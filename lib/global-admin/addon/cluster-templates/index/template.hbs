@@ -1,0 +1,24 @@
+<div class="header clearfix">
+  <h1 class="pull-left">
+    {{t "clusterTemplatesPage.index.header"}}
+  </h1>
+
+  <div class="vertical-middle"></div>
+
+  <div class="right-buttons">
+    {{#link-to
+       "cluster-templates.new"
+       class="btn btn-sm bg-primary"
+       disabled=(rbac-prevents resource="cluster" scope="global" permission="create")
+    }}
+      {{t "clusterTemplatesPage.index.newTemplate"}}
+    {{/link-to}}
+  </div>
+</div>
+
+<div class="cluster-templates-index-container">
+  <ClusterTemplatesTable
+    @clusterTemplates={{model.clusterTemplates}}
+    @clusterTemplateRevisions={{model.clusterTemplateRevisions}}
+  />
+</div>

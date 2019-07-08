@@ -1,0 +1,19 @@
+{{#if (or applyClusterTemplate clusterTemplateCreate)}}
+  {{#if applyClusterTemplate}}
+    {{#if computedOverrideAllowed}}
+      {{yield}}
+    {{else}}
+      <div>
+        {{#if computedState}}
+          {{t "generic.enabled"}}
+        {{else}}
+          {{t "generic.disabled"}}
+        {{/if}}
+      </div>
+    {{/if}}
+  {{else}}
+    {{yield}}
+  {{/if}}
+{{else}}
+  {{yield}}
+{{/if}}

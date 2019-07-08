@@ -1,0 +1,11 @@
+{{#if applyClusterTemplate}}
+  {{#if (has-override questions=questions paramName=paramName)}}
+    {{yield}}
+  {{else}}
+    <div>
+      {{get clusterTemplateRevision paramName}}
+    </div>
+  {{/if}}
+{{else}}
+  {{yield}}
+{{/if}}

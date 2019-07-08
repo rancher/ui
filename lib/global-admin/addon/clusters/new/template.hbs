@@ -1,6 +1,14 @@
-{{cru-cluster
-  model=model
-  provider=provider
-  mode="new"
-  close=(action "close")
-}}
+<section class="header">
+  <h1>
+    {{#if (eq router.currentRoute.localName "select")}}
+      {{t "clustersPage.select.provider.label"}}
+    {{else if (eq router.currentRoute.localName "cluster-template")}}
+      {{t "clustersPage.select.template.label"}}
+    {{else}}
+      {{t "clustersPage.launch.new"}} - {{driver-name provider}}
+    {{/if}}
+  </h1>
+</section>
+<section class="cluster-launch">
+  {{outlet}}
+</section>

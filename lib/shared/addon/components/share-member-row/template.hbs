@@ -1,0 +1,41 @@
+{{#if isPublic}}
+  <tr class="main-row">
+    <td class="pr-10 pl-10">
+      {{t "shareMemberRow.table.public.name"}}
+    </td>
+    <td class="pr-10 pl-10">
+      {{t "shareMemberRow.table.public.accessType"}}
+    </td>
+    <td class="pt-10">
+      <div class="input-group-btn">
+        <button class="btn bg-primary btn-sm" {{action "remove"}}>
+          <i class="icon icon-minus" />
+        </button>
+      </div>
+    </td>
+  </tr>
+{{else}}
+  <tr class="main-row">
+    <td class="pr-10 pt-10">
+      {{input-identity
+        allowTeams=true
+        action=(action "addAuthorized")
+        onError=(action "gotError")
+      }}
+    </td>
+    <td class="pr-10 pt-10">
+      {{searchable-select
+        content=choices
+        value=member.accessType
+        readOnly=false
+      }}
+    </td>
+    <td class="pt-10">
+      <div class="input-group-btn">
+        <button class="btn bg-primary btn-sm" {{action "remove"}}>
+          <i class="icon icon-minus" />
+        </button>
+      </div>
+    </td>
+  </tr>
+{{/if}}

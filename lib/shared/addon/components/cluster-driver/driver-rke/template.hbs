@@ -1,39 +1,31 @@
-{{#unless isCustom}}
-  {{cru-node-pools
-    mode=mode
-    cluster=cluster
-    driver=nodeWhich
-    nodeTemplates=model.nodeTemplates
-    registerHook=(action "registerHook")
-    setNodePoolErrors=(action "setNodePoolErrors")
-  }}
-{{/unless}}
-
 {{#if hasLegacySnapshotSettings}}
   <section class="mt-20 mb-20">
-    {{#banner-message color="bg-warning m-0"}}
-      <p>{{t "clusterNew.rke.etcd.backupConfig.legacy" duration=legacyRetention}}</p>
-    {{/banner-message}}
+    <BannerMessage
+      @color="bg-warning m-0"
+      @message={{t "clusterNew.rke.etcd.backupConfig.legacy" duration=legacyRetention}}
+    />
   </section>
 {{/if}}
 
-<section class="header has-tabs clearfix p-0">
-  <ul class="tab-nav">
-    {{#if pasteOrUpload}}
-      <li>
-        <button class="btn bg-transparent" {{action "cancel"}}>
-          {{t "clusterNew.advanced.cancel"}}
-        </button>
-      </li>
-    {{else}}
-      <li>
-        <button class="btn bg-transparent" {{action "showPaste"}}>
-          {{t "clusterNew.advanced.yaml"}} <span class="icon icon-copy"></span>
-        </button>
-      </li>
-    {{/if}}
-  </ul>
-</section>
+{{#if (and (not applyClusterTemplate) (not clusterTemplateCreate))}}
+  <section class="header has-tabs clearfix p-0">
+    <ul class="tab-nav">
+      {{#if pasteOrUpload}}
+        <li>
+          <button class="btn bg-transparent" {{action "cancel"}}>
+            {{t "clusterNew.advanced.cancel"}}
+          </button>
+        </li>
+      {{else}}
+        <li>
+          <button class="btn bg-transparent" {{action "showPaste"}}>
+            {{t "clusterNew.advanced.yaml"}} <span class="icon icon-copy"></span>
+          </button>
+        </li>
+      {{/if}}
+    </ul>
+  </section>
+{{/if}}
 
 {{#if (or isEdit (eq step 1))}}
   {{#accordion-list
@@ -84,155 +76,101 @@
           <div class="col span-6">
             <label class="acc-label">
               {{t "clusterNew.rke.version.label"}}
+              {{#if clusterTemplateCreate}}
+                <ClusterTemplateOverrideToggle
+                  @path="rancherKubernetesEngineConfig.kubernetesVersion"
+                  @configVariable={{config.kubernetesVersion}}
+                  @addOverride={{action "addOverride"}}
+                  @questions={{model.clusterTemplateRevision.questions}}
+                />
+              {{/if}}
             </label>
-            {{form-versions
-              cluster=cluster
-              editing=(eq mode "edit")
-              initialVersion=initialVersion
-              value=config.kubernetesVersion
-              versions=versionChoices
-            }}
+
+            <CheckOverrideAllowed
+              @applyClusterTemplate={{applyClusterTemplate}}
+              @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+              @paramName="rancherKubernetesEngineConfig.kubernetesVersion"
+              @questions={{model.clusterTemplateRevision.questions}}
+            >
+              {{form-versions
+                cluster=cluster
+                editing=(and (eq mode "edit") (not clusterTemplateCreate))
+                initialVersion=initialVersion
+                value=config.kubernetesVersion
+                versions=versionChoices
+              }}
+            </CheckOverrideAllowed>
           </div>
         </div>
-        <div class="row">
-          <div class="col {{if (and isCustom (eq mode "new")) "span-4" "span-6"}}">
-            <label class="acc-label">
-              {{t "clusterNew.rke.network.label"}}
-            </label>
-            {{new-select
-              classNames="form-control"
-              content=networkContent
-              localizedLabel=true
-              value=cluster.rancherKubernetesEngineConfig.network.plugin
-              disabled=isEdit
-            }}
-            {{#if windowsSupport}}
-              <label class="acc-label mt-30">
-                {{t "clusterNew.rke.network.flannelBackends.label"}}
-              </label>
-              <div class="radio">
-                <label class={{if isEdit "text-muted"}}>
-                  {{radio-button
-                    selection=config.network.options.flannel_backend_type
-                    value="host-gw"
-                    disabled=isEdit
-                  }}
-                  {{t "clusterNew.rke.network.flannelBackends.hostgw"}}
-                </label>
-              </div>
-              <div class="radio">
-                <label class={{if isEdit "text-muted"}}>
-                  {{radio-button
-                    selection=config.network.options.flannel_backend_type
-                    value="vxlan"
-                    disabled=isEdit
-                  }}
-                  {{t "clusterNew.rke.network.flannelBackends.vxlan"}}
-                </label>
-              </div>
-            {{/if}}
-          </div>
-          {{#if (and isCustom (eq mode "new"))}}
-            <div class="col span-4">
-              <label class="acc-label">
-                {{t "clusterNew.rke.windowsSupport.label"}}
-              </label>
-              <div class="radio">
-                <label class={{unless windowsSupportAvailable "text-muted"}}>
-                  {{radio-button
-                    selection=windowsSupport
-                    value=true
-                    disabled=(not windowsSupportAvailable)
-                  }}
-                  {{t "generic.enabled"}}
-                </label>
-              </div>
-              <div class="radio">
-                <label class={{unless windowsSupportAvailable "text-muted"}}>
-                  {{radio-button
-                    selection=windowsSupport
-                    value=false
-                    disabled=(not windowsSupportAvailable)
-                  }}
-                  {{t "generic.disabled"}}
-                </label>
-              </div>
-              {{#unless windowsSupportAvailable}}
-                <p class="help-block">
-                  {{t "clusterNew.rke.windowsSupport.help"}}
-                </p>
-              {{/unless}}
-            </div>
-          {{/if}}
-          <div class="col {{if (and isCustom (eq mode "new")) "span-4" "span-6"}}">
-            <label class="acc-label">
-              {{t "clusterNew.rke.networkPolicy.label"}}
-            </label>
-            <div class="radio">
-              <label class={{unless (eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")  "text-muted"}}>
-                {{radio-button
-                  selection=cluster.enableNetworkPolicy
-                  value=true
-                  disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")
-                }}
-                {{t "generic.enabled"}}
-              </label>
-            </div>
-            <div class="radio">
-              <label class={{unless (eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")  "text-muted"}}>
-                {{radio-button
-                  selection=cluster.enableNetworkPolicy
-                  value=false
-                  disabled=(not-eq cluster.rancherKubernetesEngineConfig.network.plugin "canal")
-                }}
-                {{t "generic.disabled"}}
-              </label>
-            </div>
-          </div>
-        </div>
+
+        <FormNetworkConfig
+          @config={{config}}
+          @mode={{mode}}
+          @isCustom={{isCustom}}
+          @windowsSupport={{windowsSupport}}
+          @enableNetworkPolicy={{primaryResource.enableNetworkPolicy}}
+          @clusterTemplateCreate={{clusterTemplateCreate}}
+          @clusterTemplateRevision={{model.clusterTemplateRevision}}
+          @applyClusterTemplate={{applyClusterTemplate}}
+          @addOverride={{action "addOverride"}}
+        />
+
         <div class="row">
           <div class="col span-12">
-            {{cru-cloud-provider
-              cluster=model.cluster
-              driver=nodeWhich
-              setCpFields=(action "setCpFields")
-              mode=mode
-            }}
+            <CruCloudProvider
+              @cluster={{cluster}}
+              @driver={{nodeWhich}}
+              @setCpFields={{action "setCpFields"}}
+              @mode={{mode}}
+              @clusterTemplateCreate={{clusterTemplateCreate}}
+              @applyClusterTemplate={{applyClusterTemplate}}
+              @clusterTemplateRevision={{model.clusterTemplateRevision}}
+              @questions={{model.clusterTemplateRevision.questions}}
+              @addOverride={{action "addOverride"}}
+            />
           </div>
         </div>
       {{/accordion-list-item}}
 
-      {{#advanced-section advanced=advanced}}
+      {{#advanced-section advanced=(or advanced applyClusterTemplate)}}
         {{#accordion-list-item
            title=(t "cruPrivateRegistry.title.label")
            detail=(t "cruPrivateRegistry.title.detail")
-           expandOnInit=(eq mode "edit" true false)
+           expandOnInit=(or (or (eq mode "edit" true false) forceExpandOnInit) applyClusterTemplate)
            expandAll=al.expandAll
            expand=(action expandFn)
         }}
-          {{cru-private-registry
-            cluster=cluster
-            addRegistry=(action "addRegistry")
-            removeRegistry=(action "removeRegistry")
-          }}
+          <CruPrivateRegistry
+            @cluster={{cluster}}
+            @addRegistry={{action "addRegistry"}}
+            @removeRegistry={{action "removeRegistry"}}
+            @addOverride={{action "addOverride"}}
+            @clusterTemplateCreate={{clusterTemplateCreate}}
+            @clusterTemplateRevision={{model.clusterTemplateRevision}}
+            @applyClusterTemplate={{applyClusterTemplate}}
+          />
         {{/accordion-list-item}}
 
         {{#accordion-list-item
            title=(t "clusterNew.rke.authorizedEndpoint.title")
            detail=(t "clusterNew.rke.authorizedEndpoint.detail")
-           expandOnInit=(eq mode "edit" true false)
+           expandOnInit=(or (or (eq mode "edit" true false) forceExpandOnInit) applyClusterTemplate)
            expandAll=al.expandAll
            expand=(action expandFn)
         }}
-          {{authorized-endpoint
-            cluster=cluster
-          }}
+          <AuthorizedEndpoint
+            @addOverride={{action "addOverride"}}
+            @cluster={{cluster}}
+            @clusterTemplateCreate={{clusterTemplateCreate}}
+            @clusterTemplateRevision={{model.clusterTemplateRevision}}
+            @applyClusterTemplate={{applyClusterTemplate}}
+          />
         {{/accordion-list-item}}
 
         {{#accordion-list-item
            title=(t "clusterNew.rke.advanced.label")
            detail=(t "clusterNew.rke.advanced.detail")
-           expandOnInit=(eq mode "edit" true false)
+           expandOnInit=(or (or (eq mode "edit" true false) forceExpandOnInit) applyClusterTemplate)
            expandAll=al.expandAll
            expand=(action expandFn)
         }}
@@ -240,113 +178,169 @@
             <div class="col span-4">
               <label class="acc-label">
                 {{t "clusterNew.rke.ingress.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="rancherKubernetesEngineConfig.ingress.provider"
+                    @configVariable={{config.ingress.provider}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
               </label>
-              <div class="radio">
-                <label>
-                  {{!--
-                    {{radio-button selection=nginxIngressProvider value="nginx"}}
-                    --}}
-                  {{radio-button
-                    selection=cluster.rancherKubernetesEngineConfig.ingress.provider
-                    value="nginx"
-                  }}
-                  {{t "generic.enabled"}}
-                </label>
-              </div>
-              <div class="radio">
-                <label>
-                  {{!--
-                    {{radio-button selection=nginxIngressProvider value=null}}
-                    --}}
-                  {{radio-button
-                    selection=cluster.rancherKubernetesEngineConfig.ingress.provider
-                    value="none"
-                  }}
-                  {{t "generic.disabled"}}
-                </label>
-              </div>
+              <CheckOverrideAllowed
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @paramName="rancherKubernetesEngineConfig.ingress.provider"
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                <div class="radio">
+                  <label>
+                    {{radio-button
+                      selection=config.ingress.provider
+                      value="nginx"
+                    }}
+                    {{t "generic.enabled"}}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    {{radio-button
+                      selection=config.ingress.provider
+                      value="none"
+                    }}
+                    {{t "generic.disabled"}}
+                  </label>
+                </div>
+              </CheckOverrideAllowed>
             </div>
             <div class="col span-4">
               <label class="acc-label">
                 {{t "clusterNew.rke.serviceNodePortRange.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange"
+                    @configVariable={{config.services.kubeApi.serviceNodePortRange}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
               </label>
-              {{input
-                type="text"
-                value=cluster.rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange
-                className="form-control"
-                placeholder=(t "clusterNew.rke.serviceNodePortRange.placeholder")
-              }}
+              <CheckOverrideAllowed
+                @paramName="rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                {{input
+                  type="text"
+                  value=config.services.kubeApi.serviceNodePortRange
+                  className="form-control"
+                  placeholder=(t "clusterNew.rke.serviceNodePortRange.placeholder")
+                }}
+              </CheckOverrideAllowed>
             </div>
             <div class="col span-4">
               <label class="acc-label">
                 {{t "clusterNew.rke.monitoring.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="rancherKubernetesEngineConfig.monitoring.provider"
+                    @configVariable={{config.monitoring.provider}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
               </label>
-              <div class="radio">
-                <label>
-                  {{!--
-                    {{radio-button selection=monitoringProvider value="metrics-server"}}
-                    --}}
-                  {{radio-button
-                    selection=cluster.rancherKubernetesEngineConfig.monitoring.provider
-                    value="metrics-server"
-                  }}
-                  {{t "generic.enabled"}}
-                </label>
-              </div>
-              <div class="radio">
-                <label>
-                  {{!--
-                    {{radio-button selection=monitoringProvider value=null}}
-                    --}}
-                  {{radio-button
-                    selection=cluster.rancherKubernetesEngineConfig.monitoring.provider
-                    value="none"
-                  }}
-                  {{t "generic.disabled"}}
-                </label>
-              </div>
+              <CheckOverrideAllowed
+                @paramName="rancherKubernetesEngineConfig.monitoring.provider"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                <div class="radio">
+                  <label>
+                    {{radio-button
+                      selection=config.monitoring.provider
+                      value="metrics-server"
+                    }}
+                    {{t "generic.enabled"}}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    {{radio-button
+                      selection=config.monitoring.provider
+                      value="none"
+                    }}
+                    {{t "generic.disabled"}}
+                  </label>
+                </div>
+              </CheckOverrideAllowed>
             </div>
           </div>
           <div class="row">
             <div class="col span-4">
               <label class="acc-label">
                 {{t "clusterNew.rke.podSecurityPolicy.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy"
+                    @configVariable={{config.services.kubeApi.podSecurityPolicy}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
               </label>
-              <div class="radio">
-                <label class={{unless model.psps.length "text-muted"}}>
-                  {{!--
-                    {{radio-button selection=kubeApiPodSecurityPolicy value=true disabled=(not model.psps.length)}}
-                    --}}
-                  {{radio-button
-                    selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy
-                    value=true
-                    disabled=(not model.psps.length)
-                  }}
-                  {{t "generic.enabled"}}
-                  {{#unless model.psps.length}}
-                    &mdash; {{t "clusterNew.psp.none"}}
-                  {{/unless}}
-                </label>
-              </div>
-              <div class="radio">
-                <label>
-                  {{!--
-                    {{radio-button selection=kubeApiPodSecurityPolicy value=false disabled=(not model.psps.length)}}
-                    --}}
-                  {{radio-button
-                    selection=cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy
-                    value=false
-                    disabled=(not model.psps.length)
-                  }}
-                  {{t "generic.disabled"}}
-                </label>
-              </div>
+              <CheckOverrideAllowed
+                @paramName="rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                <div class="radio">
+                  <label class={{unless model.psps.length "text-muted"}}>
+                    {{radio-button
+                      selection=config.services.kubeApi.podSecurityPolicy
+                      value=true
+                      disabled=(not model.psps.length)
+                    }}
+                    {{t "generic.enabled"}}
+                    {{#unless model.psps.length}}
+                      &mdash; {{t "clusterNew.psp.none"}}
+                    {{/unless}}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    {{radio-button
+                      selection=config.services.kubeApi.podSecurityPolicy
+                      value=false
+                      disabled=(not model.psps.length)
+                    }}
+                    {{t "generic.disabled"}}
+                  </label>
+                </div>
+              </CheckOverrideAllowed>
             </div>
             <div class="col span-4">
-              {{#if cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy}}
+              {{#if config.services.kubeApi.podSecurityPolicy}}
                 <label class="acc-label">
                   {{t "clusterNew.psp.label"}}{{field-required}}
+                  {{#if clusterTemplateCreate}}
+                    <ClusterTemplateOverrideToggle
+                      @path="defaultPodSecurityPolicyTemplateId"
+                      @configVariable={{cluster.defaultPodSecurityPolicyTemplateId}}
+                      @addOverride={{action "addOverride"}}
+                      @questions={{model.clusterTemplateRevision.questions}}
+                    />
+                  {{/if}}
                 </label>
+              <CheckOverrideAllowed
+                @paramName="defaultPodSecurityPolicyTemplateId"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
                 {{new-select
                   content=model.psps
                   optionLabelPath="displayName"
@@ -354,8 +348,9 @@
                   prompt="clusterNew.psp.prompt"
                   localizedPrompt=true
                   value=cluster.defaultPodSecurityPolicyTemplateId
-                  disabled=(not cluster.rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy)
+                  disabled=(not config.services.kubeApi.podSecurityPolicy)
                 }}
+              </CheckOverrideAllowed>
               {{else}}
                 <label class="acc-label">
                   {{t "clusterNew.psp.label"}}
@@ -368,37 +363,67 @@
             <div class="col span-4">
               <label class="acc-label">
                 {{t "clusterNew.rke.ignoreDockerVersion.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="rancherKubernetesEngineConfig.ignoreDockerVersion"
+                    @configVariable={{cluster.ignoreDockerVersion}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
               </label>
-              <div class="radio">
-                <label>
-                  {{radio-button
-                    selection=cluster.rancherKubernetesEngineConfig.ignoreDockerVersion
-                    value=false
-                  }}
-                  {{t "clusterNew.rke.ignoreDockerVersion.disabled"}}
-                </label>
-              </div>
-              <div class="radio">
-                <label>
-                  {{radio-button
-                    selection=cluster.rancherKubernetesEngineConfig.ignoreDockerVersion
-                    value=true
-                  }}
-                  {{t "clusterNew.rke.ignoreDockerVersion.enabled"}}
-                </label>
-              </div>
+              <CheckOverrideAllowed
+                @paramName="rancherKubernetesEngineConfig.ignoreDockerVersion"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                <div class="radio">
+                  <label>
+                    {{radio-button
+                      selection=config.ignoreDockerVersion
+                      value=false
+                    }}
+                    {{t "clusterNew.rke.ignoreDockerVersion.disabled"}}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    {{radio-button
+                      selection=config.ignoreDockerVersion
+                      value=true
+                    }}
+                    {{t "clusterNew.rke.ignoreDockerVersion.enabled"}}
+                  </label>
+                </div>
+              </CheckOverrideAllowed>
             </div>
 
             <div class="col span-4">
               <label class="acc-label">
                 {{t "loggingPage.dockerRootDir.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="dockerRootDir"
+                    @configVariable={{cluster.dockerRootDir}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
               </label>
-              {{input
-                type="text"
-                value=model.cluster.dockerRootDir
-                className="form-control"
-                placeholder=(t "clusterNew.rke.dockerRootDir.placeholder" dir=defaultDockerRootDir)
-              }}
+              <CheckOverrideAllowed
+                @paramName="dockerRootDir"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                {{input
+                  type="text"
+                  value=cluster.dockerRootDir
+                  className="form-control"
+                  placeholder=(t "clusterNew.rke.dockerRootDir.placeholder" dir=defaultDockerRootDir)
+                }}
+              </CheckOverrideAllowed>
             </div>
 
           </div>
@@ -407,25 +432,40 @@
 
               <label class="acc-label">
                 {{t "clusterNew.rke.etcd.location.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="backupStrategy"
+                    @configVariable={{backupStrategy}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
               </label>
-              <div>
-                <label class="radio mt-0">
-                  {{radio-button selection=backupStrategy value="local"}}
-                  {{t "clusterNew.rke.etcd.location.local.label"}}
-                  <p class="help-block">
-                    {{t "clusterNew.rke.etcd.location.local.help"}}
-                  </p>
-                </label>
-              </div>
-              <div>
-                <label class="radio">
-                  {{radio-button selection=backupStrategy value="s3"}}
-                  {{t "clusterNew.rke.etcd.location.s3.label"}}
-                  <p class="help-block">
-                    {{t "clusterNew.rke.etcd.location.s3.help"}}
-                  </p>
-                </label>
-              </div>
+              <CheckOverrideAllowed
+                @paramName="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                <div>
+                  <label class="radio mt-0">
+                    {{radio-button selection=backupStrategy value="local"}}
+                    {{t "clusterNew.rke.etcd.location.local.label"}}
+                    <p class="help-block">
+                      {{t "clusterNew.rke.etcd.location.local.help"}}
+                    </p>
+                  </label>
+                </div>
+                <div>
+                  <label class="radio">
+                    {{radio-button selection=backupStrategy value="s3"}}
+                    {{t "clusterNew.rke.etcd.location.s3.label"}}
+                    <p class="help-block">
+                      {{t "clusterNew.rke.etcd.location.s3.help"}}
+                    </p>
+                  </label>
+                </div>
+              </CheckOverrideAllowed>
             </div>
           </div>
 
@@ -434,37 +474,82 @@
               <div class="col span-3">
                 <label class="acc-label">
                   {{t "clusterNew.rke.etcd.backupConfig.bucketName.label"}}
+                  {{#if clusterTemplateCreate}}
+                    <ClusterTemplateOverrideToggle
+                      @path="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.bucketName"
+                      @configVariable={{config.services.etcd.backupConfig.s3BackupConfig.bucketName}}
+                      @addOverride={{action "addOverride"}}
+                      @questions={{model.clusterTemplateRevision.questions}}
+                    />
+                  {{/if}}
                 </label>
-                {{input
-                  type="text"
-                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.bucketName
-                  classNames="form-control"
-                  placeholder=(t "clusterNew.rke.etcd.backupConfig.bucketName.placeholder")
-                }}
+                <CheckOverrideAllowed
+                  @paramName="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.bucketName"
+                  @applyClusterTemplate={{applyClusterTemplate}}
+                  @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                  @questions={{model.clusterTemplateRevision.questions}}
+                >
+                  {{input
+                    type="text"
+                    value=config.services.etcd.backupConfig.s3BackupConfig.bucketName
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.etcd.backupConfig.bucketName.placeholder")
+                  }}
+                </CheckOverrideAllowed>
               </div>
 
               <div class="col span-3 offset-1">
                 <label class="acc-label">
                   {{t "clusterNew.rke.etcd.backupConfig.region.label"}}
+                  {{#if clusterTemplateCreate}}
+                    <ClusterTemplateOverrideToggle
+                      @path="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.region"
+                      @configVariable={{config.services.etcd.backupConfig.s3BackupConfig.region}}
+                      @addOverride={{action "addOverride"}}
+                      @questions={{model.clusterTemplateRevision.questions}}
+                    />
+                  {{/if}}
                 </label>
-                {{input
-                  type="text"
-                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.region
-                  classNames="form-control"
-                  placeholder=(t "clusterNew.rke.etcd.backupConfig.region.placeholder")
-                }}
+                <CheckOverrideAllowed
+                  @paramName="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.region"
+                  @applyClusterTemplate={{applyClusterTemplate}}
+                  @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                  @questions={{model.clusterTemplateRevision.questions}}
+                >
+                  {{input
+                    type="text"
+                    value=config.services.etcd.backupConfig.s3BackupConfig.region
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.etcd.backupConfig.region.placeholder")
+                  }}
+                </CheckOverrideAllowed>
               </div>
 
               <div class="col span-3 offset-1">
                 <label class="acc-label">
                   {{t "clusterNew.rke.etcd.backupConfig.endpoint.label"}}
+                  {{#if clusterTemplateCreate}}
+                    <ClusterTemplateOverrideToggle
+                      @path="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.endpoint"
+                      @configVariable={{config.services.etcd.backupConfig.s3BackupConfig.endpoint}}
+                      @addOverride={{action "addOverride"}}
+                      @questions={{model.clusterTemplateRevision.questions}}
+                    />
+                  {{/if}}
                 </label>
-                {{input
-                  type="text"
-                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.endpoint
-                  classNames="form-control"
-                  placeholder=(t "clusterNew.rke.etcd.backupConfig.endpoint.placeholder")
-                }}
+                <CheckOverrideAllowed
+                  @paramName="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.endpoint"
+                  @applyClusterTemplate={{applyClusterTemplate}}
+                  @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                  @questions={{model.clusterTemplateRevision.questions}}
+                >
+                  {{input
+                    type="text"
+                    value=config.services.etcd.backupConfig.s3BackupConfig.endpoint
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.etcd.backupConfig.endpoint.placeholder")
+                  }}
+                </CheckOverrideAllowed>
               </div>
             </div>
 
@@ -472,27 +557,57 @@
               <div class="col span-3">
                 <label class="acc-label">
                   {{t "clusterNew.rke.etcd.backupConfig.accessKey.label"}}
+                  {{#if clusterTemplateCreate}}
+                    <ClusterTemplateOverrideToggle
+                      @path="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.accessKey"
+                      @configVariable={{config.services.etcd.backupConfig.s3BackupConfig.accessKey}}
+                      @addOverride={{action "addOverride"}}
+                      @questions={{model.clusterTemplateRevision.questions}}
+                    />
+                  {{/if}}
                 </label>
-                {{input
-                  type="text"
-                  name="accessKey"
-                  classNames="form-control"
-                  placeholder=(t "clusterNew.rke.etcd.backupConfig.accessKey.placeholder")
-                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.accessKey
-                }}
+                <CheckOverrideAllowed
+                  @paramName="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.accessKey"
+                  @applyClusterTemplate={{applyClusterTemplate}}
+                  @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                  @questions={{model.clusterTemplateRevision.questions}}
+                >
+                  {{input
+                    type="text"
+                    name="accessKey"
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.etcd.backupConfig.accessKey.placeholder")
+                    value=config.services.etcd.backupConfig.s3BackupConfig.accessKey
+                  }}
+                </CheckOverrideAllowed>
               </div>
 
               <div class="col span-3 offset-1">
                 <label class="acc-label">
                   {{t "clusterNew.rke.etcd.backupConfig.secretKey.label"}}
+                  {{#if clusterTemplateCreate}}
+                    <ClusterTemplateOverrideToggle
+                      @path="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.secretKey"
+                      @configVariable={{config.services.etcd.backupConfig.s3BackupConfig.secretKey}}
+                      @addOverride={{action "addOverride"}}
+                      @questions={{model.clusterTemplateRevision.questions}}
+                    />
+                  {{/if}}
                 </label>
-                {{input
-                  type="password"
-                  name="password"
-                  classNames="form-control"
-                  placeholder=(t "clusterNew.rke.etcd.backupConfig.secretKey.placeholder")
-                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.secretKey
-                }}
+                <CheckOverrideAllowed
+                  @paramName="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.secretKey"
+                  @applyClusterTemplate={{applyClusterTemplate}}
+                  @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                  @questions={{model.clusterTemplateRevision.questions}}
+                >
+                  {{input
+                    type="password"
+                    name="password"
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.etcd.backupConfig.secretKey.placeholder")
+                    value=config.services.etcd.backupConfig.s3BackupConfig.secretKey
+                  }}
+                </CheckOverrideAllowed>
               </div>
             </div>
             <div class="row">
@@ -518,61 +633,105 @@
           <div class="row">
             <div class="col span-3">
               <label class="acc-label">
-
                 {{t "clusterNew.rke.etcd.enabled.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled"
+                    @configVariable={{config.services.etcd.backupConfig.enabled}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
               </label>
-              <div class="text-muted">
-                <label>
-                  {{radio-button
-                    selection=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled
-                    value=true
-                  }}
-                  {{t "generic.yes"}}
-                </label>
-                <label>
-                  {{radio-button
-                    selection=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled
-                    value=false
-                  }}
-                  {{t "generic.no"}}
-                </label>
-              </div>
+              <CheckOverrideAllowed
+                @paramName="rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                <div class="text-muted">
+                  <label>
+                    {{radio-button
+                      selection=config.services.etcd.backupConfig.enabled
+                      value=true
+                    }}
+                    {{t "generic.yes"}}
+                  </label>
+                  <label>
+                    {{radio-button
+                      selection=config.services.etcd.backupConfig.enabled
+                      value=false
+                    }}
+                    {{t "generic.no"}}
+                  </label>
+                </div>
+              </CheckOverrideAllowed>
             </div>
 
             <div class="col span-3 offset-1">
               <label class="acc-label">
                 {{t "clusterNew.rke.etcd.backupConfig.interval.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="rancherKubernetesEngineConfig.services.etcd.backupConfig.intervalHours"
+                    @configVariable={{config.services.etcd.backupConfig.intervalHours}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
               </label>
-              <div class="input-group">
-                {{input-integer
-                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.intervalHours
-                  min=1
-                  classNames="form-control"
-                  placeholder=(t "clusterNew.rke.etcd.backupConfig.interval.placeholder")
-                  disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
-                }}
-                <span class="input-group-addon bg-default">{{t "generic.hours"}}</span>
-              </div>
+              <CheckOverrideAllowed
+                @paramName="rancherKubernetesEngineConfig.services.etcd.backupConfig.intervalHours"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                <div class="input-group">
+                  {{input-integer
+                    value=config.services.etcd.backupConfig.intervalHours
+                    min=1
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.etcd.backupConfig.interval.placeholder")
+                    disabled=(if (not config.services.etcd.backupConfig.enabled) true)
+                  }}
+                  <span class="input-group-addon bg-default">{{t "generic.hours"}}</span>
+                </div>
+              </CheckOverrideAllowed>
             </div>
 
             <div class="col span-3 offset-1">
               <label class="acc-label">
                 {{t "clusterNew.rke.etcd.backupConfig.retention.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="rancherKubernetesEngineConfig.services.etcd.backupConfig.retention"
+                    @configVariable={{config.services.etcd.backupConfig.retention}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
               </label>
-              {{input-integer
-                value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.retention
-                min=1
-                classNames="form-control"
-                placeholder=(t "clusterNew.rke.etcd.backupConfig.retention.placeholder")
-                disabled=(if (not cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.enabled) true)
-              }}
+              <CheckOverrideAllowed
+                @paramName="rancherKubernetesEngineConfig.services.etcd.backupConfig.retention"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                {{input-integer
+                  value=config.services.etcd.backupConfig.retention
+                  min=1
+                  classNames="form-control"
+                  placeholder=(t "clusterNew.rke.etcd.backupConfig.retention.placeholder")
+                  disabled=(if (not config.services.etcd.backupConfig.enabled) true)
+                }}
+              </CheckOverrideAllowed>
             </div>
           </div>
         {{/accordion-list-item}}
       {{/advanced-section}}
     {{/if}}
   {{/accordion-list}}
-{{/if}}
+{{/if}} {{!-- endif (or isEdit (eq step 1)) --}}
 
 {{#if (and isCustom (eq step 2)) }}
   {{#accordion-list showExpandAll=false as |al expandFn|}}
@@ -730,11 +889,11 @@
                       <ul class="list-unstyled">
                         <li>
                           {{#form-user-labels
-                              setLabels=(action "setLabels")
-                              expandAll=al.expandAll
-                              expand=(action expandFn)
-                              detailKey="formUserLabels.nodeDetail"
-                              as | userLabelArray removeLabel addUserLabel |
+                             setLabels=(action "setLabels")
+                             expandAll=al.expandAll
+                             expand=(action expandFn)
+                             detailKey="formUserLabels.nodeDetail"
+                             as | userLabelArray removeLabel addUserLabel |
                           }}
                             {{#if userLabelArray.length}}
                               <table class="table fixed no-lines mt-20">
@@ -830,7 +989,6 @@
 
       </section>
     {{/accordion-list-item}}
-
   {{/accordion-list}}
 
   {{#if newNodeCount}}
@@ -841,8 +999,29 @@
       </div>
     </div>
   {{/if}}
+{{/if}} {{!-- endif (and isCustom (eq step 2)) --}}
 
 
+{{#if (or clusterTemplateCreate applyClusterTemplate)}}
+  {{#accordion-list
+     showExpandAll=false
+     as |al expandFn|
+  }}
+    {{#accordion-list-item
+       title=(t "clusterTemplateQuestions.label")
+       detail=(t "clusterTemplateQuestions.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=true
+    }}
+      <CruClusterTemplateQuestions
+        @addQuestion={{addQuestion}}
+        @removeQuestion={{removeQuestion}}
+        @allQuestions={{clusterTemplateQuestions}}
+        @applyClusterTemplate={{applyClusterTemplate}}
+      />
+    {{/accordion-list-item}}
+  {{/accordion-list}}
 {{/if}}
 
 {{top-errors errors=errors}}
@@ -852,14 +1031,21 @@
 
 {{#if (or isEdit (eq step 1))}}
   {{save-cancel
-    createLabel=(if isCustom "saveCancel.next" "saveCancel.create")
+    createLabel=(or overrideCreateLabel (if isCustom "saveCancel.next" "saveCancel.create"))
     editing=isEdit
     save=(action "driverSave")
     cancel=(action "close")
   }}
 {{else}}
   <div class="footer-actions">
-    <button {{action "close"}} class="btn bg-primary">{{t "clusterNew.rke.done"}}</button>
+    <button {{action "close"}} class="btn bg-primary">
+      {{t "clusterNew.rke.done"}}
+    </button>
   </div>
 {{/if}}
-<input type="file" accept="{{actualAccept}}" class="hide">
+
+<input
+  type="file"
+  accept="{{actualAccept}}"
+  class="hide"
+>

@@ -1,0 +1,157 @@
+<div class="col {{if (and isCustom (or (eq mode "new") clusterTemplateCreate)) "span-4" "span-6"}}">
+  <label class="acc-label" for="network-plugin">
+    {{t "clusterNew.rke.network.label"}}
+    {{#if clusterTemplateCreate}}
+      <ClusterTemplateOverrideToggle
+        @path="rancherKubernetesEngineConfig.network.plugin"
+        @configVariable={{config.network.plugin}}
+        @addOverride={{addOverride}}
+        @questions={{clusterTemplateRevision.questions}}
+      />
+    {{/if}}
+  </label>
+  <CheckOverrideAllowed
+    @questions={{clusterTemplateRevision.questions}}
+    @paramName="rancherKubernetesEngineConfig.network.plugin"
+    @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
+    @applyClusterTemplate={{applyClusterTemplate}}
+  >
+    {{new-select
+      id="network-plugin"
+      classNames="form-control"
+      content=networkContent
+      localizedLabel=true
+      value=config.network.plugin
+      disabled=(and isEdit (not clusterTemplateCreate))
+    }}
+  </CheckOverrideAllowed>
+  {{#if windowsSupport}}
+    <label class="acc-label mt-30">
+      {{t "clusterNew.rke.network.flannelBackends.label"}}
+      {{#if clusterTemplateCreate}}
+        <ClusterTemplateOverrideToggle
+          @path="rancherKubernetesEngineConfig.network.options.flannel_backend_type"
+          @configVariable={{config.network.options.flannel_backend_type}}
+          @addOverride={{addOverride}}
+          @questions={{clusterTemplateRevision.questions}}
+        />
+      {{/if}}
+    </label>
+    <CheckOverrideAllowed
+      @questions={{clusterTemplateRevision.questions}}
+      @paramName="rancherKubernetesEngineConfig.network.options.flannel_backend_type"
+      @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
+      @applyClusterTemplate={{applyClusterTemplate}}
+    >
+      <div class="radio">
+        <label class={{if isEdit "text-muted"}}>
+          {{radio-button
+            selection=config.network.options.flannel_backend_type
+            value="host-gw"
+            disabled=isEdit
+          }}
+          {{t "clusterNew.rke.network.flannelBackends.hostgw"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label class={{if isEdit "text-muted"}}>
+          {{radio-button
+            selection=config.network.options.flannel_backend_type
+            value="vxlan"
+            disabled=isEdit
+          }}
+          {{t "clusterNew.rke.network.flannelBackends.vxlan"}}
+        </label>
+      </div>
+    </CheckOverrideAllowed>
+  {{/if}}
+</div>
+{{#if (and isCustom (or (eq mode "new") clusterTemplateCreate))}}
+  <div class="col span-4">
+    <label class="acc-label">
+      {{t "clusterNew.rke.windowsSupport.label"}}
+      {{#if (and clusterTemplateCreate windowsSupportAvailable)}}
+        <ClusterTemplateOverrideToggle
+          @path="windowsSupport"
+          @configVariable={{windowsSupport}}
+          @addOverride={{addOverride}}
+          @questions={{clusterTemplateRevision.questions}}
+        />
+      {{/if}}
+    </label>
+    <CheckComputedOverride
+      @applyClusterTemplate={{applyClusterTemplate}}
+      @clusterTemplateCreate={{clusterTemplateCreate}}
+      @computedOverrideAllowed={{windowsSupportOverrideAvailable}}
+      @windowsSupportAvailable={{mut windowsSupportAvailable}}
+      @windowsSupport={{mut windowsSupport}}
+      @computedState={{windowsSupport}}
+    >
+      <div class="radio">
+        <label class={{unless windowsSupportAvailable "text-muted"}}>
+          {{radio-button
+            selection=windowsSupport
+            value=true
+            disabled=(not windowsSupportAvailable)
+          }}
+          {{t "generic.enabled"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label class={{unless windowsSupportAvailable "text-muted"}}>
+          {{radio-button
+            selection=windowsSupport
+            value=false
+            disabled=(not windowsSupportAvailable)
+          }}
+          {{t "generic.disabled"}}
+        </label>
+      </div>
+    </CheckComputedOverride>
+    {{#unless windowsSupportAvailable}}
+      <p class="help-block">
+        {{t "clusterNew.rke.windowsSupport.help"}}
+      </p>
+    {{/unless}}
+  </div>
+{{/if}}
+<div class="col {{if (and isCustom (or (eq mode "new") clusterTemplateCreate)) "span-4" "span-6"}}">
+  <label class="acc-label">
+    {{t "clusterNew.rke.networkPolicy.label"}}
+    {{#if (and clusterTemplateCreate projectNetworkIsolationAvailable)}}
+      <ClusterTemplateOverrideToggle
+        @path="enableNetworkPolicy"
+        @configVariable={{enableNetworkPolicy}}
+        @addOverride={{addOverride}}
+        @questions={{clusterTemplateRevision.questions}}
+      />
+    {{/if}}
+  </label>
+  <CheckOverrideAllowed
+    @questions={{clusterTemplateRevision.questions}}
+    @paramName="enableNetworkPolicy"
+    @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
+    @applyClusterTemplate={{applyClusterTemplate}}
+  >
+    <div class="radio">
+      <label class={{unless projectNetworkIsolationAvailable  "text-muted"}}>
+        {{radio-button
+          selection=enableNetworkPolicy
+          value=true
+          disabled=(not projectNetworkIsolationAvailable)
+        }}
+        {{t "generic.enabled"}}
+      </label>
+    </div>
+    <div class="radio">
+      <label class={{unless projectNetworkIsolationAvailable  "text-muted"}}>
+        {{radio-button
+          selection=enableNetworkPolicy
+          value=false
+          disabled=(not projectNetworkIsolationAvailable)
+        }}
+        {{t "generic.disabled"}}
+      </label>
+    </div>
+  </CheckOverrideAllowed>
+</div>

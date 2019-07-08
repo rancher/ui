@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="col span-6">
+    <FormNameDescription
+      @bothColClass="col span-12"
+      @colClass="col span-12"
+      @editing={{eq mode "new"}}
+      @model={{primaryResource}}
+      @nameLabel="cruClusterTemplate.name.label"
+      @nameRequired={{true}}
+    />
+  </div>
+  <div class="col span-6">
+    <FormNameDescription
+      @bothColClass="col span-12"
+      @colClass="col span-12"
+      @descriptionDisabled={{true}}
+      @descriptionShown={{false}}
+      @editing={{true}}
+      @focusDisabledOnInit={{true}}
+      @model={{clusterTemplateRevision}}
+      @nameLabel="cruClusterTemplate.revisionName.label"
+      @nameRequired={{false}}
+    />
+  </div>
+</div>
+
+<div class="row pb-20">
+  <div class="col span-6">
+    <label class="acc-label">
+      {{t "cruClusterTemplate.default.label"}}
+    </label>
+    <div class="radio">
+      <label>
+        {{input
+          type="checkbox"
+          classNames="form-control"
+          checked=setDefaultTemplateRevision
+        }}
+        {{t "cruClusterTemplate.default.flag"}}
+      </label>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <AccordionList
+    @showExpandAll={{false}}
+    as |al expandFn|
+  >
+    <AccordionListItem
+      @title={{t "cruClusterTemplate.members.label"}}
+      @detail={{t "cruClusterTemplate.members.detail"}}
+      @expandAll={{al.expandAll}}
+      @everExpanded={{true}}
+      @expanded={{expanded}}
+      @expandOnInit={{true}}
+      @expand={{action expandFn}}
+    >
+      <FormShareMember
+        @readOnly={{false}}
+        @resource={{primaryResource}}
+        @addAuthorizedPrincipal={{action "addAuthorizedPrincipal"}}
+        @removeMember={{action "removeMember"}}
+        @users={{users}}
+        @errors={{errors}}
+      />
+    </AccordionListItem>
+  </AccordionList>
+</div>
+
+<div class="row">
+  {{cluster-driver/driver-rke
+    advanced=true
+    mode=mode
+    nodeWhich="custom"
+    clusterTemplateCreate=true
+    clusterTemplateQuestions=clusterTemplateRevision.questions
+    addQuestion=(action "addQuestion")
+    removeQuestion=(action "removeQuestion")
+    model=(hash
+    cluster=cluster
+    originalCluster=originalCluster
+    psps=psps
+    clusterTemplateRevision=clusterTemplateRevision
+    )
+    otherErrors=memberErrors
+    clusterErrors=errors
+    nodePoolErrors=nodePoolErrors
+    forceExpandOnInit=true
+    overrideCreateLabel="saveCancel.create"
+    save=(action "save")
+    close=(action "cancel")
+    registerHook=(action "registerHook")
+  }}
+</div>

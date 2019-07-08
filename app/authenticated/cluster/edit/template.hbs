@@ -1,7 +1,14 @@
-{{cru-cluster
-  model=model
-  initialProvider=cluster.provider
-  provider=provider
-  mode="edit"
-  close=(action "close")
-}}
+<section class="header">
+  <h1>
+    {{t "clustersPage.editClusterName" name=model.originalCluster.displayName}}
+  </h1>
+</section>
+
+<CruCluster
+  @applyClusterTemplate={{not (is-empty model.clusterTemplateRevision)}}
+  @model={{model}}
+  @initialProvider={{cluster.provider}}
+  @provider={{provider}}
+  @mode="edit"
+  @close={{action "close"}}
+/>

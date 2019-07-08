@@ -1,0 +1,112 @@
+<div class="launch-cluster">
+  <div class="row nav nav-boxes inline-form">
+    <div class="col span-6 col-inline">
+      <div>
+        <label class="acc-label">
+          {{t "clusterNew.driverLabels.custom"}}
+        </label>
+      </div>
+
+      <div class="span-4 col">
+        <a
+          class="mb-20 mt-10 span-12 col col-inline nav-box-item driver custom"
+          href="#"
+          {{action "launchCluster" "custom"}}
+        >
+          <div class="machine-driver custom"></div>
+          <p class="driver-name">
+            {{driver-name "custom"}}
+          </p>
+        </a>
+      </div>
+      <div class="span-6 col p-10">
+        <p class="help-block">
+          {{t "clusterNew.custom.helpBlock"}}
+        </p>
+      </div>
+    </div>
+
+    <div class="col span-6 col-inline">
+      <div>
+        <label class="acc-label">
+          {{t "clusterNew.driverLabels.import"}}
+        </label>
+      </div>
+      <div class="span-4 col">
+        {{#link-to
+           "clusters.new.launch"
+           "import"
+           class="mb-20 mt-10 col span-12 col-inline nav-box-item driver import"
+        }}
+          <div class="machine-driver import"></div>
+          <p class="driver-name">
+            {{driver-name "import"}}
+          </p>
+        {{/link-to}}
+      </div>
+      <div class="span-6 col p-10">
+        <p class="help-block">
+          {{t "clusterNew.import.helpBlock"}}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {{#if (gt (get (get providerGroups "cloudGroup") "length") 0)}}
+    <div class="row nav nav-boxes inline-form">
+      <div class="col span-12 col-inline mb-0">
+        <div>
+          <label class="acc-label">
+            {{t "clusterNew.driverLabels.cloud"}}
+          </label>
+        </div>
+        {{#each (get providerGroups "cloudGroup") as |provider|}}
+          {{#unless provider.scriptError}}
+            {{#link-to
+               "clusters.new.launch"
+               provider.name
+               class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name)
+            }}
+              <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
+              <p class="driver-name">{{driver-name provider.name}}</p>
+            {{/link-to}}
+          {{else}}
+            <div class={{concat "disabled error-loading-driver mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name}}>
+              {{#tooltip-element type="tooltip-basic" model=provider.scriptError tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="tooltipDriverError"}}
+                <span class="icon icon-alert"></span>
+              {{/tooltip-element}}
+              <div class="machine-driver {{provider.name}}"></div>
+              <p class="driver-name">{{driver-name provider.name}}</p>
+            </div>
+          {{/unless}}
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if (gt (get (get providerGroups "rkeGroup") "length") 0)}}
+    <div class="row nav nav-boxes checked-active inline-form">
+      <div class="col span-12 col-inline mt-0">
+        <div>
+          <label class="acc-label">{{t "clusterNew.driverLabels.infra"}}</label>
+        </div>
+        {{#each (get providerGroups "rkeGroup") as |provider|}}
+          <a
+            class={{concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name}}
+            href="#"
+            {{action "launchCluster" provider.name}}
+          >
+            <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
+            <p class="driver-name">{{driver-name provider.name}}</p>
+          </a>
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
+</div>
+
+<div class="footer-actions mt-20">
+  {{#link-to "clusters.index" classNames="btn bg-transparent"}}
+    {{t "generic.back"}}
+  {{/link-to}}
+</div>

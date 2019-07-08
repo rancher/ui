@@ -6,6 +6,7 @@ languageContribute: "Help Translate Rancher"
 ##############################
 generic:
   actions: Actions
+  active: Active
   activate: Activate
   add: Add
   advanced: Advanced
@@ -876,6 +877,8 @@ clustersPage:
   newCluster: Add Cluster
   newClusterName: "Add Cluster: {name}"
   editClusterName: "Edit Cluster: {name}"
+  launch:
+    new: Add Cluster
   cluster:
     label: Cluster Name
   provider:
@@ -892,6 +895,37 @@ clustersPage:
     label: Pods
   storage:
     label: Disk
+  select:
+    provider:
+      label: "Create Cluster - Select Cluster Provider"
+    template:
+      label: "Create Cluster - Select Cluster Template"
+
+clustersSelectTemplatePage:
+  label: "You may elect to use a Cluster Template or a fresh cluster configuration. Please select from the list below and confirm."
+  select:
+    label: Cluster Template Revisions
+    prompt: Use fresh cluster config
+
+clusterRibbonNav:
+  title: Recent Clusters
+
+clusterTemplatesPage:
+  index:
+    header: Cluster Templates
+    newTemplate: Add Template
+  new:
+    header: Add Cluster Template
+  headers:
+    defaultRevisionId: Default Revision
+    revisionsCount: Revisions
+    created: Created
+  newRevision:
+    header: New Cluster Template Revision
+  select:
+    label: Clone from Cluster Template Revision
+  table:
+    name: Revision Name
 
 ingressPage:
   header: 'Ingress: {name}'
@@ -2456,6 +2490,7 @@ catalogSettings:
       placeholder: Your password
   errors:
     nameInExists: 'You cannot enable {key} as there is a custom catalog already with name {key}.'
+
 clusterRow:
   noMatch: No environments match the current search.
   noData: This cluster doesn't have any environments yet.
@@ -2467,6 +2502,7 @@ clusterRow:
   loginDefault: Login
 
 clusterNew:
+  header: Select Cluster Type
   advanced:
     helpText: Tabs are not able to be used in the yaml file for parsing.
     cancel: Edit as a Form
@@ -3354,13 +3390,81 @@ clusterNew:
   custom:
     label: Custom
     shortLabel: Custom
+    helpBlock: You can bring any nodes you want to Rancher and use them to create a cluster. These nodes include on-premise bare metal servers, cloud-hosted virtual machines, or on-premise virtual machines.
   import:
     label: Imported
     shortLabel: Imported
+    helpBlock: Users can import an existing Kubernetes cluster into Rancher. Note that Rancher does not automate the provisioning, scaling, or upgrade of imported clusters. All other Rancher features, including management of cluster, policy, and workloads, are available for imported clusters.
     command:
       instructionsAdminRole: "<b>Note:</b> If you want to import a Google Kubernetes Engine (GKE) cluster (or any cluster that does not supply you with a kubectl configuration file with the ClusterRole <b>cluster-admin</b> bound to it), you need to bind the ClusterRole <b>cluster-admin</b> using the command below.<br/><br/>Replace <b>[USER_ACCOUNT]</b> with your Google account address (you can retrieve this using <b>gcloud config get-value account</b>). If you are not importing a Google Kubernetes Engine cluster, replace <b>[USER_ACCOUNT]</b> with the executing user configured in your kubectl configuration file."
       instructions: "Run the kubectl command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {appName}:"
       instructionsInsecure: "If you get an error about 'certificate signed by unknown authority' because your {appName} installation is running with an untrusted/self-signed SSL certificate, run the command below instead to bypass the certificate check:"
+
+clusterTemplateNew:
+  members:
+    label: Member Roles
+    detail: Control who has access to the cluster template and what permission they have to change it.
+
+cruClusterTemplate:
+  name:
+    label: 'Template Name'
+  revisionName:
+    label: 'Template Revision Name'
+    help: 'Not required but a descriptive name is suggested to help in easily locating the correct revision.'
+  source:
+    label: 'Source Revision'
+  default:
+    label: 'Set As Default Revision'
+    flag: 'Enabled'
+  members:
+    label: 'Share Template'
+    detail: 'Share this cluster template with individual members or make it public to your orginization.'
+
+
+clusterTemplateQuestions:
+  label: 'Cluster Option Overrides'
+  detail: 'Parameters and default values that you would like the end consumer to provide data for.'
+  table:
+    question: 'Override Parameter'
+    answer: 'Default Value'
+    type: 'Type'
+    required: 'Required'
+    noMatch: 'No overrides match the current search'
+    noData: 'No overrides'
+  schemaLabels:
+    defaultClusterRoleForProjectMembers: 'Default Cluster Role For Project Memebers'
+    defaultPodSecurityPolicyTemplateId: 'Default Pod Security Policy Template Id'
+    desiredAgentImage: 'Desired Agent Image'
+    desiredAuthImage: 'Desired Auth Image'
+    dockerRootDir: 'Docker Root Directory'
+    enableClusterAlerting: 'Enable Cluster Alerting'
+    enableClusterMonitoring: 'Enable Cluster Monitoring'
+    enableNetworkPolicy: 'Enable Network Policy'
+    localClusterAuthEndpoint: 'Enable Local CLuster Auth Endpoint'
+    caCerts: 'CA Certs'
+    fqdn: 'FQDN'
+    addonJobTimeout: 'Addon Job Timeout'
+    addons: 'Addons'
+    addonsInclude: 'Addons Include'
+    authentication: 'Authentication'
+    authorization: 'Authorization'
+    bastionHost: 'Bastion Host'
+    cloudProvider: 'Cloud Provider'
+    dns: 'DNS Config'
+    ignoreDockerVersion: 'Ignore Docker Version'
+    ingress: 'Ingress'
+    kubernetesVersion: 'Kubernetes Version'
+    monitoring: 'Monitoring Config'
+    network: 'Network Config'
+    prefixPath: 'Prefix Path'
+    privateRegistries: 'Private Registry Config'
+    restore: 'Restore'
+    rotateCertificates: 'Rotate Certificates'
+    services: 'Services'
+    sshAgentAuth: 'Enable SSH Agent Auth'
+    sshCertPath: 'SSH Certificate Path'
+    sshKeyPath: 'SSH Key Path'
+
 
 conditionSections:
   title: Status
@@ -4768,6 +4872,22 @@ formScopedRoles:
       read-only:
         label: Read-Only
         detail: Allows seeing everything, but not changing anything.
+
+formShareMember:
+  add: 'Add Member'
+  public: 'Make public (read-only)'
+  table:
+    headers:
+      name: 'Name'
+      accessType: 'Access Type'
+    noMatch: 'No member match your search'
+    noData: 'You have not shared this cluster template with anyone'
+
+shareMemberRow:
+  table:
+    public:
+      name: 'Public (all members & groups)'
+      accessType: 'Read Only'
 
 formHealthCheck:
   title: Health Check
@@ -7344,6 +7464,9 @@ tooltipExpire:
   label: 'This cluster has certs that are expiring or have expired.'
   link: 'Rotate Now'
 
+tooltipToggleOverride:
+  label: 'Allow user override for <br/>{ path }?'
+
 upgradeBtn:
   version:
     current: 'Current'
@@ -7524,6 +7647,8 @@ nav:
     link: "Preferences"
   nodeTemplates:
     link: "Node Templates"
+  clusterTemplates:
+    link: Cluster Templates
   api:
     link: "API & Keys"
   settings:
@@ -7557,6 +7682,7 @@ action:
       title: Snapshot initiated
       message: "A { backupType } snapshot has been started for { clusterId }"
   clone: Clone
+  cloneRevision: Clone Revision
   console: Open Console
   convertToService: Convert to Service
   cordon: Cordon
@@ -7596,6 +7722,7 @@ action:
   resumeCronjob: Resume
   retry: Retry
   revert: Revert to Default
+  revision: New Revision from Default
   rollback: Rollback
   rotate: Rotate Certificates
   setDefault: Set as Login Environment

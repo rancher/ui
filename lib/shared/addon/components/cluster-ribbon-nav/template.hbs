@@ -1,0 +1,33 @@
+<div class="row nav nav-boxes inline-form mt-30 mb-30">
+  <div class="over-hr">
+    <span>
+      {{t "clusterRibbonNav.title"}}
+    </span>
+  </div>
+
+  <div class="col span-12 col-inline mt-0 center">
+    {{#each recentClusterProviders as |clusterProvider|}}
+      {{link-to-cluster-driver
+        "clusters.new"
+        (query-params provider=clusterProvider.name)
+        clusterName=clusterProvider.name
+        genericIcon=(if clusterProvider.genericIcon true)
+        removeRecent=(action "removeRecent" )
+      }}
+    {{/each}}
+
+    {{#link-to
+       "clusters.new.index"
+       class="mb-20 mt-10 span-12 col col-inline nav-box-item driver"
+    }}
+      <div class="text-center">
+        <i class="icon icon-plus-circle icon-4x mt-20
+          " />
+      </div>
+      <p class="driver-name">
+        All Providers
+      </p>
+    {{/link-to}}
+
+  </div>
+</div>

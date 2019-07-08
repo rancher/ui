@@ -1,0 +1,40 @@
+{{#unless applyClusterTemplate}}
+  <div class="right-buttons">
+    <button
+      class="btn bg-primary btn-sm"
+      {{action "addQuestion"}}
+    >
+      <i class="icon icon-plus"></i>
+      {{t "newMultiClusterApp.overrides.add.label"}}
+    </button>
+  </div>
+{{/unless}}
+<SortableTable
+  classNames="grid sortable-table"
+  @body={{rows}}
+  @bulkActions={{bulkActions}}
+  @descending={{descending}}
+  @headers={{questionsHeaders}}
+  @pagingLabel="pagination.member"
+  @searchText={{searchText}}
+  @sortBy={{sortBy}}
+  @stickyHeader={{true}}
+  as |sortable kind question dt|
+>
+  {{#if (eq kind "row")}}
+    <ClusterTemplateQuestionRow
+      @questions={{schemaQuestions}}
+      @question={{question}}
+      @removeQuestion={{removeQuestion}}
+      @applyClusterTemplate={{applyClusterTemplate}}
+    />
+  {{else if (eq kind "nomatch")}}
+    <td colspan="5" class="no-match" >
+      {{t "clusterTemplateQuestions.table.noMatch"}}
+    </td>
+  {{else if (eq kind "norows")}}
+    <td colspan="5" class="no-data" >
+      {{t "clusterTemplateQuestions.table.noData"}}
+    </td>
+  {{/if}}
+</SortableTable>

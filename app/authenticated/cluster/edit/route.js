@@ -1,4 +1,4 @@
-import { get, set } from '@ember/object';
+import { get, set, setProperties } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import { hash, hashSettled/* , all */ } from 'rsvp';
@@ -13,8 +13,7 @@ export default Route.extend({
   model() {
     const globalStore = this.get('globalStore');
     const cluster     = this.modelFor('authenticated.cluster');
-
-    return hash({
+    let modelOut      = {
       originalCluster:            cluster,
       cluster:                    cluster.clone(),
       kontainerDrivers:           globalStore.findAll('kontainerDriver'),
@@ -25,15 +24,23 @@ export default Route.extend({
       users:                      globalStore.findAll('user'),
       clusterRoleTemplateBinding: globalStore.findAll('clusterRoleTemplateBinding'),
       me:                         get(this, 'access.principal'),
-    });
+    };
+
+    if (!isEmpty(cluster.clusterTemplateRevisionId)) {
+      setProperties(modelOut, {
+        clusterTemplateRevision: globalStore.find('clustertemplaterevision', cluster.clusterTemplateRevisionId),
+        clusterTemplate:         globalStore.find('clustertemplate', cluster.clusterTemplateId),
+      });
+    }
+
+    return hash(modelOut);
   },
 
   afterModel(model) {
     // load the css/js url here, if the url loads fail we should error the driver out
     // show the driver in the ui, greyed out, and possibly add error text "can not load comonent from url [put url here]"
-
     let { kontainerDrivers } = model;
-    let externalDrivers      = kontainerDrivers.filter( (d) => d.uiUrl !== '' && d.state === 'active');
+    let externalDrivers      = kontainerDrivers.filter( (d) => d.uiUrl !== '' && d.state === 'active' && d.name.includes(model.cluster.provider));
     let promises             = {};
 
     externalDrivers.forEach( (d) => {

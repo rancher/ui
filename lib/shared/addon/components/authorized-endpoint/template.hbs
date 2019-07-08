@@ -1,24 +1,42 @@
 <div class="row">
   <div class="col span-6">
-    <label class="acc-label">{{t "authorizedEndpoint.enabled.label"}}</label>
-    <div class="radio">
-      <label>
-        {{radio-button
-          selection=enableLocalClusterAuthEndpoint
-          value=true
-        }}
-        {{t "generic.enabled"}}
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        {{radio-button
-          selection=enableLocalClusterAuthEndpoint
-          value=false
-        }}
-        {{t "generic.disabled"}}
-      </label>
-    </div>
+    <label class="acc-label">
+      {{t "authorizedEndpoint.enabled.label"}}
+      {{#if clusterTemplateCreate}}
+        <ClusterTemplateOverrideToggle
+          @path="localClusterAuthEndpoint"
+          @configVariable={{enableLocalClusterAuthEndpoint}}
+          @addOverride={{addOverride}}
+          @questions={{clusterTemplateRevision.questions}}
+        />
+      {{/if}}
+    </label>
+    <CheckComputedOverride
+      @applyClusterTemplate={{applyClusterTemplate}}
+      @clusterTemplateCreate={{clusterTemplateCreate}}
+      @computedOverrideAllowed={{enableLocalClusterAuthEndpointAvailable}}
+      @enableLocalClusterAuthEndpoint={{mut enableLocalClusterAuthEndpoint}}
+      @computedState={{enableLocalClusterAuthEndpoint}}
+    >
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=enableLocalClusterAuthEndpoint
+            value=true
+          }}
+          {{t "generic.enabled"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=enableLocalClusterAuthEndpoint
+            value=false
+          }}
+          {{t "generic.disabled"}}
+        </label>
+      </div>
+    </CheckComputedOverride>
   </div>
 </div>
 
@@ -27,30 +45,60 @@
     <div class="col span-4">
       <label class="acc-label" for="cluster-auth-endpoint-fqdn">
         {{t "authorizedEndpoint.fqdn.label"}}
+        {{#if clusterTemplateCreate}}
+          <ClusterTemplateOverrideToggle
+            @path="localClusterAuthEndpoint.fqdn"
+            @configVariable={{localClusterAuthEndpoint.fqdn}}
+            @addOverride={{addOverride}}
+            @questions={{clusterTemplateRevision.questions}}
+          />
+        {{/if}}
       </label>
-      {{input
-        classNames="form-control"
-        id="cluster-auth-endpoint-fqdn"
-        placeholder=(t "globalDnsPage.entriesPage.config.fqdn.placeholder")
-        type="text"
-        value=cluster.localClusterAuthEndpoint.fqdn
-      }}
+      <CheckOverrideAllowed
+        @questions={{clusterTemplateRevision.questions}}
+        @paramName="localClusterAuthEndpoint.fqdn"
+        @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
+        @applyClusterTemplate={{applyClusterTemplate}}
+      >
+        {{input
+          classNames="form-control"
+          id="cluster-auth-endpoint-fqdn"
+          placeholder=(t "globalDnsPage.entriesPage.config.fqdn.placeholder")
+          type="text"
+          value=cluster.localClusterAuthEndpoint.fqdn
+        }}
+      </CheckOverrideAllowed>
     </div>
     <div class="col span-8">
       <label class="acc-label" for="cluster-auth-endpoint-cacert">
-        {{t 'newCertificate.cert.label'}}
+        {{t "newCertificate.cert.label"}}
+        {{#if clusterTemplateCreate}}
+          <ClusterTemplateOverrideToggle
+            @path="localClusterAuthEndpoint.caCerts"
+            @configVariable={{localClusterAuthEndpoint.caCerts}}
+            @addOverride={{addOverride}}
+            @questions={{clusterTemplateRevision.questions}}
+          />
+        {{/if}}
       </label>
-      {{input-text-file
-        accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
-        canChangeName=false
-        classNames="box"
-        id="cluster-auth-endpoint-cacert"
-        minHeight=60
-        multiple=true
-        placeholder="newCertificate.cert.placeholder"
-        shouldChangeName=false
-        value=cluster.localClusterAuthEndpoint.caCerts
-      }}
+      <CheckOverrideAllowed
+        @questions={{clusterTemplateRevision.questions}}
+        @paramName="localClusterAuthEndpoint.caCerts"
+        @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
+        @applyClusterTemplate={{applyClusterTemplate}}
+      >
+        {{input-text-file
+          accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+          canChangeName=false
+          classNames="box"
+          id="cluster-auth-endpoint-cacert"
+          minHeight=60
+          multiple=true
+          placeholder="newCertificate.cert.placeholder"
+          shouldChangeName=false
+          value=cluster.localClusterAuthEndpoint.caCerts
+        }}
+      </CheckOverrideAllowed>
     </div>
   </div>
 {{/if}}
