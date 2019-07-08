@@ -82,6 +82,7 @@ const App = Application.extend({
           'globalStore',
           'intl',
           'modal',
+          'oauth',
           'resource-actions',
           'router',
           'scope',
