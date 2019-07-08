@@ -10,11 +10,19 @@
   </div>
   <div class="banner-message p-20">
     {{#if isClusterLevel}}
-      {{t "loggingPage.helpText.cluster" htmlSafe=true}}
+      {{#if isWindows}}
+        {{t "windowsCluster.logging.helpText" htmlSafe=true}}
+      {{else}}
+        {{t "loggingPage.helpText.cluster" htmlSafe=true}}
+      {{/if}}
     {{else}}
       <ul>
         <li style="list-style: circle;">
-          {{t "loggingPage.helpText.cluster" htmlSafe=true}}
+          {{#if isWindows}}
+            {{t "windowsCluster.logging.helpText" htmlSafe=true}}
+          {{else}}
+            {{t "loggingPage.helpText.cluster" htmlSafe=true}}
+          {{/if}}
         </li>
         <li style="list-style: circle;">
           {{#if (and clusterTargetType (not-eq clusterTargetType "none"))}}
