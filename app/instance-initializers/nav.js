@@ -35,7 +35,7 @@ const rootNav = [
     scope:                    'project',
     id:                       'project-istio',
     localizedLabel:           'nav.tools.istio',
-    route:                    'authenticated.project.istio.project-istio.index',
+    route:                    'authenticated.project.istio.index',
     ctx:                      [getProjectId],
     resource:                 [],
     resourceScope:            'project',
