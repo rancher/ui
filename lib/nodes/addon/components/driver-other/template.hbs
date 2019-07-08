@@ -25,12 +25,17 @@
   {{form-name-description
     model=model
     nameRequired=true
+    rowClass="row mb-10"
   }}
 
   {{form-user-labels
     initialLabels=labelResource.labels
     setLabels=(action "setLabels")
-    expandAll=null
+  }}
+
+  {{form-node-taints
+    model=model
+    expand=(action expandFn)
   }}
 
   {{form-engine-opts

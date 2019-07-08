@@ -3269,6 +3269,9 @@ clusterNew:
     labels:
       title: Node Labels
       detail: Optional labels to be applied to the node
+    taints:
+      title: Node Taints
+      detail: Optional taints to be applied to the node
     nodes:
       title: Node Pools
       detail: Configure the machines that will make up the cluster
@@ -3280,6 +3283,7 @@ clusterNew:
       template: Template
       deleteNotReadyAfterSecs: Auto Replace
       deleteNotReadyAfterSecsTooltip: "If greater than 0, nodes that are unreachable for this long will be automatically deleted and replaced."
+      taints: Taints
     detected: |
       {count, plural,
         =1 {# new node has registered}
@@ -4380,6 +4384,9 @@ editContainer:
   description:
     placeholder: e.g. My Application
 
+editNodePool:
+  title: Node Pool Taints
+
 editHost:
   title: Edit Node
   hostname:
@@ -5414,6 +5421,20 @@ formUserData:
 formLabelsAnnotations:
   title: Labels & Annotations
   detail: Key/Value pairs that can be used to label/annotate containers and make scheduling decisions.
+formNodeTaints:
+  title: Taints
+  detail: Taints mark that the node should not accept any pods that do not tolerate the taints.
+  addAction: Add Taint
+  protip: Taint must be unique by key and effect pair.
+  key:
+    label: Key
+    placeholder: e.g. foo
+  value:
+    label: Value
+    placeholder: e.g. bar
+  effect:
+    label: Effect
+
 formUserLabels:
   title: Labels
   detail: Labels are key/value pairs that can be used to annotate containers and make scheduling decisions.
