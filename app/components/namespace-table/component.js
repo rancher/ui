@@ -31,10 +31,13 @@ export default Component.extend({
 
   layout,
   headers,
-  tagName:    '',
-  sortBy:     'name',
-  searchText: '',
-  subRows:    true,
-  suffix:     true,
-  paging:     true,
+  tagName:           '',
+  sortBy:            'name',
+  searchText:        '',
+  subRows:           true,
+  suffix:            true,
+  paging:            true,
+  extraSearchFields: [
+    'project.displayName',
+  ],
 });
