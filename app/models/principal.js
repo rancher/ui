@@ -41,6 +41,7 @@ var Principal = Resource.extend({
     case C.PROJECT.TYPE_AZURE_USER:
     case C.PROJECT.TYPE_FREEIPA_USER:
     case C.PROJECT.TYPE_GITHUB_USER:
+    case C.PROJECT.TYPE_GOOGLE_USER:
     case C.PROJECT.TYPE_KEYCLOAK_USER:
     case C.PROJECT.TYPE_LDAP_USER:
     case C.PROJECT.TYPE_OPENLDAP_USER:
@@ -62,6 +63,7 @@ var Principal = Resource.extend({
     case C.PROJECT.TYPE_OPENLDAP_GROUP:
     case C.PROJECT.TYPE_PING_GROUP:
     case C.PROJECT.TYPE_SHIBBOLETH_GROUP:
+    case C.PROJECT.TYPE_GOOGLE_GROUP:
       return C.PROJECT.ORG;
     }
   }),
@@ -86,6 +88,7 @@ var Principal = Resource.extend({
     case C.PROJECT.TYPE_AZURE_USER:
     case C.PROJECT.TYPE_FREEIPA_USER:
     case C.PROJECT.TYPE_GITHUB_USER:
+    case C.PROJECT.TYPE_GOOGLE_USER:
     case C.PROJECT.TYPE_KEYCLOAK_USER:
     case C.PROJECT.TYPE_LDAP_USER:
     case C.PROJECT.TYPE_OPENLDAP_USER:
@@ -104,6 +107,7 @@ var Principal = Resource.extend({
     case C.PROJECT.TYPE_OPENLDAP_GROUP:
     case C.PROJECT.TYPE_PING_GROUP:
     case C.PROJECT.TYPE_SHIBBOLETH_GROUP:
+    case C.PROJECT.TYPE_GOOGLE_GROUP:
       key = 'model.identity.displayType.group';
       break;
 
