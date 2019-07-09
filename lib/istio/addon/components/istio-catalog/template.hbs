@@ -329,111 +329,6 @@
       </div>
     {{/if}}
 
-    <div class="over-hr">
-      <span>
-        {{t "clusterIstioPage.config.header.prometheus"}}
-      </span>
-    </div>
-    {{form-reservation
-      component="Prometheus"
-      requestCpu=config.prometheusRequestCpu
-      requestMemory=config.prometheusRequestMemory
-      limitCpu=config.prometheusLimitCpu
-      limitMemory=config.prometheusLimitMemory
-    }}
-
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label" for="input-prometheus-retention">
-          {{t "clusterIstioPage.config.prometheusRetention.label"}}
-          {{field-required}}
-        </label>
-        <div class="input-group">
-          {{input-integer
-            min=0
-            value=config.prometheusRetention
-            id="input-prometheus-retention"
-          }}
-          <span class="input-group-addon bg-default">{{t "generic.hours"}}</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col span-12">
-        <label class="acc-label">
-          {{t "clusterIstioPage.nodeSelector.helpText" component="Prometheus"}}
-        </label>
-        {{form-key-value
-          changedArray=(action (mut prometheusNodeSelectors))
-          initialMap=prometheusNodeSelector
-          allowEmptyValue=true
-          addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
-        }}
-      </div>
-    </div>
-
-    <div class="over-hr">
-      <span>
-        {{t "clusterIstioPage.config.header.grafana"}}
-      </span>
-    </div>
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "clusterIstioPage.config.grafanaEnabled.label"}}
-        </label>
-        {{schema/input-boolean
-          value=config.grafanaEnabled
-          classNames="form-control"
-        }}
-      </div>
-      {{#if config.grafanaEnabled}}
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "clusterIstioPage.config.grafanaPersistenceEnabled.label"}}
-          </label>
-          {{schema/input-boolean
-            value=config.grafanaPersistenceEnabled
-            classNames="form-control"
-          }}
-        </div>
-      {{/if}}
-    </div>
-
-    {{#if (and config.grafanaPersistenceEnabled config.grafanaEnabled)}}
-      {{catalog-persistence-row
-        component="grafana"
-        useStorageClass=useGrafanaStorageClass
-        config=grafana.persistence
-        storageClasses=storageClasses
-        persistentVolumeClaims=persistentVolumeClaims
-      }}
-    {{/if}}
-
-    {{#if config.grafanaEnabled}}
-      {{form-reservation
-        component="Grafana"
-        requestCpu=config.grafanaRequestCpu
-        requestMemory=config.grafanaRequestMemory
-        limitCpu=config.grafanaLimitCpu
-        limitMemory=config.grafanaLimitMemory
-      }}
-      <div class="row">
-        <div class="col span-12">
-          <label class="acc-label">
-            {{t "clusterIstioPage.nodeSelector.helpText" component="Grafana"}}
-          </label>
-          {{form-key-value
-            changedArray=(action (mut grafanaNodeSelectors))
-            initialMap=grafanaNodeSelector
-            allowEmptyValue=true
-            addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
-          }}
-        </div>
-      </div>
-    {{/if}}
-
     {{#advanced-section}}
       <hr/>
       {{form-key-value
@@ -488,20 +383,16 @@
   {{/accordion-list-item}}
 {{/accordion-list}}
 
-{{#if (or pilotWarning mixerTelemetryWarning prometheusWarning tracingWarning grafanaWarning gatewayWarning (and mixerPolicyWarning config.mixerPolicyEnabled) mixerWarning istioWarning)}}
+{{#if (or pilotWarning mixerTelemetryWarning tracingWarning gatewayWarning (and mixerPolicyWarning config.mixerPolicyEnabled) mixerWarning istioWarning)}}
   {{#banner-message color="bg-warning"}}
     {{#if istioWarning}}
       <p>{{istioWarning}}</p>
     {{else}}
       <p>{{pilotWarning}}</p>
       <p>{{mixerWarning}}</p>
-      <p>{{prometheusWarning}}</p>
       <p>{{mixerTelemetryWarning}}</p>
       {{#if config.tracingEnabled}}
         <p>{{tracingWarning}}</p>
-      {{/if}}
-      {{#if config.grafanaEnabled}}
-        <p>{{grafanaWarning}}</p>
       {{/if}}
       {{#if config.gatewayEnabled}}
         <p>{{gatewayWarning}}</p>
@@ -509,8 +400,9 @@
       {{#if config.mixerPolicyEnabled}}
         <p>{{mixerPolicyWarning}}</p>
       {{/if}}
-    {{/banner-message}}
-  {{/if}}
+    {{/if}}
+  {{/banner-message}}
+{{/if}}
 
   {{top-errors errors=errors}}
 
