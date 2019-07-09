@@ -415,8 +415,17 @@
     cancel=cancel
   }}
 {{else}}
-  {{banner-message
-    color="bg-warning"
-    message=(t "clusterIstioPage.goToMonitoring" clusterId=cluster.id htmlSafe=true)
-  }}
+  {{#if enableClusterMonitoring}}
+    {{#unless canReuse}}
+      {{banner-message
+        color="bg-warning"
+        message=(t "clusterIstioPage.upgradeMonitoring" clusterId=cluster.id htmlSafe=true)
+      }}
+    {{/unless}}
+  {{else}}
+    {{banner-message
+      color="bg-warning"
+      message=(t "clusterIstioPage.goToMonitoring" clusterId=cluster.id htmlSafe=true)
+    }}
+  {{/if}}
 {{/if}}
