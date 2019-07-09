@@ -92,13 +92,16 @@
               @paramName="rancherKubernetesEngineConfig.kubernetesVersion"
               @questions={{model.clusterTemplateRevision.questions}}
             >
-              {{form-versions
-                cluster=cluster
-                editing=(and (eq mode "edit") (not clusterTemplateCreate))
-                initialVersion=initialVersion
-                value=config.kubernetesVersion
-                versions=versionChoices
-              }}
+              <FormVersions
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @cluster={{cluster}}
+                @clusterTemplateCreate={{clusterTemplateCreate}}
+                @editing={{and (eq mode "edit") (not clusterTemplateCreate)}}
+                @initialVersion={{initialVersion}}
+                @value={{config.kubernetesVersion}}
+                @versions={{versionChoices}}
+                @clusterTemplateQuestions={{clusterTemplateQuestions}}
+              />
             </CheckOverrideAllowed>
           </div>
         </div>
