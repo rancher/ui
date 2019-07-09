@@ -39,5 +39,6 @@ export default Component.extend({
   paging:            true,
   extraSearchFields: [
     'displayUserLabelStrings',
+    'project.displayName',
   ],
 });
