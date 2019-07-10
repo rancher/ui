@@ -17,8 +17,8 @@ var Principal = Resource.extend({
       .get('firstObject');
   }),
 
-  avatarSrc: computed('isGithub', 'id', 'profilePicture', function() {
-    if ( get(this, 'isGithub') && get(this, 'profilePicture') ) {
+  avatarSrc: computed('isGithub', 'isGoogleOauth', 'id', 'profilePicture', function() {
+    if ( (get(this, 'isGithub') && get(this, 'profilePicture')) || (get(this, 'isGoogleOauth') && get(this, 'profilePicture')) ) {
       return get(this, 'profilePicture');
     } else {
       let id = get(this, 'id') || 'Unknown';
@@ -32,6 +32,10 @@ var Principal = Resource.extend({
   isGithub: computed('parsedExternalType', function() {
     // console.log('is github?', get(this, 'provider'));
     return (get(this, 'provider') || '').toLowerCase() === 'github';
+  }),
+
+  isGoogleOauth: computed('parsedExternalType', function() {
+    return (get(this, 'provider') || '').toLowerCase() === 'googleoauth';
   }),
 
   logicalType: computed('parsedExternalType', function() {
