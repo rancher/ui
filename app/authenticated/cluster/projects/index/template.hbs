@@ -1,5 +1,7 @@
 <section class="header clearfix">
-  <h1 class="pull-left">{{t 'projectsPage.header'}}</h1>
+  <h1 class="pull-left">
+    {{t 'projectsPage.header'}}
+  </h1>
   <div class="vertical-middle"></div>
 
   <div class="right-buttons">
@@ -11,11 +13,19 @@
       {{~#link-to (query-params group="project") classNames="btn btn-sm bg-default"~}}<i class="icon icon-folder"></i>{{~/link-to~}}
       {{~/tooltip-element~}}
     </div>
-    {{#link-to "authenticated.cluster.projects.new" class="btn bg-primary btn-sm" disabled=(rbac-prevents resource="project" scope="global" permission="create")}}
+    {{#link-to
+      "authenticated.cluster.projects.new"
+      class="btn bg-primary btn-sm"
+      disabled=(rbac-prevents resource="project" scope="global" permission="create")
+    }}
       {{t 'projectsPage.addProject'}}
     {{/link-to}}
     {{#unless (eq group 'project')}}
-      {{#link-to "authenticated.cluster.projects.new-ns" (query-params addTo=null) class="btn bg-primary btn-sm ml-10" disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")}}
+      {{#link-to
+        "authenticated.cluster.projects.new-ns" (query-params addTo=null)
+        class="btn bg-primary btn-sm ml-10"
+        disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")
+      }}
         {{t 'namespacesPage.addNamespace'}}
       {{/link-to}}
     {{/unless}}
@@ -23,7 +33,12 @@
 </section>
 
 {{#if (eq group 'project')}}
-  {{namespace-table model=rows projectsWithoutNamespace=projectsWithoutNamespaces}}
+  {{namespace-table
+    model=rows
+    projectsWithoutNamespaces=projectsWithoutNamespaces
+  }}
 {{else}}
-  {{namespace-list model=rows}}
+  {{namespace-list
+    model=rows
+  }}
 {{/if}}
