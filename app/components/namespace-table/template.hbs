@@ -60,18 +60,22 @@
         </td>
       </tr>
     {{/if}}
-  {{else if (eq kind "nomatch")}}
+  {{else if (and (eq kind "nomatch") (eq projectsWithoutNamespace.length 0))}}
     <tr>
-      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t "projectsPage.noMatch"}}</td>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+        {{t "projectsPage.noMatch"}}
+      </td>
     </tr>
   {{else if (eq kind "norows")}}
     {{#unless projectsWithoutNamespace.length}}
       <tr>
-        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t "projectsPage.noData"}}</td>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+          {{t "projectsPage.noData"}}
+        </td>
       </tr>
     {{/unless}}
   {{else if (eq kind "suffix")}}
-    {{#if (and projectsWithoutNamespace.length (not searchText.length))}}
+    {{#if (gt projectsWithoutNamespace.length 0)}}
       <tbody class="fixed grid group">
         {{#each projectsWithoutNamespace as |project|}}
           {{project-group
