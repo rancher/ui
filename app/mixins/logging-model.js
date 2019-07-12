@@ -22,6 +22,7 @@ export default Mixin.create({
       'splunk',
       'syslog',
       'fluentForwarder',
+      'cloudwatch',
       'customTarget',
     ];
 
@@ -63,9 +64,9 @@ export default Mixin.create({
     return this;
   },
 
-  targetType: computed('elasticsearchConfig', 'splunkConfig', 'kafkaConfig', 'syslogConfig', 'fluentForwarderConfig', 'customTargetConfig', function() {
+  targetType: computed('elasticsearchConfig', 'splunkConfig', 'kafkaConfig', 'syslogConfig', 'fluentForwarderConfig', 'cloudwatchConfig', 'customTargetConfig', function() {
     const {
-      customTargetConfig, elasticsearchConfig, splunkConfig, syslogConfig, kafkaConfig, fluentForwarderConfig
+      customTargetConfig, elasticsearchConfig, splunkConfig, syslogConfig, kafkaConfig, fluentForwarderConfig, cloudwatchConfig
     } = this
 
     if (customTargetConfig) {
@@ -86,16 +87,20 @@ export default Mixin.create({
     if (fluentForwarderConfig) {
       return 'fluentForwarder'
     }
+    if (cloudwatchConfig) {
+      return 'cloudwatch'
+    }
 
     return DEFAULT_TARGET_TYPE;
   }),
 
-  sslTargetType: computed('elasticsearchConfig', 'splunkConfig', 'kafkaConfig', 'syslogConfig', 'fluentForwarderConfig', function() {
+  sslTargetType: computed('elasticsearchConfig', 'splunkConfig', 'kafkaConfig', 'syslogConfig', 'fluentForwarderConfig', 'cloudwatchConfig', function() {
     const es = get(this, 'elasticsearchConfig');
     const splunk = get(this, 'splunkConfig');
     const kafka = get(this, 'kafkaConfig');
     const syslog = get(this, 'syslogConfig');
     const fluentd = get(this, 'fluentForwarderConfig');
+    const cloudwatch = get(this, 'cloudwatchConfig');
 
     if (es) {
       return 'elasticsearch';
@@ -111,6 +116,9 @@ export default Mixin.create({
     }
     if (fluentd) {
       return 'fluentForwarder'
+    }
+    if (cloudwatch) {
+      return 'cloudwatch'
     }
 
     return DEFAULT_TARGET_TYPE;

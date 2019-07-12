@@ -1,0 +1,54 @@
+<h2 class="mt-30">{{t 'loggingPage.cloudwatch.header'}}</h2>
+<hr/>
+<section class="box">
+  <div class="row">
+    <div class="col span-4 mt-0 pt-0">
+      <label class="acc-label" for="">{{t 'loggingPage.cloudwatch.accessKeyID'}}{{field-required}}</label>
+      {{input
+          type="text"
+          value=config.accessKeyID
+          classNames="form-control"
+      }}
+    </div>
+    <div class="col span-4 mt-0 pt-0">
+      <label class="acc-label" for="">{{t 'loggingPage.cloudwatch.secretAccessKey'}}{{field-required}}</label>
+      {{input
+          type="password"
+          value=config.secretAccessKey
+          classNames="form-control"
+      }}
+    </div>
+    <div class="col span-4 mt-0 pt-0">
+      <label class="acc-label" for="">{{t 'loggingPage.cloudwatch.region'}}{{field-required}}</label>
+      {{input
+          type="text"
+          value=config.region
+          placeholder=(t 'loggingPage.cloudwatch.regionPlaceholder')
+          classNames="form-control"
+      }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6 mt-0 pt-0">
+      <label class="acc-label" for="">{{t 'loggingPage.cloudwatch.group'}}{{field-required}}</label>
+      {{input
+          type="text"
+          value=config.group
+          classNames="form-control"
+      }}
+      <p class="text-info text-small">{{t 'loggingPage.cloudwatch.groupHelpText'}}</p>
+    </div>
+    <div class="col span-6 mt-0 pt-0">
+      <label class="acc-label" for="">{{t 'loggingPage.cloudwatch.stream'}}{{field-required}}</label>
+      {{input
+          type="text"
+          value=config.stream
+          classNames="form-control"
+      }}
+      <p class="text-info text-small">{{t 'loggingPage.cloudwatch.streamHelpText'}}</p>
+    </div>
+  </div>
+</section>
+
+{{logging/form-log-format logPreview=logPreview model=model}}

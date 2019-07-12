@@ -15,6 +15,7 @@ loggingPage:
     kafka: Kafka
     syslog: Syslog
     fluentd: Fluentd
+    cloudwatch: CloudWatch
     disable: None
   endpoint: Endpoint
   endpointPlaceholder: 'e.g. https://192.168.1.10:9200'
@@ -173,6 +174,21 @@ loggingPage:
     hostname:
       label: Hostname
       placeholder: The hostname of the server.
+  cloudwatch:
+    header: CloudWatch Configuration
+    accessKeyID: Access Key ID
+    accessKeyIDRequired: '"Access Key ID" is required'
+    secretAccessKey: Secret Access Key
+    secretAccessKeyRequired: '"Secret Access Key" is required'
+    group: Log Group
+    groupHelpText: This group must already exist
+    groupRequired: '"Log Group" is required'
+    stream: Log Stream
+    streamHelpText: The stream will be created if it does not exist
+    streamRequired: '"Log Stream" is required'
+    region: Region
+    regionPlaceholder: 'e.g. us-east-1'
+    regionRequired: '"Region" is required'
   customTarget:
     type:
       error: "@type is not supported, you can chose the following type: ['elasticsearch', 'splunk_hec', 'remote_syslog', 'kafka_buffered', 'forward']"
