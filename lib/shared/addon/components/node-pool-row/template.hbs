@@ -1,0 +1,87 @@
+<td data-title="{{dt.hostnamePrefix}}">
+  <div class="mr-20">
+    {{input
+      class="input-sm"
+      value=pool.hostnamePrefix
+    }}
+  </div>
+</td>
+<td data-title="{{dt.quantity}}">
+  <div class="input-group mr-20 p-10">
+    {{input
+      class="input-sm"
+      type="number"
+      min="1"
+      value=pool.quantity
+    }}
+  </div>
+</td>
+<td data-title="{{dt.nodeTemplate}}">
+  {{#if filteredNodeTemplates.length}}
+    <div class="input-group input-sm p-10">
+      {{new-select
+        class="input-sm"
+        content=filteredNodeTemplates
+        prompt="clusterNew.rke.nodes.templatePrompt"
+        localizedPrompt=true
+        optionLabelPath="displayName"
+        optionValuePath="id"
+        value=pool.nodeTemplateId
+      }}
+      <div class="input-group-btn bg-primary">
+        <button class="btn btn-sm bg-primary" {{action addNodeTemplate pool}}>
+          <i class="icon icon-plus"></i>
+        </button>
+      </div>
+    </div>
+  {{else}}
+    <button class="btn bg-primary" {{action addNodeTemplate pool}}>
+      {{t "clusterNew.rke.nodes.addTemplate"}}
+    </button>
+  {{/if}}
+</td>
+<td data-title="{{dt.deleteNotReadyAfterSecs}}">
+  {{#tooltip-element
+     type="tooltip-basic"
+     model=(t "clusterNew.rke.nodes.deleteNotReadyAfterSecsTooltip" htmlSafe=true)
+     tooltipTemplate="tooltip-static"
+     aria-describedby="tooltip-base"
+     tooltipFor="tooltipPoolCreateAfter"
+     placement="top"
+     tagName="div"
+  }}
+    <div class="input-group">
+      {{input-integer
+        value=deleteNotReadyAfterSecs
+        min=0
+        classNames="form-control"
+      }}
+      <span class="input-group-addon bg-default">
+        {{t "generic.minutes"}}
+      </span>
+    </div>
+  {{/tooltip-element}}
+</td>
+<td data-title="{{dt.etcd}}" class="text-center">
+  {{input
+    type="checkbox"
+    checked=pool.etcd
+  }}
+</td>
+<td data-title="{{dt.controlplane}}" class="text-center">
+  {{input
+    type="checkbox"
+    checked=pool.controlPlane
+  }}
+</td>
+<td data-title="{{dt.worker}}" class="text-center">
+  {{input
+    type="checkbox"
+    checked=pool.worker
+  }}
+</td>
+<td data-title="{{dt.remove}}" class="text-center">
+  <button class="btn bg-primary btn-sm" {{action removePool pool}}>
+    <i class="icon icon-minus"/>
+  </button>
+</td>
