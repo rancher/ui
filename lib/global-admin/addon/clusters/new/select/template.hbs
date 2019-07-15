@@ -8,16 +8,16 @@
       </div>
 
       <div class="span-4 col">
-        <a
-          class="mb-20 mt-10 span-12 col col-inline nav-box-item driver custom"
-          href="#"
-          {{action "launchCluster" "custom"}}
-        >
+        {{#link-to
+           "clusters.new.launch"
+           "custom"
+           class="mb-20 mt-10 col span-12 col-inline nav-box-item driver import"
+        }}
           <div class="machine-driver custom"></div>
           <p class="driver-name">
             {{driver-name "custom"}}
           </p>
-        </a>
+        {{/link-to}}
       </div>
       <div class="span-6 col p-10">
         <p class="help-block">
@@ -91,14 +91,14 @@
           <label class="acc-label">{{t "clusterNew.driverLabels.infra"}}</label>
         </div>
         {{#each (get providerGroups "rkeGroup") as |provider|}}
-          <a
-            class={{concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name}}
-            href="#"
-            {{action "launchCluster" provider.name}}
-          >
+          {{#link-to
+             "clusters.new.launch"
+             provider.name
+             class=(concat "mb-20 mt-10 col span-3 col-inline nav-box-item driver " provider.name)
+          }}
             <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
             <p class="driver-name">{{driver-name provider.name}}</p>
-          </a>
+          {{/link-to}}
         {{/each}}
       </div>
     </div>
