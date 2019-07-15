@@ -1,0 +1,43 @@
+@import "card";
+@import "../logos/discover";
+
+$fill-color: #86B8CF;
+$highlight-color: #FF6600;
+
+.jp-card {
+    .jp-card-front .jp-card-logo.jp-card-discover {
+        right: 12%;
+        top: 18%;
+    }
+}
+
+.jp-card.jp-card-discover {
+
+    &.jp-card-identified {
+        .jp-card-front, .jp-card-back {
+            &:before {
+                background-color: $fill-color;
+            }
+        }
+        .jp-card-logo.jp-card-discover {
+            opacity: 1;
+        }
+
+        .jp-card-front {
+            &:after {
+                $size: 50px;
+                @include transition($card-transition-time);
+                @include shape();
+                @include linear-gradient($highlight-color, lighten($highlight-color, 20%), $highlight-color);
+                height: $size;
+                width: $size;
+                border-radius: $size / 2;
+                position: absolute;
+                left: 100%;
+                top: 15%;
+                margin-left: -$size / 2;
+                box-shadow: inset 1px 1px 3px 1px rgba(0, 0, 0, .5);
+            }
+        }
+    }
+}

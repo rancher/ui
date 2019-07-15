@@ -1,0 +1,34 @@
+@import "card";
+@import "../logos/amex";
+
+$fill-color: #108168;
+
+.jp-card.jp-card-amex {
+
+    &.jp-card-flipped{
+        @include transform(none);
+    }
+
+    &.jp-card-identified {
+        .jp-card-front, .jp-card-back {
+            &:before {
+                background-color: $fill-color;
+            }
+        }
+
+        .jp-card-front {
+
+            .jp-card-logo.jp-card-amex {
+                opacity: 1;
+            }
+
+            .jp-card-cvc {
+                visibility: visible;
+            }
+
+            &:after {
+                opacity: 1;
+            }
+        }
+    }
+}
