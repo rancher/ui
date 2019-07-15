@@ -2,10 +2,7 @@
 {{#if (eq step 1)}}
   <form onsubmit={{action "clickNext"}}>
     <div class="row">
-      <div class="col span-4">
-        <div class="machine-driver {{driverInfo.name}}"></div>
-      </div>
-      <div class="col span-8">
+      <div class="col span-6">
         {{form-name-description
           model=model.cluster
           nameRequired=true
@@ -15,39 +12,6 @@
         }}
       </div>
     </div>
-
-    {{#accordion-list showExpandAll=false as |al expandFn|}}
-      {{#accordion-list-item
-         title=(t "clusterNew.members.label")
-         detail=(t "clusterNew.members.detail")
-         expandAll=al.expandAll
-         everExpanded=true
-         expanded=expanded
-         expand=(action expandFn)
-      }}
-        {{#if model.cluster.internal}}
-          {{banner-message icon="icon-alert" color="bg-error mt-0 mb-10" message=(t "clusterPage.internal" appName=settings.appName htmlSafe=true)}}
-        {{/if}}
-
-        {{#if isEdit}}
-          {{banner-message icon="icon-info" color="bg-info mt-0 mb-10" message=(t "clusterPage.removeMemberNote")}}
-        {{/if}}
-
-        {{form-members
-          creator=model.me
-          editing=notView
-          expanded=expanded
-          isNew=newCluster
-          memberConfig=memberConfig
-          errors=memberErrors
-          primaryResource=cluster
-          registerHook=(action "registerHook")
-          roles=model.roleTemplates
-          type="cluster"
-          users=model.users
-        }}
-      {{/accordion-list-item}}
-    {{/accordion-list}}
   </form>
 {{/if}}
 
@@ -64,14 +28,59 @@
 {{/if}}
 
 {{#if (and driverInfo.nodePool (not isCustom))}}
-  {{cru-node-pools
-    mode=mode
-    cluster=cluster
-    driver=driverInfo.nodeWhich
-    nodeTemplates=model.nodeTemplates
-    registerHook=(action "registerHook")
-    setNodePoolErrors=(action "setNodePoolErrors")
-  }}
+  <section class="mb-40 mt-40">
+    <CruNodePools
+      @mode={{mode}}
+      @cluster={{cluster}}
+      @driver={{driverInfo.nodeWhich}}
+      @nodeTemplates={{model.nodeTemplates}}
+      @registerHook={{action "registerHook"}}
+      @setNodePoolErrors={{action "setNodePoolErrors"}}
+    />
+  </section>
+{{/if}}
+
+{{#if (eq step 1)}}
+  {{#accordion-list showExpandAll=false as |al expandFn|}}
+    {{#accordion-list-item
+       title=(t "clusterNew.members.label")
+       detail=(t "clusterNew.members.detail")
+       expandAll=al.expandAll
+       everExpanded=true
+       expanded=expanded
+       expand=(action expandFn)
+    }}
+      {{#if model.cluster.internal}}
+        <BannerMessage
+          @icon="icon-alert"
+          @color="bg-error mt-0 mb-10"
+          @message={{t "clusterPage.internal" appName=settings.appName htmlSafe=true}}
+        />
+      {{/if}}
+
+      {{#if isEdit}}
+        <BannerMessage
+          @icon="icon-info"
+          @color="bg-info mt-0 mb-10"
+          @message={{t "clusterPage.removeMemberNote"}}
+        />
+      {{/if}}
+
+      <FormMembers
+        @creator={{model.me}}
+        @editing={{notView}}
+        @expanded={{expanded}}
+        @isNew={{newCluster}}
+        @memberConfig={{memberConfig}}
+        @errors={{memberErrors}}
+        @primaryResource={{cluster}}
+        @registerHook={{action "registerHook"}}
+        @roles={{model.roleTemplates}}
+        @type="cluster"
+        @users={{model.users}}
+      />
+    {{/accordion-list-item}}
+  {{/accordion-list}}
 {{/if}}
 
 {{component driverInfo.driverComponent
