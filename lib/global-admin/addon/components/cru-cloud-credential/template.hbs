@@ -146,6 +146,24 @@
           </p>
         </div>
       </div>
+    {{else if (eq cloudCredentialType "linode")}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label" for="linode-token">
+            {{t "modalAddCloudKey.linode.token.label"}}
+          </label>
+          {{input
+            type="password"
+            value=config.token
+            classNames="form-control"
+            placeholder=(t "modalAddCloudKey.linode.token.placeholder")
+            id="linode-token"
+          }}
+          <p class="text-info">
+            {{t "modalAddCloudKey.linode.token.help" htmlSafe=true}}
+          </p>
+        </div>
+      </div>
     {{else if (eq cloudCredentialType "vmware")}}
       <div class="row">
         <div class="col span-6">
