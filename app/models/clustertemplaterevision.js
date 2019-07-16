@@ -44,6 +44,7 @@ export default Resource.extend({
     newRevision() {
       this.router.transitionTo('global-admin.cluster-templates.new-revision', this.clusterTemplateId, { queryParams: { revision: this.id } });
     },
+
     setDefault() {
       const { clusterTemplate } = this;
       const successTitle   = this.intl.t('action.setDefaultRevision.success.title');
