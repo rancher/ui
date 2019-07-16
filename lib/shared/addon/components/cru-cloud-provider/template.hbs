@@ -118,7 +118,7 @@
           {{#if (get (get azureDescriptions key) "required")}}
             {{#if (eq mode "new")}}
               {{field-required}}
-            {{else if (and (eq mode "edit") (not-eq key "aadClientSecret"))}}
+            {{else if (and (eq mode "edit") (or (not-eq key "aadClientSecret") clusterTemplateCreate))}}
               {{field-required}}
             {{/if}}
           {{/if}}
