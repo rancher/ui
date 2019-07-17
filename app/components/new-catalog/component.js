@@ -66,6 +66,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
   selectedFileContetnt:     null,
 
   isGKE:                    alias('scope.currentCluster.isGKE'),
+  isWindows:                alias('scope.currentCluster.isWindows'),
 
   primaryResource:          alias('namespaceResource'),
   editing:                  notEmpty('catalogApp.id'),
