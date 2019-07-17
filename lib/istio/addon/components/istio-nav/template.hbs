@@ -19,9 +19,9 @@
     </li> --}}
   </ul>
 
-  {{#unless iconDisabled}}
-    <div class="right-buttons">
-      <div class="inline-block vertical-bottom mr-20">
+  <div class="right-buttons">
+    <div class="inline-block vertical-bottom mr-20">
+      {{#unless iconDisabled}}
         <a
           class="inline-block"
           href={{kialiUrl}}
@@ -39,10 +39,12 @@
         >
           <div class="jaeger"></div>
         </a>
+      {{/unless}}
 
+      {{#if grafana.istioUrl}}
         <a
           class="inline-block"
-          href={{grafanaUrl}}
+          href={{grafana.istioUrl}}
           target="_blank" rel="nofollow noopener noreferrer">
           <div class="grafana"></div>
         </a>
@@ -55,8 +57,8 @@
         >
           <div class="prometheus-icon"></div>
         </a>
-      </div>
-      {{yield}}
+      {{/if}}
     </div>
-  {{/unless}}
+    {{yield}}
+  </div>
 </section>
