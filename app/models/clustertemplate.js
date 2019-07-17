@@ -6,8 +6,11 @@ import { inject as service } from '@ember/service';
 const ClusterTemplate =  Resource.extend({
   globalStore: service(),
   router:      service(),
+  modal:       service(),
 
   revisions:   hasMany('id', 'clustertemplaterevision', 'clusterTemplateId', 'globalStore', null, 'globalStore'),
+
+  canEdit: true,
 
   type:        'clustertemplate',
 
@@ -33,7 +36,11 @@ const ClusterTemplate =  Resource.extend({
   actions: {
     newRevision() {
       this.router.transitionTo('global-admin.cluster-templates.new-revision', this.id);
-    }
+    },
+
+    edit() {
+      this.modalService.toggleModal('modal-edit-cluster-template', { model: this });
+    },
   },
 });
 

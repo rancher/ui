@@ -17,11 +17,34 @@
 {{else}}
   <tr class="main-row">
     <td class="pr-10 pt-10">
-      {{input-identity
-        allowTeams=true
-        action=(action "addAuthorized")
-        onError=(action "gotError")
-      }}
+      {{#if noUpdate}}
+        {{#if principal}}
+          {{identity-block principal=principal}}
+        {{else if principalId}}
+          <div class="gh-block">
+            <div class="gh-avatar">
+              <img
+                src="{{principalGravatarSrc}}"
+                width="34"
+                height="34"
+              >
+            </div>
+            <div class="gh-block-content">
+              <div class="clip gh-block-name">
+                {{principalId}}
+              </div>
+            </div>
+          </div>
+        {{else}}
+          {{t "generic.unknown"}}&nbsp;{{t "generic.user"}}
+        {{/if}}
+      {{else}}
+        {{input-identity
+          allowTeams=true
+          action=(action "addAuthorized")
+          onError=(action "gotError")
+        }}
+      {{/if}}
     </td>
     <td class="pr-10 pt-10">
       {{searchable-select

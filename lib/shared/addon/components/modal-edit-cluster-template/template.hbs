@@ -1,0 +1,67 @@
+<section class="horizontal-form container-fluid">
+  <h2>
+    {{t "cruClusterTemplate.edit.label"}}
+  </h2>
+  <div class="row">
+    <FormNameDescription
+      @bothColClass="col span-12"
+      @colClass="col span-12"
+      @editing={{true}}
+      @model={{primaryResource}}
+      @nameLabel="cruClusterTemplate.name.label"
+    />
+  </div>
+
+  <div class="row mb-20">
+    <div class="col span-6">
+      <label class="pt-20 pb-5 acc-label" for="input-select-revision">
+        {{t "cruClusterTemplate.selectRevision.label"}}
+      </label>
+      <NewSelect
+        id="input-select-revision"
+        class="form-control"
+        @optionValuePath="id"
+        @optionLabelPath="displayName"
+        @content={{primaryResource.revisions}}
+        @value={{primaryResource.defaultRevisionId}}
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <AccordionList
+      @showExpandAll={{false}}
+      as |al expandFn|
+    >
+      <AccordionListItem
+        @title={{t "cruClusterTemplate.members.label"}}
+        @detail={{t "cruClusterTemplate.members.detail"}}
+        @expandAll={{al.expandAll}}
+        @everExpanded={{true}}
+        @expanded={{expanded}}
+        @expandOnInit={{true}}
+        @expand={{action expandFn}}
+      >
+        <FormShareMember
+          @readOnly={{false}}
+          @editing={{true}}
+          @resource={{primaryResource}}
+          @addAuthorizedPrincipal={{action "addAuthorizedPrincipal"}}
+          @removeMember={{action "removeAuthorizedPrincipal"}}
+          @users={{users}}
+          @errors={{errors}}
+        />
+      </AccordionListItem>
+    </AccordionList>
+  </div>
+</section>
+
+{{top-errors errors=errors}}
+
+<div class="footer-actions">
+  {{save-cancel
+    editing=true
+    save=(action "save")
+    cancel=(action "cancel")
+  }}
+</div>
