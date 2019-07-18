@@ -2,22 +2,20 @@
   <div class="col span-6">
     <label class="acc-label">
       {{t "cruPrivateRegistry.title.label"}}
-      {{!-- TODO - this is a weird one that i need to revisit --}}
-      {{!--
-       {{#if clusterTemplateCreate}}
-       <ClusterTemplateOverrideToggle
-       @path="enablePrivateRegistry"
-       @configVariable={{enablePrivateRegistry}}
-       @addOverride={{addOverride}}
-       />
-       {{/if}}
-       --}}
+      {{#if clusterTemplateCreate}}
+        <ClusterTemplateOverrideToggle
+          @path="uiOverridePrivateRegistry"
+          @configVariable={{enablePrivateRegistry}}
+          @addOverride={{addOverride}}
+          @questions={{clusterTemplateRevision.questions}}
+        />
+      {{/if}}
     </label>
-    <CheckComputedOverride
+    <CheckOverrideAllowed
+      @paramName="uiOverridePrivateRegistry"
       @applyClusterTemplate={{applyClusterTemplate}}
-      @clusterTemplateCreate={{clusterTemplateCreate}}
-      @computedOverrideAllowed={{privateRegistryOverrideAvailable}}
-      @computedState={{enablePrivateRegistry}}
+      @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
+      @questions={{clusterTemplateRevision.questions}}
       @enablePrivateRegistry={{mut enablePrivateRegistry}}
       @multipleRegistries={{multipleRegistries}}
     >
@@ -41,7 +39,7 @@
           {{t "generic.enabled"}}
         </label>
       </div>
-    </CheckComputedOverride>
+    </CheckOverrideAllowed>
   </div>
 </div>
 
