@@ -23,8 +23,20 @@ export default Resource.extend({
     return false;
   }),
 
-  availableActions: computed('actionLinks.[]', function() {
+  availableActions: computed('actionLinks.[]', 'enabled', 'clusterTemplate.defaultRevisionId', function() {
     return [
+      {
+        label:     'generic.enable',
+        icon:      'icon icon-play',
+        action:    'enable',
+        enabled:   !this.enabled,
+      },
+      {
+        label:     'generic.disable',
+        icon:      'icon icon-stop',
+        action:    'disable',
+        enabled:   this.enabled,
+      },
       {
         label:     'action.makeDefault',
         icon:      'icon icon-success',
@@ -57,6 +69,20 @@ export default Resource.extend({
 
       clusterTemplate.save()
         .then(() => this.growl.success(successTitle, successMessage))
+        .catch((err) => this.growl.fromError(err));
+    },
+
+    disable() {
+      set(this, 'enabled', false);
+
+      this.save()
+        .catch((err) => this.growl.fromError(err));
+    },
+
+    enable() {
+      set(this, 'enabled', true);
+
+      this.save()
         .catch((err) => this.growl.fromError(err));
     },
   },
