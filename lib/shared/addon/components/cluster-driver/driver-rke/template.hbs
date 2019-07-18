@@ -68,6 +68,7 @@
 
 {{#if (or isEdit (eq step 1))}}
   {{#accordion-list
+     expandAll=(mut forceExpandAll)
      showExpandAll=true
      as |al expandFn|
   }}
@@ -775,7 +776,11 @@
 {{/if}} {{!-- endif (or isEdit (eq step 1)) --}}
 
 {{#if (and isCustom (eq step 2)) }}
-  {{#accordion-list showExpandAll=false as |al expandFn|}}
+  {{#accordion-list
+     expandAll=(mut forceExpandAll)
+     showExpandAll=false
+     as |al expandFn|
+  }}
     {{#if windowsSupport}}
       {{#accordion-list-item
          title=(t "clusterNew.rke.system.title")
@@ -1045,6 +1050,7 @@
 
 {{#if (or clusterTemplateCreate applyClusterTemplate)}}
   {{#accordion-list
+     expandAll=(mut forceExpandAll)
      showExpandAll=false
      as |al expandFn|
   }}
