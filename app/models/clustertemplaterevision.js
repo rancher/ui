@@ -6,6 +6,8 @@ import { computed, set } from '@ember/object';
 export default Resource.extend({
   globalStore: service(),
   router:      service(),
+  growl:       service(),
+  intl:        service(),
 
   type:            'clustertemplaterevision',
 
@@ -21,8 +23,14 @@ export default Resource.extend({
     return false;
   }),
 
-  availableActions: computed('actionLinks.[]', () => {
+  availableActions: computed('actionLinks.[]', function() {
     return [
+      {
+        label:     'action.makeDefault',
+        icon:      'icon icon-success',
+        action:    'setDefault',
+        enabled:   this.canMakeDefault(),
+      },
       {
         label:     'action.cloneRevision',
         icon:      'icon icon-copy',
@@ -35,18 +43,31 @@ export default Resource.extend({
   actions: {
     newRevision() {
       this.router.transitionTo('global-admin.cluster-templates.new-revision', this.clusterTemplateId, { queryParams: { revision: this.id } });
-    }
+    },
+
+    setDefault() {
+      const { clusterTemplate } = this;
+      const successTitle   = this.intl.t('action.setDefaultRevision.success.title');
+      const successMessage = this.intl.t('action.setDefaultRevision.success.message', {
+        name:   this.displayName,
+        ctName: this.clusterTemplate.displayName,
+      });
+
+      set(clusterTemplate, 'defaultRevisionId', this.id);
+
+      clusterTemplate.save()
+        .then(() => this.growl.success(successTitle, successMessage))
+        .catch((err) => this.growl.fromError(err));
+    },
   },
 
-  fetchQuestionsSchema() {
-    return this.globalStore.rawRequest({
-      url:    'clusterTemplateRevisions?action=listquestions',
-      method: 'POST',
-    }).then((resp) => {
-      if (resp.body) {
-        set(this, 'questionsSchemas', JSON.parse(resp.body));
-      }
-    });
+  canMakeDefault() {
+    let {
+      clusterTemplateId = '',
+      clusterTemplate: { defaultRevisionId = '' }
+    } = this;
+
+    return clusterTemplateId !== defaultRevisionId
   },
 
   validationErrors() {

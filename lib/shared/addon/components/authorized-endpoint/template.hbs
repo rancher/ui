@@ -4,19 +4,18 @@
       {{t "authorizedEndpoint.enabled.label"}}
       {{#if clusterTemplateCreate}}
         <ClusterTemplateOverrideToggle
-          @path="localClusterAuthEndpoint"
+          @path="localClusterAuthEndpoint.enabled"
           @configVariable={{enableLocalClusterAuthEndpoint}}
           @addOverride={{addOverride}}
           @questions={{clusterTemplateRevision.questions}}
         />
       {{/if}}
     </label>
-    <CheckComputedOverride
+    <CheckOverrideAllowed
+      @paramName="localClusterAuthEndpoint.enabled"
+      @questions={{clusterTemplateRevision.questions}}
+      @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
       @applyClusterTemplate={{applyClusterTemplate}}
-      @clusterTemplateCreate={{clusterTemplateCreate}}
-      @computedOverrideAllowed={{enableLocalClusterAuthEndpointAvailable}}
-      @enableLocalClusterAuthEndpoint={{mut enableLocalClusterAuthEndpoint}}
-      @computedState={{enableLocalClusterAuthEndpoint}}
     >
       <div class="radio">
         <label>
@@ -36,7 +35,7 @@
           {{t "generic.disabled"}}
         </label>
       </div>
-    </CheckComputedOverride>
+    </CheckOverrideAllowed>
   </div>
 </div>
 
@@ -55,8 +54,8 @@
         {{/if}}
       </label>
       <CheckOverrideAllowed
-        @questions={{clusterTemplateRevision.questions}}
         @paramName="localClusterAuthEndpoint.fqdn"
+        @questions={{clusterTemplateRevision.questions}}
         @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
         @applyClusterTemplate={{applyClusterTemplate}}
       >

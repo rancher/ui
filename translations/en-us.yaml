@@ -877,6 +877,7 @@ projectsPage:
 clustersPage:
   header: Clusters
   newCluster: Add Cluster
+  newTemplate: "New Template"
   newClusterName: "Add Cluster: {name}"
   editClusterName: "Edit Cluster: {name}"
   launch:
@@ -902,12 +903,6 @@ clustersPage:
       label: "Create Cluster - Select Cluster Provider"
     template:
       label: "Create Cluster - Select Cluster Template"
-
-clustersSelectTemplatePage:
-  label: "You may elect to use a Cluster Template or a fresh cluster configuration. Please select from the list below and confirm."
-  select:
-    label: Cluster Template Revisions
-    prompt: Use fresh cluster config
 
 clusterRibbonNav:
   title: Recent Clusters
@@ -2503,6 +2498,9 @@ clusterRow:
   importCluster: Use existing Kubernetes
   loginDefault: Login
 
+clusterTemplateRow:
+  label: 'Cluster Template'
+
 clusterNew:
   header: Select Cluster Type
   advanced:
@@ -2530,13 +2528,15 @@ clusterNew:
     label: Provider
     detail: Choose where the nodes for the cluster will come from
   nodes:
-    title: Nodes
+    title: Node Options
     detail: Customize the nodes that will be created
   customize:
     title: Cluster Options
+  kubernetesOptions:
+    title: Kubernetes Options
     detail: Customize the cluster that will be created
   security:
-    title: Security
+    title: Security Options
     detail: Customize the Service Account and Access Scopes
   psp:
     label: Default Pod Security Policy
@@ -3183,6 +3183,11 @@ clusterNew:
     eipShareType:
       label: EIP Share Type
   rke:
+    clustersSelectTemplate:
+      label: "Use an existing cluster template"
+      select:
+        label: Cluster Templates
+        prompt: Select a cluster template
     etcd:
       enabled:
         label: Recurring etcd Snapshot Enabled
@@ -3398,7 +3403,7 @@ clusterNew:
   import:
     label: Imported
     shortLabel: Imported
-    helpBlock: Users can import an existing Kubernetes cluster into Rancher. Note that Rancher does not automate the provisioning, scaling, or upgrade of imported clusters. All other Rancher features, including management of cluster, policy, and workloads, are available for imported clusters.
+    helpBlock: Users can import an existing Kubernetes cluster into Rancher. Rancher does not automate the provisioning, scaling, or upgrade of imported clusters. All other Rancher features, including management of cluster, policy, and workloads, are available for imported clusters.
     command:
       instructionsAdminRole: "<b>Note:</b> If you want to import a Google Kubernetes Engine (GKE) cluster (or any cluster that does not supply you with a kubectl configuration file with the ClusterRole <b>cluster-admin</b> bound to it), you need to bind the ClusterRole <b>cluster-admin</b> using the command below.<br/><br/>Replace <b>[USER_ACCOUNT]</b> with your Google account address (you can retrieve this using <b>gcloud config get-value account</b>). If you are not importing a Google Kubernetes Engine cluster, replace <b>[USER_ACCOUNT]</b> with the executing user configured in your kubectl configuration file."
       instructions: "Run the kubectl command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {appName}:"
@@ -3423,6 +3428,10 @@ cruClusterTemplate:
   members:
     label: 'Share Template'
     detail: 'Share this cluster template with individual members or make it public to your orginization.'
+  edit:
+    label: 'Edit Cluster Template'
+  selectRevision:
+    label: 'Select Default Revision'
 
 
 clusterTemplateQuestions:
@@ -4222,6 +4231,8 @@ dangerZone:
   header: Advanced Settings
   subtext: "Typical users will not need to change these.  Proceed with caution, incorrect values can break your {appName} installation.<br/>Settings which have been customized from default settings  are shown in <b>bold</b>."
   showLabel: I understand that I can break things by changing advanced settings.
+  show: Show
+  hide: Hide
   description:
     'cacerts': "CA Certificates needed to verify the server's certificate."
     'cluster-defaults': 'Override RKE Defaults when creating new clusters.'
@@ -4237,6 +4248,7 @@ dangerZone:
     'telemetry-opt': 'Telemetry reporting opt-in.'
     'auth-user-info-max-age-seconds': 'The maximum age of a users auth tokens before an auth provider group membership sync will be performed.'
     'auth-user-info-resync-cron': 'Default cron schedule for resyncing auth provider group memberships.'
+    'cluster-template-enforcement': 'Non-admins will be restricted to launching clusters via preapproved cluster templates only.'
 
 deleteEksCluster:
   title: "Delete {clusterName}?"
@@ -7741,6 +7753,10 @@ action:
   rollback: Rollback
   rotate: Rotate Certificates
   setDefault: Set as Login Environment
+  setDefaultRevision:
+    success:
+      title: Success
+      message: '{ name } has been set at the default revision on { ctName }.'
   setting: Setting
   start: Start
   startAll: Start All

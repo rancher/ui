@@ -59,6 +59,8 @@
   &.vmwarevsphere { @include vmwarevsphere; }
   &.other { @include other; }
   &.custom { @include custom; }
+  &.custom-driver { @include custom-driver; }
+  &.import-driver { @include import-driver; }
   &.import { @include import; }
   &.aliyunecs { @include aliyunecs; }
   &.amazoneks { @include amazoneks; }
@@ -74,9 +76,43 @@
 }
 
 .cluster-launch {
+  .cluster-driver-box {
+    border: solid $light-grey 1px;
+    padding: 15px 0px;
+    max-height: 150px;
+    text-decoration: none;
+
+    &.small {
+      max-height: 100px;
+      min-width: 175px;
+      .machine-driver {
+        height: 50px;
+        width: 50px;
+        border-right: none;
+      }
+    }
+
+    &:hover {
+      outline: 4px solid $link-color;
+      border-color: $link-color;
+    }
+  }
   .machine-driver {
-    height: 250px;
-    width: 250px;
+    height: 100px;
+    width: 100px;
+    float: left;
+    border-right: solid $light-grey 1px;
+
+    &.custom-driver,
+    &.import-driver {
+      background-size: 75px 75px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+  .driver-content {
+    overflow: hidden;
+    padding-left: 10px;
   }
 }
 

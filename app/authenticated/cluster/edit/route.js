@@ -28,8 +28,8 @@ export default Route.extend({
 
     if (!isEmpty(cluster.clusterTemplateRevisionId)) {
       setProperties(modelOut, {
-        clusterTemplateRevision: globalStore.find('clustertemplaterevision', cluster.clusterTemplateRevisionId),
-        clusterTemplate:         globalStore.find('clustertemplate', cluster.clusterTemplateId),
+        clusterTemplateRevisions: globalStore.findAll('clustertemplaterevision'),
+        clusterTemplates:         globalStore.findAll('clustertemplate'),
       });
     }
 
@@ -37,6 +37,28 @@ export default Route.extend({
   },
 
   afterModel(model) {
+    let {
+      clusterTemplateRevisions = null,
+      clusterTemplates = null,
+      cluster
+    } = model;
+
+    if (clusterTemplateRevisions) {
+      let ctr  = null;
+      let ct   = null;
+      let ctId = null;
+
+      ctr  = clusterTemplateRevisions.findBy('id', cluster.clusterTemplateRevisionId);
+      ctId = get(ctr, 'clusterTemplateId');
+      ct   = clusterTemplates.findBy('id', ctId);
+
+      setProperties(model, {
+        clusterTemplateRevisionId: get(ctr, 'id'),
+        clusterTemplateId:         get(ct, 'id'),
+        clusterTemplateRevision:   ctr
+      });
+    }
+
     // load the css/js url here, if the url loads fail we should error the driver out
     // show the driver in the ui, greyed out, and possibly add error text "can not load comonent from url [put url here]"
     let { kontainerDrivers } = model;
