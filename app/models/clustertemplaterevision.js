@@ -1,7 +1,7 @@
 import Resource from '@rancher/ember-api-store/models/resource';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
 import { inject as service } from '@ember/service';
-import { computed, set } from '@ember/object';
+import { computed, set, get } from '@ember/object';
 
 export default Resource.extend({
   globalStore: service(),
@@ -23,6 +23,17 @@ export default Resource.extend({
     return false;
   }),
 
+  canMakeDefault: computed('clusterTemplate.defaultRevisionId', function() {
+    let { clusterTemplate: { defaultRevisionId = '' } } = this;
+
+    return this.id !== defaultRevisionId
+  }),
+
+  canRemove: computed('id', 'clusterTemplate.defaultRevisionId', function() {
+    return get(this, 'canMakeDefault');
+  }),
+
+
   availableActions: computed('actionLinks.[]', 'enabled', 'clusterTemplate.defaultRevisionId', function() {
     return [
       {
@@ -41,7 +52,7 @@ export default Resource.extend({
         label:     'action.makeDefault',
         icon:      'icon icon-success',
         action:    'setDefault',
-        enabled:   this.canMakeDefault(),
+        enabled:   this.canMakeDefault,
       },
       {
         label:     'action.cloneRevision',
@@ -85,15 +96,6 @@ export default Resource.extend({
       this.save()
         .catch((err) => this.growl.fromError(err));
     },
-  },
-
-  canMakeDefault() {
-    let {
-      clusterTemplateId = '',
-      clusterTemplate: { defaultRevisionId = '' }
-    } = this;
-
-    return clusterTemplateId !== defaultRevisionId
   },
 
   validationErrors() {
