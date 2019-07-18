@@ -1,5 +1,7 @@
-{{yield 'header' this model}}
-
+{{#if hasBlock}}
+  {{yield}}
+{{else}}
+<div {{action launchAction model.id}} role="button">
 {{#if showIcon}}
   <div class="catalog-icon">
     <img src="{{app.baseAssets}}assets/images/generic-catalog.svg" data-src={{model.links.icon}}/>
@@ -12,5 +14,9 @@
   </div>
 {{/if}}
 <div class="itemwrap mt-30">
-  {{yield 'body' this model}}
+    <h3 class="mb-0">
+      {{model.displayName}}
+    </h3>
+  </div>
 </div>
+{{/if}}
