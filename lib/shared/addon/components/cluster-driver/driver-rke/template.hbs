@@ -68,6 +68,7 @@
 
 {{#if (or isEdit (eq step 1))}}
   {{#accordion-list
+     expandAll=(mut forceExpandAll)
      showExpandAll=true
      as |al expandFn|
   }}
@@ -459,7 +460,7 @@
               {{t "clusterNew.rke.etcd.location.label"}}
               {{#if clusterTemplateCreate}}
                 <ClusterTemplateOverrideToggle
-                  @path="backupStrategy"
+                  @path="uiOverrideBackupStrategy"
                   @configVariable={{backupStrategy}}
                   @addOverride={{action "addOverride"}}
                   @questions={{model.clusterTemplateRevision.questions}}
@@ -467,7 +468,7 @@
               {{/if}}
             </label>
             <CheckOverrideAllowed
-              @paramName="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig"
+              @paramName="uiOverrideBackupStrategy"
               @applyClusterTemplate={{applyClusterTemplate}}
               @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
               @questions={{model.clusterTemplateRevision.questions}}
@@ -775,7 +776,11 @@
 {{/if}} {{!-- endif (or isEdit (eq step 1)) --}}
 
 {{#if (and isCustom (eq step 2)) }}
-  {{#accordion-list showExpandAll=false as |al expandFn|}}
+  {{#accordion-list
+     expandAll=(mut forceExpandAll)
+     showExpandAll=false
+     as |al expandFn|
+  }}
     {{#if windowsSupport}}
       {{#accordion-list-item
          title=(t "clusterNew.rke.system.title")
@@ -1045,6 +1050,7 @@
 
 {{#if (or clusterTemplateCreate applyClusterTemplate)}}
   {{#accordion-list
+     expandAll=(mut forceExpandAll)
      showExpandAll=false
      as |al expandFn|
   }}
@@ -1060,6 +1066,7 @@
         @removeQuestion={{removeQuestion}}
         @allQuestions={{clusterTemplateQuestions}}
         @applyClusterTemplate={{applyClusterTemplate}}
+        @clusterTemplateCreate={{clusterTemplateCreate}}
       />
     {{/accordion-list-item}}
   {{/accordion-list}}
