@@ -1,10 +1,5 @@
 <div class="launch-cluster">
   <div class="row mb-20">
-    <div>
-      <label class="acc-label">
-        From exisiting
-      </label>
-    </div>
     <div class="row-same-height row-full-height">
       {{#link-to
          "clusters.new.launch"
@@ -13,7 +8,7 @@
       }}
         <div class="machine-driver custom-driver"></div>
         <div class="driver-content">
-          <h3>Bring your own nodes</h3>
+          <h3>{{t 'clusterNew.custom.label'}}</h3>
           <p class="help-block">
             {{t "clusterNew.custom.helpBlock"}}
           </p>
@@ -27,7 +22,7 @@
       }}
         <div class="machine-driver import-driver"></div>
         <div class="driver-content">
-          <h3>Import Existing</h3>
+          <h3>{{t 'clusterNew.import.label'}}</h3>
           <p class="help-block">
             {{t "clusterNew.import.helpBlock"}}
           </p>
@@ -36,6 +31,32 @@
     </div>
   </div>
 
+
+
+  {{#if (gt (get (get providerGroups "rkeGroup") "length") 0)}}
+    <div class="row">
+      <div class="col span-12">
+        <div>
+          <label class="acc-label">
+            {{t "clusterNew.driverLabels.infra"}}
+          </label>
+        </div>
+        {{#each (get providerGroups "rkeGroup") as |provider|}}
+          {{#link-to
+             "clusters.new.launch"
+             provider.name
+             class=(concat "col span-2 cluster-driver-box small span-height full-height" provider.name)
+          }}
+            <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
+            <div class="driver-content">
+              <p class="driver-name">{{driver-name provider.name}}</p>
+            </div>
+          {{/link-to}}
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
+  
   {{#if (gt (get (get providerGroups "cloudGroup") "length") 0)}}
     <div class="row">
       <div class="col span-12">
@@ -67,30 +88,6 @@
               </div>
             </div>
           {{/unless}}
-        {{/each}}
-      </div>
-    </div>
-  {{/if}}
-
-  {{#if (gt (get (get providerGroups "rkeGroup") "length") 0)}}
-    <div class="row">
-      <div class="col span-12">
-        <div>
-          <label class="acc-label">
-            {{t "clusterNew.driverLabels.infra"}}
-          </label>
-        </div>
-        {{#each (get providerGroups "rkeGroup") as |provider|}}
-          {{#link-to
-             "clusters.new.launch"
-             provider.name
-             class=(concat "col span-2 cluster-driver-box small span-height full-height" provider.name)
-          }}
-            <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
-            <div class="driver-content">
-              <p class="driver-name">{{driver-name provider.name}}</p>
-            </div>
-          {{/link-to}}
         {{/each}}
       </div>
     </div>

@@ -900,9 +900,9 @@ clustersPage:
     label: Disk
   select:
     provider:
-      label: "Create Cluster - Select Cluster Provider"
+      label: "Add Cluster - Select Cluster Type"
     template:
-      label: "Create Cluster - Select Cluster Template"
+      label: "Add Cluster - Select Cluster Template"
 
 clusterRibbonNav:
   title: Recent Clusters
@@ -2517,7 +2517,7 @@ clusterNew:
     cloud: In a hosted Kubernetes provider
     custom: From my own existing nodes
     import: Import existing cluster
-    infra: From nodes in an infrastructure provider
+    infra: From new nodes in an infrastructure provider
     noCloud: There are no cluster drivers enabled.
     noInfra: There are no node drivers enabled.
   externalError: 'Component could not be loaded. Check URL.'
@@ -2534,7 +2534,7 @@ clusterNew:
     title: Cluster Options
   kubernetesOptions:
     title: Kubernetes Options
-    detail: Customize the cluster that will be created
+    detail: Customize the kubernetes cluster options
   security:
     title: Security Options
     detail: Customize the Service Account and Access Scopes
@@ -3273,7 +3273,7 @@ clusterNew:
       hostnamePrefix: Name Prefix
       count: Count
       template: Template
-      deleteNotReadyAfterSecs: Recreate Unreachable After
+      deleteNotReadyAfterSecs: Auto Replace
       deleteNotReadyAfterSecsTooltip: "Should Rancher recreate nodes that have been marked as unreachable by Kubernetes after a timeout? <br /> Note: Values larger than 0 can result in increased costs."
     detected: |
       {count, plural,
@@ -3390,20 +3390,20 @@ clusterNew:
       help: Available for Kubernetes 1.14 with Flannel network provider.
       disabled: Not support {plugin} network provider.
     advanced:
-      label: Advanced Cluster Options
-      detail: Customize advanced options
+      label: Advanced Options
+      detail: Customize advanced cluster options
     authorizedEndpoint:
-      title: Authorized Cluster Endpoint
+      title: Authorized Endpoint
       detail: "Enabling the authorized cluster endpoint allows direct communication with the cluster, bypassing the Rancher API proxy. Authorized endpoints can be retrieved by generating a kubeconfig for the cluster."
       label: Authorized Cluster Endpoint
   custom:
-    label: Custom
+    label: From existing nodes
     shortLabel: Custom
-    helpBlock: You can bring any nodes you want to Rancher and use them to create a cluster. These nodes include on-premise bare metal servers, cloud-hosted virtual machines, or on-premise virtual machines.
+    helpBlock: Create a new Kubernetes cluster out of existing bare-metal servers or virtual machines.
   import:
-    label: Imported
+    label: Import an existing cluster
     shortLabel: Imported
-    helpBlock: Users can import an existing Kubernetes cluster into Rancher. Rancher does not automate the provisioning, scaling, or upgrade of imported clusters. All other Rancher features, including management of cluster, policy, and workloads, are available for imported clusters.
+    helpBlock: Import an existing Kubernetes cluster.  The provider that created it will continue to manage the provisioning and configuration of the cluster.
     command:
       instructionsAdminRole: "<b>Note:</b> If you want to import a Google Kubernetes Engine (GKE) cluster (or any cluster that does not supply you with a kubectl configuration file with the ClusterRole <b>cluster-admin</b> bound to it), you need to bind the ClusterRole <b>cluster-admin</b> using the command below.<br/><br/>Replace <b>[USER_ACCOUNT]</b> with your Google account address (you can retrieve this using <b>gcloud config get-value account</b>). If you are not importing a Google Kubernetes Engine cluster, replace <b>[USER_ACCOUNT]</b> with the executing user configured in your kubectl configuration file."
       instructions: "Run the kubectl command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {appName}:"
