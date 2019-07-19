@@ -67,7 +67,10 @@ export default Resource.extend({
     return get(this, 'scope.currentProject.id') === get(this, 'id');
   }),
 
-  canSaveMonitor: computed('actionLinks.{editMonitoring,enableMonitoring}', function() {
+  canSaveMonitor: computed('isSystemProject', 'actionLinks.{editMonitoring,enableMonitoring}', function() {
+    if ( get(this, 'isSystemProject') ) {
+      return false;
+    }
     const action = get(this, 'enableProjectMonitoring') ?  'editMonitoring' : 'enableMonitoring';
 
     return !!this.hasAction(action)
