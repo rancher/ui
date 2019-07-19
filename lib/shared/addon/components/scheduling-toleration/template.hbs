@@ -1,4 +1,4 @@
-<div class="mb-20"><label class="acc-label">{{t 'formScheduling.toleration.title'}}</label></div>
+<div><label class="acc-label">{{t 'formScheduling.toleration.title'}}</label></div>
 {{#if tolerationArray.length}}
   <table class="table fixed no-lines mb-20">
     {{#if editing}}
@@ -51,19 +51,23 @@
           </td>
           <td>&nbsp;</td>
           <td>
-            {{#input-or-display editable=editing value=toleration.tolerationSeconds}}
-              <div class="input-group">
-                {{input-integer classNames="form-control" value=toleration.tolerationSeconds}}
-                <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
-              </div>
-            {{/input-or-display}}
+            {{#if (eq toleration.effect 'NoExecute')}}
+              {{#input-or-display editable=editing value=toleration.tolerationSeconds}}
+                <div class="input-group">
+                  {{input-integer classNames="form-control" value=toleration.tolerationSeconds}}
+                  <span class="input-group-addon bg-default">{{t 'generic.seconds'}}</span>
+                </div>
+              {{/input-or-display}}
+            {{else}}
+              {{t 'generic.na'}}
+            {{/if}}
           </td>
           <td>&nbsp;</td>
           {{#if editing}}
             <div class="input-group-btn">
               <button class="btn bg-primary btn-sm" {{action "removeToleration" toleration}}><i class="icon icon-minus"/></button>
             </div>
-          {{/if}}
+          {{/if }}
         </tr>
       {{/each}}
     </tbody>
