@@ -10,7 +10,7 @@
             <i class="icon icon-alert"></i> {{t "monitoringPage.confirmDisable"}}
           </button>
         {{else}}
-          {{#if istioEnabled}}
+          {{#if (and istioEnabled (eq level "cluster"))}}
             {{#tooltip-element
               type="tooltip-basic"
               model=(t "monitoringPage.errors.disableIstioFirst")
