@@ -2,8 +2,9 @@ import Controller from '@ember/controller';
 import { alias } from '@ember/object/computed';
 
 export default Controller.extend({
-  queryParams: ['provider'],
-  provider:    null,
+  queryParams:             ['provider', 'clusterTemplateRevision'],
+  provider:                null,
+  clusterTemplateRevision: null,
 
   cluster: alias('model.cluster'),
 
