@@ -49,7 +49,7 @@ const ClusterTemplate =  Resource.extend({
     }                  = this;
     let roles          = C.CLUSTER_TEMPLATE_ROLES;
     let accessType     = roles.READ_ONLY;
-    let principalMatch = members.findBy('principalId', currentPrincipalId);
+    let principalMatch = (members || []).findBy('principalId', currentPrincipalId);
 
     if (principalMatch) {
       accessType = principalMatch.accessType;
