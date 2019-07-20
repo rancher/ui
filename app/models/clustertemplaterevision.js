@@ -2,6 +2,7 @@ import Resource from '@rancher/ember-api-store/models/resource';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
 import { inject as service } from '@ember/service';
 import { computed, set, get } from '@ember/object';
+import { not, alias } from '@ember/object/computed';
 
 export default Resource.extend({
   globalStore: service(),
@@ -11,28 +12,28 @@ export default Resource.extend({
 
   type:            'clustertemplaterevision',
 
-  clusterTemplate: reference('clusterTemplateId', 'clusterTemplate', 'globalStore'),
+  clusterTemplate:  reference('clusterTemplateId', 'clusterTemplate', 'globalStore'),
+  canCloneRevision: not('clusterTemplate.isReadOnly'),
+  canRemove:        alias('canMakeDefault'),
 
   canBulkRemove: computed('clusterTemplateId', function() {
     let { clusterTemplate } = this;
 
-    if (clusterTemplate && clusterTemplate.defaultRevisionId && clusterTemplate.defaultRevisionId !== this.id) {
+    if (clusterTemplate &&
+        clusterTemplate.defaultRevisionId &&
+        clusterTemplate.defaultRevisionId !== this.id &&
+        get(this, 'clusterTemplate.isReadOnly')) {
       return true;
     }
 
     return false;
   }),
 
-  canMakeDefault: computed('clusterTemplate.defaultRevisionId', function() {
+  canMakeDefault: computed('clusterTemplate.defaultRevisionId', 'clusterTemplate.isReadOnly', function() {
     let { clusterTemplate: { defaultRevisionId = '' } } = this;
 
-    return this.id !== defaultRevisionId
+    return this.id !== defaultRevisionId && !get(this, 'clusterTemplate.isReadOnly');
   }),
-
-  canRemove: computed('id', 'clusterTemplate.defaultRevisionId', function() {
-    return get(this, 'canMakeDefault');
-  }),
-
 
   availableActions: computed('actionLinks.[]', 'enabled', 'clusterTemplate.defaultRevisionId', function() {
     return [
@@ -40,13 +41,13 @@ export default Resource.extend({
         label:     'generic.enable',
         icon:      'icon icon-play',
         action:    'enable',
-        enabled:   !this.enabled,
+        enabled:   !this.enabled && !get(this, 'clusterTemplate.isReadOnly'),
       },
       {
         label:     'generic.disable',
         icon:      'icon icon-stop',
         action:    'disable',
-        enabled:   this.enabled,
+        enabled:   this.enabled && !get(this, 'clusterTemplate.isReadOnly'),
       },
       {
         label:     'action.makeDefault',
@@ -58,7 +59,7 @@ export default Resource.extend({
         label:     'action.cloneRevision',
         icon:      'icon icon-copy',
         action:    'newRevision',
-        enabled:   true,
+        enabled:   this.canCloneRevision,
       },
     ];
   }),

@@ -338,8 +338,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
     edit() {
       let provider = get(this, 'provider') || get(this, 'driver');
+      let queryParams = { queryParams: { provider } };
 
-      get(this, 'router').transitionTo('authenticated.cluster.edit', get(this, 'id'), { queryParams: { provider } });
+      if (this.clusterTemplateRevisionId) {
+        set(queryParams, 'queryParams.clusterTemplateRevision', this.clusterTemplateRevisionId);
+      }
+
+      this.router.transitionTo('authenticated.cluster.edit', get(this, 'id'), queryParams);
     },
 
     scaleDownPool(id) {

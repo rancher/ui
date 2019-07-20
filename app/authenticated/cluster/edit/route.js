@@ -6,9 +6,10 @@ import { loadScript, loadStylesheet, proxifyUrl } from 'shared/utils/load-script
 import { isEmpty } from '@ember/utils';
 
 export default Route.extend({
-  access:              service(),
-  globalStore:         service(),
-  roleTemplateService: service('roleTemplate'),
+  access:                 service(),
+  globalStore:            service(),
+  clusterTemplateService: service('clusterTemplates'),
+  roleTemplateService:    service('roleTemplate'),
 
   model() {
     const globalStore = this.get('globalStore');
@@ -36,27 +37,34 @@ export default Route.extend({
     return hash(modelOut);
   },
 
-  afterModel(model) {
+  afterModel(model, transition) {
     let {
       clusterTemplateRevisions = null,
       clusterTemplates = null,
       cluster
     } = model;
+    let { clusterTemplateRevisionId } = cluster;
 
     if (clusterTemplateRevisions) {
       let ctr  = null;
       let ct   = null;
       let ctId = null;
 
-      ctr  = clusterTemplateRevisions.findBy('id', cluster.clusterTemplateRevisionId);
+      if (transition.queryParams && transition.queryParams.clusterTemplateRevision) {
+        clusterTemplateRevisionId = transition.queryParams.clusterTemplateRevision;
+      }
+
+      ctr  = clusterTemplateRevisions.findBy('id', clusterTemplateRevisionId);
       ctId = get(ctr, 'clusterTemplateId');
       ct   = clusterTemplates.findBy('id', ctId);
 
       setProperties(model, {
-        clusterTemplateRevisionId: get(ctr, 'id'),
+        clusterTemplateRevisionId,
         clusterTemplateId:         get(ct, 'id'),
         clusterTemplateRevision:   ctr
       });
+
+      this.clusterTemplateService.cloneAndPopulateClusterConfig(cluster, ctr);
     }
 
     // load the css/js url here, if the url loads fail we should error the driver out
@@ -111,5 +119,8 @@ export default Route.extend({
     }
   },
 
-  queryParams: { provider: { refreshModel: true } },
+  queryParams: {
+    provider:                { refreshModel: true },
+    clusterTemplateRevision: { refreshModel: true }
+  },
 });
