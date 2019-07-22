@@ -71,6 +71,21 @@
               {{t "cruRegistry.address.quay"}}
             </label>
           </div>
+          <div>
+            <label>
+              {{radio-button
+                selection=row.preset
+                value="artifactory"
+              }}&nbsp;
+              {{t "cruRegistry.address.artifactory"}}{{if (eq row.preset "artifactory") ":"}}
+            </label>
+            {{#if (eq row.preset "artifactory")}}
+              {{input
+                value=row.address
+                placeholder=(t "cruRegistry.address.placeholder")
+              }}
+            {{/if}}
+          </div>
           {{#if globalRegistryEnabled}}
             <div>
               <label>
