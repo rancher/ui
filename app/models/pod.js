@@ -35,15 +35,19 @@ var Pod = Resource.extend(Grafana, DisplayImage, {
     return !!get(this, 'links.update') && !!get(this, 'links.yaml');
   }),
 
-  availableActions: computed('combinedState', function() {
-    let isRunning = get(this, 'combinedState') === 'running';
+  canShell: computed('containers', function() {
+    return !!get(this, 'containers').findBy('canShell', true);
+  }),
+
+  availableActions: computed('canShell', function() {
+    const canShell = get(this, 'canShell');
 
     var choices = [
       {
         label:     'action.execute',
         icon:      'icon icon-terminal',
         action:    'shell',
-        enabled:   isRunning,
+        enabled:   canShell,
         altAction: 'popoutShell'
       },
       {
