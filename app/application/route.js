@@ -7,7 +7,6 @@ import { get, set } from '@ember/object';
 export default Route.extend({
   access:   service(),
   cookies:  service(),
-  github:   service(),
   language: service('user-language'),
   modal:    service(),
   prefs:    service(),

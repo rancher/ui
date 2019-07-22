@@ -6,6 +6,7 @@ import { inject as service } from '@ember/service';
 import Grafana from 'shared/mixins/grafana';
 import { alias } from '@ember/object/computed';
 import { later } from '@ember/runloop';
+import C from 'ui/utils/constants';
 
 var Container = Resource.extend(Grafana, DisplayImage, {
   modalService: service('modal'),
@@ -28,15 +29,19 @@ var Container = Resource.extend(Grafana, DisplayImage, {
     return get(this, 'pod.namespaceId');
   }),
 
-  availableActions: computed('state', function() {
-    let isRunning = get(this, 'state') === 'running';
+  canShell: computed('state', function() {
+    return C.CAN_SHELL_STATES.indexOf(get(this, 'state')) > -1
+  }),
+
+  availableActions: computed('canShell', function() {
+    const canShell = get(this, 'canShell');
 
     var choices = [
       {
         label:     'action.execute',
         icon:      'icon icon-terminal',
         action:    'shell',
-        enabled:   isRunning,
+        enabled:   canShell,
         altAction: 'popoutShell',
       },
       {

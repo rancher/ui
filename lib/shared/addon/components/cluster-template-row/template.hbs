@@ -1,6 +1,6 @@
 {{#if isGroup}}
-  <td colspan="{{sub fullColspan 2}}" data-title="cluster-template" class="pl-10">
-    {{model.displayName}}
+  <td colspan="{{sub fullColspan 2}}" data-title="cluster-template" class="pl-20">
+    {{t "clusterTemplateRow.label"}}: {{model.displayName}}
     {{#if model.description}}
       <p class="text-small text-muted m-0">
         {{linkify model.description}}
@@ -35,6 +35,11 @@
   </td>
   <td data-title="{{dt.defaultRevisionId}}">
     {{#if (eq model.clusterTemplate.defaultRevisionId model.id)}}
+      <i class="icon icon-check" />
+    {{/if}}
+  </td>
+  <td data-title="{{dt.enabled}}">
+    {{#if model.enabled}}
       <i class="icon icon-check" />
     {{/if}}
   </td>

@@ -7,15 +7,40 @@
 
   <div class="right-buttons">
     {{#link-to
-       "clusters.new"
+       "cluster-templates.new"
        class="btn btn-sm bg-primary"
-       disabled=(rbac-prevents resource="cluster" scope="global" permission="create")
+       disabled=(rbac-prevents resource="clustertemplate" scope="global" permission="create")
     }}
-      {{t "clustersPage.newCluster"}}
+      {{t "clustersPage.newTemplate"}}
     {{/link-to}}
+
+    {{#if disabledAddCluster}}
+      {{#tooltip-element
+         type="tooltip-basic"
+         model=(t "clustersPage.clusterLaunchDisabled" htmlSafe=true)
+         tooltipTemplate="tooltip-static"
+         aria-describedby="tooltip-base"
+         tooltipFor="tooltipDisableClusterLaunch"
+      }}
+        <button
+          class="btn bg-disabled btn-sm btn-disabled"
+        >
+          {{t "clustersPage.newCluster"}}
+        </button>
+      {{/tooltip-element}}
+    {{else}}
+      {{#link-to
+         "clusters.new"
+         class="btn btn-sm bg-primary"
+         disabled=(rbac-prevents resource="cluster" scope="global" permission="create")
+      }}
+        {{t "clustersPage.newCluster"}}
+      {{/link-to}}
+    {{/if}}
   </div>
 </section>
 
+{{log model.clusters}}
 {{#if model.clusters.length}}
   {{#sortable-table
      classNames="grid sortable-table"
@@ -38,24 +63,54 @@
       }}
     {{else if (eq kind "nomatch")}}
       <tr>
-        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
           {{t "clusterRow.noClusterMatch"}}
         </td>
       </tr>
     {{else if (eq kind "norows")}}
       <tr>
-        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
           {{t "clusterRow.noClusterData"}}
         </td>
       </tr>
     {{/if}}
   {{/sortable-table}}
 {{else}}
-  {{empty-table
-    resource="container"
-    newRoute="global-admin.clusters.new"
-    newTranslationKey="clustersPage.newCluster"
-    disabled=(rbac-prevents resource="cluster" scope="global" permission="create")
-    ctx=""
+  {{#empty-table
+     resource="container"
+     newRoute="global-admin.clusters.new"
+     newTranslationKey="clustersPage.newCluster"
+     disabled=(rbac-prevents resource="cluster" scope="global" permission="create")
+     ctx=""
   }}
+    <div class="col span-6 offset-3 text-center pt-40 pb-40">
+      <img style="width: 75%;" src="{{app.baseAssets}}assets/images/resources/container.svg"/>
+      <div class="text-center mt-50">
+        {{#if disabledAddCluster}}
+          {{#tooltip-element
+             type="tooltip-basic"
+             model=(t "clustersPage.clusterLaunchDisabled" htmlSafe=true)
+             tooltipTemplate="tooltip-static"
+             aria-describedby="tooltip-base"
+             tooltipFor="tooltipDisableClusterLaunch"
+             placement="top"
+          }}
+            <button
+              class="btn bg-disabled btn-sm btn-disabled"
+            >
+              {{t "clustersPage.newCluster"}}
+            </button>
+          {{/tooltip-element}}
+        {{else}}
+          {{#link-to
+             "clusters.new"
+             class="btn btn-sm bg-primary"
+             disabled=(rbac-prevents resource="cluster" scope="global" permission="create")
+          }}
+            {{t "clustersPage.newCluster"}}
+          {{/link-to}}
+        {{/if}}
+      </div>
+    </div>
+  {{/empty-table}}
 {{/if}}

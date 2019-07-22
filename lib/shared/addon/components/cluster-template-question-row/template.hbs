@@ -16,12 +16,12 @@
       {{question.type}}
     </div>
   {{else}}
-    <NewSelect
-      class="form-control"
-      @optionLabelPath="value"
-      @content={{typeOptions}}
-      @value={{question.type}}
-    />
+    {{new-select
+      classNames="form-control"
+      optionLabelPath="value"
+      content=typeOptions
+      value=question.type
+    }}
   {{/if}}
 </td>
 <td data-title="{{dt.answer}}" class="p-20 pl-0" >
@@ -81,7 +81,7 @@
   {{/if}}
 </td>
 <td data-title="{{dt.required}}" class="p-20 pl-0 text-center" >
-  {{#if (or question.isBuiltIn applyClusterTemplate) }}
+  {{#if applyClusterTemplate}}
     <div>
       {{#if question.required}}
         <FieldRequired/>
@@ -94,11 +94,13 @@
     }}
   {{/if}}
 </td>
-<td data-title="{{t "generic.actions"}}:" class="actions">
-  <button
-    class="btn bg-primary btn-sm"
-    {{action "removeQuestion"}}
-  >
-    <i class="icon icon-minus"></i>
-  </button>
-</td>
+{{#unless applyClusterTemplate}}
+  <td data-title="{{t "generic.actions"}}:" class="actions">
+    <button
+      class="btn bg-primary btn-sm"
+      {{action "removeQuestion"}}
+    >
+      <i class="icon icon-minus"></i>
+    </button>
+  </td>
+{{/unless}}

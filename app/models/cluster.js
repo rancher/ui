@@ -33,6 +33,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
   expiringCerts:               null,
   grafanaDashboardName:        'Cluster',
   isMonitoringReady:           false,
+  _cachedConfig:               null,
   machines:                    alias('nodes'),
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
   isAKS:                       equal('driver', 'azureKubernetesService'),
@@ -337,8 +338,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
     edit() {
       let provider = get(this, 'provider') || get(this, 'driver');
+      let queryParams = { queryParams: { provider } };
 
-      get(this, 'router').transitionTo('authenticated.cluster.edit', get(this, 'id'), { queryParams: { provider } });
+      if (this.clusterTemplateRevisionId) {
+        set(queryParams, 'queryParams.clusterTemplateRevision', this.clusterTemplateRevisionId);
+      }
+
+      this.router.transitionTo('authenticated.cluster.edit', get(this, 'id'), queryParams);
     },
 
     scaleDownPool(id) {
@@ -371,6 +377,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
   clearConfigFieldsForClusterTemplate() {
     let clearedNull   = ['localClusterAuthEndpoint', 'rancherKubernetesEngineConfig', 'enableNetworkPolicy'];
     let clearedDelete = ['defaultClusterRoleForProjectMembers', 'defaultPodSecurityPolicyTemplateId'];
+
+    // set this incase we fail to save the cluster;
+    set(this, '_cachedConfig', this.rancherKubernetesEngineConfig);
 
     clearedDelete.forEach((c) => delete this[c]);
     clearedNull.forEach((c) => set(this, c, null));

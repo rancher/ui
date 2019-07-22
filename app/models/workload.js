@@ -191,9 +191,9 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
     }
   }),
 
-  podForShell: function() {
-    return get(this, 'pods').findBy('combinedState', 'running');
-  }.property('pods.@each.combinedState'),
+  podForShell: computed('pods.@each.canShell', function() {
+    return get(this, 'pods').findBy('canShell', true);
+  }),
 
   secondaryLaunchConfigs: computed('containers.[]', function() {
     return (get(this, 'containers') || []).slice(1);

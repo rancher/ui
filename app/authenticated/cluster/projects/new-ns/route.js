@@ -19,6 +19,11 @@ export default Route.extend({
 
     if (params.addTo) {
       set(namespace, 'projectId', get(params, 'addTo'));
+      const containerDefaultResourceLimit = get(namespace, 'project.containerDefaultResourceLimit');
+
+      if ( containerDefaultResourceLimit ) {
+        set(namespace, 'containerDefaultResourceLimit', containerDefaultResourceLimit);
+      }
     }
 
     return hash({

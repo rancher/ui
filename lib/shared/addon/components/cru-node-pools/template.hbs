@@ -1,69 +1,58 @@
-{{#accordion-list showExpandAll=false as |al expandFn|}}
-  {{#accordion-list-item
-     title=(t "clusterNew.rke.nodes.title")
-     detail=(t "clusterNew.rke.nodes.detail")
-     showExpand=false
-     expandOnInit=true
-     expandAll=al.expandAll
-     expand=(action expandFn)
-  }}
-    {{#sortable-table
-       classNames="grid sortable-table"
-       body=nodePools
-       suffix=true
-       search=false
-       descending=descending
-       bulkActions=false
-       rowActions=false
-       pagingLabel="pagination.nodePool"
-       headers=headers
-       as |sortable kind pool dt|
+{{#sortable-table
+   classNames="grid sortable-table"
+   body=nodePools
+   suffix=true
+   search=false
+   descending=descending
+   bulkActions=false
+   rowActions=false
+   pagingLabel="pagination.nodePool"
+   headers=headers
+   as |sortable kind pool dt|
+}}
+  {{#if (eq kind "row")}}
+    {{node-pool-row
+      addNodeTemplate=(action "addNodeTemplate")
+      filteredNodeTemplates=filteredNodeTemplates
+      pool=pool
+      removePool=(action "removePool")
+      dt=dt
     }}
-      {{#if (eq kind "row")}}
-        {{node-pool-row
-          addNodeTemplate=(action "addNodeTemplate")
-          filteredNodeTemplates=filteredNodeTemplates
-          pool=pool
-          removePool=(action "removePool")
-          dt=dt
-        }}
-      {{else if (eq kind "norows")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-40 pb-40">{{t "nodesPage.table.noData"}}</td></tr>
-      {{else if (eq kind "suffix")}}
-        <tbody>
-          <tr class="banner bg-info suffix">
-            <td colspan="3" class="pl-20 text-bold">{{t "clusterNew.rke.role.requirements.label"}}</td>
-            <td class="text-center {{if etcdOk "text-success" "text-error text-bold"}}">
-              <i class="icon {{if etcdOk "icon-success" "icon-x-circle"}}"></i>
-              {{t "clusterNew.rke.role.requirements.etcd"}}
-            </td>
-            <td class="text-center {{if controlPlaneOk "text-success" "text-error text-bold"}}">
-              <i class="icon {{if controlPlaneOk "icon-success" "icon-x-circle"}}"></i>
-              {{t "clusterNew.rke.role.requirements.controlplane"}}
-            </td>
-            <td class="text-center {{if workerOk "text-success" "text-error text-bold"}}">
-              <i class="icon {{if workerOk "icon-success" "icon-x-circle"}}"></i>
-              {{t "clusterNew.rke.role.requirements.worker"}}
-            </td>
-            <td></td>
-          </tr>
-        </tbody>
-      {{/if}}
-    {{/sortable-table}}
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-40 pb-40">{{t "nodesPage.table.noData"}}</td></tr>
+  {{else if (eq kind "suffix")}}
+    <tbody>
+      <tr class="banner bg-info suffix">
+        <td colspan="4" class="pl-20 text-bold">{{t "clusterNew.rke.role.requirements.label"}}</td>
+        <td class="text-center {{if etcdOk "text-success" "text-error text-bold"}}">
+          <i class="icon {{if etcdOk "icon-success" "icon-x-circle"}}"></i>
+          {{t "clusterNew.rke.role.requirements.etcd"}}
+        </td>
+        <td class="text-center {{if controlPlaneOk "text-success" "text-error text-bold"}}">
+          <i class="icon {{if controlPlaneOk "icon-success" "icon-x-circle"}}"></i>
+          {{t "clusterNew.rke.role.requirements.controlplane"}}
+        </td>
+        <td class="text-center {{if workerOk "text-success" "text-error text-bold"}}">
+          <i class="icon {{if workerOk "icon-success" "icon-x-circle"}}"></i>
+          {{t "clusterNew.rke.role.requirements.worker"}}
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+  {{/if}}
+{{/sortable-table}}
 
-    <div class="mt-20">
-      <button class="btn bg-primary icon-btn p-0" {{action "addPool"}}>
-        <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t "clusterNew.rke.nodes.add"}}</span>
-      </button>
-    </div>
+<div class="mt-20">
+  <button class="btn bg-primary icon-btn p-0" {{action "addPool"}}>
+    <span class="darken"><i class="icon icon-plus text-small"/></span>
+    <span>{{t "clusterNew.rke.nodes.add"}}</span>
+  </button>
+</div>
 
-    {{#if showIamWarning}}
-      {{banner-message icon="icon-alert" color="bg-warning mb-10" message=(t "clusterNew.rke.warning.aws.iam")}}
-    {{/if}}
+{{#if showIamWarning}}
+  {{banner-message icon="icon-alert" color="bg-warning mb-10" message=(t "clusterNew.rke.warning.aws.iam")}}
+{{/if}}
 
-    {{#if (and (eq mode "edit") (not etcdOk))}}
-      {{banner-message icon="icon-alert" color="bg-warning mb-10" message=(if (lt etcdCount 1) (t "clusterNew.rke.warning.etcd.noEtcd") (t "clusterNew.rke.warning.etcd.even" count=etcdCount))}}
-    {{/if}}
-  {{/accordion-list-item}}
-{{/accordion-list}}
+{{#if (and (eq mode "edit") (not etcdOk))}}
+  {{banner-message icon="icon-alert" color="bg-warning mb-10" message=(if (lt etcdCount 1) (t "clusterNew.rke.warning.etcd.noEtcd") (t "clusterNew.rke.warning.etcd.even" count=etcdCount))}}
+{{/if}}
