@@ -192,6 +192,11 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
   willSave() {
     get(this, 'model').clearTypesExcept(get(this, 'recordType'));
+
+    if ( get(this, 'mode') === 'edit' && get(this, 'recordType') === WORKLOAD ) {
+      delete get(this, 'model')[SELECTOR];
+    }
+
     set(this, 'model.namespaceId', get(this, 'namespace.id') || '__placeholder__');
     const self = this;
     const sup = this._super;
