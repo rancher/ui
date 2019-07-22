@@ -64,6 +64,10 @@ export default Route.extend({
         def = get(app, 'externalIdInfo.version');
       }
 
+      if ( !links[def] ) {
+        def = get(results, 'tpl.latestVersion');
+      }
+
       catalogTemplateUrl = links[def];
 
       var version = get(this, 'settings.rancherVersion');
