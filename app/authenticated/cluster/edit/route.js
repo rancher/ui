@@ -55,16 +55,19 @@ export default Route.extend({
       }
 
       ctr  = clusterTemplateRevisions.findBy('id', clusterTemplateRevisionId);
-      ctId = get(ctr, 'clusterTemplateId');
-      ct   = clusterTemplates.findBy('id', ctId);
 
-      setProperties(model, {
-        clusterTemplateRevisionId,
-        clusterTemplateId:         get(ct, 'id'),
-        clusterTemplateRevision:   ctr
-      });
+      if (ctr) {
+        ctId = get(ctr, 'clusterTemplateId');
+        ct   = clusterTemplates.findBy('id', ctId);
 
-      this.clusterTemplateService.cloneAndPopulateClusterConfig(cluster, ctr);
+        setProperties(model, {
+          clusterTemplateRevisionId,
+          clusterTemplateId:         get(ct, 'id'),
+          clusterTemplateRevision:   ctr
+        });
+
+        this.clusterTemplateService.cloneAndPopulateClusterConfig(cluster, ctr);
+      }
     }
 
     // load the css/js url here, if the url loads fail we should error the driver out
