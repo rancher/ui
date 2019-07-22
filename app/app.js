@@ -39,7 +39,6 @@ const App = Application.extend({
           'clusterStore',
           'digitalOcean',
           'endpoint',
-          'github',
           'globalStore',
           'intl',
           'modal',
@@ -78,7 +77,6 @@ const App = Application.extend({
           'clusterStore',
           'digitalOcean',
           'endpoint',
-          'github',
           'globalStore',
           'intl',
           'modal',
@@ -157,7 +155,6 @@ const App = Application.extend({
         services: [
           'app',
           'clusterStore',
-          'github',
           'globalStore',
           'intl',
           'modal',
