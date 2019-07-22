@@ -13,7 +13,6 @@ export default Resource.extend({
   type:            'clustertemplaterevision',
 
   clusterTemplate:  reference('clusterTemplateId', 'clusterTemplate', 'globalStore'),
-  canCloneRevision: not('clusterTemplate.isReadOnly'),
   canRemove:        alias('canMakeDefault'),
 
   canBulkRemove: computed('clusterTemplateId', function() {
@@ -21,18 +20,17 @@ export default Resource.extend({
 
     if (clusterTemplate &&
         clusterTemplate.defaultRevisionId &&
-        clusterTemplate.defaultRevisionId !== this.id &&
-        get(this, 'clusterTemplate.isReadOnly')) {
+        clusterTemplate.defaultRevisionId !== this.id) {
       return true;
     }
 
     return false;
   }),
 
-  canMakeDefault: computed('clusterTemplate.defaultRevisionId', 'clusterTemplate.isReadOnly', function() {
+  canMakeDefault: computed('clusterTemplate.defaultRevisionId', function() {
     let { clusterTemplate: { defaultRevisionId = '' } } = this;
 
-    return this.id !== defaultRevisionId && !get(this, 'clusterTemplate.isReadOnly');
+    return this.id !== defaultRevisionId;
   }),
 
   availableActions: computed('actionLinks.[]', 'enabled', 'clusterTemplate.defaultRevisionId', function() {
@@ -41,13 +39,13 @@ export default Resource.extend({
         label:     'generic.enable',
         icon:      'icon icon-play',
         action:    'enable',
-        enabled:   !this.enabled && !get(this, 'clusterTemplate.isReadOnly'),
+        enabled:   !this.enabled,
       },
       {
         label:     'generic.disable',
         icon:      'icon icon-stop',
         action:    'disable',
-        enabled:   this.enabled && !get(this, 'clusterTemplate.isReadOnly'),
+        enabled:   this.enabled,
       },
       {
         label:     'action.makeDefault',
@@ -59,7 +57,7 @@ export default Resource.extend({
         label:     'action.cloneRevision',
         icon:      'icon icon-copy',
         action:    'newRevision',
-        enabled:   this.canCloneRevision,
+        enabled:   true,
       },
     ];
   }),

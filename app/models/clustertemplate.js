@@ -15,8 +15,7 @@ const ClusterTemplate =  Resource.extend({
 
   type:      'clustertemplate',
 
-  canCloneRevision: not('isReadOnly'),
-  canEdit:          not('isReadOnly'),
+  canCloneRevision: true,
 
   availableActions: computed('actionLinks.[]', function() {
     return [
@@ -37,29 +36,13 @@ const ClusterTemplate =  Resource.extend({
     return get(this, 'defaultRevisionId').split(':')[1];
   }),
 
-  canRemove: computed('links.remove', 'isReadOnly', function() {
-    return !!get(this, 'links.remove') && !get(this, 'isReadOnly');
+  canEdit: computed('links.update', function() {
+    return !!get(this, 'links.update');
   }),
 
-  isReadOnly: computed('access.principal.id', function() {
-    let {
-      members = [],
-      creatorId,
-      access: { principal: { id: currentPrincipalId } }
-    }                  = this;
-    let roles          = C.CLUSTER_TEMPLATE_ROLES;
-    let accessType     = roles.READ_ONLY;
-    let principalMatch = (members || []).findBy('userPrincipalId', currentPrincipalId);
 
-    if (principalMatch) {
-      accessType = principalMatch.accessType;
-    } else {
-      if (this.access.me.id === creatorId) {
-        accessType = roles.OWNER;
-      }
-    }
-
-    return accessType === roles.READ_ONLY;
+  canRemove: computed('links.remove', function() {
+    return !!get(this, 'links.remove');
   }),
 
   actions: {
