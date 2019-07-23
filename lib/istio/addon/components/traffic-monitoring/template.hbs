@@ -1,23 +1,5 @@
-<div class="row text-left">
-  <div class="pull-right pl-20 pt-0 mr-10">
-    <div>
-      <label class="acc-label">
-        {{t "istio.period"}}:
-      </label>
-    </div>
-    <div class="text-left inline-block">
-      {{new-select
-        classNames="period text-black"
-        content=durationContent
-        value=duration
-        disabled=loading
-      }}
-    </div>
-    <button type="button" style="height: 37px;margin-top: -4px;" class="btn bg-primary" disabled={{loading}} {{action "refresh"}}>
-      <span><i class="icon icon-refresh"></i></span>
-    </button>
-  </div>
-  {{#if namespaces.length}}
+{{#if namespaces.length}}
+  <div class="row text-left mb-5">
     <div class="pull-left pl-20 pt-0 mr-10">
       <label class="acc-label">
         {{t "generic.namespace"}}:
@@ -28,29 +10,29 @@
         value=namespace
         optionValuePath="id"
         optionLabelPath="displayName"
-        disabled=loading
       }}
     </div>
-  {{/if}}
-</div>
-
-{{#if loading}}
-  <div class="row mt-20">
-    <div class="text-center">
-      <i class="icon icon-spinner icon-spin icon-3x"></i>
-    </div>
   </div>
-{{else if elements.nodes.length}}
-  {{traffic-graph
-    elements=graphData
-    edgeLabelMode="none"
-    graphType="versionedApp"
-    showCircuitBreakers=true
-    showMissingSidecars=true
-    showNodeLabels=true
-    showSecurity=false
-    showVirtualServices=false
-  }}
+  {{#if loading}}
+    <div class="row mt-20">
+      <div class="text-center">
+        <i class="icon icon-spinner icon-spin icon-3x"></i>
+      </div>
+    </div>
+  {{/if}}
+  <div id="kiali-div" class="{{if loading 'loading'}}">
+    <iframe src={{url}} id="kiali-iframe" scrolling="no"></iframe>
+  </div>
+  {{#unless loading}}
+    <div class="powered-by-kiali">
+      {{t "istio.kiali"}}
+      <span class="pl-5 pull-right" role="button">
+        <a href="https://www.kiali.io/" target="_blank" rel="nofollow noopener noreferrer">
+          <div class="kiali"></div>
+        </a>
+      </span>
+    </div>
+  {{/unless}}
 {{else}}
   <div class="mt-20">
     <div class="text-center text-muted">
@@ -58,4 +40,3 @@
     </div>
   </div>
 {{/if}}
-

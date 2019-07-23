@@ -71,6 +71,14 @@ clusterIstioPage:
   telemetryAndPolicy: Telemetry And Policy
   existingClaim:
     label: 'Existing Claim for {component}'
+  members:
+    title: External UI Member Access
+    detail: Control who has access to Kiali and Jaeger UI.
+  allowSystemGroup:
+    true: Allow <b>all</b> members to access Kiali and Jaeger UI.
+    false: Allow system project members and <b>specified</b> members to access Kiali and Jaeger UI.
+  goToMonitoring: 'Before enabling Istio, you need to enable cluster monitoring first. Go <a href="/c/{clusterId}/monitoring/cluster-setting">here</a> to enable cluster monitoring.'
+  upgradeMonitoring: 'Before enabling Istio, you need to upgrade cluster monitoring to version 0.0.4 or above first. Go <a href="/c/{clusterId}/monitoring/cluster-setting">here</a> to upgrade cluster monitoring.'
 istio:
   noData: Not enough data for graph
   period: Period
@@ -84,6 +92,12 @@ istio:
     graph: Traffic Graph
     metrics: Traffic Metrics
     rules: Traffic Rules
+    destinationRules:
+      label: Destination Rules
+      add: Add Destination Rule
+    virtualServices:
+      label: Virtual Services
+      add: Add Virtual Service
 rulesPage:
   new: Add Traffic Rule
   noMatch: No traffic rule match the current search
@@ -106,3 +120,330 @@ projectIstioPage:
     notEnabled: 'Istio is not enabled yet. Go <a href="/c/{clusterId}/istio/cluster-setting">here</a> to enable it.'
     notOwner: "Istio is not enabled yet. Please contact your cluster administrator."
     noPermission: "You do not have permission to configure Istio."
+
+destinationRulePage:
+  noMatch: No Destination Rules match the current search
+  noData: There are no Destination Rules to show
+  notSupported: networking.istio.io/v1alpha3 API is not available in the cluster.
+  table:
+    host:
+      label: Host
+    subsets:
+      label: Subsets
+
+
+cruDestinationRule:
+  title:
+    new: Add Destination Rule
+    edit: Edit Destination Rule
+    view: "Destination Rule: {name}"
+  port:
+    label: Port
+    placeholder: e.g. 8080 or myport
+  host:
+    error: Host is required.
+  name:
+    placeholder: e.g. myrule
+  loadBalancer:
+    label: Load Balancer
+    detail: Configure the load balancer algorithms
+    simple:
+      label: Use standard load balancing algorithms
+      roundRobin:
+        label: Round Robin Policy
+      leastConn:
+        label: Least Request Load Balancer
+      random:
+        label: Random Load Balancer
+      passthrough:
+        label: Passthrough
+    consistentHash:
+      label: Use consistent hash-based load balancing for soft session affinity
+      httpHeaderName:
+        label: HTTP Header Name
+        placeholder: e.g. end-user
+        error: HTTP Header Name is required.
+      minimumRingSize:
+        label: Minimum Ring Size
+        placeholder: e.g. 1024
+      httpCookie:
+        name:
+          label: Cookie Name
+          placeholder: e.g. username
+          error: Cookie Name is required.
+        path:
+          label: Cookie Path
+          placeholder: e.g. /
+        ttl:
+          label: TTL
+          placeholder: e.g. 0s
+          error: TTL is required.
+      mode:
+        label: Hash Mode
+        header:
+          label: Hash based on a specific HTTP header
+        cookie:
+          label: Hash based on HTTP cookie
+        sourceIp:
+          label: Hash based on the source IP address
+
+  connectionPool:
+    label: Connection Pool
+    detail: Configure the volume of connections to an upstream service
+    http1MaxPendingRequests:
+      label: HTTP1 Max Pending Requests
+      placeholder: e.g. 1024
+      help: Maximum number of pending HTTP requests to a destination.
+    http2MaxRequests:
+      label: HTTP2 Max Requests
+      placeholder: e.g. 1024
+      help: Maximum number of requests to a backend.
+    maxRequestsPerConnection:
+      label: HTTP Max Requests Per Connection
+      placeholder: e.g. 10
+      help: Maximum number of requests per connection to a backend. Setting this parameter to 1 disables keep alive.
+    maxRetries:
+      label: HTTP Max Retries
+      placeholder: e.g. 1024
+      help: Maximum number of retries that can be outstanding to all hosts in a cluster at a given time.
+    connectTimeout:
+      label: TCP Connection Timeout
+      placeholder: e.g. 30ms
+      help: TCP connection timeout.
+    maxConnections:
+      label: TCP Max Connections
+      placeholder: e.g. 1024
+      help: Maximum number of HTTP1 /TCP connections to a destination host.
+  outlierDetection:
+    label: Outlier Detection
+    detail: Configure eviction of unhealthy hosts from the load balancing pool
+    baseEjectionTime:
+      label: Base Ejection Time
+      placeholder: e.g. 30s
+      help: Minimum ejection duration. A host will remain ejected for a period equal to the product of minimum ejection duration and the number of times the host has been ejected.
+    consecutiveErrors:
+      label: Consecutive Errors
+      placeholder: e.g. 5
+      help: Number of errors before a host is ejected from the connection pool.
+    interval:
+      label: Interval
+      placeholder: e.g. 10s
+      help: Time interval between ejection sweep analysis.
+    maxEjectionPercent:
+      label: Max Ejection Percent
+      placeholder: e.g. 10
+      help: Maximum % of hosts in the load balancing pool for the upstream service that can be ejected.
+  subsets:
+    label: Subsets
+    noSubsets: No Subsets
+    addSubsetLabel: Add Subset
+    removeSubsetLabel: Remove Subset
+    name:
+      label: Name
+      placeholder: e.g. v1
+      error: Subset Name is required.
+    labels:
+      error: Please input at least one label for subset.
+  tls:
+    label: TLS
+    detail: Configure TLS related settings for connections to the upstream service
+    mode:
+      label: TLS Mode
+      none:
+        label: NONE
+      istio:
+        label: Istio Mutual - Secure connections to the upstream using mutual TLS by Istio
+      disable:
+        label: Disable - Do not setup a TLS connection to the upstream endpoint
+      simple:
+        label: Simple - Originate a TLS connection to the upstream endpoint
+      mutual:
+        label: Mutual - Secure connections to the upstream using mutual TLS by presenting client certificates for authentication
+    clientCertificate:
+      label: Client Certificate
+      placeholder: e.g. /etc/certs/myclientcert.pem
+      error: Client Certificate is required.
+    privateKey:
+      label: Private Key
+      placeholder: e.g. /etc/certs/client_private_key.pem
+      error: Private Key is required.
+    caCertificates:
+      label: CA Certificates
+      placeholder: e.g. /etc/certs/rootcacerts.pem
+    sni:
+      label: SNI
+      placeholder: e.g. nginx.example.com
+    subjectAltNames:
+      label: Subject Alternative Names
+      placeholder: e.g. example.com
+      add: Add Subject Alternative Name
+
+virtualServicePage:
+  noMatch: No Virtual Services match the current search
+  noData: There are no Virtual Services to show
+  notSupported: networking.istio.io/v1alpha3 API is not available in the cluster.
+  table:
+    hosts:
+      label: Hosts
+
+cruVirtualService:
+  title:
+    new: Add Virtual Service
+    edit: Edit Virtual Service
+    view: "Virtual Service: {name}"
+  name:
+    placeholder: e.g. myservice
+  hosts:
+    label: Hosts
+    add: Add Host
+    error: Please select or input at least one Host
+  gateways:
+    label: Gateways
+    add: Add Gateway
+    placeholder: e.g. mygateway
+  http:
+    routes:
+      label: HTTP Routes
+      noRoutes: No HTTP Routes
+      addRouteLabel: Add HTTP Route
+      removeRouteLabel: Remove HTTP Route
+      moveUp: Move Up
+      moveDown: Move Down
+      timeout:
+        label: Timeout
+        placeholder: e.g. 5s
+      faultInjection:
+        abort:
+          label: Fault Injection Abort
+          httpStatus:
+            label: HTTP Status
+            placeholder: e.g. 400
+          percent:
+            label: Percent
+            placeholder: e.g. 8
+        delay:
+          label: Fault Injection Delay
+          fixedDelay:
+            label: Fixed Delay
+            placeholder: e.g. 5s
+          percent:
+            label: Percent
+            placeholder: e.g. 8
+      mirror:
+        label: Mirror
+        host:
+          label: Host
+        subset:
+          label: Subset
+          placeholder: e.g. v2
+        port:
+          label: Port
+          placeholder: e.g. 8080 or myport
+      retries:
+        label: Retries
+        attempts:
+          label: Attempts
+          placeholder: e.g. 3
+        perTryTimeout:
+          label: Timeout Per Retry Attempt
+          placeholder: e.g. 2s
+      redirect:
+        label: Redirect
+        uri:
+          label: URI
+          placeholder: e.g. /v1/bookRatings
+        authority:
+          label: Authority
+          placeholder: e.g. newratings.default.svc.cluster.local
+        error: Please do not configure destinations and redirect at the same time.
+      rewrite:
+        label: Rewrite
+        uri:
+          label: URI
+          placeholder: e.g. /v1/bookRatings
+        authority:
+          label: Authority
+          placeholder: e.g. newratings.default.svc.cluster.local
+      destination:
+        addDestinationLabel: Add Destination
+        noDestinations: No Destinations
+        port:
+          label: Port
+          placeholder: e.g. 8080 or myport
+        weight:
+          label: Weight
+          placeholder: e.g. 50
+          error: Weight is required
+        subset:
+          label: Subset
+          placeholder: e.g. v1
+          error: Subset is required
+        host:
+          label: Host
+          error: Host is required
+      matches:
+        error: Please input at least one key value pair for match conditions
+        showMatch: Specify match rules for this route
+        addLabel: Add Another Match
+        removeLabel: Remove Match
+        noData: No Matches
+        addMatchLabel: Add Match Condition
+        noMatches: No Match Conditions
+        port:
+          label: Port
+          placeholder: e.g. 8080
+        sourceLabels:
+          label: Source Labels
+          addActionLabel: Add Source Label
+        type:
+          label: Match type
+          uri: URI
+          authority: Authority
+          method: Method
+          scheme: Scheme
+          headers: Headers
+        key:
+          label: Key
+          placeholder: e.g. end-user
+        condition:
+          label: Condition
+          exact: Exact Match
+          prefix: Prefix Match
+          regex: Regex match
+        value:
+          label: Value
+          uri:
+            exact: e.g. /ratings/v2/
+            prefix: e.g. /ratings
+            regex: e.g. /ratings.*
+          authority:
+            exact: e.g. eu.bookinfo.com
+            prefix: e.g. eu
+            regex: e.g. ".*?[.]eu[.]bookinfo[.]com"
+          method:
+            exact: e.g. GET
+            prefix: e.g. GET
+            regex: e.g. ^.*(GET|POST).*$
+          scheme:
+            exact: e.g. http
+            prefix: e.g. http
+            regex: e.g. h.*
+          headers:
+            exact: e.g. jason
+            prefix: e.g. jason
+            regex: e.g. ja.*
+
+validationsList:
+  title: Validation Checks
+  detail: Validation Checks for current {resourceType}
+  noPermission: You don't have permission to see the validations. Please contact your cluster owner to give Kiali access to you.
+  table:
+    path: Path
+    severity: Severity
+    message: Message
+  noData: No issues found
+  noMatch: No issues match the current search
+
+generic:
+  host: Host
+  istioHostPlaceholder: Select or input a host

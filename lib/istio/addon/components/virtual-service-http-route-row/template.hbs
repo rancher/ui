@@ -1,0 +1,429 @@
+<div class="box mb-10">
+  {{#if (and editing)}}
+    <div class="row">
+      <div class="pull-right">
+        <button
+          class="btn bg-transparent text-small vertical-middle"
+          {{action "removeRoute" route}}
+        >
+          {{t "cruVirtualService.http.routes.removeRouteLabel"}}
+        </button>
+      </div>
+
+      {{#unless isFirst}}
+        <div class="pull-right">
+          <button
+            class="btn bg-transparent text-small vertical-middle"
+            {{action "moveUpRoute" route}}
+          >
+            {{t "cruVirtualService.http.routes.moveUp"}}
+          </button>
+        </div>
+      {{/unless}}
+
+      {{#unless isLast}}
+        <div class="pull-right">
+          <button
+            class="btn bg-transparent text-small vertical-middle"
+            {{action "moveDownRoute" route}}
+          >
+            {{t "cruVirtualService.http.routes.moveDown"}}
+          </button>
+        </div>
+      {{/unless}}
+    </div>
+  {{/if}}
+
+  <div class="checkbox pt-10">
+    {{#if editing}}
+      <label class="no-select">
+        {{input type="checkbox" checked=showMatch}}
+        {{t "cruVirtualService.http.routes.matches.showMatch"}}
+      </label>
+    {{/if}}
+    {{#if (and editing showMatch)}}
+      <div class="inline-block">
+        <button
+          class="pt-0 pb-0 btn bg-transparent text-small vertical-middle"
+          {{action "addMatch"}}
+        >
+          {{t "cruVirtualService.http.routes.matches.addLabel"}}
+        </button>
+      </div>
+    {{/if}}
+  </div>
+
+  {{#if showMatch}}
+    {{#each route.match as |match|}}
+      {{http-route-match
+        model=match
+        editing=editing
+        removeMatch=(action "removeMatch")
+      }}
+    {{else}}
+      <div class="row text-center mt-20 mb-20 pt-10">
+        <span class="text-muted">
+          {{t "cruVirtualService.http.routes.matches.noData"}}
+        </span>
+      </div>
+    {{/each}}
+  {{/if}}
+
+  {{http-route-destination
+    namespace=namespace
+    httpRouteDestinations=httpRouteDestinations
+    hosts=hosts
+    route=route
+    isNew=isNew
+    editing=editing
+  }}
+
+  {{#advanced-section advanced=advanced}}
+    <hr class="mt-20"/>
+
+    <label class="acc-label pb-5">
+      <span class="text-black">
+        {{t "cruVirtualService.http.routes.redirect.label"}}
+      </span>
+    </label>
+    <div class="row">
+      <div class="col span-6">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-redirect-uri"}}"
+        >
+          {{t "cruVirtualService.http.routes.redirect.uri.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=route.redirect.uri
+        }}
+          {{input
+            type="text"
+            id=(concat elementId "-input-redirect-uri")
+            value=route.redirect.uri
+            classNames="form-control"
+            placeholder=(t "cruVirtualService.http.routes.redirect.uri.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+      <div class="col span-6">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-redirect-authority"}}"
+        >
+          {{t "cruVirtualService.http.routes.redirect.authority.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=route.redirect.authority
+        }}
+          {{input
+            type="text"
+            id=(concat elementId "-input-redirect-authority")
+            value=route.redirect.authority
+            classNames="form-control"
+            placeholder=(t "cruVirtualService.http.routes.redirect.authority.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+    </div>
+
+    <hr class="mt-20"/>
+
+    <label class="acc-label pb-5">
+      <span class="text-black">
+        {{t "cruVirtualService.http.routes.rewrite.label"}}
+      </span>
+    </label>
+    <div class="row">
+      <div class="col span-6">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-rewrite-uri"}}"
+        >
+          {{t "cruVirtualService.http.routes.rewrite.uri.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=route.rewrite.uri
+        }}
+          {{input
+            type="text"
+            id=(concat elementId "-input-rewrite-uri")
+            value=route.rewrite.uri
+            classNames="form-control"
+            placeholder=(t "cruVirtualService.http.routes.rewrite.uri.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+      <div class="col span-6">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-rewrite-authority"}}"
+        >
+          {{t "cruVirtualService.http.routes.rewrite.authority.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=route.rewrite.authority
+        }}
+          {{input
+            type="text"
+            id=(concat elementId "-input-rewrite-authority")
+            value=route.rewrite.authority
+            classNames="form-control"
+            placeholder=(t "cruVirtualService.http.routes.rewrite.authority.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+    </div>
+
+    <hr class="mt-20"/>
+
+    <label class="acc-label pb-5">
+      <span class="text-black">
+        {{t "cruVirtualService.http.routes.timeout.label"}}
+      </span>
+    </label>
+    <div class="row">
+      <div class="col span-6">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-timeout"}}"
+        >
+          {{t "cruVirtualService.http.routes.timeout.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=route.timeout
+        }}
+          {{input
+            type="text"
+            id=(concat elementId "-input-timeout")
+            value=route.timeout
+            classNames="form-control"
+            placeholder=(t "cruVirtualService.http.routes.timeout.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+    </div>
+
+    <hr class="mt-20"/>
+
+    <label class="acc-label pb-5">
+      <span class="text-black">
+        {{t "cruVirtualService.http.routes.retries.label"}}
+      </span>
+    </label>
+    <div class="row">
+      <div class="col span-6">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-retries-attempts"}}"
+        >
+          {{t "cruVirtualService.http.routes.retries.attempts.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=route.retries.attempts
+        }}
+          {{input-integer
+            min=0
+            id=(concat elementId "-input-retries-attempts")
+            value=route.retries.attempts
+            classNames="form-control"
+            placeholder=(t "cruVirtualService.http.routes.retries.attempts.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+      <div class="col span-6">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-retries-perTryTimeout"}}"
+        >
+          {{t "cruVirtualService.http.routes.retries.perTryTimeout.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=route.retries.perTryTimeout
+        }}
+          {{input
+            type="text"
+            id=(concat elementId "-input-retries-perTryTimeout")
+            value=route.retries.perTryTimeout
+            classNames="form-control"
+            placeholder=(t "cruVirtualService.http.routes.retries.perTryTimeout.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+    </div>
+
+    <hr class="mt-20"/>
+
+    <label class="acc-label pb-5">
+      <span class="text-black">
+        {{t "cruVirtualService.http.routes.faultInjection.abort.label"}}
+      </span>
+    </label>
+    <div class="row">
+      <div class="col span-6">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-faultInjection-abort-httpStatus"}}"
+        >
+          {{t "cruVirtualService.http.routes.faultInjection.abort.httpStatus.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=route.fault.abort.httpStatus
+        }}
+          {{input-integer
+            id=(concat elementId "-input-faultInjection-abort-httpStatus")
+            value=route.fault.abort.httpStatus
+            classNames="form-control"
+            placeholder=(t "cruVirtualService.http.routes.faultInjection.abort.httpStatus.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+      <div class="col span-6">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-faultInjection-abort-percent"}}"
+        >
+          {{t "cruVirtualService.http.routes.faultInjection.abort.percent.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=route.fault.abort.percent
+        }}
+          <div class="input-group">
+            {{input-integer
+              classNames="form-control"
+              min="0"
+              max="100"
+              id=(concat elementId "-input-faultInjection-abort-percent")
+              value=route.fault.abort.percent
+              placeholder=(t "cruVirtualService.http.routes.faultInjection.abort.percent.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              %
+            </div>
+          </div>
+        {{/input-or-display}}
+      </div>
+    </div>
+
+    <hr class="mt-20"/>
+
+    <label class="acc-label pb-5">
+      <span class="text-black">
+        {{t "cruVirtualService.http.routes.faultInjection.delay.label"}}
+      </span>
+    </label>
+    <div class="row">
+      <div class="col span-6">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-faultInjection-delay-fixedDelay"}}"
+        >
+          {{t "cruVirtualService.http.routes.faultInjection.delay.fixedDelay.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=route.fault.delay.fixedDelay
+        }}
+          {{input
+            type="text"
+            id=(concat elementId "-input-faultInjection-delay-fixedDelay")
+            value=route.fault.delay.fixedDelay
+            classNames="form-control"
+            placeholder=(t "cruVirtualService.http.routes.faultInjection.delay.fixedDelay.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+      <div class="col span-6">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-faultInjection-delay-percent"}}"
+        >
+          {{t "cruVirtualService.http.routes.faultInjection.delay.percent.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=route.fault.delay.percent
+        }}
+          <div class="input-group">
+            {{input-integer
+              classNames="form-control"
+              min="0"
+              max="100"
+              id=(concat elementId "-input-faultInjection-delay-percent")
+              value=route.fault.delay.percent
+              placeholder=(t "cruVirtualService.http.routes.faultInjection.delay.percent.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              %
+            </div>
+          </div>
+        {{/input-or-display}}
+      </div>
+    </div>
+
+    <hr class="mt-20"/>
+
+    <label class="acc-label pb-5">
+      <span class="text-black">
+        {{t "cruVirtualService.http.routes.mirror.label"}}
+      </span>
+    </label>
+    <div class="row">
+      <div class="col span-6">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-mirror-host"}}"
+        >
+          {{t "cruVirtualService.http.routes.mirror.host.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=route.mirror.host
+        }}
+          {{istio-host-select
+            namespaceId=namespace.id
+            value=route.mirror.host
+            showLabel=false
+          }}
+        {{/input-or-display}}
+      </div>
+      <div class="col span-6">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-mirror-subset"}}"
+        >
+          {{t "cruVirtualService.http.routes.mirror.subset.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=route.mirror.subset
+        }}
+          {{input
+            type="text"
+            id=(concat elementId "-input-mirror-subset")
+            value=route.mirror.subset
+            classNames="form-control"
+            placeholder=(t "cruVirtualService.http.routes.mirror.subset.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        {{port-selector
+          editing=editing
+          model=route.mirror
+         }}
+      </div>
+    </div>
+  {{/advanced-section}}
+</div>

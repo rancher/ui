@@ -1,0 +1,14 @@
+{{#if showLabel}}
+  <label for="{{concat elementId "-form-host-select"}}" class="acc-label pb-5">
+    {{t "generic.host"}}{{#if hostRequired}}{{field-required}}{{/if}}
+  </label>
+{{/if}}
+{{searchable-select
+  id=(concat elementId "-form-host-select")
+  value=value
+  content=hostChoices
+  inputClass=inputClass
+  allowCustom=true
+  placeholder=(t "generic.istioHostPlaceholder")
+  prompt=(t "formIstioHost.prompt")
+}}

@@ -1,0 +1,45 @@
+<div class="box mb-10">
+  {{#if (and editing)}}
+    <div class="row">
+      <div class="pull-right">
+        <button class="btn bg-transparent text-small vertical-middle" {{action "removeSubset" subset}}>
+          {{t "cruDestinationRule.subsets.removeSubsetLabel"}}
+        </button>
+      </div>
+    </div>
+  {{/if}}
+
+  <div class="row">
+    <div class="col span-6">
+      <label class="pb-5 acc-label" for="{{concat elementId "-input-subsets-name"}}">
+        {{t "cruDestinationRule.subsets.name.label"}}
+        {{#if editing}}
+          {{field-required}}
+        {{/if}}
+      </label>
+      {{#input-or-display
+        editable=editing
+        value=subset.name
+        classesForDisplay="text-muted form-control-static"
+      }}
+        {{input
+          id=(concat elementId "-input-subsets-name")
+          class="form-control"
+          type="text"
+          value=subset.name
+          placeholder=(t "cruDestinationRule.subsets.name.placeholder")
+        }}
+      {{/input-or-display}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-12">
+      {{form-labels
+        initialLabels=subset.labels
+        editing=editing
+        setLabels=(action "setLabels")
+      }}
+    </div>
+  </div>
+</div>

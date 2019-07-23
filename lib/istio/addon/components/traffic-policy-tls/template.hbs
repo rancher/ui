@@ -1,0 +1,160 @@
+<div class="row">
+  <div class="col span-12">
+    <label class="acc-label">
+      {{t "cruDestinationRule.tls.mode.label"}}
+    </label>
+    {{#input-or-display
+      editable=editing
+      value=tlsMode
+    }}
+      <div class="radio">
+        <label>
+          {{radio-button selection=tlsMode value="NONE"}} {{t "cruDestinationRule.tls.mode.none.label"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button selection=tlsMode value="ISTIO_MUTUAL"}} {{t "cruDestinationRule.tls.mode.istio.label"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button selection=tlsMode value="DISABLE"}} {{t "cruDestinationRule.tls.mode.disable.label"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button selection=tlsMode value="SIMPLE"}} {{t "cruDestinationRule.tls.mode.simple.label"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button selection=tlsMode value="MUTUAL"}} {{t "cruDestinationRule.tls.mode.mutual.label"}}
+        </label>
+      </div>
+    {{/input-or-display}}
+  </div>
+</div>
+
+{{#if (eq tlsMode "MUTUAL")}}
+  <div class="row">
+    <div class="col span-6 box">
+      <label
+        class="acc-label"
+        for="{{concat elementId "-input-clientCertificate"}}"
+      >
+        {{t "cruDestinationRule.tls.clientCertificate.label"}}
+        {{#if editing}}
+          {{field-required}}
+        {{/if}}
+      </label>
+      {{#input-or-display
+        editable=editing
+        value=model.clientCertificate
+      }}
+        {{input
+          type="text"
+          value=model.clientCertificate
+          id=(concat elementId "-input-clientCertificate")
+          placeholder=(t "cruDestinationRule.tls.clientCertificate.placeholder")
+        }}
+      {{/input-or-display}}
+    </div>
+
+    <div class="col span-6 box">
+      <label
+        class="acc-label"
+        for="{{concat elementId "-input-privateKey"}}"
+      >
+        {{t "cruDestinationRule.tls.privateKey.label"}}
+        {{#if editing}}
+          {{field-required}}
+        {{/if}}
+      </label>
+      {{#input-or-display
+        editable=editing
+        value=model.privateKey
+      }}
+        {{input
+          type="text"
+          value=model.privateKey
+          id=(concat elementId "-input-privateKey")
+          placeholder=(t "cruDestinationRule.tls.privateKey.placeholder")
+        }}
+      {{/input-or-display}}
+    </div>
+  </div>
+{{/if}}
+
+{{#if (or (eq tlsMode "SIMPLE") (eq tlsMode "MUTUAL"))}}
+  <div class="row">
+    <div class="col span-6 box">
+      <label
+        class="acc-label"
+        for="{{concat elementId "-input-caCertificates"}}"
+      >
+        {{t "cruDestinationRule.tls.caCertificates.label"}}
+      </label>
+      {{#input-or-display
+        editable=editing
+        value=model.caCertificates
+      }}
+        {{input
+          type="text"
+          value=model.caCertificates
+          id=(concat elementId "-input-caCertificates")
+          placeholder=(t "cruDestinationRule.tls.caCertificates.placeholder")
+        }}
+      {{/input-or-display}}
+    </div>
+
+    <div class="col span-6 box">
+      <label
+        class="acc-label"
+        for="{{concat elementId "-input-sni"}}"
+      >
+        {{t "cruDestinationRule.tls.sni.label"}}
+      </label>
+      {{#input-or-display
+        editable=editing
+        value=model.sni
+      }}
+        {{input
+          type="text"
+          value=model.sni
+          id=(concat elementId "-input-sni")
+          placeholder=(t "cruDestinationRule.tls.sni.placeholder")
+        }}
+      {{/input-or-display}}
+    </div>
+  </div>
+{{/if}}
+
+{{#if (or (eq tlsMode "SIMPLE") (eq tlsMode "MUTUAL"))}}
+  <div class="row">
+    <div class="col span-12 box">
+      {{#form-value-array
+        editing=editing
+        valueLabel="cruDestinationRule.tls.subjectAltNames.label"
+        addActionLabel="cruDestinationRule.tls.subjectAltNames.add"
+        changed=(action "setSubjectAltNames")
+        addButtonClass="btn bg-link icon-btn"
+        initialValues=model.subjectAltNames
+        showProTip=false
+        as |c row|
+      }}
+        {{#input-or-display
+          editable=editing
+          value=row.value
+        }}
+          {{input
+            class="form-control input-sm"
+            type="text"
+            value=row.value
+            placeholder=(t "cruDestinationRule.tls.subjectAltNames.placeholder")
+          }}
+        {{/input-or-display}}
+      {{/form-value-array}}
+    </div>
+  </div>
+{{/if}}

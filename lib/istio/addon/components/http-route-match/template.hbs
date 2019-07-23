@@ -1,0 +1,203 @@
+{{#if editing}}
+  <div class="row">
+    <div class="pull-right">
+      <button
+        class="btn bg-transparent text-small vertical-middle"
+        {{action "removeRouteMatch" model}}
+      >
+        {{t "cruVirtualService.http.routes.matches.removeLabel"}}
+      </button>
+    </div>
+  </div>
+{{/if}}
+{{#if matches.length}}
+  <table class="fixed striped mt-20">
+    <thead>
+      <tr>
+        <th>
+          {{t "cruVirtualService.http.routes.matches.type.label"}}
+        </th>
+        <th>
+          {{t "cruVirtualService.http.routes.matches.key.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </th>
+        <th>
+          {{t "cruVirtualService.http.routes.matches.condition.label"}}
+        </th>
+        <th>
+          {{t "cruVirtualService.http.routes.matches.value.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </th>
+        {{#if editing}}
+          <th width="40">&nbsp;</th>
+        {{/if}}
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each matches as |match index|}}
+        <tr>
+          <td class="p-5">
+            {{#input-or-display
+              editable=editing
+              value=match.matchType
+            }}
+              {{match-type-select
+                match=match
+                matches=matches
+                index=index
+              }}
+            {{/input-or-display}}
+          </td>
+          <td class="p-5">
+            {{#if (eq match.matchType "headers")}}
+              {{#input-or-display
+                editable=editing
+                value=match.key
+              }}
+                {{input
+                  type="text"
+                  class="input-sm"
+                  value=match.key
+                  placeholder=(t "cruVirtualService.http.routes.matches.key.placeholder")
+                }}
+              {{/input-or-display}}
+            {{else}}
+              <div class="text-muted">
+                {{t "generic.na"}}
+              </div>
+            {{/if}}
+          </td>
+          <td class="p-5">
+            {{#input-or-display
+              editable=editing
+              value=match.condition
+            }}
+              {{new-select
+                classNames="form-control"
+                content=conditions
+                localizedLabel=true
+                value=match.condition
+              }}
+            {{/input-or-display}}
+          </td>
+          <td class="p-5">
+            {{#input-or-display
+              editable=editing
+              value=match.value
+            }}
+              {{input
+                type="text"
+                class="input-sm"
+                value=match.value
+                placeholder=(t (concat "cruVirtualService.http.routes.matches.value." match.matchType "." match.condition))
+              }}
+            {{/input-or-display}}
+          </td>
+
+          {{#if editing}}
+            <td class="text-right">
+              <button
+                class="btn bg-primary btn-sm"
+                {{action "removeMatch" match}}
+              >
+                <i class="icon icon-minus"/>
+                <span class="sr-only">
+                  {{t "generic.remove"}}
+                </span>
+              </button>
+            </td>
+          {{/if}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <div class="row text-center mt-20 mb-20 pt-10">
+    <span class="text-muted">
+      {{t "cruVirtualService.http.routes.matches.noMatches"}}
+    </span>
+  </div>
+{{/if}}
+{{#if editing}}
+  <div class="row mt-20">
+    <button
+      class="btn bg-link icon-btn pull-left"
+      {{action "addMatch"}}
+    >
+      <span class="darken">
+        <i class="icon icon-plus text-small"></i>
+      </span>
+      <span>
+        {{t "cruVirtualService.http.routes.matches.addMatchLabel"}}
+      </span>
+    </button>
+  </div>
+{{/if}}
+
+{{#advanced-section advanced=advanced}}
+  <div class="row mt-20">
+    <div class="col span-4">
+      <label
+        class="acc-label"
+        for="{{concat elementId "-input-port"}}"
+      >
+        {{t "cruVirtualService.http.routes.matches.port.label"}}
+      </label>
+      {{#input-or-display
+        editable=editing
+        value=model.port
+      }}
+        {{input-integer
+          id=(concat elementId "-input-port")
+          min=0
+          max=65535
+          value=model.port
+          classNames="form-control"
+          placeholder=(t "cruVirtualService.http.routes.matches.port.placeholder")
+        }}
+      {{/input-or-display}}
+    </div>
+  </div>
+  <div class="row mt-20">
+    <div class="col span-6">
+      {{form-key-value
+        editing=editing
+        addActionLabel="cruVirtualService.http.routes.matches.sourceLabels.addActionLabel"
+        header=(t "cruVirtualService.http.routes.matches.sourceLabels.label")
+        initialMap=model.sourceLabels
+        changed=(action "setSourceLabels")
+      }}
+    </div>
+    <div class="col span-6">
+      {{#form-value-array
+        editing=editing
+        valueLabel="cruVirtualService.gateways.label"
+        addActionLabel="cruVirtualService.gateways.add"
+        changed=(action "setGateways")
+        addButtonClass="btn bg-link icon-btn"
+        initialValues=model.gateways
+        showProTip=false
+        as |c row|
+      }}
+        {{#input-or-display
+          editable=editing
+          value=row.value
+        }}
+          {{input
+            class="form-control input-sm"
+            type="text"
+            value=row.value
+            placeholder=(t "cruVirtualService.gateways.placeholder")
+          }}
+        {{/input-or-display}}
+      {{/form-value-array}}
+    </div>
+  </div>
+{{/advanced-section}}
+
+<hr class="mt-30"/>

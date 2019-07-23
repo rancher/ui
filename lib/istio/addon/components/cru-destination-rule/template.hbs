@@ -1,0 +1,215 @@
+{{#if isView}}
+  <section class="header clearfix">
+    <div class="pull-left">
+      <h1>
+        {{t (concat "cruDestinationRule.title." mode) name=model.displayName}}
+      </h1>
+    </div>
+    <div class="right-buttons">
+      {{badge-state model=model}}
+      {{action-menu
+        model=model
+        showPrimary=false
+        classNames="ml-10 inline-block"
+        size="sm"
+      }}
+    </div>
+  </section>
+
+  <div class="row banner bg-info basics">
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.name"}}:
+      </label>
+      {{#copy-inline clipboardText=model.displayName}}
+        {{model.displayName}}
+      {{/copy-inline}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "servicePage.multistat.namespace"}}:
+      </label>
+      {{#copy-inline clipboardText=model.namespaceId}}
+        {{model.namespaceId}}
+      {{/copy-inline}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.host"}}:
+      </label>
+      {{#copy-inline clipboardText=model.host}}
+        {{model.host}}
+      {{/copy-inline}}
+    </div>
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">
+        {{t "generic.created"}}:
+      </label>
+      {{date-calendar model.created}}
+    </div>
+  </div>
+{{else}}
+  <section class="header clearfix">
+    <h1>
+      {{t (concat "cruDestinationRule.title." mode) name=model.displayName}}
+    </h1>
+  </section>
+  <section class="horizontal-form container-fluid">
+    <div class="row">
+      <div class="col span-6">
+        {{form-name-description
+          model=model
+          namePlaceholder="cruDestinationRule.name.placeholder"
+          descriptionShown=false
+          nameDisabled=isEdit
+        }}
+      </div>
+      <div class="col span-6">
+        {{form-namespace
+          namespace=namespace
+          errors=namespaceErrors
+          registerHook=(action "registerHook")
+          editing=isNew
+        }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        {{istio-host-select
+          namespaceId=namespace.id
+          value=model.host
+        }}
+      </div>
+    </div>
+  </section>
+{{/if}}
+
+<section class="horizontal-form container-fluid mb-30">
+  <div class="row mt-30">
+    <label>
+      {{t "cruDestinationRule.subsets.label"}}
+    </label>
+  </div>
+
+  <hr/>
+
+  {{#each subsets as |subset|}}
+    {{destination-rule-subset-row
+      editing=editing
+      subset=subset
+      subsets=subsets
+      removeSubset=(action "removeSubset")
+    }}
+  {{else}}
+    <div class="p-20 text-center text-muted">
+      {{t "cruDestinationRule.subsets.noSubsets"}}
+    </div>
+  {{/each}}
+
+  {{#if editing}}
+    <div class="row">
+      <button class="btn bg-link icon-btn pull-right" {{action "addSubset"}}>
+        <span class="darken">
+          <i class="icon icon-plus text-small"></i>
+        </span>
+        <span>
+          {{t "cruDestinationRule.subsets.addSubsetLabel"}}
+        </span>
+      </button>
+    </div>
+  {{/if}}
+</section>
+
+<hr class="mt-30 mb-30" />
+{{#accordion-list as | al expandFn | }}
+  {{#if isView}}
+    {{config-validation-list
+      resourceType="destinationrule"
+      expandAll=al.expandAll
+      expandFn=expandFn
+      namespaceId=model.namespaceId
+      name=model.name
+    }}
+  {{/if}}
+
+  {{#accordion-list-item
+     title=(t "cruDestinationRule.loadBalancer.label")
+     detail=(t "cruDestinationRule.loadBalancer.detail")
+     expandAll=al.expandAll
+     expand=(action expandFn)
+  }}
+    {{load-balancer
+      editing=editing
+      trafficPolicy=model.trafficPolicy
+    }}
+  {{/accordion-list-item}}
+
+  {{#accordion-list-item
+     title=(t "cruDestinationRule.connectionPool.label")
+     detail=(t "cruDestinationRule.connectionPool.detail")
+     expandAll=al.expandAll
+     expand=(action expandFn)
+  }}
+    {{connection-pool
+      editing=editing
+      trafficPolicy=model.trafficPolicy
+    }}
+  {{/accordion-list-item}}
+
+  {{#accordion-list-item
+     title=(t "cruDestinationRule.outlierDetection.label")
+     detail=(t "cruDestinationRule.outlierDetection.detail")
+     expandAll=al.expandAll
+     expand=(action expandFn)
+  }}
+    {{outlier-detection
+      editing=editing
+      trafficPolicy=model.trafficPolicy
+    }}
+  {{/accordion-list-item}}
+
+  {{#accordion-list-item
+     title=(t "cruDestinationRule.tls.label")
+     detail=(t "cruDestinationRule.tls.detail")
+     expandAll=al.expandAll
+     expand=(action expandFn)
+  }}
+    {{traffic-policy-tls
+      editing=editing
+      errors=tlsErrors
+      trafficPolicy=model.trafficPolicy
+    }}
+  {{/accordion-list-item}}
+
+  {{#if isView}}
+    {{form-labels-annotations
+      classNames="accordion-wrapper"
+      model=model
+      editing=editing
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+  {{/if}}
+{{/accordion-list}}
+
+{{#unless isView}}
+  {{#advanced-section advanced=advanced}}
+    {{form-labels-annotations
+      classNames="accordion-wrapper"
+      initialLabels=model.labels
+      setLabels=(action "setLabels")
+      model=model
+      editing=editing
+    }}
+  {{/advanced-section}}
+{{/unless}}
+
+{{#if editing}}
+  {{top-errors errors=errors}}
+  {{save-cancel
+    editing=isEdit
+    save=(action "save")
+    cancel=cancel
+  }}
+{{/if}}

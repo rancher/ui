@@ -1,0 +1,63 @@
+{{#if scope.currentCluster.istioEnabled}}
+  {{#istio-nav
+    iconDisabled=model.iconDisabled
+  }}
+    {{#if (eq currentRouteName "authenticated.project.istio.project-istio.rules")}}
+      <a
+        class="btn btn-sm bg-primary mr-10"
+        href="{{href-to "authenticated.project.project-catalogs" scope.currentProject.id (query-params istio=true)}}"
+      >
+        <i class="icon icon-gear icon-fw"/>
+        <span>{{t "nav.apps.manage"}}</span>
+      </a>
+
+      <a
+        class="btn btn-sm bg-primary"
+        href="{{href-to "catalog-tab" scope.currentProject.id (query-params istio=true)}}"
+        disabled={{rbac-prevents resource="app" scope="project" permission="create"}}
+      >
+        <span>{{t "rulesPage.new"}}</span>
+      </a>
+    {{else if (eq currentRouteName "authenticated.project.istio.project-istio.destination-rules.index")}}
+      <button
+        {{action "importYaml"}}
+        class="btn btn-sm bg-default mr-10"
+        disabled={{rbac-prevents resource="destinationrule" scope="project" permission="create"}}
+      >
+        {{t "nav.containers.importCompose"}}
+      </button>
+
+      {{#link-to
+        "project-istio.destination-rules.new"
+        scope.currentProject.id
+        class="btn btn-sm bg-primary"
+        disabled=(rbac-prevents resource="destinationrule" scope="project" permission="create")
+      }}
+        {{t "istio.nav.destinationRules.add"}}
+      {{/link-to}}
+    {{else if (eq currentRouteName "authenticated.project.istio.project-istio.virtual-services.index")}}
+      <button
+        {{action "importYaml"}}
+        class="btn btn-sm bg-default mr-10"
+        disabled={{rbac-prevents resource="virtualservice" scope="project" permission="create"}}
+      >
+        {{t "nav.containers.importCompose"}}
+      </button>
+
+      {{#link-to
+        "project-istio.virtual-services.new"
+        scope.currentProject.id
+        class="btn btn-sm bg-primary"
+        disabled=(rbac-prevents resource="virtualservice" scope="project" permission="create")
+      }}
+        {{t "istio.nav.virtualServices.add"}}
+      {{/link-to}}
+    {{/if}}
+  {{/istio-nav}}
+  {{outlet}}
+{{else}}
+  {{banner-message
+    color="bg-info"
+    message=(t (if scope.currentCluster.systemProject  "projectIstioPage.info.notEnabled" "projectIstioPage.info.notOwner") clusterId=scope.currentCluster.id htmlSafe=true)
+  }}
+{{/if}}

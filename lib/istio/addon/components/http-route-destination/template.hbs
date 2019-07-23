@@ -1,0 +1,132 @@
+{{#if httpRouteDestinations.length}}
+  <table class="fixed striped mt-20">
+    <thead>
+      <tr>
+        <th>
+          {{t "cruVirtualService.http.routes.destination.host.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </th>
+        <th>
+          {{t "cruVirtualService.http.routes.destination.subset.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </th>
+        <th>
+          {{t "cruVirtualService.http.routes.destination.port.label"}}
+        </th>
+        <th>
+          {{t "cruVirtualService.http.routes.destination.weight.label"}}
+          {{#if editing}}
+            {{field-required}}
+          {{/if}}
+        </th>
+        {{#if editing}}
+          <th width="40">&nbsp;</th>
+        {{/if}}
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each httpRouteDestinations as |destination|}}
+        <tr>
+          <td class="p-5">
+            {{#input-or-display
+              editable=editing
+              value=destination.destination.host
+            }}
+              {{istio-host-select
+                showLabel=false
+                namespaceId=namespace.id
+                value=destination.destination.host
+                inputClass="input-sm"
+              }}
+            {{/input-or-display}}
+          </td>
+          <td class="p-5">
+            {{#input-or-display
+              editable=editing
+              value=destination.destination.subset
+            }}
+              {{input
+                type="text"
+                class="input-sm"
+                value=destination.destination.subset
+                placeholder=(t "cruVirtualService.http.routes.destination.subset.placeholder")
+              }}
+            {{/input-or-display}}
+          </td>
+          <td class="p-5">
+            {{#input-or-display
+              editable=editing
+              value=destination.portNumberOrName
+            }}
+              {{input
+                type="text"
+                class="input-sm"
+                value=destination.portNumberOrName
+                placeholder=(t "cruVirtualService.http.routes.destination.port.placeholder")
+              }}
+            {{/input-or-display}}
+          </td>
+          <td class="p-5">
+            {{#input-or-display
+              editable=editing
+              value=destination.weight
+            }}
+              <div class="input-group">
+                {{input-integer
+                  class="input-sm"
+                  min="0"
+                  max="100"
+                  value=destination.weight
+                  placeholder=(t "cruVirtualService.http.routes.destination.weight.placeholder")
+                }}
+                <div class="input-group-addon bg-default">
+                  %
+                </div>
+              </div>
+            {{/input-or-display}}
+          </td>
+
+          {{#if editing}}
+            <td class="text-right">
+              <button
+                class="btn bg-primary btn-sm"
+                {{action "removeDestination" destination}}
+              >
+                <i class="icon icon-minus"/>
+                <span class="sr-only">
+                  {{t "generic.remove"}}
+                </span>
+              </button>
+            </td>
+          {{/if}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <div class="row text-center mt-20 mb-20 pt-10">
+    <span class="text-muted">
+      {{t "cruVirtualService.http.routes.destination.noDestinations"}}
+    </span>
+  </div>
+{{/if}}
+{{#if editing}}
+  <div class="row mt-20">
+    <button
+      class="btn bg-link icon-btn pull-left"
+      {{action "addDestination"}}
+    >
+      <span class="darken">
+        <i class="icon icon-plus text-small"></i>
+      </span>
+      <span>
+        {{t "cruVirtualService.http.routes.destination.addDestinationLabel"}}
+      </span>
+    </button>
+  </div>
+{{/if}}
