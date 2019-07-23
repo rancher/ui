@@ -1,58 +1,76 @@
 <div class="container-header-text">
-  <h3>{{t 'confirmDelete.title'}}:</h3>
+  <h3>
+    {{t "confirmDelete.title"}}:
+  </h3>
   <hr/>
   {{#if isSystemProject}}
     <div class="mb-20 mt-20">
-      {{#banner-message color='bg-warning m-0'}}
-        {{t 'confirmDelete.systemProjectNote'}}
+      {{#banner-message
+        color="bg-warning m-0"
+      }}
+        {{t "confirmDelete.systemProjectNote"}}
       {{/banner-message}}
     </div>
   {{/if}}
   {{#if hasSystemProjectNamespace}}
     <div class="mb-20 mt-20">
-      {{#banner-message color='bg-warning m-0'}}
-        {{t 'confirmDelete.systemProjectNamespaceNote'}}
+      {{#banner-message
+        color="bg-warning m-0"
+      }}
+        {{t "confirmDelete.systemProjectNamespaceNote"}}
       {{/banner-message}}
     </div>
   {{/if}}
   {{#if isSystemChart}}
     <div class="mb-20 mt-20">
-      {{#banner-message color='bg-warning m-0'}}
-        {{t 'confirmDelete.systemChartNote'}}
+      {{#banner-message
+        color="bg-warning m-0"
+      }}
+        {{t "confirmDelete.systemChartNote"}}
       {{/banner-message}}
     </div>
   {{/if}}
   <div class="display-name">
     {{#if (lte resources.length 10)}}
       {{#each resources as |resource|}}
-          <div>{{resource.displayName}}</div>
+        <div>
+          {{resource.displayName}}
+        </div>
       {{/each}}
     {{else}}
-      <div>{{t 'confirmDelete.largeDeleteText' key=resources.firstObject.displayName othersCount=(sub resources.length 1)}}</div>
+      <div>
+        {{t "confirmDelete.largeDeleteText" key=resources.firstObject.displayName othersCount=(sub resources.length 1)}}
+      </div>
     {{/if}}
   </div>
 </div>
 
 {{#if (and isEnvironment (not isSystemProject))}}
   <div class="mb-15">
-    {{t 'confirmDelete.environmentNote' appName=settings.appName}}
+    {{t "confirmDelete.environmentNote" appName=settings.appName}}
   </div>
 {{/if}}
 {{#if isCluster}}
   <div class="mb-15">
-    {{t 'confirmDelete.clusterNote' appName=settings.appName}}
+    {{t "confirmDelete.clusterNote" appName=settings.appName}}
   </div>
 {{/if}}
 {{#if isClusterRoleTemplateBinding}}
   <div class="mb-15">
-    {{t 'confirmDelete.clusterRoleTemplateBindingNote'}}
+    {{t "confirmDelete.clusterRoleTemplateBindingNote"}}
   </div>
 {{/if}}
 <div class="footer-actions">
-  <button {{action "confirm"}} class="btn bg-error">{{t 'confirmDelete.confirmAction'}}</button>
-  <button {{action "cancel"}} class="btn bg-transparent">{{t 'confirmDelete.cancelAction'}}</button>
+  <button {{action "confirm"}} class="btn bg-error">
+    {{t "confirmDelete.confirmAction"}}
+  </button>
+  <button {{action "cancel"}} class="btn bg-transparent">
+    {{t "confirmDelete.cancelAction"}}
+  </button>
 </div>
 
 {{#if showProtip}}
-  <div class="protip mt-10">{{t 'confirmDelete.protip' key=alternateLabel}}</div>
+  <div class="protip mt-10">
+    {{t "confirmDelete.protip" key=alternateLabel}}
+  </div>
 {{/if}}
