@@ -45,7 +45,7 @@ const ClusterTemplate =  Resource.extend({
 
   actions: {
     newRevision() {
-      this.router.transitionTo('global-admin.cluster-templates.new-revision', this.id);
+      this.router.transitionTo('global-admin.cluster-templates.new-revision', this.id, { queryParams: { revision: this.defaultRevisionId } });
     },
 
     edit() {
