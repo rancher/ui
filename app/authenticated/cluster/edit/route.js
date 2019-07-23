@@ -60,10 +60,11 @@ export default Route.extend({
         ctId = get(ctr, 'clusterTemplateId');
         ct   = clusterTemplates.findBy('id', ctId);
 
-        setProperties(model, {
+        set(model, 'clusterTemplateRevision', ctr);
+
+        setProperties(cluster, {
           clusterTemplateRevisionId,
           clusterTemplateId:         get(ct, 'id'),
-          clusterTemplateRevision:   ctr
         });
 
         this.clusterTemplateService.cloneAndPopulateClusterConfig(cluster, ctr);
