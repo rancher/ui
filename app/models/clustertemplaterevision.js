@@ -1,8 +1,8 @@
 import Resource from '@rancher/ember-api-store/models/resource';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
 import { inject as service } from '@ember/service';
-import { computed, set, get } from '@ember/object';
-import { not, alias } from '@ember/object/computed';
+import { computed, set } from '@ember/object';
+import { alias } from '@ember/object/computed';
 
 export default Resource.extend({
   globalStore: service(),

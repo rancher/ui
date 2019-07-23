@@ -2,8 +2,6 @@ import Resource from '@rancher/ember-api-store/models/resource';
 import { hasMany } from '@rancher/ember-api-store/utils/denormalize';
 import { computed, get } from '@ember/object';
 import { inject as service } from '@ember/service';
-import C from 'shared/utils/constants';
-import { not } from '@ember/object/computed';
 
 const ClusterTemplate =  Resource.extend({
   globalStore: service(),
