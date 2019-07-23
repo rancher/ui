@@ -1,33 +1,72 @@
 <div class="launch-cluster">
   <div class="row mb-20">
-    <div class="row-same-height row-full-height">
-      {{#link-to
-         "clusters.new.launch"
-         "custom"
-         class="col span-6 cluster-driver-box span-height full-height"
-      }}
-        <div class="machine-driver custom-driver"></div>
-        <div class="driver-content">
-          <h3>{{t 'clusterNew.custom.label'}}</h3>
-          <p class="help-block">
-            {{t "clusterNew.custom.helpBlock"}}
-          </p>
-        </div>
-      {{/link-to}}
 
-      {{#link-to
-         "clusters.new.launch"
-         "import"
-         class="col span-6 cluster-driver-box span-height full-height"
-      }}
-        <div class="machine-driver import-driver"></div>
-        <div class="driver-content">
-          <h3>{{t 'clusterNew.import.label'}}</h3>
-          <p class="help-block">
-            {{t "clusterNew.import.helpBlock"}}
-          </p>
-        </div>
-      {{/link-to}}
+    {{#if disabledAddCluster}}
+      <BannerMessage
+        @color="bg-warning"
+        @icon="icon-alert"
+        @message={{t "clustersPage.clusterLaunchDisabled"}}
+      />
+    {{/if}}
+
+    <div class="row-same-height row-full-height">
+      {{#if disabledAddCluster}}
+        <a
+          class="col span-6 cluster-driver-box span-height full-height bg-disabled btn-disabled"
+          href="javascript:void(0);"
+        >
+          <div class="machine-driver custom-driver"></div>
+          <div class="driver-content">
+            <h3>{{t "clusterNew.custom.label"}}</h3>
+            <p class="help-block">
+              {{t "clusterNew.custom.helpBlock"}}
+            </p>
+          </div>
+        </a>
+      {{else}}
+        {{#link-to
+           "clusters.new.launch"
+           "custom"
+           class="col span-6 cluster-driver-box span-height full-height"
+        }}
+          <div class="machine-driver custom-driver"></div>
+          <div class="driver-content">
+            <h3>{{t "clusterNew.custom.label"}}</h3>
+            <p class="help-block">
+              {{t "clusterNew.custom.helpBlock"}}
+            </p>
+          </div>
+        {{/link-to}}
+      {{/if}}
+
+      {{#if disabledAddCluster}}
+        <a
+          class="col span-6 cluster-driver-box span-height full-height bg-disabled btn-disabled"
+          href="javascript:void(0);"
+        >
+          <div class="machine-driver import-driver"></div>
+          <div class="driver-content">
+            <h3>{{t "clusterNew.import.label"}}</h3>
+            <p class="help-block">
+              {{t "clusterNew.import.helpBlock"}}
+            </p>
+          </div>
+        </a>
+      {{else}}
+        {{#link-to
+           "clusters.new.launch"
+           "import"
+           class="col span-6 cluster-driver-box span-height full-height"
+        }}
+          <div class="machine-driver import-driver"></div>
+          <div class="driver-content">
+            <h3>{{t "clusterNew.import.label"}}</h3>
+            <p class="help-block">
+              {{t "clusterNew.import.helpBlock"}}
+            </p>
+          </div>
+        {{/link-to}}
+      {{/if}}
     </div>
   </div>
 
@@ -41,22 +80,35 @@
             {{t "clusterNew.driverLabels.infra"}}
           </label>
         </div>
+
         {{#each (get providerGroups "rkeGroup") as |provider|}}
-          {{#link-to
-             "clusters.new.launch"
-             provider.name
-             class=(concat "col span-2 cluster-driver-box small span-height full-height" provider.name)
-          }}
-            <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
-            <div class="driver-content">
-              <p class="driver-name">{{driver-name provider.name}}</p>
-            </div>
-          {{/link-to}}
+          {{#if disabledAddCluster}}
+            <a
+              class={{concat "col span-2 cluster-driver-box small span-height full-height bg-disabled btn-disabled " provider.name}}
+              href="javascript:void(0);"
+            >
+              <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
+              <div class="driver-content">
+                <p class="driver-name">{{driver-name provider.name}}</p>
+              </div>
+            </a>
+          {{else}}
+            {{#link-to
+               "clusters.new.launch"
+               provider.name
+               class=(concat "col span-2 cluster-driver-box small span-height full-height " provider.name)
+            }}
+              <div class="machine-driver {{if provider.genericIcon "generic"}} {{provider.name}}"></div>
+              <div class="driver-content">
+                <p class="driver-name">{{driver-name provider.name}}</p>
+              </div>
+            {{/link-to}}
+          {{/if}}
         {{/each}}
       </div>
     </div>
   {{/if}}
-  
+
   {{#if (gt (get (get providerGroups "cloudGroup") "length") 0)}}
     <div class="row">
       <div class="col span-12">

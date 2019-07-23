@@ -8,20 +8,13 @@
         {{t "formShareMember.add"}}
       </span>
     </button>
-    <button class="btn bg-link icon-btn p-0" {{action "sharePublic"}}>
-      <span class="darken">
-        <i class="icon icon-plus text-small"/>
-      </span>
-      <span>
-        {{t "formShareMember.public"}}
-      </span>
-    </button>
   </div>
 </div>
-<div>
+
+<div class="row">
   <SortableTable
     @class="grid sortable-table"
-    @body={{allRows}}
+    @body={{membersRows}}
     @searchText={{searchText}}
     @descending={{descending}}
     @sortBy={{sortBy}}
@@ -32,26 +25,15 @@
     as |sortable kind member dt|
   >
     {{#if (eq kind "row")}}
-      {{#if (eq member.groupPrincipalId "*")}}
+      {{#unless member.pendingDelete}}
         <ShareMemberRow
           @member={{member}}
           @editing={{editing}}
           @clusterResource={{resource}}
           @users={{users}}
           @remove={{removeMember}}
-          @isPublic={{true}}
         />
-      {{else}}
-        {{#unless member.pendingDelete}}
-          <ShareMemberRow
-            @member={{member}}
-            @editing={{editing}}
-            @clusterResource={{resource}}
-            @users={{users}}
-            @remove={{removeMember}}
-          />
-        {{/unless}}
-      {{/if}}
+      {{/unless}}
     {{else if (eq kind "nomatch")}}
       <tr>
         <td colspan="{{sortable.fullColspan}}" class="no-match">
@@ -66,4 +48,33 @@
       </tr>
     {{/if}}
   </SortableTable>
+
+  <hr/>
+
+  <div class="col span-6">
+    <div class="radio">
+      {{!--
+          <ShareMemberRow
+          @member={{member}}
+          @editing={{editing}}
+          @clusterResource={{resource}}
+          @users={{users}}
+          @remove={{removeMember}}
+          @isPublic={{true}}
+          />
+          --}}
+      <label>
+        {{input
+          type="checkbox"
+          classNames="form-control"
+          checked=addPublicMember
+          change=(action "checkboxToggled")
+        }}
+        Make Public (read-only)
+        {{!--
+        {{t "cruClusterTemplate.default.flag"}}
+        --}}
+      </label>
+    </div>
+  </div>
 </div>
