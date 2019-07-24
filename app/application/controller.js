@@ -11,14 +11,13 @@ export default Controller.extend({
   tooltipService:    service('tooltip'),
 
   // GitHub auth params
-  queryParams:       ['isPopup', 'redirectTo', 'fromAuthProvider'],
+  queryParams:       ['isPopup', 'fromAuthProvider'],
 
   error:             null,
   error_description: null,
   state:             null,
   code:              null,
   isPopup:           null,
-  redirectTo:        null,
 
   tooltip:           oneWay('tooltipService.tooltipOpts.type'),
   tooltipTemplate:   oneWay('tooltipService.tooltipOpts.template'),

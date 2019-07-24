@@ -170,7 +170,12 @@ export default Component.extend({
       return true;
     });
 
-    set(this, 'navTree', out);
+    const old = JSON.stringify(get(this, 'navTree'));
+    const neu = JSON.stringify(out);
+
+    if ( old !== neu ) {
+      set(this, 'navTree', out);
+    }
   },
 
   keyUp(e) {
