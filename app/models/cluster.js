@@ -297,10 +297,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
       const getBackupType = () => {
         let services = get(this, 'rancherKubernetesEngineConfig.services.etcd');
 
-        if (get(services, 'backupConfig')) {
-          if (isEmpty(services.backupConfig.s3BackupConfig)) {
+        if (get(services, 'cachedConfig')) {
+          if (isEmpty(services.cachedConfig.s3BackupConfig)) {
             return 'local';
-          } else if (!isEmpty(services.backupConfig.s3BackupConfig)) {
+          } else if (!isEmpty(services.cachedConfig.s3BackupConfig)) {
             return 's3';
           }
         }
@@ -377,9 +377,24 @@ export default Resource.extend(Grafana, ResourceUsage, {
   clearConfigFieldsForClusterTemplate() {
     let clearedNull   = ['localClusterAuthEndpoint', 'rancherKubernetesEngineConfig', 'enableNetworkPolicy'];
     let clearedDelete = ['defaultClusterRoleForProjectMembers', 'defaultPodSecurityPolicyTemplateId'];
+    let {
+      localClusterAuthEndpoint,
+      rancherKubernetesEngineConfig,
+      enableNetworkPolicy,
+      defaultClusterRoleForProjectMembers,
+      defaultPodSecurityPolicyTemplateId,
+    } = this;
+
+    let cachedConfig = {
+      localClusterAuthEndpoint,
+      rancherKubernetesEngineConfig,
+      enableNetworkPolicy,
+      defaultClusterRoleForProjectMembers,
+      defaultPodSecurityPolicyTemplateId,
+    };
 
     // set this incase we fail to save the cluster;
-    set(this, '_cachedConfig', this.rancherKubernetesEngineConfig);
+    set(this, '_cachedConfig', cachedConfig);
 
     clearedDelete.forEach((c) => delete this[c]);
     clearedNull.forEach((c) => set(this, c, null));
