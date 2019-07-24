@@ -585,6 +585,34 @@
             <div class="row">
               <div class="col span-3">
                 <label class="acc-label">
+                  {{t "clusterNew.rke.etcd.backupConfig.folder.label"}}
+                  {{#if clusterTemplateCreate}}
+                    <ClusterTemplateOverrideToggle
+                      @path="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.folder"
+                      @configVariable={{config.services.etcd.backupConfig.s3BackupConfig.folder}}
+                      @addOverride={{action "addOverride"}}
+                      @questions={{model.clusterTemplateRevision.questions}}
+                    />
+                  {{/if}}
+                </label>
+                <CheckOverrideAllowed
+                  @paramName="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.folder"
+                  @applyClusterTemplate={{applyClusterTemplate}}
+                  @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                  @questions={{model.clusterTemplateRevision.questions}}
+                >
+                  {{input
+                    type="text"
+                    name="folder"
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.etcd.backupConfig.folder.placeholder")
+                    value=config.services.etcd.backupConfig.s3BackupConfig.folder
+                  }}
+                </CheckOverrideAllowed>
+              </div>
+
+              <div class="col span-3 offset-1">
+                <label class="acc-label">
                   {{t "clusterNew.rke.etcd.backupConfig.accessKey.label"}}
                   {{#if clusterTemplateCreate}}
                     <ClusterTemplateOverrideToggle
