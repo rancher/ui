@@ -44,17 +44,8 @@ export default Route.extend({
         state:             null,
         code:              null,
         error_description: null,
-        redirectTo:        null,
       });
     })
-
-    if ( params.redirectTo ) {
-      let path = params.redirectTo;
-
-      if ( path.substr(0, 1) === '/' ) {
-        get(this, 'session').set(C.SESSION.BACK_TO, path);
-      }
-    }
 
     if (params.isPopup) {
       this.controllerFor('application').set('isPopup', true);
