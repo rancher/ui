@@ -1104,10 +1104,7 @@
     {{/accordion-list}}
   {{/if}}
 
-  {{top-errors errors=errors}}
-  {{top-errors errors=clusterErrors}}
-  {{top-errors errors=otherErrors}}
-  {{top-errors errors=clusterOptErrors}}
+  {{top-errors errors=allErrors}}
 
   {{#if (or isEdit (eq step 1))}}
     {{save-cancel
@@ -1115,6 +1112,7 @@
       editing=isEdit
       save=(action "driverSave")
       cancel=(action "close")
+      saveDisabled=canSave
     }}
   {{else}}
     <div class="footer-actions">
