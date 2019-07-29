@@ -29,37 +29,39 @@
 </section>
 
 {{#unless clusterTemplateCreate}}
-  <section class="cluster-template-select mb-5">
-    <div class="row">
-      {{#if (or (or model.clusterTemplateRevisions model.clusterTemplateRevision) clusterTemplatesEnforced)}}
-        <div class="col span-6">
-          <label class="acc-label" for="use-existing-cluster-template">
-            {{input
-              class="input-lg"
-              type="checkbox"
-              checked=useClusterTemplate
-              id="use-existing-cluster-template"
-              disabled=clusterTemplatesEnforced
-            }}
-            {{t "clusterNew.rke.clustersSelectTemplate.label"}}
-          </label>
-          {{#if useClusterTemplate}}
-            {{new-select
-              id="input-cluster-template-select"
-              classNames="form-control"
-              optionValuePath="clusterTemplateRevisionId"
-              optionLabelPath="clusterTemplateRevisionId"
-              optionGroupPath="clusterTemplateName"
-              content=allTemplates
-              value=clusterTemplateRevisionId
-              prompt=(t "clusterNew.rke.clustersSelectTemplate.select.prompt")
-              localizedPrompt=true
-            }}
-          {{/if}}
-        </div>
-      {{/if}}
-    </div>
-  </section>
+  {{#if (eq step 1)}}
+    <section class="cluster-template-select mb-5">
+      <div class="row">
+        {{#if (or (or model.clusterTemplateRevisions model.clusterTemplateRevision) clusterTemplatesEnforced)}}
+          <div class="col span-6">
+            <label class="acc-label" for="use-existing-cluster-template">
+              {{input
+                class="input-lg"
+                type="checkbox"
+                checked=useClusterTemplate
+                id="use-existing-cluster-template"
+                disabled=clusterTemplatesEnforced
+              }}
+              {{t "clusterNew.rke.clustersSelectTemplate.label"}}
+            </label>
+            {{#if useClusterTemplate}}
+              {{new-select
+                id="input-cluster-template-select"
+                classNames="form-control"
+                optionValuePath="clusterTemplateRevisionId"
+                optionLabelPath="clusterTemplateRevisionId"
+                optionGroupPath="clusterTemplateName"
+                content=allTemplates
+                value=clusterTemplateRevisionId
+                prompt=(t "clusterNew.rke.clustersSelectTemplate.select.prompt")
+                localizedPrompt=true
+              }}
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+    </section>
+  {{/if}}
 {{/unless}}
 
 {{#if (or clusterTemplateCreate (or (not clusterTemplatesEnforced) (and clusterTemplatesEnforced clusterTemplateRevisionId)))}}
