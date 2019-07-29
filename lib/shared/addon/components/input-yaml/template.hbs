@@ -4,13 +4,13 @@
       {{#if showUpload}}
         <button class="btn bg-link icon-btn" {{action "click"}}>
           <span class="darken"><i class="icon icon-upload text-small"/></span>
-          <span>{{t 'inputTextFile.tooltip'}}</span>
+          <span>{{t "inputTextFile.tooltip"}}</span>
         </button>
       {{/if}}
       {{#if showDownload}}
         <button class="btn bg-link icon-btn p-0" {{action "download"}}>
           <span class="darken"><i class="icon icon-download text-small"/></span>
-          <span>{{t 'generic.download'}}</span>
+          <span>{{t "generic.download"}}</span>
         </button>
       {{/if}}
     </div>
@@ -21,13 +21,13 @@
     {{#if showUpload}}
       <button class="btn bg-link icon-btn" {{action "click"}}>
         <span class="darken"><i class="icon icon-upload text-small"/></span>
-        <span>{{t 'inputTextFile.tooltip'}}</span>
+        <span>{{t "inputTextFile.tooltip"}}</span>
       </button>
     {{/if}}
     {{#if showDownload}}
       <button class="btn bg-link icon-btn p-0" {{action "download"}}>
         <span class="darken"><i class="icon icon-download text-small"/></span>
-        <span>{{t 'generic.download'}}</span>
+        <span>{{t "generic.download"}}</span>
       </button>
     {{/if}}
   </div>
@@ -52,15 +52,19 @@
           tabSize=2
           lineNumbers=true
           mode="yaml"
-          readOnly=(if (or (eq modalOpts.type 'review') readOnly) true false)
+          readOnly=(if (or (eq modalOpts.type "review") readOnly) true false)
           gutters=gutters
           lint=true
           lineWrapping=true
           viewportMargin=viewportMargin
+          extraKeys=(hash
+            Tab=tabReplacement
+            Shift-Tab=shiftTabReplacement
+          )
         )
       }}
     </div>
   {{/if}}
 </div>
-{{yield 'description'}}
+{{yield "description"}}
 <input type="file" accept="{{actualAccept}}" multiple={{multiple}} class="hide">
