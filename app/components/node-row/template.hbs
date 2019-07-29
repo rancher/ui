@@ -114,13 +114,16 @@
   </td>
 </tr>
 
-{{#if (or model.displayUserLabelStrings.length model.requireAnyLabelStrings.length model.isUnschedulable)}}
+{{#if (or model.displayUserLabelStrings.length model.displayTaintsStrings.length model.requireAnyLabelStrings.length model.isUnschedulable)}}
   <tr class="sub-row">
     <td colspan="2">{{! checkbox and expand}}</td>
     <td colspan="{{sub labelColspan 3}}">
       {{#if model.isUnschedulable}}
         <span class="tag-xs bg-warning">{{t 'nodesPage.table.unschedulable'}}</span>
       {{/if}}
+      {{#each model.displayTaintsStrings as |taint|}}
+        <span class="tag-xs bg-warning">{{taint}}</span>
+      {{/each}}
       {{#each model.requireAnyLabelStrings as |label|}}
         <span class="tag-xs bg-warning">{{label}}</span>
       {{/each}}

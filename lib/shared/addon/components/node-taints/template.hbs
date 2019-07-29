@@ -1,0 +1,99 @@
+{{#if (or taints.length nodeTemplateTaints.length)}}
+  <table class="table fixed no-lines small mb-10">
+    <thead>
+      <tr class="hidden-sm">
+        <th>{{t "formNodeTaints.key.label"}}{{field-required}}</th>
+        <th width="10"></th>
+        <th>{{t "formNodeTaints.value.label"}}</th>
+        <th width="10"></th>
+        <th>{{t "formNodeTaints.effect.label"}}</th>
+        <th width="40">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each nodeTemplateTaints as |taint|}}
+        <tr>
+          <td data-title="key">
+            {{taint.key}}
+          </td>
+
+          <td>&nbsp;</td>
+
+          <td data-title="value">
+            {{taint.value}}
+          </td>
+
+          <td>&nbsp;</td>
+
+          <td data-title="effect">
+            {{taint.effect}}
+          </td>
+
+          <td>&nbsp;</td>
+        </tr>
+      {{/each}}
+      {{#each taints as |taint|}}
+        <tr>
+          <td data-title="key">
+            {{input
+              class="form-control input-sm"
+              type="text"
+              value=taint.key
+              placeholder=(t "formNodeTaints.key.placeholder")
+            }}
+          </td>
+
+          <td>&nbsp;</td>
+
+          <td data-title="value">
+            {{input
+              class="form-control input-sm"
+              type="text"
+              value=taint.value
+              placeholder=(t "formNodeTaints.value.placeholder")
+            }}
+          </td>
+
+          <td>&nbsp;</td>
+
+          <td data-title="effect">
+            {{new-select
+              classNames="form-control input-sm"
+              content=effects
+              value=taint.effect
+            }}
+          </td>
+
+          <td class="text-right">
+            <button
+              class="btn bg-primary btn-sm"
+              {{action "removeTaint" taint}}
+            >
+              <i class="icon icon-minus"/>
+              <span class="sr-only">
+                {{t "generic.remove"}}
+              </span>
+            </button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <div class="protip mb-5">
+    {{t "formNodeTaints.protip"}}
+  </div>
+{{/if}}
+
+<div>
+  <button
+    class="btn bg-link icon-btn"
+    {{action "addTaint"}}
+  >
+    <span class="darken">
+      <i class="icon icon-plus text-small"/>
+    </span>
+    <span>
+      {{t "formNodeTaints.addAction"}}
+    </span>
+  </button>
+</div>
