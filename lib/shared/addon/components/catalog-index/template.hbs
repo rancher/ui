@@ -132,27 +132,11 @@
 {{/if}}
 
 {{#each arrangedContent as |catalogItem|}}
-  {{#catalog-box model=catalogItem showSource=showCatalogDropdown as |section|}}
-    {{#if (eq section "body")}}
-      <h3 class="mb-0">
-        <a class="pointer" {{action (action launch catalogItem.id )}}>
-          {{catalogItem.displayName}}
-        </a>
-      </h3>
-      <div>
-        ({{t "generic.from"}} <span class="text-capitalize">{{catalogItem.displayCatalogId}}</span>)
-      </div>
-      <div class="mt-10 description">{{catalogItem.description}}</div>
-    {{else if (eq section "footer")}}
-      <button
-        type="button"
-        class="btn btn-sm bg-primary"
-        {{action (action launch catalogItem.id )
-        }}>
-        {{t "catalogPage.index.action.launch"}}
-      </button>
-    {{/if}}
-  {{/catalog-box}}
+  {{catalog-box
+    model=catalogItem
+    showSource=showCatalogDropdown
+    launchAction=(action launch)
+  }}
 {{else}}
   <div class="text-muted mt-20">
     {{#if showCatalogDropdown}}
