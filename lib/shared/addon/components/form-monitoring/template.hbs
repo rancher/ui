@@ -1,0 +1,324 @@
+{{#if canSaveMonitor}}
+  {{#if loading}}
+    <section class="row">
+      <div class="text-center">
+        <i class="icon icon-spinner icon-spin icon-3x"></i>
+      </div>
+    </section>
+  {{else}}
+    <div class="box mb-10">
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "monitoringPage.version"}}
+            {{#if (and enabled latestVersion templateVersion (not-eq latestVersion templateVersion))}}
+              <span class="bg-warning pt-0 pb-0 pl-5 pr-5">
+                {{t "monitoringPage.upgradeAvailable" version=latestVersion}}
+              </span>
+            {{/if}}
+          </label>
+          {{new-select
+            classNames="form-control"
+            content=availableVersions
+            value=templateVersion
+          }}
+        </div>
+      </div>
+
+      <hr class="mt-15 mb-15"/>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "monitoringPage.config.retention.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer min=0 value=retention}}
+            <span class="input-group-addon bg-default">{{t "generic.hours"}}</span>
+          </div>
+        </div>
+        {{#if (eq level "cluster")}}
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "monitoringPage.config.nodeexporter.enable"}}
+            </label>
+            {{schema/input-boolean value=enableNodeExporter}}
+          </div>
+        {{/if}}
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "monitoringPage.config.prometheus.enablePersistence.label"}}
+          </label>
+          {{schema/input-boolean value=enablePrometheusPersistence}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "monitoringPage.config.grafana.enablePersistence.label"}}
+          </label>
+          {{schema/input-boolean value=enableGrafanaPersistence}}
+        </div>
+      </div>
+
+      {{#if enablePrometheusPersistence}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "monitoringPage.config.prometheus.size.label"}}
+            </label>
+            {{schema/input-string
+              value=prometheusPersistenceSize
+              placeholder=(t "monitoringPage.config.prometheus.size.placeholder")
+            }}
+          </div>
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "monitoringPage.config.prometheus.storageClass.label"}}
+            </label>
+            {{schema/input-storageclass value=prometheusStorageClass}}
+          </div>
+        </div>
+      {{/if}}
+
+      {{#if enableGrafanaPersistence}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "monitoringPage.config.grafana.size.label"}}
+            </label>
+            {{schema/input-string
+              value=grafanaPersistenceSize
+              placeholder=(t "monitoringPage.config.grafana.size.placeholder")
+            }}
+          </div>
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "monitoringPage.config.grafana.storageClass.label"}}
+            </label>
+            {{schema/input-storageclass value=grafanaStorageClass}}
+          </div>
+        </div>
+      {{/if}}
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "monitoringPage.config.prometheus.cpuLimit.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer
+              min="0"
+              step="100"
+              value=limitsCpu
+              classNames="form-control"
+              placeholder=(t "monitoringPage.config.prometheus.cpuLimit.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "monitoringPage.config.prometheus.cpuLimit.unit"}}
+            </div>
+          </div>
+
+          <label class="acc-label mt-20">
+            {{t "monitoringPage.config.prometheus.cpuRequest.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer
+              min="0"
+              step="100"
+              value=requestsCpu
+              classNames="form-control"
+              placeholder=(t "monitoringPage.config.prometheus.cpuRequest.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "monitoringPage.config.prometheus.cpuRequest.unit"}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "monitoringPage.config.prometheus.memoryLimit.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer
+              min="4"
+              step="1"
+              value=limitsMemory
+              classNames="form-control"
+              placeholder=(t "monitoringPage.config.prometheus.memoryLimit.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "generic.mibibyte"}}
+            </div>
+          </div>
+
+          <label class="acc-label mt-20">
+            {{t "monitoringPage.config.prometheus.memoryRequest.label"}}
+          </label>
+          <div class="input-group">
+            {{input-integer
+              min="4"
+              step="1"
+              value=requestsMemory
+              classNames="form-control"
+              placeholder=(t "monitoringPage.config.prometheus.memoryRequest.placeholder")
+            }}
+            <div class="input-group-addon bg-default">
+              {{t "generic.mibibyte"}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{#if (and (eq level "cluster") enableNodeExporter)}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "monitoringPage.config.nodeexporter.cpuLimit.label"}}
+            </label>
+            <div class="input-group">
+              {{input-integer
+                min="0"
+                step="100"
+                value=nodeExporterLimitsCpu
+                classNames="form-control"
+                placeholder=(t "monitoringPage.config.nodeexporter.cpuLimit.placeholder")
+              }}
+              <div class="input-group-addon bg-default">
+                {{t "monitoringPage.config.nodeexporter.cpuLimit.unit"}}
+              </div>
+            </div>
+          </div>
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "monitoringPage.config.nodeexporter.memoryLimit.label"}}
+            </label>
+            <div class="input-group">
+              {{input-integer
+                min="4"
+                step="1"
+                value=nodeExporterLimitsMemory
+                classNames="form-control"
+                placeholder=(t "monitoringPage.config.nodeexporter.memoryLimit.placeholder")
+              }}
+              <div class="input-group-addon bg-default">
+                {{t "generic.mibibyte"}}
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+      {{#if (eq level "cluster")}}
+        <div class="row">
+          {{#if enableNodeExporter}}
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t "monitoringPage.config.nodeexporter.label"}}
+              </label>
+              {{input-integer
+                min=1
+                max=65535
+                value=port
+              }}
+            </div>
+          {{/if}}
+
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "monitoringPage.config.operator.memoryLimit.label"}}
+            </label>
+            <div class="input-group">
+              {{input-integer
+                min="4"
+                step="1"
+                value=operatorLimitsMemory
+                classNames="form-control"
+                placeholder=(t "monitoringPage.config.operator.memoryLimit.placeholder")
+              }}
+              <div class="input-group-addon bg-default">
+                {{t "generic.mibibyte"}}
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "monitoringPage.nodeSelector.helpText"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut nodeSelectors))
+            initialStr=nodeSelectorsStr
+            allowEmptyValue=true
+            addActionLabel="monitoringPage.nodeSelector.addSelectorLabel"
+          }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-12">
+          {{scheduling-toleration
+            editing=true
+            tolerate=prometheusTolerations
+            title=(t "formScheduling.toleration.workloadTitle" workload="Prometheus")
+          }}
+        </div>
+      </div>
+
+      {{#advanced-section advanced=advanced}}
+        {{form-key-value
+          initialMap=customAnswers
+          changed=(action (mut customAnswers))
+          allowEmptyValue=true
+          addInitialEmptyRow=true
+          editing=true
+          header=(t "newCatalog.answers.label")
+          addActionLabel="newCatalog.answers.addAction"
+          keyLabel="newContainer.environment.keyLabel"
+          keyPlaceholder="newContainer.environment.keyPlaceholder"
+          valueLabel="newContainer.environment.valueLabel"
+          valuePlaceholder="newContainer.environment.valuePlaceholder"
+        }}
+      {{/advanced-section}}
+    </div>
+  {{/if}}
+
+  {{#if (or insufficientPrometheusMemory insufficientPrometheusCpu insufficient)}}
+    {{#banner-message color="bg-warning"}}
+      <p>
+        {{#if (and insufficientMemory insufficientCpu)}}
+          {{t "monitoringPage.insufficientSize.total.all" cpu=minCpu memory=minMemory}}
+        {{else if insufficientMemory}}
+          {{t "monitoringPage.insufficientSize.total.memory" memory=minMemory}}
+        {{else if insufficientCpu}}
+          {{t "monitoringPage.insufficientSize.total.cpu" cpu=minCpu}}
+        {{else if (and insufficientPrometheusCpu insufficientPrometheusMemory nodeSelectors.length)}}
+            {{t "monitoringPage.insufficientSize.selectors.all" cpu=prometheusRequestCpu memory=prometheusRequestMemory}}
+        {{else if (and insufficientPrometheusCpu insufficientPrometheusMemory)}}
+            {{t "monitoringPage.insufficientSize.prometheus.all" cpu=prometheusRequestCpu memory=prometheusRequestMemory}}
+        {{else if (and insufficientPrometheusCpu nodeSelectors.length)}}
+            {{t "monitoringPage.insufficientSize.selectors.cpu" cpu=prometheusRequestCpu}}
+        {{else if insufficientPrometheusCpu}}
+            {{t "monitoringPage.insufficientSize.prometheus.cpu" cpu=prometheusRequestCpu}}
+        {{else if (and insufficientPrometheusMemory nodeSelectors.length)}}
+            {{t "monitoringPage.insufficientSize.selectors.memory" memory=prometheusRequestMemory}}
+        {{else if insufficientPrometheusMemory}}
+            {{t "monitoringPage.insufficientSize.prometheus.memory" memory=prometheusRequestMemory}}
+        {{/if}}
+      </p>
+    {{/banner-message}}
+  {{/if}}
+{{else if (and (eq level "project") scope.currentProject.isSystemProject)}}
+  {{banner-message
+    color="bg-info"
+    message=(t "monitoringPage.systemProject")
+  }}
+{{else}}
+  {{banner-message
+    color="bg-info"
+    message=(t "monitoringPage.noPermission" level=level)
+  }}
+{{/if}}
