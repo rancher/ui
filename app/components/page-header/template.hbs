@@ -19,7 +19,6 @@
           {{#dd.trigger}}
             {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
               {{#if item.route}}
-                {{log item.currentWhen 'item.currentWhen'}}
                 {{#link-to-as-attrs
                    ourRoute=item.route
                    ctx=item.ctx
@@ -52,6 +51,7 @@
                        ctx=subitem.ctx
                        qp=subitem.qp
                        activeParent="LI"
+                       currentWhen=subitem.currentWhen
                     }}
                       <span>
                         {{maybe-t subitem.localizedLabel subitem.label}}

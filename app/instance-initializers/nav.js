@@ -48,8 +48,7 @@ const rootNav = [
         resource:       [],
         resourceScope:  'project',
         currentWhen:    [
-          'authenticated.project.pipeline.pipelines',
-          'authenticated.project.pipeline.repositories',
+          'authenticated.project.istio.project-istio',
         ],
         condition() {
           return !get(this, 'cluster.isWindows');
