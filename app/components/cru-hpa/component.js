@@ -9,14 +9,17 @@ import Errors from 'ui/utils/errors';
 import ChildHook from 'shared/mixins/child-hook';
 import { flattenLabelArrays } from 'shared/mixins/manage-labels';
 
+const RESOURCE_METRICS_API_GROUP = 'metrics.k8s.io';
+
 export default Component.extend(ViewNewEdit, ChildHook, {
   intl: service(),
 
   layout,
 
-  model:     null,
-  metrics:   alias('model.metrics'),
-  namespace: alias('model.namespace'),
+  model:       null,
+  apiServices: null,
+  metrics:     alias('model.metrics'),
+  namespace:   alias('model.namespace'),
 
   didInsertElement() {
     if (get(this, 'metrics.length') === 0) {
@@ -65,6 +68,12 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     const namespaceId = get(this, 'namespace.id');
 
     return (get(this, 'deployments') || []).filter((w) => get(w, 'namespaceId') === namespaceId);
+  }),
+
+  resourceMetricsAvailable: computed('apiServices', function() {
+    const apiServices = get(this, 'apiServices');
+
+    return apiServices.find((api) => get(api, 'name').split('.').length === 4 && get(api, 'name').endsWith(RESOURCE_METRICS_API_GROUP));
   }),
 
   willSave() {

@@ -4,6 +4,11 @@
       color="bg-warning"
       message=(t (if (eq metric.type "External") "cruHpa.metrics.types.warning.external" "cruHpa.metrics.types.warning.custom" ))
     }}
+  {{else if (not resourceMetricsAvailable)}}
+    {{banner-message
+      color="bg-warning"
+      message=(t "cruHpa.metrics.types.warning.resource")
+    }}
   {{/unless}}
 
   {{#if showCpuReservationWarning}}
