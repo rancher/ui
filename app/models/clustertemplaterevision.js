@@ -36,28 +36,30 @@ export default Resource.extend({
   availableActions: computed('actionLinks.[]', 'enabled', 'clusterTemplate.defaultRevisionId', function() {
     return [
       {
-        label:     'generic.enable',
-        icon:      'icon icon-play',
-        action:    'enable',
-        enabled:   !this.enabled,
+        label:    'generic.enable',
+        icon:     'icon icon-play',
+        action:   'enable',
+        enabled:  !this.enabled,
+        bulkable: true,
       },
       {
-        label:     'generic.disable',
-        icon:      'icon icon-stop',
-        action:    'disable',
-        enabled:   this.enabled,
+        label:    'generic.disable',
+        icon:     'icon icon-stop',
+        action:   'disable',
+        enabled:  this.enabled,
+        bulkable: true,
       },
       {
-        label:     'action.makeDefault',
-        icon:      'icon icon-success',
-        action:    'setDefault',
-        enabled:   this.canMakeDefault,
+        label:    'action.makeDefault',
+        icon:     'icon icon-success',
+        action:   'setDefault',
+        enabled:  this.canMakeDefault,
       },
       {
-        label:     'action.cloneRevision',
-        icon:      'icon icon-copy',
-        action:    'newRevision',
-        enabled:   true,
+        label:    'action.cloneRevision',
+        icon:     'icon icon-copy',
+        action:   'newRevision',
+        enabled:  true,
       },
     ];
   }),
@@ -86,14 +88,26 @@ export default Resource.extend({
       set(this, 'enabled', false);
 
       this.save()
-        .catch((err) => this.growl.fromError(err));
+        .catch((err) => {
+          set(this, 'enabled', true);
+
+          this.growl.fromError(err);
+
+          return err;
+        });
     },
 
     enable() {
       set(this, 'enabled', true);
 
       this.save()
-        .catch((err) => this.growl.fromError(err));
+        .catch((err) => {
+          set(this, 'enabled', false);
+
+          this.growl.fromError(err);
+
+          return err;
+        });
     },
   },
 

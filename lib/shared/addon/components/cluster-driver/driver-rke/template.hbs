@@ -29,7 +29,7 @@
 </section>
 
 {{#unless clusterTemplateCreate}}
-  {{#if (eq step 1)}}
+  {{#if (or isEdit (eq step 1))}}
     <section class="cluster-template-select mb-5">
       <div class="row">
         {{#if (or (or model.clusterTemplateRevisions model.clusterTemplateRevision) clusterTemplatesEnforced)}}
@@ -1083,27 +1083,29 @@
 
 
   {{#if (or clusterTemplateCreate applyClusterTemplate)}}
-    {{#accordion-list
-       expandAll=(mut forceExpandAll)
-       showExpandAll=false
-       as |al expandFn|
-    }}
-      {{#accordion-list-item
-         title=(t "clusterTemplateQuestions.label")
-         detail=(t "clusterTemplateQuestions.detail")
-         expandAll=al.expandAll
-         expand=(action expandFn)
-         expandOnInit=true
+    {{#if (or isEdit (eq step 1))}}
+      {{#accordion-list
+         expandAll=(mut forceExpandAll)
+         showExpandAll=false
+         as |al expandFn|
       }}
-        <CruClusterTemplateQuestions
-          @addQuestion={{addQuestion}}
-          @removeQuestion={{removeQuestion}}
-          @allQuestions={{clusterTemplateQuestions}}
-          @applyClusterTemplate={{applyClusterTemplate}}
-          @clusterTemplateCreate={{clusterTemplateCreate}}
-        />
-      {{/accordion-list-item}}
-    {{/accordion-list}}
+        {{#accordion-list-item
+           title=(t "clusterTemplateQuestions.label")
+           detail=(t "clusterTemplateQuestions.detail")
+           expandAll=al.expandAll
+           expand=(action expandFn)
+           expandOnInit=true
+        }}
+          <CruClusterTemplateQuestions
+            @addQuestion={{addQuestion}}
+            @removeQuestion={{removeQuestion}}
+            @allQuestions={{clusterTemplateQuestions}}
+            @applyClusterTemplate={{applyClusterTemplate}}
+            @clusterTemplateCreate={{clusterTemplateCreate}}
+          />
+        {{/accordion-list-item}}
+      {{/accordion-list}}
+    {{/if}}
   {{/if}}
 
   {{top-errors errors=allErrors}}
