@@ -1,12 +1,19 @@
 import { hash } from 'rsvp';
 import { set, get } from '@ember/object';
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export default Route.extend({
+  clusterStore:  service(),
+
   model(params) {
     const store = get(this, 'store');
+    const clusterStore = get(this, 'clusterStore');
 
-    const deps = { deployments: store.findAll('deployment') };
+    const deps = {
+      deployments: store.findAll('deployment'),
+      apiServices: clusterStore.findAll('apiService')
+    };
 
     if ( get(params, 'id') ) {
       deps['existing'] = store.find('horizontalpodautoscaler', params.id);
