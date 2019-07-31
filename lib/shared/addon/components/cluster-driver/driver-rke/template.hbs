@@ -14,13 +14,13 @@
     </h2>
   </div>
   <div class="right-buttons">
-    {{#if (eq step 1)}}
+    {{#if (or (and isEdit (not applyClusterTemplate)) (and (eq step 1) (not applyClusterTemplate)))}}
       {{#if pasteOrUpload}}
-        <button class="btn btn-sm bg-transparent" {{action "cancel"}}>
+        <button class="btn btn-sm bg-primary" {{action "cancel"}}>
           {{t "clusterNew.advanced.cancel"}}
         </button>
       {{else}}
-        <button class="btn btn-sm bg-transparent" {{action "showPaste"}}>
+        <button class="btn btn-sm bg-primary" {{action "showPaste"}}>
           {{t "clusterNew.advanced.yaml"}} <span class="icon icon-copy"></span>
         </button>
       {{/if}}
@@ -40,7 +40,7 @@
                 type="checkbox"
                 checked=useClusterTemplate
                 id="use-existing-cluster-template"
-                disabled=clusterTemplatesEnforced
+                disabled=(or clusterTemplatesEnforced pasteOrUpload)
               }}
               {{t "clusterNew.rke.clustersSelectTemplate.label"}}
             </label>
@@ -65,7 +65,6 @@
 {{/unless}}
 
 {{#if (or clusterTemplateCreate (or (not clusterTemplatesEnforced) (and clusterTemplatesEnforced clusterTemplateRevisionId)))}}
-
   {{#if (or isEdit (eq step 1))}}
     {{#accordion-list
        expandAll=(mut forceExpandAll)
