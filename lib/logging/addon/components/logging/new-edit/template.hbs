@@ -4,41 +4,49 @@
   </h1>
 </section>
 
-<div class="banner bg-info">
-  <div class="banner-icon p-20">
-    <i class="icon icon-info"></i>
-  </div>
-  <div class="banner-message p-20">
-    {{#if isClusterLevel}}
-      {{#if isWindows}}
-        {{t "windowsCluster.logging.helpText" htmlSafe=true}}
+{{#if (and scope.currentCluster.isWindows scope.currentCluster.isVxlan)}}
+  {{banner-message
+    icon="icon-alert"
+    color="bg-warning mb-10"
+    message=(t "windowsCluster.logging.vxlanWarning" appName=settings.appName htmlSafe=true)
+  }}
+{{else}}
+  <div class="banner bg-info">
+    <div class="banner-icon p-20">
+      <i class="icon icon-info"></i>
+    </div>
+    <div class="banner-message p-20">
+      {{#if isClusterLevel}}
+        {{#if isWindows}}
+          {{t "windowsCluster.logging.helpText" htmlSafe=true}}
+        {{else}}
+          {{t "loggingPage.helpText.cluster" htmlSafe=true}}
+        {{/if}}
       {{else}}
-        {{t "loggingPage.helpText.cluster" htmlSafe=true}}
+        <ul>
+          <li style="list-style: circle;">
+            {{#if isWindows}}
+              {{t "windowsCluster.logging.helpText" htmlSafe=true}}
+            {{else}}
+              {{t "loggingPage.helpText.cluster" htmlSafe=true}}
+            {{/if}}
+          </li>
+          <li style="list-style: circle;">
+            {{#if (and clusterTargetType (not-eq clusterTargetType "none"))}}
+              {{t
+                "loggingPage.helpText.clusterTarget"
+                clusterTargetType=clusterTargetType
+                htmlSafe=true
+              }}
+            {{else}}
+              {{t "loggingPage.helpText.noClusterTarget"}}
+            {{/if}}
+          </li>
+        </ul>
       {{/if}}
-    {{else}}
-      <ul>
-        <li style="list-style: circle;">
-          {{#if isWindows}}
-            {{t "windowsCluster.logging.helpText" htmlSafe=true}}
-          {{else}}
-            {{t "loggingPage.helpText.cluster" htmlSafe=true}}
-          {{/if}}
-        </li>
-        <li style="list-style: circle;">
-          {{#if (and clusterTargetType (not-eq clusterTargetType "none"))}}
-            {{t
-              "loggingPage.helpText.clusterTarget"
-              clusterTargetType=clusterTargetType
-              htmlSafe=true
-            }}
-          {{else}}
-            {{t "loggingPage.helpText.noClusterTarget"}}
-          {{/if}}
-        </li>
-      </ul>
-    {{/if}}
+    </div>
   </div>
-</div>
+{{/if}}
 
 {{#if (not-eq targetType "none")}}
   <section class="header has-tabs clearfix p-0">
