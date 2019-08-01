@@ -144,7 +144,7 @@
             @config={{config}}
             @mode={{mode}}
             @isCustom={{isCustom}}
-            @windowsSupport={{windowsSupport}}
+            @cluster={{cluster}}
             @enableNetworkPolicy={{primaryResource.enableNetworkPolicy}}
             @clusterTemplateCreate={{clusterTemplateCreate}}
             @clusterTemplateRevision={{model.clusterTemplateRevision}}
@@ -804,7 +804,7 @@
        showExpandAll=false
        as |al expandFn|
     }}
-      {{#if windowsSupport}}
+      {{#if cluster.windowsPreferedCluster}}
         {{#accordion-list-item
            title=(t "clusterNew.rke.system.title")
            detail=(t "clusterNew.rke.system.detail")
@@ -1027,7 +1027,7 @@
                               </button>
                             {{/form-user-labels}}
 
-                            {{#unless windowsSupport}}
+                            {{#unless cluster.windowsPreferedCluster}}
                               <div class="row mt-20 mb-20">
                                 {{t "clusterNew.rke.taints.title"}}
                                 <p class="help-block">
