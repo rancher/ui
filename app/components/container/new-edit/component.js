@@ -1,5 +1,5 @@
 import Errors from 'ui/utils/errors';
-import { get, set, setProperties, computed } from '@ember/object';
+import { get, set, setProperties } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
@@ -60,8 +60,10 @@ export default Component.extend(NewOrEdit, ChildHook, {
   // ----------------------------------
   userLabels: null,
 
-  advanced:   false,
+  advanced:     false,
   header:        '',
+  showTargetOS: false,
+
   isSidekick:    equal('scaleMode', 'sidekick'),
   init() {
     window.nec = this;
@@ -213,10 +215,6 @@ export default Component.extend(NewOrEdit, ChildHook, {
       set(this, 'header', get(this, 'intl').t(k, args));
     });
   }.observes('isUpgrade', 'isSidekick', 'isGlobal', 'service.displayName', 'intl.locale').on('init'),
-
-  showTargetOS: computed('scope.currentCluster.isWindows', 'isUpgrade', 'isSidekick', function(){
-    return get(this, 'scope.currentCluster.isWindows') && !get(this, 'isUpgrade') && !get(this, 'isSidekick');
-  }),
 
   // ----------------------------------
   // ----------------------------------
