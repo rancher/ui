@@ -1,6 +1,6 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import { get, set } from '@ember/object';
+import { get } from '@ember/object';
 
 export default Route.extend({
   access:  service(),
@@ -10,38 +10,19 @@ export default Route.extend({
   beforeModel() {
     this._super(...arguments);
 
-    return get(this, 'catalog').fetchUnScopedCatalogs().then((hash) => {
-      this.set('catalogs', hash);
-    });
+    return get(this, 'catalog').fetchUnScopedCatalogs();
   },
 
-  model(params) {
-    const project = this.modelFor('authenticated.project').get('project');
+  model() {
+    // Do not use the model result
+    const out = {};
 
-    set(params, 'project', project);
-
-    return get(this, 'catalog').fetchTemplates(params)
-      .then((res) => {
-        res.catalog.forEach((tpl) => {
-          let exists = project.get('apps').findBy('externalIdInfo.templateId', tpl.get('id'));
-
-          tpl.set('exists', !!exists);
-        });
-
-        res.catalogs = get(this, 'catalogs');
-
-        return res;
-      });
+    return get(this, 'catalog').fetchTemplates().then(() => out);
   },
 
   resetController(controller, isExiting/* , transition*/) {
     if (isExiting) {
-      controller.setProperties({
-        category:         '',
-        catalogId:        '',
-        projectCatalogId: '',
-        clusterCatalogId: '',
-      })
+      controller.setProperties({ category: '' })
     }
   },
 
@@ -57,12 +38,4 @@ export default Route.extend({
       this.refresh();
     },
   },
-
-  queryParams: {
-    category:         { refreshModel: true },
-    catalogId:        { refreshModel: true },
-    clusterCatalogId: { refreshModel: true },
-    projectCatalogId: { refreshModel: true },
-  },
-
 });
