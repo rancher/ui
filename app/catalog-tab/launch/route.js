@@ -166,7 +166,6 @@ export default Route.extend({
         return EmberObject.create({
           catalogTemplate,
           namespace,
-          allTemplates:       this.modelFor(get(this, 'parentRoute')).get('catalog'),
           catalogApp:         neuApp,
           catalogTemplateUrl: links[def], // catalogTemplateUrl gets qp's added and this needs with out
           namespaces:         results.namespaces,
