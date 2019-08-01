@@ -60,30 +60,37 @@
     </div>
   {{/if}}
 
-  <div class="box mb-10">
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "clusterIstioPage.version"}}
-          {{#if (and enabled latestVersion templateVersion (not-eq latestVersion templateVersion))}}
-            <span class="bg-warning pt-0 pb-0 pl-5 pr-5">
-              {{t "monitoringPage.upgradeAvailable" version=latestVersion}}
-            </span>
-          {{/if}}
-        </label>
-        {{new-select
-          classNames="form-control"
-          content=istioVersions
-          value=templateVersion
-        }}
-      </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "clusterIstioPage.version"}}
+        {{#if (and enabled latestVersion templateVersion (not-eq latestVersion templateVersion))}}
+          <span class="bg-warning pt-0 pb-0 pl-5 pr-5">
+            {{t "monitoringPage.upgradeAvailable" version=latestVersion}}
+          </span>
+        {{/if}}
+      </label>
+      {{new-select
+        classNames="form-control"
+        content=istioVersions
+        value=templateVersion
+      }}
     </div>
+  </div>
 
-    <div class="over-hr">
-      <span>
-        {{t "clusterIstioPage.config.header.pilot"}}
-      </span>
-    </div>
+  {{#accordion-list
+     expandAll=(mut forceExpandAll)
+     showExpandAll=true
+     as |al expandFn|
+  }}
+    <!--start here-->
+    {{#accordion-list-item
+     title=(t "clusterIstioPage.config.header.pilot")
+     detail="lorem ipsum detail"
+     expandOnInit=true
+     expandAll=al.expandAll
+     expand=(action expandFn)
+    }}
     {{form-reservation
       component="Pilot"
       requestCpu=config.pilotRequestCpu
@@ -137,12 +144,21 @@
         }}
       </div>
     </div>
+    {{/accordion-list-item}}
 
-    <div class="over-hr">
+    <!--start here-->
+    {{#accordion-list-item
+     title=(t "clusterIstioPage.config.header.mixer")
+     detail="lorem ipsum detail"
+     expandOnInit=true
+     expandAll=al.expandAll
+     expand=(action expandFn)
+    }}
+{{!--   <div class="over-hr">
       <span>
         {{t "clusterIstioPage.config.header.mixer"}}
       </span>
-    </div>
+    </div> --}}
     {{form-reservation
       component="MixerTelemetry"
       requestCpu=config.mixerTelemetryRequestCpu
@@ -196,12 +212,16 @@
         }}
       </div>
     </div>
+    {{/accordion-list-item}}
 
-    <div class="over-hr">
-      <span>
-        {{t "clusterIstioPage.config.header.tracing"}}
-      </span>
-    </div>
+    <!--start here-->
+    {{#accordion-list-item
+     title=(t "clusterIstioPage.config.header.tracing")
+     detail="lorem ipsum detail"
+     expandOnInit=true
+     expandAll=al.expandAll
+     expand=(action expandFn)
+    }}
     <div class="row">
       <div class="col span-6">
         <label class="acc-label">
@@ -236,12 +256,16 @@
         </div>
       </div>
     {{/if}}
+    {{/accordion-list-item}}
 
-    <div class="over-hr">
-      <span>
-        {{t "clusterIstioPage.config.header.gateway"}}
-      </span>
-    </div>
+    <!--start here-->
+    {{#accordion-list-item
+     title=(t "clusterIstioPage.config.header.gateway")
+     detail="lorem ipsum detail"
+     expandOnInit=true
+     expandAll=al.expandAll
+     expand=(action expandFn)
+    }}
     <div class="row">
       <div class="col span-6">
         <label class="acc-label">
@@ -355,24 +379,25 @@
         </div>
       </div>
     {{/if}}
+    {{/accordion-list-item}}
+  {{/accordion-list}}
 
-    {{#advanced-section}}
-      <hr/>
-      {{form-key-value
-        initialMap=customAnswers
-        changed=(action (mut customAnswers))
-        allowEmptyValue=true
-        addInitialEmptyRow=true
-        editing=true
-        header=(t "newCatalog.answers.label")
-        addActionLabel="newCatalog.answers.addAction"
-        keyLabel="newContainer.environment.keyLabel"
-        keyPlaceholder="newContainer.environment.keyPlaceholder"
-        valueLabel="newContainer.environment.valueLabel"
-        valuePlaceholder="newContainer.environment.valuePlaceholder"
-      }}
-    {{/advanced-section}}
-  </div>
+  {{#advanced-section}}
+    <hr/>
+    {{form-key-value
+      initialMap=customAnswers
+      changed=(action (mut customAnswers))
+      allowEmptyValue=true
+      addInitialEmptyRow=true
+      editing=true
+      header=(t "newCatalog.answers.label")
+      addActionLabel="newCatalog.answers.addAction"
+      keyLabel="newContainer.environment.keyLabel"
+      keyPlaceholder="newContainer.environment.keyPlaceholder"
+      valueLabel="newContainer.environment.valueLabel"
+      valuePlaceholder="newContainer.environment.valuePlaceholder"
+    }}
+  {{/advanced-section}}
 
 {{#accordion-list showExpandAll=false as |al expandFn|}}
   {{#accordion-list-item
