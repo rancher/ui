@@ -26,7 +26,6 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
 
   layout,
   namespaceErrors:          null,
-  allTemplates:             null,
   templateResource:         null,
   namespaceResource:        null,
   versionsArray:            null,
