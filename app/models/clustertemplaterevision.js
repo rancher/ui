@@ -1,7 +1,7 @@
 import Resource from '@rancher/ember-api-store/models/resource';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
 import { inject as service } from '@ember/service';
-import { computed, set } from '@ember/object';
+import { computed, get, set } from '@ember/object';
 import { alias } from '@ember/object/computed';
 
 export default Resource.extend({
@@ -113,6 +113,10 @@ export default Resource.extend({
 
   validationErrors() {
     let errors = [];
+
+    if (!get(this, 'name')) {
+      errors.push('Revision name is required');
+    }
 
     if (errors.length > 0) {
       return errors;
