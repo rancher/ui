@@ -122,8 +122,6 @@ export default Resource.extend({
       return errors;
     }
 
-    errors = this._super(...arguments);
-
     return errors;
   },
 });
