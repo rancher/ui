@@ -11,6 +11,8 @@ import C from 'ui/utils/constants';
 import { isEmpty } from '@ember/utils';
 import moment from 'moment';
 
+const GRAY_OUT_SCHEDULER_STATUS_PROVIDERS = ['azureaks', 'aliyunkcs'];
+
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
   growl:       service(),
@@ -263,6 +265,38 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
   isWindows:  computed('windowsPreferedCluster', function() {
     return !!get(this, 'windowsPreferedCluster');
+  }),
+
+  unhealthyComponents: computed('componentStatuses.@each.conditions', function() {
+    return (get(this, 'componentStatuses') || [])
+      .filter((s) => !s.conditions.any((c) => c.status === 'True'));
+  }),
+
+  inactiveNodes: computed('nodes.@each.state', function() {
+    return get(this, 'nodes').filter( (n) => C.ACTIVEISH_STATES.indexOf(get(n, 'state')) === -1 );
+  }),
+
+  displayWarnings: computed('provider', 'inactiveNodes.[]', 'unhealthyComponents.[]', function() {
+    const intl = get(this, 'intl');
+    const out = [];
+    const unhealthyComponents = get(this, 'unhealthyComponents') || [];
+    const inactiveNodes = get(this, 'inactiveNodes') || [];
+    const provider = get(this, 'provider');
+
+    const grayOut = GRAY_OUT_SCHEDULER_STATUS_PROVIDERS.indexOf(provider) > -1;
+
+    unhealthyComponents.forEach((component) => {
+      if ( grayOut && (get(component, 'name') === 'scheduler' || get(component, 'name') === 'controller-manager') ) {
+        return;
+      }
+      out.pushObject(intl.t('clusterDashboard.alert.component', { component: get(component, 'name') }));
+    });
+
+    inactiveNodes.forEach((node) => {
+      out.pushObject(intl.t('clusterDashboard.alert.node', { node: get(node, 'displayName') }))
+    });
+
+    return out;
   }),
 
   actions: {
