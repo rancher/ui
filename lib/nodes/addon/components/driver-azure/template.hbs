@@ -70,12 +70,49 @@
           placeholder=(t "nodeDriver.azure.availabilitySet.placeholder")
         }}
       </div>
+
       <div class="col span-6">
-        <label class="acc-label">
+        <label class="acc-label" for="input-fault-domain-count">
+          {{t "nodeDriver.azure.faultDomainCount.label"}}
+        </label>
+        {{input-number
+          id="input-fault-domain-count"
+          value=config.faultDomainCount
+          min=0
+          max=3
+          classNames="form-control"
+          placeholder=(t "nodeDriver.azure.faultDomainCount.placeholder")
+        }}
+        <p class="help-block">
+          {{t "nodeDriver.azure.faultDomainCount.helpText"}}
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label" for="input-update-domain-count">
+          {{t "nodeDriver.azure.updateDomainCount.label"}}
+        </label>
+        {{input-number
+          value=config.updateDomainCount
+          id="input-update-domain-count"
+          min=0
+          classNames="form-control"
+          placeholder=(t "nodeDriver.azure.updateDomainCount.placeholder")
+        }}
+        <p class="help-block">
+          {{t "nodeDriver.azure.updateDomainCount.helpText"}}
+        </p>
+      </div>
+
+      <div class="col span-6">
+        <label class="acc-label" for="input-resource-group">
           {{t "nodeDriver.azure.resourceGroup.label"}}
         </label>
         {{input
           type="text"
+          id="input-resource-group"
           value=config.resourceGroup
           classNames="form-control"
           placeholder=(t "nodeDriver.azure.resourceGroup.placeholder")
@@ -251,6 +288,36 @@
           value=config.storageType
         }}
       </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "nodeDriver.azure.managedDisks.label"}}
+        </label>
+        {{new-select
+          classNames="form-control"
+          content=diskChoices
+          localizedLabel=true
+          value=config.managedDisks
+        }}
+      </div>
+
+      {{#if config.managedDisks}}
+        <div class="col span-6">
+          <label class="acc-label" for="input-disk-size">
+            {{t "nodeDriver.azure.diskSize.label"}}
+          </label>
+          {{input-number
+            value=config.diskSize
+            id="input-disk-size"
+            min=1
+            max=32767
+            classNames="form-control"
+            placeholder=(t "nodeDriver.azure.diskSize.placeholder")
+          }}
+        </div>
+      {{/if}}
     </div>
   {{/accordion-list-item}}
 
