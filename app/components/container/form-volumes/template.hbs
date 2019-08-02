@@ -30,24 +30,68 @@
       {{#dd.trigger
            class="btn bg-link p-0 icon-btn pl-10"
       }}
-        <span>{{t "formVolumes.add.label"}}</span>
-        <span class="darken"><i class="icon icon-chevron-down"></i></span>
+        <span>
+          {{t "formVolumes.add.label"}}
+        </span>
+        <span class="darken">
+          <i class="icon icon-chevron-down"></i>
+        </span>
       {{/dd.trigger}}
 
       {{#dd.content}}
-        <li><a {{action "addVolume"}}>{{t "formVolumes.add.newVolume"}}</a></li>
-        <li><a {{action "addNewPvc"}}>{{t "formVolumes.add.newPvc"}}</a></li>
-        <li><a {{action "addPvc"}}>{{t "formVolumes.add.existingPvc"}}</a></li>
-        <li><a {{action "addBindMount"}}>{{t "formVolumes.add.bindMount"}}</a></li>
-        <li class="hide"><a {{action "addTmpfs"}}>{{t "formVolumes.add.tmpfs"}}</a></li>
-        <li><a {{action "addSecret"}}>{{t "formVolumes.add.secret"}}</a></li>
-        <li><a {{action "addConfigMap"}}>{{t "formVolumes.add.configMap"}}</a></li>
-        <li><a {{action "addCertificate"}}>{{t "formVolumes.add.certificate"}}</a></li>
-        {{#if loggingEnabled}}
-          <li><a {{action "addCustomLogPath"}}>{{t "formVolumes.add.customLogPath"}}</a></li>
+        <li>
+          <a {{action "addVolume"}}>
+            {{t "formVolumes.add.newVolume"}}
+          </a>
+        </li>
+        <li>
+          <a {{action "addNewPvc"}}>
+            {{t "formVolumes.add.newPvc"}}
+          </a>
+        </li>
+        <li>
+          <a {{action "addPvc"}}>
+            {{t "formVolumes.add.existingPvc"}}
+          </a>
+        </li>
+        <li>
+          <a {{action "addBindMount"}}>
+            {{t "formVolumes.add.bindMount"}}
+          </a>
+        </li>
+        <li class="hide">
+          <a {{action "addTmpfs"}}>
+            {{t "formVolumes.add.tmpfs"}}
+          </a>
+        </li>
+        <li>
+          <a {{action "addSecret"}}>
+            {{t "formVolumes.add.secret"}}
+          </a>
+        </li>
+        <li>
+          <a {{action "addConfigMap"}}>
+            {{t "formVolumes.add.configMap"}}
+          </a>
+        </li>
+        <li>
+          <a {{action "addCertificate"}}>
+            {{t "formVolumes.add.certificate"}}
+          </a>
+        </li>
+        {{#if (and loggingEnabled (not isWindows))}}
+          <li>
+            <a {{action "addCustomLogPath"}}>
+              {{t "formVolumes.add.customLogPath"}}
+            </a>
+          </li>
         {{/if}}
         {{#if isStatefulSet}}
-          <li><a {{action "addVolumeClaimTemplate"}}>{{t "formVolumes.add.vct"}}</a></li>
+          <li>
+            <a {{action "addVolumeClaimTemplate"}}>
+              {{t "formVolumes.add.vct"}}
+            </a>
+          </li>
         {{/if}}
       {{/dd.content}}
     {{/basic-dropdown}}

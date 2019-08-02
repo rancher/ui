@@ -4,9 +4,10 @@ import Component from '@ember/component';
 import layout from './template';
 import { get, set, observer, computed } from '@ember/object'
 
-
+const LINUX_LAST_CONTAINER = 'ubuntu:xenial'
+const WINDOWS_LAST_CONTAINER = 'mcr.microsoft.com/dotnet/core/samples:aspnetapp'
 // Remember the last value and use that for new one
-var lastContainer = 'ubuntu:xenial';
+var lastContainer;
 
 export default Component.extend({
   scope: service(),
@@ -27,6 +28,9 @@ export default Component.extend({
 
     let initial = get(this, 'initialValue') || '';
 
+    if ( !lastContainer ) {
+      lastContainer = (get(this, 'scope.currentCluster.isWindows') ? WINDOWS_LAST_CONTAINER : LINUX_LAST_CONTAINER)
+    }
     if ( !initial ) {
       initial = lastContainer;
     }

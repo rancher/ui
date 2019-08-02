@@ -29,7 +29,6 @@ export default Component.extend({
   editing:             false,
   showWarning:         false,
   kindChoices:         null,
-  showHostPortWarning: false,
 
   ports:               null,
   nodePortFrom:        null,
@@ -194,6 +193,11 @@ export default Component.extend({
       if (!loadBalancerCapabilites.l4LoadBalancerEnabled && k === 'LoadBalancer') {
         setProperties(out, {
           translationKey: `formPorts.kind.LoadBalancerDisbaled`,
+          disabled:       true
+        })
+      } else if (get(this, 'scope.currentCluster.isWindows') && k === 'HostPort') {
+        setProperties(out, {
+          translationKey: `formPorts.kind.HostPortDisbaled`,
           disabled:       true
         })
       } else {

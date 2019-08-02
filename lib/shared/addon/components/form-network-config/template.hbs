@@ -25,17 +25,9 @@
       disabled=(and isEdit (not clusterTemplateCreate))
     }}
   </CheckOverrideAllowed>
-  {{#if windowsSupport}}
+  {{#if cluster.windowsPreferedCluster}}
     <label class="acc-label mt-30">
       {{t "clusterNew.rke.network.flannelBackends.label"}}
-      {{#if clusterTemplateCreate}}
-        <ClusterTemplateOverrideToggle
-          @path="rancherKubernetesEngineConfig.network.options.flannel_backend_type"
-          @configVariable={{config.network.options.flannel_backend_type}}
-          @addOverride={{addOverride}}
-          @questions={{clusterTemplateRevision.questions}}
-        />
-      {{/if}}
     </label>
     <CheckOverrideAllowed
       @questions={{clusterTemplateRevision.questions}}
@@ -70,27 +62,18 @@
   <div class="col span-4">
     <label class="acc-label">
       {{t "clusterNew.rke.windowsSupport.label"}}
-      {{#if (and clusterTemplateCreate windowsSupportAvailable)}}
-        <ClusterTemplateOverrideToggle
-          @path="windowsSupport"
-          @configVariable={{windowsSupport}}
-          @addOverride={{addOverride}}
-          @questions={{clusterTemplateRevision.questions}}
-        />
-      {{/if}}
     </label>
     <CheckComputedOverride
       @applyClusterTemplate={{applyClusterTemplate}}
       @clusterTemplateCreate={{clusterTemplateCreate}}
       @computedOverrideAllowed={{windowsSupportOverrideAvailable}}
       @windowsSupportAvailable={{mut windowsSupportAvailable}}
-      @windowsSupport={{mut windowsSupport}}
-      @computedState={{windowsSupport}}
+      @computedState={{cluster.windowsPreferedCluster}}
     >
       <div class="radio">
         <label class={{unless windowsSupportAvailable "text-muted"}}>
           {{radio-button
-            selection=windowsSupport
+            selection=cluster.windowsPreferedCluster
             value=true
             disabled=(not windowsSupportAvailable)
           }}
@@ -100,7 +83,7 @@
       <div class="radio">
         <label class={{unless windowsSupportAvailable "text-muted"}}>
           {{radio-button
-            selection=windowsSupport
+            selection=cluster.windowsPreferedCluster
             value=false
             disabled=(not windowsSupportAvailable)
           }}

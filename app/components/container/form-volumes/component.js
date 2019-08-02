@@ -36,6 +36,7 @@ export default Component.extend({
   nextNum:       1,
   cluster:       alias('scope.currentCluster'),
   project:       alias('scope.currentProject'),
+  isWindows:     alias('scope.currentCluster.isWindows'),
 
   init() {
     this._super(...arguments);

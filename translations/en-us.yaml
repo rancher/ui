@@ -703,6 +703,7 @@ catalogPage:
     refreshBtn: Refresh
     allCatalogs: All Catalogs
     allCategories: All Categories
+    windowsWarning: Most of the applications should be running in Linux clusters. So it might not work if you deploy them in the current cluster.
     manage: Manage
     search:
       label: Search
@@ -5128,7 +5129,7 @@ formServicePorts:
 formPorts:
   header: Port Mapping
   addAction: Add Port
-  hostPortWarning: Host Port is not supported on Windows nodes.
+  hostPortWarning: 'Host Port is not supported on Windows nodes. See Windows support <a href="https://kubernetes.io/docs/setup/production-environment/windows/intro-windows-in-kubernetes/#limitations" target="_blank">limitations</a> in Kubernetes for more info.'
   warning: This workload is not created by {appName} UI or {appName} API. {appName} will not automatically create related services for port mapping.
   kind:
     label: As a
@@ -5137,6 +5138,7 @@ formPorts:
     ClusterIP: Cluster IP (Internal only)
     LoadBalancer: Layer-4 Load Balancer
     LoadBalancerDisbaled: 'Layer-4 Load Balancer (disabled)'
+    HostPortDisbaled: 'HostPort (disabled)'
   sourcePort:
     label: On listening port
     placeholder: "e.g. 80"
@@ -8087,3 +8089,11 @@ rkeConfigComment:
 units:
   percent: '%'
   cpu: milli CPUs
+
+windowsCluster:
+  logging:
+    vxlanWarning: |
+      {appName} Logging doesn't work with VxLan mode currently due to <a href="https://github.com/kubernetes/kubernetes/issues/79359" target="_blank">kubernetes/kubernetes#79359</a>. We are working with Microsoft to fix it in Kubernetes side.
+    kafka:
+      brokerTypeHelpText: Use the Broker list as the Kafka connection entry point.
+    helpText: We will use fluentd to collect stdout/stderr logs from each container and the log files which exist under path <code >/var/log/containers/</code> on each <b>Linux</b> host and <code >c:/var/log/containers/</code> on each <b>Windows</b> host. The logs can be shipped to a target you configure below.
