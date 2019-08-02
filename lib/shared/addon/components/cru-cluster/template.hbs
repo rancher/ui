@@ -82,22 +82,24 @@
   {{/accordion-list}}
 {{/if}}
 
-{{component driverInfo.driverComponent
-  applyClusterTemplate=applyClusterTemplate
-  clusterTemplateQuestions=model.clusterTemplateRevision.questions
-  clusterTemplateRevisionId=clusterTemplateRevisionId
-  clusterErrors=errors
-  mode=mode
-  model=model
-  nodePoolErrors=nodePoolErrors
-  nodeWhich=driverInfo.nodeWhich
-  originalCluster=originalCluster
-  otherErrors=memberErrors
-  save=(action "save")
-  close=(action "close")
-  registerHook=(action "registerHook")
-  updateFromYaml=(action "updateFromYaml")
-}}
+{{#unless routeLoading}}
+  {{component driverInfo.driverComponent
+    applyClusterTemplate=applyClusterTemplate
+    clusterTemplateQuestions=model.clusterTemplateRevision.questions
+    clusterTemplateRevisionId=clusterTemplateRevisionId
+    clusterErrors=errors
+    mode=mode
+    model=model
+    nodePoolErrors=nodePoolErrors
+    nodeWhich=driverInfo.nodeWhich
+    originalCluster=originalCluster
+    otherErrors=memberErrors
+    save=(action "save")
+    close=(action "close")
+    registerHook=(action "registerHook")
+    updateFromYaml=(action "updateFromYaml")
+  }}
+{{/unless}}
 
 {{#if (and isEdit (not provider))}}
   {{top-errors errors=errors}}

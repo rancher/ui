@@ -33,31 +33,44 @@
     <section class="cluster-template-select mb-5">
       <div class="row">
         {{#if (or (or model.clusterTemplateRevisions model.clusterTemplateRevision) clusterTemplatesEnforced)}}
-          <div class="col span-6">
+          <div>
             <label class="acc-label" for="use-existing-cluster-template">
               {{input
                 class="input-lg"
                 type="checkbox"
                 checked=useClusterTemplate
                 id="use-existing-cluster-template"
-                disabled=(or clusterTemplatesEnforced pasteOrUpload)
+                disabled=(or isEdit (or clusterTemplatesEnforced pasteOrUpload))
               }}
               {{t "clusterNew.rke.clustersSelectTemplate.label"}}
             </label>
-            {{#if useClusterTemplate}}
+          </div>
+          {{#if useClusterTemplate}}
+            <div class="col span-6">
               {{new-select
                 id="input-cluster-template-select"
                 classNames="form-control"
-                optionValuePath="clusterTemplateRevisionId"
-                optionLabelPath="clusterTemplateRevisionId"
-                optionGroupPath="clusterTemplateName"
-                content=allTemplates
-                value=clusterTemplateRevisionId
+                optionValuePath="id"
+                optionLabelPath="name"
+                content=filteredClusterTemplates
+                value=selectedClusterTemplateId
                 prompt=(t "clusterNew.rke.clustersSelectTemplate.select.prompt")
                 localizedPrompt=true
               }}
-            {{/if}}
-          </div>
+            </div>
+            <div class="col span-6">
+              {{new-select
+                classNames="form-control"
+                optionValuePath="id"
+                optionLabelPath="name"
+                content=filteredTemplateRevisions
+                value=clusterTemplateRevisionId
+                disabled=(not selectedClusterTemplateId)
+                prompt=(t "clusterNew.rke.clustersSelectTemplateRevision.select.prompt")
+                localizedPrompt=true
+              }}
+            </div>
+          {{/if}}
         {{/if}}
       </div>
     </section>
