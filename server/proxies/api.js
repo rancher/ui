@@ -74,6 +74,7 @@ module.exports = function(app, options) {
     'Version':   '/version',
     'Apiui':     '/api-ui',
     'Samlauth':  '/v1-saml',
+    'Drivers':   '/assets/rancher-ui-driver-*',
   }
 
   app.use('/', function(req, res, next) {
@@ -95,7 +96,7 @@ module.exports = function(app, options) {
       }
 
       // include root path in proxied request
-      req.url = path.join(base, req.url);
+      req.url = req.originalUrl;
       req.headers['X-Forwarded-Proto'] = req.protocol;
 
       // don't include the original host header
