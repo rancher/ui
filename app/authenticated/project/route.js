@@ -13,7 +13,9 @@ const VALID_ROUTES = ['apps-tab', 'catalog-tab.index', 'authenticated.project.se
   'authenticated.project.logging', 'authenticated.project.pipeline.settings',
   'authenticated.project.monitoring.project-setting', 'authenticated.project.istio.project-istio.graph',
   'authenticated.project.istio.project-istio.metrics', 'authenticated.project.istio.project-istio.rules',
-  'authenticated.project.istio.project-istio.destination-rules', 'authenticated.project.istio.project-istio.virtual-services'];
+  'authenticated.project.istio.project-istio.destination-rules', 'authenticated.project.istio.project-istio.virtual-services',
+  'authenticated.project.hpa', 'authenticated.project.pipeline.pipelines'
+];
 
 export default Route.extend(Preload, {
   access:       service(),

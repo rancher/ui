@@ -4,15 +4,9 @@
   </h1>
   {{#if (and enabled canEnable)}}
     <div class="pull-right">
-      {{#if confirmDisable}}
-        <button class="btn bg-error" {{action "disable"}}>
-          <i class="icon icon-alert"></i> {{t "clusterIstioPage.confirmDisable"}}
-        </button>
-      {{else}}
-        <button class="btn bg-error" {{action "promptDisable"}}>
-          {{t "clusterIstioPage.disable"}}
-        </button>
-      {{/if}}
+      <button class="btn bg-error" {{action "disable"}}>
+        {{t "clusterIstioPage.disable"}}
+      </button>
     </div>
   {{/if}}
 </section>
@@ -82,26 +76,28 @@
       <label class="acc-label">
         &nbsp;
       </label>
-      <div>
-        {{input
-          type="checkbox"
-          checked=enableMonitoring
-          id="input-enable-monitoring"
-          disabled=true
-        }}
-        {{t "clusterIstioPage.enableMonitoring.label"}}
-        {{#tooltip-element
-          type="tooltip-basic"
-          model=(t "clusterIstioPage.goToMonitoring" clusterId=cluster.id htmlSafe=true)
-          tooltipTemplate="tooltip-static"
-          aria-describedby="tooltip-base"
-          baseClass="text-left"
-        }}
-        <span>
-          <i class="icon icon-help icon-blue"/>
-        </span>
-        {{/tooltip-element}}
-      </div>
+      {{#unless enableClusterMonitoring}}
+        <div>
+          {{input
+            type="checkbox"
+            checked=enableMonitoring
+            id="input-enable-monitoring"
+            disabled=true
+          }}
+          {{t "clusterIstioPage.enableMonitoring.label"}}
+          {{#tooltip-element
+            type="tooltip-basic"
+            model=(t "clusterIstioPage.goToMonitoring" clusterId=cluster.id htmlSafe=true)
+            tooltipTemplate="tooltip-static"
+            aria-describedby="tooltip-base"
+            baseClass="text-left"
+          }}
+          <span>
+            <i class="icon icon-help icon-blue"/>
+          </span>
+          {{/tooltip-element}}
+        </div>
+      {{/unless}}
     </div>
   </div>
 

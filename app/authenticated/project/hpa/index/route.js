@@ -23,7 +23,6 @@ export default Route.extend({
   },
 
   setDefaultRoute: on('activate', function() {
-    set(this, `session.${ C.SESSION.CONTAINER_ROUTE }`, 'authenticated.project.hpa');
-    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, undefined);
+    set(this, `session.${ C.SESSION.PROJECT_ROUTE }`, 'authenticated.project.hpa');
   }),
 });
