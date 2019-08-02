@@ -55,7 +55,7 @@
   {{/if}}
 
   <div class="row mt-10 mb-10 center">
-    <div class="col span-5">
+    <div class="col span-6">
       <label class="acc-label">
         {{t "clusterIstioPage.version"}}
         {{#if (and enabled latestVersion templateVersion (not-eq latestVersion templateVersion))}}
@@ -103,10 +103,45 @@
 
 {{#accordion-list as | al expandFn |}}
   {{#accordion-list-item
+     title=(t "clusterIstioPage.members.title")
+     detail=(t "clusterIstioPage.members.detail")
+     expandAll=al.expandAll
+     expand=(action expandFn)
+     expandOnInit=true
+  }}
+    <div class="radio">
+      <label>
+        {{radio-button
+          selection=allowSystemGroup
+          value=true
+        }}
+        {{t "clusterIstioPage.allowSystemGroup.true" htmlSafe=true}}
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        {{radio-button
+          selection=allowSystemGroup
+          value=false
+        }}
+        {{t "clusterIstioPage.allowSystemGroup.false" htmlSafe=true}}
+      </label>
+      {{#unless allowSystemGroup}}
+        {{form-members-catalog-access
+          readOnly=false
+          members=members
+          addAuthorizedPrincipal=(action "addAuthorizedPrincipal")
+          removeMember=(action "removeMember")
+        }}
+      {{/unless}}
+    </div>
+  {{/accordion-list-item}}
+  {{#accordion-list-item
     title="Pilot"
     detail=(t "clusterIstioPage.workload.detail" workload="Pilot")
     expandAll=al.expandAll
     expand=(action expandFn)
+    expandOnInit=true
   }}
     {{form-reservation
       component="Pilot"
@@ -168,6 +203,7 @@
     detail=(t "clusterIstioPage.workload.detail" workload="Mixer")
     expandAll=al.expandAll
     expand=(action expandFn)
+    expandOnInit=true
   }}
     {{form-reservation
       component="MixerTelemetry"
@@ -229,6 +265,7 @@
     detail=(t "clusterIstioPage.workload.detail" workload="Tracing")
     expandAll=al.expandAll
     expand=(action expandFn)
+    expandOnInit=true
   }}
     <div class="row">
       <div class="col span-6">
@@ -271,6 +308,7 @@
     detail=(t "clusterIstioPage.workload.detail" workload="Ingress Gateway")
     expandAll=al.expandAll
     expand=(action expandFn)
+    expandOnInit=true
   }}
     <div class="row">
       <div class="col span-6">
@@ -404,42 +442,6 @@
       valuePlaceholder="newContainer.environment.valuePlaceholder"
     }}
   {{/advanced-section}}
-
-{{#accordion-list showExpandAll=false as |al expandFn|}}
-  {{#accordion-list-item
-     title=(t "clusterIstioPage.members.title")
-     detail=(t "clusterIstioPage.members.detail")
-     expand=(action expandFn)
-     expandOnInit=true
-  }}
-    <div class="radio">
-      <label>
-        {{radio-button
-          selection=allowSystemGroup
-          value=true
-        }}
-        {{t "clusterIstioPage.allowSystemGroup.true" htmlSafe=true}}
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        {{radio-button
-          selection=allowSystemGroup
-          value=false
-        }}
-        {{t "clusterIstioPage.allowSystemGroup.false" htmlSafe=true}}
-      </label>
-      {{#unless allowSystemGroup}}
-        {{form-members-catalog-access
-          readOnly=false
-          members=members
-          addAuthorizedPrincipal=(action "addAuthorizedPrincipal")
-          removeMember=(action "removeMember")
-        }}
-      {{/unless}}
-    </div>
-  {{/accordion-list-item}}
-{{/accordion-list}}
 
 {{#if (or pilotWarning mixerTelemetryWarning tracingWarning gatewayWarning (and mixerPolicyWarning config.mixerPolicyEnabled) mixerWarning istioWarning)}}
   {{#banner-message color="bg-warning"}}

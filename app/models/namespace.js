@@ -100,14 +100,14 @@ var Namespace = Resource.extend(StateCounts, {
       },
       {
         label:    'action.enableAutoInject',
-        icon:     'icon icon-istio',
+        icon:     'icon icon-plus-circle',
         action:   'enableAutoInject',
         enabled:  get(this, 'scope.currentCluster.istioEnabled') && !!get(this, 'scope.currentCluster.systemProject') && !get(this, 'autoInjectionEnabled'),
         bulkable: true
       },
       {
         label:    'action.disableAutoInject',
-        icon:     'icon icon-istio',
+        icon:     'icon icon-minus-circle',
         action:   'disableAutoInject',
         enabled:  get(this, 'scope.currentCluster.istioEnabled') && !!get(this, 'scope.currentCluster.systemProject') && get(this, 'autoInjectionEnabled'),
         bulkable: true
