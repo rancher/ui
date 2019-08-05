@@ -91,6 +91,23 @@
           </div>
         {{/if}}
       {{/if}}
+
+      {{#if (and applyClusterTemplate (eq selectedCloudProvider "external"))}}
+          <div class="radio">
+            <label>
+              {{t "cloudProvider.external.label"}}
+            </label>
+          </div>
+        {{else if isCreateClusterOrClusterTemplate}}
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=selectedCloudProvider
+                value="external"
+              }} {{t "cloudProvider.external.label"}}
+            </label>
+          </div>
+        {{/if}}
     </div>
   </CheckComputedOverride>
   {{#unless (eq selectedCloudProvider "none")}}
@@ -158,5 +175,7 @@
 <p class="text-info">
   {{#if (eq selectedCloudProvider "generic")}}
     {{t "cloudProvider.custom.helpText" htmlSafe=true}}
+  {{else if (eq selectedCloudProvider "external")}}
+    {{t "cloudProvider.external.helpText" htmlSafe=true}}
   {{/if}}
 </p>
