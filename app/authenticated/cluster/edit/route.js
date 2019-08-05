@@ -40,34 +40,38 @@ export default Route.extend({
   afterModel(model, transition) {
     let {
       clusterTemplateRevisions = null,
-      clusterTemplates = null,
       cluster
     } = model;
     let { clusterTemplateRevisionId } = cluster;
 
-    if (clusterTemplateRevisions) {
-      let ctr  = null;
-      let ct   = null;
-      let ctId = null;
+    if (clusterTemplateRevisionId) {
+      if (clusterTemplateRevisions) {
+        let ctr  = null;
 
-      if (transition.queryParams && transition.queryParams.clusterTemplateRevision) {
-        clusterTemplateRevisionId = transition.queryParams.clusterTemplateRevision;
-      }
+        if (transition.queryParams && transition.queryParams.clusterTemplateRevision) {
+          clusterTemplateRevisionId = transition.queryParams.clusterTemplateRevision;
+        }
 
-      ctr  = clusterTemplateRevisions.findBy('id', clusterTemplateRevisionId);
+        ctr  = clusterTemplateRevisions.findBy('id', clusterTemplateRevisionId);
 
-      if (ctr) {
-        ctId = get(ctr, 'clusterTemplateId');
-        ct   = clusterTemplates.findBy('id', ctId);
+        if (ctr) {
+          set(model, 'clusterTemplateRevision', ctr);
 
-        set(model, 'clusterTemplateRevision', ctr);
+          this.clusterTemplateService.cloneAndPopulateClusterConfig(cluster, ctr);
+        } else {
+          let tempCluster  = cluster.cloneForNew();
 
-        setProperties(cluster, {
-          clusterTemplateRevisionId,
-          clusterTemplateId:         get(ct, 'id'),
-        });
+          tempCluster.set('type', 'clusterSpec');
 
-        this.clusterTemplateService.cloneAndPopulateClusterConfig(cluster, ctr);
+          let tempSpec     = this.globalStore.createRecord(tempCluster);
+
+          tempCluster.set('type', 'clusterTemplateRevision');
+          tempCluster.set('clusterConfig', tempSpec);
+
+          let tempRevision = this.globalStore.createRecord(tempCluster);
+
+          set(model, 'clusterTemplateRevision', tempRevision);
+        }
       }
     }
 
