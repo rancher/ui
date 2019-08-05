@@ -16,82 +16,96 @@
         <div class="col span-12">
           <div class="row">
             <div class="col span-12">
-              <label class="acc-label" for="">{{t "loggingPage.fluentd.endpoint.label"}}
+              <label class="acc-label" for="">
+                {{t "loggingPage.fluentd.endpoint.label"}}
                 {{#if (eq idx 0)}}
                   {{field-required}}
                 {{/if}}
               </label>
               {{input
-                  type="text"
-                  value=item.endpoint
-                  classNames="form-control fluentd-endpoint"
-                  placeholder=(t "loggingPage.fluentd.endpoint.placeholder")
-                  focus-out=(action "alertMessage" idx)
+                type="text"
+                value=item.endpoint
+                classNames="form-control fluentd-endpoint"
+                placeholder=(t "loggingPage.fluentd.endpoint.placeholder")
+                focus-out=(action "alertMessage" idx)
               }}
               {{#if (and endpointError (eq idx index))}}
-                <span class="text-error text-small">{{t endpointErrorText}}</span>
+                <span class="text-error text-small">
+                  {{t endpointErrorText}}
+                </span>
               {{/if}}
             </div>
           </div>
           <div class="row">
             <div class="col span-12">
-              <label class="acc-label" for="">{{t "loggingPage.fluentd.sharedKey.label"}}
+              <label class="acc-label" for="">
+                {{t "loggingPage.fluentd.sharedKey.label"}}
               </label>
               {{input
-                  type="password"
-                  value=item.sharedKey
-                  classNames="form-control"
-                  placeholder=(t "loggingPage.fluentd.sharedKey.placeholder")
+                type="password"
+                value=item.sharedKey
+                classNames="form-control"
+                placeholder=(t "loggingPage.fluentd.sharedKey.placeholder")
               }}
             </div>
           </div>
           <div class="row">
             <div class="col span-6">
-              <label class="acc-label" for="">{{t "loggingPage.fluentd.username.label"}}
+              <label class="acc-label" for="">
+                {{t "loggingPage.fluentd.username.label"}}
               </label>
               {{input
-                  type="text"
-                  value=item.username
-                  classNames="form-control"
-                  placeholder=(t "loggingPage.fluentd.username.placeholder")
+                type="text"
+                value=item.username
+                classNames="form-control"
+                placeholder=(t "loggingPage.fluentd.username.placeholder")
               }}
             </div>
             <div class="col span-6">
-              <label class="acc-label" for="">{{t "loggingPage.fluentd.password.label"}}
+              <label class="acc-label" for="">
+                {{t "loggingPage.fluentd.password.label"}}
               </label>
               {{input
-                  type="password"
-                  value=item.password
-                  classNames="form-control"
-                  placeholder=(t "loggingPage.fluentd.password.placeholder")
+                type="password"
+                value=item.password
+                classNames="form-control"
+                placeholder=(t "loggingPage.fluentd.password.placeholder")
               }}
             </div>
           </div>
           <div class="row">
             <div class="col span-12 pt-0">
-              <label class="acc-label" for="">{{t "loggingPage.fluentd.hostname.label"}}</label>
+              <label class="acc-label" for="">
+                {{t "loggingPage.fluentd.hostname.label"}}
+              </label>
               {{input
-                  type="text"
-                  value=item.hostname
-                  classNames="form-control"
-                  placeholder=(t "loggingPage.fluentd.hostname.placeholder")
+                type="text"
+                value=item.hostname
+                classNames="form-control"
+                placeholder=(t "loggingPage.fluentd.hostname.placeholder")
               }}
             </div>
           </div>
           <div class="row">
             <div class="col span-12">
-              <label class="acc-label" for="">{{t "loggingPage.fluentd.weight.label"}}
+              <label class="acc-label" for="">
+                {{t "loggingPage.fluentd.weight.label"}}
               </label>
-              {{input-integer class="form-control input-sm public"
-                              min="0"
-                              value=item.weight
-                              placeholder=(t "loggingPage.fluentd.weight.placeholder")
+              {{input-int
+                class="form-control input-sm public"
+                min="0"
+                value=item.weight
+                placeholder=(t "loggingPage.fluentd.weight.placeholder")
               }}
             </div>
           </div>
           <div class="row">
             <div class="col span-12 pt-0" style="margin-top: 43px;">
-              {{input type="checkbox" classNames="form-control" checked=item.standby}}
+              {{input
+                type="checkbox"
+                classNames="form-control"
+                checked=item.standby
+              }}
               {{t "loggingPage.fluentd.standby.label"}}
             </div>
           </div>
@@ -100,38 +114,57 @@
     {{/each}}
     <div>
       <button class="btn bg-link icon-btn p-0" {{action "add"}}>
-        <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t "loggingPage.fluentd.addServer"}}</span>
+        <span class="darken">
+          <i class="icon icon-plus text-small"/>
+        </span>
+        <span>
+          {{t "loggingPage.fluentd.addServer"}}
+        </span>
       </button>
     </div>
   </div>
 
   <div class="row">
     <div class="col span-6 pt-0" style="margin-top: 43px;">
-      {{input type="checkbox" classNames="form-control" checked=config.compress}}
+      {{input
+        type="checkbox"
+        classNames="form-control"
+        checked=config.compress
+      }}
       {{t "loggingPage.fluentd.compress.label"}}
-      <p class="text-info text-small" style="margin-left: 25px;">{{t "loggingPage.fluentd.compress.helpText"}}</p>
+      <p class="text-info text-small" style="margin-left: 25px;">
+        {{t "loggingPage.fluentd.compress.helpText"}}
+      </p>
     </div>
     <div class="col span-6 pt-0" style="margin-top: 43px;">
-      {{input type="checkbox" classNames="form-control" checked=config.enableTls}}
+      {{input
+        type="checkbox"
+        classNames="form-control"
+        checked=config.enableTls
+      }}
       {{t "loggingPage.fluentd.enableTls.label"}}
       {{#if config.enableTls}}
         <div class="clearfix">
-          <label class="acc-label pt-5">{{t "loggingPage.fluentd.certificate.label"}}</label>
+          <label class="acc-label pt-5">
+            {{t "loggingPage.fluentd.certificate.label"}}
+          </label>
         </div>
         {{input-text-file
-            classNames="box"
-            value=config.certificate
-            multiple=true
-            canChangeName=false
-            accept="application/x-x509-ca-cert,text/plain,.pem,.crt,.cert"
-            minHeight=60
-            placeholder="newCertificate.cert.placeholder"
-            shouldChangeName=false
+          classNames="box"
+          value=config.certificate
+          multiple=true
+          canChangeName=false
+          accept="application/x-x509-ca-cert,text/plain,.pem,.crt,.cert"
+          minHeight=60
+          placeholder="newCertificate.cert.placeholder"
+          shouldChangeName=false
         }}
       {{/if}}
     </div>
   </div>
 </section>
 
-{{logging/form-log-format logPreview=logPreview model=model}}
+{{logging/form-log-format
+  logPreview=logPreview
+  model=model
+}}
