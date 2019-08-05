@@ -4,15 +4,9 @@
   </h1>
   {{#if (and enabled canEnable)}}
     <div class="pull-right">
-      {{#if confirmDisable}}
-        <button class="btn bg-error" {{action "disable"}}>
-          <i class="icon icon-alert"></i> {{t "clusterIstioPage.confirmDisable"}}
-        </button>
-      {{else}}
-        <button class="btn bg-error" {{action "promptDisable"}}>
-          {{t "clusterIstioPage.disable"}}
-        </button>
-      {{/if}}
+      <button class="btn bg-error" {{action "disable"}}>
+        {{t "clusterIstioPage.disable"}}
+      </button>
     </div>
   {{/if}}
 </section>
@@ -60,7 +54,7 @@
     </div>
   {{/if}}
 
-  <div class="row">
+  <div class="row mt-10 mb-10 center">
     <div class="col span-6">
       <label class="acc-label">
         {{t "clusterIstioPage.version"}}
@@ -70,27 +64,85 @@
           </span>
         {{/if}}
       </label>
-      {{new-select
-        classNames="form-control"
-        content=istioVersions
-        value=templateVersion
-      }}
+      <div>
+        {{new-select
+          classNames="form-control"
+          content=istioVersions
+          value=templateVersion
+        }}
+      </div>
+    </div>
+    <div class="col span-7">
+      <label class="acc-label">
+        &nbsp;
+      </label>
+      {{#unless enableClusterMonitoring}}
+        <div>
+          {{input
+            type="checkbox"
+            checked=enableMonitoring
+            id="input-enable-monitoring"
+            disabled=true
+          }}
+          {{t "clusterIstioPage.enableMonitoring.label"}}
+          {{#tooltip-element
+            type="tooltip-basic"
+            model=(t "clusterIstioPage.goToMonitoring" clusterId=cluster.id htmlSafe=true)
+            tooltipTemplate="tooltip-static"
+            aria-describedby="tooltip-base"
+            baseClass="text-left"
+          }}
+          <span>
+            <i class="icon icon-help icon-blue"/>
+          </span>
+          {{/tooltip-element}}
+        </div>
+      {{/unless}}
     </div>
   </div>
 
-  {{#accordion-list
-     expandAll=(mut forceExpandAll)
-     showExpandAll=true
-     as |al expandFn|
-  }}
-    <!--start here-->
-    {{#accordion-list-item
-     title=(t "clusterIstioPage.config.header.pilot")
-     detail="lorem ipsum detail"
-     expandOnInit=true
+{{#accordion-list as | al expandFn |}}
+  {{#accordion-list-item
+     title=(t "clusterIstioPage.members.title")
+     detail=(t "clusterIstioPage.members.detail")
      expandAll=al.expandAll
      expand=(action expandFn)
-    }}
+     expandOnInit=true
+  }}
+    <div class="radio">
+      <label>
+        {{radio-button
+          selection=allowSystemGroup
+          value=true
+        }}
+        {{t "clusterIstioPage.allowSystemGroup.true" htmlSafe=true}}
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        {{radio-button
+          selection=allowSystemGroup
+          value=false
+        }}
+        {{t "clusterIstioPage.allowSystemGroup.false" htmlSafe=true}}
+      </label>
+      {{#unless allowSystemGroup}}
+        {{form-members-catalog-access
+          readOnly=false
+          members=members
+          addAuthorizedPrincipal=(action "addAuthorizedPrincipal")
+          removeMember=(action "removeMember")
+        }}
+      {{/unless}}
+    </div>
+  {{/accordion-list-item}}
+  {{#accordion-list-item
+    title="Pilot"
+    detail=(t "clusterIstioPage.workload.detail" workload="Pilot")
+    expandAll=al.expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
     {{form-reservation
       component="Pilot"
       requestCpu=config.pilotRequestCpu
@@ -144,21 +196,15 @@
         }}
       </div>
     </div>
-    {{/accordion-list-item}}
+  {{/accordion-list-item}}
 
-    <!--start here-->
-    {{#accordion-list-item
-     title=(t "clusterIstioPage.config.header.mixer")
-     detail="lorem ipsum detail"
-     expandOnInit=true
-     expandAll=al.expandAll
-     expand=(action expandFn)
-    }}
-{{!--   <div class="over-hr">
-      <span>
-        {{t "clusterIstioPage.config.header.mixer"}}
-      </span>
-    </div> --}}
+  {{#accordion-list-item
+    title="Mixer"
+    detail=(t "clusterIstioPage.workload.detail" workload="Mixer")
+    expandAll=al.expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
     {{form-reservation
       component="MixerTelemetry"
       requestCpu=config.mixerTelemetryRequestCpu
@@ -212,16 +258,15 @@
         }}
       </div>
     </div>
-    {{/accordion-list-item}}
+  {{/accordion-list-item}}
 
-    <!--start here-->
-    {{#accordion-list-item
-     title=(t "clusterIstioPage.config.header.tracing")
-     detail="lorem ipsum detail"
-     expandOnInit=true
-     expandAll=al.expandAll
-     expand=(action expandFn)
-    }}
+  {{#accordion-list-item
+    title="Tracing"
+    detail=(t "clusterIstioPage.workload.detail" workload="Tracing")
+    expandAll=al.expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
     <div class="row">
       <div class="col span-6">
         <label class="acc-label">
@@ -256,16 +301,15 @@
         </div>
       </div>
     {{/if}}
-    {{/accordion-list-item}}
+  {{/accordion-list-item}}
 
-    <!--start here-->
-    {{#accordion-list-item
-     title=(t "clusterIstioPage.config.header.gateway")
-     detail="lorem ipsum detail"
-     expandOnInit=true
-     expandAll=al.expandAll
-     expand=(action expandFn)
-    }}
+  {{#accordion-list-item
+    title="Ingress Gateway"
+    detail=(t "clusterIstioPage.workload.detail" workload="Ingress Gateway")
+    expandAll=al.expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
     <div class="row">
       <div class="col span-6">
         <label class="acc-label">
@@ -399,42 +443,6 @@
     }}
   {{/advanced-section}}
 
-{{#accordion-list showExpandAll=false as |al expandFn|}}
-  {{#accordion-list-item
-     title=(t "clusterIstioPage.members.title")
-     detail=(t "clusterIstioPage.members.detail")
-     expand=(action expandFn)
-     expandOnInit=true
-  }}
-    <div class="radio">
-      <label>
-        {{radio-button
-          selection=allowSystemGroup
-          value=true
-        }}
-        {{t "clusterIstioPage.allowSystemGroup.true" htmlSafe=true}}
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        {{radio-button
-          selection=allowSystemGroup
-          value=false
-        }}
-        {{t "clusterIstioPage.allowSystemGroup.false" htmlSafe=true}}
-      </label>
-      {{#unless allowSystemGroup}}
-        {{form-members-catalog-access
-          readOnly=false
-          members=members
-          addAuthorizedPrincipal=(action "addAuthorizedPrincipal")
-          removeMember=(action "removeMember")
-        }}
-      {{/unless}}
-    </div>
-  {{/accordion-list-item}}
-{{/accordion-list}}
-
 {{#if (or pilotWarning mixerTelemetryWarning tracingWarning gatewayWarning (and mixerPolicyWarning config.mixerPolicyEnabled) mixerWarning istioWarning)}}
   {{#banner-message color="bg-warning"}}
     {{#if istioWarning}}
@@ -474,10 +482,5 @@
         message=(t "clusterIstioPage.upgradeMonitoring" clusterId=cluster.id htmlSafe=true)
       }}
     {{/unless}}
-  {{else}}
-    {{banner-message
-      color="bg-warning"
-      message=(t "clusterIstioPage.goToMonitoring" clusterId=cluster.id htmlSafe=true)
-    }}
   {{/if}}
 {{/if}}

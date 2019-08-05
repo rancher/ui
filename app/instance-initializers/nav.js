@@ -4,59 +4,56 @@ import { get } from '@ember/object';
 const rootNav = [
   // Project
   {
-    scope:           'project',
-    id:              'containers',
-    localizedLabel:  'nav.containers.tab',
-    route:           'authenticated.project.index',
-    ctx:             [getProjectId],
-    resource:        ['workload', 'ingress', 'service'],
-    resourceScope:   'project',
-    moreCurrentWhen: [
-      'containers', 'workload',
-      'ingresses',
-      'authenticated.project.dns',
-      'authenticated.project.hpa',
-      'volumes',
-      'authenticated.project.pipeline.pipelines',
-      'authenticated.project.pipeline.repositories',
-    ],
-  },
-
-  {
-    scope:          'project',
-    id:             'project-apps',
-    localizedLabel: 'nav.apps.tab',
-    route:          'apps-tab',
-    ctx:            [getProjectId],
-    resource:       ['app'],
-    resourceScope:  'project',
-  },
-  {
-    scope:                    'project',
-    id:                       'project-istio',
-    localizedLabel:           'nav.tools.istio',
-    route:                    'authenticated.project.istio.index',
-    ctx:                      [getProjectId],
-    resource:                 [],
-    resourceScope:            'project',
-    disableIfClusterNotReady: true,
-    moreCurrentWhen:          [
-      'authenticated.project.istio.project-istio.graph',
-      'authenticated.project.istio.project-istio.metrics',
-      'authenticated.project.istio.project-istio.rules',
-      'authenticated.project.istio.project-istio.destination-rules',
-      'authenticated.project.istio.project-istio.virtual-services',
-    ],
-    condition() {
-      return !get(this, 'cluster.isWindows');
-    },
-  },
-  {
     scope:          'project',
     id:             'infra',
     localizedLabel: 'nav.infra.tab',
     ctx:            [getProjectId],
     submenu:        [
+      {
+        id:             'containers',
+        localizedLabel: 'nav.containers.tab',
+        route:          'authenticated.project.index',
+        ctx:            [getProjectId],
+        resource:       ['workload', 'ingress', 'service'],
+        resourceScope:  'project',
+        currentWhen:    [
+          'containers',
+          'workload',
+          'ingresses',
+          'authenticated.project.dns',
+          'volumes',
+        ],
+      },
+      {
+        id:             'hpa',
+        localizedLabel: 'nav.infra.hpa',
+        route:          'authenticated.project.hpa',
+        ctx:            [getProjectId],
+        resource:       ['horizontalpodautoscaler'],
+        resourceScope:  'project',
+      },
+      {
+        id:             'pipelines',
+        localizedLabel: 'nav.infra.pipelines',
+        route:          'authenticated.project.pipeline.pipelines',
+        ctx:            [getProjectId],
+        resource:       [],
+        resourceScope:  'project',
+      },
+      {
+        id:             'istio',
+        localizedLabel: 'nav.tools.istio',
+        route:          'authenticated.project.istio.index',
+        ctx:            [getProjectId],
+        resource:       [],
+        resourceScope:  'project',
+        currentWhen:    [
+          'authenticated.project.istio.project-istio',
+        ],
+        condition() {
+          return !get(this, 'cluster.isWindows');
+        },
+      },
       {
         id:             'infra-certificates',
         localizedLabel: 'nav.infra.certificates',
@@ -90,6 +87,15 @@ const rootNav = [
         resourceScope:  'project',
       },
     ],
+  },
+  {
+    scope:          'project',
+    id:             'project-apps',
+    localizedLabel: 'nav.apps.tab',
+    route:          'apps-tab',
+    ctx:            [getProjectId],
+    resource:       ['app'],
+    resourceScope:  'project',
   },
   {
     scope:          'project',

@@ -1,20 +1,24 @@
-{{#containers-header showGroup=false}}
-  <button
-    {{action "importYaml"}}
-    class="btn btn-sm bg-default mr-10"
-    disabled={{rbac-prevents resource="horizontalpodautoscaler" scope="project" permission="create"}}
-  >
-    {{t "nav.containers.importCompose"}}
-  </button>
-  {{#link-to
-    "authenticated.project.hpa.new"
-    scope.currentProject.id
-    class="btn btn-sm bg-primary"
-    disabled=(or (not model.supported) (rbac-prevents resource="horizontalpodautoscaler" scope="project" permission="create"))
-  }}
-    {{t "nav.containers.addHpa"}}
-  {{/link-to}}
-{{/containers-header}}
+<section class="header clearfix">
+  <div class="right-buttons">
+    <button
+      {{action "importYaml"}}
+      class="btn btn-sm bg-default mr-10"
+      disabled={{rbac-prevents resource="horizontalpodautoscaler" scope="project" permission="create"}}
+    >
+      {{t "nav.containers.importCompose"}}
+    </button>
+    {{#link-to
+      "authenticated.project.hpa.new"
+      scope.currentProject.id
+      class="btn btn-sm bg-primary"
+      disabled=(or (not model.supported) (rbac-prevents resource="horizontalpodautoscaler" scope="project" permission="create"))
+    }}
+      {{t "nav.containers.addHpa"}}
+    {{/link-to}}
+  </div>
+
+  <h1>{{t "nav.infra.hpa"}}</h1>
+</section>
 
 {{#if rows.length}}
   <section class="pl-0 pr-0">
