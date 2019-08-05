@@ -11,6 +11,18 @@
     {{#link-to-external "authenticated.cluster" model.id}}
       {{model.displayName}}
     {{/link-to-external}}
+
+    {{#if (and model.displayWarnings.length (not-eq model.state "waiting") (not-eq model.state "provisioning"))}}
+      {{#tooltip-element
+          type="tooltip-basic"
+          tooltipTemplate='tooltip-multi-lines'
+          model=model.displayWarnings
+          inlineBlock=true
+      }}
+        <i class="icon icon-alert text-error" />
+      {{/tooltip-element}}
+    {{/if}}
+
     {{#if model.certsExpiring}}
       {{#tooltip-element
          type="tooltip-expiring"
