@@ -195,11 +195,6 @@ export default Component.extend({
           translationKey: `formPorts.kind.LoadBalancerDisbaled`,
           disabled:       true
         })
-      } else if (get(this, 'scope.currentCluster.isWindows') && k === 'HostPort') {
-        setProperties(out, {
-          translationKey: `formPorts.kind.HostPortDisbaled`,
-          disabled:       true
-        })
       } else {
         set(out, 'translationKey', `formPorts.kind.${ k }`);
       }
