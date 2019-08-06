@@ -1,19 +1,43 @@
-<section class="header clearfix">
-  <div class="right-buttons">
-    <div class="btn-group p-0 mr-10">
-      {{#tooltip-element type="tooltip-basic" model=(t 'nav.group.none') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
-        {{#link-to (query-params group="none") classNames="btn btn-sm bg-default"}}<i class="icon icon-certificate"></i>{{/link-to}}
-      {{/tooltip-element}}
+{{#security-header}}
+  <div class="btn-group p-0 mr-10">
+    {{#tooltip-element
+      type="tooltip-basic"
+      model=(t "nav.group.none")
+      tooltipTemplate="tooltip-static"
+      aria-describedby="tooltip-base"
+      tooltipFor="tooltipLink"
+    }}
+      {{#link-to
+        (query-params group="none")
+        classNames="btn btn-sm bg-default"
+      }}
+        <i class="icon icon-certificate"></i>
+      {{/link-to}}
+    {{/tooltip-element}}
 
-      {{#tooltip-element type="tooltip-basic" model=(t 'nav.group.namespace') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
-        {{#link-to (query-params group="namespace") classNames="btn btn-sm bg-default"}}<i class="icon icon-list-nested"></i>{{/link-to}}
-      {{/tooltip-element}}
-    </div>
-    {{#link-to "authenticated.project.certificates.new" classNames="btn btn-sm bg-primary right-divider-btn" disabled=(rbac-prevents resource="certificate" scope="project" permission="create")}}{{t 'certificatesPage.index.linkTo'}}{{/link-to}}
+    {{#tooltip-element
+      type="tooltip-basic"
+      model=(t "nav.group.namespace")
+      tooltipTemplate="tooltip-static"
+      aria-describedby="tooltip-base"
+      tooltipFor="tooltipLink"
+    }}
+      {{#link-to
+        (query-params group="namespace")
+        classNames="btn btn-sm bg-default"
+      }}
+        <i class="icon icon-list-nested"></i>
+      {{/link-to}}
+    {{/tooltip-element}}
   </div>
-
-  <h1>{{t 'certificatesPage.index.header'}}</h1>
-</section>
+  {{#link-to
+    "authenticated.project.certificates.new"
+    classNames="btn btn-sm bg-primary right-divider-btn"
+    disabled=(rbac-prevents resource="certificate" scope="project" permission="create")
+    }}
+      {{t "certificatesPage.index.linkTo"}}
+    {{/link-to}}
+{{/security-header}}
 
 <section>
   {{#if rows.length}}
@@ -33,9 +57,9 @@
       {{else if (eq kind "group")}}
         {{namespace-group model=row.ref noGroup="namespaceGroup.project" fullColspan=sortable.fullColspan}}
       {{else if (eq kind "nomatch")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'certificatesPage.index.noMatch'}}</td></tr>
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "certificatesPage.index.noMatch"}}</td></tr>
       {{else if (eq kind "norows")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'certificatesPage.index.noData'}}</td></tr>
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "certificatesPage.index.noData"}}</td></tr>
       {{/if}}
     {{/sortable-table}}
   {{else}}
