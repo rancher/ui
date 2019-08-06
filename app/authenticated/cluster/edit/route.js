@@ -59,14 +59,20 @@ export default Route.extend({
 
           this.clusterTemplateService.cloneAndPopulateClusterConfig(cluster, ctr);
         } else {
-          let tempCluster  = cluster.cloneForNew();
+          // user does not have access to the template that was used to launch a cluster
+          // create a fake cluster that we'll use to turn into a "temaplate Revision" to be passed down to components
+          // I am using JSON flow here to drop any of the dynamic UI only fields so we dont risk cross contamination with observables and the like.
+          let tempCluster  = JSON.parse(JSON.stringify(cluster.cloneForNew()));
 
-          tempCluster.set('type', 'clusterSpec');
+          set(tempCluster, 'type', 'clusterSpec');
 
           let tempSpec     = this.globalStore.createRecord(tempCluster);
 
-          tempCluster.set('type', 'clusterTemplateRevision');
-          tempCluster.set('clusterConfig', tempSpec);
+          // a template revision has a "cluster config" that should be set which we'll fake with a parsed spec
+          setProperties(tempCluster, {
+            type:          'clusterTemplateRevision',
+            clusterConfig: JSON.parse(JSON.stringify(tempSpec)),
+          });
 
           let tempRevision = this.globalStore.createRecord(tempCluster);
 
