@@ -49,18 +49,39 @@
       groupByRef="namespace"
       sortBy=sortBy
       bulkActions=true
-      headers=headers as |sortable kind row dt|}}
+      headers=headers as |sortable kind row dt|
+    }}
       {{#if (eq kind "row")}}
-        {{registry-row model=row dt=dt}}
+        {{registry-row
+          model=row
+          dt=dt
+        }}
       {{else if (eq kind "group")}}
-        {{namespace-group model=row.ref noGroup="namespaceGroup.project" fullColspan=sortable.fullColspan}}
+        {{namespace-group
+          model=row.ref
+          noGroup="namespaceGroup.project"
+          fullColspan=sortable.fullColspan
+        }}
       {{else if (eq kind "nomatch")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "registriesPage.index.noMatch"}}</td></tr>
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            {{t "registriesPage.index.noMatch"}}
+          </td>
+        </tr>
       {{else if (eq kind "norows")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "registriesPage.index.noData"}}</td></tr>
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            {{t "registriesPage.index.noData"}}
+          </td>
+        </tr>
       {{/if}}
     {{/sortable-table}}
   {{else}}
-    {{empty-table disabled=(rbac-prevents resource="dockercredential" scope="project" permission="create") resource="container" newRoute="authenticated.project.registries.new" newTranslationKey="registriesPage.index.linkTo"}}
+    {{empty-table
+      disabled=(rbac-prevents resource="dockercredential" scope="project" permission="create")
+      resource="container"
+      newRoute="authenticated.project.registries.new"
+      newTranslationKey="registriesPage.index.linkTo"
+    }}
   {{/if}}
 </section>

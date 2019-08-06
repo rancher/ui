@@ -42,7 +42,7 @@
 <section>
   {{#if rows.length}}
     {{#sortable-table
-        classNames="grid fixed mb-0 sortable-table"
+      classNames="grid fixed mb-0 sortable-table"
       body=rows
       descending=descending
       groupByKey=groupTableBy
@@ -53,16 +53,36 @@
       as |sortable kind row|
     }}
       {{#if (eq kind "row")}}
-        {{certificate-row model=row dt=dt}}
+        {{certificate-row
+          model=row
+          dt=dt
+        }}
       {{else if (eq kind "group")}}
-        {{namespace-group model=row.ref noGroup="namespaceGroup.project" fullColspan=sortable.fullColspan}}
+        {{namespace-group
+          model=row.ref
+          noGroup="namespaceGroup.project"
+          fullColspan=sortable.fullColspan
+        }}
       {{else if (eq kind "nomatch")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "certificatesPage.index.noMatch"}}</td></tr>
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            {{t "certificatesPage.index.noMatch"}}
+          </td>
+        </tr>
       {{else if (eq kind "norows")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "certificatesPage.index.noData"}}</td></tr>
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            {{t "certificatesPage.index.noData"}}
+          </td>
+        </tr>
       {{/if}}
     {{/sortable-table}}
   {{else}}
-    {{empty-table disabled=(rbac-prevents resource="certificate" scope="project" permission="create") resource="certificate" newRoute="authenticated.project.certificates.new" newTranslationKey="certificatesPage.index.linkTo"}}
+    {{empty-table
+      disabled=(rbac-prevents resource="certificate" scope="project" permission="create")
+      resource="certificate"
+      newRoute="authenticated.project.certificates.new"
+      newTranslationKey="certificatesPage.index.linkTo"
+    }}
   {{/if}}
 </section>
