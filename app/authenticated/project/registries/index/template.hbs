@@ -1,19 +1,43 @@
-<section class="header clearfix">
-  <div class="right-buttons">
-    <div class="btn-group p-0 mr-10">
-      {{#tooltip-element type="tooltip-basic" model=(t 'nav.group.none') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
-        {{#link-to (query-params group="none") classNames="btn btn-sm bg-default"}}<i class="icon icon-database"></i>{{/link-to}}
-      {{/tooltip-element}}
+{{#security-header}}
+  <div class="btn-group p-0 mr-10">
+    {{#tooltip-element
+      type="tooltip-basic"
+      model=(t "nav.group.none")
+      tooltipTemplate="tooltip-static"
+      aria-describedby="tooltip-base"
+      tooltipFor="tooltipLink"
+    }}
+      {{#link-to
+        (query-params group="none")
+        classNames="btn btn-sm bg-default"
+      }}
+        <i class="icon icon-database"></i>
+      {{/link-to}}
+    {{/tooltip-element}}
 
-      {{#tooltip-element type="tooltip-basic" model=(t 'nav.group.namespace') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
-        {{#link-to (query-params group="namespace") classNames="btn btn-sm bg-default"}}<i class="icon icon-list-nested"></i>{{/link-to}}
-      {{/tooltip-element}}
-    </div>
-    {{#link-to "authenticated.project.registries.new" classNames="btn btn-sm bg-primary" disabled=(rbac-prevents resource="dockercredential" scope="project" permission="create")}}{{t 'registriesPage.index.linkTo'}}{{/link-to}}
+    {{#tooltip-element
+      type="tooltip-basic"
+      model=(t "nav.group.namespace")
+      tooltipTemplate="tooltip-static"
+      aria-describedby="tooltip-base"
+      tooltipFor="tooltipLink"
+    }}
+      {{#link-to
+        (query-params group="namespace")
+        classNames="btn btn-sm bg-default"
+      }}
+        <i class="icon icon-list-nested"></i>
+      {{/link-to}}
+    {{/tooltip-element}}
   </div>
-
-  <h1>{{t 'registriesPage.index.header'}}</h1>
-</section>
+  {{#link-to
+    "authenticated.project.registries.new"
+    classNames="btn btn-sm bg-primary"
+    disabled=(rbac-prevents resource="dockercredential" scope="project" permission="create")
+  }}
+    {{t "registriesPage.index.linkTo"}}
+  {{/link-to}}
+{{/security-header}}
 
 <section class="instances pt-5 pb-5">
   {{#if rows.length}}
@@ -25,18 +49,39 @@
       groupByRef="namespace"
       sortBy=sortBy
       bulkActions=true
-      headers=headers as |sortable kind row dt|}}
+      headers=headers as |sortable kind row dt|
+    }}
       {{#if (eq kind "row")}}
-        {{registry-row model=row dt=dt}}
+        {{registry-row
+          model=row
+          dt=dt
+        }}
       {{else if (eq kind "group")}}
-        {{namespace-group model=row.ref noGroup="namespaceGroup.project" fullColspan=sortable.fullColspan}}
+        {{namespace-group
+          model=row.ref
+          noGroup="namespaceGroup.project"
+          fullColspan=sortable.fullColspan
+        }}
       {{else if (eq kind "nomatch")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'registriesPage.index.noMatch'}}</td></tr>
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            {{t "registriesPage.index.noMatch"}}
+          </td>
+        </tr>
       {{else if (eq kind "norows")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'registriesPage.index.noData'}}</td></tr>
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            {{t "registriesPage.index.noData"}}
+          </td>
+        </tr>
       {{/if}}
     {{/sortable-table}}
   {{else}}
-    {{empty-table disabled=(rbac-prevents resource="dockercredential" scope="project" permission="create") resource="container" newRoute="authenticated.project.registries.new" newTranslationKey="registriesPage.index.linkTo"}}
+    {{empty-table
+      disabled=(rbac-prevents resource="dockercredential" scope="project" permission="create")
+      resource="container"
+      newRoute="authenticated.project.registries.new"
+      newTranslationKey="registriesPage.index.linkTo"
+    }}
   {{/if}}
 </section>
