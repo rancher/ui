@@ -19,27 +19,23 @@
 </section>
 
 <section class="instances pt-5 pb-5">
-  {{#if rows.length}}
-    {{#sortable-table
-      classNames="grid sortable-table"
-      body=rows
-      descending=descending
-      groupByKey=groupTableBy
-      groupByRef="namespace"
-      sortBy=sortBy
-      bulkActions=true
-      headers=headers as |sortable kind row dt|}}
-      {{#if (eq kind "row")}}
-        {{config-map-row model=row dt=dt}}
-      {{else if (eq kind "group")}}
-        {{namespace-group model=row.ref noGroup="namespaceGroup.project" fullColspan=sortable.fullColspan}}
-      {{else if (eq kind "nomatch")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'configMapsPage.index.noMatch'}}</td></tr>
-      {{else if (eq kind "norows")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'configMapsPage.index.noData'}}</td></tr>
-      {{/if}}
-    {{/sortable-table}}
-  {{else}}
-    {{empty-table disabled=(rbac-prevents resource=resource scope="project" permission="create") resource="container" newRoute="authenticated.project.config-maps.new" newTranslationKey="configMapsPage.index.linkTo"}}
-  {{/if}}
+  {{#sortable-table
+    classNames="grid sortable-table"
+    body=rows
+    descending=descending
+    groupByKey=groupTableBy
+    groupByRef="namespace"
+    sortBy=sortBy
+    bulkActions=true
+    headers=headers as |sortable kind row dt|}}
+    {{#if (eq kind "row")}}
+      {{config-map-row model=row dt=dt}}
+    {{else if (eq kind "group")}}
+      {{namespace-group model=row.ref noGroup="namespaceGroup.project" fullColspan=sortable.fullColspan}}
+    {{else if (eq kind "nomatch")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'configMapsPage.index.noMatch'}}</td></tr>
+    {{else if (eq kind "norows")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'configMapsPage.index.noData'}}</td></tr>
+    {{/if}}
+  {{/sortable-table}}
 </section>
