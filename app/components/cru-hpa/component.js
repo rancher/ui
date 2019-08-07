@@ -67,7 +67,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   deploymentsChoices: computed('namespace.id', 'deployments.[]', function() {
     const namespaceId = get(this, 'namespace.id');
 
-    return (get(this, 'deployments') || []).filter((w) => get(w, 'namespaceId') === namespaceId);
+    return (get(this, 'deployments') || []).filter((w) => get(w, 'namespaceId') === namespaceId).sortBy('displayName');
   }),
 
   resourceMetricsAvailable: computed('apiServices', function() {
@@ -75,6 +75,36 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
     return apiServices.find((api) => get(api, 'name').split('.').length === 4 && get(api, 'name').endsWith(RESOURCE_METRICS_API_GROUP));
   }),
+
+  validate() {
+    this._super();
+
+    const intl = get(this, 'intl');
+
+    const errors = get(this, 'errors') || [];
+
+    if ( get(this, 'model.minReplicas') === null ) {
+      errors.pushObject(intl.t('validation.required', { key: intl.t('cruHpa.minReplicas.label') }));
+    }
+
+    (get(this, 'model.metrics') || []).forEach((metric) => {
+      if ( get(metric, 'target.type') === 'Utilization' && (!get(metric, 'target.utilization')) ) {
+        errors.pushObject(intl.t('validation.required', { key: intl.t('cruHpa.metrics.value.label') }));
+      }
+
+      if ( get(metric, 'target.type') === 'AverageValue' && (!get(metric, 'target.averageValue')) ) {
+        errors.pushObject(intl.t('validation.required', { key: intl.t('cruHpa.metrics.value.label') }));
+      }
+
+      if ( get(metric, 'target.type') === 'Value' && (!get(metric, 'target.value')) ) {
+        errors.pushObject(intl.t('validation.required', { key: intl.t('cruHpa.metrics.value.label') }));
+      }
+    });
+
+    set(this, 'errors', errors.uniq());
+
+    return errors.length === 0;
+  },
 
   willSave() {
     set(this, 'model.namespaceId', get(this, 'namespace.id') || '__placeholder__');
