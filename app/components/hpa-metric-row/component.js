@@ -186,7 +186,7 @@ export default Component.extend({
     }
 
     if ( metricName === MEMORY && metricTargetType === AVERAGE_VALUE && metricType === RESOURCE ) {
-      set(this, 'metric.target.averageValue', `${ stringValue }Mi`)
+      set(this, 'metric.target.averageValue', stringValue ? `${ stringValue }Mi` : null)
     }
   }),
 
