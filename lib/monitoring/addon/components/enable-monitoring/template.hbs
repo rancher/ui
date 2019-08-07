@@ -3,34 +3,6 @@
     <h1 class="pull-left">
       {{t (concat "monitoringPage." level ".title")}}
     </h1>
-    {{#if (and enabled canDisableMonitor)}}
-      <div class="pull-right">
-        {{#if confirmDisable}}
-          <button class="btn bg-error" {{action "disable"}}>
-            <i class="icon icon-alert"></i> {{t "monitoringPage.confirmDisable"}}
-          </button>
-        {{else}}
-          {{#if (and istioEnabled (eq level "cluster"))}}
-            {{#tooltip-element
-              type="tooltip-basic"
-              model=(t "monitoringPage.errors.disableIstioFirst")
-              tooltipTemplate="tooltip-static"
-              aria-describedby="tooltip-base"
-              inlineBlock=true
-              placement="top"
-            }}
-              <button class="btn bg-error" {{action "promptDisable"}}>
-                {{t "monitoringPage.disable"}}
-              </button>
-            {{/tooltip-element}}
-          {{else}}
-            <button class="btn bg-error" {{action "promptDisable"}}>
-              {{t "monitoringPage.disable"}}
-            </button>
-          {{/if}}
-        {{/if}}
-      </div>
-    {{/if}}
   </section>
 
   {{#if settings.isRancher}}
@@ -371,13 +343,40 @@
   {{/if}}
 
   <div class="text-center">
-    {{save-cancel
+    {{#save-cancel
       saveDisabled=saveDisabled
       cancelDisabled=true
       editing=enabled
       createLabel="monitoringPage.enableActionLabel"
       save="enable"
     }}
+      {{#if (and enabled canDisableMonitor)}}
+        {{#if confirmDisable}}
+          <button class="btn bg-error" {{action "disable"}}>
+            <i class="icon icon-alert"></i> {{t "monitoringPage.confirmDisable"}}
+          </button>
+        {{else}}
+          {{#if (and istioEnabled (eq level "cluster"))}}
+            {{#tooltip-element
+              type="tooltip-basic"
+              model=(t "monitoringPage.errors.disableIstioFirst")
+              tooltipTemplate="tooltip-static"
+              aria-describedby="tooltip-base"
+              inlineBlock=true
+              placement="top"
+            }}
+              <button class="btn bg-error" {{action "promptDisable"}}>
+                {{t "monitoringPage.disable"}}
+              </button>
+            {{/tooltip-element}}
+          {{else}}
+            <button class="btn bg-error" {{action "promptDisable"}}>
+              {{t "monitoringPage.disable"}}
+            </button>
+          {{/if}}
+        {{/if}}
+      {{/if}}
+    {{/save-cancel}}
   </div>
 {{else if (and (eq level "project") scope.currentProject.isSystemProject)}}
   {{banner-message

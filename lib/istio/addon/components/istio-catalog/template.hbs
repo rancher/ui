@@ -2,13 +2,6 @@
   <h1 class="pull-left">
     {{t "clusterIstioPage.header"}}
   </h1>
-  {{#if (and enabled canEnable)}}
-    <div class="pull-right">
-      <button class="btn bg-error" {{action "disable"}}>
-        {{t "clusterIstioPage.disable"}}
-      </button>
-    </div>
-  {{/if}}
 </section>
 
 {{#if canEnable}}
@@ -141,7 +134,7 @@
     detail=(t "clusterIstioPage.workload.detail" workload="Pilot")
     expandAll=al.expandAll
     expand=(action expandFn)
-    expandOnInit=true
+    expandOnInit=false
   }}
     {{form-reservation
       component="Pilot"
@@ -203,7 +196,7 @@
     detail=(t "clusterIstioPage.workload.detail" workload="Mixer")
     expandAll=al.expandAll
     expand=(action expandFn)
-    expandOnInit=true
+    expandOnInit=false
   }}
     {{form-reservation
       component="MixerTelemetry"
@@ -265,7 +258,7 @@
     detail=(t "clusterIstioPage.workload.detail" workload="Tracing")
     expandAll=al.expandAll
     expand=(action expandFn)
-    expandOnInit=true
+    expandOnInit=false
   }}
     <div class="row">
       <div class="col span-6">
@@ -308,7 +301,7 @@
     detail=(t "clusterIstioPage.workload.detail" workload="Ingress Gateway")
     expandAll=al.expandAll
     expand=(action expandFn)
-    expandOnInit=true
+    expandOnInit=false
   }}
     <div class="row">
       <div class="col span-6">
@@ -424,25 +417,29 @@
       </div>
     {{/if}}
     {{/accordion-list-item}}
-  {{/accordion-list}}
 
-  {{#advanced-section}}
-    <hr/>
-    {{form-key-value
-      initialMap=customAnswers
-      changed=(action (mut customAnswers))
-      allowEmptyValue=true
-      addInitialEmptyRow=true
-      editing=true
-      header=(t "newCatalog.answers.label")
-      addActionLabel="newCatalog.answers.addAction"
-      keyLabel="newContainer.environment.keyLabel"
-      keyPlaceholder="newContainer.environment.keyPlaceholder"
-      valueLabel="newContainer.environment.valueLabel"
-      valuePlaceholder="newContainer.environment.valuePlaceholder"
+    {{#accordion-list-item
+      title=(t "clusterIstioPage.customAnswers.title")
+      detail=(t "clusterIstioPage.customAnswers.detail")
+      expandAll=al.expandAll
+      expand=(action expandFn)
+      expandOnInit=false
     }}
-  {{/advanced-section}}
-
+      {{form-key-value
+        initialMap=customAnswers
+        changed=(action (mut customAnswers))
+        allowEmptyValue=true
+        addInitialEmptyRow=true
+        editing=true
+        header=(t "newCatalog.answers.label")
+        addActionLabel="newCatalog.answers.addAction"
+        keyLabel="newContainer.environment.keyLabel"
+        keyPlaceholder="newContainer.environment.keyPlaceholder"
+        valueLabel="newContainer.environment.valueLabel"
+        valuePlaceholder="newContainer.environment.valuePlaceholder"
+      }}
+    {{/accordion-list-item}}
+  {{/accordion-list}}
 {{#if (or pilotWarning mixerTelemetryWarning tracingWarning gatewayWarning (and mixerPolicyWarning config.mixerPolicyEnabled) mixerWarning istioWarning)}}
   {{#banner-message color="bg-warning"}}
     {{#if istioWarning}}
@@ -466,14 +463,20 @@
 
   {{top-errors errors=errors}}
 
-  {{save-cancel
+  {{#save-cancel
     saveDisabled=saveDisabled
     editing=enabled
     createLabel="clusterIstioPage.enableActionLabel"
     save=(action "save")
     saved=saved
-    cancel=cancel
+    cancelDisabled=true
   }}
+    {{#if (and enabled canEnable)}}
+      <button class="btn bg-error" {{action "disable"}}>
+        {{t "clusterIstioPage.disable"}}
+      </button>
+    {{/if}}
+  {{/save-cancel}}
 {{else}}
   {{#if enableClusterMonitoring}}
     {{#unless canReuse}}
