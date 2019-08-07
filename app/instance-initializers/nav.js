@@ -55,8 +55,8 @@ const rootNav = [
         },
       },
       {
-        id:             'infra-security',
-        localizedLabel: 'nav.infra.security',
+        id:             'infra-secrets',
+        localizedLabel: 'nav.infra.secrets',
         route:          'authenticated.project.secrets',
         ctx:            [getProjectId],
         resource:       ['namespacedsecret', 'secret', 'dockercredential', 'certificate'],
