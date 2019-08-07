@@ -106,12 +106,7 @@
     {{cluster-dashboard-tabs dashboards=dashboards}}
   {{/if}}
 {{else}}
-  {{empty-table
-    resource="container"
-    showNew=scope.currentCluster.canAddNode
-    newRoute="authenticated.cluster.nodes.templates"
-    newTranslationKey="nodesPage.addNode"
-    disabled=(rbac-prevents resource="machine" scope="global" permission="create")
-    ctx=""
-  }}
+  <div class="text-center text-muted">
+    {{t 'metricsAction.noData'}}
+  </div>
 {{/if}}
