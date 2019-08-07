@@ -40,34 +40,44 @@ export default Route.extend({
   afterModel(model, transition) {
     let {
       clusterTemplateRevisions = null,
-      clusterTemplates = null,
       cluster
     } = model;
     let { clusterTemplateRevisionId } = cluster;
 
-    if (clusterTemplateRevisions) {
-      let ctr  = null;
-      let ct   = null;
-      let ctId = null;
+    if (clusterTemplateRevisionId) {
+      if (clusterTemplateRevisions) {
+        let ctr  = null;
 
-      if (transition.queryParams && transition.queryParams.clusterTemplateRevision) {
-        clusterTemplateRevisionId = transition.queryParams.clusterTemplateRevision;
-      }
+        if (transition.queryParams && transition.queryParams.clusterTemplateRevision) {
+          clusterTemplateRevisionId = transition.queryParams.clusterTemplateRevision;
+        }
 
-      ctr  = clusterTemplateRevisions.findBy('id', clusterTemplateRevisionId);
+        ctr  = clusterTemplateRevisions.findBy('id', clusterTemplateRevisionId);
 
-      if (ctr) {
-        ctId = get(ctr, 'clusterTemplateId');
-        ct   = clusterTemplates.findBy('id', ctId);
+        if (ctr) {
+          set(model, 'clusterTemplateRevision', ctr);
 
-        set(model, 'clusterTemplateRevision', ctr);
+          this.clusterTemplateService.cloneAndPopulateClusterConfig(cluster, ctr);
+        } else {
+          // user does not have access to the template that was used to launch a cluster
+          // create a fake cluster that we'll use to turn into a "temaplate Revision" to be passed down to components
+          // I am using JSON flow here to drop any of the dynamic UI only fields so we dont risk cross contamination with observables and the like.
+          let tempCluster  = JSON.parse(JSON.stringify(cluster.cloneForNew()));
 
-        setProperties(cluster, {
-          clusterTemplateRevisionId,
-          clusterTemplateId:         get(ct, 'id'),
-        });
+          set(tempCluster, 'type', 'clusterSpec');
 
-        this.clusterTemplateService.cloneAndPopulateClusterConfig(cluster, ctr);
+          let tempSpec     = this.globalStore.createRecord(tempCluster);
+
+          // a template revision has a "cluster config" that should be set which we'll fake with a parsed spec
+          setProperties(tempCluster, {
+            type:          'clusterTemplateRevision',
+            clusterConfig: JSON.parse(JSON.stringify(tempSpec)),
+          });
+
+          let tempRevision = this.globalStore.createRecord(tempCluster);
+
+          set(model, 'clusterTemplateRevision', tempRevision);
+        }
       }
     }
 

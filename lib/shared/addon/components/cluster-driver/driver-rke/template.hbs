@@ -47,28 +47,36 @@
           </div>
           {{#if useClusterTemplate}}
             <div class="col span-6">
-              {{new-select
-                id="input-cluster-template-select"
-                classNames="form-control"
-                optionValuePath="id"
-                optionLabelPath="name"
-                content=filteredClusterTemplates
-                value=selectedClusterTemplateId
-                prompt=(t "clusterNew.rke.clustersSelectTemplate.select.prompt")
-                localizedPrompt=true
-              }}
+              {{#if filteredClusterTemplates}}
+                {{new-select
+                  id="input-cluster-template-select"
+                  classNames="form-control"
+                  optionValuePath="id"
+                  optionLabelPath="name"
+                  content=filteredClusterTemplates
+                  value=selectedClusterTemplateId
+                  prompt=(t "clusterNew.rke.clustersSelectTemplate.select.prompt")
+                  localizedPrompt=true
+                }}
+              {{else}}
+                {{selectedClusterTemplateId}}
+              {{/if}}
             </div>
             <div class="col span-6">
-              {{new-select
-                classNames="form-control"
-                optionValuePath="id"
-                optionLabelPath="name"
-                content=filteredTemplateRevisions
-                value=clusterTemplateRevisionId
-                disabled=(not selectedClusterTemplateId)
-                prompt=(t "clusterNew.rke.clustersSelectTemplateRevision.select.prompt")
-                localizedPrompt=true
-              }}
+              {{#if filteredClusterTemplates}}
+                {{new-select
+                  classNames="form-control"
+                  optionValuePath="id"
+                  optionLabelPath="name"
+                  content=filteredTemplateRevisions
+                  value=clusterTemplateRevisionId
+                  disabled=(not selectedClusterTemplateId)
+                  prompt=(t "clusterNew.rke.clustersSelectTemplateRevision.select.prompt")
+                  localizedPrompt=true
+                }}
+              {{else}}
+                {{clusterTemplateRevisionId}}
+              {{/if}}
             </div>
           {{/if}}
         {{/if}}
@@ -85,6 +93,7 @@
        as |al expandFn|
     }}
       {{#if pasteOrUpload}}
+        {{!-- EDIT YAML  --}}
         <div class="accordion">
           <div class="accordion-header">
             <div class="expand"></div>
@@ -112,6 +121,7 @@
           </div>
         </div>
       {{else}}
+        {{!-- EDIT FORM  --}}
         {{#accordion-list-item
            title=(t "clusterNew.kubernetesOptions.title")
            detail=(t "clusterNew.kubernetesOptions.detail")
@@ -143,7 +153,7 @@
                   @applyClusterTemplate={{applyClusterTemplate}}
                   @cluster={{cluster}}
                   @clusterTemplateCreate={{clusterTemplateCreate}}
-                  @editing={{and (eq mode "edit") (not clusterTemplateCreate)}}
+                  @editing={{eq mode "edit"}}
                   @initialVersion={{initialVersion}}
                   @value={{config.kubernetesVersion}}
                   @versions={{versionChoices}}

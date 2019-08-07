@@ -27,16 +27,24 @@
 <div class="row pb-20">
   <div class="col span-6">
     <label class="acc-label">
-      {{t "cruClusterTemplate.default.label"}}
     </label>
     <div class="radio">
       <label>
-        {{input
-          type="checkbox"
-          classNames="form-control"
-          checked=setDefaultTemplateRevision
-        }}
-        {{t "cruClusterTemplate.default.flag"}}
+        {{#if (eq clusterTemplate.revisions.length 0)}}
+          {{input
+            type="checkbox"
+            classNames="form-control"
+            checked=true
+            disabled=true
+          }}
+        {{else}}
+          {{input
+            type="checkbox"
+            classNames="form-control"
+            checked=setDefaultTemplateRevision
+          }}
+        {{/if}}
+        {{t "cruClusterTemplate.default.label"}}
       </label>
     </div>
   </div>
