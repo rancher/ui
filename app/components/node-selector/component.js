@@ -63,7 +63,7 @@ export default Component.extend({
     case 'In':
       return `${ rule.key } in (${ rule.value })`;
     case 'NotIn':
-      return `${ rule.key } not in (${ rule.value })`;
+      return `${ rule.key } notin (${ rule.value })`;
     default:
       return `${ rule.key } ${ rule.operator } ${ rule.value }`;
     }
