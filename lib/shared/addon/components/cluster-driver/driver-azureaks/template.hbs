@@ -163,27 +163,29 @@
         </div>
 
         <div class="row">
-          <div class="col span-6">
-            <label class="acc-label">
-              {{t "clusterNew.azureaks.enableHttpApplicationRouting.label"}}
-            </label>
-            <div class="form-control-static">
-              <label class="hand mr-20">
-                {{radio-button
-                  selection=config.enableHttpApplicationRouting
-                  value=true
-                }}
-                {{t "generic.enabled"}}
+          {{#unless isChinaRegion}}
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t "clusterNew.azureaks.enableHttpApplicationRouting.label"}}
               </label>
-              <label class="hand">
-                {{radio-button
-                  selection=config.enableHttpApplicationRouting
-                  value=false
-                }}
-                {{t "generic.disabled"}}
-              </label>
+              <div class="form-control-static">
+                <label class="hand mr-20">
+                  {{radio-button
+                    selection=config.enableHttpApplicationRouting
+                    value=true
+                  }}
+                  {{t "generic.enabled"}}
+                </label>
+                <label class="hand">
+                  {{radio-button
+                    selection=config.enableHttpApplicationRouting
+                    value=false
+                  }}
+                  {{t "generic.disabled"}}
+                </label>
+              </div>
             </div>
-          </div>
+          {{/unless}}
           <div class="col span-6">
             <label class="acc-label">
               {{t "clusterNew.azureaks.enableMonitoring.label"}}
