@@ -14,7 +14,7 @@
     </h2>
   </div>
   <div class="right-buttons">
-    {{#if (or (and isEdit (not applyClusterTemplate)) (and (eq step 1) (not applyClusterTemplate)))}}
+    {{#if (and (or (not applyClusterTemplate) (and (eq step 1) (not applyClusterTemplate))) notView)}}
       {{#if pasteOrUpload}}
         <button class="btn btn-sm bg-primary" {{action "cancel"}}>
           {{t "clusterNew.advanced.cancel"}}
@@ -28,8 +28,8 @@
   </div>
 </section>
 
-{{#unless clusterTemplateCreate}}
-  {{#if (or isEdit (eq step 1))}}
+{{#if (and (not clusterTemplateCreate) notView) }}
+  {{#if (eq step 1)}}
     <section class="cluster-template-select mb-5">
       <div class="row">
         {{#if (or (or model.clusterTemplateRevisions model.clusterTemplateRevision) clusterTemplatesEnforced)}}
@@ -83,7 +83,7 @@
       </div>
     </section>
   {{/if}}
-{{/unless}}
+{{/if}}
 
 {{#if (or clusterTemplateCreate (or (not clusterTemplatesEnforced) (and clusterTemplatesEnforced clusterTemplateRevisionId)))}}
   {{#if (or isEdit (eq step 1))}}
@@ -153,7 +153,7 @@
                   @applyClusterTemplate={{applyClusterTemplate}}
                   @cluster={{cluster}}
                   @clusterTemplateCreate={{clusterTemplateCreate}}
-                  @editing={{eq mode "edit"}}
+                  @mode={{mode}}
                   @initialVersion={{initialVersion}}
                   @value={{config.kubernetesVersion}}
                   @versions={{versionChoices}}
@@ -200,6 +200,7 @@
            expand=(action expandFn)
         }}
           <CruPrivateRegistry
+            @mode={{mode}}
             @cluster={{cluster}}
             @addRegistry={{action "addRegistry"}}
             @removeRegistry={{action "removeRegistry"}}
@@ -236,24 +237,29 @@
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
               >
-                <div class="radio">
-                  <label>
-                    {{radio-button
-                      selection=config.ingress.provider
-                      value="nginx"
-                    }}
-                    {{t "generic.enabled"}}
-                  </label>
-                </div>
-                <div class="radio">
-                  <label>
-                    {{radio-button
-                      selection=config.ingress.provider
-                      value="none"
-                    }}
-                    {{t "generic.disabled"}}
-                  </label>
-                </div>
+                {{#input-or-display
+                   editable=notView
+                   value=config.ingress.provider
+                }}
+                  <div class="radio">
+                    <label>
+                      {{radio-button
+                        selection=config.ingress.provider
+                        value="nginx"
+                      }}
+                      {{t "generic.enabled"}}
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      {{radio-button
+                        selection=config.ingress.provider
+                        value="none"
+                      }}
+                      {{t "generic.disabled"}}
+                    </label>
+                  </div>
+                {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
             <div class="col span-4">
@@ -274,12 +280,17 @@
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
               >
-                {{input
-                  type="text"
-                  value=config.services.kubeApi.serviceNodePortRange
-                  className="form-control"
-                  placeholder=(t "clusterNew.rke.serviceNodePortRange.placeholder")
+                {{#input-or-display
+                   editable=notView
+                   value=config.services.kubeApi.serviceNodePortRange
                 }}
+                  {{input
+                    type="text"
+                    value=config.services.kubeApi.serviceNodePortRange
+                    className="form-control"
+                    placeholder=(t "clusterNew.rke.serviceNodePortRange.placeholder")
+                  }}
+                {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
             <div class="col span-4">
@@ -300,24 +311,29 @@
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
               >
-                <div class="radio">
-                  <label>
-                    {{radio-button
-                      selection=config.monitoring.provider
-                      value="metrics-server"
-                    }}
-                    {{t "generic.enabled"}}
-                  </label>
-                </div>
-                <div class="radio">
-                  <label>
-                    {{radio-button
-                      selection=config.monitoring.provider
-                      value="none"
-                    }}
-                    {{t "generic.disabled"}}
-                  </label>
-                </div>
+                {{#input-or-display
+                   editable=notView
+                   value=config.monitoring.provider
+                }}
+                  <div class="radio">
+                    <label>
+                      {{radio-button
+                        selection=config.monitoring.provider
+                        value="metrics-server"
+                      }}
+                      {{t "generic.enabled"}}
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      {{radio-button
+                        selection=config.monitoring.provider
+                        value="none"
+                      }}
+                      {{t "generic.disabled"}}
+                    </label>
+                  </div>
+                {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
           </div>
@@ -340,29 +356,34 @@
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
               >
-                <div class="radio">
-                  <label class={{unless model.psps.length "text-muted"}}>
-                    {{radio-button
-                      selection=config.services.kubeApi.podSecurityPolicy
-                      value=true
-                      disabled=(not model.psps.length)
-                    }}
-                    {{t "generic.enabled"}}
-                    {{#unless model.psps.length}}
-                      &mdash; {{t "clusterNew.psp.none"}}
-                    {{/unless}}
-                  </label>
-                </div>
-                <div class="radio">
-                  <label>
-                    {{radio-button
-                      selection=config.services.kubeApi.podSecurityPolicy
-                      value=false
-                      disabled=(not model.psps.length)
-                    }}
-                    {{t "generic.disabled"}}
-                  </label>
-                </div>
+                {{#input-or-display
+                   editable=notView
+                   value=config.services.kubeApi.podSecurityPolicy
+                }}
+                  <div class="radio">
+                    <label class={{unless model.psps.length "text-muted"}}>
+                      {{radio-button
+                        selection=config.services.kubeApi.podSecurityPolicy
+                        value=true
+                        disabled=(not model.psps.length)
+                      }}
+                      {{t "generic.enabled"}}
+                      {{#unless model.psps.length}}
+                        &mdash; {{t "clusterNew.psp.none"}}
+                      {{/unless}}
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      {{radio-button
+                        selection=config.services.kubeApi.podSecurityPolicy
+                        value=false
+                        disabled=(not model.psps.length)
+                      }}
+                      {{t "generic.disabled"}}
+                    </label>
+                  </div>
+                {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
             <div class="col span-4">
@@ -384,15 +405,20 @@
                   @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                   @questions={{model.clusterTemplateRevision.questions}}
                 >
-                  {{new-select
-                    content=model.psps
-                    optionLabelPath="displayName"
-                    optionValuePath="id"
-                    prompt="clusterNew.psp.prompt"
-                    localizedPrompt=true
-                    value=cluster.defaultPodSecurityPolicyTemplateId
-                    disabled=(not config.services.kubeApi.podSecurityPolicy)
+                  {{#input-or-display
+                     editable=notView
+                     value=cluster.defaultPodSecurityPolicyTemplateId
                   }}
+                    {{new-select
+                      content=model.psps
+                      optionLabelPath="displayName"
+                      optionValuePath="id"
+                      prompt="clusterNew.psp.prompt"
+                      localizedPrompt=true
+                      value=cluster.defaultPodSecurityPolicyTemplateId
+                      disabled=(not config.services.kubeApi.podSecurityPolicy)
+                    }}
+                  {{/input-or-display}}
                 </CheckOverrideAllowed>
               {{else}}
                 <label class="acc-label">
@@ -421,24 +447,29 @@
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
               >
-                <div class="radio">
-                  <label>
-                    {{radio-button
-                      selection=config.ignoreDockerVersion
-                      value=false
-                    }}
-                    {{t "clusterNew.rke.ignoreDockerVersion.disabled"}}
-                  </label>
-                </div>
-                <div class="radio">
-                  <label>
-                    {{radio-button
-                      selection=config.ignoreDockerVersion
-                      value=true
-                    }}
-                    {{t "clusterNew.rke.ignoreDockerVersion.enabled"}}
-                  </label>
-                </div>
+                {{#input-or-display
+                   editable=notView
+                   value=config.ignoreDockerVersion
+                }}
+                  <div class="radio">
+                    <label>
+                      {{radio-button
+                        selection=config.ignoreDockerVersion
+                        value=false
+                      }}
+                      {{t "clusterNew.rke.ignoreDockerVersion.disabled"}}
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      {{radio-button
+                        selection=config.ignoreDockerVersion
+                        value=true
+                      }}
+                      {{t "clusterNew.rke.ignoreDockerVersion.enabled"}}
+                    </label>
+                  </div>
+                {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
 
@@ -460,12 +491,17 @@
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
               >
-                {{input
-                  type="text"
-                  value=cluster.dockerRootDir
-                  className="form-control"
-                  placeholder=(t "clusterNew.rke.dockerRootDir.placeholder" dir=defaultDockerRootDir)
+                {{#input-or-display
+                   editable=notView
+                   value=cluster.dockerRootDir
                 }}
+                  {{input
+                    type="text"
+                    value=cluster.dockerRootDir
+                    className="form-control"
+                    placeholder=(t "clusterNew.rke.dockerRootDir.placeholder" dir=defaultDockerRootDir)
+                  }}
+                {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
 
@@ -490,24 +526,29 @@
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
               >
-                <div>
-                  <label class="radio mt-0">
-                    {{radio-button selection=backupStrategy value="local"}}
-                    {{t "clusterNew.rke.etcd.location.local.label"}}
-                    <p class="help-block">
-                      {{t "clusterNew.rke.etcd.location.local.help"}}
-                    </p>
-                  </label>
-                </div>
-                <div>
-                  <label class="radio">
-                    {{radio-button selection=backupStrategy value="s3"}}
-                    {{t "clusterNew.rke.etcd.location.s3.label"}}
-                    <p class="help-block">
-                      {{t "clusterNew.rke.etcd.location.s3.help"}}
-                    </p>
-                  </label>
-                </div>
+                {{#input-or-display
+                   editable=notView
+                   value=backupStrategy
+                }}
+                  <div>
+                    <label class="radio mt-0">
+                      {{radio-button selection=backupStrategy value="local"}}
+                      {{t "clusterNew.rke.etcd.location.local.label"}}
+                      <p class="help-block">
+                        {{t "clusterNew.rke.etcd.location.local.help"}}
+                      </p>
+                    </label>
+                  </div>
+                  <div>
+                    <label class="radio">
+                      {{radio-button selection=backupStrategy value="s3"}}
+                      {{t "clusterNew.rke.etcd.location.s3.label"}}
+                      <p class="help-block">
+                        {{t "clusterNew.rke.etcd.location.s3.help"}}
+                      </p>
+                    </label>
+                  </div>
+                {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
           </div>
@@ -532,12 +573,17 @@
                   @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                   @questions={{model.clusterTemplateRevision.questions}}
                 >
-                  {{input
-                    type="text"
-                    value=config.services.etcd.backupConfig.s3BackupConfig.bucketName
-                    classNames="form-control"
-                    placeholder=(t "clusterNew.rke.etcd.backupConfig.bucketName.placeholder")
+                  {{#input-or-display
+                     editable=notView
+                     value=config.services.etcd.backupConfig.s3BackupConfig.bucketName
                   }}
+                    {{input
+                      type="text"
+                      value=config.services.etcd.backupConfig.s3BackupConfig.bucketName
+                      classNames="form-control"
+                      placeholder=(t "clusterNew.rke.etcd.backupConfig.bucketName.placeholder")
+                    }}
+                  {{/input-or-display}}
                 </CheckOverrideAllowed>
               </div>
 
@@ -559,12 +605,17 @@
                   @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                   @questions={{model.clusterTemplateRevision.questions}}
                 >
-                  {{input
-                    type="text"
-                    value=config.services.etcd.backupConfig.s3BackupConfig.region
-                    classNames="form-control"
-                    placeholder=(t "clusterNew.rke.etcd.backupConfig.region.placeholder")
+                  {{#input-or-display
+                     editable=notView
+                     value=config.services.etcd.backupConfig.s3BackupConfig.region
                   }}
+                    {{input
+                      type="text"
+                      value=config.services.etcd.backupConfig.s3BackupConfig.region
+                      classNames="form-control"
+                      placeholder=(t "clusterNew.rke.etcd.backupConfig.region.placeholder")
+                    }}
+                  {{/input-or-display}}
                 </CheckOverrideAllowed>
               </div>
 
@@ -586,12 +637,17 @@
                   @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                   @questions={{model.clusterTemplateRevision.questions}}
                 >
-                  {{input
-                    type="text"
-                    value=config.services.etcd.backupConfig.s3BackupConfig.endpoint
-                    classNames="form-control"
-                    placeholder=(t "clusterNew.rke.etcd.backupConfig.endpoint.placeholder")
+                  {{#input-or-display
+                     editable=notView
+                     value=config.services.etcd.backupConfig.s3BackupConfig.endpoint
                   }}
+                    {{input
+                      type="text"
+                      value=config.services.etcd.backupConfig.s3BackupConfig.endpoint
+                      classNames="form-control"
+                      placeholder=(t "clusterNew.rke.etcd.backupConfig.endpoint.placeholder")
+                    }}
+                  {{/input-or-display}}
                 </CheckOverrideAllowed>
               </div>
             </div>
@@ -615,13 +671,18 @@
                   @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                   @questions={{model.clusterTemplateRevision.questions}}
                 >
-                  {{input
-                    type="text"
-                    name="folder"
-                    classNames="form-control"
-                    placeholder=(t "clusterNew.rke.etcd.backupConfig.folder.placeholder")
-                    value=config.services.etcd.backupConfig.s3BackupConfig.folder
+                  {{#input-or-display
+                     editable=notView
+                     value=config.services.etcd.backupConfig.s3BackupConfig.folder
                   }}
+                    {{input
+                      type="text"
+                      name="folder"
+                      classNames="form-control"
+                      placeholder=(t "clusterNew.rke.etcd.backupConfig.folder.placeholder")
+                      value=config.services.etcd.backupConfig.s3BackupConfig.folder
+                    }}
+                  {{/input-or-display}}
                 </CheckOverrideAllowed>
               </div>
 
@@ -643,13 +704,18 @@
                   @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                   @questions={{model.clusterTemplateRevision.questions}}
                 >
-                  {{input
-                    type="text"
-                    name="accessKey"
-                    classNames="form-control"
-                    placeholder=(t "clusterNew.rke.etcd.backupConfig.accessKey.placeholder")
-                    value=config.services.etcd.backupConfig.s3BackupConfig.accessKey
+                  {{#input-or-display
+                     editable=notView
+                     value=config.services.etcd.backupConfig.s3BackupConfig.accessKey
                   }}
+                    {{input
+                      type="text"
+                      name="accessKey"
+                      classNames="form-control"
+                      placeholder=(t "clusterNew.rke.etcd.backupConfig.accessKey.placeholder")
+                      value=config.services.etcd.backupConfig.s3BackupConfig.accessKey
+                    }}
+                  {{/input-or-display}}
                 </CheckOverrideAllowed>
               </div>
 
@@ -671,32 +737,59 @@
                   @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                   @questions={{model.clusterTemplateRevision.questions}}
                 >
-                  {{input
-                    type="password"
-                    name="password"
-                    classNames="form-control"
-                    placeholder=(t "clusterNew.rke.etcd.backupConfig.secretKey.placeholder")
-                    value=config.services.etcd.backupConfig.s3BackupConfig.secretKey
+                  {{#input-or-display
+                     editable=notView
+                     obfuscate=true
+                     value=config.services.etcd.backupConfig.s3BackupConfig.secretKey
                   }}
+                    {{input
+                      type="password"
+                      name="password"
+                      classNames="form-control"
+                      placeholder=(t "clusterNew.rke.etcd.backupConfig.secretKey.placeholder")
+                      value=config.services.etcd.backupConfig.s3BackupConfig.secretKey
+                    }}
+                  {{/input-or-display}}
                 </CheckOverrideAllowed>
               </div>
             </div>
             <div class="row">
               <div class="col span-7">
                 <label class="acc-label" for="s3-config-custom-ca">
+                  {{#if clusterTemplateCreate}}
+                    <ClusterTemplateOverrideToggle
+                      @path="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.customCa"
+                      @configVariable={{config.services.etcd.backupConfig.s3BackupConfig.customCa}}
+                      @addOverride={{action "addOverride"}}
+                      @questions={{model.clusterTemplateRevision.questions}}
+                    />
+                  {{/if}}
                   {{t "clusterNew.rke.etcd.backupConfig.customCa.label"}}
                 </label>
-                {{input-text-file
-                  accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
-                  canChangeName=false
-                  classNames="box"
-                  id="s3-config-custom-ca"
-                  minHeight=60
-                  multiple=true
-                  placeholder="clusterNew.rke.etcd.backupConfig.customCa.placeholder"
-                  shouldChangeName=false
-                  value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.customCa
-                }}
+                <CheckOverrideAllowed
+                  @paramName="rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.customCa"
+                  @applyClusterTemplate={{applyClusterTemplate}}
+                  @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                  @questions={{model.clusterTemplateRevision.questions}}
+                >
+                  {{#input-or-display
+                     editable=notView
+                     obfuscate=true
+                     value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.customCa
+                  }}
+                    {{input-text-file
+                      accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+                      canChangeName=false
+                      classNames="box"
+                      id="s3-config-custom-ca"
+                      minHeight=60
+                      multiple=true
+                      placeholder="clusterNew.rke.etcd.backupConfig.customCa.placeholder"
+                      shouldChangeName=false
+                      value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.customCa
+                    }}
+                  {{/input-or-display}}
+                </CheckOverrideAllowed>
               </div>
             </div>
           {{/unless}}
@@ -720,22 +813,27 @@
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
               >
-                <div class="text-muted">
-                  <label>
-                    {{radio-button
-                      selection=config.services.etcd.backupConfig.enabled
-                      value=true
-                    }}
-                    {{t "generic.yes"}}
-                  </label>
-                  <label>
-                    {{radio-button
-                      selection=config.services.etcd.backupConfig.enabled
-                      value=false
-                    }}
-                    {{t "generic.no"}}
-                  </label>
-                </div>
+                {{#input-or-display
+                   editable=notView
+                   value=config.services.etcd.backupConfig.enabled
+                }}
+                  <div class="text-muted">
+                    <label>
+                      {{radio-button
+                        selection=config.services.etcd.backupConfig.enabled
+                        value=true
+                      }}
+                      {{t "generic.yes"}}
+                    </label>
+                    <label>
+                      {{radio-button
+                        selection=config.services.etcd.backupConfig.enabled
+                        value=false
+                      }}
+                      {{t "generic.no"}}
+                    </label>
+                  </div>
+                {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
 
@@ -758,14 +856,19 @@
                 @questions={{model.clusterTemplateRevision.questions}}
               >
                 <div class="input-group">
-                  {{input-integer
-                    value=config.services.etcd.backupConfig.intervalHours
-                    min=1
-                    classNames="form-control"
-                    placeholder=(t "clusterNew.rke.etcd.backupConfig.interval.placeholder")
-                    disabled=(if (not config.services.etcd.backupConfig.enabled) true)
+                  {{#input-or-display
+                     editable=notView
+                     value=(concat config.services.etcd.backupConfig.intervalHours (concat " " (t "generic.hours")))
                   }}
-                  <span class="input-group-addon bg-default">{{t "generic.hours"}}</span>
+                    {{input-integer
+                      value=config.services.etcd.backupConfig.intervalHours
+                      min=1
+                      classNames="form-control"
+                      placeholder=(t "clusterNew.rke.etcd.backupConfig.interval.placeholder")
+                      disabled=(if (not config.services.etcd.backupConfig.enabled) true)
+                    }}
+                    <span class="input-group-addon bg-default">{{t "generic.hours"}}</span>
+                  {{/input-or-display}}
                 </div>
               </CheckOverrideAllowed>
             </div>
@@ -788,13 +891,18 @@
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
               >
-                {{input-integer
-                  value=config.services.etcd.backupConfig.retention
-                  min=1
-                  classNames="form-control"
-                  placeholder=(t "clusterNew.rke.etcd.backupConfig.retention.placeholder")
-                  disabled=(if (not config.services.etcd.backupConfig.enabled) true)
+                {{#input-or-display
+                   editable=notView
+                   value=config.services.etcd.backupConfig.retention
                 }}
+                  {{input-integer
+                    value=config.services.etcd.backupConfig.retention
+                    min=1
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.etcd.backupConfig.retention.placeholder")
+                    disabled=(if (not config.services.etcd.backupConfig.enabled) true)
+                  }}
+                {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
           </div>
@@ -808,6 +916,7 @@
            expand=(action expandFn)
         }}
           <AuthorizedEndpoint
+            @mode={{mode}}
             @addOverride={{action "addOverride"}}
             @cluster={{cluster}}
             @clusterTemplateCreate={{clusterTemplateCreate}}
@@ -1132,7 +1241,7 @@
 
   {{top-errors errors=allErrors}}
 
-  {{#if (or isEdit (eq step 1))}}
+  {{#if (and notView (eq step 1))}}
     {{save-cancel
       createLabel=(or overrideCreateLabel (if isCustom "saveCancel.next" "saveCancel.create"))
       editing=isEdit

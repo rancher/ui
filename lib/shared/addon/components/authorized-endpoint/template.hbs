@@ -17,24 +17,29 @@
       @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
       @applyClusterTemplate={{applyClusterTemplate}}
     >
-      <div class="radio">
-        <label>
-          {{radio-button
-            selection=enableLocalClusterAuthEndpoint
-            value=true
-          }}
-          {{t "generic.enabled"}}
-        </label>
-      </div>
-      <div class="radio">
-        <label>
-          {{radio-button
-            selection=enableLocalClusterAuthEndpoint
-            value=false
-          }}
-          {{t "generic.disabled"}}
-        </label>
-      </div>
+      {{#input-or-display
+         editable=(not-eq mode "view")
+         value=enableLocalClusterAuthEndpoint
+      }}
+        <div class="radio">
+          <label>
+            {{radio-button
+              selection=enableLocalClusterAuthEndpoint
+              value=true
+            }}
+            {{t "generic.enabled"}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button
+              selection=enableLocalClusterAuthEndpoint
+              value=false
+            }}
+            {{t "generic.disabled"}}
+          </label>
+        </div>
+      {{/input-or-display}}
     </CheckOverrideAllowed>
   </div>
 </div>
@@ -59,13 +64,18 @@
         @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
         @applyClusterTemplate={{applyClusterTemplate}}
       >
-        {{input
-          classNames="form-control"
-          id="cluster-auth-endpoint-fqdn"
-          placeholder=(t "globalDnsPage.entriesPage.config.fqdn.placeholder")
-          type="text"
-          value=cluster.localClusterAuthEndpoint.fqdn
+        {{#input-or-display
+           editable=(not-eq mode "view")
+           value=cluster.localClusterAuthEndpoint.fqdn
         }}
+          {{input
+            classNames="form-control"
+            id="cluster-auth-endpoint-fqdn"
+            placeholder=(t "globalDnsPage.entriesPage.config.fqdn.placeholder")
+            type="text"
+            value=cluster.localClusterAuthEndpoint.fqdn
+          }}
+        {{/input-or-display}}
       </CheckOverrideAllowed>
     </div>
     <div class="col span-8">
@@ -86,17 +96,24 @@
         @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
         @applyClusterTemplate={{applyClusterTemplate}}
       >
-        {{input-text-file
-          accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
-          canChangeName=false
-          classNames="box"
-          id="cluster-auth-endpoint-cacert"
-          minHeight=60
-          multiple=true
-          placeholder="newCertificate.cert.placeholder"
-          shouldChangeName=false
-          value=cluster.localClusterAuthEndpoint.caCerts
+        {{#input-or-display
+           editable=(not-eq mode "view")
+           value=cluster.localClusterAuthEndpoint.caCerts
+           obfuscate=true
+           classesForDisplay="force-wrap"
         }}
+          {{input-text-file
+            accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
+            canChangeName=false
+            classNames="box"
+            id="cluster-auth-endpoint-cacert"
+            minHeight=60
+            multiple=true
+            placeholder="newCertificate.cert.placeholder"
+            shouldChangeName=false
+            value=cluster.localClusterAuthEndpoint.caCerts
+          }}
+        {{/input-or-display}}
       </CheckOverrideAllowed>
     </div>
   </div>

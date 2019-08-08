@@ -47,18 +47,21 @@
       {{/if}}
     </td>
     <td class="pr-10 pt-10">
-      {{searchable-select
-        content=choices
-        value=member.accessType
-        readOnly=false
-      }}
+      {{#if editing}}
+        {{searchable-select
+          content=choices
+          value=member.accessType
+        }}
+      {{else}}
+        {{member.accessType}}
+      {{/if}}
     </td>
     <td class="pt-10">
-      <div class="input-group-btn">
+      {{#if editing}}
         <button class="btn bg-primary btn-sm" {{action "remove"}}>
           <i class="icon icon-minus" />
         </button>
-      </div>
+      {{/if}}
     </td>
   </tr>
 {{/if}}
