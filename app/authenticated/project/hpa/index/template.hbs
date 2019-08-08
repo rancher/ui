@@ -20,7 +20,7 @@
   <h1>{{t "nav.infra.hpa"}}</h1>
 </section>
 
-{{#if rows.length}}
+{{# if model.supported }}
   <section class="pl-0 pr-0">
     {{#sortable-table
       classNames="grid sortable-table"
@@ -71,13 +71,6 @@
       {{/if}}
     {{/sortable-table}}
   </section>
-{{else if model.supported}}
-  {{empty-table
-    disabled=(rbac-prevents resource="horizontalpodautoscaler" scope="project" permission="create")
-    resource="container"
-    newRoute="authenticated.project.hpa.new"
-    newTranslationKey="nav.containers.addHpa"
-  }}
 {{else}}
   {{banner-message
     icon="icon-alert"

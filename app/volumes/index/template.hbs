@@ -3,65 +3,61 @@
   {{#link-to "volumes.new" class="btn btn-sm bg-primary"}}{{t 'nav.containers.addVolume'}}{{/link-to}}
 {{/containers-header}}
 
-{{#if rows.length}}
-  <section class="pl-0 pr-0">
-    {{#sortable-table
-          classNames="grid sortable-table"
-          body=rows
-          searchText=searchText
-          sortBy=sortBy
-          bulkActions=true
-          subRows=true
-          descending=descending
-          groupByKey=groupTableBy
-          groupByRef="namespace"
-          pagingLabel="pagination.volume"
-          subHeaders=containerHeaders
-          subSearchField="instances"
-          headers=headers as |sortable kind obj dt|}}
-      {{#if (eq kind "row")}}
-        <tr class="main-row">
-          <td class="row-check" valign="middle" style="padding-top: 2px;">
-            {{check-box nodeId=obj.id}}
-          </td>
-          <td data-title="{{dt.state}}">
-            {{badge-state model=obj}}
-          </td>
-          <td data-title="{{dt.name}}">
-            <a href="{{href-to "volumes.detail" obj.id}}">{{obj.displayName}}</a>
-          </td>
-          <td data-title="{{dt.size}}">
-            {{obj.displaySize}}
-          </td>
-          <td data-title="{{dt.volume}}">
-            {{#if obj.persistentVolume}}
-              <a href="{{href-to "authenticated.cluster.storage.persistent-volumes.detail" scope.currentCluster.id obj.persistentVolume.id}}">
-                {{obj.persistentVolume.displayName}}
-              </a>
-            {{else}}
-              <span class="text-muted">&ndash;</span>
-            {{/if}}
-          </td>
-          <td data-title="{{dt.storageClass}}">
-            {{#if obj.storageClass}}
-              <a href="{{href-to "authenticated.cluster.storage.classes.detail" scope.currentCluster.id obj.storageClass.id}}">
-                {{obj.storageClass.displayName}}
-              </a>
-            {{else}}
-              <span class="text-muted">&ndash;</span>
-            {{/if}}
-          </td>
-          <td data-title="{{dt.actions}}" class="actions">
-            {{action-menu model=obj}}
-          </td>
-        </tr>
-      {{else if (eq kind "group")}}
-        {{namespace-group model=obj.ref fullColspan=sortable.fullColspan}}
-      {{else if (eq kind "nomatch")}}
-        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'volumesPage.noMatch'}}</td></tr>
-      {{/if}}
-    {{/sortable-table}}
-  </section>
-{{else}}
-  {{empty-table resource="container" newRoute="volumes.new" newTranslationKey="nav.containers.addVolume"}}
-{{/if}}
+<section class="pl-0 pr-0">
+  {{#sortable-table
+        classNames="grid sortable-table"
+        body=rows
+        searchText=searchText
+        sortBy=sortBy
+        bulkActions=true
+        subRows=true
+        descending=descending
+        groupByKey=groupTableBy
+        groupByRef="namespace"
+        pagingLabel="pagination.volume"
+        subHeaders=containerHeaders
+        subSearchField="instances"
+        headers=headers as |sortable kind obj dt|}}
+    {{#if (eq kind "row")}}
+      <tr class="main-row">
+        <td class="row-check" valign="middle" style="padding-top: 2px;">
+          {{check-box nodeId=obj.id}}
+        </td>
+        <td data-title="{{dt.state}}">
+          {{badge-state model=obj}}
+        </td>
+        <td data-title="{{dt.name}}">
+          <a href="{{href-to "volumes.detail" obj.id}}">{{obj.displayName}}</a>
+        </td>
+        <td data-title="{{dt.size}}">
+          {{obj.displaySize}}
+        </td>
+        <td data-title="{{dt.volume}}">
+          {{#if obj.persistentVolume}}
+            <a href="{{href-to "authenticated.cluster.storage.persistent-volumes.detail" scope.currentCluster.id obj.persistentVolume.id}}">
+              {{obj.persistentVolume.displayName}}
+            </a>
+          {{else}}
+            <span class="text-muted">&ndash;</span>
+          {{/if}}
+        </td>
+        <td data-title="{{dt.storageClass}}">
+          {{#if obj.storageClass}}
+            <a href="{{href-to "authenticated.cluster.storage.classes.detail" scope.currentCluster.id obj.storageClass.id}}">
+              {{obj.storageClass.displayName}}
+            </a>
+          {{else}}
+            <span class="text-muted">&ndash;</span>
+          {{/if}}
+        </td>
+        <td data-title="{{dt.actions}}" class="actions">
+          {{action-menu model=obj}}
+        </td>
+      </tr>
+    {{else if (eq kind "group")}}
+      {{namespace-group model=obj.ref fullColspan=sortable.fullColspan}}
+    {{else if (eq kind "nomatch")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'volumesPage.noMatch'}}</td></tr>
+    {{/if}}
+  {{/sortable-table}}
+</section>

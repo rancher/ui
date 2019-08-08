@@ -1,51 +1,47 @@
-{{#if body.length}}
-  {{#sortable-table
-    tableClassNames="double-rows"
-    bulkActions=bulkActions
-    body=body
-    sortBy=sortBy
-    fullRows=true
-    search=search
-    groupByKey=groupByKey
-    groupByRef=groupByRef
-    headers=headers as |sortable kind inst dt|
-    }}
-    {{#if (eq kind "row")}}
-      <tr class="main-row">
-        {{#if body.length}}
-          <td valign="middle" class="row-check" style="padding-top: 2px;">
-            {{check-box nodeId=inst.id}}
-          </td>
-        {{/if}}
-        <td data-title="{{dt.lastRunState}}" class="state">
-          {{badge-state model=inst}}
+{{#sortable-table
+  tableClassNames="double-rows"
+  bulkActions=bulkActions
+  body=body
+  sortBy=sortBy
+  fullRows=true
+  search=search
+  groupByKey=groupByKey
+  groupByRef=groupByRef
+  headers=headers as |sortable kind inst dt|
+  }}
+  {{#if (eq kind "row")}}
+    <tr class="main-row">
+      {{#if body.length}}
+        <td valign="middle" class="row-check" style="padding-top: 2px;">
+          {{check-box nodeId=inst.id}}
         </td>
-        <td data-title="{{dt.repositoryUrl}}" class="clip">
-          {{#link-to "pipelines.detail" inst.id}}
-            {{inst.displayName}}
+      {{/if}}
+      <td data-title="{{dt.lastRunState}}" class="state">
+        {{badge-state model=inst}}
+      </td>
+      <td data-title="{{dt.repositoryUrl}}" class="clip">
+        {{#link-to "pipelines.detail" inst.id}}
+          {{inst.displayName}}
+        {{/link-to}}
+      </td>
+      <td data-title="{{dt.runCount}}" class="clip">
+        {{#if inst.lastExecutionId}}
+          {{#link-to "pipelines.run" inst.id inst.lastRun}}
+            {{~#tooltip-element style="100%;" inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(date-str inst.lastStarted) tagName="span" tooltipFor="tooltip-basic"}}
+              {{date-from-now inst.lastStarted}}
+            {{~/tooltip-element}}
           {{/link-to}}
-        </td>
-        <td data-title="{{dt.runCount}}" class="clip">
-          {{#if inst.lastExecutionId}}
-            {{#link-to "pipelines.run" inst.id inst.lastRun}}
-              {{~#tooltip-element style="100%;" inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(date-str inst.lastStarted) tagName="span" tooltipFor="tooltip-basic"}}
-                {{date-from-now inst.lastStarted}}
-              {{~/tooltip-element}}
-            {{/link-to}}
-          {{else}}
-            {{t 'generic.na'}}
-          {{/if}}
-        </td>        
-        <td data-title="{{dt.actions}}" class="actions">
-          {{action-menu model=inst showPrimary=true}}
-        </td>
-      </tr>
-    {{else if (eq kind "nomatch")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'pipelinesPage.table.noMatch'}}</td></tr>
-    {{else if (eq kind "norows")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'pipelinesPage.table.noData'}}</td></tr>
-    {{/if}}
-  {{/sortable-table}}
-{{else}}
-  {{empty-table resource="container" newRoute="authenticated.project.pipeline.repositories" newTranslationKey="repositories.enable"}}
-{{/if}}
+        {{else}}
+          {{t 'generic.na'}}
+        {{/if}}
+      </td>
+      <td data-title="{{dt.actions}}" class="actions">
+        {{action-menu model=inst showPrimary=true}}
+      </td>
+    </tr>
+  {{else if (eq kind "nomatch")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'pipelinesPage.table.noMatch'}}</td></tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'pipelinesPage.table.noData'}}</td></tr>
+  {{/if}}
+{{/sortable-table}}

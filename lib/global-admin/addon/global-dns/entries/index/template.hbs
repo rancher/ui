@@ -16,46 +16,37 @@
 </section>
 
 
-{{#if rows.length}}
-  {{#sortable-table
-     classNames="grid sortable-table"
-     body=rows
-     searchText=searchText
-     descending=descending
-     sortBy=sortBy
-     bulkActions=true
-     pagingLabel="pagination.cluster"
-     headers=headers as |sortable kind entry dt|
-  }}
-    {{#if (eq kind "row")}}
-      {{global-dns-entry-row
-        entry=entry
-      }}
-    {{else if (eq kind "nomatch")}}
-      <tr>
-        <td
-          colspan="{{sortable.fullColspan}}"
-          class="text-center text-muted lacsso pt-20 pb-20"
-        >
-          {{t "globalDnsPage.noDnsMatch"}}
-        </td>
-      </tr>
-    {{else if (eq kind "norows")}}
-      <tr>
-        <td
-          colspan="{{sortable.fullColspan}}"
-          class="text-center text-muted lacsso pt-20 pb-20"
-        >
-          {{t "clusterRow.noDnsData"}}
-        </td>
-      </tr>
-    {{/if}}
-  {{/sortable-table}}
-{{else}}
-  {{empty-table
-    resource="container"
-    newRoute="global-admin.global-dns.entries.new"
-    newTranslationKey="globalDnsPage.newDns"
-    ctx=""
-  }}
-{{/if}}
+{{#sortable-table
+   classNames="grid sortable-table"
+   body=rows
+   searchText=searchText
+   descending=descending
+   sortBy=sortBy
+   bulkActions=true
+   pagingLabel="pagination.cluster"
+   headers=headers as |sortable kind entry dt|
+}}
+  {{#if (eq kind "row")}}
+    {{global-dns-entry-row
+      entry=entry
+    }}
+  {{else if (eq kind "nomatch")}}
+    <tr>
+      <td
+        colspan="{{sortable.fullColspan}}"
+        class="text-center text-muted lacsso pt-20 pb-20"
+      >
+        {{t "globalDnsPage.noDnsMatch"}}
+      </td>
+    </tr>
+  {{else if (eq kind "norows")}}
+    <tr>
+      <td
+        colspan="{{sortable.fullColspan}}"
+        class="text-center text-muted lacsso pt-20 pb-20"
+      >
+        {{t "clusterRow.noDnsData"}}
+      </td>
+    </tr>
+  {{/if}}
+{{/sortable-table}}
