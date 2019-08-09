@@ -114,7 +114,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         if ( firstTemplate ) {
           return get(firstTemplate, 'driver');
         } else {
-          return 'custom';
+          return null;
         }
       } else {
         return 'custom';
