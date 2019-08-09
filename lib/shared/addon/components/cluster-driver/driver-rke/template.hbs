@@ -16,13 +16,23 @@
   <div class="right-buttons">
     {{#if (or (not applyClusterTemplate) (and (eq step 1) (not applyClusterTemplate)))}}
       {{#if pasteOrUpload}}
-        <button class="btn btn-sm bg-primary" {{action "cancel"}}>
-          {{#if notView}}
-            {{t "clusterNew.advanced.cancel"}}
-          {{else}}
-            {{t "clusterNew.advanced.viewCancel"}}
-          {{/if}}
-        </button>
+        {{#if clusterOptErrors.length}}
+          <button class="btn btn-sm bg-primary" disabled>
+            {{#if notView}}
+              {{t "clusterNew.advanced.cancel"}}
+            {{else}}
+              {{t "clusterNew.advanced.viewCancel"}}
+            {{/if}}
+          </button>
+        {{else}}
+          <button class="btn btn-sm bg-primary" {{action "cancel"}}>
+            {{#if notView}}
+              {{t "clusterNew.advanced.cancel"}}
+            {{else}}
+              {{t "clusterNew.advanced.viewCancel"}}
+            {{/if}}
+          </button>
+        {{/if}}
       {{else}}
         <button class="btn btn-sm bg-primary" {{action "showPaste"}}>
           {{#if notView}}
@@ -112,12 +122,14 @@
             </div>
           </div>
           <div class="accordion-content">
+            {{top-errors errors=clusterOptErrors}}
             <div class="mt-25">
               {{input-yaml
                 showDownload=false
                 canChangeName=false
                 autoResize=true
                 value=yamlValue
+                fileChosen=(action "fileUploaded")
                 readOnly=(eq mode "view")
                 showUpload=(not-eq mode "view")
                 valueUpdated=(action "yamlValUpdated")
@@ -1250,7 +1262,9 @@
     {{/if}}
   {{/if}}
 
-  {{top-errors errors=allErrors}}
+  {{#unless (and pasteOrUpload clusterOptErrors)}}
+    {{top-errors errors=allErrors}}
+  {{/unless}}
 
   {{#if (or (and notView (eq step 1)) (and isEdit (eq step 2)))}}
     {{save-cancel
