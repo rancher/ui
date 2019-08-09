@@ -41,6 +41,7 @@ const App = Application.extend({
           'endpoint',
           'globalStore',
           'intl',
+          'linode',
           'modal',
           'resource-actions',
           'router',
