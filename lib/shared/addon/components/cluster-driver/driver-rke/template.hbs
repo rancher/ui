@@ -1251,7 +1251,7 @@
 
   {{top-errors errors=allErrors}}
 
-  {{#if (and notView (eq step 1))}}
+  {{#if (or (and notView (eq step 1)) (and isEdit (eq step 2)))}}
     {{save-cancel
       createLabel=(or overrideCreateLabel (if isCustom "saveCancel.next" "saveCancel.create"))
       editing=isEdit
