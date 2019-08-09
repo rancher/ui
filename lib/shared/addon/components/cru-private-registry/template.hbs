@@ -12,12 +12,13 @@
       {{/if}}
     </label>
     <CheckOverrideAllowed
-      @paramName="uiOverridePrivateRegistry"
       @applyClusterTemplate={{applyClusterTemplate}}
       @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
-      @questions={{clusterTemplateRevision.questions}}
       @enablePrivateRegistry={{mut enablePrivateRegistry}}
       @multipleRegistries={{multipleRegistries}}
+      @paramName="uiOverridePrivateRegistry"
+      @questions={{clusterTemplateRevision.questions}}
+      @value={{enablePrivateRegistry}}
     >
       {{#input-or-display
          editable=(not-eq mode "view")
@@ -65,6 +66,7 @@
       <CheckOverrideAllowed
         @questions={{clusterTemplateRevision.questions}}
         @paramName="rancherKubernetesEngineConfig.privateRegistries[0].url"
+        @value={{privateRegistry.url}}
         @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
         @applyClusterTemplate={{applyClusterTemplate}}
       >
@@ -99,6 +101,7 @@
       <CheckOverrideAllowed
         @questions={{clusterTemplateRevision.questions}}
         @paramName="rancherKubernetesEngineConfig.privateRegistries[0].user"
+        @value={{privateRegistry.user}}
         @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
         @applyClusterTemplate={{applyClusterTemplate}}
       >
@@ -130,6 +133,7 @@
       <CheckOverrideAllowed
         @questions={{clusterTemplateRevision.questions}}
         @paramName="rancherKubernetesEngineConfig.privateRegistries[0].password"
+        @value={{privateRegistry.password}}
         @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
         @applyClusterTemplate={{applyClusterTemplate}}
       >
