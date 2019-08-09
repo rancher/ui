@@ -14,14 +14,22 @@
     </h2>
   </div>
   <div class="right-buttons">
-    {{#if (and (or (not applyClusterTemplate) (and (eq step 1) (not applyClusterTemplate))) notView)}}
+    {{#if (or (not applyClusterTemplate) (and (eq step 1) (not applyClusterTemplate)))}}
       {{#if pasteOrUpload}}
         <button class="btn btn-sm bg-primary" {{action "cancel"}}>
-          {{t "clusterNew.advanced.cancel"}}
+          {{#if notView}}
+            {{t "clusterNew.advanced.cancel"}}
+          {{else}}
+            {{t "clusterNew.advanced.viewCancel"}}
+          {{/if}}
         </button>
       {{else}}
         <button class="btn btn-sm bg-primary" {{action "showPaste"}}>
-          {{t "clusterNew.advanced.yaml"}} <span class="icon icon-copy"></span>
+          {{#if notView}}
+            {{t "clusterNew.advanced.yaml"}} <span class="icon icon-copy"></span>
+          {{else}}
+            {{t "clusterNew.advanced.viewYaml"}} <span class="icon icon-copy"></span>
+          {{/if}}
         </button>
       {{/if}}
     {{/if}}
@@ -109,6 +117,8 @@
                 canChangeName=false
                 autoResize=true
                 value=yamlValue
+                readOnly=(eq mode "view")
+                showUpload=(not-eq mode "view")
                 valueUpdated=(action "yamlValUpdated")
               }}
             </div>
