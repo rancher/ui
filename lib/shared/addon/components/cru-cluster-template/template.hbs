@@ -3,7 +3,7 @@
     <FormNameDescription
       @bothColClass="col span-12"
       @colClass="col span-12"
-      @editing={{eq mode "new"}}
+      @editing={{or (eq mode "new") (not mode "view")}}
       @model={{primaryResource}}
       @nameLabel="cruClusterTemplate.name.label"
       @nameRequired={{true}}
@@ -15,7 +15,7 @@
       @colClass="col span-12"
       @descriptionDisabled={{true}}
       @descriptionShown={{false}}
-      @editing={{true}}
+      @editing={{notView}}
       @focusDisabledOnInit={{true}}
       @model={{clusterTemplateRevision}}
       @nameLabel="cruClusterTemplate.revisionName.label"
@@ -30,12 +30,12 @@
     </label>
     <div class="radio">
       <label>
-        {{#if (eq clusterTemplate.revisions.length 0)}}
+        {{#if (or (eq clusterTemplate.revisions.length 0) isView)}}
           {{input
             type="checkbox"
             classNames="form-control"
             checked=true
-            disabled=true
+            disabled=isView
           }}
         {{else}}
           {{input
@@ -65,7 +65,7 @@
       @expand={{action expandFn}}
     >
       <FormShareMember
-        @editing={{eq mode "edit"}}
+        @editing={{notView}}
         @resource={{primaryResource}}
         @addAuthorizedPrincipal={{action "addAuthorizedPrincipal"}}
         @removeMember={{action "removeMember"}}
@@ -81,7 +81,7 @@
     advanced=true
     mode=mode
     nodeWhich="custom"
-    clusterTemplateCreate=true
+    clusterTemplateCreate=notView
     clusterTemplateQuestions=clusterTemplateRevision.questions
     clusterTemplateRevisionId=clusterTemplateRevisionId
     addQuestion=(action "addQuestion")

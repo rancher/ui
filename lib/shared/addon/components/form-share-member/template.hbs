@@ -1,15 +1,17 @@
-<div class="row">
-  <div class="col">
-    <button class="btn bg-link icon-btn p-0" {{action "addMember"}}>
-      <span class="darken">
-        <i class="icon icon-plus text-small"/>
-      </span>
-      <span>
-        {{t "formShareMember.add"}}
-      </span>
-    </button>
+{{#if editing}}
+  <div class="row">
+    <div class="col">
+      <button class="btn bg-link icon-btn p-0" {{action "addMember"}}>
+        <span class="darken">
+          <i class="icon icon-plus text-small"/>
+        </span>
+        <span>
+          {{t "formShareMember.add"}}
+        </span>
+      </button>
+    </div>
   </div>
-</div>
+{{/if}}
 
 <div class="row">
   <SortableTable
@@ -52,30 +54,19 @@
 
   <hr/>
 
-  <div class="col span-6">
-    <div class="radio">
-      {{!--
-          <ShareMemberRow
-          @member={{member}}
-          @editing={{editing}}
-          @clusterResource={{resource}}
-          @users={{users}}
-          @remove={{removeMember}}
-          @isPublic={{true}}
-          />
-          --}}
-      <label>
-        {{input
-          type="checkbox"
-          classNames="form-control"
-          checked=addPublicMember
-          change=(action "checkboxToggled")
-        }}
-        Make Public (read-only)
-        {{!--
-        {{t "cruClusterTemplate.default.flag"}}
-        --}}
-      </label>
+  {{#if editing}}
+    <div class="col span-6">
+      <div class="radio">
+        <label>
+          {{input
+            type="checkbox"
+            classNames="form-control"
+            checked=addPublicMember
+            change=(action "checkboxToggled")
+          }}
+          {{t "formShareMember.public"}}
+        </label>
+      </div>
     </div>
-  </div>
+  {{/if}}
 </div>
