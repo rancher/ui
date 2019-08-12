@@ -8,7 +8,22 @@
     </li>
   </ul>
   <div class="right-buttons">
-    <button disabled={{rbac-prevents resource="kontainerdriver" scope="global" permission="create"}} class="btn btn-sm bg-primary right-divider-btn" {{action 'addNewDriver'}}>{{t 'clusterDrivers.add'}}</button>
+    <button
+      disabled={{or refreshing (rbac-prevents resource="kontainerdriver" scope="global" permission="create")}}
+      class="btn btn-sm bg-primary right-divider-btn"
+      {{action 'refreshMetadata'}}>
+        {{#if refreshing}}
+         <i class="icon icon-spinner icon-spin"></i>
+        {{/if}}
+        {{t 'clusterDrivers.refresh'}}
+    </button>
+
+    <button
+      disabled={{rbac-prevents resource="kontainerdriver" scope="global" permission="create"}}
+      class="btn btn-sm bg-primary right-divider-btn"
+      {{action 'addNewDriver'}}>
+        {{t 'clusterDrivers.add'}}
+    </button>
   </div>
 </section>
 
