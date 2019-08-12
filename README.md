@@ -42,10 +42,19 @@ Rancher releases include a static copy of the UI passed in during build as a tar
 ```bash
   ./scripts/build-static
 ```
-
 ### Customizing
 
 We highly suggest making customizations as an [ember-cli addon](http://ember-cli.com/extending/#developing-addons-and-blueprints) rather than forking this repo, making a bunch of changes and then fighting conflicts to keep it up to date with upstream forever.  [ui-example-addon-machine](https://github.com/rancher/ui-example-addon-machine) is an example addon that adds a custom screen for a docker-machine driver.  If there is no way for you to get to what you want to change from an addon, PRs to this repo that add generalized hooks so that you can are accepted.
+
+### Project Structure
+
+Rancher UI uses [Ember CLI Pods](https://cli.emberjs.com/release/advanced-use/project-layouts/#podslayout) for its project structure. We suggest reading the documentation if you have questions about the layout of the Rancher UI project.
+
+### Engines and In-repo Addons
+
+Rancher UI uses [Ember Engines](http://ember-engines.com) to break the deliverable code into smaller chunks and only deliver what the end-user will need. When adding new components to an engine ensure you are only re-exporting the component back out of the engine if it is required and can not be placed in the `shared` in-repo addon. When adding a new service or dependency that is required by an engine ensure that you pass the dependencies to the engine, more info can be found [here](http://ember-engines.com/guide/services)
+
+The `shared` in-repo addon is a central repository of shared components for use with both the main app and any in-repo engine.
 
 ### Translations
 Rancher UI supports localization via translations files. You can swap translations live by utilizing the Language Picker located in the footer. If you would like to add your own translations files follow the directions below.
@@ -90,6 +99,7 @@ Or just [click here](//github.com/rancher/rancher/issues/new?title=%5BUI%5D%20) 
 
 * ember: http://emberjs.com/
 * ember-cli: http://www.ember-cli.com/
+* ember-engines: http://ember-engines.com/
 * Development Browser Extensions
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
   * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
