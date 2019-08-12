@@ -416,31 +416,16 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">
-            {{t "nodeDriver.amazoneks.min.label"}}
+            {{t "nodeDriver.amazoneks.desired.label"}}
           </label>
           {{#if editing}}
             <div>
-              {{config.minimumNodes}}
+              {{config.desiredNodes}}
             </div>
           {{else}}
-            {{input-number value=config.minimumNodes min=1}}
+            {{input-number value=config.desiredNodes min=1}}
           {{/if}}
         </div>
-
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "nodeDriver.amazoneks.max.label"}}
-          </label>
-          {{#if editing}}
-            <div>
-              {{config.maximumNodes}}
-            </div>
-          {{else}}
-            {{input-number value=config.maximumNodes min=1}}
-          {{/if}}
-        </div>
-      </div>
-      <div class="row">
         <div class="col span-6">
           <label class="acc-label">
             {{t "nodeDriver.amazoneks.nodeVolumeSize.label"}}
@@ -463,6 +448,8 @@
             </div>
           {{/if}}
         </div>
+      </div>
+      <div class="row">
         <div class="col span-6">
           <label class="acc-label" for="aws-eks-key-piar">
             {{t "nodeDriver.amazoneks.keyPairs.label"}}
