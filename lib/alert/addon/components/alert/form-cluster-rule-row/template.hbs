@@ -142,38 +142,14 @@
   <hr/>
   <section class="row">
     <div class="col span-1 text-right">
-      <div style={{verbStyles}}>{{if isEventTarget (t "alertPage.newOrEdit.happens") (t "alertPage.newOrEdit.is")}}</div>
+      <div style={{verbStyles}}>
+        {{if isEventTarget (t "alertPage.newOrEdit.happens") (t "alertPage.newOrEdit.is")}}
+      </div>
     </div>
     {{#if (eq model._targetType "metric")}}
-      <div class="row">
-        <div class="col span-2 mt-5">
-          {{searchable-select
-            content=operatorContent
-            class="form-control"
-            value=model.metricRule.comparison
-            readOnly=(not-eq model._targetType "metric")
-          }}
-        </div>
-        <div class="col span-2 mt-5">
-          {{input-number class="form-control"
-            value=model.metricRule.thresholdValue
-            readOnly=(not-eq model._targetType "metric")
-            placeholder="e.g. 10"
-            min=0
-          }}
-        </div>
-        <div class="col span-1 text-right">
-          <div style={{verbStyles}}>{{t "alertPage.newOrEdit.for"}}</div>
-        </div>
-        <div class="col span-4 mt-5">
-          {{searchable-select
-            content=durationContent
-            class="form-control"
-            value=model.metricRule.duration
-            readOnly=(not-eq model._targetType "metric")
-          }}
-        </div>
-      </div>
+      {{alert/form-comparison-row
+        model=model
+      }}
       <hr/>
       {{#if (eq graphStatus "success")}}
         <div class="row">

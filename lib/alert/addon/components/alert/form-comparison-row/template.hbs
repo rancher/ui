@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col span-2 mt-5">
+    {{searchable-select
+      content=operatorContent
+      class="form-control"
+      value=model.metricRule.comparison
+      readOnly=(not-eq model._targetType "metric")
+    }}
+  </div>
+  <div class="col span-2 mt-5">
+    {{#unless (eq model.metricRule.comparison hasValue)}}
+      {{input-number
+        class="form-control"
+        value=model.metricRule.thresholdValue
+        readOnly=(not-eq model._targetType "metric")
+        placeholder="e.g. 10"
+        min=0
+      }}
+    {{/unless}}
+  </div>
+  <div class="col span-1 text-right">
+    <div style={{verbStyles}}>
+      {{t "alertPage.newOrEdit.for"}}
+    </div>
+  </div>
+  <div class="col span-4 mt-5">
+    {{searchable-select
+      content=durationContent
+      class="form-control"
+      value=model.metricRule.duration
+      readOnly=(not-eq model._targetType "metric")
+    }}
+  </div>
+</div>
+
