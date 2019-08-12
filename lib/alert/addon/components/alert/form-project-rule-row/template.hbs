@@ -17,11 +17,17 @@
   <div class="row">
     <div class="col span-1 text-right">
       <div class="pt-10">
-        <label>{{t "formNameDescription.name.label"}}</label>
+        <label>
+          {{t "formNameDescription.name.label"}}
+        </label>
       </div>
     </div>
     <div class="col span-10">
-      {{input type="text" value=model.name placeholder=(t "formNameDescription.name.placeholder")}}
+      {{input
+        type="text"
+        value=model.name
+        placeholder=(t "formNameDescription.name.placeholder")
+      }}
     </div>
   </div>
 
@@ -42,7 +48,11 @@
       <div class="row">
         <div class="col span-3">
           <label>
-            {{radio-button selection=model._targetType value="pod"}} {{t "alertPage.targetTypes.pod"}}
+            {{radio-button
+              selection=model._targetType
+              value="pod"
+            }}
+            {{t "alertPage.targetTypes.pod"}}
           </label>
         </div>
         <div class="col span-8 mt-0">
@@ -61,7 +71,11 @@
       <div class="row">
         <div class="col span-3">
           <label>
-            {{radio-button selection=model._targetType value="workload"}} {{t "alertPage.targetTypes.workload"}}
+            {{radio-button
+              selection=model._targetType
+              value="workload"
+            }}
+            {{t "alertPage.targetTypes.workload"}}
           </label>
         </div>
         <div class="col span-8 mt-0">
@@ -80,7 +94,11 @@
       <div class="row">
         <div class="col span-3">
           <label>
-            {{radio-button selection=model._targetType value="workloadSelector"}} {{t "alertPage.targetTypes.workloadSelector"}}
+            {{radio-button
+              selection=model._targetType
+              value="workloadSelector"
+            }}
+            {{t "alertPage.targetTypes.workloadSelector"}}
           </label>
         </div>
         <div class="col span-8 mt-0">
@@ -92,8 +110,12 @@
             }}
           {{else}}
             <button {{action "noop"}} style="cursor:not-allowed;" class="btn bg-disabled icon-btn">
-              <span class="darken"><i class="icon icon-plus text-small"/></span>
-              <span>{{t "alertPage.addSelectorLabel"}}</span>
+              <span class="darken">
+                <i class="icon icon-plus text-small"/>
+              </span>
+              <span>
+                {{t "alertPage.addSelectorLabel"}}
+              </span>
             </button>
           {{/if}}
         </div>
@@ -103,7 +125,12 @@
       <div class="row">
         <div class="col span-3">
           <label style={{expressionStyle}}>
-            {{radio-button selection=model._targetType value="metric" disabled=(not monitoringEnabled)}} {{t "alertPage.newOrEdit.expression.label"}}
+            {{radio-button
+              selection=model._targetType
+              value="metric"
+              disabled=(not monitoringEnabled)
+            }}
+            {{t "alertPage.newOrEdit.expression.label"}}
           </label>
         </div>
         <div class="col span-8 mt-0">
@@ -116,9 +143,13 @@
             allowCustom=true
           }}
           {{#if (eq graphStatus "noData")}}
-            <p class="text-error text-small mt-0 mb-0">{{t "alertPage.newOrEdit.expression.noData"}}</p>
+            <p class="text-error text-small mt-0 mb-0">
+              {{t "alertPage.newOrEdit.expression.noData"}}
+            </p>
           {{else if (eq graphStatus "error")}}
-            <p class="text-error text-small mt-0 mb-0">{{t "alertPage.newOrEdit.expression.error"}}</p>
+            <p class="text-error text-small mt-0 mb-0">
+              {{t "alertPage.newOrEdit.expression.error"}}
+            </p>
           {{/if}}
         </div>
       </div>
@@ -153,13 +184,25 @@
       <div class="col span-10">
         {{#if (eq model._targetType "pod")}}
           <label class="mr-10">
-            {{radio-button selection=model.podRule.condition value="notrunning"}} {{t "alertPage.newOrEdit.notRunning"}}
+            {{radio-button
+              selection=model.podRule.condition
+              value="notrunning"
+            }}
+            {{t "alertPage.newOrEdit.notRunning"}}
           </label>
           <label class="mr-10">
-            {{radio-button selection=model.podRule.condition value="notscheduled"}} {{t "alertPage.newOrEdit.notScheduled"}}
+            {{radio-button
+              selection=model.podRule.condition
+              value="notscheduled"
+            }}
+            {{t "alertPage.newOrEdit.notScheduled"}}
           </label>
           <label>
-            {{radio-button selection=model.podRule.condition value="restarts"}} {{t "alertPage.newOrEdit.restarted"}}
+            {{radio-button
+              selection=model.podRule.condition
+              value="restarts"
+            }}
+            {{t "alertPage.newOrEdit.restarted"}}
           </label>
           <div style="display:inline-block;width:80px;">
             {{input-integer
@@ -196,12 +239,16 @@
                   valueMax=100
                   step=1
                 }}
-                <span class="input-group-addon">{{model.workloadRule.availablePercentage}}% {{t "alertPage.newOrEdit.available"}}</span>
+                <span class="input-group-addon">
+                  {{model.workloadRule.availablePercentage}}% {{t "alertPage.newOrEdit.available"}}
+                </span>
               </div>
             </div>
           </div>
         {{else}}
-          <div>{{t "alertPage.newOrEdit.moreTarget"}}</div>
+          <div>
+            {{t "alertPage.newOrEdit.moreTarget"}}
+          </div>
         {{/if}}
       </div>
     {{/if}}
@@ -213,12 +260,31 @@
       {{t "alertPage.newOrEdit.sendA"}}
     </div>
     <div class="col span-10">
-      <label class="mr-10">{{radio-button selection=model.severity value="critical"}} {{t "alertPage.newOrEdit.critical"}}</label>
-      <label class="mr-10">{{radio-button selection=model.severity value="warning"}} {{t "alertPage.newOrEdit.warning"}}</label>
-      <label class="mr-10">{{radio-button selection=model.severity value="info"}} {{t "alertPage.newOrEdit.info"}}</label>
+      <label class="mr-10">
+        {{radio-button
+          selection=model.severity
+          value="critical"}}
+          {{t "alertPage.newOrEdit.critical"}}
+        </label>
+      <label class="mr-10">
+        {{radio-button
+          selection=model.severity
+          value="warning"
+        }}
+        {{t "alertPage.newOrEdit.warning"}}
+      </label>
+      <label class="mr-10">
+        {{radio-button
+          selection=model.severity
+          value="info"
+        }}
+        {{t "alertPage.newOrEdit.info"}}
+      </label>
     </div>
     {{#if (and (eq mode "new") (eq level "group"))}}
-      {{#advanced-section advanced=advanced}}
+      {{#advanced-section
+        advanced=advanced
+      }}
         <div class="row">
           <div class="col span-10 offset-1">
             {{alert/form-row-advanced
@@ -238,7 +304,9 @@
     <div class="row">
       <div class="col span-10 offset-1">
         {{#unless showAdvancedSection}}
-          <label class="acc-label mt-20">{{t "alertPage.newOrEdit.inherited.label"}}</label>
+          <label class="acc-label mt-20">
+            {{t "alertPage.newOrEdit.inherited.label"}}
+          </label>
           <div>
             {{#if model.inherited}}
               {{t "generic.enabled"}}
@@ -249,7 +317,7 @@
               <i class="icon icon-edit"/>
             </button>
           </div>
-  {{else}}
+        {{else}}
           {{alert/form-row-advanced
             model=model
             alertGroup=alertGroup
