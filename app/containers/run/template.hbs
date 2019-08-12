@@ -8,28 +8,27 @@
   <div class="clearfix">
     {{#catalog-box
       classNames="bg-secondary"
+      tagName="div"
       model=dataMap.workload.launchConfig
       showIcon=false
       showDescription=false
-      as |section|
     }}
-
-        {{#if (eq section "header")}}
-          <div class="darken p-20 m-0">
-            <i class="icon icon-service icon-4x"/>
-          </div>
-        {{else if (eq section "body")}}
-          <h3 class="text-muted">{{dataMap.workload.launchConfig.name}}</h3>
-          <p class="help-block">{{t "newContainer.sidekick.primary"}}</p>
-        {{else if (eq section "footer")}}
-          {{#link-to
-            (query-params launchConfigIndex=-1)
-            class="btn bg-info"
-            disabled=deleting
-          }}
-            {{t "action.edit"}}
-          {{/link-to}}
-        {{/if}}
+      <div class="darken p-20 m-0">
+        <i class="icon icon-service"/>
+      </div>
+      <span class="text-muted">
+        {{dataMap.workload.launchConfig.name}}
+      </span>
+      <p class="help-block mb-10">
+        {{t "newContainer.sidekick.primary"}}
+      </p>
+      {{#link-to
+        (query-params launchConfigIndex=-1)
+        class="btn btn-sm bg-info"
+        disabled=deleting
+      }}
+        {{t "action.edit"}}
+      {{/link-to}}
     {{/catalog-box}}
 
     {{#each dataMap.workload.secondaryLaunchConfigs as |slc index|}}
@@ -37,27 +36,33 @@
         model=slc
         showIcon=false
         showDescription=false
-        as |section|
+        tagName="div"
       }}
-        {{#if (eq section "header")}}
-          <div class="darken p-20 m-0">
-            <i class="icon icon-container icon-4x"/>
-          </div>
-        {{else if (eq section "body")}}
-          <h3>{{slc.name}}</h3>
-          <p class="help-block">{{t "newContainer.sidekick.sidekick"}}</p>
-        {{else if (eq section "footer")}}
-          <button class="btn bg-error" {{action "promptRemove" index}} disabled={{deleting}}>
-            {{t "action.remove"}}
-          </button>
-          {{#link-to
-             (query-params launchConfigIndex=index)
-             class="btn bg-primary"
-             disabled=deleting
-          }}
-            {{t "action.edit"}}
-          {{/link-to}}
-        {{/if}}
+        <div class="darken p-20 m-0">
+          <i class="icon icon-container"/>
+        </div>
+        <div>
+        <span>
+          {{slc.name}}
+        </span>
+        </div>
+        <p class="help-block mb-10">
+          {{t "newContainer.sidekick.sidekick"}}
+        </p>
+        <button
+          class="btn btn-sm bg-error"
+          {{action "promptRemove" index}}
+          disabled={{deleting}}
+        >
+          {{t "action.remove"}}
+        </button>
+        {{#link-to
+            (query-params launchConfigIndex=index)
+            class="btn btn-sm bg-primary"
+            disabled=deleting
+        }}
+          {{t "action.edit"}}
+        {{/link-to}}
       {{/catalog-box}}
     {{/each}}
   </div>
