@@ -2,6 +2,7 @@ import Resource from '@rancher/ember-api-store/models/resource';
 import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Alert from 'ui/mixins/model-alert';
+import C from 'ui/utils/constants';
 
 const clusterAlertRule = Resource.extend(Alert, {
   intl: service(),
@@ -66,7 +67,7 @@ const clusterAlertRule = Resource.extend(Alert, {
       }
       break;
     case 'metric':
-      out = `${ intl.t(`alertPage.comparison.${ metricRule.comparison }`) } ${ metricRule.thresholdValue }`
+      out = metricRule.comparison === C.ALERTING_COMPARISON.HAS_VALUE ? intl.t(`alertPage.comparison.${ metricRule.comparison }`) : `${ intl.t(`alertPage.comparison.${ metricRule.comparison }`) } ${ metricRule.thresholdValue }`
       break;
     }
 

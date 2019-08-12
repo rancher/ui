@@ -16,11 +16,17 @@
   <div class="row">
     <div class="col span-1 text-right">
       <div class="pt-10">
-        <label>{{t "formNameDescription.name.label"}}</label>
+        <label>
+          {{t "formNameDescription.name.label"}}
+        </label>
       </div>
     </div>
     <div class="col span-10">
-      {{input type="text" value=model.name placeholder=(t "formNameDescription.name.placeholder")}}
+      {{input
+        type="text"
+        value=model.name
+        placeholder=(t "formNameDescription.name.placeholder")
+      }}
     </div>
   </div>
   <section class="row">
@@ -41,7 +47,8 @@
       <div class="row">
         <div class="col span-2">
           <label class="acc-label">
-            {{radio-button selection=model._targetType value="systemService"}} {{t "alertPage.targetTypes.systemService"}}
+            {{radio-button selection=model._targetType value="systemService"}}
+            {{t "alertPage.targetTypes.systemService"}}
           </label>
         </div>
         <div class="col span-9 mt-0">
@@ -58,10 +65,20 @@
       <div class="row">
         <div class="col span-2">
           <label class="acc-label">
-            <span class="pr-10"> {{radio-button selection=model._targetType value="normalEvent"}} {{t "alertPage.newOrEdit.normal"}} </span>
+            <span class="pr-10">
+              {{radio-button
+                selection=model._targetType
+                value="normalEvent"
+              }}
+              {{t "alertPage.newOrEdit.normal"}}
+            </span>
           </label>
           <label class="acc-label">
-            {{radio-button selection=model._targetType value="warningEvent"}} {{t "alertPage.newOrEdit.warning"}}
+            {{radio-button
+              selection=model._targetType
+              value="warningEvent"
+            }}
+            {{t "alertPage.newOrEdit.warning"}}
           </label>
         </div>
         <div class="col span-9 mt-0">
@@ -73,13 +90,19 @@
             readOnly=(not-eq isEventTarget true)
           }}
         </div>
-        <div class="col span-1 text-right"> {{t "alertPage.targetTypes.event"}} </div>
+        <div class="col span-1 text-right">
+          {{t "alertPage.targetTypes.event"}}
+        </div>
       </div>
 
       <div class="row">
         <div class="col span-2">
           <label class="acc-label">
-            {{radio-button selection=model._targetType value="node"}} {{t "alertPage.targetTypes.node"}}
+            {{radio-button
+              selection=model._targetType
+              value="node"
+            }}
+            {{t "alertPage.targetTypes.node"}}
           </label>
         </div>
         <div class="col span-9 mt-0">
@@ -97,7 +120,11 @@
       <div class="row">
         <div class="col span-2">
           <label class="acc-label">
-            {{radio-button selection=model._targetType value="nodeSelector"}} {{t "alertPage.targetTypes.nodeSelector"}}
+            {{radio-button
+              selection=model._targetType
+              value="nodeSelector"
+            }}
+            {{t "alertPage.targetTypes.nodeSelector"}}
           </label>
         </div>
         <div class="col span-9 mt-0">
@@ -109,8 +136,12 @@
             }}
           {{else}}
             <button {{action "noop"}} style="cursor:not-allowed;" class="btn bg-disabled icon-btn">
-              <span class="darken"><i class="icon icon-plus text-small"/></span>
-              <span>{{t "alertPage.addSelectorLabel"}}</span>
+              <span class="darken">
+                <i class="icon icon-plus text-small"/>
+              </span>
+              <span>
+                {{t "alertPage.addSelectorLabel"}}
+              </span>
             </button>
           {{/if}}
         </div>
@@ -118,7 +149,12 @@
       <div class="row">
         <div class="col span-2">
           <label class="acc-label" style={{expressionStyle}}>
-            {{radio-button selection=model._targetType value="metric" disabled=(not monitoringEnabled)}} {{t "alertPage.newOrEdit.expression.label"}}
+            {{radio-button
+              selection=model._targetType
+              value="metric"
+              disabled=(not monitoringEnabled)
+            }}
+            {{t "alertPage.newOrEdit.expression.label"}}
           </label>
         </div>
         <div class="col span-9 mt-0">
@@ -131,9 +167,13 @@
             allowCustom=true
           }}
           {{#if (eq graphStatus "noData")}}
-            <p class="text-error text-small mt-0 mb-0">{{t "alertPage.newOrEdit.expression.noData"}}</p>
+            <p class="text-error text-small mt-0 mb-0">
+              {{t "alertPage.newOrEdit.expression.noData"}}
+            </p>
           {{else if (eq graphStatus "error")}}
-            <p class="text-error text-small mt-0 mb-0">{{t "alertPage.newOrEdit.expression.error"}}</p>
+            <p class="text-error text-small mt-0 mb-0">
+              {{t "alertPage.newOrEdit.expression.error"}}
+            </p>
           {{/if}}
         </div>
       </div>
@@ -142,38 +182,14 @@
   <hr/>
   <section class="row">
     <div class="col span-1 text-right">
-      <div style={{verbStyles}}>{{if isEventTarget (t "alertPage.newOrEdit.happens") (t "alertPage.newOrEdit.is")}}</div>
+      <div style={{verbStyles}}>
+        {{if isEventTarget (t "alertPage.newOrEdit.happens") (t "alertPage.newOrEdit.is")}}
+      </div>
     </div>
     {{#if (eq model._targetType "metric")}}
-      <div class="row">
-        <div class="col span-2 mt-5">
-          {{searchable-select
-            content=operatorContent
-            class="form-control"
-            value=model.metricRule.comparison
-            readOnly=(not-eq model._targetType "metric")
-          }}
-        </div>
-        <div class="col span-2 mt-5">
-          {{input-number class="form-control"
-            value=model.metricRule.thresholdValue
-            readOnly=(not-eq model._targetType "metric")
-            placeholder="e.g. 10"
-            min=0
-          }}
-        </div>
-        <div class="col span-1 text-right">
-          <div style={{verbStyles}}>{{t "alertPage.newOrEdit.for"}}</div>
-        </div>
-        <div class="col span-4 mt-5">
-          {{searchable-select
-            content=durationContent
-            class="form-control"
-            value=model.metricRule.duration
-            readOnly=(not-eq model._targetType "metric")
-          }}
-        </div>
-      </div>
+      {{alert/form-comparison-row
+        model=model
+      }}
       <hr/>
       {{#if (eq graphStatus "success")}}
         <div class="row">
@@ -190,14 +206,26 @@
       <div class="col span-10">
         {{#if (eq model._targetType "systemService")}}
           <label class="acc-label">
-            {{radio-button selection="whatever" value="whatever"}} {{t "alertPage.newOrEdit.unhealthy"}}
+            {{radio-button
+              selection="whatever"
+              value="whatever"
+            }}
+            {{t "alertPage.newOrEdit.unhealthy"}}
           </label>
         {{else if (or (eq model._targetType "node") (eq model._targetType "nodeSelector"))}}
           <label class="acc-label pr-20">
-            {{radio-button selection=model.nodeRule.condition value="notready"}} {{t "alertPage.newOrEdit.notReady"}}
+            {{radio-button
+              selection=model.nodeRule.condition
+              value="notready"
+            }}
+            {{t "alertPage.newOrEdit.notReady"}}
           </label>
           <label class="acc-label pr-10">
-            {{radio-button selection=model.nodeRule.condition value="cpu"}} {{t "alertPage.newOrEdit.cpuUsage"}}
+            {{radio-button
+              selection=model.nodeRule.condition
+              value="cpu"
+            }}
+            {{t "alertPage.newOrEdit.cpuUsage"}}
           </label>
           <div style="display:inline-block;width:60px;">
             {{input-integer
@@ -209,7 +237,11 @@
           </div>%
 
           <label class="ml-20 acc-label pr-20">
-            {{radio-button selection=model.nodeRule.condition value="mem"}} {{t "alertPage.newOrEdit.memUsage"}}
+            {{radio-button
+              selection=model.nodeRule.condition
+              value="mem"
+            }}
+            {{t "alertPage.newOrEdit.memUsage"}}
           </label>
           <div style="display:inline-block;width:60px;">
             {{input-integer
@@ -230,12 +262,32 @@
       {{t "alertPage.newOrEdit.sendA"}}
     </div>
     <div class="col span-10">
-      <label class="acc-label mr-10">{{radio-button selection=model.severity value="critical"}} {{t "alertPage.newOrEdit.critical"}}</label>
-      <label class="acc-label mr-10">{{radio-button selection=model.severity value="warning"}} {{t "alertPage.newOrEdit.warning"}}</label>
-      <label class="acc-label mr-10">{{radio-button selection=model.severity value="info"}} {{t "alertPage.newOrEdit.info"}}</label>
+      <label class="acc-label mr-10">
+        {{radio-button
+          selection=model.severity
+          value="critical"
+        }}
+        {{t "alertPage.newOrEdit.critical"}}
+      </label>
+      <label class="acc-label mr-10">
+        {{radio-button
+          selection=model.severity
+          value="warning"
+        }}
+        {{t "alertPage.newOrEdit.warning"}}
+      </label>
+      <label class="acc-label mr-10">
+        {{radio-button
+          selection=model.severity
+          value="info"
+        }}
+        {{t "alertPage.newOrEdit.info"}}
+      </label>
     </div>
     {{#if (and (eq mode "new") (eq level "group"))}}
-      {{#advanced-section advanced=advanced}}
+      {{#advanced-section
+        advanced=advanced
+      }}
         <div class="row">
           <div class="col span-10 offset-1">
             {{alert/form-row-advanced
@@ -255,7 +307,9 @@
     <div class="row">
       <div class="col span-10 offset-1">
         {{#unless showAdvancedSection}}
-          <label class="acc-label mt-20">{{t "alertPage.newOrEdit.inherited.label"}}</label>
+          <label class="acc-label mt-20">
+            {{t "alertPage.newOrEdit.inherited.label"}}
+          </label>
           <div>
             {{#if model.inherited}}
               {{t "generic.enabled"}}
