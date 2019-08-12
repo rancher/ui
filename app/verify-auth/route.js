@@ -62,7 +62,7 @@ export default Route.extend(VerifyAuth, {
         return oauth.testConfig(config).then((resp) => {
           oauth.authorize(resp, openersOauth.get('state'));
         }).catch((err) => {
-          this.send('gotError', err);
+          reply({ err });
         });
       } else if ( samlProviders.includes(get(params, 'config')) ) {
         if ( window.opener.window.onAuthTest ) {
