@@ -124,6 +124,12 @@
     </div>
   </div>
 
+  {{logging/form-log-ssl
+    config=config
+    targetType=targetType
+    disabled=(not config.enableTls)
+  }}
+  <hr>
   <div class="row">
     <div class="col span-6 pt-0" style="margin-top: 43px;">
       {{input
@@ -135,31 +141,6 @@
       <p class="text-info text-small" style="margin-left: 25px;">
         {{t "loggingPage.fluentd.compress.helpText"}}
       </p>
-    </div>
-    <div class="col span-6 pt-0" style="margin-top: 43px;">
-      {{input
-        type="checkbox"
-        classNames="form-control"
-        checked=config.enableTls
-      }}
-      {{t "loggingPage.fluentd.enableTls.label"}}
-      {{#if config.enableTls}}
-        <div class="clearfix">
-          <label class="acc-label pt-5">
-            {{t "loggingPage.fluentd.certificate.label"}}
-          </label>
-        </div>
-        {{input-text-file
-          classNames="box"
-          value=config.certificate
-          multiple=true
-          canChangeName=false
-          accept="application/x-x509-ca-cert,text/plain,.pem,.crt,.cert"
-          minHeight=60
-          placeholder="newCertificate.cert.placeholder"
-          shouldChangeName=false
-        }}
-      {{/if}}
     </div>
   </div>
 </section>
