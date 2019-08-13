@@ -75,9 +75,17 @@
               <ul>
                 <li>
                   {{t "authPage.googleoauth.notAuthenticated.ul.li1.ul.li1"}}
-                  <p class="help-block">
-                    {{t "authPage.googleoauth.notAuthenticated.ul.li1.helpertext"}}
-                  </p>
+                   {{#tooltip-element
+                      type="tooltip-basic"
+                      model=(t "authPage.googleoauth.notAuthenticated.ul.li1.helpertext" clusterId=cluster.id htmlSafe=true)
+                      tooltipTemplate="tooltip-static"
+                      aria-describedby="tooltip-base"
+                      baseClass="text-left"
+                    }}
+                    <span>
+                      <i class="icon icon-help icon-blue"/>
+                    </span>
+                  {{/tooltip-element}}
                 </li>
               </ul>
             </li>
@@ -86,6 +94,17 @@
               <ul>
                 <li>
                   {{t "authPage.googleoauth.notAuthenticated.ul.li2.ul.li1" appName=settings.appName htmlSafe=true}}
+                    {{#tooltip-element
+                      type="tooltip-basic"
+                      model=(t "authPage.googleoauth.notAuthenticated.ul.li2.helperText" clusterId=cluster.id htmlSafe=true)
+                      tooltipTemplate="tooltip-static"
+                      aria-describedby="tooltip-base"
+                      baseClass="text-left"
+                    }}
+                    <span>
+                      <i class="icon icon-help icon-blue"/>
+                    </span>
+                  {{/tooltip-element}}
                   <span>
                     {{destinationDomain}}
                     {{copy-to-clipboard
@@ -94,9 +113,6 @@
                       htmlSafe=true
                     }}
                   </span>
-                  <p class="help-block">
-                    {{t "authPage.googleoauth.notAuthenticated.ul.li2.helperText"}}
-                  </p>
                 </li>
                 <li>
                   <b>
