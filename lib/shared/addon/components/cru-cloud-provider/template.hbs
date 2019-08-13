@@ -1,5 +1,20 @@
 <label class="acc-label mt-5">
   {{t "cloudProvider.title"}}
+  {{!-- <span class="text-info">{{t "cloudProvider.helpText" htmlSafe=true}}</span> --}}
+
+  <span class="inline-block">
+    {{#tooltip-element
+       type="tooltip-basic"
+       model=(t "cloudProvider.helpText" htmlSafe=true)
+       tooltipTemplate="tooltip-static"
+       aria-describedby="tooltip-base"
+       tooltipFor="tooltipPoolCreateAfter"
+       placement="top"
+       tagName="div"
+    }}
+      <i class="icon icon-info"></i>
+    {{/tooltip-element}}
+  </span>
 </label>
 
 {{#if (and (eq driver "custom") (eq selectedCloudProvider "none"))}}
@@ -129,14 +144,6 @@
     </div>
   {{/unless}}
 </div>
-
-{{#if (not-eq mode "view")}}
-  <div class="col span-12">
-    <p class="text-info">
-      {{t "cloudProvider.helpText" htmlSafe=true}}
-    </p>
-  </div>
-{{/if}}
 
 {{#if (eq selectedCloudProvider "azure")}}
   {{#each-in configAnswers as |key value|}}
