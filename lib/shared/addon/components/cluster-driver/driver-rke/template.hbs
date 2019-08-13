@@ -879,21 +879,21 @@
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
               >
-                <div class="input-group">
-                  {{#input-or-display
-                     editable=notView
-                     value=(concat config.services.etcd.backupConfig.intervalHours (concat " " (t "generic.hours")))
+                {{#input-or-display
+                  tagName="div"
+                  classNames="input-group"
+                  editable=notView
+                  value=(concat config.services.etcd.backupConfig.intervalHours (concat " " (t "generic.hours")))
+                }}
+                  {{input-integer
+                    value=config.services.etcd.backupConfig.intervalHours
+                    min=1
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.etcd.backupConfig.interval.placeholder")
+                    disabled=(if (not config.services.etcd.backupConfig.enabled) true)
                   }}
-                    {{input-integer
-                      value=config.services.etcd.backupConfig.intervalHours
-                      min=1
-                      classNames="form-control"
-                      placeholder=(t "clusterNew.rke.etcd.backupConfig.interval.placeholder")
-                      disabled=(if (not config.services.etcd.backupConfig.enabled) true)
-                    }}
-                    <span class="input-group-addon bg-default">{{t "generic.hours"}}</span>
-                  {{/input-or-display}}
-                </div>
+                  <span class="input-group-addon bg-default">{{t "generic.hours"}}</span>
+                {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
 
@@ -916,9 +916,12 @@
                 @questions={{model.clusterTemplateRevision.questions}}
               >
                 {{#input-or-display
-                   editable=notView
-                   value=config.services.etcd.backupConfig.retention
+                  tagName="div"
+                  classNames="input-group"
+                  editable=notView
+                  value=config.services.etcd.backupConfig.retention
                 }}
+                  <span class="input-group-addon bg-default">{{t "clusterNew.rke.etcd.backupConfig.retention.prefix"}}</span>
                   {{input-integer
                     value=config.services.etcd.backupConfig.retention
                     min=1

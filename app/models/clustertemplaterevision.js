@@ -21,7 +21,7 @@ export default Resource.extend({
     }
 
     return 'disabled';
-    }),
+  }),
 
   canBulkRemove: computed('clusterTemplateId', function() {
     let { clusterTemplate } = this;
