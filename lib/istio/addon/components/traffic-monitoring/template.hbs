@@ -1,16 +1,24 @@
 {{#if namespaces.length}}
   <div class="row text-left mb-5">
     <div class="pull-left pl-20 pt-0 mr-10">
-      <label class="acc-label">
-        {{t "generic.namespace"}}:
-      </label>
-      {{new-select
-        content=namespaces
-        classNames="namespace-select text-black"
-        value=namespace
-        optionValuePath="id"
-        optionLabelPath="displayName"
-      }}
+      <div class="inline-block">
+        <label class="acc-label">
+          {{t "generic.namespace"}}:
+        </label>
+        {{new-select
+          content=namespaces
+          classNames="namespace-select text-black"
+          value=namespace
+          optionValuePath="id"
+          optionLabelPath="displayName"
+        }}
+      </div>
+      <button
+        class="btn btn-sm bg-default"
+        {{action "refreshGraph"}}
+      >
+        {{t "istio.refreshGraph"}}
+      </button>
     </div>
   </div>
   {{#if loading}}
