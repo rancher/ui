@@ -46,6 +46,7 @@ export default Component.extend(ModalBase, {
         id:      backup.id,
         label:   `${ backup.displayName } ( ${ time.format('MMMM Do YYYY, H:mm:ss') })`,
         created: backup.created,
+        state:   backup.state,
       }
     }).sortBy('created');
   }),
