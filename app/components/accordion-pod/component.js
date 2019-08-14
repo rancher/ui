@@ -21,7 +21,7 @@ export default Component.extend(ManageLabels, {
       name:           'name',
       sort:           ['name'],
       translationKey: 'generic.name',
-      width:          400
+      width:          350
     },
     {
       name:           'displayImage',
@@ -32,7 +32,7 @@ export default Component.extend(ManageLabels, {
       name:           'node',
       sort:           ['displayName'],
       translationKey: 'generic.node',
-      width:          180
+
     },
   ],
 });
