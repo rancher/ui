@@ -15,20 +15,10 @@
   </td>
 {{else}}
   <td class="row-check" valign="middle" style="padding-top: 2px;">
-    {{#if model.canBulkRemove}}
-      {{check-box nodeId=model.id}}
-    {{/if}}
+    {{check-box nodeId=model.id disabled=(not model.canBulkRemove)}}
   </td>
   <td data-title="{{dt.state}}" class="state">
-    {{#if model.enabled}}
-      <span class="badge-state vertical-middle text-capitalize bg-success">
-        {{t "generic.active"}}
-      </span>
-    {{else}}
-      <span class="badge-state vertical-middle text-capitalize text-error">
-        {{t "generic.disabled"}}
-      </span>
-    {{/if}}
+    {{badge-state model=model}}
   </td>
   <td data-title="{{dt.displayName}}">
     {{#link-to
@@ -38,13 +28,8 @@
       {{model.displayName}}
     {{/link-to}}
   </td>
-  <td data-title="{{dt.defaultRevisionId}}">
+  <td data-title="{{dt.defaultRevisionId}}" class="text-center">
     {{#if (eq model.clusterTemplate.defaultRevisionId model.id)}}
-      <i class="icon icon-check" />
-    {{/if}}
-  </td>
-  <td data-title="{{dt.enabled}}">
-    {{#if model.enabled}}
       <i class="icon icon-check" />
     {{/if}}
   </td>

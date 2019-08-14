@@ -15,6 +15,14 @@ export default Resource.extend({
   clusterTemplate:  reference('clusterTemplateId', 'clusterTemplate', 'globalStore'),
   canRemove:        alias('canMakeDefault'),
 
+  combinedState: computed('enabled', function() {
+    if ( get(this, 'enabled') ) {
+      return 'active';
+    }
+
+    return 'disabled';
+  }),
+
   canBulkRemove: computed('clusterTemplateId', function() {
     let { clusterTemplate } = this;
 

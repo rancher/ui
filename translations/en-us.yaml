@@ -884,7 +884,7 @@ projectsPage:
 clustersPage:
   header: Clusters
   newCluster: Add Cluster
-  newTemplate: "New Template"
+  newTemplate: Add Template
   newClusterName: "Add Cluster: {name}"
   editClusterName: "Edit Cluster: {name}"
   clusterLaunchDisabled: "You have not been granted access to any cluster templates."
@@ -3207,17 +3207,20 @@ clusterNew:
     clustersSelectTemplateRevision:
       select:
         prompt: Select a cluster template revision
+        default: '{name} - Default (Created {ago})'
+        other: '{name} (Created {ago})'
     etcd:
       enabled:
         label: Recurring etcd Snapshot Enabled
       backupConfig:
         legacy: "This cluster was configured with a legacy etcd snapshot api. The new api replaces the creation time and retention time durations with a simpler creation time in hours and retention count. We have migrated your creation period automatically. Retention count has been configured to the default of 6 snapshots (current retention duration: {duration}), if you're okay with this setting no further action is required. If not, you may change the setting in the advanced settings section."
         retention:
-          label: Recurring etcd Snapshot Retention Count
-          placeholder: "12"
+          label: Recurring etcd Snapshot Retention
+          placeholder: "e.g. 12"
+          prefix: Keep the last
         interval:
-          label: Recurring etcd Snapshot Creation Period
-          placeholder: "6"
+          label: Recurring etcd Snapshot Interval
+          placeholder: "e.g. 6"
         bucketName:
           label: S3 Bucket Name
           placeholder: "e.g. backups"
@@ -5562,7 +5565,9 @@ formValueArray:
 
 formVersions:
   experimental: "(experimental)"
-  unsupported: "(unsupported)"
+  dotx: "Latest {minor} (allows patch version upgrades)"
+  downgrade: "(can't downgrade)"
+  unsupported: "(not allowed by template)"
 
 formIstioHost:
   prompt: Select a host...
