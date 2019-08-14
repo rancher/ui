@@ -8,4 +8,8 @@ export default Component.extend(LazyIcon, {
   layout,
   classNames:    ['namespace-app'],
   latestVersion: null,
+
+  didRender() {
+    this.initAppIcon();
+  },
 });
