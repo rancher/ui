@@ -1,6 +1,14 @@
 {{#if title}}
   <section class="header clearfix">
     <div class="right-buttons">
+      {{#if showCopy}}
+        {{copy-to-clipboard
+          tooltipText=""
+          buttonText="copyToClipboard.tooltip"
+          clipboardText=value
+          class="with-clip"
+        }}
+      {{/if}}
       {{#if showUpload}}
         <button class="btn bg-link icon-btn" {{action "click"}}>
           <span class="darken"><i class="icon icon-upload text-small"/></span>
@@ -18,6 +26,14 @@
   </section>
 {{else}}
   <div class="text-right mb-20">
+    {{#if showCopy}}
+      {{copy-to-clipboard
+        tooltipText=""
+        buttonText="copyToClipboard.tooltip"
+        clipboardText=value
+        class="with-clip"
+      }}
+    {{/if}}
     {{#if showUpload}}
       <button class="btn bg-link icon-btn" {{action "click"}}>
         <span class="darken"><i class="icon icon-upload text-small"/></span>
