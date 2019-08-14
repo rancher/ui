@@ -45,43 +45,90 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">
-            {{t "clusterNew.googlegke.zone.label"}}
+            {{t "clusterNew.googlegke.locationType.label"}}
           </label>
           {{#input-or-display
              editable=isNew
-             value=config.zone
+             value=locationType
           }}
-            {{new-select
-              classNames="form-control select-algin-checkbox"
-              optionValuePath="name"
-              optionLabelPath="name"
-              content=zoneChoices
-              value=config.zone
-              prompt="clusterNew.googlegke.zone.prompt"
-              localizedPrompt=true
-              disabled=editing
-            }}
+            <div class="radio">
+              <label>
+                {{radio-button selection=locationType value="zonal"}}
+                {{t "clusterNew.googlegke.locationType.zone"}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                {{radio-button selection=locationType value="regional"}}
+                {{t "clusterNew.googlegke.locationType.region"}}
+              </label>
+            </div>
           {{/input-or-display}}
         </div>
-        {{#unless hideNewField}}
+        {{#if (eq locationType "zonal")}}
+          <div class="col span-4">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.zone.label"}}
+            </label>
+            {{#input-or-display
+              editable=isNew
+              value=config.zone
+            }}
+              {{new-select
+                classNames="form-control select-algin-checkbox"
+                optionValuePath="name"
+                optionLabelPath="name"
+                content=zoneChoices
+                value=config.zone
+                prompt="clusterNew.googlegke.zone.prompt"
+                localizedPrompt=true
+                disabled=editing
+              }}
+            {{/input-or-display}}
+          </div>
+          {{#unless hideNewField}}
+            <div class="col span-2">
+              <label class="acc-label">
+                {{t "clusterNew.googlegke.locations.label"}}
+              </label>
+              {{#each locationContent as |location|}}
+                <div class="checkbox">
+                  <label class={{if editing "text-muted"}}>
+                    {{input
+                      type="checkbox"
+                      checked=location.checked
+                      disabled=editing
+                    }}
+                    {{location.name}}
+                  </label>
+                </div>
+              {{/each}}
+            </div>
+          {{/unless}}
+        {{/if}}
+
+        {{#if (eq locationType "regional")}}
           <div class="col span-6">
             <label class="acc-label">
-              {{t "clusterNew.googlegke.locations.label"}}
+              {{t "clusterNew.googlegke.region.label"}}
             </label>
-            {{#each locationContent as |location|}}
-              <div class="checkbox">
-                <label class={{if editing "text-muted"}}>
-                  {{input
-                    type="checkbox"
-                    checked=location.checked
-                    disabled=editing
-                  }}
-                  {{location.name}}
-                </label>
-              </div>
-            {{/each}}
+            {{#input-or-display
+              editable=isNew
+              value=config.region
+            }}
+              {{new-select
+                classNames="form-control select-algin-checkbox"
+                optionValuePath="name"
+                optionLabelPath="name"
+                content=regionChoices
+                value=config.region
+                prompt="clusterNew.googlegke.region.prompt"
+                localizedPrompt=true
+                disabled=editing
+              }}
+            {{/input-or-display}}
           </div>
-        {{/unless}}
+        {{/if}}
       </div>
 
       <div class="row">
