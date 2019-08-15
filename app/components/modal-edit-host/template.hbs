@@ -52,16 +52,20 @@
 
   <div class="row inline-form">
     <div class="col span-12">
-      {{form-user-labels
-        initialLabels=originalModel.labels
-        readonlyLabels=readonlyLabels
-        setLabels=(action "setUserLabels")
-      }}
+      {{#accordion-list showExpandAll=false as |al expandFn|}}
+        {{form-labels-annotations
+          classNames="accordion-wrapper"
+          expandAll=al.expandAll
+          expandFn=expandFn
+          initialLabels=model.labels
+          model=model
+        }}
 
-      {{form-node-taints
-        model=model
-        isNode=true
-      }}
+        {{form-node-taints
+          model=model
+          isNode=true
+        }}
+      {{/accordion-list}}
     </div>
   </div>
 </section>
