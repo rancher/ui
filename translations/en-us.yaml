@@ -3551,6 +3551,9 @@ confirmDelete:
   cancelAction: Cancel
   largeDeleteText: '{key} and {othersCount} others'
   systemChartNote: 'You are removing a system app. It may cause issues with the cluster if it is removed.'
+  forceDelete:
+    label: Force Delete
+    warning: "Force deleting pods does not wait for confirmation that the pod's processes have been terminated, which can leave those processes running until the node detects the deletion and completes graceful deletion. If your processes use shared storage or talk to a remote API and depend on the name of the pod to identify themselves, force deleting those pods may result in multiple processes running on different machines using the same identification which may lead to data corruption or inconsistency. Only force delete pods when you are sure the pod is terminated, or if your application can tolerate multiple copies of the same pod running at once. Also, if you force delete pods the scheduler may place new pods on those nodes before the node has released those resources and causing those pods to be evicted immediately."
 
 containerLogs:
   download: Download Logs
