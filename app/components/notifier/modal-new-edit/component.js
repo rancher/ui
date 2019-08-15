@@ -197,10 +197,6 @@ export default Component.extend(ModalBase, NewOrEdit, {
     if (errors.includes(preError)) {
       let afterError = ''
 
-      if (notifierType === 'slack') {
-        afterError = C.NOTIFIER_TABLE_LABEL.SLACK
-        errors.splice(errors.findIndex((e) => e === preError), 1, intl.t('validation.required', { key: afterError }))
-      }
       if (notifierType === 'email') {
         afterError = C.NOTIFIER_TABLE_LABEL.SMTP
         errors.splice(errors.findIndex((e) => e === preError), 1, intl.t('validation.required', { key: afterError }))
