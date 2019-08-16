@@ -27,6 +27,9 @@
       <section class="">
         <div class="clearfix">
           <div class="pull-right">
+            <button class="btn btn-sm bg-primary" {{action "edit"}}>
+              {{t "generic.edit"}}
+            </button>
             <button class="btn btn-sm right-divider-btn bg-error" {{action "disable"}}>
               {{t "authPage.googleoauth.authenticated.disableAccess.disable"}}
             </button>
@@ -35,30 +38,13 @@
         <hr />
         {{form-google-auth
           authConfig=authConfig
-          isEnabled=isEnabled
+          editing=false
         }}
       </section>
     {{/accordion-list-item}}
-
-    {{#accordion-list-item
-         classNames="mt-30"
-         detail=(t "siteAccess.helpText" appName=settings.appName htmlSafe=true)
-         expand=(action expandFn)
-         expandAll=al.expandAll
-         expandOnInit=true
-         expanded=true
-         showExpand=false
-         title=(t "siteAccess.header")
-    }}
-      {{site-access
-        model=authConfig
-        principals=model.principals
-        collection="siteAccess.organizations"
-      }}
-    {{/accordion-list-item}}
   {{/if}}
 
-  {{#unless isEnabled}}
+  {{#if (or editing (not isEnabled))}}
     {{#accordion-list-item
       expand=(action expandFn)
       expandAll=al.expandAll
@@ -201,7 +187,7 @@
         <section>
           {{form-google-auth
             authConfig=authConfig
-            isEnabled=isEnabled
+            editing=true
           }}
 
           <div class="row text-center">
@@ -227,5 +213,24 @@
         </section>
       </form>
     {{/accordion-list-item}}
-  {{/unless}}
+  {{/if}}
+
+  {{#if isEnabled}}
+    {{#accordion-list-item
+         classNames="mt-30"
+         detail=(t "siteAccess.helpText" appName=settings.appName htmlSafe=true)
+         expand=(action expandFn)
+         expandAll=al.expandAll
+         expandOnInit=true
+         expanded=true
+         showExpand=false
+         title=(t "siteAccess.header")
+    }}
+      {{site-access
+        model=authConfig
+        principals=model.principals
+        collection="siteAccess.organizations"
+      }}
+    {{/accordion-list-item}}
+  {{/if}}
 {{/accordion-list}}

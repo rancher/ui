@@ -10,19 +10,23 @@
           aria-describedby="tooltip-base"
           baseClass="text-left"
         }}
-        <span>
-          <i class="icon icon-help icon-blue"/>
-        </span>
+          <span>
+            <i class="icon icon-help icon-blue"/>
+          </span>
         {{/tooltip-element}}
         {{field-required}}
-
       </label>
-      {{input
-        type="text"
-        name="username"
+      {{#input-or-display
+        editable=editing
         value=authConfig.adminEmail
-        classNames="form-control"
       }}
+        {{input
+          type="text"
+          name="username"
+          value=authConfig.adminEmail
+          classNames="form-control"
+        }}
+      {{/input-or-display}}
     </div>
   </div>
   <div class="col span-6">
@@ -36,14 +40,14 @@
             aria-describedby="tooltip-base"
             baseClass="text-left"
           }}
-          <span>
-            <i class="icon icon-help icon-blue"/>
-          </span>
+            <span>
+              <i class="icon icon-help icon-blue"/>
+            </span>
           {{/tooltip-element}}
         {{field-required}}
       </label>
       {{#input-or-display
-        editable=(not isEnabled)
+        editable=editing
         value=authConfig.hostname
       }}
         {{input
@@ -62,74 +66,81 @@
       <label class="acc-label pb-5">
         {{t "authPage.googleoauth.notAuthenticated.form.nestedGroupMembershipEnabled.labelText"}}
       </label>
-      <div class="radio">
-        <label>
-          {{radio-button
-            selection=authConfig.nestedGroupMembershipEnabled
-            value=true
-          }}
-          {{t "generic.enabled"}}
-        </label>
-      </div>
-      <div class="radio">
-        <label>
-          {{radio-button
-            selection=authConfig.nestedGroupMembershipEnabled
-            value=false
-          }}
-          {{t "generic.disabled"}}
-        </label>
-      </div>
+      {{#input-or-display
+        editable=editing
+        value=authConfig.nestedGroupMembershipEnabled
+      }}
+        <div class="radio">
+          <label>
+            {{radio-button
+              selection=authConfig.nestedGroupMembershipEnabled
+              value=true
+            }}
+            {{t "generic.enabled"}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button
+              selection=authConfig.nestedGroupMembershipEnabled
+              value=false
+            }}
+            {{t "generic.disabled"}}
+          </label>
+        </div>
+      {{/input-or-display}}
     </div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col span-12">
-    {{#input-text-file
-      classNames="box"
-      label="authPage.googleoauth.notAuthenticated.form.oauthCredential.labelText"
-      value=authConfig.oauthCredential
-      accept="text/*, .json"
-      minHeight=60
-      canChangeName=false
-      nameRequired=true
-      placeholder="authPage.googleoauth.notAuthenticated.form.oauthCredential.labelText"
-      concealValue=true
-      as |section|
-    }}
-      {{#if (eq section "description")}}
-        <div class="row help">
-          <div class="col span-12 help-block wrap mb-0">
-            {{t "authPage.googleoauth.notAuthenticated.form.oauthCredential.helperText" htmlSafe=true}}
+{{#if editing}}
+  <div class="row">
+    <div class="col span-12">
+      {{#input-text-file
+        classNames="box"
+        label="authPage.googleoauth.notAuthenticated.form.oauthCredential.labelText"
+        value=authConfig.oauthCredential
+        accept="text/*, .json"
+        minHeight=60
+        canChangeName=false
+        nameRequired=true
+        placeholder="authPage.googleoauth.notAuthenticated.form.oauthCredential.labelText"
+        concealValue=true
+        as |section|
+      }}
+        {{#if (eq section "description")}}
+          <div class="row help">
+            <div class="col span-12 help-block wrap mb-0">
+              {{t "authPage.googleoauth.notAuthenticated.form.oauthCredential.helperText" htmlSafe=true}}
+            </div>
           </div>
-        </div>
-      {{/if}}
-    {{/input-text-file}}
+        {{/if}}
+      {{/input-text-file}}
+    </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col span-12">
-    {{#input-text-file
-      classNames="box"
-      label="authPage.googleoauth.notAuthenticated.form.serviceAccountCredential.labelText"
-      value=authConfig.serviceAccountCredential
-      accept="text/*, .json"
-      minHeight=60
-      canChangeName=false
-      nameRequired=true
-      placeholder="authPage.googleoauth.notAuthenticated.form.serviceAccountCredential.labelText"
-      concealValue=true
-      as |section|
-    }}
-      {{#if (eq section "description")}}
-        <div class="row help">
-          <div class="col span-12 help-block wrap mb-0">
-            {{t "authPage.googleoauth.notAuthenticated.form.serviceAccountCredential.helperText" htmlSafe=true}}
+  <div class="row">
+    <div class="col span-12">
+      {{#input-text-file
+        classNames="box"
+        label="authPage.googleoauth.notAuthenticated.form.serviceAccountCredential.labelText"
+        value=authConfig.serviceAccountCredential
+        accept="text/*, .json"
+        minHeight=60
+        canChangeName=false
+        nameRequired=true
+        placeholder="authPage.googleoauth.notAuthenticated.form.serviceAccountCredential.labelText"
+        concealValue=true
+        as |section|
+      }}
+        {{#if (eq section "description")}}
+          <div class="row help">
+            <div class="col span-12 help-block wrap mb-0">
+              {{t "authPage.googleoauth.notAuthenticated.form.serviceAccountCredential.helperText" htmlSafe=true}}
+            </div>
           </div>
-        </div>
-      {{/if}}
-    {{/input-text-file}}
+        {{/if}}
+      {{/input-text-file}}
+    </div>
   </div>
-</div>
+{{/if}}
