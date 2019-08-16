@@ -76,6 +76,7 @@ export default Component.extend({
         if ( get(this, 'deleteTokens') ) {
           return get(this, 'globalStore').findAll('token').then((tokens) => {
             const promises = [];
+
             tokens.forEach((token) => {
               if ( !token.current ) {
                 promises.push(token.delete());
