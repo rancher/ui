@@ -4941,6 +4941,7 @@ formScopedRoles:
 formShareMember:
   add: 'Add Member'
   public: 'Make public (read-only)'
+  helpText: 'When assigning an Owner, the user must have the <code>Create Cluster Templates</code> global role in order to create new revisions. These permissions can be granted by an administrator.'
   table:
     headers:
       name: 'Name'
@@ -4953,6 +4954,10 @@ shareMemberRow:
     public:
       name: 'Public (all members & groups)'
       accessType: 'Read Only'
+  accessType:
+    owner: 'Owner'
+    member: 'Member'
+    'read-only': 'User'
 
 formHealthCheck:
   title: Health Check
@@ -6093,6 +6098,8 @@ modalConfirmDeactivate:
   header: Are you sure you want to
   protip: "ProTip: Hold the {key} key while clicking {isServiceButton} to bypass this confirmation."
   cancel: Cancel
+  nodeDriver: 'You will no longer be able to create, replace or remove nodes in any node pools that are using this driver.'
+  clusterDriver: 'You will no longer be able to edit the configuration of clusters using this driver.  Resources in the provider will not be automatically removed.'
   buttons:
     project:
       message: deactivate your environment

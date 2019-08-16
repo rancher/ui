@@ -28,8 +28,7 @@ function displayUrl(url) {
 export default Resource.extend({
   modalService:        service('modal'),
   catalog:             service(),
-  intl:         service(),
-
+  intl:                service(),
   type:                'nodeDriver',
   catalogTemplateIcon: computed('externalId', function() {
     let parsedExtId = parseExternalId(get(this, 'externalId')) || null;
@@ -120,11 +119,12 @@ export default Resource.extend({
         bulkable: true
       },
       {
-        label:    'action.deactivate',
-        icon:     'icon icon-pause',
-        action:   'deactivate',
-        enabled:  !!a.deactivate,
-        bulkable: true
+        label:     'action.deactivate',
+        icon:      'icon icon-pause',
+        action:    'promotDeactivate',
+        enabled:   !!a.deactivate,
+        bulkable:  true,
+        altAction: 'deactivate',
       },
     ];
   }),
@@ -132,6 +132,7 @@ export default Resource.extend({
   externalIdInfo: computed('externalId', function() {
     return parseExternalId(get(this, 'externalId'));
   }),
+
   actions: {
     activate() {
       return this.doAction('activate');
@@ -139,6 +140,13 @@ export default Resource.extend({
 
     deactivate() {
       return this.doAction('deactivate');
+    },
+
+    promotDeactivate() {
+      get(this, 'modalService').toggleModal('modal-confirm-deactivate', {
+        originalModel: this,
+        action:        'deactivate'
+      });
     },
 
     edit() {

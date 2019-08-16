@@ -4,7 +4,8 @@ import { inject as service } from '@ember/service';
 
 var KontainerDriver = Resource.extend({
   intl:         service(),
-  type:                'kontainerDriver',
+  modalService: service('modal'),
+  type:         'kontainerDriver',
 
   availableActions: computed('actionLinks.{activate,deactivate}', function() {
     let a = get(this, 'actionLinks') || {};
@@ -18,11 +19,12 @@ var KontainerDriver = Resource.extend({
         bulkable: true
       },
       {
-        label:    'action.deactivate',
-        icon:     'icon icon-pause',
-        action:   'deactivate',
-        enabled:  !!a.deactivate,
-        bulkable: true
+        label:     'action.deactivate',
+        icon:      'icon icon-pause',
+        action:    'promotDeactivate',
+        enabled:   !!a.deactivate,
+        bulkable:  true,
+        altAction: 'deactivate',
       },
     ];
   }),
@@ -65,6 +67,13 @@ var KontainerDriver = Resource.extend({
 
     edit() {
       get(this, 'modalService').toggleModal('modal-edit-driver', this);
+    },
+
+    promotDeactivate() {
+      get(this, 'modalService').toggleModal('modal-confirm-deactivate', {
+        originalModel: this,
+        action:        'deactivate'
+      });
     },
   },
 
