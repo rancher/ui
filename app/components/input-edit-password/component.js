@@ -4,6 +4,7 @@ import { get, set, computed, observer } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { later, run } from '@ember/runloop';
 import { randomStr } from 'shared/utils/util';
+import { resolve, all } from 'rsvp';
 
 const CHANGE = 'change';
 const SET = 'set';
@@ -16,17 +17,19 @@ export default Component.extend({
   access:      service(),
 
   layout,
-  showCurrent:     true,
-  generate:        false,
-  setOrChange:     CHANGE,
-  editLabel:       'modalEditPassword.actionButton',
-  currentPassword: null,
-  user:            null,
+  showCurrent:      true,
+  generate:         false,
+  setOrChange:      CHANGE,
+  editLabel:        'modalEditPassword.actionButton',
+  currentPassword:  null,
+  user:             null,
+  showDeleteTokens: false,
 
-  confirmBlurred: false,
-  serverErrors:   null,
-  password:       null,
-  confirm:        null,
+  confirmBlurred:   false,
+  serverErrors:     null,
+  password:         null,
+  confirm:          null,
+  deleteTokens:     false,
 
   didReceiveAttrs() {
     if ( get(this, 'generate') ) {
@@ -69,16 +72,30 @@ export default Component.extend({
         promise = user.doAction('setpassword', { newPassword: neu.trim(), });
       }
 
-      return promise.then(() => get(this, 'access').loadMe()
-        .then(() => {
-          get(this, 'complete')(true);
-          later(this, () => {
-            if ( this.isDestroyed || this.isDestroying ) {
-              return;
-            }
-            cb(true);
-          }, 1000);
-        })).catch((err) => {
+      return promise.then(() => get(this, 'access').loadMe().then(() => {
+        if ( get(this, 'deleteTokens') ) {
+          return get(this, 'globalStore').findAll('token').then((tokens) => {
+            const promises = [];
+            tokens.forEach((token) => {
+              if ( !token.current ) {
+                promises.push(token.delete());
+              }
+            });
+
+            return all(promises);
+          });
+        } else {
+          return resolve();
+        }
+      }).then(() => {
+        get(this, 'complete')(true);
+        later(this, () => {
+          if ( this.isDestroyed || this.isDestroying ) {
+            return;
+          }
+          cb(true);
+        }, 1000);
+      })).catch((err) => {
         set(this, 'serverErrors', [err.message]);
         get(this, 'complete')(false);
         cb(false);

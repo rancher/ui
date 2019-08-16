@@ -1,6 +1,10 @@
 <form class="horizontal-form container-fluid text-left" {{action 'save' on="submit"}}>
   <input type="text" name="username" autocomplete="username" value={{user.username}} style="display: none;" />
   <div class="content">
+    {{#if showDeleteTokens}}
+      <label>{{input type="checkbox" checked=deleteTokens}} {{t 'modalEditPassword.deleteTokens'}}</label>
+    {{/if}}
+
     {{#if showCurrent}}
       <div class="row mb-20">
         <div class="col span-12">
