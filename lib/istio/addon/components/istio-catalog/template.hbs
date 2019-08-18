@@ -463,6 +463,14 @@
 
   {{top-errors errors=errors}}
 
+  {{#if (and (not saveDisabled) (not enabled) enableClusterMonitoring (not scope.currentCluster.isMonitoringReady))}}
+    <BannerMessage
+      @color="bg-warning"
+      @icon="icon-alert"
+      @message={{t "clusterIstioPage.monitoringNotDeployed"}}
+    />
+  {{/if}}
+
   {{#save-cancel
     saveDisabled=saveDisabled
     editing=enabled
