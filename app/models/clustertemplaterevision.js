@@ -23,18 +23,6 @@ export default Resource.extend({
     return 'disabled';
   }),
 
-  canBulkRemove: computed('clusterTemplateId', function() {
-    let { clusterTemplate } = this;
-
-    if (clusterTemplate &&
-        clusterTemplate.defaultRevisionId &&
-        clusterTemplate.defaultRevisionId !== this.id) {
-      return true;
-    }
-
-    return false;
-  }),
-
   canMakeDefault: computed('clusterTemplate.defaultRevisionId', function() {
     let { clusterTemplate: { defaultRevisionId = '' } } = this;
 
