@@ -3,15 +3,6 @@
     {{t "confirmDelete.title"}}:
   </h3>
   <hr/>
-  {{#if forceDelete}}
-    <div class="mb-20 mt-20">
-      {{banner-message
-        icon="icon-alert"
-        color="bg-warning m-0"
-        message=(t "confirmDelete.forceDelete.warning")
-      }}
-    </div>
-  {{/if}}
   {{#if isSystemProject}}
     <div class="mb-20 mt-20">
       {{#banner-message
@@ -75,6 +66,15 @@
     </label>
   </div>
 {{/if}}
+  {{#if forceDelete}}
+    <div class="mb-20 mt-20">
+      {{banner-message
+        icon="icon-alert"
+        color="bg-warning m-0"
+        message=(t "confirmDelete.forceDelete.warning" htmlSafe=true)
+      }}
+    </div>
+  {{/if}}
 {{#if isClusterRoleTemplateBinding}}
   <div class="mb-15">
     {{t "confirmDelete.clusterRoleTemplateBindingNote"}}
