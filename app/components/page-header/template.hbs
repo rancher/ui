@@ -45,7 +45,7 @@
             {{#each item.submenu as |subitem|}}
               {{#if subitem.route}}
                 {{#if (or (not subitem.resource) (rbac-allows resource=subitem.resource scope=subitem.resourceScope))}}
-                  <li class="{{if (and subitem.disableIfClusterNotReady (not cluster.isReady)) "pointer-events-none"}}">
+                  <li>
                     {{#link-to-as-attrs
                        ourRoute=subitem.route
                        ctx=subitem.ctx
