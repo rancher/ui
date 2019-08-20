@@ -57,6 +57,10 @@ export default Mixin.create({
         [`${ t }.outputTags`]:             get(this, `outputTags`),
         [`${ t }.dockerRootDir`]:          get(this, 'dockerRootDir'),
         [`${ t }.includeSystemComponent`]: get(this, 'includeSystemComponent'),
+        [`${ t }.enableMultiLineFilter`]:  get(this, 'enableMultiLineFilter'),
+        [`${ t }.multiLineStartRegexp`]:   get(this, 'multiLineStartRegexp'),
+        [`${ t }.continueLineRegexp`]:     get(this, 'continueLineRegexp'),
+        [`${ t }.multiLineEndRegexp`]:     get(this, 'multiLineEndRegexp'),
       })
     }
 
