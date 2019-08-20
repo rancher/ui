@@ -127,7 +127,17 @@
   logPreview=logPreview
   model=model
 }}
-{{!--
-  {{#advanced-section advanced=showAdvanced}}
-  {{logging/form-log-docker model=model parentModel=parentModel}}
-  {{/advanced-section}} --}}
+
+{{#accordion-list showExpandAll=false as | al expandFn |}}
+  {{#accordion-list-item title=(t "loggingPage.multiLine.title")
+     detail=(t "loggingPage.multiLine.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=false
+  }}
+    {{logging/form-multi-line
+      model=model
+      targetType=targetType
+    }}
+  {{/accordion-list-item}}
+{{/accordion-list}}
