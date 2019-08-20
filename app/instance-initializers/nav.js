@@ -284,11 +284,10 @@ const rootNav = [
         localizedLabel:           'nav.tools.istio',
         route:                    'authenticated.cluster.istio.cluster-setting',
         resourceScope:            'global',
-        disableIfClusterNotReady: true,
         resource:                 [],
         ctx:                      [getClusterId],
         condition() {
-          return !get(this, 'cluster.isWindows');
+          return !get(this, 'cluster.isWindows') && get(this, 'cluster.isReady');
         },
       },
     ],
