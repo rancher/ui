@@ -4,6 +4,7 @@ clusterIstioPage:
   disabled: "Istio尚未启用，请单击“启用”按钮启用它。"
   notReady: 在当前集群的系统中安装Istio…
   confirmDisable: "你确定吗?再次单击将禁用Istio"
+  monitoringNotDeployed: "监控仍在部署中。 在确保集群中有足够的资源启用Istio之前，请等待监控部署完成。"
   disable: 禁用
   enableActionLabel: 启用
   version: Istio版本
@@ -26,7 +27,7 @@ clusterIstioPage:
       pilot: Pilot
       prometheus: Prometheus
       mixer: Mixer
-      tracing: Tracing
+      tracing: 跟踪
     tracingEnabled:
       label: 启用跟踪
     grafanaEnabled:
@@ -40,9 +41,9 @@ clusterIstioPage:
     gatewayType:
       label: Ingress网关的服务类型
     http2Port:
-      label: Http2 Port
+      label: Http2端口
     httpsPort:
-      label: Https Port
+      label: Https端口
     loadBalancerIP:
       label: Load Balancer IP
       placeholder: '例如: 192.0.0.1'
@@ -79,7 +80,7 @@ clusterIstioPage:
     detail:  控制哪些用户能访问Kiali和Jaeger UI
   pilot:
     title: Pilot
-    detail: 哪里管理配置
+    detail: 配置流量管理
   mixer:
     title: Mixer
     detail: 常规策略和遥测配置。
@@ -103,7 +104,7 @@ istio:
   table:
     template: 模板
     host: Host
-  kiali: Powered by Kiali
+  kiali: 由Kiali提供支持
   trafficMonitoring:
     duration: Last {time}
   nav:
@@ -131,7 +132,7 @@ ruleDetailPage:
   answers:
     title: Answers
     detail: Customized answers of this traffic rules
-    variable: Variable
+    variable: 变量
 
 projectIstioPage:
   info:
@@ -180,7 +181,7 @@ cruDestinationRule:
       httpHeaderName:
         label: HTTP Header Name
         placeholder: '例如: end-user'
-        error: HTTP Header Name is required.
+        error: 必须设置HTTP Header名称。
       minimumRingSize:
         label: Minimum Ring Size
         placeholder: '例如: 1024'
@@ -261,7 +262,7 @@ cruDestinationRule:
       placeholder: '例如: v1'
       error: Subset Name is required.
     labels:
-      error: Please input at least one label for subset.
+      error: 请为子集至少设置一个标签。
   tls:
     label: TLS
     detail: 为连接到上游服务配置TLS相关设置
@@ -276,17 +277,17 @@ cruDestinationRule:
       simple:
         label: 简单-创建到上游端点的TLS连接
       mutual:
-        label: Mutual - Secure connections to the upstream using mutual TLS by presenting client certificates for authentication
+        label: Mutual - 通过提供客户端证书进行身份验证，使用双向TLS安全连接到上游
     clientCertificate:
-      label: Client Certificate
+      label: 客户端证书(Client certificate)
       placeholder: '例如: /etc/certs/myclientcert.pem'
-      error: Client Certificate is required.
+      error: 必须设置客户端证书。
     privateKey:
-      label: Private Key
+      label: 私钥(private key)
       placeholder: '例如: /etc/certs/client_private_key.pem'
-      error: Private Key is required.
+      error: 必须设置私钥。
     caCertificates:
-      label: CA Certificates
+      label: CA证书(CA certificate)
       placeholder: '例如: /etc/certs/rootcacerts.pem'
     sni:
       label: SNI
@@ -363,7 +364,7 @@ cruVirtualService:
           label: Attempts
           placeholder: '例如: 3'
         perTryTimeout:
-          label: 每次重试尝试超时
+          label: 每次重试超时
           placeholder: '例如: 2s'
       redirect:
         label: 重定向
@@ -389,16 +390,16 @@ cruVirtualService:
           label: Port
           placeholder: '例如: 8080 or myport'
         weight:
-          label: Weight
+          label: 权重
           placeholder: '例如: 50'
-          error: Weight is required
+          error: 必须设置权重。
         subset:
           label: Subset
           placeholder: '例如: v1'
           error: Subset is required
         host:
           label: Host
-          error: Host is required
+          error: 必须设置Host。
       matches:
         error: 请为匹配条件输入至少一个键值对
         showMatch: 指定此路由的匹配规则
