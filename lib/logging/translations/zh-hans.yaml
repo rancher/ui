@@ -2,7 +2,7 @@ loggingPage:
   targetNav:
     experimental: 实验性
     tips:
-      caseA: 当前{pageScope}日志收集未启用。
+      caseA: 当前{pageScope}未启用日志收集功能。
       caseB: 当前日志收集目标是<code class="text-capitalize">{currentTarget}</code>，点击下面的保存按钮将禁止当前{pageScope}的日志收集。
       caseC: 当前日志收集目标是<code class="text-capitalize">{currentTarget}</code>。
       caseD: 点击下面的保存按钮去设置<span class="text-info text-capitalize">{targetType}</span>为日志收集目标服务。
@@ -15,7 +15,7 @@ loggingPage:
     kafka: Kafka
     syslog: Syslog
     fluentd: Fluentd
-    disable: None
+    disable: 禁用
   endpoint: 访问地址
   endpointPlaceholder: '例如: https://192.168.1.10:9200'
   logging: 日志收集
@@ -68,8 +68,8 @@ loggingPage:
       password: 密码
       passwordPlaceholder: 密码
     indexPatterns:
-      header: 索引模式
-      helpText: 索引模式用于生成Elacticsearch索引。
+      header: 索引配置
+      helpText: 配置用于生成Elacticsearch索引的参数。
       prefix: 前缀
       prefixPlaceholder: '例如: logstash'
       dateFormat: '日期格式:'
@@ -78,17 +78,17 @@ loggingPage:
         required: 必须添加前缀
         invalidCharacters: "前缀不能包含'{char}'"
 
-    generatedIndex: '生成的索引格式为: <code class="text-italic">{esIndex}</code>，默认索引模式为: {indexFormat}。'
+    generatedIndex: '生成的索引格式为: <code class="text-italic">{esIndex}</code>，默认索引格式为: {indexFormat}。'
     endpoint:
-      required: 访问地址必须填写
+      required: 必须配置访问地址。
   splunk:
     header: Splunk HTTP事件收集配置
-    helpText: '您可以找到如何配置Splunk HEC(HTTP事件收集器)的说明，<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">点击这里</a>。'
+    helpText: '您可以<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">点击这里</a>找到如何配置Splunk HEC(HTTP事件收集器)的说明。'
     token: Token
     tokenPlaceholder: Your Token
     tokenHelpText: 'Token是允许日志收集程序和HTTP客户端连接到HEC的验证信息，<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector#Configure_HTTP_Event_Collector_on_Splunk_Enterprise" target="_blank">了解详情</a>。'
-    tokenRequired: Token必须填写
-    endpointRequired: 访问地址必须填写
+    tokenRequired: 必须配置Token。
+    endpointRequired: 必须配置访问地址。
     source: 日志源
     sourcePlaceholder: '例如: fluentd'
     sourceHelpText: '标识事件来源的默认字段，即事件发生的位置，<a href="https://docs.splunk.com/Splexicon:Source" target="_blank">了解详情</a>。'
@@ -112,7 +112,7 @@ loggingPage:
     topicPlaceholder: '例如: message'
     topicHelpText: 日志将发送到这个主题。
     endpoint:
-      required: 访问地址必须填写
+      required: 必须配置访问地址。
       broker:
         placeholder: '例如: https://192.168.1.10:9092'
       zookeeper:
@@ -126,17 +126,18 @@ loggingPage:
     programHelpText: 日志中的程序名称。
     severityHelpText: '<p class="text-info text-small">日志的严重性列表可以在这里找到<a href="https://tools.ietf.org/html/rfc5424#section-6.2.1" target="_blank">，了解详情</a>。</p>'
     severities:
-      emergency: Emergency
-      alert: Alert
-      critical: Ctitical
-      error: Error
-      warning: Warning
-      notice: Notice
+      emergency: 紧急
+      alert: 警报
+      critical: 危险
+      error: 错误
+      warning: 警告
+      notice: 注意
       info: Info
       debug: Debug
     tokenHelpText: '将Token令牌添加到每个系统日志消息的结构化数据中。对于像<a href="https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/Cloud-Syslog-Source" target="_blank">Sumologic</a>, <a href="https://www.loggly.com/docs/customer-token-authentication-token" target="_blank">Loggly</a>等云日志系统，您可以在其配置页面上生成Token令牌。'
     endpoint:
-      required: 访问地址必须填写
+      required: 必须配置访问地址。
+    logSeverity: '日志等级:'
   fluentd:
     header: Fluentd配置
     compress:
@@ -146,7 +147,7 @@ loggingPage:
       label: 访问地址
       placeholder: '例如: 192.168.1.10:24224'
       invalid: 访问地址需要填写端口
-      required: 访问地址必须填写
+      required: 必须配置访问地址。
     password:
       label: 密码
       placeholder: 用于身份验证的用户名密码
@@ -154,7 +155,7 @@ loggingPage:
       label: 共享密钥
       placeholder: 用于身份验证的共享密钥
     standby:
-      label: 只用于做待机
+      label: 仅作为备用
       none: 需要一个非待机访问地址.
     username:
       label: 用户名
@@ -177,7 +178,7 @@ loggingPage:
     type:
       error: "@type不支持, 你可以选择以下类型: ['elasticsearch', 'splunk_hec', 'remote_syslog', 'kafka_buffered', 'forward']"
   ssl:
-    sslHeader: "{authType} 配置"
+    sslHeader: "{authType}配置"
     headerHelp: 输入HTTPS地址或选择TCP开启SSL配置
     certificate:
       label: PEM格式的CA证书
@@ -206,7 +207,7 @@ loggingPage:
       label: 密码
       placeholder: Your Password
     saslScramMechanism:
-      label: Scram Mechanism
+      label: 安全机制
       sha256: sha256
       sha512: sha512
     customTarget:
@@ -226,3 +227,14 @@ loggingPage:
     running: 运行中
     runOk: 运行成功
     dryRun: 试运行
+  multiLine:
+    title: 多行配置
+    detail: Concat插件配置选项。
+    enableMultiLineFilter:
+      label: 启用多行过滤
+    multiLineStartRegexp:
+      label: 多行开始正则表达式
+    continueLineRegexp:
+      label: 中间行正则表达式
+    multiLineEndRegexp:
+      label: 多行结束正则表达式

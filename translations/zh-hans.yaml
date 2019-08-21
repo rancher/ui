@@ -18,8 +18,8 @@ generic:
   cancel: 取消
   closeModal: 关闭
   cluster: 集群
-  collapse: 崩溃
-  collapseAll: 折叠全部
+  collapse: 折叠
+  collapseAll: 全部折叠
   comingSoon: 即将推出
   command: 命令
   confirm: 确认
@@ -44,9 +44,10 @@ generic:
   enabled: 启用
   entrypoint: 入口
   environment: 环境
+  expand: 展开
   expandAll: 全部展开
   experimental: "(实验)"
-  from: 来自
+  from: '来自'
   false: 'False'
   generic: '常规'
   gigabyte: 'GB'
@@ -828,6 +829,7 @@ projectsListNamespacePage:
   current: 当前项目
 
 projectsPage:
+  annotationsDetail: 为项目配置标签和注释。
   header: 项目/命名空间列表
   headerNS: 命名空间
   addProject: 添加项目
@@ -980,7 +982,7 @@ containersPage:
     sparkPrefixMemory: "内存:"
     sparkPrefixNetwork: "网络:"
     sparkPrefixStorage: "存储:"
-    noData: 没有可以显示的容器
+    noData: 没有容器显示
     noMatch: 没有符合当前搜索的容器
   welcome:
     container: 立即开始
@@ -1936,7 +1938,7 @@ signupPage:
 stackPage:
   header:
     singleBanner: 查看单个应用
-    backLink: 返回全部应用
+    backLink: 返回所有应用
   basics:
     tagsCopy: 复制用逗号分隔的标签
   containers:
@@ -2515,6 +2517,8 @@ clusterRow:
 
 clusterTemplateRow:
   label: '集群模板'
+  noData: '当前没有配置集群模板。'
+  noMatch: 没有集群模板匹配当前搜索。
 
 clusterNew:
   header: 选择集群类型
@@ -2551,7 +2555,7 @@ clusterNew:
     title: 集群选项
   kubernetesOptions:
     title: Kubernetes选项
-    detail: 自定义将要创建的集群
+    detail: 自定义集群功能
   security:
     title: 安全
     detail: 自定义GKE服务账号和访问权限
@@ -3428,7 +3432,7 @@ clusterNew:
       disabled: 不支持{plugin}网络提供商。
     advanced:
       label: 高级集群选项
-      detail: 自定义高级选项
+      detail: 自定义集群参数。
     authorizedEndpoint:
       title: 授权集群访问地址
       detail: "通过授权的集群访问地址与集群直接通信，绕过Rancher API代理。可以通过为集群生成kubeconfig来访问集群。"
@@ -4313,14 +4317,14 @@ deleteEksCluster:
     placeholder: Your AWS session token
     provided: Provided
   error:
-    accessKey: Access key必须设置。
-    secretKey: Secret key必须设置。
-    sessionToken: Session token必须设置。
+    accessKey: 必须设置Access key。
+    secretKey: 必须设置Secret key。
+    sessionToken: 必须设置Session token。
 
 hpaPage:
   noMatch: 没有匹配当前搜索的HPA
-  noData: 没有定义HPA
-  notSupported: 集群中不可用autoscaling/v2beta2 API。
+  noData: 没有配置HPA规则
+  notSupported: 集群中autoscaling/v2beta2 API不可用。
   table:
     replicas:
       range: 副本范围
@@ -4329,7 +4333,7 @@ hpaPage:
     lastScaleTime:
       label: Last Scale
     target:
-      label: 目标工作负载
+      label: 目标应用
 
 editAccount:
   title: 编辑账号
@@ -4364,10 +4368,10 @@ editApiKey:
   secretKey: Secret Key(密码)
   basicAuth: "Access Key和Secret Key可以作为HTTP基本身份验证的用户名和密码发送，以授权请求。您也可以将它们组合为Bearer Token:"
   token: Bearer Token
-  scope: 作用集群范围
+  scope: 作用范围
   scopeSelect:
-    prompt: 未指定作用范围
-    helpText: '集群范围的令牌可用于直接与<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/options/#authorized-cluster-endpoint" target="_blank" rel="nofollow noreferrer"授权集群端点</a>配置的集群的Kubernetes API交互。'
+    prompt: 不指定作用范围(作用于所有集群)
+    helpText: '集群范围的令牌可用于直接与<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/options/#authorized-cluster-endpoint" target="_blank" rel="nofollow noreferrer"授权集群端点</a>配置的集群API交互。'
   ttl:
     label: 自动失效时间
     never: 永不过期
@@ -5410,7 +5414,7 @@ formSslTermination:
   defaultCertificate:
     prompt: '选择证书...'
   default:
-    label: 使用默认ingress controller证书
+    label: 使用默认Ingress证书
     noHosts: 请给默认证书证书至少配置一条域名
   custom:
     label: 选择证书
@@ -6297,6 +6301,7 @@ modalYaml:
     new: 导入{type}YAML
     edit: '编辑YAML: {name}'
     view: '查看YAML: {name}'
+  noData: 没有{name}资源。
 modalWechat:
   title: '扫码关注Rancher中国微信技术群'
   wechat: 微信
@@ -6314,8 +6319,8 @@ nodeGroup:
 
 newIngress:
   header:
-    add: 添加Ingress规则
-    edit: 编辑Ingress规则
+    add: 添加规则
+    edit: 编辑规则
   error:
     noRules: "您必须有一个或多个规则"
 newBalancer:
@@ -6618,6 +6623,7 @@ nodeDriver:
     otc: Open Telekom Cloud
     packet: Packet
     rackspace: RackSpace
+    rancherkubernetesengine: RKE
     softlayer: SoftLayer
     tencenttke: Tencent TKE
     upcloud: UpCloud
@@ -7455,7 +7461,7 @@ pagination:
     other {当前显示{count}个工作负载中的{from}到{to}个 }}
 
 projectRow:
-  none: 无描述
+  none: 没有描述
   orchestration: 编排
 
 publicEndpoints:
@@ -7717,7 +7723,7 @@ nav:
     deploy: 部署服务
     addContainer: 添加容器
     addBalancer: 添加负载均衡
-    addIngress: 添加Ingress规则
+    addIngress: 添加规则
     addDns: 添加DNS记录
     addHpa: 添加HPA
     addVolume: 添加PVC
@@ -7738,7 +7744,7 @@ nav:
   apps:
     tab: 应用商店
     apps: 应用商店
-    noData: 目前还没有启动任何应用程序
+    noData: 目前没有运行应用程序
     launch: 启动
     manage: 管理
   infra:
@@ -7838,7 +7844,7 @@ action:
   mute: Mute
   nodeConfig: 下载Keys
   pause: 暂停编排
-  pauseAll: 暂停全部
+  pauseAll: 全部暂停
   redeploy: 重新部署
   refreshAuthProviderAccess:
     label: 刷新组成员
@@ -7870,8 +7876,8 @@ action:
   startAll: 全部开始
   stop: 停止
   stopAll: 全部停止
-  stopDrain: 停止Drain
-  suspend: Suspend
+  stopDrain: 停止驱散
+  suspend: 暂停
   test: 测试
   uncordon: 激活
   unmute: 取消静默
