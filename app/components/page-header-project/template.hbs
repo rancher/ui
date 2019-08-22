@@ -13,26 +13,38 @@
     <a role="button" aria-haspopup="true" class="{{if twoLine "two-line "}}text-white nav-link">
       {{#if (eq pageScope "project")}}
         <div class="clip">
-          <span>{{project.cluster.displayName}}</span>
+          <span>
+            {{project.cluster.displayName}}
+          </span>
         </div>
         <div class="pl-15 clip text-muted">
-          <span>{{project.displayName}}</span>
+          <span>
+            {{project.displayName}}
+          </span>
         </div>
       {{else if (eq pageScope "cluster")}}
         <div class="clip">
-          <span>{{cluster.displayName}}</span>
+          <span>
+            {{cluster.displayName}}
+          </span>
         </div>
       {{else if (eq pageScope "global")}}
         <div class="clip">
-          <span>{{t "nav.admin.tab"}}</span>
+          <span>
+            {{t "nav.admin.tab"}}
+          </span>
         </div>
       {{else}}
         <div class="clip">
-          <span>{{pageScope}}</span>
+          <span>
+            {{pageScope}}
+          </span>
         </div>
       {{/if}}
 
-      <span class="sr-only">{{t "nav.srToggleDropdown"}}</span>
+      <span class="sr-only">
+        {{t "nav.srToggleDropdown"}}
+      </span>
       <i class="icon icon-chevron-down chevron"></i>
     </a>
 
@@ -75,7 +87,9 @@
               }}
                 {{entry.searchMatch}}
               {{/link-to}}
-              <p class="state">{{entry.cluster.displayState}}</p>
+              <p class="state">
+                {{entry.cluster.displayState}}
+              </p>
             </li>
           {{else}}
             <li class="text-muted p-10">
@@ -86,16 +100,30 @@
           {{#each byCluster as |entry|}}
             <li
               data-cluster-id={{entry.cluster.id}}
-              class="item clip cluster {{if entry.active "active" "inactive"}} {{if (eq hoverEntry entry) "hover"}}"
+              class="item clip cluster p-0 {{if entry.active "active" "inactive"}} {{if (eq hoverEntry entry) "hover"}}"
             >
-              {{#link-to
-                 "authenticated.cluster"
-                 entry.cluster.id
-                 class="top"
-              }}
-                {{entry.cluster.displayName}}
-              {{/link-to}}
-              <p class="state">{{entry.cluster.displayState}}</p>
+              <div class="center align-items-stretch">
+                {{#link-to
+                  "authenticated.cluster"
+                   entry.cluster.id
+                   tagName="div"
+                   class="link top pl-20 pt-5 pb-5 m-0 flex-grow-3"
+                }}
+                  {{entry.cluster.displayName}}
+                  <p class="state">
+                    {{entry.cluster.displayState}}
+                  </p>
+                {{/link-to}}
+                {{#link-to
+                   "authenticated.cluster.edit"
+                   entry.cluster.id
+                   (query-params provider=entry.cluster.provider)
+                   class="top link pr-20 pt-5 pb-5 edit-link m-0 flex-grow-1"
+                   tagName="div"
+                }}
+                  <i class="icon icon-edit pull-right mt-10"></i>
+                {{/link-to}}
+              </div>
             </li>
           {{else}}
             <li class="text-muted p-10">
@@ -144,22 +172,36 @@
           {{#each clusterEntry.projects as |project|}}
             <li
               data-project-id={{project.id}}
-              class="item clip project {{unless project.isReady "not-ready"}} {{if project.active "active" "inactive"}}"
+              class="item clip project  p-0 {{unless project.isReady "not-ready"}} {{if project.active "active" "inactive"}}"
             >
-              {{#link-to
-                 "authenticated.project"
-                 project.id
-                 class="top"
-              }}
-                {{project.displayName}}
-              {{/link-to}}
-              <p class="state">
+              <div class="center align-items-stretch">
+                {{#link-to
+                  "authenticated.project"
+                  project.id
+                  tagName="div"
+                  class="link top pl-20 pt-5 pb-5 m-0 flex-grow-3"
+                }}
+                  {{project.displayName}}
+                  <p class="state">
+                    {{#if project.isReady}}
+                      {{project.displayState}}
+                    {{else}}
+                      {{t "nav.projectDropdown.projectNotReady"}}
+                    {{/if}}
+                  </p>
+                {{/link-to}}
                 {{#if project.isReady}}
-                  {{project.displayState}}
-                {{else}}
-                  {{t "nav.projectDropdown.projectNotReady"}}
+                  {{#link-to
+                     "authenticated.cluster.projects.edit"
+                     project.clusterId
+                     project.id
+                     class="top pr-20 pt-5 pb-5 edit-link link m-0 flex-grow-1"
+                     tagName="div"
+                  }}
+                    <i class="icon icon-edit pull-right mt-10"></i>
+                  {{/link-to}}
                 {{/if}}
-              </p>
+              </div>
             </li>
         {{else}}
             <li class="text-muted p-10">
