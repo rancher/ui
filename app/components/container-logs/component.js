@@ -28,6 +28,9 @@ export default Component.extend({
   wrapLines:     null,
   isFollow:      true,
   followTimer:   null,
+  isPrevious:    false,
+  previousButton: 'previous',
+
 
   init() {
     this._super(...arguments);
@@ -108,6 +111,20 @@ export default Component.extend({
       this.$('.log-body').animate({ scrollTop: '0px' });
     },
 
+    previousLog() {
+      if ( get(this, 'isPrevious') ) {
+        set(this, 'isPrevious', false);
+        set(this, 'previousButton', 'previous');
+      }
+      else {
+        set(this, 'isPrevious', true);
+        set(this, 'previousButton', 'current');
+      }
+      this.disconnect();
+      this.send('clear');
+      this.exec();
+    },
+
     followLog() {
       set(this, 'isFollow', true);
       this.send('scrollToBottom');
@@ -158,7 +175,7 @@ export default Component.extend({
     const scheme = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
     let url = `${ scheme }${ window.location.host }/k8s/clusters/${ clusterId }/api/v1/namespaces/${ namespaceId }/pods/${ podName }/log`;
 
-    url += `?container=${ encodeURIComponent(containerName) }&tailLines=${ LINES }&follow=true&timestamps=true`;
+    url += `?container=${ encodeURIComponent(containerName) }&tailLines=${ LINES }&follow=true&timestamps=true&previous=${ get(this, 'isPrevious') }`;
 
     this.connect(url);
   },
