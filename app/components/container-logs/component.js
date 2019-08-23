@@ -117,9 +117,6 @@ export default Component.extend({
       } else {
         set(this, 'isPrevious', true);
       }
-      this.disconnect();
-      this.send('clear');
-      this.exec();
     },
 
     followLog() {
@@ -150,6 +147,9 @@ export default Component.extend({
     } else {
       set(this, 'previousButton', 'previous');
     }
+    this.disconnect();
+    this.send('clear');
+    this.exec();
   }),
 
   _bootstrap() {
