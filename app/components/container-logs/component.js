@@ -114,10 +114,8 @@ export default Component.extend({
     previousLog() {
       if ( get(this, 'isPrevious') ) {
         set(this, 'isPrevious', false);
-        set(this, 'previousButton', 'previous');
       } else {
         set(this, 'isPrevious', true);
-        set(this, 'previousButton', 'current');
       }
       this.disconnect();
       this.send('clear');
@@ -144,6 +142,14 @@ export default Component.extend({
 
   wrapLinesDidChange: observer('wrapLines', function() {
     set(this, `prefs.${ C.PREFS.WRAP_LINES }`, get(this, 'wrapLines'));
+  }),
+
+  isPreviousChange: observer('isPrevious', function() {
+    if ( get(this, 'isPrevious') ) {
+      set(this, 'previousButton', 'current');
+    } else {
+      set(this, 'previousButton', 'previous');
+    }
   }),
 
   _bootstrap() {
