@@ -22,13 +22,13 @@ export default Component.extend({
   showProtip:     true,
   classNames:    'container-log',
 
-  status:        'connecting',
-  containerName: null,
-  socket:        null,
-  wrapLines:     null,
-  isFollow:      true,
-  followTimer:   null,
-  isPrevious:    false,
+  status:         'connecting',
+  containerName:  null,
+  socket:         null,
+  wrapLines:      null,
+  isFollow:       true,
+  followTimer:    null,
+  isPrevious:     false,
   previousButton: 'previous',
 
 
@@ -115,8 +115,7 @@ export default Component.extend({
       if ( get(this, 'isPrevious') ) {
         set(this, 'isPrevious', false);
         set(this, 'previousButton', 'previous');
-      }
-      else {
+      } else {
         set(this, 'isPrevious', true);
         set(this, 'previousButton', 'current');
       }
