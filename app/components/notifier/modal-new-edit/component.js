@@ -102,6 +102,8 @@ export default Component.extend(ModalBase, NewOrEdit, {
       }
       const ok = this.validate();
 
+      this.willSave()
+
       if (!ok) {
         return resolve();
       }
@@ -206,5 +208,20 @@ export default Component.extend(ModalBase, NewOrEdit, {
     set(this, 'errors', errors);
 
     return get(this, 'errors.length') === 0;
+  },
+
+  willSave() {
+    const notifierType = get(this, 'model.notifierType')
+
+    if (notifierType !== 'email') {
+      const targetConfig = get(this, `model.${ notifierType }Config`)
+
+      if (!get(targetConfig, 'proxyUrl')) {
+        delete targetConfig.proxyUrl
+      }
+      set(this, `model.${ notifierType }Config`, targetConfig)
+    }
+
+    return this._super(...arguments);
   },
 });
