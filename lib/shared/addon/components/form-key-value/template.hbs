@@ -27,7 +27,7 @@
     {{#each ary as |row|}}
       <tr>
         <td data-title="{{t keyLabel}}:">
-          {{#if (and editing allowEditKey (not-eq row.editable false))}}
+          {{#if editing}}
             {{input-paste
               separators=separators
               pasted=(action "pastedValues")
@@ -35,6 +35,7 @@
               type="text"
               value=row.key
               placeholder=keyPlaceholder
+              disabled=(not (and allowEditKey (not-eq row.editable false)))
             }}
           {{else}}
             {{row.key}}
@@ -61,7 +62,7 @@
         <td>&nbsp;</td>
         <td class="valign-top text-right">
           {{#if (and editing allowRemove)}}
-            <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span></button>
+            <button class="btn bg-primary btn-sm" {{action "remove" row}} disabled={{eq row.editable false}}><i class="icon icon-minus"/><span class="sr-only">{{t "generic.remove"}}</span></button>
           {{/if}}
         </td>
       </tr>
