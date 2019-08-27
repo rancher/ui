@@ -1,18 +1,27 @@
-<section class="header clearfix">
-  <div class="right-buttons">
-    {{#link-to "repositories" class="btn btn-sm bg-primary"}}
-      {{t 'repositories.enable'}}
-    {{/link-to}}
-  </div>
+{{#if scope.currentCluster.isWindows}}
+  <BannerMessage
+    @color="bg-warning"
+    @message={{t "windowsCluster.pipelines"}}
+  />
+{{else}}
+  <section class="header clearfix">
+    <div class="right-buttons">
+      {{#link-to "repositories" class="btn btn-sm bg-primary"}}
+        {{t "repositories.enable"}}
+      {{/link-to}}
+    </div>
 
-  <h1>{{t 'nav.infra.pipelines'}}</h1>
-</section>
+    <h1>
+      {{t "nav.infra.pipelines"}}
+    </h1>
+  </section>
 
-<section class="instances">
-  {{pipeline-jobs-table
-    body=model
-    bulkActions=true
-    search=true
-    paging=true
-  }}
-</section>
+  <section class="instances">
+    {{pipeline-jobs-table
+      body=model
+      bulkActions=true
+      search=true
+      paging=true
+    }}
+  </section>
+{{/if}}

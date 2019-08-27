@@ -50,9 +50,6 @@ const rootNav = [
         currentWhen:    [
           'authenticated.project.istio.project-istio',
         ],
-        condition() {
-          return !get(this, 'cluster.isWindows');
-        },
       },
       {
         id:             'infra-secrets',
@@ -286,9 +283,6 @@ const rootNav = [
         resourceScope:            'global',
         resource:                 [],
         ctx:                      [getClusterId],
-        condition() {
-          return !get(this, 'cluster.isWindows') && get(this, 'cluster.isReady');
-        },
       },
     ],
   },
