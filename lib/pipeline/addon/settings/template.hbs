@@ -1,6 +1,13 @@
-<div class="pt-20"></div>
-{{settings-git
-  providers=model.providers
-  githubAuthConfig=model.githubAuthConfig
-  settings=model.settings
-}}
+{{#if scope.currentCluster.isWindows}}
+  <BannerMessage
+    @color="bg-warning"
+    @message={{t "windowsCluster.pipelines"}}
+  />
+{{else}}
+  <div class="pt-20"></div>
+  {{settings-git
+    providers=model.providers
+    githubAuthConfig=model.githubAuthConfig
+    settings=model.settings
+  }}
+{{/if}}

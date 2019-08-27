@@ -56,8 +56,15 @@
   {{/istio-nav}}
   {{outlet}}
 {{else}}
-  {{banner-message
-    color="bg-info"
-    message=(t (if scope.currentCluster.systemProject  "projectIstioPage.info.notEnabled" "projectIstioPage.info.notOwner") clusterId=scope.currentCluster.id htmlSafe=true)
-  }}
+  {{#if scope.currentCluster.isWindows}}
+    <BannerMessage
+      @color="bg-warning"
+      @message={{t "windowsCluster.istio"}}
+    />
+  {{else}}
+    {{banner-message
+      color="bg-info"
+      message=(t (if scope.currentCluster.systemProject  "projectIstioPage.info.notEnabled" "projectIstioPage.info.notOwner") clusterId=scope.currentCluster.id htmlSafe=true)
+    }}
+  {{/if}}
 {{/if}}
