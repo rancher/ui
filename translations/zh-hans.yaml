@@ -155,7 +155,7 @@ accountsPage:
         active: 激活
         created: 已授权
       global:
-        title: 全局权限
+        title: 全局角色
         description: 访问管理影响整个安装的事情
         admin: 此用户是管理员并拥有所有权限
         noRoles: 此用户没有全局角色
@@ -293,10 +293,10 @@ rolesPage:
     errors:
       inherited: "角色{displayName}被:{roleNames}继承"
   resources:
-    title: 授权资源
+    title: 资源授权
     detail: 对Kubernetes资源的具体操作进行授权。
   inherit:
-    title: 继承角色
+    title: 角色继承
     detail: 继承其他角色的所有权限
   addRole: 添加角色
   editRole: 编辑角色
@@ -319,7 +319,7 @@ rolesPage:
         labelText: 上下文
         detail: 此角色的适用范围适合在此展示
       locked:
-        labelText: 已锁定
+        labelText: 锁定
         detail: 对已经绑定的用户没有影响
         enabled: '是: 不允许用户再绑定此角色，已绑定的用户不受影响。'
         disabled: "否"
@@ -608,7 +608,7 @@ authPage:
         label: 应用 ID
         placeholder: UUID字符串
       applicationSecret:
-        label: 应用 Secret
+        label: 应用密文
       serverURL:
         label: Rancher Server Url
       azureADEndpoint:
@@ -2133,7 +2133,7 @@ notifierPage:
       user: 用户
     secret:
       label: 自建应用密钥
-      helpText: 您可以在<a href="https://work.weixin.qq.com/wework_admin/frame#apps" target="_blank" rel="nofollow noopener noreferrer">自建应用详情页</a>找到Secret。
+      helpText: 您可以在<a href="https://work.weixin.qq.com/wework_admin/frame#apps" target="_blank" rel="nofollow noopener noreferrer">自建应用详情页</a>找到密文。
     agent:
       label: 自建应用代理 ID
       helpText: 您可以在<a href="https://work.weixin.qq.com/wework_admin/frame#apps" target="_blank" rel="nofollow noopener noreferrer">自建应用详情页</a>找到Agent Id。
@@ -2335,7 +2335,7 @@ annotationsSection:
 
 authorizedEndpoint:
   enabled:
-    label: '授权集群访问地址(此地址需要能够访问k8s api-server，在Rancher不可用时，可通过此地址直接访问k8s集群)'
+    label: '此地址必须是能够访问k8s api-server的域名或者IP。在Rancher Server不可用时，可使用包含此地址的kubecfg文件，通过命令 "kubectl --context" 直接访问k8s集群。'
   fqdn:
     label: FQDN(域名，后面的证书为ca证书 → )
 
@@ -3229,7 +3229,7 @@ clusterNew:
         retention:
           label: 备份副本
           placeholder: "12"
-          prefix: 保留份数
+          prefix: 份数
         interval:
           label: 备份周期
           placeholder: "6"
@@ -3300,10 +3300,10 @@ clusterNew:
       detail: "自定义Kubernetes集群选项"
     labels:
       title: 主机标签
-      detail: 应用于节点的可选标签
+      detail: （可选）添加到节点的标签
     taints:
       title: 节点污点（Taints）
-      detail: （可选）应用于节点的污点（taints）
+      detail: （可选）添加到节点的污点（taints）
     nodes:
       title: 主机池
       detail: 配置集群需要的主机节点
@@ -3336,7 +3336,7 @@ clusterNew:
     network:
       title: 网络驱动
       detail: 为集群配置网络驱动
-      label: 网络组件
+      label: 网络驱动
       flannel: Flannel
       flannelCustom: Flannel
       calico: Calico
@@ -3435,7 +3435,7 @@ clusterNew:
       detail: 自定义集群参数。
     authorizedEndpoint:
       title: 授权集群访问地址
-      detail: "通过授权的集群访问地址与集群直接通信，绕过Rancher API代理。可以通过为集群生成kubeconfig来访问集群。"
+      detail: "授权集群访问地址可用于直接访问Kubernetes API SERVER，绕过Rancher API代理。"
       label: 授权集群访问地址
   custom:
     label: 自定义
@@ -3495,15 +3495,15 @@ clusterTemplateQuestions:
     enableClusterMonitoring: '启用集群监控'
     enableNetworkPolicy: '启用网络策略'
     localClusterAuthEndpoint: '启用本地集群Auth端点'
-    caCerts: 'CA Certs'
+    caCerts: 'CA证书'
     fqdn: 'FQDN'
-    addonJobTimeout: 'Addon Job Timeout'
-    addons: 'Addons'
+    addonJobTimeout: '附加组件安装超时'
+    addons: '附加组件'
     addonsInclude: 'Addons Include'
-    authentication: 'Authentication'
-    authorization: 'Authorization'
-    bastionHost: 'Bastion Host'
-    cloudProvider: 'Cloud Provider'
+    authentication: '身份验证'
+    authorization: '授权'
+    bastionHost: '堡垒主机'
+    cloudProvider: '云供应商'
     dns: 'DNS配置'
     ignoreDockerVersion: '忽略Docker版本'
     ingress: 'Ingress'
@@ -3515,9 +3515,9 @@ clusterTemplateQuestions:
     restore: '集群恢复'
     rotateCertificates: '轮换证书'
     services: 'Services'
-    sshAgentAuth: 'Enable SSH Agent Auth'
-    sshCertPath: 'SSH Certificate Path'
-    sshKeyPath: 'SSH Key Path'
+    sshAgentAuth: '启用SSH代理认证'
+    sshCertPath: 'SSH证书路径'
+    sshKeyPath: 'SH密钥路径'
 
 
 conditionSections:
@@ -4366,7 +4366,7 @@ editApiKey:
     new: 添加API Key
   accessKey: Access Key(用户名)
   secretKey: Secret Key(密码)
-  basicAuth: "Access Key和Secret Key可以作为HTTP基本身份验证的用户名和密码发送，以授权请求。您也可以将它们组合为Bearer Token:"
+  basicAuth: "Access Key和Secret Key可以作为HTTP基本身份验证的用户名和密码发送，以授权请求。您也可以将它们组合为Bearer Token: "
   token: Bearer Token
   scope: 作用范围
   scopeSelect:
@@ -4847,7 +4847,7 @@ formEnvVar:
     value: 值
 
 formGlobalRoles:
-  title: 全局权限
+  title: 全局角色
   description: 控制用户管理整个{appName}安装的访问权限。
   mode:
     admin:
@@ -5610,9 +5610,9 @@ formVolumeRow:
     existingVct: PVC模板
     bindMount: 主机映射卷
     tmpfs: Tmpfs
-    secret: Secret卷
-    configmap: Configmap卷
-    certificate: Certificate卷
+    secret: 密文卷
+    configmap: 配置映射卷
+    certificate: 证书卷
     newVolumeClaimTemplate: 新的PVC模板
   remove: 删除卷
   subPath: 卷中的子路径
@@ -5652,9 +5652,9 @@ formVolumes:
     existingPvc: 使用现有PVC
     bindMount: 映射主机目录
     tmpfs: 添加内存tmpfs
-    secret: Secret卷
-    configMap: ConfigMap卷
-    certificate: Certificate卷
+    secret: 密文卷
+    configMap: 配置映射卷
+    certificate: 证书卷
     customLogPath: 从目录读取日志
     vct: 添加PVC模板
   table:
@@ -5814,7 +5814,7 @@ hostSettings:
   helpText:
     static1: "不要包含<code>/v1</code>或任何其他路径，但如果您设置了"
     static2: "在{appName}前面，请确保使用<code>https://</code>."
-    isRancher: '<a href="{docsBase}/installing-rancher/installing-server/basic-ssl-config/" target="_blank">SSL termination</a>'
+    isRancher: '<a href="{docsBase}/installing-rancher/installing-server/basic-ssl-config/" target="_blank">SSL终止</a>'
     sslTerm: SSL终止
   notPublic:
     alert: |
@@ -5872,7 +5872,7 @@ containersSection:
   detail: Pod中的容器
   noData: 没有容器
   noMatch: 没有容器匹配当前搜索
-  initContainer: Init Container
+  initContainer: 初始化容器(Init)
 
 labelsSection:
   kind: 类型
@@ -5913,7 +5913,7 @@ loginSaml:
 
 loginUserPass:
   local: 使用本地用户
-  externalProvider: 使用{externalName}用户
+  externalProvider: 使用{externalName}用户。
   provider: "{kind}"
   userLabel: 用户名
   remember: 记住登录
@@ -5926,9 +5926,9 @@ loginUserPass:
 machineTemplatesPage:
   title: 添加主机
   new:
-    helpText: 启动新的主机或通过SSH导入已经运行Docker的主机
+    helpText: 启动新的主机或通过SSH导入已经运行Docker的主机。
     btn: 设置
-  custom: 自定义添加一台现有的正在运行Docker的主机
+  custom: 自定义添加一台现有的正在运行Docker的主机。
   templateBox:
     button: 选择
     labels:
@@ -5951,7 +5951,7 @@ newCertificate:
     invalidFormat: 无效的证书
     placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
     protip: 包括全部所需的证书链
-    tooltip: 'Paste in the CA certificate that will be used in the generated kubeconfig(s) to validate the server certificate. <a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/options/#authorized-cluster-endpoint" target="blank"
+    tooltip: '粘贴用于验证server证书的CA证书，它将生成在kubecfg文件中。 查看<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/options/#authorized-cluster-endpoint" target="blank"
     >更多信息</a>'
   certChain:
     label: 证书链
@@ -6044,7 +6044,7 @@ modalAddCloudKey:
     edit: 编辑云凭证
   type: 凭证类型
   saving:
-    validating: Validating Keys
+    validating: 确认键
   errors:
     validation: '{ status }: 验证密钥时出现问题，请输入有效凭证，然后重试。'
     region: 您必须选择一个区域来验证您的密钥
@@ -6067,21 +6067,21 @@ modalAddCloudKey:
   digitalocean:
     accessToken:
       label: Access Token
-      placeholder: Your DigitalOcean API access token
+      placeholder: 您的DigitalOcean API访问令牌
       help: |
         粘贴来自DigitalOcean的
         <a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications & API</a>。
   linode:
     token:
-      label: Access Token
-      placeholder: Your Linode API access token
+      label: 访问令牌
+      placeholder: 您的Linode API访问令牌
       help: |
-        Paste in a Personal Access Token from the Linode
+        从Linode粘贴个人访问令牌
         <a href="https://cloud.linode.com/profile/tokens" target="_blank" rel="nofollow noreferrer noopener">API Tokens</a> screen
-    authAccountButton: 'Next: Configure Instance'
+    authAccountButton: '下一步: 配置实例'
   vmwarevsphere:
     password:
-      label: Password
+      label: 密码
 
 modalConfirmYaml2Form:
   header: "您将从YAML编辑切换到表单编辑"
@@ -6100,8 +6100,8 @@ modalConfirmDeactivate:
   header: 是否确认要
   protip: "高级技巧:在点击{isServiceButton}时按住{key}键以跳过确认操作"
   cancel: 取消
-  nodeDriver: 'You will no longer be able to create, replace or remove nodes in any node pools that are using this driver.'
-  clusterDriver: 'You will no longer be able to edit the configuration of clusters using this driver.  Resources in the provider will not be automatically removed.'
+  nodeDriver: '您将无法在任何使用此驱动程序的节点池中创建、替换或删除节点。'
+  clusterDriver: '您将不能够再使用此驱动程序编辑集群的配置。提供程序中的资源不会自动删除。'
   buttons:
     project:
       message: 停用环境
@@ -6647,8 +6647,8 @@ nodeDriver:
       placeholder: 选择要安装的Kubernetes版本
     keyPairs:
       label: SSH Key
-      prompt: none selected
-      tooltip: You may need to edit the security group's inbound rules to enable the port 22.
+      prompt: 没有选择
+      tooltip: 您可能需要编辑安全组的入站规则来启用22端口。
     role:
       label: 服务角色
       noneSelected: "Rancher创建角色"
@@ -6744,8 +6744,8 @@ nodeDriver:
       title: 3. 安全组
       detail: 选择安全组将应用到实例
       choose: 选择一个或多个现有的组
-      defaultExisting: "标准: 使用现有的<code>{groupName}</code>安全组"
-      defaultCreate: "标准: 自动创建<code>{groupName}</code>安全组"
+      defaultExisting: "标准: 使用现有的<code>{groupName}</code>安全组。"
+      defaultCreate: "标准: 自动创建<code>{groupName}</code>安全组。"
       next: "下一步: 设置实例选项"
       loading: 正在加载实例选项...
     tags:
@@ -6760,9 +6760,9 @@ nodeDriver:
       text: 将要开放端口的详细信息
     needs:
       label: "为了使{appName}正常使用，安全组需要配置允许以下流量通过:"
-      item1: '从{appName} 服务器到主机的<code>TCP</code>端口<code>22</code><span class="text-muted">(SSH连接用于安装docker)'
-      item2: '主机之间需要开放<code>UDP</code>端口<code>500</code>和<code>4500</code><span class="text-muted">(ipsec网络)</span></li>'
-      item3: 这些规则<b>不会</b>自动添加
+      item1: '从{appName} 服务器到主机的<code>TCP</code>端口<code>22</code><span class="text-muted">(SSH连接用于安装docker)。'
+      item2: '主机之间需要开放<code>UDP</code>端口<code>500</code>和<code>4500</code><span class="text-muted">(ipsec网络)</span></li>。'
+      item3: 这些规则<b>不会</b>自动添加。
     instanceType:
       label: 实例类型
     rootSize:
@@ -6932,7 +6932,7 @@ nodeDriver:
       detail: 选择OVF环境属性
     vcenter:
       label: vCenter或ESXi服务器
-      placeholder: vCenter或者ESXi主机名/IP
+      placeholder: 'vCenter或者ESXi主机名/IP'
     vcenterPort:
       label: 端口
     username:
@@ -6957,15 +6957,15 @@ nodeDriver:
     dataCenter:
       label: 数据中心
       placeholder: "例如: datacenter_name"
-      help: "用于创建虚拟机的数据中心（对于独立ESXi保留空白）"
+      help: "用于创建虚拟机的数据中心（对于独立ESXi保留空白）。"
     pool:
       label: 池
       placeholder: "例如: /dc_name/host/host_name/Resources/pool_name"
-      help: "用于创建VM的资源池(对于独立ESXi保留空白)"
+      help: "用于创建VM的资源池(对于独立ESXi保留空白)。"
     host:
       label: 主机
       placeholder: "例如: cluster_name/host_name"
-      help: "用于创建虚拟机的特定主机(对于独立ESXi或具有DRS的集群留空)"
+      help: "用于创建虚拟机的特定主机(对于独立ESXi或具有DRS的集群留空)。"
     network:
       label: 网络
       placeholder: "例如: VM网络"
@@ -6973,11 +6973,11 @@ nodeDriver:
     dataStore:
       label: 数据存储
       placeholder: "例如: datastore_cluster_name/datastore_name"
-      help: "创建VM磁盘的数据存储"
+      help: "用于创建VM磁盘的存储"
     cloudinit:
       label: Cloud Init
       placeholder: "例如: http://my_host/cloud-config.yml"
-      help: "Cloud-init文件或url在guestinfo中设置"
+      help: "在guestinfo中设置Cloud-init文件或url"
     folder:
       label: Folder
       placeholder: "例如: /folder"
@@ -6988,29 +6988,29 @@ nodeDriver:
       value:
         placeholder: "例如: Myrancherhost"
       label: 用于guestinfo的配置参数
-      addActionLabel: Add Parameter
+      addActionLabel: 添加参数
     vappHelp: "注意:独立的ESXI不支持vApp选项和网络协议配置文件"
     vappMode:
       disabled: "不使用vApp"
-      auto: "使用vApp配置网络协议配置文件"
-      manual: "提供自定义vApp配置"
+      auto: " 使用vApp网络协议配置文件去配置网络"
+      manual: "使用自定义vApp配置"
     vappTransport:
       label: OVF environment transport
       placeholder: "例如: com.vmware.guestInfo"
-      help: "com.vmware.guestInfo或者iso"
+      help: "com.vmware.guestInfo 或 iso"
     vappIpprotocol:
-      label: vApp IP protocol
+      label: vApp IP协议
       placeholder: "例如: IPv4"
-      help: "IPv4 or IPv6"
+      help: "IPv4 或 IPv6"
     vappIpallocationpolicy:
       label: vApp IP分配策略
       placeholder: "例如: fixedAllocated"
-      help: "dhcp, fixed, transient or fixedAllocated"
+      help: "dhcp, fixed, transient 或 fixedAllocated"
     vappProperty:
       key:
         placeholder: "例如: guestinfo.interface.0.ip.0.address"
       value:
-        placeholder: "例如: ip:VM Network, expression or string"
+        placeholder: "例如: ip:VM Network, expression 或 string"
       label: vApp属性
       addActionLabel: 添加参数
   azure:
@@ -7034,12 +7034,12 @@ nodeDriver:
       placeholder: Azure订阅证书
     image:
       label: 镜像
-      placeholder: '推荐:UbuntuServer:16.04.0-LTS:latest'
+      placeholder: '推荐: UbuntuServer:16.04.0-LTS:latest'
     diskSize:
       label: Disk Size
       placeholder: '例如: 30'
     managedDisks:
-      label: Disk Type
+      label: 磁盘类型
       unmanaged: Unmanaged Disk
       managed: Managed Disk
     updateDomainCount:
@@ -7060,7 +7060,7 @@ nodeDriver:
       placeholder: 发布配置文件
     environment:
       label: 环境
-      placeholder: 'AzurePublicCloud'
+      placeholder: 'Azure公共云'
     resourceGroup:
       label: 资源组
       placeholder: 'docker-machine'
@@ -7183,7 +7183,7 @@ nodeDriver:
       label: 安全组
       placeholder: 安全组
       prompt: 选择安全组...
-      defaultCreate: "自动创建<code>{groupName}</code>安全组"
+      defaultCreate: "自动创建<code>{groupName}</code>安全组。"
     sshPassword:
       label: SSH密码
       placeholder: 创建实例后SSH远程登录密码(非必填)
@@ -7226,7 +7226,7 @@ nodeDriver:
     cluster:
       label: 集群
     network:
-      defaultCreate: "标准: 自动创建<code>{groupName}</code>安全组"
+      defaultCreate: "标准: 自动创建<code>{groupName}</code>安全组。"
       choose: 连接到现有网络
       label: 网络
     portHelp:
@@ -7246,7 +7246,7 @@ nodeDriver:
 
 newConfigMap:
   title:
-    new: 添加ConfigMap
+    new: 添加配置映射
     edit: '编辑配置映射: {name}'
     view: '配置映射: {name}'
   name:
@@ -7284,7 +7284,7 @@ pageFooter:
   slack: Slack
   download:
     link: 下载Rancher CLI
-    mac: macOS
+    mac: MacOS
     windows: Windows
     linux: Linux
   showSystem: 显示系统容器
@@ -7513,7 +7513,7 @@ schema:
   inputContainer:
     prompt: 选择容器...
   inputConfigMap:
-    prompt: 选择ConfigMap
+    prompt: 选择配置映射
   inputEnum:
     option: 选择选项...
   inputHost:
@@ -7598,7 +7598,7 @@ tooltipLink:
   composeYaml: 编排文件
 
 tooltipWarning:
-  notConfigured: 未设置访问控制
+  notConfigured: 没有配置访问控制
   dismiss: 取消
 
 tooltipExpire:
@@ -7675,9 +7675,9 @@ searchableSelect:
 # Mixins
 ##############################
 containerChoices:
-  hostGroup: "主机:{name}"
-  hostGroupWithState: "主机:{name}{state}"
-  unknownHost: "主机:???"
+  hostGroup: "主机: {name}"
+  hostGroupWithState: "主机: {name}{state}"
+  unknownHost: "主机: ???"
   containerOption: "{name}"
 
 ##############################
@@ -7736,7 +7736,7 @@ nav:
     node: 按主机分组
     workload: 按负载量分组
     namespace: 按名称空间分组
-    namespaceWorkload: 按名称空间/工作负载分组
+    namespaceWorkload: '按名称空间/工作负载分组'
   hosts:
     tab: 主机
     addHost: 添加主机

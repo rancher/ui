@@ -11,8 +11,6 @@ import C from 'ui/utils/constants';
 import { isEmpty } from '@ember/utils';
 import moment from 'moment';
 
-const GRAY_OUT_SCHEDULER_STATUS_PROVIDERS = ['azureaks', 'aliyunkcs'];
-
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
   growl:       service(),
@@ -283,7 +281,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const inactiveNodes = get(this, 'inactiveNodes') || [];
     const provider = get(this, 'provider');
 
-    const grayOut = GRAY_OUT_SCHEDULER_STATUS_PROVIDERS.indexOf(provider) > -1;
+    const grayOut = C.GRAY_OUT_SCHEDULER_STATUS_PROVIDERS.indexOf(provider) > -1;
 
     unhealthyComponents.forEach((component) => {
       if ( grayOut && (get(component, 'name') === 'scheduler' || get(component, 'name') === 'controller-manager') ) {
