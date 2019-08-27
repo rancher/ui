@@ -9,6 +9,12 @@
   </ul>
   <div class="right-buttons">
     <button
+      disabled={{rbac-prevents resource="kontainerdriver" scope="global" permission="create"}}
+      class="btn btn-sm bg-primary right-divider-btn"
+      {{action 'downloadRancherImages'}}>
+        {{t 'clusterDrivers.downloadRancherImages'}}
+    </button>
+    <button
       disabled={{or refreshing (rbac-prevents resource="kontainerdriver" scope="global" permission="create")}}
       class="btn btn-sm bg-primary right-divider-btn"
       {{action 'refreshMetadata'}}>
