@@ -107,6 +107,10 @@ export default Resource.extend({
     return !!get(this, 'links.update') && !get(this, 'builtin');
   }),
 
+  canRemove: computed('state', function() {
+    return get(this, 'state') === 'inactive'
+  }),
+
   availableActions: computed('actionLinks.{activate,deactivate}', function() {
     let a = get(this, 'actionLinks') || {};
 
@@ -115,14 +119,14 @@ export default Resource.extend({
         label:    'action.activate',
         icon:     'icon icon-play',
         action:   'activate',
-        enabled:  !!a.activate,
+        enabled:  !!a.activate && get(this, 'state') === 'inactive',
         bulkable: true
       },
       {
         label:     'action.deactivate',
         icon:      'icon icon-pause',
         action:    'promotDeactivate',
-        enabled:   !!a.deactivate,
+        enabled:   !!a.deactivate && get(this, 'state') === 'active',
         bulkable:  true,
         altAction: 'deactivate',
       },
