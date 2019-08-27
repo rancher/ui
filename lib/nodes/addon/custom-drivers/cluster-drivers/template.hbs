@@ -1,56 +1,74 @@
 <section class="header has-tabs clearfix p-0">
   <ul class="tab-nav">
     <li>
-      {{#link-to "custom-drivers.cluster-drivers"}}{{t 'customDrivers.clusters'}}{{/link-to}}
+      {{#link-to "custom-drivers.cluster-drivers"}}
+        {{t "customDrivers.clusters"}}
+      {{/link-to}}
     </li>
     <li>
-      {{#link-to "custom-drivers.node-drivers"}}{{t 'customDrivers.nodes'}}{{/link-to}}
+      {{#link-to "custom-drivers.node-drivers"}}
+        {{t "customDrivers.nodes"}}
+      {{/link-to}}
     </li>
   </ul>
   <div class="right-buttons">
     <button
+      disabled={{rbac-prevents resource="kontainerdriver" scope="global" permission="create"}}
+      class="btn btn-sm bg-primary right-divider-btn"
+      {{action "downloadRancherImages"}}>
+        {{t "clusterDrivers.downloadRancherImages"}}
+    </button>
+    <button
       disabled={{or refreshing (rbac-prevents resource="kontainerdriver" scope="global" permission="create")}}
       class="btn btn-sm bg-primary right-divider-btn"
-      {{action 'refreshMetadata'}}>
+      {{action "refreshMetadata"}}>
         {{#if refreshing}}
          <i class="icon icon-spinner icon-spin"></i>
         {{/if}}
-        {{t 'clusterDrivers.refresh'}}
+        {{t "clusterDrivers.refresh"}}
     </button>
 
     <button
       disabled={{rbac-prevents resource="kontainerdriver" scope="global" permission="create"}}
       class="btn btn-sm bg-primary right-divider-btn"
-      {{action 'addNewDriver'}}>
-        {{t 'clusterDrivers.add'}}
+      {{action "addNewDriver"}}>
+        {{t "clusterDrivers.add"}}
     </button>
   </div>
 </section>
 
 {{#sortable-table
-    classNames="grid sortable-table"
-    body=rows
-    searchText=searchText
-    sortBy=sortBy
-    descending=descending
-    bulkActions=true
-    pagingLabel="pagination.driver"
-    headers=headers as |sortable kind driver dt|}}
+   classNames="grid sortable-table"
+   body=rows
+   searchText=searchText
+   sortBy=sortBy
+   descending=descending
+   bulkActions=true
+   pagingLabel="pagination.driver"
+   headers=headers
+   as |sortable kind driver dt|
+ }}
   {{#if (eq kind "row")}}
     <tr class="main-row">
       <td valign="middle" class="row-check" style="padding-top: 2px;">
-        {{check-box nodeId=driver.id}}
+        {{check-box
+          nodeId=driver.id
+        }}
       </td>
 
       <td data-title="{{dt.state}}" class="state">
-        {{badge-state model=driver}}
+        {{badge-state
+          model=driver
+        }}
       </td>
 
       <td data-title="{{dt.name}}" class="clip">
         {{driver.displayName}}
         <div class="clip text-small">
           {{#if driver.builtin}}
-            <span class="text-muted">{{t 'clusterDrivers.builtIn'}}</span>
+            <span class="text-muted">
+              {{t "clusterDrivers.builtIn"}}
+            </span>
           {{else}}
             {{driver.url}}
           {{/if}}
@@ -58,16 +76,29 @@
       </td>
 
       <td data-title="{{dt.actions}}" class="actions">
-        {{action-menu model=driver}}
+        {{action-menu
+          model=driver
+        }}
       </td>
     </tr>
 
     {{#if model.showTransitioningMessage}}
-      {{error-sub-row fullColspan=sortable.fullColspan model=driver}}
+      {{error-sub-row
+        fullColspan=sortable.fullColspan
+        model=driver
+      }}
     {{/if}}
   {{else if (eq kind "nomatch")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'clusterDrivers.table.noMatch'}}</td></tr>
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+        {{t "clusterDrivers.table.noMatch"}}
+      </td>
+    </tr>
   {{else if (eq kind "norows")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'clusterDrivers.table.noData'}}</td></tr>
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+        {{t "clusterDrivers.table.noData"}}
+      </td>
+    </tr>
   {{/if}}
 {{/sortable-table}}
