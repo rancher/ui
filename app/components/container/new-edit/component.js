@@ -75,8 +75,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
 
     const service = get(this, 'service');
 
-    if (!get(this, 'isSidekick') &&
-      service && !get(service, 'scheduling')) {
+    if (!get(this, 'isSidekick') && !get(service, 'scheduling.node')) {
       set(service, 'scheduling', { node: {} });
     }
 
