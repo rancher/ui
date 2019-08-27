@@ -1,9 +1,9 @@
 <section>
   {{#unless isEnabled}}
       <BannerMessage
-       @color="bg-warning"
-       @icon="icon-alert"
-       @message={{t "authPage.googleoauth.header.disabled.label"}}
+        @color="bg-warning"
+        @icon="icon-alert"
+        @message={{t "authPage.googleoauth.header.disabled.label"}}
       />
   {{/unless}}
   {{top-errors
@@ -11,10 +11,26 @@
   }}
 </section>
 
-{{#accordion-list
-  showExpandAll=false  as |al expandFn|
-}}
+<BannerMessage
+  @color="bg-warning"
+  @icon="icon-alert"
+  @message={{t "authPage.googleoauth.warning.doc" htmlSafe=true}}
+/>
 
+{{#unless isEnabled}}
+  <FormGoogleAuth
+    @save={{action "save"}}
+    @cancel={{action "cancel"}}
+    @authConfig={{authConfig}}
+    @saving={{saving}}
+    @doneSaving={{doneSaving}}
+  />
+{{/unless}}
+
+{{#accordion-list
+  showExpandAll=false
+  as |al expandFn|
+}}
   {{#if isEnabled}}
     {{#accordion-list-item
       expand=(action expandFn)
@@ -36,184 +52,20 @@
           </div>
         </div>
         <hr />
-        {{form-google-auth
-          authConfig=authConfig
-          editing=false
-          isEnabled=isEnabled
-        }}
+        <FormGoogleAuthRead
+          @authConfig={{model.originalConfig}}
+        />
+        {{#if editing}}
+          <FormGoogleAuth
+            @save={{action "save"}}
+            @cancel={{action "cancel"}}
+            @authConfig={{authConfig}}
+            @saving={{saving}}
+            @doneSaving={{doneSaving}}
+            @isEnabled={{isEnabled}}
+          />
+        {{/if}}
       </section>
-    {{/accordion-list-item}}
-  {{/if}}
-
-  {{#if (or editing (not isEnabled))}}
-    {{#accordion-list-item
-      expand=(action expandFn)
-      expandAll=al.expandAll
-      expandOnInit=true
-      expanded=true
-      showExpand=false
-      title=(t "authPage.googleoauth.notAuthenticated.header")
-    }}
-      <section class="">
-        <p>
-          <ol class="alphalist ml-40">
-            <li>
-              {{t "authPage.googleoauth.notAuthenticated.ul.li1.text" htmlSafe=true}}
-              <ul>
-                <li>
-                  {{t "authPage.googleoauth.notAuthenticated.ul.li1.ul.li1"}}
-                   {{#tooltip-element
-                      type="tooltip-basic"
-                      model=(t "authPage.googleoauth.notAuthenticated.ul.li1.helpertext" clusterId=cluster.id htmlSafe=true)
-                      tooltipTemplate="tooltip-static"
-                      aria-describedby="tooltip-base"
-                      baseClass="text-left"
-                    }}
-                    <span>
-                      <i class="icon icon-help icon-blue"/>
-                    </span>
-                  {{/tooltip-element}}
-                </li>
-              </ul>
-            </li>
-            <li>
-              {{t "authPage.googleoauth.notAuthenticated.ul.li2.text"}}
-              <ul>
-                <li>
-                  {{t "authPage.googleoauth.notAuthenticated.ul.li2.ul.li1" appName=settings.appName htmlSafe=true}}
-                    {{#tooltip-element
-                      type="tooltip-basic"
-                      model=(t "authPage.googleoauth.notAuthenticated.ul.li2.helperText" clusterId=cluster.id htmlSafe=true)
-                      tooltipTemplate="tooltip-static"
-                      aria-describedby="tooltip-base"
-                      baseClass="text-left"
-                    }}
-                    <span>
-                      <i class="icon icon-help icon-blue"/>
-                    </span>
-                  {{/tooltip-element}}
-                  <span>
-                    {{destinationDomain}}
-                    {{copy-to-clipboard
-                      size="small"
-                      clipboardText=destinationDomain
-                      htmlSafe=true
-                    }}
-                  </span>
-                </li>
-                <li>
-                  <b>
-                    {{t "authPage.googleoauth.notAuthenticated.ul.li2.ul.li2" htmlSafe=true}}
-                  </b>
-                  <span>
-                    {{destinationUrl}}
-                    {{copy-to-clipboard
-                      size="small"
-                      clipboardText=destinationUrl
-                      htmlSafe=true
-                    }}
-                  </span>
-                </li>
-                <li>
-                  {{t "authPage.googleoauth.notAuthenticated.ul.li2.ul.li3"}}
-                </li>
-              </ul>
-            </li>
-            <li>
-              {{t "authPage.googleoauth.notAuthenticated.ul.li3.text"}}
-              <ul>
-                <li>
-                  {{t "authPage.googleoauth.notAuthenticated.ul.li3.ul.li1"}}
-                </li>
-                <li>
-                  <b>
-                    {{t "authPage.googleoauth.notAuthenticated.ul.li3.ul.li2" htmlSafe=true}}
-                  </b>
-                  <span>
-                    {{authorizedJavascriptOrigin}}
-                    {{copy-to-clipboard
-                      size="small"
-                      clipboardText=authorizedJavascriptOrigin
-                      htmlSafe=true
-                    }}
-                  </span>
-                </li>
-                <li>
-                  {{t "authPage.googleoauth.notAuthenticated.ul.li3.ul.li3" htmlSafe=true}}
-                  <span>
-                    {{redirectURI}}
-                    {{copy-to-clipboard
-                      size="small"
-                      clipboardText=redirectURI
-                      htmlSafe=true
-                    }}
-                  </span>
-                </li>
-                <li>
-                  {{t "authPage.googleoauth.notAuthenticated.ul.li3.ul.li4"}}
-                </li>
-              </ul>
-            </li>
-             <li>
-              {{t "authPage.googleoauth.notAuthenticated.ul.li4.text"}}
-              <ul>
-                <li>
-                  {{t "authPage.googleoauth.notAuthenticated.ul.li4.ul.li1" htmlSafe=true}}
-                </li>
-                <li>
-                  {{t "authPage.googleoauth.notAuthenticated.ul.li4.ul.li2"}}
-                </li>
-                <li>
-                  {{t "authPage.googleoauth.notAuthenticated.ul.li4.ul.li3"}}
-                </li>
-                <li>
-                  {{t "authPage.googleoauth.notAuthenticated.ul.li4.ul.li4"}}
-                </li>
-              </ul>
-            </li>
-          </ol>
-        </p>
-      </section>
-    {{/accordion-list-item}}
-
-    {{#accordion-list-item
-      expand=(action expandFn)
-      expandAll=al.expandAll
-      expandOnInit=true
-      expanded=true
-      showExpand=false
-      title=(t "authPage.googleoauth.notAuthenticated.form.header" appName=settings.appName)
-    }}
-      <form autcomplete="on">
-        <section>
-          {{form-google-auth
-            authConfig=authConfig
-            editing=true
-            isEnabled=isEnabled
-          }}
-
-          <div class="row text-center">
-            <div class="btn-group">
-              <button
-                disabled={{buttonDisabled}}
-                class="btn bg-primary"
-                {{action "save"}}>
-                {{#if saving}}
-                  <i class="icon icon-spinner icon-spin"></i> {{t "authPage.googleoauth.testAuth.buttonText.post"}}
-                {{else if doneSaving}}
-                  {{t "generic.saved"}}
-                {{else}}
-                  <i class="icon icon-google"></i> {{t "authPage.googleoauth.testAuth.buttonText.pre"}}
-                {{/if}}
-              </button>
-              <button {{action "cancel"}} class="btn bg-transparent">
-                {{t "saveCancel.cancel"}}
-              </button>
-            </div>
-          </div>
-
-        </section>
-      </form>
     {{/accordion-list-item}}
   {{/if}}
 
