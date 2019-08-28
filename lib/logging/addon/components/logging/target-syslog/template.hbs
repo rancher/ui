@@ -1,123 +1,81 @@
-<h2 class="mt-30">
-  {{t "loggingPage.syslog.header"}}
-</h2>
+<h2 class="mt-30">{{t 'loggingPage.syslog.header'}}</h2>
 <hr/>
 <section class="box">
   <div class="row">
-      <label class="acc-label">
-        {{t "loggingPage.endpoint"}}
-        {{field-required}}
-      </label>
+      <label class="acc-label">{{t 'loggingPage.endpoint'}}{{field-required}}</label>
       <div class="input-group">
         {{input
-          type="text"
-          value=config.endpoint
-          classNames="form-control"
-          placeholder=(t "loggingPage.syslog.endpointPlaceholder")
-          id="syslog-endpoint"
+            type="text"
+            value=config.endpoint
+            classNames="form-control"
+            placeholder=(t 'loggingPage.syslog.endpointPlaceholder')
+            id="syslog-endpoint"
         }}
         <div class="input-group-btn bg-primary">
           {{#basic-dropdown
                horizontalPosition="right"
                as |dd|}}
             {{#dd.trigger class="btn bg-default text-uppercase"}}
-              <span class="pr-5">
-                {{config.protocol}}
-              </span>
-              <i class="icon icon-chevron-down"></i>
+              <span class="pr-5">{{config.protocol}}</span><i class="icon icon-chevron-down"></i>
             {{/dd.trigger}}
 
             {{#dd.content}}
-              <li>
-                <a {{action "changeProtocol" "tcp"}}>
-                  TCP
-                </a>
-              </li>
-              <li>
-                <a {{action "changeProtocol" "udp"}}>
-                  UDP
-                </a>
-              </li>
+              <li><a {{action "changeProtocol" 'tcp'}}>TCP</a></li>
+              <li><a {{action "changeProtocol" 'udp'}}>UDP</a></li>
             {{/dd.content}}
 
           {{/basic-dropdown}}
         </div>
       </div>
-    <p class="text-info text-small mb-0">
-      {{t "loggingPage.syslog.endpointHelpText"}}
-    </p>
+    <p class="text-info text-small mb-0">{{t 'loggingPage.syslog.endpointHelpText'}}</p>
   </div>
 
   <div class="row">
     <div class="col span-6 mt-0 pt-0">
-      <label class="acc-label">
-        {{t "loggingPage.syslog.program"}}
-      </label>
+      <label class="acc-label" for="">{{t 'loggingPage.syslog.program'}}</label>
       {{input
-        type="text"
-        value=config.program
-        classNames="form-control"
-        placeholder=(t "loggingPage.syslog.programPlaceholder")
+          type="text"
+          value=config.program
+          classNames="form-control"
+          placeholder=(t 'loggingPage.syslog.programPlaceholder')
       }}
-      <p class="text-info text-small">
-        {{t "loggingPage.syslog.programHelpText"}}
-      </p>
+      <p class="text-info text-small">{{t 'loggingPage.syslog.programHelpText'}}</p>
     </div>
 
     <div class="col span-6 mt-0 pt-0">
-      <label class="acc-label">
-        {{t "loggingPage.splunk.token"}}
-      </label>
+      <label class="acc-label" for="">{{t 'loggingPage.splunk.token'}}</label>
       {{input
-        type="text"
-        value=config.token
-        classNames="form-control"
-        placeholder=(t "loggingPage.splunk.tokenPlaceholder")
+          type="text"
+          value=config.token
+          classNames="form-control"
+          placeholder=(t 'loggingPage.splunk.tokenPlaceholder')
       }}
       <p class="text-info text-small">
-        {{t "loggingPage.syslog.tokenHelpText" htmlSafe=true}}
+        {{t 'loggingPage.syslog.tokenHelpText' htmlSafe=true}}
       </p>
     </div>
   </div>
 
   <div>
-    <span class="mr-10">
-      {{t "loggingPage.syslog.logSeverity"}}
-    </span>
+    <span class="mr-10">Log Severity:</span>
     {{#each severities as |item|}}
       <label class="mr-10 text-capitalize">
-        {{radio-button
-          selection=config.severity
-          value=item.value
-        }}
+        {{radio-button selection=config.severity value=item.value }}
         {{t item.label}}
       </label>
     {{/each}}
-    {{t "loggingPage.syslog.severityHelpText" htmlSafe=true}}
+    {{t 'loggingPage.syslog.severityHelpText' htmlSafe=true}}
   </div>
 </section>
 
 {{logging/form-log-ssl
-  config=config
-  targetType=targetType
-  disabled=(or (not enableSSLConfig) (not config.enableTls))
+    config=config
+    targetType=targetType
+    disabled=(or (not enableSSLConfig) (not config.enableTls))
 }}
 
-{{logging/form-log-format
-  logPreview=logPreview
-  model=model
-}}
-
-{{#accordion-list showExpandAll=false as | al expandFn |}}
-  {{#accordion-list-item title=(t "loggingPage.multiLine.title")
-     detail=(t "loggingPage.multiLine.detail")
-     expandAll=expandAll
-     expand=(action expandFn)
-     expandOnInit=false
-  }}
-    {{logging/form-multi-line
-      model=model
-      targetType=targetType
-    }}
-  {{/accordion-list-item}}
-{{/accordion-list}}
+{{logging/form-log-format logPreview=logPreview model=model}}
+{{!--
+  {{#advanced-section advanced=showAdvanced}}
+  {{logging/form-log-docker model=model parentModel=parentModel}}
+  {{/advanced-section}} --}}
