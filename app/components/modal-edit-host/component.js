@@ -1,4 +1,4 @@
-import { observer } from '@ember/object';
+import { observer, set, get } from '@ember/object';
 import { on } from '@ember/object/evented';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
@@ -23,20 +23,20 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
   init() {
     this._super(...arguments);
-    this.set('model', this.get('originalModel').clone());
+    set(this, 'model', get(this, 'originalModel').clone());
 
-    if (this.get('model.name')) {
-      this.set('customName', this.get('model.name'))
+    if (get(this, 'model.name')) {
+      set(this, 'customName', get(this, 'model.name'))
     }
   },
 
   customNameObserver: on('init', observer('customName', function() {
-    let cn = this.get('customName');
+    let cn = get(this, 'customName');
 
     if (cn && cn.length > 0) {
-      this.set('primaryResource.name', cn);
+      set(this, 'primaryResource.name', cn);
     } else {
-      this.set('primaryResource.name', null);
+      set(this, 'primaryResource.name', null);
     }
   })),
 
