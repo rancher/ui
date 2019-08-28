@@ -5,8 +5,11 @@ import Component from '@ember/component';
 import NewOrEdit from 'shared/mixins/new-or-edit';
 import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
+import { inject as service } from '@ember/service';
 
 export default Component.extend(ModalBase, NewOrEdit, {
+  scope:  service(),
+
   layout,
   classNames:    ['large-modal'],
   model:         null,
@@ -16,6 +19,8 @@ export default Component.extend(ModalBase, NewOrEdit, {
   customName:     null,
 
   originalModel:      alias('modalService.modalOpts'),
+  taintCapabilites:   alias('scope.currentCluster.capabilities.taintSupport'),
+
   init() {
     this._super(...arguments);
     this.set('model', this.get('originalModel').clone());
