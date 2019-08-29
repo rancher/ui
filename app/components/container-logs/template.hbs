@@ -27,13 +27,16 @@
 {{yield}}
 
 <div class="footer-actions">
-  <div class="checkbox pt-10" style="position: absolute">
-    <label>
+  <div class="checkbox pt-10 text-left" style="position: absolute; top: -2px">
+    <label class="block">
       {{input type="checkbox" checked=wrapLines}}
       {{t 'containerLogs.wrapLines'}}
     </label>
+    <label class="block">
+      {{input type="checkbox" checked=isPrevious}}
+      {{t 'containerLogs.previous'}}
+    </label>
   </div>
-  <button {{action "previousLog"}} class="btn bg-default">{{t (concat 'containerLogs.previousButton.' previousButton)}}</button>
   <button {{action "scrollToTop"}} class="btn bg-default">{{t 'containerLogs.scrollTop'}}</button>
   <button {{action "followLog"}} class="btn bg-default scroll-bottom">{{t 'containerLogs.scrollBottom'}}</button>
   <button {{action "download"}} class="btn bg-default">{{t 'containerLogs.download'}}</button>

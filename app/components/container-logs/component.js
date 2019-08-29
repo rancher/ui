@@ -29,7 +29,6 @@ export default Component.extend({
   isFollow:       true,
   followTimer:    null,
   isPrevious:     false,
-  previousButton: 'previous',
 
 
   init() {
@@ -111,14 +110,6 @@ export default Component.extend({
       this.$('.log-body').animate({ scrollTop: '0px' });
     },
 
-    previousLog() {
-      if ( get(this, 'isPrevious') ) {
-        set(this, 'isPrevious', false);
-      } else {
-        set(this, 'isPrevious', true);
-      }
-    },
-
     followLog() {
       set(this, 'isFollow', true);
       this.send('scrollToBottom');
@@ -131,7 +122,7 @@ export default Component.extend({
     },
   },
 
-  containerDidChange: observer('containerName', function() {
+  watchReconnect: observer('containerName', 'isPrevious', function() {
     this.disconnect();
     this.send('clear');
     this.exec();
@@ -139,17 +130,6 @@ export default Component.extend({
 
   wrapLinesDidChange: observer('wrapLines', function() {
     set(this, `prefs.${ C.PREFS.WRAP_LINES }`, get(this, 'wrapLines'));
-  }),
-
-  isPreviousChange: observer('isPrevious', function() {
-    if ( get(this, 'isPrevious') ) {
-      set(this, 'previousButton', 'current');
-    } else {
-      set(this, 'previousButton', 'previous');
-    }
-    this.disconnect();
-    this.send('clear');
-    this.exec();
   }),
 
   _bootstrap() {
