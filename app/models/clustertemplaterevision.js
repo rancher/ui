@@ -30,19 +30,21 @@ export default Resource.extend({
   }),
 
   availableActions: computed('actionLinks.[]', 'enabled', 'clusterTemplate.defaultRevisionId', function() {
+    const a = get(this, 'actionLinks') || {};
+
     return [
       {
         label:    'generic.enable',
         icon:     'icon icon-play',
         action:   'enable',
-        enabled:  !this.enabled,
+        enabled:  !!a.enable,
         bulkable: true,
       },
       {
         label:    'generic.disable',
         icon:     'icon icon-stop',
         action:   'disable',
-        enabled:  this.enabled,
+        enabled:  !!a.disable,
         bulkable: true,
       },
       {
@@ -81,9 +83,7 @@ export default Resource.extend({
     },
 
     disable() {
-      set(this, 'enabled', false);
-
-      this.save()
+      this.doAction('disable')
         .catch((err) => {
           set(this, 'enabled', true);
 
@@ -94,9 +94,7 @@ export default Resource.extend({
     },
 
     enable() {
-      set(this, 'enabled', true);
-
-      this.save()
+      this.doAction('enable')
         .catch((err) => {
           set(this, 'enabled', false);
 
