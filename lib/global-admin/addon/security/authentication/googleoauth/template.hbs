@@ -1,21 +1,23 @@
 <section>
-  {{#unless isEnabled}}
+  {{#if isEnabled}}
       <BannerMessage
-        @color="bg-warning"
-        @icon="icon-alert"
-        @message={{t "authPage.googleoauth.header.disabled.label"}}
+        @color="bg-info"
+        @icon="icon-info"
+        @message={{t "authPage.googleoauth.warning.doc" htmlSafe=true}}
       />
-  {{/unless}}
+
+    {{else}}
+       <BannerMessage
+      @color="bg-warning"
+      @icon="icon-alert"
+      @message={{t "authPage.googleoauth.header.disabled.label" htmlSafe=true}}
+    />
+  {{/if}}
   {{top-errors
     errors=errors
   }}
 </section>
 
-<BannerMessage
-  @color="bg-warning"
-  @icon="icon-alert"
-  @message={{t "authPage.googleoauth.warning.doc" htmlSafe=true}}
-/>
 
 {{#unless isEnabled}}
   <FormGoogleAuth
