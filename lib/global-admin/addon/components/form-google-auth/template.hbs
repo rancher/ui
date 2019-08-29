@@ -3,17 +3,6 @@
     <label class="acc-label pb-5">
       {{t "authPage.googleoauth.notAuthenticated.form.adminEmail.labelText"}}
       {{field-required}}
-      {{#tooltip-element
-        type="tooltip-basic"
-        model=(t "authPage.googleoauth.notAuthenticated.form.adminEmail.helperText" clusterId=cluster.id htmlSafe=true)
-        tooltipTemplate="tooltip-static"
-        aria-describedby="tooltip-base"
-        baseClass="text-left"
-      }}
-        <span>
-          <i class="icon icon-help icon-blue"/>
-        </span>
-      {{/tooltip-element}}
     </label>
     {{input
       type="text"
@@ -27,17 +16,6 @@
     <label class="acc-label pb-5">
       {{t "authPage.googleoauth.notAuthenticated.form.hostname.labelText"}}
         {{field-required}}
-        {{#tooltip-element
-          type="tooltip-basic"
-          model=(t "authPage.googleoauth.notAuthenticated.form.hostname.helperText" clusterId=cluster.id htmlSafe=true)
-          tooltipTemplate="tooltip-static"
-          aria-describedby="tooltip-base"
-          baseClass="text-left"
-        }}
-          <span>
-            <i class="icon icon-help icon-blue"/>
-          </span>
-        {{/tooltip-element}}
     </label>
     {{#input-or-display
       editable=(not isEnabled)
@@ -68,7 +46,7 @@
 </div>
 
 
-<div class="pt-30 pb-30">
+<div class="pt-20 pb-10">
 <h3>
   <b>
     {{t "authPage.googleoauth.stepOne.header"}}
@@ -96,7 +74,15 @@
 
       <li>
         {{t "authPage.googleoauth.notAuthenticated.ul.li2.ul.li1" appName=settings.appName htmlSafe=true}}
-          {{#tooltip-element
+        <span>
+          {{destinationDomain}}
+          {{copy-to-clipboard
+            size="small"
+            clipboardText=destinationDomain
+            htmlSafe=true
+          }}
+        </span>
+        {{#tooltip-element
             type="tooltip-basic"
             model=(t "authPage.googleoauth.notAuthenticated.ul.li2.helperText" clusterId=cluster.id htmlSafe=true)
             tooltipTemplate="tooltip-static"
@@ -107,14 +93,6 @@
             <i class="icon icon-help icon-blue"/>
           </span>
         {{/tooltip-element}}
-        <span>
-          {{destinationDomain}}
-          {{copy-to-clipboard
-            size="small"
-            clipboardText=destinationDomain
-            htmlSafe=true
-          }}
-        </span>
       </li>
       <li>
         <b>
@@ -135,7 +113,7 @@
     </ul>
 </div>
 
-<div class="pt-30 pb-30">
+<div class="pt-20 pb-10">
   <h3>
     <b>
       {{t "authPage.googleoauth.stepTwo.header"}}
@@ -205,7 +183,7 @@
   </div>
 </div>
 
-<div class="pt-30 pb-30">
+<div class="pt-20 pb-10">
   <h3>
     <b>
       {{t "authPage.googleoauth.stepThree.header"}}
