@@ -337,25 +337,32 @@
         </div>
         <div class="row">
           <div class="col span-12">
-            {{t "clusterNew.azureaks.networking.label"}}
-            <div class="radio">
-              <label class={{concat (if editing "text-muted") " acc-label mr-20"}}>
-                {{radio-button
-                  selection=netMode
-                  value="default"
-                  disabled=editing
-                }}
-                {{t "clusterNew.azureaks.networking.default"}}
-              </label>
-              <label class={{concat (if editing "text-muted") " acc-label"}}>
-                {{radio-button
-                  selection=netMode
-                  value="advanced"
-                  disabled=editing
-                }}
-                {{t "clusterNew.azureaks.networking.advanced"}}
-              </label>
-            </div>
+            <label class="acc-label" for="azureaks-netwok-mode">
+              {{t "clusterNew.azureaks.networking.label"}}
+            </label>
+            {{#input-or-display
+               editable=isNew
+               value=(if (eq netMode "default") (t "clusterNew.azureaks.networking.default") (t "clusterNew.azureaks.networking.advanced"))
+            }}
+              <div class="radio">
+                <label class={{concat (if editing "text-muted") " hand mr-20"}}>
+                  {{radio-button
+                    selection=netMode
+                    value="default"
+                    disabled=editing
+                  }}
+                  {{t "clusterNew.azureaks.networking.default"}}
+                </label>
+                <label class={{concat (if editing "text-muted") " hand"}}>
+                  {{radio-button
+                    selection=netMode
+                    value="advanced"
+                    disabled=editing
+                  }}
+                  {{t "clusterNew.azureaks.networking.advanced"}}
+                </label>
+              </div>
+            {{/input-or-display}}
           </div>
           {{#if (eq netMode "advanced")}}
             <div class="row">
@@ -365,7 +372,7 @@
                 </label>
                 {{#input-or-display
                    editable=isNew
-                   value=networkChoice
+                   value=networkChoiceDispaly
                 }}
                   {{new-select
                     classNames="form-control"
