@@ -22,12 +22,14 @@ export default Component.extend({
   showProtip:     true,
   classNames:    'container-log',
 
-  status:        'connecting',
-  containerName: null,
-  socket:        null,
-  wrapLines:     null,
-  isFollow:      true,
-  followTimer:   null,
+  status:         'connecting',
+  containerName:  null,
+  socket:         null,
+  wrapLines:      null,
+  isFollow:       true,
+  followTimer:    null,
+  isPrevious:     false,
+
 
   init() {
     this._super(...arguments);
@@ -120,7 +122,7 @@ export default Component.extend({
     },
   },
 
-  containerDidChange: observer('containerName', function() {
+  watchReconnect: observer('containerName', 'isPrevious', function() {
     this.disconnect();
     this.send('clear');
     this.exec();
@@ -158,7 +160,7 @@ export default Component.extend({
     const scheme = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
     let url = `${ scheme }${ window.location.host }/k8s/clusters/${ clusterId }/api/v1/namespaces/${ namespaceId }/pods/${ podName }/log`;
 
-    url += `?container=${ encodeURIComponent(containerName) }&tailLines=${ LINES }&follow=true&timestamps=true`;
+    url += `?container=${ encodeURIComponent(containerName) }&tailLines=${ LINES }&follow=true&timestamps=true&previous=${ get(this, 'isPrevious') }`;
 
     this.connect(url);
   },
