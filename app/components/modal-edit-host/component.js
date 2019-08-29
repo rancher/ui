@@ -1,12 +1,15 @@
-import { observer } from '@ember/object';
+import { observer, set, get } from '@ember/object';
 import { on } from '@ember/object/evented';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import NewOrEdit from 'shared/mixins/new-or-edit';
 import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
+import { inject as service } from '@ember/service';
 
 export default Component.extend(ModalBase, NewOrEdit, {
+  scope:  service(),
+
   layout,
   classNames:    ['large-modal'],
   model:         null,
@@ -16,22 +19,24 @@ export default Component.extend(ModalBase, NewOrEdit, {
   customName:     null,
 
   originalModel:      alias('modalService.modalOpts'),
+  taintCapabilites:   alias('scope.currentCluster.capabilities.taintSupport'),
+
   init() {
     this._super(...arguments);
-    this.set('model', this.get('originalModel').clone());
+    set(this, 'model', get(this, 'originalModel').clone());
 
-    if (this.get('model.name')) {
-      this.set('customName', this.get('model.name'))
+    if (get(this, 'model.name')) {
+      set(this, 'customName', get(this, 'model.name'))
     }
   },
 
   customNameObserver: on('init', observer('customName', function() {
-    let cn = this.get('customName');
+    let cn = get(this, 'customName');
 
     if (cn && cn.length > 0) {
-      this.set('primaryResource.name', cn);
+      set(this, 'primaryResource.name', cn);
     } else {
-      this.set('primaryResource.name', null);
+      set(this, 'primaryResource.name', null);
     }
   })),
 
