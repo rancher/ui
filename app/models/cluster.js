@@ -91,9 +91,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return get(this, 'configName') === 'rancherKubernetesEngineConfig';
   }),
 
-  provider: computed('configName', 'nodePools.@each.nodeTemplateId', 'driver', function() {
+  provider: computed('configName', 'nodePools.@each.{driver,nodeTemplateId}', 'driver', function() {
     const pools = get(this, 'nodePools') || [];
-    const firstTemplate = get(pools, 'firstObject.nodeTemplate');
+    const firstPool = pools.objectAt(0);
 
     switch ( get(this, 'configName') ) {
     case 'amazonElasticContainerServiceConfig':
@@ -109,15 +109,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
     case 'huaweiEngineConfig':
       return 'huaweicce';
     case 'rancherKubernetesEngineConfig':
-      if ( pools.length > 0 ) {
-        if ( firstTemplate ) {
-          return get(firstTemplate, 'driver');
-        } else {
-          return null;
-        }
-      } else {
+      if ( !pools.length ) {
         return 'custom';
       }
+
+
+      return firstPool.driver || get(firstPool, 'nodeTemplate.driver') || null;
     default:
       if (get(this, 'driver') && get(this, 'configName')) {
         return get(this, 'driver');
