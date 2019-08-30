@@ -1,15 +1,26 @@
 import Resource from '@rancher/ember-api-store/models/resource';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
 import { cancel, later } from '@ember/runloop'
-import { get, set } from '@ember/object';
-import { alias } from '@ember/object/computed';
+import { get, set, computed } from '@ember/object';
+import { ucFirst } from 'shared/utils/util';
 
 const NodePool = Resource.extend({
   type:          'nodePool',
   quantityTimer: null,
+
   nodeTemplate:  reference('nodeTemplateId'),
 
-  displayProvider: alias('nodeTemplate.displayProvider'),
+  displayProvider: computed('driver', 'nodeTemplate.driver', 'intl.locale', function() {
+    const intl = get(this, 'intl');
+    const driver = get(this, 'driver');
+    const key = `nodeDriver.displayName.${ driver }`;
+
+    if ( intl.exists(key) ) {
+      return intl.t(key);
+    } else {
+      return ucFirst(driver);
+    }
+  }),
 
   incrementQuantity(by) {
     let quantity = get(this, 'quantity');
