@@ -71,6 +71,22 @@
       }}
     </div>
   </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "notifierPage.sendResolved.label"}}
+      </label>
+      <div class="checkbox">
+        <label>
+          {{input
+            type="checkbox"
+            checked=model.sendResolved
+          }}
+          {{t "generic.enable"}}
+        </label>
+      </div>
+    </div>
+  </div>
 {{else if (eq currentType "email")}}
   <div class="row">
     <div class="col span-12 mt-0 mb-0">
@@ -170,6 +186,22 @@
       <p class="help-block text-info text-small">{{t "notifierPage.smtp.defaultRecipient.helpText"}}</p>
     </div>
   </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "notifierPage.sendResolved.label"}}
+      </label>
+      <div class="checkbox">
+        <label>
+          {{input
+            type="checkbox"
+            checked=model.sendResolved
+          }}
+          {{t "generic.enable"}}
+        </label>
+      </div>
+    </div>
+  </div>
 {{else if (eq currentType "pagerduty")}}
   <div class="row">
     <div class="col span-12 mt-0 mb-0">
@@ -212,6 +244,22 @@
         value=model.pagerdutyConfig.proxyUrl
         placeholder=(t "notifierPage.proxyUrl.placeholder")
       }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "notifierPage.sendResolved.label"}}
+      </label>
+      <div class="checkbox">
+        <label>
+          {{input
+            type="checkbox"
+            checked=model.sendResolved
+          }}
+          {{t "generic.enable"}}
+        </label>
+      </div>
     </div>
   </div>
 {{else if (eq currentType "wechat")}}
@@ -307,6 +355,22 @@
       }}
     </div>
   </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "notifierPage.sendResolved.label"}}
+      </label>
+      <div class="checkbox">
+        <label>
+          {{input
+            type="checkbox"
+            checked=model.sendResolved
+          }}
+          {{t "generic.enable"}}
+        </label>
+      </div>
+    </div>
+  </div>
 {{else if (eq currentType "webhook")}}
   <div class="row">
     <div class="col span-12 mt-0 mb-0">
@@ -348,6 +412,22 @@
       }}
     </div>
   </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "notifierPage.sendResolved.label"}}
+      </label>
+      <div class="checkbox">
+        <label>
+          {{input
+            type="checkbox"
+            checked=model.sendResolved
+          }}
+          {{t "generic.enable"}}
+        </label>
+      </div>
+    </div>
+  </div>
 {{/if}}
 
 {{#if (eq currentType "slack")}}
@@ -362,42 +442,45 @@
   {{t "notifierPage.pagerduty.helpText" htmlSafe=true}}
 {{/if}}
 
-<div class="over-hr mt-40">
-  <span>
-    {{#if testing}}
-      <button
-        style="color: white;"
-        class="btn bg-info btn-disabled"
-        {{action "test"}}
-      >
-        <i class="icon icon-spinner icon-spin"></i>{{t "notifierPage.testAction.testing"}}
-      </button>
-    {{else}}
-      {{#if tested}}
+{{#if isSelectType}}
+  <div class="over-hr mt-40">
+    <span>
+      {{#if testing}}
         <button
-          {{action "test"}}
-          class="btn  btn-disabled {{if testOk "bg-success" "bg-error"}}"
           style="color: white;"
+          class="btn bg-info btn-disabled"
+          {{action "test"}}
         >
-          {{if testOk (t "notifierPage.testAction.testOk") (t "notifierPage.testAction.testFailed")}}
+          <i class="icon icon-spinner icon-spin"></i>{{t "notifierPage.testAction.testing"}}
         </button>
       {{else}}
-        <button
-          {{action "test"}}
-          class="btn bg-info"
-          style="color: white;"
-        >
-          {{t "notifierPage.testAction.test"}}
-        </button>
+        {{#if tested}}
+          <button
+            {{action "test"}}
+            class="btn  btn-disabled {{if testOk "bg-success" "bg-error"}}"
+            style="color: white;"
+          >
+            {{if testOk (t "notifierPage.testAction.testOk") (t "notifierPage.testAction.testFailed")}}
+          </button>
+        {{else}}
+          <button
+            {{action "test"}}
+            class="btn bg-info"
+            style="color: white;"
+          >
+            {{t "notifierPage.testAction.test"}}
+          </button>
+        {{/if}}
       {{/if}}
-    {{/if}}
-  </span>
-</div>
+    </span>
+  </div>
+{{/if}}
 
 <div class="footer-actions">
   {{save-cancel
     createLabel=addBtnLabel
     save=(action "save")
     cancel=(action "cancel")
+    saveDisabled=(not isSelectType)
   }}
 </div>
