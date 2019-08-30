@@ -96,7 +96,7 @@ generic:
   persistentVolume: 持久卷(PV)
   random: 随机
   remove: 移除
-  restarts: 重启次数
+  restarts: Pod重启次数
   role: 角色
   save: 保存
   saved: 已保存
@@ -183,9 +183,9 @@ accountsPage:
   new:
     header: 添加用户
     errors:
-      usernameReq: 必须填写用户名
-      usernameInExists: 用户名已存在，请设置新的用户名
-      pwReq: 密码必须设置
+      usernameReq: 必须填写用户名。
+      usernameInExists: 用户名已存在，请设置新的用户名。
+      pwReq: 必须设置密码。
       role: 新用户需要具备角色，从列表中选择角色。
     form:
       username:
@@ -234,7 +234,7 @@ appDetailPage:
     nodata: 此应用未创建服务
   volumes:
     title: 卷
-    detail: 此应用创建的持久卷声明(Pvc)
+    detail: 此应用创建的持久卷声明(Pvc)。
     nodata: 此应用未创建持久卷声明
   configMaps:
     title: 配置映射
@@ -242,7 +242,7 @@ appDetailPage:
     nodata: 此应用程序没有配置映射
   secrets:
     title: 密文
-    detail: 此应用相关的密文(Secrets)
+    detail: 此应用相关的密文(Secrets)。
     nodata: 此应用未使用密文
 
 podSecurityPoliciesPage:
@@ -253,7 +253,7 @@ podSecurityPoliciesPage:
       name: 名称
       created: 创建时间
       noData: 未配置Pod安全策略
-      noMatch: 没有与当前搜索匹配的Pod安全策略
+      noMatch: 没有与当前搜索匹配的Pod安全策略。
   addPodSecurityPolicy: 添加策略
   editPodSecurityPolicy: 编辑策略
   detail:
@@ -291,7 +291,7 @@ rolesPage:
       project: 新项目默认角色
       showDefaults: 仅显示默认角色
     errors:
-      inherited: "角色{displayName}被:{roleNames}继承"
+      inherited: "角色{displayName}被: {roleNames}继承"
   resources:
     title: 资源授权
     detail: 对Kubernetes资源的具体操作进行授权。
@@ -317,7 +317,7 @@ rolesPage:
         placeholder: '例如: 开发者'
       context:
         labelText: 上下文
-        detail: 此角色的适用范围适合在此展示
+        detail: 此角色的适用范围适合在此展示。
       locked:
         labelText: 锁定
         detail: 对已经绑定的用户没有影响
@@ -376,7 +376,7 @@ authPage:
       disable: 禁用访问控制
     header:
       disabled:
-        label: "{providerName}未配置"
+        label: "{providerName}未配置。"
     enabled:
       authenticated:
         header:
@@ -386,8 +386,8 @@ authPage:
       userName: '用户名:'
       userId: '用户 ID:'
     disabled:
-      header: "1. 配置{providerName}账户"
-      headerDetail: "填写{providerName}账户信息"
+      header: "1. 配置{providerName}账户。"
+      headerDetail: "填写{providerName}账户信息。"
       label: "{providerName}未配置"
       name:
         labelText: 显示名称
@@ -440,9 +440,9 @@ authPage:
       disableAccess:
         header: '危险区域&trade;'
         warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限。'
-        confirmDisable: "确认? 再次点击将关闭访问控制"
+        confirmDisable: "确认关闭吗? 再次点击将关闭访问控制"
         disable: 关闭访问控制
-      groupsField: '组︰'
+      groupsField: '组: '
       displayName: '显示名称: '
       userName: '用户名: '
       userId: '用户 ID: '
@@ -483,7 +483,7 @@ authPage:
       disableAccess:
         header: "危险区域&trade;"
         warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限。'
-        confirmDisable: "确认? 再次点击将关闭访问控制"
+        confirmDisable: "确认关闭吗? 再次点击将关闭访问控制"
         disable: 禁用Github访问
     notAuthenticated:
       header: "1. 设置GitHub应用"
@@ -496,7 +496,7 @@ authPage:
           text: '点击 "Register new application" 并填写表单内容:'
           ul:
             li1: '<b>应用名称: </b><span class="text-muted">应用名称，例如: My {appName}</span>'
-            li2: '主页URL: '
+            li2: '应用首页URL: '
             li3: '<b>应用描述: </b><span class="text-muted">应用描述，可选</span>'
             li4: '授权回调URL: '
         li3:
@@ -526,7 +526,7 @@ authPage:
   googleoauth:
     header:
       disabled:
-        label: '没有配置Google'
+        label: 'Google未配置。有关设置身份验证的更详细说明，请访问<a href="https://rancher.com/docs/rancher/v2.x/en/admin-settings/authentication/google/" target="_blankRancher">文档</a>'
     authenticated:
       header:
         text: 身份验证
@@ -534,41 +534,36 @@ authPage:
           text: "管理员邮箱: "
       disableAccess:
         header: "危险警告"
-        warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
-        confirmDisable: "Are you sure?  Click again to disable access control"
+        warning: '<b class="text-danger">Caution:</b> 禁用访问控制将为所有能够访问此页面或API的人提供对{appName}的完全控制。'
+        confirmDisable: "确定关闭吗?再次单击将关闭访问控制。"
         disable: 禁用谷歌访问
     notAuthenticated:
-      header: "1. Google应用配置"
       ul:
         li1:
-          text: '对于标准版谷歌, <a href="https://console.developers.google.com/apis/credentials" target="_blank">点击这里</a>访问谷歌开发者控制台。'
           helpertext: '注意: Rancher URL必须是正确的FQDN格式。'
           ul:
-            li1: '登录您的帐户。切换到 "APIs和服务" 并点击 "凭证"。'
+            li1: '登录您的帐户，切换到 "APIs和服务" 并点击 "凭证"。'
         li2:
-          text: '点击 "OAuth同意屏幕"并填写以下表单:'
+          text: '点击 "OAuth同意屏幕" 并填写以下表单:'
           helperText: '注意:这必须是一个FQDN域名，IP地址无效。'
           ul:
-            li1: '<b>授权域名:</b> '
-            li2: '<b>应用首页:</b> '
-            li3: '在谷歌api的作用域下，启用“email”、“profile”和“openid。'
-            li4: '授权回调URL:'
+            li1: '<b>授权域名: </b> '
+            li2: '<b>应用首页: </b> '
+            li3: '在谷歌api的作用域下，启用 "email"、"profile" 和 "openid"。'
+            li4: '授权回调URL: '
         li3:
-          text: '点击"凭据"按钮去创建OAuth client ID:'
           ul:
-            li1: '选择“创建凭据”下拉框，并选择"OAuth客户端ID"，然后选择"Web application"。'
-            li2: '<b>授权Javascript来源:</b> '
-            li3: '<b>授权重定向URLs:</b> '
-            li4: '点击“创建”，然后点击"下载JSON"按钮。'
+            li1: '选择 "创建凭据" 下拉框，并选择 "OAuth客户端ID"，然后选择 "Web application"。'
+            li2: '<b>授权Javascript来源: </b> '
+            li3: '<b>授权重定向URLs: </b> '
+            li4: '点击 "创建"，然后点击"下载JSON"按钮。'
         li4:
-          text: '再次点击"凭证"并创建 “服务账号密钥”:'
           ul:
             li1: '<a href="https://cloud.google.com/iam/docs/service-accounts">点击这里</a>了解有关创建和管理服务帐户的信息。'
             li2: '选择您的服务帐户。'
             li3: '选择JSON作为键类型并点击"创建".'
             li4: 'JSON文件将自动保存在本地。'
       form:
-        header: '2. 配置{appName}使用您的应用程序进行身份验证'
         oauthCredential:
           labelText: OAuth凭证
           helperText: 复制并粘贴OAuth凭证JSON，该JSON可以在您的谷歌API开发人员控制台(上面的步骤3)中找到。
@@ -589,14 +584,24 @@ authPage:
         post: 等待Google返回
       authError: '未授权谷歌访问'
       popupError: '请关闭弹出的窗口并点击认证按钮重新认证。'
-
+    warning:
+      doc: '有关设置身份验证的更详细说明，请访问<a href="https://rancher.com/docs/rancher/v2.x/en/admin-settings/authentication/google/" target="_blank">文档</a>'
+    stepOne:
+      header: '第一步:'
+      info: '对于标准谷歌，<a href="https://console.developers.google.com/apis/credentials" target="_blank">点击这里</a>访问谷歌开发者控制台。'
+    stepTwo:
+      header: '第二步:'
+      info: '导航到 "OAuth同意屏幕" 选项卡并填写表单'
+    stepThree:
+      header: '第三步:'
+      info: '导航到 "凭据" 选项卡创建OAuth客户端ID'
   azuread:
     header:
       disabled:
         label: 'Azure AD未配置'
     enabled:
       header: '危险区域&trade;'
-      reallyDisable: '确认? 再次点击将关闭访问控制'
+      reallyDisable: '确认关闭吗? 再次点击将关闭访问控制'
       promptDisable: 关闭访问控制
       general:
         header: 常规
@@ -644,7 +649,7 @@ authPage:
   localAuth:
     header:
       enabled: '本地验证已启用'
-      disabled: '本地验证未设置'
+      disabled: '本地验证未配置'
     subtext:
       enabled:
         text: '{appName}已设置本地账户访问'
@@ -655,7 +660,7 @@ authPage:
       header: '危险区域&trade;'
       warning: '<b class="text-danger">警告:</b>禁用访问控制将导致所有能够访问此页面或API的用户拥有对{appName}的完全控制权限。'
       buttonText:
-        disable: '确认? 再次点击将关闭访问控制。'
+        disable: '确认关闭吗? 再次点击将关闭访问控制。'
         prompt: 关闭访问控制
     accessDisabled:
       header: '1. 设置管理员用户'
@@ -701,7 +706,7 @@ catalogPage:
   istio:
     header: 流量规则商店
   index:
-    header: 应用商店
+    header: 应用列表
     refreshBtn: 刷新
     allCatalogs: 全部应用商店
     allCategories: 所有分类
@@ -801,8 +806,8 @@ membersPage:
 namespacesPage:
   header: 命名空间
   addNamespace: 添加命名空间
-  noMatch: 没有符合搜索的命名空间
-  noData: 此集群未创建任何命名空间
+  noMatch: 没有符合搜索的命名空间。
+  noData: 此集群未创建任何命名空间。
   table:
     name:
       label: 命名空间
@@ -820,7 +825,7 @@ namespacesPage:
 clusterPage:
   edit: 编辑集群
   annotationsDetail: 为集群配置标签和注释。
-  removeMemberNote: '注意: 删除成员不会删除其项目权限'
+  removeMemberNote: '注意: 删除成员不会删除其项目权限。'
   internal: '<b>警告:</b>{appName}集群用作数据存储，只应授予管理员拥有写入权限.<br>对此集群具有写入权限的用户，可以使用它授予自己安装并管理的其他集群的访问权限。'
 
 projectsListNamespacePage:
@@ -834,11 +839,11 @@ projectsPage:
   headerNS: 命名空间
   addProject: 添加项目
   editProject: 编辑项目
-  noMatch: 没有与当前搜索匹配的项目
-  noData: 此集群没有配置任何项目
+  noMatch: 没有与当前搜索匹配的项目。
+  noData: 此集群没有配置任何项目。
   groups:
     none: 命名空间列表
-    namespaces: 项目分组/命名空间分组
+    namespaces: '项目分组/命名空间分组'
   quota:
     label: 资源配额
   ns:
@@ -856,7 +861,7 @@ projectsPage:
     detail: 配置整个项目可以使用多少资源。
   containerDefaultLimit:
     title: 容器默认限制
-    detail: 配置默认情况下容器可以消耗多少资源
+    detail: 配置默认情况下容器可以消耗多少资源.
   members:
     title: 成员
     detail: 配置可以访问该项目中资源的用户以及用户权限。
@@ -866,7 +871,7 @@ projectsPage:
     labelText: 成员
     addMember: 添加成员
     addUser: 添加用户
-    noAddUser: 您是唯一的活动注册用户
+    noAddUser: 您是唯一的活动注册用户.
     addGroup: 添加组
     addServiceAccount: 添加服务帐户
     multipleRoles: 多个角色
@@ -880,8 +885,8 @@ projectsPage:
     errors:
       nameReq: 名称(必填)
       nameInExists: 名称已经存在，请使用新的项目名称。
-      memberNameReq: 成员名称是必须的
-      memberRoleReq: 成员角色是必须的
+      memberNameReq: 成员名称必须设置。
+      memberRoleReq: 成员角色必须设置。
 
 clustersPage:
   header: 集群列表
@@ -952,7 +957,7 @@ containerPage:
     detail: '在创建容器时配置到容器内的环境变量。'
   portsTab:
     header: 端口
-    detail: '容器监听端口到主机公用IP地址端口的映射关系。'
+    detail: '容器中进程监听的端口与主机端口的映射关系。'
     hostPrimaryIp: "({ip})"
   linksTab:
     header: 链接
@@ -988,15 +993,15 @@ containersPage:
     container: 立即开始
     containerLink: 创建容器
     orchestrator: 安装另一个编排引擎
-    kubernetesLink: 安装 Kubernetes
+    kubernetesLink: 安装Kubernetes
 
 clusterDashboard:
-  systemProject: "这是具有所有Kubernetes和{appName}系统命名空间的系统项目，修改系统项目中的资源可能会导致系统无法正常运行。"
+  systemProject: "这是包含所有Kubernetes和{appName}系统命名空间的系统项目，修改当前项目中的资源配置可能会导致系统无法正常运行。"
   notActive: 当前集群<b>{state}</b>中...
   notReady: 当前集群<b>{state}</b>中...，在API准备就绪之前，直接与API交互的功能将不可用。
   used: 使用值
 metricsAction:
-  description: 查看实时监控指标
+  description: 实时查看工作负载监控数据。
   noData: 没有足够的数据绘制图表
   sections:
     workload: 工作负载监控
@@ -1036,18 +1041,18 @@ metrics:
   container-disk-io: 磁盘I/O
   container-memory-usage-bytes-sum: 内存
   istio-global-request-volume: Project Request Volume
-  istio-global-success-rate: Project Success Rate
-  istio-4xxs: Project 4xx Request Count
-  istio-5xxs: Project 5xx Request Count
+  istio-global-success-rate: 项目成功率
+  istio-4xxs: 项目4xx错误代码计数
+  istio-5xxs: 项目5xx错误代码计数
   istio-global-request-volume-top10: Request Volume by Service
-  istio-4xxs-top10: 4xx Request Count by Service
-  istio-5xxs-top10: 5xx Request Count by Service
+  istio-4xxs-top10: 服务4xx错误代码计数
+  istio-5xxs-top10: 服务5xx错误代码计数
   istio-request-duration-p99-top10: P99 Request Latency by Service
   istio-request-duration-p90-top10: P90 Request Latency by Service
   istio-request-duration-p50-top10: P50 Request Latency by Service
 dnsPage:
-  noMatch: 没有匹配当前搜索的记录
-  noData: 没有可以显示的DNS记录
+  noMatch: 没有匹配当前搜索的记录。
+  noData: 没有可以显示的DNS记录。
   type:
     arecord: 外部IP
     cname: 主机名
@@ -1547,10 +1552,10 @@ globalDnsPage:
         label: API Key
         placeholder: Your API Key
       credentialsPath:
-        label: Credential Path
+        label: SSH证书路径
         placeholder: "/.aws"
       proxySetting:
-        label: Proxy Setting
+        label: 代理设置
       roleArn:
         label: Role ARN
         placeholder: "arn:partition:service:region:account-id:resource"
@@ -1562,7 +1567,7 @@ globalDnsPage:
         placeholder: public
 
 multiClusterAppsPage:
-  header: 多集群应用列表
+  header: 应用列表
   noData: 没有启动多集群应用程序
   error:
     appData: 加载全局应用程序数据出错
@@ -1609,7 +1614,7 @@ haPage:
 nodesPage:
   header: 主机列表
   editCluster: 编辑集群
-  nodePoolGroup: "Pool: {name}"
+  nodePoolGroup: "主机池: {name}"
   table:
     clusterName: 集群
     role: 角色
@@ -2100,7 +2105,6 @@ notifierPage:
     defaultRecipientPlaceholder: '例如: #example'
     helpText: |
       以下是<a href="https://slack.com/apps/A0F7XDUAZ-incoming-webhooks" target="_blank" rel="nofollow noopener noreferrer">创建传入WebHooks</a>的方法。
-
   smtp:
     server: Smtp服务器配置
     host: Smtp服务器地址
@@ -2124,7 +2128,6 @@ notifierPage:
     serviceKeyPlaceholder: 您的PagerDuty服务密匙。
     helpText: |
       以下是<a href="https://support.pagerduty.com/docs/webhooks">为PagerDuty创建传入WebHooks</a>的方法。
-
   wechat:
     recipientType:
       label: 接收者类型
@@ -2180,7 +2183,7 @@ ldap:
       freeipa: 启用FreeIPA认证
   header:
     disabled:
-      label: "{providerName}未设置"
+      label: "{providerName}未配置"
   accessEnabled:
     header: 验证
     subtext: "如需修改服务器配置，请在下方关闭访问控制后重新设置"
@@ -2505,6 +2508,7 @@ catalogSettings:
       placeholder:  password
   errors:
     nameInExists: '在启用{key}之前，请移除名称为{key}的应用商店。'
+
 clusterRow:
   noMatch: 没有匹配当前搜索的环境。
   noData: 集群中还没有任何环境。
@@ -2598,11 +2602,11 @@ clusterNew:
     os:
       label: 操作系统
     disk:
-      basic: 本地硬盘
-      ssd: 本地SSD硬盘
-      cloudBasic: 普通云硬盘
-      cloudPremium: 高性能云硬盘
-      cloudSsd: SSD云硬盘
+      LOCAL_BASIC: Local Basic
+      LOCAL_SSD: Local SSD
+      CLOUD_BASIC: Cloud Basic
+      CLOUD_PREMIUM: Cloud Premium
+      CLOUD_SSD: Cloud SSD
     rootSize:
       label: 系统盘大小
       placeholder: '例如: 25'
@@ -2708,7 +2712,7 @@ clusterNew:
       placeholder: Azure租户 ID
     image:
       label: 镜像
-      placeholder: '推荐: UbuntuServer:16.04.0-LTS:latest'
+      placeholder: '推荐:UbuntuServer:18.04-LTS:latest'
     size:
       label: 规格
     dockerPort:
@@ -2873,7 +2877,7 @@ clusterNew:
       label: 实例类型
       required: 实例类型必须设置
   googlegke:
-    label: Google Kubernetes 引擎
+    label: Google Kubernetes引擎
     shortLabel: Google GKE
     checkServiceAccount: "下一步: 配置主机"
     checkingServiceAccount: 认证
@@ -3079,7 +3083,7 @@ clusterNew:
       label: 集群名称
       required: 集群名称必须填写
     access:
-      title: Account Access
+      title: 帐户访问
       detail: 选择用于启动华为云容器引擎的区域和API KEY。
     accessKey:
       label: 访问密钥ID
@@ -3561,7 +3565,7 @@ confirmDelete:
 
 containerLogs:
   download: 下载日志
-  title: "日志: "
+  title: "日志查看: "
   onlyCombined: "<b>注意:</b>此容器运行时带有TTY(-t)参数，仅有合并的标准输出和标准错误日志可见。"
   combined: 合并日志
   stdout: 标准输出
@@ -3571,6 +3575,7 @@ containerLogs:
   scrollBottom: 回到底部
   clear: 清除屏幕
   wrapLines: 自动换行
+  previous: 上一次运行
   status:
     initializing: 初始化...
     connecting: 连接中...
@@ -4434,7 +4439,7 @@ editHost:
   customName:
     label: 自定义名称
     placeholder: '例如: dev1'
-    help: 如果此处未设置，名称将显示为主机名
+    help: 如果此处未配置，名称将显示为主机名
   description:
     label: 描述
     placeholder: '例如: 我的开发主机'
@@ -4837,8 +4842,8 @@ formResourceQuota:
 
 formEnvVar:
   title: 环境变量
-  detail: 在创建时添加的环境变量。
-  noData: 当前没有环境变量
+  detail: 工作负载配置的环境变量。
+  noData: 当前工作负载没有配置环境变量
   status: |
     {count, plural,
     =0{无变量}
@@ -4927,7 +4932,7 @@ formScopedRoles:
   mode:
     admin:
       label: 所有者
-      detail: 所有者可以完全控制{type}及内部的所有资源。
+      detail: 所有者可以完全控制{type}和内部的所有资源。
     user:
       label: 成员
       detail: 成员可以管理{type}内部的资源，但不能更改{type}本身。
@@ -4936,7 +4941,7 @@ formScopedRoles:
       detail: 为用户选择单个角色
     readOnly:
       label: 只读
-      detail: 成员仅可以查看{type}中的资源，但不能更改资源和{type}本身。
+      detail: 成员仅可以查看{type}中的资源，但不能更改{type}本身。
     userDef:
       detail: 用户配置的角色
     role:
@@ -5029,10 +5034,10 @@ formKeyToPath:
 formMatchExpressions:
   addAction: 添加表达式
   key:
-    label: Key
+    label: 键
     placeholder: "例如: region"
   value:
-    label: Values
+    label: 值
     placeholder: "例如: us,eu,ap"
 
 formKeyValue:
@@ -5248,7 +5253,7 @@ formScheduling:
   autoRun: "在匹配调度规则的每个主机上自动运行"
   autoPick:
     vm: "为每一个虚拟机自动选择符合调度规则的主机"
-    container: "为每一个Pod自动选择符合调度规则的主机"
+    container: "每个Pod自动匹配主机"
     host: "自动选择符合调度规则的主机"
   addRule: 添加规则
   addCustom: 添加自定义规则
@@ -5261,7 +5266,7 @@ formScheduling:
   time: 时间
   toleration:
     title: 调度容忍
-    add: 增加调度容忍
+    add: 添加调度容忍
     workloadTitle: "{workload}Pod的容忍"
   scaling:
     minMaxDetail: 如果设置，用户将无法通过界面或API请求使容器数量低于最小数量或超过最大数量。
@@ -5273,13 +5278,13 @@ formScheduling:
   hostMax: 最大主机数
   perHost: 每个主机
   priority:
-    label: 优先级等级
+    label: 优先级
     placeholder: '例如: 3'
   priorityClassName:
     label: 优先级显示名称
     placeholder: '例如: 高'
   scheduler:
-    label: 调度
+    label: 调度名称
     placeholder: '例如: MyScheduler'
   nodeSelector:
     requireAll: "必须 "
@@ -5868,7 +5873,7 @@ uploadFile:
 
 podsSection:
   title: Pods
-  detail: 此工作负载中的Pods
+  detail: 当前工作负载中的所有Pods。
 
 containersSection:
   title: 容器
@@ -6136,8 +6141,8 @@ modalEditDriver:
     label: 校验和
     help: "可选: 检验下载的驱动是否匹配期望的校验和"
   whitelist:
-    label: 域名白名单
-    addActionLabel: 添加域名
+    label: '域名白名单(测试的时候，如果不知道填写什么域名，可以考虑填写0.0.0.0/0)'
+    addActionLabel: 添加
     noData: 没有域名
 
 
@@ -6377,7 +6382,7 @@ newCatalog:
   saveUpgrade: 升级
   selectVersionAdd: 选择模板版本部署
   selectVersionConfigure: 选择模板版本设置
-  selectVersionUpgrade: 选择模板版本升级
+  selectVersionUpgrade: 选择版本升级
   startService: 创建后启动服务
   support: "支持:"
   templateVersion: 模板版本
@@ -6588,6 +6593,7 @@ clusterDrivers:
   table:
     noData: 当前集群没有配置任何节点
     noMatch: 没有节点匹配当前搜索
+  downloadRancherImages: 下载镜像列表
 
 kontainerDriver:
   displayName:
@@ -7749,7 +7755,7 @@ nav:
     community: 社区贡献
   apps:
     tab: 应用商店
-    apps: 应用商店
+    apps: 应用列表
     noData: 目前没有运行应用程序
     launch: 启动
     manage: 管理
@@ -7762,7 +7768,7 @@ nav:
     secrets: 密文
     members: 成员
     hpa: HPA
-    pipelines: Pipelines
+    pipelines: 流水线
   admin:
     tab: 全局
     accounts: 用户
@@ -8135,7 +8141,7 @@ rkeConfigComment:
     "       calico_network_provider:"
     "         cloud_provider: aws"
     ""
-    "  # 指定flannel的网络接口"
+    "  # 指定flannel网络接口"
     ""
     "     network:"
     "       plugin: flannel"
@@ -8150,14 +8156,18 @@ rkeConfigComment:
     "         iface: eth1"
   services: |
     ""
-    " # 自定义服务参数"
+    " # 自定义服务参数，仅适用于Linux环境"
     "     services:"
     "       kube-api:"
     "         service_cluster_ip_range: 10.43.0.0/16"
+    "         extra_args: "
+    "           watch-cache: true   "
     "       kube-controller:"
     "         cluster_cidr: 10.42.0.0/16"
     "         service_cluster_ip_range: 10.43.0.0/16"
     "         extra_args:     "
+    "           # 修改每个节点子网大小(cidr掩码长度)，默认为24，可用IP为254个；23，可用IP为510个；22，可用IP为1022个；"
+    "           node-cidr-mask-size: 24  "
     "           # 控制器定时与节点通信以检查通信是否正常，周期默认5s  "
     "           node-monitor-period: '5s'  "
     "           # 当节点通信失败后，再等一段时间kubernetes判定节点为notready状态。这个时间段必须是kubelet的nodeStatusUpdateFrequency(默认10s)的N倍，其中N表示允许kubelet同步节点状态的重试次数，默认40s。"
@@ -8171,6 +8181,10 @@ rkeConfigComment:
     "         cluster_dns_server: 10.43.0.10"
     "         # 扩展变量 "
     "         extra_args:"
+    "           # 与apiserver会话时的并发数，默认是10 "
+    "           kube-api-burst: '30'      "
+    "           # 与apiserver会话时的 QPS,默认是5   "
+    "           kube-api-qps: '15'  "
     "           # 修改节点最大Pod数量"
     "           max-pods: '250' "
     "           # secrets和configmaps同步到Pod需要的时间，默认一分钟"
@@ -8180,15 +8194,56 @@ rkeConfigComment:
     "           # 拉取镜像的最大并发数，registry-burst不能超过registry-qps ，仅当registry-qps大于0(零)时生效，(默认10)。如果registry-qps为0则不限制(默认5)。"
     "           registry-burst: '10' "
     "           registry-qps: '0'   "
-    "           system-reserved: 'memory=250Mi'   "
-    "           kube-reserved: 'memory=250Mi'  "
+    "           # 以下配置用于配置节点资源预留和限制  "
+    "           cgroups-per-qos: 'true'   "
+    "           cgroup-driver: cgroupfs   "
+    "           # 以下两个参数指明为相关服务预留多少资源，仅用于调度，不做实际限制"
+    "           system-reserved: 'memory=300Mi'   "
+    "           kube-reserved: 'memory=2Gi'  "
+    "           enforce-node-allocatable: 'pods'  "
+    "           # 硬驱逐伐值，当节点上的可用资源少于这个值时，就会触发强制驱逐。强制驱逐会强制kill掉POD，不会等POD自动退出。"
     "           eviction-hard: 'memory.available<300Mi,nodefs.available<10%,imagefs.available<15%,nodefs.inodesFree<5%'   "
-    "           cgroup-driver: systemd      "
+    "           # 软驱逐伐值  "
+    "           ## 以下四个参数配套使用，当节点上的可用资源少于这个值时但大于硬驱逐伐值时候，会等待eviction-soft-grace-period设置的时长；"
+    "           ## 等待中每10s检查一次，当最后一次检查还触发了软驱逐伐值就会开始驱逐，驱逐不会直接Kill POD，先发送停止信号给POD，然后等待eviction-max-pod-grace-period设置的时长； "
+    "           ## 在eviction-max-pod-grace-period时长之后，如果POD还未退出则发送强制kill POD"
+    "           eviction-soft: 'memory.available<500Mi,nodefs.available<50%,imagefs.available<50%,nodefs.inodesFree<10%'   "
+    "           eviction-soft-grace-period: 'memory.available=1m30s'    "
+    "           eviction-max-pod-grace-period: '30'      "
+    "           ## 当处于驱逐状态的节点不可调度，当节点恢复正常状态后"
+    "           eviction-pressure-transition-period: '5m0s'       "
+    "       extra_binds:      "
+    "         - "/usr/libexec/kubernetes/kubelet-plugins:/usr/libexec/kubernetes/kubelet-plugins"    "
+    "         - "/etc/iscsi:/etc/iscsi"     "
+    "         - "/sbin/iscsiadm:/sbin/iscsiadm"       "
     "       etcd:     "
-    "         # 修改空间配额为$((4*1024*1024*1024))，默认2G,最大8G"
+    "         # 修改空间配额为$((4*1024*1024*1024))，默认2G,最大8G    "
     "         extra_args:"
-    "           quota-backend-bytes: '4294967296'"
-    "           auto-compaction-retention: 240 #(单位小时) "
-  docker_root_dir: |
+    "           quota-backend-bytes: '4294967296'        "
+    "           auto-compaction-retention: 240 #(单位小时)      "
+    "       kubeproxy:    "
+    "         extra_args:     "
+    "         # 默认使用iptables进行数据转发    "
+    "           proxy-mode: ""    # 如果要启用ipvs，则此处设置为`ipvs` "
+    "         extra_binds:    "
+    "           - "/lib/modules:/lib/modules"     "
+  rancher_kubernetes_engine_config: |
     ""
-    "  # 自定义Rancher参数"
+    "Rancher Config"
+  clusterConfig: |
+    ""
+    "Cluster Config"
+
+units:
+  percent: '%'
+  cpu: milli CPUs
+
+windowsCluster:
+  logging:
+    vxlanWarning: |
+      由于<a href="https://github.com/kubernetes/kubernetes/issues/79359" target="_blank">kubernetes/kubernetes#79359</a>这个问题，{appName} Logging目前无法运行在VxLan模式下。我们正在与微软合作， 以修复Kubernetes相关的问题。
+    kafka:
+      brokerTypeHelpText: 使用Broker列表作为Kafka连接接入点。
+    helpText: '我们将使用fluentd从每个容器中收集stdout/stderr日志，以及收集每个<b>Linux</b>主机<code >/var/log/containers/</code>路径和每个<b>Windows</b>主机<code >c:/var/log/containers/</code>路径下的日志文件，并且可以将日志发送到下面配置的目标日志收集服务。'
+  istio: 在Windows集群中不支持Istio。
+  pipelines: 在Windows集群中不支持pipelines。

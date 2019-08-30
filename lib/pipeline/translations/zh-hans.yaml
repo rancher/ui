@@ -33,8 +33,8 @@ action:
 pipelinesPage:
   table:
     status: 状态
-    noData: 没有任何流水线
-    noMatch: 没有流水线符合当前搜索
+    noData: 没有配置流水线
+    noMatch: 没有符合当前搜索的流水线规则
   pipelines: 流水线
   lastActivity: 最后运行
 
@@ -82,7 +82,7 @@ newPipelineStage:
   trigger:
     webhook: 推送
     webhookPR: 拉取请求
-    webhookTag: Tag
+    webhookTag: 标签
 
 newPipelineStep:
   header:
@@ -108,30 +108,30 @@ newPipelineStep:
         ssh: 通过SSH协议发布到Git
       path:
         label: Chart目录
-        placeholder: 例如：./charts/wordpress/latest
+        placeholder: '例如: ./charts/wordpress/latest'
         helpText: '代码库中<code style="padding: 2px 5px;">Chart.yaml</code>所在的目录'
       catalogTemplate:
         label: 应用模版名称
-        placeholder: 例如：wordpress
+        placeholder: '例如: wordpress'
         helpText: 所发布应用模版的名称。
       version:
         label: 应用模版版本
-        placeholder: 例如：latest
+        placeholder: '例如: latest'
         helpText: 所发布应用模版的版本。
       gitUrl:
         label: Git地址
         placeholder:
-          ssh: 例如：git@github.com:myrepo/charts.git
-          http: 例如：https://github.com/myrepo/charts.git
+          ssh: '例如: git@github.com:myrepo/charts.git'
+          http: '例如: https://github.com/myrepo/charts.git'
         helpText: 把应用模版发布到这个Git地址。
         error: Git地址必须以http或https开头。
       gitBranch:
         label: Git分支
-        placeholder: 例如：dev
+        placeholder: '例如: dev'
         helpText: 把应用模版发布到这个Git分支。
       gitAuthor:
         label: 作者
-        placeholder: 例如：user
+        placeholder: '例如: user'
         helpText: 提交信息中所包含的作者信息。
       gitEmail:
         label: 作者邮箱
@@ -152,7 +152,7 @@ newPipelineStep:
         helpText: 你可以选择已有版本或者输入新的版本。
       name:
         label: 应用名称
-        placeholder: 例如：myapp
+        placeholder: '例如: myapp'
       targetNamespace:
         label: 命名空间
         helpText: 部署应用的命名空间。
@@ -222,8 +222,8 @@ authPage:
       show: 修改证书
       saveActionLabel: 保存证书
     limit:
-      label: 为执行程序配置资源限制和预留
-      saveActionLabel: 更新限制和预留
+      label: 为执行程序配置资源预留和限制
+      saveActionLabel: 更新预留和限制
   header: 流水线设置
   setup: "1. 配置{type}应用"
   authenticated:
@@ -294,7 +294,7 @@ authPage:
     auth: '<a href="https://bitbucket.org/account" target="_blank" rel="nofollow noreferrer">点击此处</a>，在弹出的新窗口中进行应用设置。'
     ul:
       li2:
-        text: '点击"OAuth"，然后点击"Add consumer"，并填写表单内容：'
+        text: '点击"OAuth"，然后点击"Add consumer"，并填写表单内容: '
         ul:
           li1: '<b>应用名称:</b> <span class="text-muted">任意名称，例如 My Pipeline</span>'
           li2: '回调URL:'
