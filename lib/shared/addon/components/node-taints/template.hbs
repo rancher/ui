@@ -39,6 +39,7 @@
               class="form-control input-sm"
               type="text"
               value=taint.key
+              disabled=taint.readonly
               placeholder=(t "formNodeTaints.key.placeholder")
             }}
           </td>
@@ -50,6 +51,7 @@
               class="form-control input-sm"
               type="text"
               value=taint.value
+              disabled=taint.readonly
               placeholder=(t "formNodeTaints.value.placeholder")
             }}
           </td>
@@ -61,12 +63,14 @@
               classNames="form-control input-sm"
               content=effects
               value=taint.effect
+              disabled=taint.readonly
             }}
           </td>
 
           <td class="text-right">
             <button
               class="btn bg-primary btn-sm"
+              disabled={{taint.readonly}}
               {{action "removeTaint" taint}}
             >
               <i class="icon icon-minus"/>

@@ -10,6 +10,7 @@ import { resolve } from 'rsvp';
 import C from 'ui/utils/constants';
 import { isEmpty } from '@ember/utils';
 import moment from 'moment';
+const TRUE = 'True';
 
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
@@ -274,11 +275,46 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return get(this, 'nodes').filter( (n) => C.ACTIVEISH_STATES.indexOf(get(n, 'state')) === -1 );
   }),
 
-  displayWarnings: computed('provider', 'inactiveNodes.[]', 'unhealthyComponents.[]', function() {
+  unhealthyNodes: computed('nodes.@each.conditions', function() {
+    const out = [];
+
+    (get(this, 'nodes') || []).forEach((n) => {
+      const conditions = get(n, 'conditions');
+      const outOfDisk = conditions.find((c) => c.type === 'OutOfDisk');
+      const diskPressure = conditions.find((c) => c.type === 'DiskPressure');
+      const memoryPressure = conditions.find((c) => c.type === 'MemoryPressure');
+
+      if ( outOfDisk && get(outOfDisk, 'status') === TRUE ) {
+        out.push({
+          displayName: get(n, 'displayName'),
+          error:       'outOfDisk'
+        });
+      }
+
+      if ( diskPressure && get(diskPressure, 'status') === TRUE ) {
+        out.push({
+          displayName: get(n, 'displayName'),
+          error:       'diskPressure'
+        });
+      }
+
+      if ( memoryPressure && get(memoryPressure, 'status') === TRUE ) {
+        out.push({
+          displayName: get(n, 'displayName'),
+          error:       'memoryPressure'
+        });
+      }
+    });
+
+    return out;
+  }),
+
+  displayWarnings: computed('unhealthyNodes.[]', 'provider', 'inactiveNodes.[]', 'unhealthyComponents.[]', function() {
     const intl = get(this, 'intl');
     const out = [];
     const unhealthyComponents = get(this, 'unhealthyComponents') || [];
     const inactiveNodes = get(this, 'inactiveNodes') || [];
+    const unhealthyNodes = get(this, 'unhealthyNodes') || [];
     const provider = get(this, 'provider');
 
     const grayOut = C.GRAY_OUT_SCHEDULER_STATUS_PROVIDERS.indexOf(provider) > -1;
@@ -292,6 +328,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
     inactiveNodes.forEach((node) => {
       out.pushObject(intl.t('clusterDashboard.alert.node', { node: get(node, 'displayName') }))
+    });
+
+    unhealthyNodes.forEach((node) => {
+      out.pushObject(intl.t(`clusterDashboard.alert.nodeCondition.${ get(node, 'error') }`, { node: get(node, 'displayName') }))
     });
 
     return out;
