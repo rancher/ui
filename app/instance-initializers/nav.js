@@ -291,10 +291,19 @@ const rootNav = [
   {
     scope:          'global',
     id:             'global-clusters',
-    localizedLabel: 'nav.admin.clusters',
+    localizedLabel: 'nav.admin.clusters.tab',
     route:          'global-admin.clusters',
     resource:       ['cluster'],
     resourceScope:  'global',
+    submenu:        [
+      {
+        id:             'rke-template',
+        localizedLabel: 'nav.admin.clusters.rkeTemplate',
+        route:          'global-admin.cluster-templates',
+        resource:       ['clustertemplate'],
+        resourceScope:  'global',
+      },
+    ],
   },
   {
     scope:          'global',
