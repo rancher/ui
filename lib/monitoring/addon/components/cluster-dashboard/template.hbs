@@ -89,14 +89,9 @@
 
   {{#unless hideManagerAndSchedulerStatus}}
     <div class="row">
-      {{#each unhealthyComponents as |component|}}
+      {{#each cluster.displayWarnings as |warning|}}
         {{#banner-message icon="icon-alert" color="text-left bg-error mt-30"}}
-          <p>{{t "clusterDashboard.alert.component" component=component.name}}</p>
-        {{/banner-message}}
-      {{/each}}
-      {{#each inactiveNodes as |node|}}
-        {{#banner-message icon="icon-alert" color="text-left bg-error mt-30"}}
-          <p>{{t "clusterDashboard.alert.node" node=node.displayName}}</p>
+          <p>{{warning}}</p>
         {{/banner-message}}
       {{/each}}
     </div>
