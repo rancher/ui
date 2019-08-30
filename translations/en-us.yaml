@@ -498,7 +498,7 @@ authPage:
             li1: '<b>Application name:</b> <span class="text-muted">Anything you like, e.g. My {appName}</span>'
             li2: 'Homepage URL:'
             li3: '<b>
-            
+
             Application description:</b> <span class="text-muted">Anything you like, optional</span>'
             li4: 'Authorization callback URL:'
         li3:
@@ -896,7 +896,7 @@ clustersPage:
   newTemplate: Add Template
   newClusterName: "Add Cluster: {name}"
   editClusterName: "Edit Cluster: {name}"
-  clusterLaunchDisabled: "You have not been granted access to any cluster templates."
+  clusterLaunchDisabled: "You have not been granted access to any RKE Templates."
   launch:
     new: Add Cluster
   cluster:
@@ -919,25 +919,25 @@ clustersPage:
     provider:
       label: "Add Cluster - Select Cluster Type"
     template:
-      label: "Add Cluster - Select Cluster Template"
+      label: "Add Cluster - Select RKE Template"
 
 clusterRibbonNav:
   title: Recent Clusters
 
 clusterTemplatesPage:
   index:
-    header: Cluster Templates
+    header: RKE Templates
     newTemplate: Add Template
   new:
-    header: Add Cluster Template
+    header: Add RKE Template
   headers:
     defaultRevisionId: Default Revision
     revisionsCount: Revisions
     created: Created
   newRevision:
-    header: New Cluster Template Revision
+    header: New RKE Template Revision
   select:
-    label: Clone from Cluster Template Revision
+    label: Clone from RKE Template Revision
   table:
     name: Revision Name
 
@@ -2522,9 +2522,9 @@ clusterRow:
   loginDefault: Login
 
 clusterTemplateRow:
-  label: 'Cluster Template'
-  noData: 'There are no cluster templates defined.'
-  noMatch: No cluster templates match the current search.
+  label: 'RKE Template'
+  noData: 'There are no RKE Templates defined.'
+  noMatch: No RKE Templates match the current search.
 
 clusterNew:
   header: Select Cluster Type
@@ -3218,13 +3218,13 @@ clusterNew:
       label: EIP Share Type
   rke:
     clustersSelectTemplate:
-      label: "Use an existing cluster template and revision"
+      label: "Use an existing RKE Template and revision"
       select:
-        label: Cluster Templates
-        prompt: Select a cluster template
+        label: RKE Templates
+        prompt: Select a RKE Template
     clustersSelectTemplateRevision:
       select:
-        prompt: Select a cluster template revision
+        prompt: Select a RKE Template revision
         default: '{name} - Default (Created {ago})'
         other: '{name} (Created {ago})'
     etcd:
@@ -3459,7 +3459,7 @@ clusterNew:
 clusterTemplateNew:
   members:
     label: Member Roles
-    detail: Control who has access to the cluster template and what permission they have to change it.
+    detail: Control who has access to the RKE Template and what permission they have to change it.
 
 cruClusterTemplate:
   infoBanner: Templates let you save and reuse configuration options for RKE clusters only.
@@ -3474,9 +3474,9 @@ cruClusterTemplate:
     label: 'Default Revision'
   members:
     label: 'Share Template'
-    detail: 'Share this cluster template with individual members or make it public to your organization. This affects all template revisions in this cluster template.'
+    detail: 'Share this RKE Template with individual members or make it public to your organization. This affects all template revisions in this RKE Template.'
   edit:
-    label: 'Edit Cluster Template'
+    label: 'Edit RKE Template'
   selectRevision:
     label: 'Select Default Revision'
 
@@ -4301,7 +4301,7 @@ dangerZone:
     'telemetry-opt': 'Telemetry reporting opt-in.'
     'auth-user-info-max-age-seconds': 'The maximum age of a users auth tokens before an auth provider group membership sync will be performed.'
     'auth-user-info-resync-cron': 'Default cron schedule for resyncing auth provider group memberships.'
-    'cluster-template-enforcement': 'Non-admins will be restricted to launching clusters via preapproved cluster templates only.'
+    'cluster-template-enforcement': 'Non-admins will be restricted to launching clusters via preapproved RKE Templates only.'
     'auth-user-session-ttl-minutes': 'Custom TTL (in minutes) on a user auth session.'
 
 deleteEksCluster:
@@ -4952,13 +4952,13 @@ formScopedRoles:
 formShareMember:
   add: 'Add Member'
   public: 'Make public (read-only)'
-  helpText: 'When assigning an Owner, the user must have the <code>Create Cluster Templates</code> global role in order to create new revisions. These permissions can be granted by an administrator.'
+  helpText: 'When assigning an Owner, the user must have the <code>Create RKE Templates</code> global role in order to create new revisions. These permissions can be granted by an administrator.'
   table:
     headers:
       name: 'Name'
       accessType: 'Access Type'
     noMatch: 'No member match your search'
-    noData: 'You have not shared this cluster template with anyone'
+    noData: 'You have not shared this RKE Template with anyone'
 
 shareMemberRow:
   table:
@@ -7769,7 +7769,9 @@ nav:
   admin:
     tab: Global
     accounts: Users
-    clusters: Clusters
+    clusters:
+      tab: Clusters
+      rkeTemplate: RKE Templates
     machines: Nodes
     drivers: Drivers
     catalogs: Catalogs
@@ -7798,7 +7800,7 @@ nav:
   nodeTemplates:
     link: "Node Templates"
   clusterTemplates:
-    link: Cluster Templates
+    link: RKE Templates
   api:
     link: "API & Keys"
   settings:
