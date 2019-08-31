@@ -295,15 +295,6 @@ const rootNav = [
     route:          'global-admin.clusters',
     resource:       ['cluster'],
     resourceScope:  'global',
-    submenu:        [
-      {
-        id:             'rke-template',
-        localizedLabel: 'nav.admin.clusters.rkeTemplate',
-        route:          'global-admin.cluster-templates',
-        resource:       ['clustertemplate'],
-        resourceScope:  'global',
-      },
-    ],
   },
   {
     scope:          'global',
@@ -402,6 +393,13 @@ const rootNav = [
       //   resource:       ['globaldns'],
       //   resourceScope:  'global',
       // },
+      {
+        id:             'rke-template',
+        localizedLabel: 'nav.admin.clusters.rkeTemplate',
+        route:          'global-admin.cluster-templates',
+        resource:       ['clustertemplate'],
+        resourceScope:  'global',
+      },
     ],
   },
 //  {

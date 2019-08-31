@@ -83,7 +83,7 @@ export default Component.extend({
               }
             });
 
-            return all(promises);
+            return all(promises).catch(() => resolve());
           });
         } else {
           return resolve();
