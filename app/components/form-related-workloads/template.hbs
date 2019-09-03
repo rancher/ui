@@ -1,0 +1,41 @@
+{{#accordion-list-item
+     title=(t "formRelatedWorkloads.title")
+     detail=(t "formRelatedWorkloads.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=expandOnInit
+}}
+  {{#sortable-table
+      tableClassNames="double-rows"
+      classNames="grid sortable-table"
+      body=workloads
+      searchText=searchText
+      sortBy=sortBy
+      subRows=true
+      pagingLabel="pagination.workload"
+      headers=headers as |sortable kind inst dt|}}
+    {{#if (eq kind "row")}}
+      {{workload-row
+        model=inst
+        toggle=(action "toggleExpand")
+        expanded=(array-includes expandedInstances inst.id)
+        searchText=searchText
+        subMatches=sortable.subMatches
+        fullColspan=sortable.fullColspan
+        dt=dt
+      }}
+    {{else if (eq kind "nomatch")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+          {{t "containersPage.table.noMatch"}}
+        </td>
+      </tr>
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+          {{t "formRelatedWorkloads.nodata"}}
+        </td>
+      </tr>
+    {{/if}}
+  {{/sortable-table}}
+{{/accordion-list-item}}

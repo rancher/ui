@@ -13,6 +13,10 @@ var PersistentVolumeClaim = Resource.extend({
   persistentVolume: reference('volumeId', 'persistentVolume', 'clusterStore'),
   namespace:        reference('namespaceId', 'namespace', 'clusterStore'),
 
+  workloads: computed('namespace.workloads.@each.volumes', function() {
+    return (get(this, 'namespace.workloads') || []).filter((workload) => (get(workload, 'volumes') || []).find((volume) => get(volume, 'persistentVolumeClaim.persistentVolumeClaimId') === get(this, 'id')));
+  }),
+
   sizeBytes: computed('status.capacity.storage', function() {
     const str = get(this, 'status.capacity.storage');
 
