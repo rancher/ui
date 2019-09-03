@@ -45,7 +45,7 @@
   </div>
 </div>
 
-<div class="box mt-10">
+<div class="box mt-10 mb-20">
   {{form-key-value
     initialMap=primaryResource.data
     allowEmptyValue=true
@@ -57,6 +57,16 @@
     changed=(action "updateData")
   }}
 </div>
+
+{{#accordion-list showExpandAll=false as | al expandFn |}}
+  {{#if isView}}
+    {{form-related-workloads
+      workloads=model.workloads
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+  {{/if}}
+{{/accordion-list}}
 
 {{#unless isView}}
   {{top-errors errors=errors}}
