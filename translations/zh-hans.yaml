@@ -132,6 +132,8 @@ generic:
   readWrite: 读写
   writeOnly: 只写
   full: 完整
+  linux: Linux
+  windows: Windows
 realmNames:
   all: 全部
   usWest: 美国西部
@@ -305,10 +307,10 @@ rolesPage:
   new:
     errors:
       nameReq: 名称(必填)
-      memberReq: 成员是必需的
-      nameInExists: 名称是已经存在， 请使用新的角色名称。
-      ruleResourceReq: 资源是规则所必需的
-      roleTemplate: 角色模板是必需的
+      memberReq: 成员必需设置
+      nameInExists: 名称已存在， 请使用新的角色名称。
+      ruleResourceReq: 资源必须选择
+      roleTemplate: 角色模板必须选择
       noSelectedRoles: 请为该用户至少选择一个角色。
       roleAlreadyExists: 用户已经具有"{key}"角色。
     form:
@@ -924,10 +926,10 @@ clusterRibbonNav:
 
 clusterTemplatesPage:
   index:
-    header: 集群模板
+    header: RKE集群模板列表
     newTemplate: 添加模板
   new:
-    header: 添加集群模板
+    header: 添加模板
   headers:
     defaultRevisionId: 默认修订
     revisionsCount: 修订版本
@@ -935,7 +937,7 @@ clusterTemplatesPage:
   newRevision:
     header: 新集群模板修订
   select:
-    label: 从集群模板修订克隆
+    label: 从模板修订克隆
   table:
     name: 修订版本名称
 
@@ -1856,14 +1858,14 @@ servicePage:
     daemonSetScale: '每主机1个Pod'
     currentScale: 'Pod可用副本数: {count}'
   serviceType:
-    deployment: Deployment
-    replicaSet: 副本集
-    statefulSet: 有状态集
-    daemonSet: 守护程序集
-    replicationController: 复制控制器
-    job: 任务
-    cronJob: 定时任务
-    pod: 独立容器
+    deployment: Deployment (无状态)
+    replicaSet: Replica Set
+    statefulSet: Stateful Set (有状态)
+    daemonSet: Daemon Set (每个主机一个Pod)
+    replicationController: Replication Controller
+    job: job (一次性运行Pod)
+    cronJob: Cron Job (定时运行Pod)
+    pod: 独立 Pod
   external:
     externalIp: |
       {count, plural,
@@ -2010,7 +2012,7 @@ newStack:
     addActionLabel: 添加应答
 
 nodeTemplatesPage:
-  header: 主机模板
+  header: 主机模板列表
   rightButtons:
     actionButton: 添加模板
     cloudCredentials: 管理云凭证
@@ -2153,6 +2155,8 @@ notifierPage:
   proxyUrl:
     label: Proxy URL
     placeholder: '例如: http://my-proxy/'
+  sendResolved:
+    label: 发送已解决告警
 
   webhook:
     url: URL
@@ -2764,7 +2768,7 @@ clusterNew:
       label: 子网
       placeholder: 示例-子网名称
     subnetPrefix:
-      label: 子网Prefix
+      label: 子网前缀
       placeholder: '128.42.0.0/21'
     availabilitySet:
       label: 可用性集
@@ -2773,7 +2777,7 @@ clusterNew:
       label: 开放端口
       placeholder: '逗号分隔，例如: 80,443'
     privateIpAddress:
-      label: 私有IP
+      label: 私有 IP
       placeholder: '127.0.0.1'
     usePrivateIp:
       label: 使用私有IP连接
@@ -3575,7 +3579,7 @@ containerLogs:
   scrollBottom: 回到底部
   clear: 清除屏幕
   wrapLines: 自动换行
-  previous: 上一次运行
+  previous: 以前的容器
   status:
     initializing: 初始化...
     connecting: 连接中...
@@ -4425,6 +4429,7 @@ editContainer:
     placeholder: '例如: Myapp'
   description:
     placeholder: '例如: 我的应用'
+
 editNodePool:
   title: 节点池污点（Taints）
 
@@ -5216,18 +5221,18 @@ formScale:
   label: 类型
   showAdvanced: 更多选项
   scaleMode:
-    deploymentPrefix: "部署"
+    deploymentPrefix: "Deployment: 部署无状态应用， "
     replicationControllerPrefix: "复制控制器"
     replicaSetPrefix: "副本集"
-    statefulSetPrefix: "有状态(StatefulSet)部署"
+    statefulSetPrefix: "StatefulSet: 部署有状态应用， "
     scaleSuffix: |
       {scale, plural,
       =1{个Pod}
       other{个Pods}
       }
-    daemonSet: "每台主机部署1个Pod(DaemonSet)"
-    cronJob: "Cron定时运行"
-    job: Job
+    daemonSet: "DaemonSet: 每台主机部署 1 个Pod"
+    cronJob: "CronJob: 定时运行Pod"
+    job: "Job: 一次性运行Pod"
     sidekickInactive: "Sidecar: 将容器添加到现有工作负载"
     sidekickPrefix: "Sidecar: 添加容器到"
     sidekickSuffix: ""
@@ -7769,7 +7774,9 @@ nav:
   admin:
     tab: 全局
     accounts: 用户
-    clusters: 集群
+    clusters:
+      tab: 集群
+      rkeTemplate: RKE集群模板
     machines: 主机
     drivers: 驱动管理
     catalogs: 商店设置
@@ -7850,7 +7857,7 @@ action:
   logs: 查看日志
   makeDefault: 设置为缺省
   move: 移动
-  mute: Mute
+  mute: 静默
   nodeConfig: 下载Keys
   pause: 暂停编排
   pauseAll: 全部暂停
@@ -7869,7 +7876,7 @@ action:
   restart: 重启
   restoreFromEtcdBackup: 恢复
   resume: 恢复编排
-  resumeCronjob: Resume
+  resumeCronjob: 重新开始
   retry: 重试
   revert: 恢复默认值
   revision: 新修订的默认值
@@ -8124,7 +8131,7 @@ rkeConfigComment:
   ingress: |
     ""
     "  # 当前仅支持nginx的ingress"
-    "  # 设置`provider: none`从而禁用ingress控制器"
+    "  # 设置`provider: none`禁用ingress控制器"
     "  # 通过node_selector可以指定在某些节点上运行ingress控制器，例如: "
     "     provider: nginx"
     "     node_selector:"
