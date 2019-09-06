@@ -18,6 +18,7 @@
       pool=pool
       removePool=(action "removePool")
       dt=dt
+      mode=mode
     }}
   {{else if (eq kind "norows")}}
     <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-40 pb-40">{{t "nodesPage.table.noData"}}</td></tr>
@@ -37,7 +38,7 @@
           <i class="icon {{if workerOk "icon-success" "icon-x-circle"}}"></i>
           {{t "clusterNew.rke.role.requirements.worker"}}
         </td>
-        <td colspan="2"></td>
+        <td colspan="{{if (or taintCapabilites (eq mode "new")) "2" "1"}}"></td>
       </tr>
     </tbody>
   {{/if}}
