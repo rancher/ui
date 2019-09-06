@@ -12,33 +12,6 @@
     </li>
   </ul>
   <div class="right-buttons">
-    {{#basic-dropdown
-         horizontalPosition="right"
-         as |dd|}}
-      {{#dd.trigger
-        class="btn bg-primary p-0 icon-btn pl-10 btn-sm right-divider-btn"
-      }}
-        <span>
-          {{t "clusterDrivers.downloadRancherImages"}}
-        </span>
-        <span class="darken ml-5">
-          <i class="icon icon-chevron-down"></i>
-        </span>
-      {{/dd.trigger}}
-
-      {{#dd.content}}
-        <li>
-          <a {{action "downloadLinuxImages"}}>
-            {{t "generic.linux"}}
-          </a>
-        </li>
-        <li>
-          <a {{action "downloadWindowsImages"}}>
-            {{t "generic.windows"}}
-          </a>
-        </li>
-      {{/dd.content}}
-    {{/basic-dropdown}}
     <button
       disabled={{or refreshing (rbac-prevents resource="kontainerdriver" scope="global" permission="create")}}
       class="btn btn-sm bg-primary right-divider-btn"
