@@ -18,13 +18,20 @@
       pool=pool
       removePool=(action "removePool")
       dt=dt
+      mode=mode
     }}
   {{else if (eq kind "norows")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-40 pb-40">{{t "nodesPage.table.noData"}}</td></tr>
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-40 pb-40">
+        {{t "nodesPage.table.noData"}}
+      </td>
+    </tr>
   {{else if (eq kind "suffix")}}
     <tbody>
       <tr class="banner bg-info suffix">
-        <td colspan="4" class="pl-20 text-bold">{{t "clusterNew.rke.role.requirements.label"}}</td>
+        <td colspan="4" class="pl-20 text-bold">
+          {{t "clusterNew.rke.role.requirements.label"}}
+        </td>
         <td class="text-center {{if etcdOk "text-success" "text-error text-bold"}}">
           <i class="icon {{if etcdOk "icon-success" "icon-x-circle"}}"></i>
           {{t "clusterNew.rke.role.requirements.etcd"}}
@@ -37,7 +44,7 @@
           <i class="icon {{if workerOk "icon-success" "icon-x-circle"}}"></i>
           {{t "clusterNew.rke.role.requirements.worker"}}
         </td>
-        <td colspan="2"></td>
+        <td colspan="{{if (or taintCapabilites (eq mode "new")) "2" "1"}}"></td>
       </tr>
     </tbody>
   {{/if}}
@@ -45,15 +52,27 @@
 
 <div class="mt-20">
   <button class="btn bg-primary icon-btn p-0" {{action "addPool"}}>
-    <span class="darken"><i class="icon icon-plus text-small"/></span>
-    <span>{{t "clusterNew.rke.nodes.add"}}</span>
+    <span class="darken">
+      <i class="icon icon-plus text-small"/>
+    </span>
+    <span>
+      {{t "clusterNew.rke.nodes.add"}}
+    </span>
   </button>
 </div>
 
 {{#if showIamWarning}}
-  {{banner-message icon="icon-alert" color="bg-warning mb-10" message=(t "clusterNew.rke.warning.aws.iam")}}
+  {{banner-message
+    icon="icon-alert"
+    color="bg-warning mb-10"
+    message=(t "clusterNew.rke.warning.aws.iam")
+  }}
 {{/if}}
 
 {{#if (and (eq mode "edit") (not etcdOk))}}
-  {{banner-message icon="icon-alert" color="bg-warning mb-10" message=(if (lt etcdCount 1) (t "clusterNew.rke.warning.etcd.noEtcd") (t "clusterNew.rke.warning.etcd.even" count=etcdCount))}}
+  {{banner-message
+    icon="icon-alert"
+    color="bg-warning mb-10"
+    message=(if (lt etcdCount 1) (t "clusterNew.rke.warning.etcd.noEtcd") (t "clusterNew.rke.warning.etcd.even" count=etcdCount))
+  }}
 {{/if}}
