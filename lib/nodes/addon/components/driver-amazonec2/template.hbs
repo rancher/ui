@@ -394,6 +394,28 @@
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">
+            {{t "nodeDriver.amazonec2.rootVolumeType.label"}}
+          </label>
+          <select
+            id="amazonec2-volume-type-select"
+            class="form-control"
+            onchange={{action (mut config.volumeType) value="target.value"}}
+          >
+            {{#each volumeTypes as |choice|}}
+              <option
+                value={{choice}}
+                selected={{eq config.volumeType choice}}
+              >
+                {{t (concat 'cruStorageClass.aws-ebs.type.' choice)}}
+              </option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
             {{t "nodeDriver.amazonec2.requestSpotInstance.label"}}
           </label>
           <div class="checkbox">
