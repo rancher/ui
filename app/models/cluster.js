@@ -178,7 +178,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
   }),
 
   defaultProject: computed('projects.@each.{name,clusterOwner}', function() {
-    let projects = get(this, 'projects');
+    let projects = get(this, 'projects') || [];
 
     let out = projects.findBy('isDefault');
 
@@ -265,18 +265,18 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
   unhealthyComponents: computed('componentStatuses.@each.conditions', function() {
     return (get(this, 'componentStatuses') || [])
-      .filter((s) => !s.conditions.any((c) => c.status === 'True'));
+      .filter((s) => !(s.conditions || []).any((c) => c.status === 'True'));
   }),
 
   inactiveNodes: computed('nodes.@each.state', function() {
-    return get(this, 'nodes').filter( (n) => C.ACTIVEISH_STATES.indexOf(get(n, 'state')) === -1 );
+    return (get(this, 'nodes') || []).filter( (n) => C.ACTIVEISH_STATES.indexOf(get(n, 'state')) === -1 );
   }),
 
   unhealthyNodes: computed('nodes.@each.conditions', function() {
     const out = [];
 
     (get(this, 'nodes') || []).forEach((n) => {
-      const conditions = get(n, 'conditions');
+      const conditions = get(n, 'conditions') || [];
       const outOfDisk = conditions.find((c) => c.type === 'OutOfDisk');
       const diskPressure = conditions.find((c) => c.type === 'DiskPressure');
       const memoryPressure = conditions.find((c) => c.type === 'MemoryPressure');
