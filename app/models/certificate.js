@@ -4,10 +4,23 @@ import { computed } from '@ember/object'
 import Resource from '@rancher/ember-api-store/models/resource';
 
 export default Resource.extend({
-  router:     service(),
-  intl:   service(),
+  router:       service(),
+  intl:         service(),
+  allWorkloads: service(),
 
   state: 'active',
+
+  workloads: computed('allWorkloads.list.@each.volumes', 'allWorkloads.list.@each.containers', function() {
+    return (get(this, 'allWorkloads.list') || []).map((item) => item.obj).filter((workload) => {
+      if ( get(this, 'namespaceId') && get(workload, 'namespaceId') !== get(this, 'namespaceId')) {
+        return false;
+      }
+      const volume = (get(workload, 'volumes') || []).find((volume) => get(volume, 'secret.secretName') === get(this, 'name'));
+      const env = (get(workload, 'containers') || []).find((container) => (get(container, 'environmentFrom') || []).find((env) => get(env, 'source') === 'secret' && get(env, 'sourceName') === get(this, 'name')));
+
+      return volume || env;
+    });
+  }),
 
   issuedDate: computed('issuedAt', function() {
     return new Date(get(this, 'issuedAt'));
