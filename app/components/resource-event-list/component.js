@@ -57,8 +57,8 @@ export default Component.extend({
     this.clearTimeOut();
     this._super();
   },
-  expanedDidChange: observer('expanded', function() {
-    if ( get(this, 'expanded') ) {
+  expanedDidChange: observer('expanded', 'expandAll', function() {
+    if ( get(this, 'expanded') || get(this, 'expandAll') ) {
       set(this, 'loading', true);
       this.fetchEvents();
     } else {
