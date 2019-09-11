@@ -1,6 +1,6 @@
 # Private Labeling #
 
-Setting `/v3/settings/ui-pl` to a value other than `rancher` will (on rancher/server >= v0.61):
+Setting `/v3/settings/ui-pl` to a value other than `rancher` will:
   - Change (most) places that say "Rancher" in the UI to the value you provide.
     - This does not include things like "rancher-compose.yml" that are expected to have a certain name.
   - Disable the footer and help links to Rancher Labs-specific docs, forums, and repos.
