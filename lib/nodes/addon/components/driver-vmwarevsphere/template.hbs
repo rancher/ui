@@ -84,36 +84,88 @@
           </div>
         </div>
       </div>
-
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "nodeDriver.vmwarevsphere.cloudinit.label"}}
-        </label>
-        {{input
-          type="text"
-          value=config.cloudinit
-          classNames="form-control"
-          placeholder=(t "nodeDriver.vmwarevsphere.cloudinit.placeholder")
-        }}
-        <p class="help-block">
-          {{t "nodeDriver.vmwarevsphere.cloudinit.help"}}
-        </p>
-      </div>
     </div>
 
     <div class="row">
       <div class="col span-12">
         <label class="acc-label">
-          {{t "nodeDriver.vmwarevsphere.boot2dockerUrl.label"}}
+          {{t "nodeDriver.vmwarevsphere.creationType.label"}}
         </label>
-        {{input
-          type="text"
-          value=config.boot2dockerUrl
-          classNames="form-control"
-          placeholder=(t "nodeDriver.vmwarevsphere.boot2dockerUrl.placeholder")
+        {{new-select
+            class="form-control"
+            content=creationTypeOptions
+            value=config.creationType
         }}
       </div>
     </div>
+
+    {{#if showManualCreation }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.vmwarevsphere.boot2dockerUrl.label"}}
+          </label>
+          {{input
+            type="text"
+            value=config.boot2dockerUrl 
+            classNames="form-control"
+            placeholder=(t "nodeDriver.vmwarevsphere.boot2dockerUrl.placeholder")
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.vmwarevsphere.cloudinit.label"}}
+          </label>
+          {{input
+            type="text"
+            value=config.cloudinit
+            classNames="form-control no-resize"
+            placeholder=(t "nodeDriver.vmwarevsphere.cloudinit.placeholder")
+          }}
+          <p class="help-block">
+            {{t "nodeDriver.vmwarevsphere.cloudinit.help"}}
+          </p>
+        </div>
+      </div>
+    {{else}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.vmwarevsphere.library.label"}}
+          </label>
+          {{input
+            type="text"
+            value=config.library
+            classNames="form-control no-resize"
+            placeholder=(t "nodeDriver.vmwarevsphere.library.placeholder")
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.vmwarevsphere.cloneFrom.label"}}
+          </label>
+          {{input
+            type="text"
+            value=config.cloneFrom
+            classNames="form-control no-resize"
+            placeholder=(t "nodeDriver.vmwarevsphere.cloneFrom.placeholder")
+          }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.vmwarevsphere.cloudConfig.label"}}
+          </label>
+          {{textarea-autogrow
+            value=config.cloudConfig
+            classNames="form-control no-resize"
+            rows="5"
+            placeholder="nodeDriver.vmwarevsphere.cloudConfig.placeholder"
+          }}
+        </div>
+      </div>
+    {{/if}}
 
     <div class="row">
       <div class="col span-12">
@@ -172,37 +224,6 @@
     <div class="row">
       <div class="col span-6">
         <label class="acc-label">
-          {{t "nodeDriver.vmwarevsphere.host.label"}}
-        </label>
-        {{input
-          type="text"
-          value=config.hostsystem
-          classNames="form-control"
-          placeholder=(t "nodeDriver.vmwarevsphere.host.placeholder")
-        }}
-        <p class="help-block">
-          {{t "nodeDriver.vmwarevsphere.host.help"}}
-        </p>
-      </div>
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "nodeDriver.vmwarevsphere.network.label"}}
-        </label>
-        {{input
-          type="text"
-          value=network
-          classNames="form-control"
-          placeholder=(t "nodeDriver.vmwarevsphere.network.placeholder")
-        }}
-        <p class="help-block">
-          {{t "nodeDriver.vmwarevsphere.network.help"}}
-        </p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">
           {{t "nodeDriver.vmwarevsphere.dataStore.label"}}
         </label>
         {{input
@@ -228,6 +249,34 @@
         <p class="help-block">
           {{t "nodeDriver.vmwarevsphere.folder.help"}}
         </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-12">
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.host.label"}}
+        </label>
+        {{input
+          type="text"
+          value=config.hostsystem
+          classNames="form-control"
+          placeholder=(t "nodeDriver.vmwarevsphere.host.placeholder")
+        }}
+        <p class="help-block">
+          {{t "nodeDriver.vmwarevsphere.host.help"}}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-12">
+        {{form-value-array
+          initialValues=initNetworkArray
+          changed=(action "updateNetwork")
+          addActionLabel="nodeDriver.vmwarevsphere.network.addActionLabel"
+          valueLabel="nodeDriver.vmwarevsphere.network.valueLabel"
+          valuePlaceholder="nodeDriver.vmwarevsphere.network.valuePlaceholder"
+        }}
       </div>
     </div>
   {{/accordion-list-item}}
