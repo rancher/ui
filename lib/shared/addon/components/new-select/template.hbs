@@ -1,35 +1,38 @@
-{{#if prompt}}
-  <option selected={{not selection}}>
-    {{#if localizedPrompt}}
-      {{maybe-t prompt}}
-    {{else}}
-      {{prompt}}
-    {{/if}}
-  </option>
-{{/if}}
+<select disabled={{asyncContent.loading}}>
+  {{#if prompt}}
+    <option selected={{not selection}}>
+      {{#if localizedPrompt}}
+        {{maybe-t prompt}}
+      {{else}}
+        {{prompt}}
+      {{/if}}
+    </option>
+  {{/if}}
 
-{{#each ungroupedContent as |item|}}
-  <option value="{{get item optionValuePath}}" selected={{eq value (get item optionValuePath)}} disabled={{get item optionDisabledPath}}>
-    {{#if localizedLabel}}
-      {{maybe-t (get item optionLabelPath)}}
-    {{else if localizedHtmlLabel}}
-      {{t (get item optionLabelPath) htmlSafe=true}}
-    {{else}}
-      {{get item optionLabelPath}}
-    {{/if}}
-  </option>
-{{/each}}
+  {{#each ungroupedContent as |item|}}
+    <option value="{{get item optionValuePath}}" selected={{eq value (get item optionValuePath)}} disabled={{get item optionDisabledPath}}>
+      {{#if localizedLabel}}
+        {{maybe-t (get item optionLabelPath)}}
+      {{else if localizedHtmlLabel}}
+        {{t (get item optionLabelPath) htmlSafe=true}}
+      {{else}}
+        {{get item optionLabelPath}}
+      {{/if}}
+    </option>
+  {{/each}}
 
-{{#each groupedContent as |group|}}
-  <optgroup label="{{group.group}}">
-    {{#each group.options as |item|}}
-      <option value="{{get item optionValuePath}}" selected={{eq value (get item optionValuePath)}} disabled={{get item optionDisabledPath}}>
-        {{#if localizedLabel}}
-          {{maybe-t (get item optionLabelPath)}}
-        {{else}}
-          {{get item optionLabelPath}}
-        {{/if}}
-      </option>
-    {{/each}}
-  </optgroup>
-{{/each}}
+  {{#each groupedContent as |group|}}
+    <optgroup label="{{group.group}}">
+      {{#each group.options as |item|}}
+        <option value="{{get item optionValuePath}}" selected={{eq value (get item optionValuePath)}} disabled={{get item optionDisabledPath}}>
+          {{#if localizedLabel}}
+            {{maybe-t (get item optionLabelPath)}}
+          {{else}}
+            {{get item optionLabelPath}}
+          {{/if}}
+        </option>
+      {{/each}}
+    </optgroup>
+  {{/each}}
+</select>
+<i class="icon icon-spinner icon-spin" />

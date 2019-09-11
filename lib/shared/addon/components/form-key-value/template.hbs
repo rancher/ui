@@ -28,15 +28,26 @@
       <tr>
         <td data-title="{{t keyLabel}}:">
           {{#if editing}}
-            {{input-paste
-              separators=separators
-              pasted=(action "pastedValues")
-              class="form-control input-sm key"
-              type="text"
-              value=row.key
-              placeholder=keyPlaceholder
-              disabled=(not (and allowEditKey (not-eq row.editable false)))
-            }}
+            {{#if keyContent}}
+              <NewSelect
+                @content={{keyContent}}
+                @class="form-control input-sm key"
+                @useContentForDefaultValue={{true}}
+                @value={{row.key}}
+                @placeholder={{keyPlaceholder}}
+                @disabled={{not (and allowEditKey (not-eq row.editable false))}}
+              />
+            {{else}}
+              {{input-paste
+                separators=separators
+                pasted=(action "pastedValues")
+                class="form-control input-sm key"
+                type="text"
+                value=row.key
+                placeholder=keyPlaceholder
+                disabled=(not (and allowEditKey (not-eq row.editable false)))
+              }}
+            {{/if}}
           {{else}}
             {{row.key}}
           {{/if}}
@@ -50,10 +61,21 @@
 
         <td data-title="{{t valueLabel}}:">
           {{#if editing}}
-            {{#if allowMultilineValue}}
-              {{textarea-autogrow class=(concat "form-control input-sm value" (if concealValue " conceal")) spellcheck="false" required=true value=row.value placeholder=valuePlaceholder disabled=(eq row.editable false)}}
+            {{#if valueContent}}
+              <NewSelect
+                @content={{valueContent}}
+                @class="form-control input-sm key"
+                @useContentForDefaultValue={{true}}
+                @value={{row.value}}
+                @placeholder={{keyPlaceholder}}
+                @disabled={{not (and allowEditKey (not-eq row.editable false))}}
+              />
             {{else}}
-              {{input class=(concat "form-control input-sm value" (if concealValue " conceal")) spellcheck="false" type="text" value=row.value placeholder=valuePlaceholder disabled=(eq row.editable false)}}
+              {{#if allowMultilineValue}}
+                {{textarea-autogrow class=(concat "form-control input-sm value" (if concealValue " conceal")) spellcheck="false" required=true value=row.value placeholder=valuePlaceholder disabled=(eq row.editable false)}}
+              {{else}}
+                {{input class=(concat "form-control input-sm value" (if concealValue " conceal")) spellcheck="false" type="text" value=row.value placeholder=valuePlaceholder disabled=(eq row.editable false)}}
+              {{/if}}
             {{/if}}
           {{else}}
             <span class="{{if concealValue "conceal"}}">{{nl-to-br row.value}}</span>
