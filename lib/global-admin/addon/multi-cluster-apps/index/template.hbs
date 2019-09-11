@@ -19,6 +19,10 @@
 </section>
 
 <section class="pl-0 pr-0">
+  <div class="row mb-15">
+    {{search-text searchText=searchText}}
+  </div>
+
   {{#each filteredApps as |group|}}
     <div class="row flex">
       {{#each group as |app|}}
@@ -31,7 +35,11 @@
     </div>
   {{else}}
     <div class="text-center text-muted">
-        {{t 'multiClusterAppsPage.noData'}}
+      {{#if searchText}}
+        {{t "multiClusterAppsPage.noMatch"}}
+      {{else}}
+        {{t "multiClusterAppsPage.noData"}}
+      {{/if}}
     </div>
   {{/each}}
 </section>

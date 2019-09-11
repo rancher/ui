@@ -4,6 +4,7 @@ import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
 import { computed, get, observer } from '@ember/object';
 import { once } from '@ember/runloop';
+import { filter } from 'ui/utils/search-text';
 
 export default Controller.extend({
   prefs:             service(),
@@ -18,7 +19,7 @@ export default Controller.extend({
     once(() => this.get('catalog').fetchAppTemplates(get(this, 'model.apps')));
   }),
 
-  filteredApps: computed('model.apps.@each.{type,isFromCatalog,tags,state}', 'tags', function() {
+  filteredApps: computed('model.apps.@each.{type,isFromCatalog,tags,state}', 'tags', 'searchText', function() {
     var needTags = get(this, 'tags');
 
     var apps = get(this, 'model.apps').filter((ns) => !C.REMOVEDISH_STATES.includes(get(ns, 'state')));
@@ -29,6 +30,8 @@ export default Controller.extend({
 
     apps = apps.filterBy('isIstio', false);
     apps = apps.sortBy('displayName');
+
+    apps = filter(apps, get(this, 'searchText'));
 
     const group = [];
     let dataIndex = 0;

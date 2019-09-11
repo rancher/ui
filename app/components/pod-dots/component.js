@@ -1,8 +1,8 @@
-import { computed, observer } from '@ember/object';
+import { get, computed, observer } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import pagedArray from 'ember-cli-pagination/computed/paged-array';
-import { matches } from 'shared/components/sortable-table/component';
+import { filter } from 'ui/utils/search-text';
 import layout from './template';
 
 export const searchFields = ['displayName', 'id:prefix', 'displayState', 'image', 'displayIp:ip'];
@@ -48,33 +48,7 @@ export default Component.extend({
       out.pushObject(pod);
     }
 
-    let searchFields = this.get('searchFields');
-    let searchText = (this.get('searchText') || '').trim().toLowerCase();
-
-    if ( searchText.length ) {
-      let searchTokens = searchText.split(/\s*[, ]\s*/);
-
-      for ( let i = out.length - 1 ; i >= 0 ; i-- ) {
-        let row = out[i].containers[0];
-
-        for ( let j = 0 ; j < searchTokens.length ; j++ ) {
-          let expect = true;
-          let token = searchTokens[j];
-
-          if ( token.substr(0, 1) === '!' ) {
-            expect = false;
-            token = token.substr(1);
-          }
-
-          if ( token && matches(searchFields, token, row) !== expect ) {
-            out.removeAt(i);
-            break;
-          }
-        }
-      }
-    }
-
-    return out;
+    return filter(out, get(this, 'searchText'), get(this, 'searchFields'));
   }),
 
   pagedContent: pagedArray('filtered', {
