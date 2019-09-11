@@ -1,6 +1,14 @@
 <div class="container-header-text">
   <h3>
-    {{t "confirmDelete.title"}}:
+    {{#if resourceType}}
+      {{t 
+        "confirmDelete.titleWithResourceType" 
+        resourceType=(t (concat "confirmDelete.resourceType." resourceType))
+        htmlSafe=true
+      }}
+    {{else}}
+      {{t "confirmDelete.titleWithoutResourceType"}}
+    {{/if}}
   </h3>
   <hr/>
   {{#if isSystemProject}}
