@@ -12,7 +12,7 @@ variable when running the `rancher/rancher` container.
 
 # Images #
 This folder contains all the images that have the Rancher-specific content in them.
-You can replace them by running the `rancher/server` container (>= v0.44) with:
+You can replace them by running the `rancher/rancher` container with:
 
 ```-v /path/to/your/logos:/usr/share/rancher/ui/assets/images/logos```
 
