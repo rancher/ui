@@ -1,7 +1,7 @@
 {{#accordion-list showExpandAll=false as | al expandFn |}}
   <div class="over-hr">
     <span>
-      {{driverOptionsTitle}}
+      {{driverContentTitle}}
     </span>
   </div>
 
@@ -24,6 +24,96 @@
       hideSave=true
     }}
 
+  {{/accordion-list-item}}
+
+  {{#accordion-list-item
+     title=(t "nodeDriver.vmwarevsphere.scheduling.title")
+     detail=(t "nodeDriver.vmwarevsphere.scheduling.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
+  }}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.dataCenter.label"}}
+        </label>
+        <NewSelect 
+          @class="form-control"
+          @useContentForDefaultValue={{true}}
+          @content={{datacenterContent}}
+          @value={{config.datacenter}}
+          @optionValuePath="value"
+          @optionLabelPath="label"
+        />
+        <p class="help-block">
+          {{t "nodeDriver.vmwarevsphere.dataCenter.help"}}
+        </p>
+      </div>
+
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.pool.label"}}
+        </label>
+        <NewSelect 
+          @class="form-control"
+          @useContentForDefaultValue={{true}}
+          @content={{resourcePoolContent}}
+          @value={{config.pool}}
+        />
+        <p class="help-block">
+          {{t "nodeDriver.vmwarevsphere.pool.help"}}
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.dataStore.label"}}
+        </label>
+        <NewSelect 
+          @class="form-control"
+          @useContentForDefaultValue={{true}}
+          @content={{dataStoreContent}}
+          @value={{config.datastore}}
+        />
+        <p class="help-block">
+          {{t "nodeDriver.vmwarevsphere.dataStore.help"}}
+        </p>
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.folder.label"}}
+        </label>
+        <NewSelect 
+          @class="form-control"
+          @useContentForDefaultValue={{true}}
+          @content={{folderContent}}
+          @value={{config.folder}}
+        />
+        <p class="help-block">
+          {{t "nodeDriver.vmwarevsphere.folder.help"}}
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-12">
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.host.label"}}
+        </label>
+        <NewSelect 
+          @class="form-control"
+          @useContentForDefaultValue={{true}}
+          @content={{hostContent}}
+          @value={{config.hostsystem}}
+        />
+        <p class="help-block">
+          {{t "nodeDriver.vmwarevsphere.host.help"}}
+        </p>
+      </div>
+    </div>
   {{/accordion-list-item}}
 
   {{#accordion-list-item
@@ -84,16 +174,88 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="col span-6">
+    <div class="row">
+      <div class="col {{if showContentLibrary "span-4" "span-6"}}">
+        <label class="acc-label">
+          {{t "nodeDriver.vmwarevsphere.creationType.label"}}
+        </label>
+        <NewSelect
+            @class="form-control"
+            @useContentForDefaultValue={{true}}
+            @content={{creationTypeContent}}
+            @value={{config.creationType}}
+        />
+      </div>
+
+      {{#if showRancherOsIso }}
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.vmwarevsphere.boot2dockerUrl.label"}}
+            </label>
+            {{input
+              type="text"
+              value=config.boot2dockerUrl 
+              classNames="form-control"
+              placeholder=(t "nodeDriver.vmwarevsphere.boot2dockerUrl.placeholder")
+            }}
+          </div>
+      {{/if}}
+      {{#if showContentLibrary}}
+          <div class="col span-4">
+              <label class="acc-label">
+                Content library:
+              </label>
+              <NewSelect
+                @useContentForDefaultValue={{true}}
+                @content={{contentLibraryContent}}
+                @value={{config.contentLibrary}}
+              />
+          </div>
+          <div class="col span-4">
+            <label class="acc-label">
+              Library template:
+            </label>
+            <SearchableSelect
+              @content={{libraryTemplateContent}}
+              @value={{config.cloneFrom}}
+            />
+          </div>
+      {{/if}}
+      {{#if showVirtualMachine}}
+            <div class="col span-6">
+              <label class="acc-label">
+                Virtual machine:
+              </label>
+              <SearchableSelect
+                @content={{virtualMachineContent}}
+                @value={{config.cloneFrom}}
+              />
+            </div>
+      {{/if}}
+      {{#if showTemplate}}
+          <div class="col span-6">
+            <label class="acc-label">
+              Template:
+            </label>
+            <SearchableSelect
+              @content={{templateContent}}
+              @value={{config.cloneFrom}}
+            />
+          </div>
+      {{/if}}
+    </div>
+
+    <div class="row">
+      <div class="col span-12">
         <label class="acc-label">
           {{t "nodeDriver.vmwarevsphere.cloudinit.label"}}
         </label>
-        {{input
-          type="text"
-          value=config.cloudinit
-          classNames="form-control"
-          placeholder=(t "nodeDriver.vmwarevsphere.cloudinit.placeholder")
+        {{textarea-autogrow
+          value=config.cloudConfig
+          classNames="form-control no-resize"
+          placeholder="nodeDriver.vmwarevsphere.cloudinit.placeholder"
         }}
         <p class="help-block">
           {{t "nodeDriver.vmwarevsphere.cloudinit.help"}}
@@ -103,15 +265,15 @@
 
     <div class="row">
       <div class="col span-12">
-        <label class="acc-label">
-          {{t "nodeDriver.vmwarevsphere.boot2dockerUrl.label"}}
-        </label>
-        {{input
-          type="text"
-          value=config.boot2dockerUrl
-          classNames="form-control"
-          placeholder=(t "nodeDriver.vmwarevsphere.boot2dockerUrl.placeholder")
-        }}
+        <FormContextualSelectArray
+          @editing={{true}}
+          @content={{networkContent}}
+          @contentFilter={{action "networkContentFilter"}}
+          @values={{config.network}}
+          @addActionLabel="nodeDriver.vmwarevsphere.network.addActionLabel"
+          @valueLabel="nodeDriver.vmwarevsphere.network.valueLabel"
+          @valuePlaceholder="nodeDriver.vmwarevsphere.network.valuePlaceholder"
+        />
       </div>
     </div>
 
@@ -131,105 +293,36 @@
   {{/accordion-list-item}}
 
   {{#accordion-list-item
-     title=(t "nodeDriver.vmwarevsphere.scheduling.title")
-     detail=(t "nodeDriver.vmwarevsphere.scheduling.detail")
+     title=(t "nodeDriver.vmwarevsphere.tags.title")
+     detail=(t "nodeDriver.vmwarevsphere.tags.detail")
      expandAll=expandAll
      expand=(action expandFn)
      expandOnInit=true
   }}
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "nodeDriver.vmwarevsphere.dataCenter.label"}}
-        </label>
-        {{input
-          type="text"
-          value=config.datacenter
-          classNames="form-control"
-          placeholder=(t "nodeDriver.vmwarevsphere.dataCenter.placeholder")
-        }}
-        <p class="help-block">
-          {{t "nodeDriver.vmwarevsphere.dataCenter.help"}}
-        </p>
-      </div>
+    <FormContextualSelectArray
+      @editing={{true}}
+      @content={{tagContent}}
+      @contentFilter={{action "tagContentFilter"}}
+      @values={{config.tag}}
+      @addActionLabel="nodeDriver.vmwarevsphere.tags.addActionLabel"
+      @valuePlaceholder="nodeDriver.vmwarevsphere.tags.valuePlaceholder"
+    />
+  {{/accordion-list-item}}
 
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "nodeDriver.vmwarevsphere.pool.label"}}
-        </label>
-        {{input
-          type="text"
-          value=config.pool
-          classNames="form-control"
-          placeholder=(t "nodeDriver.vmwarevsphere.pool.placeholder")
-        }}
-        <p class="help-block">
-          {{t "nodeDriver.vmwarevsphere.pool.help"}}
-        </p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "nodeDriver.vmwarevsphere.host.label"}}
-        </label>
-        {{input
-          type="text"
-          value=config.hostsystem
-          classNames="form-control"
-          placeholder=(t "nodeDriver.vmwarevsphere.host.placeholder")
-        }}
-        <p class="help-block">
-          {{t "nodeDriver.vmwarevsphere.host.help"}}
-        </p>
-      </div>
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "nodeDriver.vmwarevsphere.network.label"}}
-        </label>
-        {{input
-          type="text"
-          value=network
-          classNames="form-control"
-          placeholder=(t "nodeDriver.vmwarevsphere.network.placeholder")
-        }}
-        <p class="help-block">
-          {{t "nodeDriver.vmwarevsphere.network.help"}}
-        </p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "nodeDriver.vmwarevsphere.dataStore.label"}}
-        </label>
-        {{input
-          type="text"
-          value=config.datastore
-          classNames="form-control"
-          placeholder=(t "nodeDriver.vmwarevsphere.dataStore.placeholder")
-        }}
-        <p class="help-block">
-          {{t "nodeDriver.vmwarevsphere.dataStore.help"}}
-        </p>
-      </div>
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "nodeDriver.vmwarevsphere.folder.label"}}
-        </label>
-        {{input
-          type="text"
-          value=config.folder
-          classNames="form-control"
-          placeholder=(t "nodeDriver.vmwarevsphere.folder.placeholder")
-        }}
-        <p class="help-block">
-          {{t "nodeDriver.vmwarevsphere.folder.help"}}
-        </p>
-      </div>
-    </div>
+  {{#accordion-list-item
+     title=(t "nodeDriver.vmwarevsphere.customAttributes.title")
+     detail=(t "nodeDriver.vmwarevsphere.customAttributes.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
+  }}
+    {{form-key-value
+        initialArray=initialCustomAttributes
+        allowEmptyValue=false
+        keyContent=customAttributeContent
+        changedArray=(action "customAttributesChanged")
+        addActionLabel="nodeDriver.vmwarevsphere.customAttributes.addActionLabel"
+      }}
   {{/accordion-list-item}}
 
   {{#accordion-list-item
