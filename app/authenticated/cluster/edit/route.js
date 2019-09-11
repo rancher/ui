@@ -57,7 +57,8 @@ export default Route.extend({
         if (ctr) {
           set(model, 'clusterTemplateRevision', ctr);
 
-          this.clusterTemplateService.cloneAndPopulateClusterConfig(cluster, ctr);
+          // This is breaking fields that already have values that don't match the template, like kubernetesVersion with 1.14.x
+          // this.clusterTemplateService.cloneAndPopulateClusterConfig(cluster, ctr);
         } else {
           // user does not have access to the template that was used to launch a cluster
           // create a fake cluster that we'll use to turn into a "temaplate Revision" to be passed down to components
