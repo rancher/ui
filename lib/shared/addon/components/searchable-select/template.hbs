@@ -1,6 +1,6 @@
 {{#outside-click onOutsideClick=(action "hide")}}
   {{input
-    disabled=readOnly
+    disabled=(or readOnly asyncContent.loading)
     class=(concat "form-control input-search search " class " " inputClass)
     placeholder=placeholder
     type="text"
@@ -105,3 +105,4 @@
     </section>
   {{/if}}
 {{/outside-click}}
+<i class="icon icon-spinner icon-spin" />

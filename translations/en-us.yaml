@@ -6555,7 +6555,6 @@ formUpgrade:
       label: Progress Deadline
       detail: How long to wait without seeing progress before marking the deployment as stalled.
 
-
 formValueArray:
   addActionLabel: Add Value
   valueLabel: Value
@@ -8135,18 +8134,35 @@ nodeDriver:
     flavor:
       label: Flavor
   vmwarevsphere:
+    hostOptions:
+      any:
+        label: 'Any'
+    creationType:
+      label: Creation type
+      deployFromTemplateContentLibrary: "Deploy from template: Content Library"
+      deployFromTemplateDataCenter: "Deploy from template: Data Center"
+      cloneAnExistingVirtualMachine: "Clone an existing virtual machine"
+      rancherOsIso: RancherOS ISO (Deprecated)
     access:
       title: 1. Account Access
       detail: Configure where to find the VCenter or ESXi server
       help: "Note: The free ESXi license does not support API access.  Only servers with a valid or evaluation license are supported."
-    instance:
-      title: 2. Instance Options
-      detail: Choose the size and OS of the virtual machine
     scheduling:
-      title: 3. Scheduling
+      title: 2. Scheduling
       detail: Choose what hypervisor the virtual machine will be scheduled to
+    instance:
+      title: 3. Instance Options
+      detail: Choose the size and OS of the virtual machine
+    tags:
+      title: 4. Tags
+      detail: Tags allow you to attach metadata to objects in the vSphere inventory to make it easier to sort and search for these objects.
+      addActionLabel: Add tag  
+    customAttributes:
+      title: 5. Custom attributes (legacy)
+      detail: Custom attributes allow you to attach metadata to objects in the vSphere inventory to make it easier to sort and search for these objects.
+      addActionLabel: Add custom attribute
     vappOptions:
-      title: 4. vApp Options
+      title: 6. vApp Options
       detail: Choose OVF environment properties
     vcenter:
       label: vCenter or ESXi Server
@@ -8171,13 +8187,22 @@ nodeDriver:
     boot2dockerUrl:
       label: OS ISO URL
       placeholder: "Default: Latest rancheros-vmware image"
+    cloudConfig:
+      label: Cloud config
+      placeholder: /etc/kubernetes/vsphere.conf
+    cloneFrom:
+      label: VM/Template
+      placeholder: e.g. http://my_host/template.yml
+    library:
+      label: Library
+      placeholder: dsl_linux_v4-4-10.ova
     schedulingSection: Scheduling
     dataCenter:
       label: Data Center
       placeholder: "e.g. datacenter_name"
       help: "Data Center to create VM in (leave blank for standalone ESXi)"
     pool:
-      label: Pool
+      label: Resource Pool
       placeholder: "e.g. /dc_name/host/host_name/Resources/pool_name"
       help: "Resource Pool to create VM in (leave blank for standalone ESXi)"
     host:
@@ -8185,13 +8210,16 @@ nodeDriver:
       placeholder: "e.g. cluster_name/host_name"
       help: "Specific host to create VM on (leave blank for standalone ESXi or for cluster with DRS)"
     network:
-      label: Network
-      placeholder: "e.g. VM Network"
-      help: "Network to attach VM to"
+      addActionLabel: "Add Network"
+      valueLabel: "Networks"
+      valuePlaceholder: "e.g. VM Network"
+      help: "Networks to attach VM to"
     dataStore:
       label: Data Store
       placeholder: "e.g. datastore_cluster_name/datastore_name"
       help: "Datastore to create VM disk on"
+    cloudinitType:
+      label: Cloud Init type
     cloudinit:
       label: Cloud Init
       placeholder: "e.g. http://my_host/cloud-config.yml"
