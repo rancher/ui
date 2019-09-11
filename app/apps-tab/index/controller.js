@@ -31,12 +31,12 @@ export default Controller.extend({
     apps = apps.filterBy('isIstio', false);
     apps = apps.sortBy('displayName');
 
-    apps = filter(apps, get(this, 'searchText'));
+    const { matches } = filter(apps, get(this, 'searchText'));
 
     const group = [];
     let dataIndex = 0;
 
-    apps.forEach((app, index) => {
+    matches.forEach((app, index) => {
       if ( index % 2 === 0 ) {
         group.push([app]);
         dataIndex++;
