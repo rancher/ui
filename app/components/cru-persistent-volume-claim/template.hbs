@@ -167,6 +167,13 @@
 <hr/>
 
 {{#accordion-list showExpandAll=false as | al expandFn |}}
+  {{#if isView}}
+    {{form-related-workloads
+      workloads=model.workloads
+      expandAll=al.expandAll
+      expandFn=expandFn
+    }}
+  {{/if}}
   {{#accordion-list-item
      title=(t "cruPersistentVolume.customize.title")
      detail=(t "cruPersistentVolume.customize.detail")
