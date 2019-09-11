@@ -48,7 +48,9 @@ export default Component.extend({
       out.pushObject(pod);
     }
 
-    return filter(out, get(this, 'searchText'), get(this, 'searchFields'));
+    const { matches } = filter(out, get(this, 'searchText'), get(this, 'searchFields'));
+
+    return matches;
   }),
 
   pagedContent: pagedArray('filtered', {
