@@ -1,10 +1,10 @@
 {{#accordion-list-item
-     title=(t 'resourceEventList.title')
-     detail=(t 'resourceEventList.detail' resourceType=resourceType)
+     title=(t "resourceEventList.title")
+     detail=(t "resourceEventList.detail" resourceType=resourceType)
      expandAll=expandAll
      expand=(action expandFn)
      expanded=expanded
-     componentName='sortable-table'
+     componentName="sortable-table"
      as | parent |
 }}
   {{#if (and (or expanded expandAll) (not loading))}}
@@ -23,12 +23,22 @@
     }}
       {{#if (eq kind "row")}}
         <tr class="main-row">
+          {{#if clusterEvents}}
+            <td data-title="{{dt.involvedObject.namespace}}">
+              {{row.involvedObject.namespace}}
+            </td>
+          {{/if}}
           <td data-title="{{dt.type}}">
             {{row.type}}
           </td>
           <td data-title="{{dt.reason}}">
             {{row.reason}}
           </td>
+          {{#if clusterEvents}}
+            <td data-title="{{dt.involvedObject.name}}">
+              {{row.involvedObject.name}}
+            </td>
+          {{/if}}
           <td data-title="{{dt.message}}">
             {{row.message}}
           </td>
@@ -38,11 +48,11 @@
         </tr>
       {{else if (eq kind "norows")}}
         <tr>
-          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'resourceEventList.noData'}}</td>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "resourceEventList.noData"}}</td>
         </tr>
       {{else if (eq kind "nomatch")}}
         <tr>
-          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'resourceEventList.noMatch'}}</td>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "resourceEventList.noMatch"}}</td>
         </tr>
       {{/if}}
     {{/component}}
