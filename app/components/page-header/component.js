@@ -25,6 +25,7 @@ export default Component.extend({
   settings:         service(),
   access:           service(),
   prefs:            service(),
+  router:           service(),
 
   layout,
   // Inputs
@@ -92,12 +93,12 @@ export default Component.extend({
     });
   },
 
-  willRender() {
-    if ($('BODY').hasClass('touch') && $('header > nav').hasClass('nav-open')) {// eslint-disable-line
-      run.later(() => {
+  didInsertElement() {
+    run.scheduleOnce('afterRender', this, function() {
+      this.get('router').on('willTransition', () => {
         $('header > nav').removeClass('nav-open');// eslint-disable-line
       });
-    }
+    });
   },
 
   shouldUpdateNavTree: observer(
