@@ -153,10 +153,20 @@ export default Route.extend({
         }
 
         if ( neuApp.id ) {
-          verArr.filter((ver) => ver.version === get(neuApp, 'externalIdInfo.version'))
-            .forEach((ver) => {
-              set(ver, 'version', `${ ver.version } (current)`);
+          const v = get(neuApp, 'externalIdInfo.version');
+          const currentVersion = verArr.filter((ver) => ver.version === v);
+
+          if ( currentVersion.length === 0 ) {
+            verArr.unshift({
+              link:        get(verArr, 'firstObject.link').substring(0, get(verArr, 'firstObject.link.length') - get(verArr, 'firstObject.version.length')) + v,
+              sortVersion: v,
+              version:     `${ v } (current)`
             })
+          } else {
+            currentVersion.forEach((ver) => {
+              set(ver, 'version', `${ ver.version } (current)`);
+            });
+          }
         }
 
         if ( !params.namespaceId && params.istio ) {
