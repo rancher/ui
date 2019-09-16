@@ -892,72 +892,72 @@
       {{/unless}}
     {{/accordion-list-item}}
 
-    {{#if (eq mode "new")}}
-      {{#accordion-list-item
-         title=(t "clusterNew.security.title")
-         detail=(t "clusterNew.security.detail")
-         showExpand=true
-         expandOnInit=false
-         expandAll=al.expandAll
-         expand=(action expandFn)
-      }}
-        <div class="row">
-          <div class="col span-6">
-            <label class="acc-label">
-              {{t "clusterNew.googlegke.serviceAccount.label"}}
+    {{#accordion-list-item
+        title=(t "clusterNew.security.title")
+        detail=(t "clusterNew.security.detail")
+        showExpand=true
+        expandOnInit=false
+        expandAll=al.expandAll
+        expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "clusterNew.googlegke.serviceAccount.label"}}
+          </label>
+          {{searchable-select
+            content=serviceAccountContent
+            classNames="form-control"
+            value=config.serviceAccount
+            optionLabelPath="displayName"
+            optionValuePath="uniqueId"
+            readOnly=editing
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "clusterNew.googlegke.oauthScopes.label"}}
+          </label>
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=oauthScopesSelection
+                value="default"
+                disabled=editing
+              }}
+              {{t "clusterNew.googlegke.oauthScopes.default"}}
             </label>
-            {{searchable-select
-              content=serviceAccountContent
-              classNames="form-control"
-              value=config.serviceAccount
-              optionLabelPath="displayName"
-              optionValuePath="uniqueId"
-            }}
           </div>
-          <div class="col span-6">
-            <label class="acc-label">
-              {{t "clusterNew.googlegke.oauthScopes.label"}}
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=oauthScopesSelection
+                value="full"
+                disabled=editing
+              }}
+              {{t "clusterNew.googlegke.oauthScopes.full"}}
             </label>
-            <div class="radio">
-              <label>
-                {{radio-button
-                  selection=oauthScopesSelection
-                  value="default"
-                  disabled=editing
-                }}
-                {{t "clusterNew.googlegke.oauthScopes.default"}}
-              </label>
-            </div>
-            <div class="radio">
-              <label>
-                {{radio-button
-                  selection=oauthScopesSelection
-                  value="full"
-                  disabled=editing
-                }}
-                {{t "clusterNew.googlegke.oauthScopes.full"}}
-              </label>
-            </div>
-            <div class="radio">
-              <label>
-                {{radio-button
-                  selection=oauthScopesSelection
-                  value="custom"
-                  disabled=editing
-                }}
-                {{t "clusterNew.googlegke.oauthScopes.custom"}}
-              </label>
-            </div>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=oauthScopesSelection
+                value="custom"
+                disabled=editing
+              }}
+              {{t "clusterNew.googlegke.oauthScopes.custom"}}
+            </label>
           </div>
         </div>
+      </div>
 
-        {{#if (eq oauthScopesSelection "custom")}}
-          {{gke-access-scope
-            config=scopeConfig
-          }}
-        {{/if}}
-      {{/accordion-list-item}}
-    {{/if}}
+      {{#if (eq oauthScopesSelection "custom")}}
+        {{gke-access-scope
+          config=scopeConfig
+          readOnly=editing
+        }}
+      {{/if}}
+    {{/accordion-list-item}}
   {{/accordion-list}}
 
   {{top-errors errors=errors}}
