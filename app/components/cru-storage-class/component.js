@@ -7,7 +7,8 @@ import { getProvisioners } from 'ui/models/storageclass';
 import ChildHook from 'shared/mixins/child-hook';
 
 export default Component.extend(ViewNewEdit, ChildHook, {
-  intl: service(),
+  intl:        service(),
+  globalStore:  service(),
 
   layout,
   model: null,
@@ -42,7 +43,8 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
   provisionerChoices: computed('intl.locale', function() {
     const intl = get(this, 'intl');
-    const out = getProvisioners().map((p) => {
+    const showUnsupported = get(this, 'globalStore').all('feature').filterBy('name', 'unsupported-storage-drivers').get('firstObject.value');
+    const out = getProvisioners(showUnsupported).map((p) => {
       const entry = Object.assign({}, p);
       const key = `storageClass.${ entry.name }.title`;
 

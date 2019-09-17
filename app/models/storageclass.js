@@ -8,21 +8,21 @@ const DEFAULT_ANNOTATION = 'storageclass.kubernetes.io/is-default-class';
 
 const PROVISIONERS = [];
 
-registerProvisioner('aws-ebs',        'kubernetes.io/aws-ebs',         true);
-registerProvisioner('gce-pd',         'kubernetes.io/gce-pd',          true);
-registerProvisioner('glusterfs',      'kubernetes.io/glusterfs',       true);
-registerProvisioner('cinder',         'kubernetes.io/cinder',          true);
-registerProvisioner('vsphere-volume', 'kubernetes.io/vsphere-volume',  true);
-registerProvisioner('rbd',            'kubernetes.io/rbd',             true);
-registerProvisioner('quobyte',        'kubernetes.io/quobyte',         true);
-registerProvisioner('azure-disk',     'kubernetes.io/azure-disk',      true);
-registerProvisioner('azure-file',     'kubernetes.io/azure-file',      true);
-registerProvisioner('portworx-volume', 'kubernetes.io/portworx-volume', true);
-registerProvisioner('scaleio',        'kubernetes.io/scaleio',         true);
-registerProvisioner('storageos',      'kubernetes.io/storageos',       true);
-registerProvisioner('longhorn',      'rancher.io/longhorn',       true);
+registerProvisioner('aws-ebs',        'kubernetes.io/aws-ebs',         true, true);
+registerProvisioner('gce-pd',         'kubernetes.io/gce-pd',          true, true);
+registerProvisioner('glusterfs',      'kubernetes.io/glusterfs',       true, false);
+registerProvisioner('cinder',         'kubernetes.io/cinder',          true, false);
+registerProvisioner('vsphere-volume', 'kubernetes.io/vsphere-volume',  true, true);
+registerProvisioner('rbd',            'kubernetes.io/rbd',             true, false);
+registerProvisioner('quobyte',        'kubernetes.io/quobyte',         true, false);
+registerProvisioner('azure-disk',     'kubernetes.io/azure-disk',      true, true);
+registerProvisioner('azure-file',     'kubernetes.io/azure-file',      true, true);
+registerProvisioner('portworx-volume', 'kubernetes.io/portworx-volume', true, false);
+registerProvisioner('scaleio',        'kubernetes.io/scaleio',         true, false);
+registerProvisioner('storageos',      'kubernetes.io/storageos',       true, false);
+registerProvisioner('longhorn',      'rancher.io/longhorn',       true, true);
 
-export function registerProvisioner(name, provisioner, component) {
+export function registerProvisioner(name, provisioner, component, supported) {
   if ( component === true ) {
     component = name;
   }
@@ -37,11 +37,16 @@ export function registerProvisioner(name, provisioner, component) {
     name,
     value:     provisioner,
     component,
+    supported,
   });
 }
 
-export function getProvisioners() {
-  return JSON.parse(JSON.stringify(PROVISIONERS));
+export function getProvisioners(showUnsupported = false) {
+  const supportedProvisioners = showUnsupported
+    ? PROVISIONERS
+    : PROVISIONERS.filter((p) => p.supported);
+
+  return JSON.parse(JSON.stringify(supportedProvisioners));
 }
 
 export default Resource.extend({
