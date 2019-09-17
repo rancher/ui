@@ -2,7 +2,7 @@ import { get, set, computed, observer } from '@ember/object';
 import { on } from '@ember/object/evented';
 import { inject as service } from '@ember/service';
 import Resource from '@rancher/ember-api-store/models/resource';
-import { hasMany } from '@rancher/ember-api-store/utils/denormalize';
+import { hasMany, reference } from '@rancher/ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 import Grafana from 'shared/mixins/grafana';
 import { equal, alias } from '@ember/object/computed';
@@ -11,6 +11,7 @@ import C from 'ui/utils/constants';
 import { isEmpty } from '@ember/utils';
 import moment from 'moment';
 const TRUE = 'True';
+const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
 
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
@@ -29,6 +30,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
   grafanaDashboardName:        'Cluster',
   isMonitoringReady:           false,
   _cachedConfig:               null,
+  clusterTemplate:             reference('clusterTemplateId'),
+  clusterTemplateRevision:     reference('clusterTemplateRevisionId'),
   machines:                    alias('nodes'),
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
   isAKS:                       equal('driver', 'azureKubernetesService'),
@@ -48,6 +51,25 @@ export default Resource.extend(Grafana, ResourceUsage, {
       set(this, 'isMonitoringReady', status);
     }
   })),
+
+  clusterTemplateDisplayName: computed('clusterTemplate.name', 'clusterTemplateId', function() {
+    return get(this, 'clusterTemplate.displayName')
+      || get(this, 'clusterTemplateId').replace(CLUSTER_TEMPLATE_ID_PREFIX, '');
+  }),
+
+  clusterTemplateRevisionDisplayName: computed('clusterTemplateRevision.name', 'clusterTemplateRevisionId', function() {
+    return get(this, 'clusterTemplateRevision.displayName')
+      || get(this, 'clusterTemplateRevisionId').replace(CLUSTER_TEMPLATE_ID_PREFIX, '');
+  }),
+
+  isClusterTemplateUpgradeAvailable: computed('clusterTemplate.latestRevision.id', 'clusterTemplateRevision.id', function() {
+    const latestClusterTemplateRevisionId = get(this, 'clusterTemplate.latestRevision.id');
+    const currentClusterTemplateRevisionId = get(this, 'clusterTemplateRevision.id');
+
+    return latestClusterTemplateRevisionId
+      && currentClusterTemplateRevisionId
+      && currentClusterTemplateRevisionId !== latestClusterTemplateRevisionId;
+  }),
 
   getAltActionDelete: computed('action.remove', function() { // eslint-disable-line
     return get(this, 'canBulkRemove') ? 'delete' : null;
