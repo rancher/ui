@@ -78,13 +78,13 @@
                   optionValuePath="id"
                   optionLabelPath="name"
                   content=filteredTemplateRevisions
-                  value=clusterTemplateRevisionId
+                  value=model.cluster.clusterTemplateRevisionId
                   disabled=(not selectedClusterTemplateId)
                   prompt=(t "clusterNew.rke.clustersSelectTemplateRevision.select.prompt")
                   localizedPrompt=true
                 }}
               {{else}}
-                {{clusterTemplateRevisionId}}
+                {{model.cluster.clusterTemplateRevisionId}}
               {{/if}}
             </div>
           {{/if}}
@@ -94,7 +94,7 @@
   {{/if}}
 {{/if}}
 
-{{#if (or clusterTemplateCreate (or (not clusterTemplatesEnforced) (and clusterTemplatesEnforced clusterTemplateRevisionId)))}}
+{{#if (or clusterTemplateCreate (or (not clusterTemplatesEnforced) (and clusterTemplatesEnforced model.cluster.clusterTemplateRevisionId)))}}
   {{#if (or isEdit (eq step 1))}}
     {{#accordion-list
        expandAll=(mut forceExpandAll)
