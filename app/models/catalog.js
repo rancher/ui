@@ -12,6 +12,12 @@ export default Resource.extend({
     return ucFirst(get(this, 'kind'));
   }),
 
+  combinedState: computed('id', function() {
+    if ( !get(this, 'id') ) {
+      return 'disabled';
+    }
+  }),
+
   canClone: computed('actions.clone', function() {
     const name         = get(this, 'name');
     const catalogNames = get(C, 'CATALOG');
@@ -23,15 +29,27 @@ export default Resource.extend({
   availableActions: computed('actionLinks.{refresh}', function() {
     let a = get(this, 'actionLinks') || {};
 
-    return [{
-      enabled: !!a.refresh,
-      label:   'catalogPage.index.refreshBtn',
-      icon:    'icon icon-refresh',
-      action:  'refresh'
-    }];
+    return [
+      {
+        action:  'enable',
+        icon:    'icon icon-plus-circle',
+        enabled: !this.id,
+        label:   'generic.enable',
+      },
+      {
+        enabled: !!a.refresh,
+        label:   'catalogPage.index.refreshBtn',
+        icon:    'icon icon-refresh',
+        action:  'refresh'
+      }
+    ];
   }),
 
   actions: {
+    enable() {
+      this.save();
+    },
+
     edit() {
       get(this, 'modalService').toggleModal('modal-edit-catalog', {
         model: this,
