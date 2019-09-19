@@ -9,6 +9,7 @@ import { parseSi } from 'shared/utils/parse-unit';
 export default Component.extend(ViewNewEdit, {
   intl:         service(),
   clusterStore: service(),
+  globalStore:  service(),
 
   layout,
   model:      null,
@@ -58,7 +59,8 @@ export default Component.extend(ViewNewEdit, {
 
   sourceChoices: computed('intl.locale', function() {
     const intl = get(this, 'intl');
-    const out = getSources('persistent').map((p) => {
+    const showUnsupported = get(this, 'globalStore').all('feature').filterBy('name', 'unsupported-storage-drivers').get('firstObject.value');
+    const out = getSources('persistent', showUnsupported).map((p) => {
       const entry = Object.assign({}, p);
       const key = `volumeSource.${ entry.name }.title`;
 
@@ -85,7 +87,8 @@ export default Component.extend(ViewNewEdit, {
 
   sourceComponent: computed('sourceName', function() {
     const name = get(this, 'sourceName');
-    const sources = getSources('persistent');
+    const showUnsupported = get(this, 'globalStore').all('feature').filterBy('name', 'unsupported-storage-drivers').get('firstObject.value');
+    const sources = getSources('persistent', showUnsupported);
     const entry = sources.findBy('name', name);
 
     if (entry) {
@@ -95,8 +98,7 @@ export default Component.extend(ViewNewEdit, {
 
   willSave() {
     const vol = get(this, 'primaryResource');
-
-    const entry = getSources('persistent').findBy('name', get(this, 'sourceName'));
+    const entry = getSources('persistent', true).findBy('name', get(this, 'sourceName'));
 
     if ( !entry ) {
       const errors = [];

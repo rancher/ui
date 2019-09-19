@@ -6,7 +6,8 @@ import layout from './template';
 import { getSources } from 'ui/models/volume';
 
 export default Component.extend(ViewNewEdit, {
-  intl: service(),
+  intl:        service(),
+  globalStore:  service(),
 
   layout,
   model:      null,
@@ -24,7 +25,9 @@ export default Component.extend(ViewNewEdit, {
 
   actions: {
     updateParams(key, map) {
-      getSources('ephemeral').forEach((source) => {
+      const showUnsupported = get(this, 'globalStore').all('feature').filterBy('name', 'unsupported-storage-drivers').get('firstObject.value');
+
+      getSources('ephemeral', showUnsupported).forEach((source) => {
         if (source.value === key){
           set(this, `primaryResource.${ key }`, map);
         } else {
@@ -45,7 +48,8 @@ export default Component.extend(ViewNewEdit, {
   sourceChoices: computed('intl.locale', function() {
     const intl = get(this, 'intl');
     const skip = ['host-path', 'secret'];
-    const out = getSources('ephemeral').map((p) => {
+    const showUnsupported = get(this, 'globalStore').all('feature').filterBy('name', 'unsupported-storage-drivers').get('firstObject.value');
+    const out = getSources('ephemeral', showUnsupported).map((p) => {
       const entry = Object.assign({}, p);
       const key = `volumeSource.${ entry.name }.title`;
 
@@ -71,7 +75,8 @@ export default Component.extend(ViewNewEdit, {
 
   sourceComponent: computed('sourceName', function() {
     const name = get(this, 'sourceName');
-    const sources = getSources('ephemeral');
+    const showUnsupported = get(this, 'globalStore').all('feature').filterBy('name', 'unsupported-storage-drivers').get('firstObject.value');
+    const sources = getSources('ephemeral', showUnsupported);
     const entry = sources.findBy('name', name);
 
     if (entry) {
