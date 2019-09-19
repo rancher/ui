@@ -1,22 +1,5 @@
-<section class="header clearfix">
-  <h1>{{t 'catalogSettings.more.header'}}</h1>
-  <div>
-    <p>{{t 'catalogSettings.more.helpText.header' htmlSafe=true}}</p>
-    <ul class="">
-      <li>{{t 'catalogSettings.more.helpText.help-name' htmlSafe=true}}</li>
-      <li>
-        <span>{{t 'catalogSettings.more.helpText.help-repo' htmlSafe=true}}</span>
-        <ul>
-          <li>{{t 'catalogSettings.more.helpText.help-git' appName=settings.appName htmlSafe=true}}</li>
-          <li>{{t 'catalogSettings.more.helpText.help-chart' htmlSafe=true}}</li>
-        </ul>
-      </li>
-    </ul>
-  </div>
-</section>
-
 {{#sortable-table
-     body=filtered
+     body=rows
      descending=descending
      headers=headers
      paging=paging
@@ -27,7 +10,7 @@
      as |sortable kind row dt|
 }}
   {{#if (eq kind "row")}}
-    <tr class="main-row">
+    <tr class="main-row {{if (not row.id) 'text-muted'}}">
       <td class="row-check" valign="middle" style="padding-top: 2px;">
         {{check-box nodeId=row.id}}
       </td>
@@ -47,7 +30,7 @@
         {{row.name}}
       </td>
       <td data-title="{{dt.url}}">
-        <a href="{{row.url}}" target="_blank" rel="nofollow noopener">{{row.url}}</a>
+        {{row.url}}
       </td>
       <td data-title="{{dt.branch}}">
         {{row.branch}}
