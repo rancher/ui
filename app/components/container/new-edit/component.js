@@ -5,10 +5,8 @@ import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import NewOrEdit from 'shared/mixins/new-or-edit';
-import { debouncedObserver } from 'ui/utils/debounce';
 import C from 'ui/utils/constants';
 import ChildHook from 'shared/mixins/child-hook';
-import { flattenLabelArrays } from 'shared/mixins/manage-labels';
 import layout from './template';
 
 const WINDOWS_NODE_SELECTOR = 'beta.kubernetes.io/os = windows';
@@ -58,8 +56,6 @@ export default Component.extend(NewOrEdit, ChildHook, {
   annotationErrors: null,
 
   // ----------------------------------
-  userLabels: null,
-
   advanced:     false,
   header:        '',
   showTargetOS: false,
@@ -118,10 +114,6 @@ export default Component.extend(NewOrEdit, ChildHook, {
       }
     }
 
-    if ( !get(this, 'isSidekick') ) {
-      this.labelsChanged();
-    }
-
     if ( get(this, 'showTargetOS') && get(this, `prefs.${ C.PREFS.TARGET_OS }`) ) {
       set(this, 'targetOs', get(this, `prefs.${ C.PREFS.TARGET_OS }`));
     }
@@ -142,10 +134,6 @@ export default Component.extend(NewOrEdit, ChildHook, {
 
     setImage(uuid) {
       set(this, 'launchConfig.image', uuid);
-    },
-
-    setLabels(section, labels) {
-      set(this, `${ section  }Labels`, labels);
     },
 
     setRequestedHostId(hostId) {
@@ -178,18 +166,6 @@ export default Component.extend(NewOrEdit, ChildHook, {
       ary.removeAt(idx);
     },
   },
-
-  // Labels
-  labelsChanged: debouncedObserver(
-    'userLabels.@each.{key,value}',
-    function() {
-      let out = flattenLabelArrays(
-        get(this, 'userLabels'),
-      );
-
-      set(this, 'service.labels', out);
-    }
-  ),
 
   updateHeader: function() {
     let args = {};
