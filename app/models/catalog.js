@@ -4,7 +4,7 @@ import { computed, get } from '@ember/object';
 import { ucFirst } from 'shared/utils/util';
 import C from 'ui/utils/constants';
 
-export default Resource.extend({
+const Catalog = Resource.extend({
   modalService: service('modal'),
   level:        'global',
 
@@ -71,3 +71,14 @@ export default Resource.extend({
     },
   },
 });
+
+Catalog.reopenClass({
+  stateMap: {
+    'disabled': {
+      icon:  'icon icon-alert',
+      color: 'text-muted'
+    }
+  }
+});
+
+export default Catalog;
