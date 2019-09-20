@@ -4,7 +4,7 @@ import Resource from '@rancher/ember-api-store/models/resource';
 
 const SOURCES = [];
 
-//             name/component    field                     component ephemeral persistent driver
+//             name/component    field                     component ephemeral persistent supported driver
 registerSource('aws-ebs',              'awsElasticBlockStore',   true, true,  true, true);
 registerSource('azure-disk',           'azureDisk',              true, true,  true, true);
 registerSource('azure-file',           'azureFile',              true, true,  true, true);
@@ -57,17 +57,13 @@ export function registerSource(name, field, component, ephemeral = true, persist
   });
 }
 
-export function getSources(which = 'all', showUnsupported = false) {
-  const supportedSources = showUnsupported
-    ? SOURCES
-    : SOURCES.filter((s) => s.supported);
-
+export function getSources(which = 'all') {
   if (which === 'ephemeral') {
-    return JSON.parse(JSON.stringify(supportedSources.filter((s) => s.ephemeral)));
+    return JSON.parse(JSON.stringify(SOURCES.filter((s) => s.ephemeral)));
   } else if ( which === 'persistent' ) {
-    return JSON.parse(JSON.stringify(supportedSources.filter((s) => s.persistent)));
+    return JSON.parse(JSON.stringify(SOURCES.filter((s) => s.persistent)));
   } else {
-    return JSON.parse(JSON.stringify(supportedSources));
+    return JSON.parse(JSON.stringify(SOURCES));
   }
 }
 

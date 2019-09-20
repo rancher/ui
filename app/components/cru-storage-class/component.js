@@ -5,10 +5,11 @@ import { get, set, computed } from '@ember/object';
 import layout from './template';
 import { getProvisioners } from 'ui/models/storageclass';
 import ChildHook from 'shared/mixins/child-hook';
+import C from 'ui/utils/constants';
 
 export default Component.extend(ViewNewEdit, ChildHook, {
   intl:        service(),
-  globalStore:  service(),
+  features:     service(),
 
   layout,
   model: null,
@@ -43,8 +44,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
   provisionerChoices: computed('intl.locale', function() {
     const intl = get(this, 'intl');
-    const showUnsupported = get(this, 'globalStore').all('feature').filterBy('name', 'unsupported-storage-drivers').get('firstObject.value');
-    const out = getProvisioners(showUnsupported).map((p) => {
+    const out = getProvisioners().map((p) => {
       const entry = Object.assign({}, p);
       const key = `storageClass.${ entry.name }.title`;
 
@@ -61,6 +61,13 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
     return out.sortBy('priority', 'label');
   }),
+
+  supportedProvisionerChoices: computed('provisionerChoices', function() {
+    const showUnsupported = get(this, 'features').isFeatureEnabled(C.FEATURES.UNSUPPORTED_STORAGE_DRIVERS);
+
+    return get(this, 'provisionerChoices').filter((choice) => showUnsupported || choice.supported)
+  }),
+
   willSave() {
     const self = this;
     const sup = this._super;

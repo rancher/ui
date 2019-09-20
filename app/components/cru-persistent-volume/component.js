@@ -5,11 +5,12 @@ import { get, set, computed } from '@ember/object';
 import layout from './template';
 import { getSources } from 'ui/models/volume';
 import { parseSi } from 'shared/utils/parse-unit';
+import C from 'ui/utils/constants';
 
 export default Component.extend(ViewNewEdit, {
   intl:         service(),
   clusterStore: service(),
-  globalStore:  service(),
+  features:     service(),
 
   layout,
   model:      null,
@@ -59,8 +60,7 @@ export default Component.extend(ViewNewEdit, {
 
   sourceChoices: computed('intl.locale', function() {
     const intl = get(this, 'intl');
-    const showUnsupported = get(this, 'globalStore').all('feature').filterBy('name', 'unsupported-storage-drivers').get('firstObject.value');
-    const out = getSources('persistent', showUnsupported).map((p) => {
+    const out = getSources('persistent').map((p) => {
       const entry = Object.assign({}, p);
       const key = `volumeSource.${ entry.name }.title`;
 
@@ -78,6 +78,12 @@ export default Component.extend(ViewNewEdit, {
     return out.sortBy('priority', 'label');
   }),
 
+  supportedSourceChoices: computed('sourceChoices', function() {
+    const showUnsupported = get(this, 'features').isFeatureEnabled(C.FEATURES.UNSUPPORTED_STORAGE_DRIVERS);
+
+    return get(this, 'sourceChoices').filter((choice) => showUnsupported || choice.supported)
+  }),
+
   sourceDisplayName: computed('sourceName', 'sourceChoices.[]', function() {
     const { sourceChoices, sourceName } = this;
     const match = sourceChoices.findBy('name', sourceName);
@@ -87,8 +93,7 @@ export default Component.extend(ViewNewEdit, {
 
   sourceComponent: computed('sourceName', function() {
     const name = get(this, 'sourceName');
-    const showUnsupported = get(this, 'globalStore').all('feature').filterBy('name', 'unsupported-storage-drivers').get('firstObject.value');
-    const sources = getSources('persistent', showUnsupported);
+    const sources = getSources('persistent');
     const entry = sources.findBy('name', name);
 
     if (entry) {
@@ -98,7 +103,7 @@ export default Component.extend(ViewNewEdit, {
 
   willSave() {
     const vol = get(this, 'primaryResource');
-    const entry = getSources('persistent', true).findBy('name', get(this, 'sourceName'));
+    const entry = getSources('persistent').findBy('name', get(this, 'sourceName'));
 
     if ( !entry ) {
       const errors = [];
