@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Errors from 'ui/utils/errors';
+import Util from 'ui/utils/util';
 
 export default Ember.Service.extend({
   init: function() {
@@ -16,7 +17,7 @@ export default Ember.Service.extend({
       opt.header = title;
     }
 
-    return $.jGrowl(body, opt);
+    return $.jGrowl(Util.escapeHtml(body), opt);
   },
 
   success: function(title, body) {
