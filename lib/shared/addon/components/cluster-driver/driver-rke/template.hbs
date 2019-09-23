@@ -84,7 +84,7 @@
                   localizedPrompt=true
                 }}
               {{else}}
-                {{model.cluster.clusterTemplateRevisionId}}
+                {{clusterTemplateRevisionId}}
               {{/if}}
             </div>
           {{/if}}
@@ -94,7 +94,7 @@
   {{/if}}
 {{/if}}
 
-{{#if (or clusterTemplateCreate (or (not clusterTemplatesEnforced) (and clusterTemplatesEnforced model.cluster.clusterTemplateRevisionId)))}}
+{{#if (or clusterTemplateCreate (or (not clusterTemplatesEnforced) (and clusterTemplatesEnforced clusterTemplateRevisionId)))}}
   {{#if (or isEdit (eq step 1))}}
     {{#accordion-list
        expandAll=(mut forceExpandAll)
