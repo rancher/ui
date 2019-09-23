@@ -4,10 +4,11 @@ import { inject as service } from '@ember/service';
 import EmberObject, { get, set, computed } from '@ember/object';
 import layout from './template';
 import { getSources } from 'ui/models/volume';
+import C from 'ui/utils/constants';
 
 export default Component.extend(ViewNewEdit, {
   intl:        service(),
-  globalStore:  service(),
+  features:     service(),
 
   layout,
   model:      null,
@@ -25,9 +26,7 @@ export default Component.extend(ViewNewEdit, {
 
   actions: {
     updateParams(key, map) {
-      const showUnsupported = get(this, 'globalStore').all('feature').filterBy('name', 'unsupported-storage-drivers').get('firstObject.value');
-
-      getSources('ephemeral', showUnsupported).forEach((source) => {
+      getSources('ephemeral').forEach((source) => {
         if (source.value === key){
           set(this, `primaryResource.${ key }`, map);
         } else {
@@ -48,8 +47,7 @@ export default Component.extend(ViewNewEdit, {
   sourceChoices: computed('intl.locale', function() {
     const intl = get(this, 'intl');
     const skip = ['host-path', 'secret'];
-    const showUnsupported = get(this, 'globalStore').all('feature').filterBy('name', 'unsupported-storage-drivers').get('firstObject.value');
-    const out = getSources('ephemeral', showUnsupported).map((p) => {
+    const out = getSources('ephemeral').map((p) => {
       const entry = Object.assign({}, p);
       const key = `volumeSource.${ entry.name }.title`;
 
@@ -73,10 +71,15 @@ export default Component.extend(ViewNewEdit, {
     return out.filter((x) => x.priority > 0 ).sortBy('priority', 'label');
   }),
 
+  supportedSourceChoices: computed('sourceChoices', function() {
+    const showUnsupported = get(this, 'features').isFeatureEnabled(C.FEATURES.UNSUPPORTED_STORAGE_DRIVERS);
+
+    return get(this, 'sourceChoices').filter((choice) => showUnsupported || choice.supported)
+  }),
+
   sourceComponent: computed('sourceName', function() {
     const name = get(this, 'sourceName');
-    const showUnsupported = get(this, 'globalStore').all('feature').filterBy('name', 'unsupported-storage-drivers').get('firstObject.value');
-    const sources = getSources('ephemeral', showUnsupported);
+    const sources = getSources('ephemeral');
     const entry = sources.findBy('name', name);
 
     if (entry) {

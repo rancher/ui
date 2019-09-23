@@ -41,12 +41,8 @@ export function registerProvisioner(name, provisioner, component, supported) {
   });
 }
 
-export function getProvisioners(showUnsupported = false) {
-  const supportedProvisioners = showUnsupported
-    ? PROVISIONERS
-    : PROVISIONERS.filter((p) => p.supported);
-
-  return JSON.parse(JSON.stringify(supportedProvisioners));
+export function getProvisioners() {
+  return JSON.parse(JSON.stringify(PROVISIONERS));
 }
 
 export default Resource.extend({
