@@ -21,7 +21,7 @@ const Catalog = Resource.extend({
   canClone: computed('actions.clone', function() {
     const name         = get(this, 'name');
     const catalogNames = get(C, 'CATALOG');
-    const builtIn      = [get(catalogNames, 'LIBRARY_KEY'), get(catalogNames, 'HELM_STABLE_KEY'), get(catalogNames, 'HELM_INCUBATOR_KEY')];
+    const builtIn      = [get(catalogNames, 'LIBRARY_KEY'), get(catalogNames, 'ALIBABA_APP_HUB_KEY'), get(catalogNames, 'HELM_STABLE_KEY'), get(catalogNames, 'HELM_INCUBATOR_KEY')];
 
     return !builtIn.includes(name);
   }),
