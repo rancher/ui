@@ -26,6 +26,7 @@ export default Ember.Component.extend({
       {label: 'v17.12.x', value: 'https://releases.rancher.com/install-docker/17.12.sh'},
       {label: 'v18.03.x', value: 'https://releases.rancher.com/install-docker/18.03.sh'},
       {label: 'v18.09.x', value: 'https://releases.rancher.com/install-docker/18.09.sh'},
+      {label: 'v19.03.x', value: 'https://releases.rancher.com/install-docker/19.03.sh'},
       {label: this.get('intl').t('formEngineOpts.engineInstallUrl.latest'), value: 'https://get.docker.com'},
     ];
 
