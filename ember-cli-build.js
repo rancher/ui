@@ -3,6 +3,8 @@
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var util     = require('util');
 var env      = EmberApp.env();
+var nodeSass = require('node-sass');
+
 
 module.exports = function(defaults) {
   // Pull in a few useful environment settings for index.html to use
@@ -25,7 +27,9 @@ module.exports = function(defaults) {
     },
     storeConfigInMeta: false,
     inlineContent: inline,
-
+    sassOptions: {
+      implementation: nodeSass
+    },
     outputPaths: {
       app: {
         css: {
