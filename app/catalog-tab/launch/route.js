@@ -152,6 +152,8 @@ export default Route.extend({
           });
         }
 
+        let catalogTemplateUrlKey = def;
+
         if ( neuApp.id ) {
           const v = get(neuApp, 'externalIdInfo.version');
           const currentVersion = verArr.filter((ver) => ver.version === v);
@@ -166,6 +168,7 @@ export default Route.extend({
             currentVersion.forEach((ver) => {
               set(ver, 'version', `${ ver.version } (current)`);
             });
+            catalogTemplateUrlKey = v;
           }
         }
 
@@ -177,7 +180,7 @@ export default Route.extend({
           catalogTemplate,
           namespace,
           catalogApp:         neuApp,
-          catalogTemplateUrl: links[def], // catalogTemplateUrl gets qp's added and this needs with out
+          catalogTemplateUrl: links[catalogTemplateUrlKey], // catalogTemplateUrl gets qp's added and this needs with out
           namespaces:         results.namespaces,
           tpl:                results.tpl,
           tplKind:            kind,
