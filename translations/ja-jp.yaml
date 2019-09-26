@@ -3967,6 +3967,154 @@ loginGithub:
   buttonText: GitHub でログイン
 loginAzure:
   buttonText: Azure ADでログイン
+
+loggingPage:
+  targetNav:
+    experimental: Experimental
+    tips:
+      caseA: Logging is disabled in the current {pageScope}.
+      caseB: The current logging target is <code class="text-capitalize">{currentTarget}</code>, Click the Save button below will disable logging in current {pageScope}.
+      caseC: The current logging target is <code class="text-capitalize">{currentTarget}</code>,
+      caseD: click the Save button below to set <span class="text-info text-capitalize">{targetType}</span> as the logging target.
+      caseE: click the Save button below to update the <span class="text-info text-capitalize">{targetType}</span> configuration.
+      caseF: No logging target, click the Save button below to set <code class="text-capitalize">{targetType}</code> as the logging target.
+  targetTypes:
+    embedded: Embedded
+    elasticsearch: Elasticsearch
+    splunk: Splunk
+    kafka: Kafka
+    syslog: syslog
+    disable: None
+  endpoint: Endpoint
+  endpointPlaceholder: 'e.g. https://192.168.1.10:9200'
+  logging: Logging
+  clusterHeader: Cluster Logging
+  projectHeader: Project Logging
+  helpText:
+    cluster: We will collect the standard output and standard error for each container, the log files which under path<code> /var/log/containers/ </code>on each host. The log will be shipped to the target you choose below.
+    clusterTarget: The cluster logging target is <code class="text-capitalize">{clusterTargetType}</code>. If project logging is enabled, logs will be shipped to both cluster target and project logging target.
+    noClusterTarget: Logging is disabled at current cluster.
+  tags:
+    keyPlaceholder: e.g. foo
+    valuePlaceholder: e.g. bar
+    addActionLabel: Add Field
+  keyValueForm:
+    keyPlaceholder: e.g. 192.168.1.10
+  targetKafka:
+    addActionLabel: Add Broker
+    host: Host
+    port: Port
+  embedded:
+    esDeployState:
+      message:
+        pending: Elasticsearch deploying in progress
+        failed: Failed to deploy Elasticsearch
+        success: 'Elascticsearch Endpoint:'
+    kibanaDeployState:
+      message:
+        pending: Kibana deploying in progress
+        failed: Failed to deploy Kibana
+        success: 'Kibana endpoint:'
+    header: Embedded Elasticsearch Configuration
+    failed: Failed
+    pending: Deploying
+    helpText:
+      persistantStorage: Embedded Elasticsearch is experimental, no persistent storage will be provided.
+      requirements: The embedded deployment includes Elasticsearch and Kibana. Elasticsearch requests at least 1 CPU and 500M MEM available on the node it is deployed.
+      esEndpoint: 'Elascticsearch Endpoint: <a href="http://47.88.57.141:30022" target="_blank">http://47.88.57.141:30022</a>'
+      kibanaEndpoint: 'Kibana Endpoint: <a href="http://47.88.57.141:30024" target="_blank">http://47.88.57.141:30024</a>'
+    cpuRequests:
+      label: CPU Requests (Core)
+      placeholder: e.g. 1
+    cpuLimits:
+      label: CPU Limits (Core)
+      placeholder: e.g. 4
+    memRequests:
+      label: Memory Requests (M)
+      placeholder: e.g. 500
+    memLimits:
+      label: Memory Limits (M)
+      placeholder: e.g. 2000
+    resouceRequestsAndLimits: CPU and Memory
+
+    indexPatterns:
+      header: Index Patterns
+      helpText: Index patterns are used to generate Elacticsearch index
+      prefix: Prefix
+      prefixPlaceholder: e.g. logstash
+      dateFormat: 'Date Format:'
+    generatedIndex: 'The generated index will be: <code class="text-italic">{esIndex}</code>, by default the index patterns is $\{clusterName\}-$\{dateFormat\}'
+  logPreview:
+    header: Log Format Preview
+  additional:
+    header: Additional Logging Configuration
+    fields:
+      header: Custom Log Fields
+      helpText: You can add custom fields as key/value pairs for better filtering.
+    flushInterval:
+      header: Flush Interval
+      label: Flush Interval
+      placeholder: e.g. 1
+      sec: sec
+      helpText: How often buffered logs would be flushed.
+
+  elasticsearch:
+    header: Elasticsearch Configuration
+    endpointHelpText: Copy your endpoint from Elastic Cloud, or input the reachable endpoint of your self-hosted Elacticsearch.
+    xpack:
+      header: X-Pack Security
+      headerOptional: (optional)
+      helpText: If your Elasticsearch use X-Pack built-in native authentication features, put your username and password below.
+      username: Username
+      usernamePlaceholder: e.g. John
+      password: Password
+      passwordPlaceholder: Your Password
+    indexPatterns:
+      header: Index Patterns
+      helpText: Index patterns are used to generate Elacticsearch index
+      prefix: Prefix
+      prefixPlaceholder: e.g. logstash
+      dateFormat: 'Date Format:'
+    generatedIndex: 'The generated index will be: <code class="text-italic">{esIndex}</code>, by default the index patterns is {indexFormat}'
+  splunk:
+    header: Splunk HTTP Event Collector Configuration
+    helpText: 'You can find instructions on how to configre Splunk HEC(HTTP Event Collector) <a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">here</a>.'
+    token: Token
+    tokenPlaceholder: Your Token
+    tokenHelpText: 'Tokens are entities that let logging agents and HTTP clients connect to the HEC input. <a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector#Configure_HTTP_Event_Collector_on_Splunk_Enterprise" target="_blank">Detail</a>'
+    source: Source
+    sourcePlaceholder: e.g. fluentd
+    sourceHelpText: 'A default field that identifies the source of an event, that is, where the event originated. <a href="https://docs.splunk.com/Splexicon:Source" target="_blank">Detail</a>'
+  kafka:
+    header: Kafka Configuration
+    endpointType: Endpoint Type
+    zookeeper: Zookeeper
+    broker: Broker
+    brokerTypeHelpText: Use either Zookeeper or Broker list as the Kafka connection entrypoint.
+    zookeeperHelpText: Zookeeper is for building coordination, configuration management, leader detection, detecting node update in kafka cluster.
+    brokerHelpText: A Kafka cluster consists of one or more Brokers, config the host and port for each Broker.
+    addEndpoint: Add Endpoint
+    topic: Topic
+    topicPlaceholder: e.g. message
+    topicHelpText: Logs will be send to this topic
+  syslog:
+    endpointPlaceholder: 'e.g. 192.168.1.10:514'
+    header: Syslog Configuration
+    endpointHelpText: Input your syslog server endpoint herecluster.
+    program: Program
+    programPlaceholder: e.g. MyProgram
+    programHelpText: The program name of the log.
+    severityHelpText: '<p class="text-info text-small">The severity of logs, list of severities definition could be found here <a href="https://tools.ietf.org/html/rfc5424#section-6.2.1" target="_blank">here.</a></p>'
+    severities:
+      emergency: Emergency
+      alert: Alert
+      critical: Critical
+      error: Error
+      warning: Warning
+      notice: Notice
+      info: Info
+      debug: Debug
+
 loginUserPass:
   local: ローカルユーザーを使用
   provider: "{kind}"

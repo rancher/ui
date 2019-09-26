@@ -61,22 +61,22 @@ export default Component.extend({
     var stdin = get(instance, 'stdin');
     var out = {
       type: 'both',
-      name: get(this, 'intl').tHtml('formCommand.console.both'),
+      name: get(this, 'intl').t('formCommand.console.both', { htmlSafe: true }),
     };
 
     if ( tty !== undefined || stdin !== undefined ) {
       if ( tty && stdin ) {
         out.type = 'both';
-        out.name = get(this, 'intl').tHtml('formCommand.console.both');
+        out.name = get(this, 'intl').t('formCommand.console.both', { htmlSafe: true });
       } else if ( tty ) {
         out.type = 'terminal';
-        out.name = get(this, 'intl').tHtml('formCommand.console.terminal');
+        out.name = get(this, 'intl').t('formCommand.console.terminal', { htmlSafe: true });
       } else if ( stdin ) {
         out.type = 'interactive';
-        out.name = get(this, 'intl').tHtml('formCommand.console.interactive');
+        out.name = get(this, 'intl').t('formCommand.console.interactive', { htmlSafe: true });
       } else {
         out.type = 'none';
-        out.name = get(this, 'intl').tHtml('formCommand.console.none');
+        out.name = get(this, 'intl').t('formCommand.console.none', { htmlSafe: true });
       }
     }
 
