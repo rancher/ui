@@ -1,39 +1,25 @@
 import { get } from '@ember/object';
-import { makeArray } from '@ember/array';
 import missingMessage from 'ui/utils/intl/missing-message';
 
 export function initialize(instance) {
   let intl = instance.lookup('service:intl');
-  let adapter = intl.get('adapter');
+  let adapter = get(intl, '_adapter');
 
   adapter.reopen({
     _lookup: adapter.lookup,
-    lookup(locales, key) {
-      locales = makeArray(locales || get(this, 'locale'));
-
-      if (locales[0] === 'none') {
-        return missingMessage(key, locales);
+    lookup(locale, key) {
+      if (locale === 'none') {
+        return missingMessage(key, locale);
       } else if ( key ) {
-        return this._lookup(locales, key);
+        return this._lookup(locale, key);
       } else {
-        return this._lookup(locales, 'generic.missing');
+        return this._lookup(locale, 'generic.missing');
       }
     },
-  });
-
-  // @TODO use regular t with htmlSafe instead
-  intl.reopen({
-    tHtml(key, ...args) {
-      const [options] = args;
-      const translation = this.findTranslationByKey(key, options && options.locale);
-
-      return this.formatHtmlMessage(translation, ...args);
-    }
   });
 }
 
 export default {
   name:       'intl',
-  after:      'ember-intl',
   initialize
 };
