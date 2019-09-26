@@ -547,7 +547,6 @@ authPage:
             li1: '登录您的帐户，切换到 "APIs和服务" 并点击 "凭证"。'
         li2:
           text: '点击 "OAuth同意屏幕" 并填写以下表单: '
-          helperText: '注意: 这必须是一个FQDN域名，IP地址无效。'
           ul:
             li1: '<b>授权域名: </b> '
             li2: '<b>应用首页: </b> '
@@ -559,12 +558,12 @@ authPage:
             li2: '<b>授权Javascript来源: </b> '
             li3: '<b>授权重定向URLs: </b> '
             li4: '点击 "创建"，然后点击"下载JSON"按钮。'
+            li5: '将下载的JSON文件上传到OAuth凭据框中。'
         li4:
           ul:
             li1: '<a href="https://cloud.google.com/iam/docs/service-accounts">点击这里</a>了解有关创建和管理服务帐户的信息。'
             li2: '选择您的服务帐户。'
             li3: '选择JSON作为键类型并点击"创建".'
-            li4: 'JSON文件将自动保存在本地。'
       form:
         oauthCredential:
           labelText: OAuth凭证
@@ -596,7 +595,8 @@ authPage:
       info: '导航到 "OAuth同意屏幕" 选项卡并填写表单'
     stepThree:
       header: '第三步: '
-      info: '导航到 "凭据" 选项卡创建OAuth客户端ID'
+      subHeader: '查看<a href="https://rancher.com/docs/rancher/v2.x/en/admin-settings/authentication/google/#creating-service-account-credentials" target="_blank" rel="nofollow noopener noreferrer">操作指南</a>:'
+      info: '创建服务帐户凭证'
   azuread:
     header:
       disabled:
@@ -2003,7 +2003,7 @@ newStack:
     placeholder: '例如: MyApp Stack'
   files:
     label: 额外的Compose文件
-    addActionLabel: 添加Compose文件
+    addActionLabel: 添加文件
     uploadActionLabel: 从磁盘读取
     namePlaceholder: 文件名
     valuePlaceholder: 文件内容
@@ -2700,6 +2700,7 @@ clusterNew:
       placeholder: '例如: example'
     ssh:
       label: 公共密钥
+      placeholder: "粘贴SSH公钥"
     security:
       label: 安全
     members:
@@ -2828,7 +2829,7 @@ clusterNew:
       loading: '从Alibaba加载可用区域'
     clusters:
       k8s: Kubernetes
-      managed: 纳管Kubernetes
+      managed: 托管Kubernetes
       label: 集群类型
     master:
       title: Master 节点
@@ -4063,6 +4064,13 @@ cruStorageClass:
       label: 卷类型
       pd-standard: '标准'
       pd-ssd: 'SSD'
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如: ext4"
+    replicationType:
+      label: Replication Type
+      none: Zonal
+      regionalPd: Regional
     zone:
       label: 可用区
       automatic: "自动: 集群中有主机的区域"
@@ -4963,7 +4971,7 @@ formScopedRoles:
 formShareMember:
   add: '添加成员'
   public: '转换为公有 (只读)'
-  helpText: '在分配所有者时，用户必须具有 <a href="/g/security/roles">Create Cluster Template</a> 全局角色，以便创建新的修订。这些权限可以由管理员授予。'
+  helpText: '在分配所有者时，用户必须具有<a href="/g/security/roles">Create Cluster Template</a>全局角色，以便创建新的修订。这些权限可以由管理员授予。'
   table:
     headers:
       name: '名称'
