@@ -24,6 +24,9 @@
       <thead>
         <tr class="hidden-sm">
           <th class="{{unless editing "acc-label"}}">
+            {{t "formServicePorts.name.label"}}
+          </th>
+          <th class="{{unless editing "acc-label"}}">
             {{t "formPorts.containerPort.label"}}
             {{#if editing}}
               {{field-required}}
@@ -52,6 +55,13 @@
       <tbody>
         {{#each ports as |port|}}
           <tr>
+            <td data-title="{{t 'formServicePorts.name.label'}}">
+              {{#if editing}}
+                {{input class="form-control input-sm public" value=port.name placeholder=(t 'formServicePorts.name.placeholder')}}
+              {{else}}
+                {{port.name}}
+              {{/if}}
+            </td>
             <td data-title="{{t "formPorts.containerPort.label"}}">
               {{#if editing}}
                 {{input-integer
