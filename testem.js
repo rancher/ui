@@ -6,14 +6,12 @@ module.exports = {
     'Chrome'
   ],
   launch_in_dev: [
-    'Chrome'
   ],
   browser_args: {
     Chrome: {
       ci: [
         // --no-sandbox is needed when running Chrome inside a container
         '--no-sandbox',
-        '--disable-gpu',
         '--headless',
         '--disable-dev-shm-usage',
         '--disable-software-rasterizer',
