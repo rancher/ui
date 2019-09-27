@@ -31,9 +31,11 @@ const ClusterTemplate =  Resource.extend({
   }),
 
   latestRevision: computed('revisions.[]', function() {
-    return isNaN(get(this, 'revisions.length'))
+    const revisions = (get(this, 'revisions') || []).filter((revision) => revision.enabled);
+
+    return get(revisions, 'length') === 0
       ? null
-      : get(this, 'revisions').sortBy('createdTS').get('lastObject');
+      : revisions.sortBy('createdTS').get('lastObject');
   }),
 
   displayDefaultRevisionId: computed('revisionsCount', 'revisions.[]', function() {

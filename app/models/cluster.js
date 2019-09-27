@@ -53,13 +53,17 @@ export default Resource.extend(Grafana, ResourceUsage, {
   })),
 
   clusterTemplateDisplayName: computed('clusterTemplate.name', 'clusterTemplateId', function() {
-    return get(this, 'clusterTemplate.displayName')
-      || get(this, 'clusterTemplateId').replace(CLUSTER_TEMPLATE_ID_PREFIX, '');
+    const displayName = get(this, 'clusterTemplate.displayName');
+    const clusterTemplateId = (get(this, 'clusterTemplateId') || '').replace(CLUSTER_TEMPLATE_ID_PREFIX, '');
+
+    return displayName || clusterTemplateId;
   }),
 
   clusterTemplateRevisionDisplayName: computed('clusterTemplateRevision.name', 'clusterTemplateRevisionId', function() {
-    return get(this, 'clusterTemplateRevision.displayName')
-      || get(this, 'clusterTemplateRevisionId').replace(CLUSTER_TEMPLATE_ID_PREFIX, '');
+    const displayName = get(this, 'clusterTemplateRevision.displayName');
+    const revisionId = (get(this, 'clusterTemplateRevisionId') || '').replace(CLUSTER_TEMPLATE_ID_PREFIX, '')
+
+    return displayName || revisionId;
   }),
 
   isClusterTemplateUpgradeAvailable: computed('clusterTemplate.latestRevision.id', 'clusterTemplateRevision.id', function() {

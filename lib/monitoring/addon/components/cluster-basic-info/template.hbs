@@ -9,11 +9,13 @@
     <span>{{cluster.version.gitVersion}}</span>
   </div>
 
-  <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'clustersPage.rkeTemplate.label'}}:</label>
-    <span>{{cluster.clusterTemplateDisplayName}}/{{cluster.clusterTemplateRevisionDisplayName}}</span>
-    {{cluster-template-revision-upgrade-notification cluster=cluster}}
-  </div>
+  {{#if cluster.clusterTemplateId}}
+    <div class="vertical-middle">
+      <label class="acc-label vertical-middle p-0">{{t 'clustersPage.rkeTemplate.label'}}:</label>
+      <span>{{cluster.clusterTemplateDisplayName}}/{{cluster.clusterTemplateRevisionDisplayName}}</span>
+      {{cluster-template-revision-upgrade-notification cluster=cluster}}
+    </div>
+  {{/if}}
 
   <div class="vertical-middle">
     <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}:</label>
