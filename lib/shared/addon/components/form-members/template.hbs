@@ -2,8 +2,8 @@
   <table class="table fixed">
     <thead>
       <tr>
-        <th>{{t 'formMembers.members.name.label'}}</th>
-        <th>{{t 'formMembers.members.role.label'}}</th>
+        <th>{{t "formMembers.members.name.label"}}</th>
+        <th>{{t "formMembers.members.role.label"}}</th>
         <th width="10">&nbsp;</th>
         <th width="40"></th>
       </tr>
@@ -11,51 +11,48 @@
     <tbody>
       {{#if isNew}}
         {{#each defaultRoles as |defRole|}}
-          <tr class="main-row">
-            <td class="pr-10">
-              {{creator.displayName}}
-            </td>
-            <td class="pr-10">
-              {{defRole.name}}
-            </td>
-            <td>&nbsp;</td>
-          </tr>
+          <ProjectMemberRow
+            @principal={{creator}}
+            @roleTemplate={{defRole}}
+            @pageType={{primaryResource.type}}
+            @noUpdate={{true}}
+          />
         {{/each}}
       {{/if}}
       {{#each memberArray as |member|}}
         {{#unless member.pendingDelete}}
-          {{project-member-row
-              member=member
-              editing=editing
-              resource=primaryResource
-              roles=filteredRoles
-              users=filteredUsers
-              pageType=primaryResource.type
-              remove=(action "removeMember")
-          }}
+          <ProjectMemberRow
+            @member={{member}}
+            @editing={{editing}}
+            @resource={{primaryResource}}
+            @roles={{filteredRoles}}
+            @users={{filteredUsers}}
+            @pageType={{primaryResource.type}}
+            @remove={{action "removeMember"}}
+          />
         {{/unless}}
       {{/each}}
     </tbody>
   </table>
 
   <div class="mt-10">
-    {{#if (and (eq filteredUsers.length 0) (eq access.provider 'local'))}}
+    {{#if (and (lte filteredUsers.length 1) (eq access.provider "local"))}}
       {{#tooltip-element
-           type="tooltip-basic"
-           model=(t 'formMembers.members.noAddUser')
-           tooltipTemplate='tooltip-static'
-           aria-describedby="tooltip-base"
-           tooltipFor="tooltipNoUsers"
+         type="tooltip-basic"
+         model=(t "formMembers.members.noAddUser")
+         tooltipTemplate="tooltip-static"
+         aria-describedby="tooltip-base"
+         tooltipFor="tooltipNoUsers"
       }}
         <button class="btn bg-link icon-btn p-0" disabled=true>
           <span class="darken"><i class="icon icon-plus text-small"/></span>
-          <span>{{t 'formMembers.members.addMember'}}</span>
+          <span>{{t "formMembers.members.addMember"}}</span>
         </button>
       {{/tooltip-element}}
     {{else}}
       <button class="btn bg-link icon-btn p-0" {{action "addMember" "User"}}>
         <span class="darken"><i class="icon icon-plus text-small"/></span>
-        <span>{{t 'formMembers.members.addMember'}}</span>
+        <span>{{t "formMembers.members.addMember"}}</span>
       </button>
     {{/if}}
   </div>
