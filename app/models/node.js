@@ -207,7 +207,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
   }),
 
   //  or they will not be pulled in correctly.
-  displayEndpoints: function() {
+  displayEndpoints: computed('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}', function() {
     var store = get(this, 'clusterStore');
 
     return (get(this, 'publicEndpoints') || []).map((endpoint) => {
@@ -219,14 +219,15 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
 
       return endpoint;
     });
-  }.property('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}'),
+  }),
 
   // If you use this you must ensure that services and containers are already in the store
-  requireAnyLabelStrings: function() {
+  requireAnyLabelStrings: computed(`labels.${ C.LABEL.REQUIRE_ANY }`, function() {
     return  ((get(this, 'labels') || {})[C.LABEL.REQUIRE_ANY] || '')
       .split(/\s*,\s*/)
       .filter((x) => x.length > 0 && x !== C.LABEL.SYSTEM_TYPE);
-  }.property(`labels.${ C.LABEL.REQUIRE_ANY }`),
+  }),
+
   actions: {
     activate() {
       return this.doAction('activate');
