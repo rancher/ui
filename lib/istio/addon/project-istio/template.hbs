@@ -2,6 +2,13 @@
   {{#istio-nav
     iconDisabled=model.iconDisabled
   }}
+    <button
+      {{action "importYaml"}}
+      class="btn btn-sm bg-default mr-10"
+      disabled={{or (rbac-prevents resource="virtualservice" scope="project" permission="create") (rbac-prevents resource="destinationrule" scope="project" permission="create")}}
+    >
+      {{t "nav.containers.importCompose"}}
+    </button>
     {{#if (eq currentRouteName "authenticated.project.istio.project-istio.rules")}}
       <a
         class="btn btn-sm bg-primary mr-10"
@@ -19,14 +26,6 @@
         <span>{{t "rulesPage.new"}}</span>
       </a>
       {{else if (eq currentRouteName "authenticated.project.istio.project-istio.destination-rules.index")}}
-        <button
-          {{action "importYaml"}}
-          class="btn btn-sm bg-default mr-10"
-          disabled={{rbac-prevents resource="destinationrule" scope="project" permission="create"}}
-        >
-          {{t "nav.containers.importCompose"}}
-        </button>
-
         {{#link-to
           "project-istio.destination-rules.new"
           scope.currentProject.id
@@ -36,14 +35,6 @@
           {{t "istio.nav.destinationRules.add"}}
         {{/link-to}}
       {{else if (eq currentRouteName "authenticated.project.istio.project-istio.virtual-services.index")}}
-        <button
-          {{action "importYaml"}}
-          class="btn btn-sm bg-default mr-10"
-          disabled={{rbac-prevents resource="virtualservice" scope="project" permission="create"}}
-          >
-          {{t "nav.containers.importCompose"}}
-        </button>
-
         {{#link-to
           "project-istio.virtual-services.new"
           scope.currentProject.id
@@ -53,13 +44,6 @@
           {{t "istio.nav.virtualServices.add"}}
         {{/link-to}}
     {{/if}}
-    <button
-      {{action "importYaml"}}
-      class="btn btn-sm bg-default mr-10"
-      disabled={{or (rbac-prevents resource="virtualservice" scope="project" permission="create") (rbac-prevents resource="destinationrule" scope="project" permission="create")}}
-    >
-      {{t "nav.containers.importCompose"}}
-    </button>
   {{/istio-nav}}
   {{outlet}}
 {{else}}
