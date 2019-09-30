@@ -1,62 +1,54 @@
 <td class="pr-10">
-  {{#if owner}}
-    {{owner.displayName}}
-  {{else}}
-    {{#if noUpdate}}
-      {{#if principal}}
-        {{identity-block principal=principal}}
-      {{else if principalId}}
-        <div class="gh-block">
-          <div class="gh-avatar">
-            <img
-              src="{{principalGravatarSrc}}"
-              width="34"
-              height="34"
-            >
-          </div>
-          <div class="gh-block-content">
-            <div class="clip gh-block-name">
-              {{principalId}}
-            </div>
+  {{#if noUpdate}}
+    {{#if principal}}
+      {{identity-block principal=principal}}
+    {{else if principalId}}
+      <div class="gh-block">
+        <div class="gh-avatar">
+          <img
+            src="{{principalGravatarSrc}}"
+            width="34"
+            height="34"
+          >
+        </div>
+        <div class="gh-block-content">
+          <div class="clip gh-block-name">
+            {{principalId}}
           </div>
         </div>
-      {{else}}
-        {{!-- we should never get here, but if we did you can start with a error in principal search by id --}}
-        {{t "generic.unknown"}}&nbsp;{{t "generic.user"}}
-      {{/if}}
+      </div>
     {{else}}
-      {{input-identity
-        allowTeams=true
-        action=(action "addAuthorized")
-        onError=(action "gotError")
-      }}
+      {{!-- we should never get here, but if we did you can start with a error in principal search by id --}}
+      {{t "generic.unknown"}}&nbsp;{{t "generic.user"}}
     {{/if}}
+  {{else}}
+    {{input-identity
+      allowTeams=true
+      action=(action "addAuthorized")
+      onError=(action "gotError")
+    }}
   {{/if}}
 </td>
 <td class="pr-10">
-  {{#if owner}}
-    {{t "generic.owner"}}
-  {{else}}
-    {{#if noUpdate}}
-      {{#if roleTemplate}}
-        {{roleTemplate.displayName}}
-      {{else}}
-        {{t "generic.custom"}}
-      {{/if}}
+  {{#if noUpdate}}
+    {{#if roleTemplate}}
+      {{roleTemplate.displayName}}
     {{else}}
-      {{searchable-select
-        change=(action "onSelect")
-        content=choices
-        value=roleTemplateId
-        readOnly=noUpdate
-      }}
+      {{t "generic.custom"}}
     {{/if}}
+  {{else}}
+    {{searchable-select
+      change=(action "onSelect")
+      content=choices
+      value=roleTemplateId
+      readOnly=noUpdate
+    }}
   {{/if}}
 </td>
 <td>&nbsp;</td>
 <div class="input-group-btn">
-  {{#unless owner}}
-    <button class="btn bg-primary btn-sm" {{action remove member}}>
+  {{#unless noUpdate}}
+    <button class="btn bg-primary btn-sm" {{action "remove"}}>
       <i class="icon icon-minus" />
     </button>
   {{/unless}}
