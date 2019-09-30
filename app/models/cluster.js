@@ -66,7 +66,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return displayName || revisionId;
   }),
 
-  isClusterTemplateUpgradeAvailable: computed('clusterTemplate.latestRevision.id', 'clusterTemplateRevision.id', function() {
+  isClusterTemplateUpgradeAvailable: computed('clusterTemplate.latestRevision', 'clusterTemplate.latestRevision.id', 'clusterTemplateRevision.id', function() {
     const latestClusterTemplateRevisionId = get(this, 'clusterTemplate.latestRevision.id');
     const currentClusterTemplateRevisionId = get(this, 'clusterTemplateRevision.id');
 
