@@ -2,9 +2,12 @@ import Resource from '@rancher/ember-api-store/models/resource';
 import { computed } from '@ember/object';
 import { notEmpty } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
+import { hasMany } from '@rancher/ember-api-store/utils/denormalize';
+import { get } from '@ember/object';
 
 const cloudCredential = Resource.extend({
   modal:    service(),
+  globalStore:    service(),
   type:     'cloudCredential',
 
   canClone: false,
@@ -15,6 +18,7 @@ const cloudCredential = Resource.extend({
   isDo:     notEmpty('digitaloceancredentialConfig'),
   isLinode: notEmpty('linodecredentialConfig'),
   isVMware: notEmpty('vmwarevspherecredentialConfig'),
+  nodeTemplates: hasMany('id', 'nodetemplate', 'cloudCredentialId', 'globalStore'),
 
   displayType: computed('amazonec2credentialConfig', 'azurecredentialConfig', 'digitaloceancredentialConfig', 'linodecredentialConfig', 'vmwarevspherecredentialConfig', function() {
     const {
@@ -38,6 +42,9 @@ const cloudCredential = Resource.extend({
     }
   }),
 
+  numberOfNodeTemplateAssociations: computed('nodeTemplates.[]', function() {
+    return get(this, 'nodeTemplates').length;
+  }),
 
   actions: {
     edit() {
