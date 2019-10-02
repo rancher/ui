@@ -29,7 +29,7 @@ module.exports = {
   root:          true,
   parser:        'babel-eslint',
   parserOptions: {
-    ecmaVersion:                 2017,
+    ecmaVersion:                 2018,
     sourceType:                  'module',
     allowImportExportEverywhere: true
   },
@@ -95,28 +95,19 @@ module.exports = {
     'no-undef':                                   'error',
     'no-unused-vars':                             'warn',
     'no-useless-escape':                          'off',
+    'no-self-assign':                             'off',
     'strict':                                     'off',
     'wrap-iife':                                  'off',
-    files:                                        [
-      '.eslintrc.js',
-      'tests/.eslintrc.js',
-      '.template-lintrc.js',
-      'ember-cli-build.js',
-      'testem.js',
-      'blueprints/*/index.js',
-      'config/**/*.js',
-      'lib/*/index.js'
-    ],
     // stylistic
-    'array-bracket-spacing':    'error',
-    'padded-blocks':            ['error', 'never'],
-    'block-spacing':            ['error', 'always'],
-    'brace-style':              ['error', '1tbs'],
-    'comma-spacing':            'error',
-    'func-call-spacing':        ['error', 'never'],
-    'implicit-arrow-linebreak': 'error',
-    'indent':                   ['error', 2],
-    'key-spacing':              ['error', {
+    'array-bracket-spacing':                      'error',
+    'padded-blocks':                              ['error', 'never'],
+    'block-spacing':                              ['error', 'always'],
+    'brace-style':                                ['error', '1tbs'],
+    'comma-spacing':                              'error',
+    'func-call-spacing':                          ['error', 'never'],
+    'implicit-arrow-linebreak':                   'error',
+    'indent':                                     ['error', 2],
+    'key-spacing':                                ['error', {
       'align': {
         'beforeColon': false,
         'afterColon':  true,
@@ -204,5 +195,33 @@ module.exports = {
     'rest-spread-spacing':    'error',
     'template-curly-spacing': ['error', 'always'],
     'yield-star-spacing':     ['error', 'both'],
-  }
+  },
+  overrides: [
+    // node files
+    {
+      files: [
+        '.eslintrc.js',
+        '.template-lintrc.js',
+        'ember-cli-build.js',
+        'testem.js',
+        'blueprints/*/index.js',
+        'config/**/*.js',
+        'lib/*/index.js',
+        'server/**/*.js'
+      ],
+      parserOptions: { sourceType: 'script' },
+      env:           {
+        browser: false,
+        node:    true
+      },
+      plugins: ['node'],
+      rules:   Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
+        // add your custom rules and overrides for node files here
+
+        // this can be removed once the following is fixed
+        // https://github.com/mysticatea/eslint-plugin-node/issues/77
+        'node/no-unpublished-require': 'off'
+      })
+    }
+  ]
 };

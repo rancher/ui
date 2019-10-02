@@ -71,7 +71,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   }),
 
   resourceMetricsAvailable: computed('apiServices', function() {
-    const apiServices = get(this, 'apiServices');
+    const apiServices = get(this, 'apiServices') || [];
 
     return apiServices.find((api) => get(api, 'name').split('.').length === 4 && get(api, 'name').endsWith(RESOURCE_METRICS_API_GROUP));
   }),

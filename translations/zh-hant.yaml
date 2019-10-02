@@ -5,7 +5,17 @@ languageContribute: "幫助翻譯Rancher"
 # Really generic things used in multiple places (use sparingly)
 ##############################
 generic:
-
+  authorize: 認證 & 同步代碼庫
+  branch: 分支
+  commit: 提交
+  repository: 代碼庫
+  registry: 鏡像庫
+  imageName: 鏡像名稱
+  loginIn: 登入
+  logout: 退出用戶{user}
+  pipeline: 流水線
+  is: 是
+  push: 提交到代碼庫
   actions: 操作
   activate: 激活
   add: 添加
@@ -232,6 +242,96 @@ appDetailPage:
     detail: 此應用相關的密文(Secrets)
     nodata: 此應用未使用密文
 
+alertPage:
+  na: 未配置
+  items: 項目
+  addSelectorLabel: 添加選擇器
+  create: 創建
+  save: 保存
+  cluster: 集群
+  project: 項目
+  alerts: 告警
+  newOrEdit:
+    showAdvanced: 顯示高級選項
+    initialWait: 等待時間
+    interval: 時間間隔
+    initialWaitHelpText: 在觸發告警到發送通知需要等待多長時間
+    repeatIntervalHelpText: 當告警處於活動狀態時，重復發送通知的時間間隔
+    whenA: 當
+    happens: 發生
+    sendA: 發送
+    to: 到
+    alert: 告警
+    is: 是
+    lessThan: 少於
+    and: 和
+    critical: 危險
+    addRecipient: 添加接收者
+    info: 信息
+    normal: 正常
+    warning: 警告
+    notReady: 未就緒
+    unhealthy: 不健康
+    cpuUsage: CPU預留超過
+    memUsage: 內存預留超過
+    podPlaceholder: 選擇壹個Pod
+    notRunning: 未運行
+    notScheduled: 未調度
+    restarted: 重啟
+    restartedTimes: 次在最近的
+    minutes: 分鐘
+    available: 可用
+    createOne: 創建壹條
+    noNotifierHelpText: 沒有定義通知規則，去
+    workloadTypePlaceholder: 選擇工作負載類型
+    resourcePlaceholder:  選擇資源
+    notifierPlaceholder: 選擇通知
+    nodePlaceholder: 選擇主機
+    systemServicePlaceholder:  選擇系統服務
+    nodeRequired: 需要選擇主機
+    nodeSelectorRequired: 需要主機選擇器
+  resourceKinds:
+    # backend use capitalized name
+    Pod: Pod
+    Node: 主機
+    Deployment: 部署
+    DaemonSet: DaemonSet
+    StatefulSet: 狀態集
+  targetTypes:
+    pod: Pod
+    node: 主機
+    deployment: 部署
+    daemonset: Daemonset
+    statefulset: 狀態集
+    workload: 工作負載
+    event: 事件
+    systemService: 系統服務
+    nodeSelector: 主機選擇
+    workloadSelector: 工作負載選擇
+  index:
+    addAlert: 添加告警
+    table:
+      noMatch: 沒有告警與當前搜索匹配。
+      noData: 沒有定義告警規則
+      condition: 條件
+      target: 目標
+      recipients: 接收者
+      displayCondition:
+        notScheduled: 未調度
+        notRunning: 未運行
+        available: '{percent}%可用'
+        restarted: 在{interval}分鐘內重啟{times}次
+        notready: 未就緒
+        unhealthy: 不健康
+        happens: 發生
+        notReady: 未就緒
+        cpuUsage: 'CPU使用超過{percent}%'
+        memUsage: '內存使用超過{percent}%'
+
+  new:
+    addHeader: 添加告警
+    editHeader: 編輯告警
+
 podSecurityPoliciesPage:
   index:
     header: Pod安全策略
@@ -349,6 +449,126 @@ apiPage:
     noData: 沒有定義API密鑰
 
 authPage:
+  setting:
+    executor:
+      label: 最大流水線運行個數
+      scale: 數量
+  header: 流水線設置
+  setup: "1. 配置{type}應用"
+  authenticated:
+    header:
+      text: 代碼庫認證信息
+      enterpriseHostName: "地址:"
+      clientId:
+        text: "客戶端ID:"
+  testAuth:
+    header: '3. 測試並啟用驗證'
+    subtext: '通過測試認證來檢查配置是否正確:'
+    buttonText:
+      preVariable: 授權
+      post: 保存中
+  form:
+    headerVariable: '2. 完成配置，並使用您的{SCM}賬號進行驗證'
+    isEnterprise:
+      labelText: 使用https連接
+    enterprise:
+      labelText: '使用私有{type}企業版部署'
+    enterpriseHost:
+      labelText: 地址
+      placeholder: '例如: example.com'
+  gitlab:
+    auth: '標準GitLab: <a href="https://gitlab.com/profile/applications" target="_blank">點擊此處</a>，在彈出的新窗口中進行應用設置。'
+    enterpriseAuth: "企業版GitLab: 請登錄您的GitLab賬號，點擊Settings，然後點擊Applications進行設置。"
+    ul:
+      li2:
+        text: '填寫表單內容:'
+        ul:
+          li1: '<b>名稱: </b><span class="text-muted">應用名稱，例如: My Pipeline。</span>'
+          li2: '回調URL:'
+      li3:
+        text: '點擊Save application'
+    form:
+      subtextVariable: '將新創建應用的Application Id和Secret復制粘貼到對應的輸入框中'
+      clientId:
+        labelText: 應用ID
+      clientSecret:
+        labelText: 秘鑰
+
+  github:
+    standard: GitHub
+    enterprise: GitHub企業版
+    header:
+      disabled:
+        label: GitHub未配置
+    authenticated:
+      header:
+        text: 認證信息
+        enterpriseHostName: "地址:"
+        clientId:
+          text: "客戶端ID:"
+          helpText: "要修改設置的GitHub應用，請在下方禁用訪問控制後重新設置"
+      disableAccess:
+        header: "危險區域&trade;"
+        warning: '<b class="text-danger">警告:</b>禁用訪問控制將導致任何能夠訪問此頁面或API的用戶擁有對{appName}的完全控制權限。'
+        confirmDisable: "確認? 再次點擊將關閉訪問控制"
+        disable: 禁用Github訪問
+    notAuthenticated:
+      header: "1. 設置GitHub應用"
+      ul:
+        li1:
+          text: '標準GitHub。<a href="https://github.com/settings/developers" target="_blank">點擊此處</a>並在彈出的新窗口中進行應用設置。'
+          ul:
+            li1: "企業版GitHub。請登錄賬號，點擊Settings，然後點擊Applications進行設置"
+        li2:
+          text: '點擊 "Register new application" 並填寫表單內容:'
+          ul:
+            li1: '<b>應用名稱: </b><span class="text-muted">應用名稱， 例如: My {appName}</span>'
+            li2: '主頁URL: '
+            li3: '<b>應用描述: </b><span class="text-muted">應用描述，可選</span>'
+            li4: '授權回調URL: '
+        li3:
+          text: '點擊 "Register Application" '
+      form:
+        header: '2. 配置{appName}以使用GitHub進行身份驗證'
+        subtext: '將新創建的GitHub應用Client ID和Secret複製粘貼到下方的對應輸入框中'
+        clientId:
+          labelText: 客戶端ID
+        clientSecret:
+          labelText: 客戶端秘鑰
+        ghEnterprise:
+          labelText: 使用私有GitHub企業版部署
+        isGHEnterprise:
+          labelText: 使用安全連接
+        enterpriseHost:
+          labelText: 地址
+          placeholder: '例如: github.example.com'
+    testAuth:
+      header: '3. 測試並啟用認證'
+      subtext: '測試以確認配置是否正確'
+      buttonText:
+        pre: 啟用GitHub認證
+        post: 等待GitHub返回
+      authError: '未獲取Github訪問權限'
+      popupError: '請關閉當前窗口，點擊認證按鈕重新認證'
+    auth: '標準GitHub: <a href="https://github.com/settings/developers" target="_blank">點擊此處</a>，在彈出的新窗口中進行應用設置。'
+    enterpriseAuth: "企業版GitHub: 請登錄您的GitHub賬號，點擊Settings，然後點擊Applications進行設置。"
+    ul:
+      li2:
+        text: '點擊"Register new application"並填寫表單內容:'
+        ul:
+          li1: '<b>應用名稱: </b> <span class="text-muted">應用名稱，例如: My Pipeline。</span>'
+          li2: '主頁URL:'
+          li3: '<b>應用描述: </b> <span class="text-muted">應用描述，可選。</span>'
+          li4: '授權回調URL:'
+      li3:
+        text: '點擊Register Application'
+    form:
+      subtextVariable: '將新創建應用的Client ID和Client Secret復制粘貼到對應的輸入框中'
+      clientId:
+        labelText: 客戶端ID
+      clientSecret:
+        labelText: 客戶端秘鑰
+
   saml:
     accessEnabled:
       header: 認證
@@ -441,62 +661,6 @@ authPage:
       shibboleth: Shibboleth
   root:
     header: 訪問控制
-  github:
-    standard: GitHub
-    enterprise: GitHub企業版
-    header:
-      disabled:
-        label: GitHub未配置
-    authenticated:
-      header:
-        text: 認證信息
-        enterpriseHostName: "地址:"
-        clientId:
-          text: "客戶端ID:"
-          helpText: "要修改設置的GitHub應用，請在下方禁用訪問控制後重新設置"
-      disableAccess:
-        header: "危險區域&trade;"
-        warning: '<b class="text-danger">警告:</b>禁用訪問控制將導致任何能夠訪問此頁面或API的用戶擁有對{appName}的完全控制權限。'
-        confirmDisable: "確認? 再次點擊將關閉訪問控制"
-        disable: 禁用Github訪問
-    notAuthenticated:
-      header: "1. 設置GitHub應用"
-      ul:
-        li1:
-          text: '標準GitHub。<a href="https://github.com/settings/developers" target="_blank">點擊此處</a>並在彈出的新窗口中進行應用設置。'
-          ul:
-            li1: "企業版GitHub。請登錄賬號，點擊Settings，然後點擊Applications進行設置"
-        li2:
-          text: '點擊 "Register new application" 並填寫表單內容:'
-          ul:
-            li1: '<b>應用名稱: </b><span class="text-muted">應用名稱， 例如: My {appName}</span>'
-            li2: '主頁URL: '
-            li3: '<b>應用描述: </b><span class="text-muted">應用描述，可選</span>'
-            li4: '授權回調URL: '
-        li3:
-          text: '點擊 "Register Application" '
-      form:
-        header: '2. 配置{appName}以使用GitHub進行身份驗證'
-        subtext: '將新創建的GitHub應用Client ID和Secret複製粘貼到下方的對應輸入框中'
-        clientId:
-          labelText: 客戶端ID
-        clientSecret:
-          labelText: 客戶端秘鑰
-        ghEnterprise:
-          labelText: 使用私有GitHub企業版部署
-        isGHEnterprise:
-          labelText: 使用安全連接
-        enterpriseHost:
-          labelText: 地址
-          placeholder: '例如: github.example.com'
-    testAuth:
-      header: '3. 測試並啟用認證'
-      subtext: '測試以確認配置是否正確'
-      buttonText:
-        pre: 啟用GitHub認證
-        post: 等待GitHub返回
-      authError: '未獲取Github訪問權限'
-      popupError: '請關閉當前窗口，點擊認證按鈕重新認證'
   azuread:
     header:
       disabled:
@@ -4468,6 +4632,172 @@ loginSaml:
   keycloak:
     buttonText: "使用Keycloak登錄"
 
+
+loggingPage:
+  targetNav:
+    experimental: 實驗性
+    tips:
+      caseA: 當前{pageScope}日誌收集未啟用。
+      caseB: 當前日誌收集目標是<code class="text-capitalize">{currentTarget}</code>，點擊下面的保存按鈕將禁止當前{pageScope}的日誌收集。
+      caseC: 當前日誌收集目標是<code class="text-capitalize">{currentTarget}</code>。
+      caseD: 點擊下面的保存按鈕去設置<span class="text-info text-capitalize">{targetType}</span>為日誌收集目標服務。
+      caseE: 點擊下面的保存按鈕來更新<span class="text-info text-capitalize">{targetType}</span>配置。
+      caseF: 沒有日誌收集目標服務，完成以下設置並保存<code class="text-capitalize">{targetType}</code>為日誌收集目標服務。
+  targetTypes:
+    embedded: Embedded
+    elasticsearch: Elasticsearch
+    splunk: Splunk
+    kafka: Kafka
+    syslog: syslog
+    disable: None
+  endpoint: 訪問地址
+  endpointPlaceholder: '例如: https://192.168.1.10:9200'
+  logging: 日誌收集
+  clusterHeader: 集群日誌收集
+  projectHeader: 項目日誌收集
+  helpText:
+    cluster: 我們將為每個容器收集標準輸出和標準錯誤，<code>/var/log/containers/</code>是每個主機日誌文件路徑，日誌將被發送到您在下面選擇的目標服務。
+    clusterTarget: 當前日誌收集目標是<code class="text-capitalize">{clusterTargetType}</code>。如果項目日誌收集啟用，日誌將被發送到集群目標和項目目標。
+    noClusterTarget: 日誌收集默認禁用
+  tags:
+    keyPlaceholder: '例如: foo'
+    valuePlaceholder: '例如: bar'
+    addActionLabel: 添加字段
+  keyValueForm:
+    keyPlaceholder: '例如: 192.168.1.10'
+  targetKafka:
+    addActionLabel: 添加代理
+    host: 主機
+    port: 端口
+  logPreview:
+    header: 日誌格式預覽
+  additional:
+    header: 其他日誌配置
+    fields:
+      header: 自定義Log字段
+      helpText: 以鍵值對的形式添加自定義字段，以便更好地進行過濾。
+    flushInterval:
+      header: 刷新時間間隔
+      label: 刷新時間間隔
+      placeholder: '例如: 1'
+      sec: 秒
+      helpText: 日誌刷新頻率
+
+  elasticsearch:
+    header: Elasticsearch配置
+    endpointHelpText: 輸入雲端Elacticsearch地址，或者私有部署的Elacticsearch地址。
+    endpointProtocolError: 訪問地址應該以"http://"或者"https://"開頭。
+    endpointHostError: 請輸入主機名或域名。
+    xpack:
+      header: X-Pack安全
+      headerOptional: (可選)
+      helpText: 如果您的Elasticsearch開啟了X-Pack內置的本地身份驗證功能，請在下面設置用戶名和密碼。
+      username: 用戶名
+      usernamePlaceholder: '例如: John'
+      password: 密碼
+      passwordPlaceholder: 密碼
+    indexPatterns:
+      header: 索引模式
+      helpText: 索引模式用於生成Elacticsearch索引。
+      prefix: 前綴
+      prefixPlaceholder: '例如: logstash'
+      dateFormat: '日期格式:'
+    generatedIndex: '生成的索引格式為: <code class="text-italic">{esIndex}</code>，默認情況下索引模式為: {indexFormat}。'
+  splunk:
+    header: Splunk HTTP事件收集配置
+    helpText: '您可以找到如何配置Splunk HEC(HTTP事件收集器)的說明，<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">點擊這裏</a>。'
+    token: Token
+    tokenPlaceholder: Your Token
+    tokenHelpText: 'Token是允許日誌收集程序和HTTP客戶端連接到HEC的驗證信息，<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector#Configure_HTTP_Event_Collector_on_Splunk_Enterprise" target="_blank">了解詳情</a>。'
+    source: 日誌源
+    sourcePlaceholder: '例如: fluentd'
+    sourceHelpText: '標識事件來源的默認字段，即事件發生的位置，<a href="https://docs.splunk.com/Splexicon:Source" target="_blank">了解詳情</a>。'
+    index: Index
+    indexPlaceholder: '例如: main'
+    indexHelpText: '您在此處指定的索引必須在此令牌的允許索引列表中，<a href="https://docs.splunk.com/Splexicon:Index" target="_blank">了解詳情</a>。'
+  kafka:
+    header: Kafka配置
+    endpointType: 訪問端點類型
+    zookeeper: Zookeeper
+    broker: Broker
+    brokerTypeHelpText: 使用Zookeeper或Broker作為Kafka連接入口點。
+    zookeeperHelpText: Zookeeper用於構建協調、配置管理、master檢測、檢測kafka集群中的節點更新。
+    brokerHelpText: Kafka集群由壹個或多個Broker組成，為每個Broker配置主機和端口。
+    addEndpoint: 訪問地址
+    topic: 主題
+    topicPlaceholder: '例如: message'
+    topicHelpText: 日誌將發送到這個主題。
+  syslog:
+    endpointPlaceholder: '例如: 192.168.1.10:514'
+    header: Syslog配置
+    endpointHelpText: 在這裏輸入日誌服務器的接入地址，選擇TCP將顯示SSL證書配置。
+    program: 程序名
+    programPlaceholder: '例如: MyProgram'
+    programHelpText: 日誌中的程序名稱。
+    severityHelpText: '<p class="text-info text-small">日誌的嚴重性列表可以在這裏找到<a href="https://tools.ietf.org/html/rfc5424#section-6.2.1" target="_blank">，了解詳情</a>。</p>'
+    severities:
+      emergency: Emergency
+      alert: Alert
+      critical: Ctitical
+      error: Error
+      warning: Warning
+      notice: Notice
+      info: Info
+      debug: Debug
+    tokenHelpText: '將Token令牌添加到每個系統日誌消息的結構化數據中。對於像<a href="https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/Cloud-Syslog-Source" target="_blank">Sumologic</a>, <a href="https://www.loggly.com/docs/customer-token-authentication-token" target="_blank">Loggly</a>等雲日誌系統，您可以在其配置頁面上生成Token令牌。'
+  fluentd:
+    header: Fluentd配置
+    compress:
+      label: 啟用Gzip壓縮
+      helpText: 啟用Gzip壓縮可減少傳輸數據大小。
+    endpoint:
+      label: 訪問地址
+      placeholder: '例如: 192.168.1.10:24224'
+    password:
+      label: 密碼
+      placeholder: 用於身份驗證的用戶名密碼
+    sharedKey:
+      label: 共享密鑰
+      placeholder: 用於身份驗證的共享密鑰
+    standby:
+      label: Use as Standby Only
+    username:
+      label: 用戶名
+      placeholder: 用於身份驗證的用戶名
+    weight:
+      label: 權重
+      placeholder: 此訪問地址的負載平衡權重。
+    addServer: 添加Fluentd服務
+    endpointHostError: 訪問地址不能以http或https開頭。
+    endpointPortError: 訪問地址需要添加端口。
+    removeFluentServers: 刪除此Fluentd服務
+    enableTls:
+      label: Use TLS
+    certificate:
+      label: PEM格式的CA證書
+    hostname:
+      label: 主機名
+      placeholder: 服務器主機名
+  ssl:
+    sslHeader: SSL配置
+    certificate:
+      label: PEM格式的CA證書
+    clientKey:
+      label: 客戶端私鑰
+    clientCert:
+      label: 客戶端證書
+    clientKeyPass:
+      label: 客戶端私鑰密碼
+      password:
+        placeholder: 客戶端私鑰密碼
+    verify:
+      label: SSL校驗
+      enabled: '啟用'
+      disabled: 禁用
+  dockerRootDir:
+    header: Docker配置
+    label: Docker Root Directory
+    placeholder: "輸入docker root Directory，默認值為{dir}"
 loginUserPass:
   local: 使用本地用戶
   provider: "{kind}"
@@ -6033,6 +6363,8 @@ action:
   resume: 恢復編排
   revert: 恢復默認值
   rollback: 回滾
+  rerun: 重新運行
+  run: 運行
   setDefault: 設置為缺省
   setting: 設置
   start: 啟動
@@ -6317,3 +6649,205 @@ rkeConfigComment:
     "         # 修改空間配額為$((4*1024*1024*1024))，默認2G,最大8G"
     "         extra_args:"
     "           quota-backend-bytes: '4294967296'"
+
+pipelinesPage:
+  table:
+    status: 狀態
+    noData: 沒有任何流水線
+    noMatch: 沒有流水線符合當前搜索
+  pipelines: 流水線
+  lastActivity: 最新運行
+
+pipelinesSetting:
+  globalConfigChangeLabel: 使用OAuth應用程序去認證
+  customConfigChangeLabel: 使用另壹個OAuthe應用程序
+  userGlobalConfig: GitHub身份驗證已啟用，您可以使用它來直接啟用Pipline。
+  gitAuthentication: Git驗證
+  authenticateWithGit: 用Git進行身份驗證
+  authenticatedUsers: 已授權的用戶
+  sureToDisableOAuth: 您確定要取消授權嗎？
+  disableOAuth: 取消授權
+  dataClear: 清除數據
+  resetData: 重置所有與流水線相關的數據
+  clearing: 清除中
+  sureToClearData: 確定要清除數據嗎？
+  clearData: 清除數據
+
+repositories:
+  header: 代碼庫
+  enable: 設置代碼庫
+  message: 選擇壹個示例代碼庫或者使用您自己的代碼庫來設置流水線。
+  table:
+    repository: 代碼庫
+    noData: 沒有任何代碼庫
+    noMatch: 沒有代碼庫符合當前搜索
+
+newPipeline:
+  steps:
+    label: 流水線配置
+  save: 保存
+
+newPipelineStage:
+  errors:
+    name:
+      required: 請輸入名稱。
+  header:
+    create: 添加階段
+    edit: 編輯階段
+  name:
+    placeholder: "例如: compile"
+  addStep: 添加步驟
+  trigger:
+    webhook: 推送
+    webhookPR: 拉取請求
+    webhookTag: Tag
+
+newPipelineStep:
+  header:
+    create: 添加步驟
+    edit: 編輯步驟
+  stepType:
+    label: 步驟類型
+    image: 基礎鏡像
+    env: 環境變量
+    enableBranch: 設置流水線
+    applyYaml:
+      label: 部署YAML
+      yaml: YAML路徑
+      env:
+        header: 環境變量
+        addActionLabel: 添加變量
+        keyPlaceholder: IMAGE_TAG
+      errors:
+        path:
+          required: 請輸入YAML路徑。
+    scm:
+      noYaml: 代碼庫中沒有發現<code>.rancher-pipeline.yml</code>文件。
+      demoGroup: 示例代碼庫
+      selectRepository: 代碼庫
+      add: 選擇代碼庫
+      refresh: 刷新代碼庫
+      user: 用戶
+      trigger: 流水線觸發
+      noWebhook: 沒有設置代碼庫Webhook的權限
+    build:
+      imageName:
+        placeholder: '例如: example/app:v1'
+      errors:
+        tag:
+          required: 請輸入鏡像名稱
+        dockerfilePath:
+          required: 請輸入Dockerfile的路徑。
+        registry:
+          required: 請選擇鏡像倉庫。
+      noRegistry: 沒有配置鏡像倉庫。您可以點擊<a href="{route}" target="_blank">這裏</a>配置鏡像倉庫。
+      pushRemote: 推送鏡像到遠端鏡像倉庫。
+      label: 構建並發布鏡像
+      dockerFilePath: Dockerfile路徑
+      buildContext: 構建上下文
+    task:
+      label: 運行腳本
+      shellScript: 腳本
+      customEntryPoint: 自定義EntryPoint
+      secret: 從密文中註入環境變量
+      errors:
+        image:
+          required: 請輸入基礎鏡像。
+        shellScript:
+          required: 請輸入要運行的腳本。
+      privileged:
+        label: 以特權模式運行該步驟。
+      shell:
+        label: 腳本
+      command:
+        label: 命令
+        placeholder: EntryPoint的參數
+      entryPoint:
+        label: EntryPoint
+        placeholder: 該項留空將使用默認的EntryPoint
+
+pipelineDetailPage:
+  header: '流水線: {name}'
+  repository: 代碼庫
+  lastRun: 最新運行
+  triggered: 觸發時間
+  commitMessage: 提交信息
+  activity:
+    title: 運行
+    detail: 流水線的歷史運行列表
+    table:
+      noData: 沒有任何運行。
+      noMatch: 沒有運行符合當前搜索。
+      status: 狀態
+      branch: 分支
+      runNumber: 運行
+      commit: 提交信息
+      triggered: 觸發時間
+
+runPipeline:
+  title: '運行{name}'
+  noBranch: '該代碼庫沒有發現<code>.rancher-pipeline.yml</code>文件。您可以點擊<b>編輯配置</b>通過向導的方式配置流水線，也可以點擊<b>查看/編輯YAML</b>直接修改配置。'
+  branch:
+    label: '分支'
+
+pipelineSetting:
+  title: '流水線設置"{name}"'
+
+buildDetailPage:
+  header: '流水線運行: #{name}'
+  duration: 運行時間
+  stillRunning: 仍在運行
+  log:
+    title: 詳細日誌
+    detail: 當前流水線運行的詳細日誌。
+    waiting: Waiting...
+    loading: Loading...
+
+
+enablePipeline:
+  header: 啟用代碼庫認證
+  configNow: 立即設置
+  helpText:
+    代碼庫認證尚未開啟,需要先開啟代碼庫認證。
+  noPermission:
+    代碼庫認證尚未開啟,需要聯系項目管理員設置認證。
+
+editYamlPipeline:
+  title: '查看/編輯YAML{name}'
+  branch:
+    label: '分支'
+
+editPipelineConfig:
+  header: 修改流水線配置
+  pushToReop: 將如下的流水線配置自動推送到遠端代碼庫。
+  download: 僅下載流水線配置。
+  timeout:
+    label: 超時時間
+    helpText: 如果構建在該時間內沒有執行完成，則終止本次構建。
+pipelineSelector:
+  header: 觸發規則
+  table:
+    type: 類型
+    value: 值
+  title:
+    include: '當滿足條件時運行該{type}'
+    exclude: '當滿足條件時不運行該{type}'
+  addRule: 添加規則
+  branch: 分支
+  event: 事件
+  pr: 拉取請求
+  push: 推送
+  tag: Tag
+
+fromSecret:
+  addFrom: 從密文中添加
+  secret:
+    label: 密文
+  prefixOrKey:
+    label: 鍵
+  prefix:
+    label: 別名
+  keyLabel: 變量
+  keyPlaceholder: '例如: Foo'
+  valueLabel: 值
+  valuePlaceholder: '例如: bar'

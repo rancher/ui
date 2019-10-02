@@ -134,6 +134,28 @@ generic:
   full: Full
   linux: Linux
   windows: Windows
+  host: Host
+  istioHostPlaceholder: Select or input a host
+  cpu: CPU
+  memory: Memory
+  noData: No Data
+  authorize: Authorize & Fetch Your Repositories
+  branch: Branch
+  commit: Commit
+  repository: Repository
+  registry: Registry
+  imageName: Image Name
+  loginIn: Login in
+  logout: Log Out User {user}
+  pipeline: Pipeline
+  is: is
+  push: Push to Repository
+  noBranch: There is no branch in this repository.
+  github: GitHub
+  gitlab: GitLab
+  bitbucket: Bitbucket
+  required: '{key} is required.'
+
 realmNames:
   all: All
   usWest: US West
@@ -246,6 +268,137 @@ appDetailPage:
     title: Secrets
     detail: Secrets associated with this application
     nodata: This application has no secrets
+
+alertPage:
+  na: Not Configured
+  items: Items
+  addSelectorLabel: Add Selector
+  create: Create
+  save: Save
+  cluster: Cluster
+  project: Project
+  alertGroups: Alerts
+  newOrEdit:
+    showAdvanced: Show Advanced Options
+    initialWait: Initial Wait
+    interval: Interval
+    initialWaitHelpText: How long to wait before sending a notification when an alert is triggered.
+    repeatIntervalHelpText: Repeat interval of sending a notification when an alert is active.
+    whenA: When A
+    whenAn: When An
+    happens: Happens
+    sendA: Send a
+    to: To
+    alert: Alert
+    is: Is
+    lessThan: less than
+    and: And
+    critical: Critical
+    addRecipient: Add Recipient
+    info: Info
+    normal: Normal
+    warning: Warning
+    notReady: Not Ready
+    unhealthy: Unhealthy
+    cpuUsage: CPU reservation over
+    memUsage: Memory reservation over
+    podPlaceholder: Choose a Pod
+    notRunning: Not Running
+    notScheduled: Not Scheduled
+    restarted: Restarted
+    restartedTimes: times within the last
+    minutes: Minutes
+    available: available
+    createOne: create one
+    noNotifierHelpText: You do not have any notifiers configured. Go here to
+    workloadTypePlaceholder: Choose a Workload Type
+    resourcePlaceholder: Choose a Resource
+    notifierPlaceholder: Choose a Notifier
+    nodePlaceholder: Choose a Node
+    systemServicePlaceholder: Choose a System Service
+    nodeRequired: Node required
+    nodeSelectorRequired: Node Selector required
+    recipient:
+      helpText: The value set in the Notifier is used by default. You can override this with another value.
+    expression:
+      label: Expression
+      noData: No metric graph data.
+      error: Failed to fetch metric graph data.
+      placeholder: Input Expression
+    removeAlert: Remove this Alert
+    alertRule: Alert Rule
+    groupWaitSeconds:
+      label: Group Wait Time
+      helpText: How long to wait to buffer alerts of the same group before sending initially.
+    groupIntervalSeconds:
+      label: Group Interval Time
+      helpText: How long to wait before sending an alert that has been added to a group which contains already fired alerts.
+    repeatIntervalSeconds:
+      label: Repeat Interval Time
+      helpText: How long to wait before re-sending a given alert that has already been sent.
+    monitoringDisabled: Expression is disabled, Go and
+    enableMonitoring: enable monitoring
+    for: For
+    moreTarget: More targetTypes...
+    inherited:
+      label: Group Inherited
+      enabled: Enabled - Inheriting the advanced options from group
+  resourceKinds:
+    # backend use capitalized name
+    Pod: Pod
+    Node: Node
+    Deployment: Deployment
+    DaemonSet: DaemonSet
+    StatefulSet: StatefulSet
+  targetTypes:
+    pod: Pod
+    node: Node
+    deployment: Deployment
+    daemonset: Daemonset
+    statefulset: Statefulset
+    workload: Workload
+    event: Event
+    systemService: System Service
+    nodeSelector: Node Selector
+    workloadSelector: Workload Selector
+    metric: Metric
+    undefined: None
+  index:
+    addAlertGroup: Add Alert Group
+    addAlert: Add Alert Rule
+    noAlerts: There are no alert rules defined.
+    table:
+      noMatch: No alerts match the current search.
+      noData: There are no alerts defined
+      noGroup: No alert group
+      condition: Condition
+      target: Target
+      recipients: Notifiers
+      displayCondition:
+        notScheduled: Not Scheduled
+        notRunning: Not Running
+        available: '{percent}% available'
+        restarted: Restarted {times} times within the last {interval} minutes
+        notready: Not Ready
+        unhealthy: Unhealthy
+        happens: Happens
+        notReady: Not Ready
+        cpuUsage: 'CPU usage over {percent}%'
+        memUsage: 'MEM usage over {percent}%'
+        expression: Expression
+  new:
+    addHeader: Add Alert Group
+    editHeader: Edit Alert Group
+    addRuleHeader: Add Alert Rule
+    editRuleHeader: Edit Alert Rule
+  comparison:
+    equal: Equal
+    not-equal: Not Equal
+    greater-than: Greater Than
+    less-than: Less Than
+    greater-or-equal: Greater Or Equal
+    less-or-equal: Less Or Equal
+    has-value: Not Null
 
 podSecurityPoliciesPage:
   index:
@@ -372,6 +525,111 @@ apiPage:
     noData: There are no API keys defined
 
 authPage:
+  setting:
+    executor:
+      label: The maximum number of pipeline executors
+      scale: Scale
+    cacerts:
+      label: Configure custom CA to support clone from self-signed git service
+      show: Edit cacerts
+      saveActionLabel: Save cacerts
+    limit:
+      label: Configure the resource limit and reservation for executors
+      saveActionLabel: Update Limit and Reservation
+  header: Pipeline Setting
+  setup: "1. Setup a {type} application"
+  authenticated:
+    header:
+      text: Repository Authentication Information
+      enterpriseHostName: "Host:"
+      clientId:
+        text: "Client ID:"
+      key:
+        text: "Key:"
+  testAuth:
+    header: '3. Test and enable authentication'
+    subtext: 'Check that your application is configured correctly by testing authentication with it:'
+    buttonText:
+      preVariable: Authenticate
+      post: Authenticating
+  form:
+    headerVariable: '2. Configure the pipeline to use your {SCM} for authentication'
+    isEnterprise:
+      labelText: Use a https connection
+    enterprise:
+      labelText: Use a private {type} enterprise installation
+    enterpriseHost:
+      labelText: Enterprise Host
+      placeholder: 'e.g. example.com'
+  gitlab:
+    auth: 'For standard GitLab, <a href="https://gitlab.com/profile/applications" target="_blank" rel="nofollow noreferrer">click here</a> to go to applications settings in a new window.'
+    enterpriseAuth: "For GitLab Enterprise, login to your account.  Click on Settings, then Applications."
+    ul:
+      li2:
+        text: 'Fill out the form:'
+        ul:
+          li1: '<b>Name:</b> <span class="text-muted">Anything you like, e.g. My Pipeline</span>'
+          li2: Redirect URI
+      li3:
+        text: 'Click "Save application" '
+    form:
+      subtextVariable: 'Copy and paste the Application Id and Secret from your newly-created application.'
+      clientId:
+        labelText: Application Id
+      clientSecret:
+        labelText: Secret
+  bitbucketcloud:
+    target:
+      header: '1. Choose the Bitbucket type you want to use'
+      bitbucketserver: 'Use private Bitbucket Server setup'
+      bitbucketcloud: 'Use public Bitbucket Cloud'
+    setup: '2. Setup a Bitbucket Cloud application'
+    auth: 'For Bitbucket Cloud, <a href="https://bitbucket.org/account" target="_blank" rel="nofollow noreferrer">click here</a> to go to user settings in a new window.'
+    ul:
+      li2:
+        text: 'Click "OAuth", then click "Add consumer" and fill out the form:'
+        ul:
+          li1: '<b>Name:</b> <span class="text-muted">Anything you like, e.g. My Pipeline</span>'
+          li2: Callback URL
+          li3: '<b>Select Permissions</b> <b>Account Read</b>, <b>Pull Requests Write</b>, <b>Projects Read</b> and <b>Webhooks Read And Write</b>'
+      li3:
+        text: 'Click "Save" '
+    form:
+      headerVariable: '3. Configure the pipeline to use your Bitbucket Cloud for authentication'
+      subtextVariable: 'Copy and paste the Key and Secret from your newly-created consumer.'
+      clientId:
+        labelText: Key
+      clientSecret:
+        labelText: Secret
+  bitbucketserver:
+    warning: Bitbucket server webhooks need to do SSL verification, please ensure that {appName} server’s certificate is trusted by the bitbucket server. More info can be found <a href="https://rancher.com/docs/rancher/v2.x/en/tools/pipelines/configurations/#1-configuring-version-control-providers" target="_blank" rel="nofollow noopener noreferrer">here</a>.
+    copy: Click the icon to copy it
+    target:
+      header: '1. Choose the Bitbucket type you want to use'
+      bitbucketserver: 'Use private Bitbucket Server setup'
+      bitbucketcloud: 'Use public Bitbucket Cloud'
+    setup: '2. Setup a Bitbucket Server application'
+    auth: 'For Bitbucket Server, login to your account. Click on Administration, then Application Links.'
+    ul:
+      li2:
+        text: 'Create a new application link:'
+        ul:
+          li1: '<b>Link:</b>'
+          li2: '<b>Application Name:</b> <span class="text-muted">Anything you like, e.g. My Pipeline</span>'
+          li3: '<b>Select Create incoming link</b>'
+          li4: '<b>Click "Continue"</b>'
+          li5: 'Consumer Key:'
+          li6: '<b>Consumer Name:</b> <span class="text-muted">Anything you like, e.g. pipeline</span>'
+          li7: 'Public Key:'
+          li8: '<b>Click "Continue"</b>'
+    form:
+      headerVariable: '3. Configure the pipeline to use your Bitbucket Server for authentication'
+      hostname:
+        labelText: Bitbucket Server Host
+        placeholder: e.g. example.com
+        required: Bitbucket Server Host is required.
+      tls:
+        labelText: Use a https connection
   saml:
     accessEnabled:
       header: Authentication
@@ -470,6 +728,24 @@ authPage:
   root:
     header: Access Control
   github:
+    auth: 'For standard GitHub, <a href="https://github.com/settings/developers" target="_blank" rel="nofollow noreferrer">click here</a> to go to applications settings in a new window.'
+    enterpriseAuth: "For Github Enterprise, login to your account.  Click on Settings, then Developer settings."
+    ul:
+      li2:
+        text: 'Click "Register new application" and fill out the form:'
+        ul:
+          li1: '<b>Application name:</b> <span class="text-muted">Anything you like, e.g. My Pipeline</span>'
+          li2: Homepage URL
+          li3: '<b>Application description:</b> <span class="text-muted">Anything you like, optional</span>'
+          li4: Authorization callback URL
+      li3:
+        text: 'Click "Register Application" '
+    form:
+      subtextVariable: 'Copy and paste the Client ID and Secret from your newly-created application.'
+      clientId:
+        labelText: Client ID
+      clientSecret:
+        labelText: Client Secret
     standard: GitHub
     enterprise: GitHub Enterprise
     header:
@@ -748,6 +1024,106 @@ cloudCredentialsPage:
 clusterCatalogPage:
   header: Catalogs
 
+clusterIstioPage:
+  header: Istio
+  enabled: "Istio is enabled. In order to leverage Istio, you will need to enable Istio sidecar auto injection for each namespace. If you enable it on an existing namespace, any existing workloads will need to be re-deployed to leverage the sidecar auto injection."
+  disabled: "Istio is not enabled yet. Please click Enable button to enable it."
+  notReady: Installing Istio into the system project of current cluster...
+  confirmDisable: "Are you sure?  Click again to disable Istio"
+  monitoringNotDeployed: "Monitoring is still deploying. Please wait for monitoring to finish deploying before enabling Istio to ensure there are enough resources in the cluster."
+  disable: Disable
+  enableActionLabel: Enable
+  version: Istio Version
+  customAnswers:
+    title: Custom Answers
+    detail: Configure custom answers.
+  links:
+    kiali:
+      label: Kiali UI
+    jaeger:
+      label: Jaeger UI
+    grafana:
+      label: Grafana UI
+    prometheus:
+      label: Prometheus UI
+  config:
+    header:
+      grafana: Grafana
+      gateway: Ingress Gateway
+      pilot: Pilot
+      prometheus: Prometheus
+      mixer: Mixer
+      tracing: Tracing
+    tracingEnabled:
+      label: Enable Tracing
+    grafanaEnabled:
+      label: Enable Grafana
+    grafanaPersistenceEnabled:
+      label: Enable Persistent Storage for Grafana
+    mtlsEnabled:
+      label: Service to service mutual TLS
+    gatewayEnabled:
+      label: Enable Ingress Gateway
+    gatewayType:
+      label: Service Type of Ingress Gateway
+    http2Port:
+      label: Http2 Port
+    httpsPort:
+      label: Https Port
+    loadBalancerIP:
+      label: Load Balancer IP
+      placeholder: e.g. 192.0.0.1
+    prometheusRetention:
+      label: Retention for Prometheus
+      placeholder: e.g. 6h
+    traceSampling:
+      label: Trace sampling Percentage
+      placeholder: e.g. 1
+    mixerPolicyEnabled:
+      label: Enable Mixer Policy
+  nodeSelector:
+    addSelectorLabel: Add Selector
+    helpText: Select the nodes where {component} workloads will be scheduled to
+  insufficientSize:
+    total:
+      cpu: Please make sure you have at least {minCpu} milli CPUs available to {action} Istio.
+      memory: Please make sure you have at least {minMemory} MiB of memory available to {action} Istio.
+      all: Please make sure you have at least {minCpu} milli CPUs and {minMemory} MiB of memory available to {action} Istio.
+    workload:
+      cpu: Please make sure you have at least one node with {cpu} milli CPUs available to deploy {component} workload.
+      memory: Please make sure you have at least one node with {memory} MiB of memory available to deploy {component} workload.
+      all: Please make sure you have at least one node with {cpu} milli CPUs and {memory} MiB of memory available to deploy {component} workload.
+    selectors:
+      cpu: Please make sure you have at least one node matches node selectors with {cpu} milli CPUs available to enable {component} workload.
+      memory: Please make sure you have at least one node matches node selectors with {memory} MiB of memory available to enable {component} workload.
+      all: Please make sure you have at least one node matches node selectors with {cpu} milli CPUs and {memory} MiB of memory available to enable {component} workload.
+      unsupported: 'Node selector with value "true", "false" or number is not supported'
+  telemetryAndPolicy: Telemetry And Policy
+  existingClaim:
+    label: 'Existing Claim for {component}'
+  members:
+    title: Member Access
+    detail: Control who has access to Kiali and Jaeger UI.
+  pilot:
+    title: Pilot
+    detail: Traffic management configuration.
+  mixer:
+    title: Mixer
+    detail: General purpose policy and telemetry configuration.
+  tracing:
+    title: Tracing
+    detail: Configure tracking requests.
+  ingress:
+    title: Ingress Gateway
+    detail: Monitoring and route rules configuration.
+  allowSystemGroup:
+    'true': Allow <b>all</b> members to access Kiali and Jaeger UI.
+    'false': Allow cluster owner and <b>specified</b> members to access Kiali and Jaeger UI.
+  goToMonitoring: 'Monitoring needs to be on for istio to work. If you would like to modify the values please go to the <a href="/c/{clusterId}/monitoring/cluster-setting">Monitoring page</a> and save.'
+  upgradeMonitoring: 'Before enabling Istio, you need to upgrade cluster monitoring to version 0.0.4 or above first. Go <a href="/c/{clusterId}/monitoring/cluster-setting">here</a> to upgrade cluster monitoring.'
+  enableMonitoring:
+    label: Enable Monitoring
+
 certificatesPage:
   cn: Domain Name
   expiresDate: Expires
@@ -1011,6 +1387,154 @@ clusterDashboard:
   notActive: This cluster is currently <b>{state}</b>.
   notReady: This cluster is currently <b>{state}</b>; areas that interact directly with it will not be available until the API is ready.
   used: Used
+  title: Dashboard
+  sections:
+    cluster: Cluster Metrics
+    etcd: Etcd Metrics
+    k8s: Kubernetes Components Metrics
+    rancher: '{appName} Logging Metrics'
+    node: Node Metrics
+  noRancherComponents: '{appName} Logging is not enabled in this cluster or not enough data for graph.'
+  cpu: CPU
+  memory: Memory
+  pods: Pods
+  value: Value
+  more: More
+  clusterNotReady: Graph information from Cluster currently not available
+  subtitle:
+    reserved: "{used} of {total} Reserved"
+    used: "{used} of {total} Used"
+  enableMonitoring: Enable Monitoring to see live metrics
+  upgradeAvailable: "Monitoring {version} Upgrade Available"
+  monitoringNotReady: Monitoring API is not ready
+  node: Nodes
+  etcd: Etcd
+  scheduler: Scheduler
+  controllerManager: Controller Manager
+  alert:
+    node: "Alert: Node {node} is not active."
+    component: "Alert: Component {component} is unhealthy."
+    nodeCondition:
+      outOfDisk: "Alert: Node {node} is out of disk."
+      diskPressure: "Alert: Node {node} has disk pressure."
+      memoryPressure: "Alert: Node {node} has memory pressure."
+  liveTitle: "{used} of {total} Used"
+  reserved: Reserved
+
+
+ingressResponse:
+  host: Host
+  path: Path
+  responseTime: Response Time
+  noData: No Data
+  noMatch: No records match the current search
+  detail: Top 10 ingress upstream response time
+  title: Ingress Upstream Response Time
+
+etcd:
+  hasLeader:
+    label: Etcd has a leader
+  leaderChange:
+    label: Number of leader changes
+  failedProposals:
+    label: Number of failed proposals
+
+monitoringPage:
+  update: Update configuration
+  version: Monitoring Version
+  upgrade: Upgrade monitoring to the latest version {version}
+  upgradeAvailable: "({version} Upgrade Available)"
+  confirmDisable: "Are you sure?  Click again to disable monitoring."
+  disable: Disable
+  enableActionLabel: Enable
+  systemProject: "If you want to collect custom metrics for pods in System Project, please enable cluster level monitoring directly."
+  noPermission: "You do not have permission to configure {level} level monitoring."
+  toUpdate:
+    cluster: Cluster level monitoring is enabled.
+    project: Project level monitoring is enabled.
+  insufficientSize:
+    prometheus:
+      cpu: Please make sure you have at least one node with {cpu} milli CPUs available to enable Prometheus workload.
+      memory: Please make sure you have at least one node with {memory} MiB of memory available to enable Prometheus workload.
+      all: Please make sure you have at least one node with {cpu} milli CPUs and {memory} MiB of memory available to enable Prometheus workload.
+    selectors:
+      cpu: Please make sure you have at least one node matches node selectors with {cpu} milli CPUs available to enable Prometheus workload.
+      memory: Please make sure you have at least one node matches node selectors with {memory} MiB of memory available to enable Prometheus workload.
+      all: Please make sure you have at least one node that matches node selectors with {cpu} milli CPUs and {memory} MiB of memory available to enable Prometheus workload.
+    total:
+      cpu: Please make sure you have at least {cpu} milli CPUs available to enable monitoring.
+      memory: Please make sure you have at least {memory} MiB of memory available to enable monitoring.
+      all: Please make sure you have at least {cpu} milli CPUs and {memory} MiB of memory available to enable monitoring.
+  clusterNotEnabled: Cluster level monitoring is not enabled. Only custom metrics will be collected.
+  prometheus: Monitoring is not enabled yet, click the Save button below to enable it.
+  resourceLimitsHelp: 'When enabling monitoring, you need to ensure your worker nodes and Prometheus pod have enough resources. Please visit <a href="https://rancher.com/docs/rancher/v2.x/en/cluster-admin/tools/monitoring/#resource-consumption" target="_blank" rel="nofollow noreferrer">the Rancher docs</a> for suggested resource limits.'
+  config:
+    types:
+      none: None
+      prometheus: Prometheus
+    header: Prometheus Configuration
+    prometheus:
+      cpuLimit:
+        label: Prometheus CPU Limit
+        placeholder: e.g. 1000
+        unit: milli CPUs
+      cpuRequest:
+        label: Prometheus CPU Reservation
+        placeholder: e.g. 1000
+        unit: milli CPUs
+      memoryLimit:
+        label: Prometheus Memory Limit
+        placeholder: e.g. 1000
+      memoryRequest:
+        label: Prometheus Memory Reservation
+        placeholder: e.g. 1000
+      enablePersistence:
+        label: Enable Persistent Storage for Prometheus
+      size:
+        label: Prometheus Persistent Volume Size
+        placeholder: e.g. 50Gi
+      storageClass:
+        label: Default StorageClass for Prometheus
+    grafana:
+      enablePersistence:
+        label: Enable Persistent Storage for Grafana
+      size:
+        label: Grafana Persistent Volume Size
+        placeholder: e.g. 10Gi
+      storageClass:
+        label: Default StorageClass for Grafana
+    retention:
+      label: Data Retention
+    storageClass:
+      label: Storage Class
+    operator:
+      memoryLimit:
+        label: Prometheus Operator Memory Limit
+        placeholder: e.g. 500
+    nodeexporter:
+      label: Node Exporter Host Port
+      enable: Enable Node Exporter
+      cpuLimit:
+        label: Node Exporter CPU Limit
+        placeholder: e.g. 200
+        unit: milli CPUs
+      memoryLimit:
+        label: Node Exporter Memory Limit
+        placeholder: e.g. 200
+  nodeSelector:
+    addSelectorLabel: Add Selector
+    helpText: Select the nodes where monitoring related workloads will be scheduled to
+  cluster:
+    title: Cluster Monitoring Configuration
+    disabled: Monitoring is disabled in the current cluster.
+    toDisable: Monitoring is enabled. Click the Save button below will disable monitoring in current cluster.
+  project:
+    title: Project Monitoring Configuration
+    disabled: Monitoring is disabled in the current project.
+    toDisable: Monitoring is enabled. Click the Save button below will disable monitoring in current project.
+  errors:
+    disableIstioFirst: 'Before disable cluster monitoring, you need to disable Istio first.'
+
 metricsAction:
   description: Expand to see live metrics
   noData: Not enough data for graph
@@ -1038,29 +1562,65 @@ metricsAction:
     30d: 30 days
 
 metrics:
-  workload-cpu-usage: CPU Utilization
-  workload-disk-io: Disk I/O
-  workload-memory-usage-bytes-sum: Memory Utilization
-  workload-network-io: Network I/O
-  workload-network-packet: Network Packets
+  apiserver-request-count: API Server Request Rate
+  apiserver-request-latency: API Server Request Latency
+  cluster-cpu-load: Load Average
+  cluster-cpu-usage: CPU Utilization
+  cluster-disk-io: Disk I/O
+  cluster-fs-usage-percent: Disk Utilization
+  cluster-memory-usage: Memory Utilization
+  cluster-network-io: Network I/O
+  cluster-network-packet: Network Packets
+  container-cpu-usage: CPU Utilization
+  container-disk-io: Disk I/O
+  container-memory-usage-bytes-sum: Memory Utilization
+  controllermanager-queue-depth: Controller Manager Queue Depth
+  etcd-db-bytes-sum: DB Size
+  etcd-disk-operate: Disk Operations
+  etcd-grpc-client: GRPC Client Traffic
+  etcd-leader-change: Leader Change
+  etcd-peer-traffic: Peer Traffic
+  etcd-raft-proposals: Raft Proposals
+  etcd-rpc-rate: RPC Rate
+  etcd-stream: Active Streams
+  etcd-sync-duration: Disk Sync Duration
+  fluentd-buffer-queue-length: Fluentd Buffer Queue Rate
+  fluentd-input-record-number: Fluentd Input Rate
+  fluentd-output-errors: Fluentd Output Errors Rate
+  fluentd-output-record-number: Fluentd Output Rate
+  ingresscontroller-nginx-connection: Ingress Controller Connections
+  ingresscontroller-request-process-time: Ingress Controller Request Process Time
+  istio-4xxs-top10: 4xx Request Count by Service
+  istio-4xxs: Project 4xx Request Count
+  istio-5xxs-top10: 5xx Request Count by Service
+  istio-5xxs: Project 5xx Request Count
+  istio-global-request-volume-top10: Request Volume by Service
+  istio-global-request-volume: Project Request Volume
+  istio-global-success-rate: Project Success Rate
+  istio-request-duration-p50-top10: P50 Request Latency by Service
+  istio-request-duration-p90-top10: P90 Request Latency by Service
+  istio-request-duration-p99-top10: P99 Request Latency by Service
+  node-cpu-load: Load Average
+  node-cpu-usage: CPU Utilization
+  node-disk-io: Disk I/O
+  node-fs-usage-percent: Disk Utilization
+  node-memory-usage: Memory Utilization
+  node-network-io: Network I/O
+  node-network-packet: Network Packets
   pod-cpu-usage: CPU Utilization
   pod-disk-io: Disk I/O
   pod-memory-usage-bytes-sum: Memory Utilization
   pod-network-io: Network I/O
   pod-network-packet: Network Packets
-  container-cpu-usage: CPU Utilization
-  container-disk-io: Disk I/O
-  container-memory-usage-bytes-sum: Memory Utilization
-  istio-global-request-volume: Project Request Volume
-  istio-global-success-rate: Project Success Rate
-  istio-4xxs: Project 4xx Request Count
-  istio-5xxs: Project 5xx Request Count
-  istio-global-request-volume-top10: Request Volume by Service
-  istio-4xxs-top10: 4xx Request Count by Service
-  istio-5xxs-top10: 5xx Request Count by Service
-  istio-request-duration-p99-top10: P99 Request Latency by Service
-  istio-request-duration-p90-top10: P90 Request Latency by Service
-  istio-request-duration-p50-top10: P50 Request Latency by Service
+  scheduler-e-2-e-scheduling-latency-seconds-quantile: Scheduler E2E Scheduling Latency
+  scheduler-pod-unscheduler: Scheduling Failed Pods
+  scheduler-total-preemption-attempts: Scheduler Preemption Attempts
+  workload-cpu-usage: CPU Utilization
+  workload-disk-io: Disk I/O
+  workload-memory-usage-bytes-sum: Memory Utilization
+  workload-network-io: Network I/O
+  workload-network-packet: Network Packets
+
 dnsPage:
   noMatch: No records match the current search
   noData: There are no DNS records defined
@@ -1314,6 +1874,16 @@ cruVolume:
     title: Source Configuration
     detail: Configure options for the selected volume source
     prompt: Choose a volume source...
+
+destinationRulePage:
+  noMatch: No Destination Rules match the current search
+  noData: There are no destination rules defined.
+  notSupported: networking.istio.io/v1alpha3 API is not available in the cluster.
+  table:
+    host:
+      label: Host
+    subsets:
+      label: Subsets
 
 globalRegistryPage:
   header: Global Registry
@@ -1740,6 +2310,27 @@ hostsPage:
         body:
           noData: This host does not have any volumes
 
+istio:
+  refreshGraph: Refresh Graph
+  noData: Not enough data for graph
+  period: Period
+  table:
+    template: Template
+    host: Host
+  kiali: Powered by Kiali
+  trafficMonitoring:
+    duration: Last {time}
+  nav:
+    graph: Traffic Graph
+    metrics: Traffic Metrics
+    rules: Traffic Rules
+    destinationRules:
+      label: Destination Rules
+      add: Add Destination Rule
+    virtualServices:
+      label: Virtual Services
+      add: Add Virtual Service
+
 k8sImport:
   header: Import Existing Kubernetes
   name:
@@ -1808,6 +2399,12 @@ notFoundPage:
   header: "The page you were looking for doesn't exist!"
   linkTo: Go Home
 
+projectIstioPage:
+  info:
+    notEnabled: 'Istio is not enabled yet. Go <a href="/c/{clusterId}/istio/cluster-setting">here</a> to enable it.'
+    notOwner: "Istio is not enabled yet. Please contact your cluster administrator."
+    noPermission: "You do not have permission to configure Istio."
+
 registriesPage:
   index:
     header: Registry Credentials
@@ -1834,6 +2431,23 @@ registriesPage:
       password:
         labelText: Password
         placeholder: e.g. password
+
+rulesPage:
+  new: Add Traffic Rule
+  noMatch: No traffic rule match the current search
+  noData: There are no traffic rules to show
+ruleDetailPage:
+  header: "Traffic Rules: {appName}"
+  rules:
+    virtualservices: Virtual Services
+    serviceentries: Service Entries
+    destinationrules: Destination Rules
+    gateways: Gateways
+    envoyfilters: Envoy Filters
+  answers:
+    title: Answers
+    detail: Customized answers of this traffic rules
+    variable: Variable
 
 secretsPage:
   index:
@@ -2082,6 +2696,14 @@ verifyPage:
     header: Account Created
     subtext: Click the link below to be to taken to the login page.
     linkText: Login
+
+virtualServicePage:
+  noMatch: No Virtual Services match the current search
+  noData: There are no virtual services to defined
+  notSupported: networking.istio.io/v1alpha3 API is not available in the cluster.
+  table:
+    hosts:
+      label: Hosts
 
 verifyResetPasswordPage:
   header: Reset Password
@@ -3493,6 +4115,150 @@ cruClusterTemplate:
   selectRevision:
     label: 'Select Default Revision'
 
+cruDestinationRule:
+  title:
+    new: Add Destination Rule
+    edit: Edit Destination Rule
+    view: "Destination Rule: {name}"
+  port:
+    label: Port
+    placeholder: e.g. 8080 or myport
+  host:
+    error: Host is required.
+  name:
+    placeholder: e.g. myrule
+  loadBalancer:
+    label: Load Balancer
+    detail: Configure the load balancer algorithms
+    simple:
+      label: Use standard load balancing algorithms
+      roundRobin:
+        label: Round Robin Policy
+      leastConn:
+        label: Least Request Load Balancer
+      random:
+        label: Random Load Balancer
+      passthrough:
+        label: Passthrough
+    consistentHash:
+      label: Use consistent hash-based load balancing for soft session affinity
+      httpHeaderName:
+        label: HTTP Header Name
+        placeholder: e.g. end-user
+        error: HTTP Header Name is required.
+      minimumRingSize:
+        label: Minimum Ring Size
+        placeholder: e.g. 1024
+      httpCookie:
+        name:
+          label: Cookie Name
+          placeholder: e.g. username
+          error: Cookie Name is required.
+        path:
+          label: Cookie Path
+          placeholder: e.g. /
+        ttl:
+          label: TTL
+          placeholder: e.g. 0s
+          error: TTL is required.
+      mode:
+        label: Hash Mode
+        header:
+          label: Hash based on a specific HTTP header
+        cookie:
+          label: Hash based on HTTP cookie
+        sourceIp:
+          label: Hash based on the source IP address
+  connectionPool:
+    label: Connection Pool
+    detail: Configure the volume of connections to an upstream service
+    http1MaxPendingRequests:
+      label: HTTP1 Max Pending Requests
+      placeholder: e.g. 1024
+      help: Maximum number of pending HTTP requests to a destination.
+    http2MaxRequests:
+      label: HTTP2 Max Requests
+      placeholder: e.g. 1024
+      help: Maximum number of requests to a backend.
+    maxRequestsPerConnection:
+      label: HTTP Max Requests Per Connection
+      placeholder: e.g. 10
+      help: Maximum number of requests per connection to a backend. Setting this parameter to 1 disables keep alive.
+    maxRetries:
+      label: HTTP Max Retries
+      placeholder: e.g. 1024
+      help: Maximum number of retries that can be outstanding to all hosts in a cluster at a given time.
+    connectTimeout:
+      label: TCP Connection Timeout
+      placeholder: e.g. 30ms
+      help: TCP connection timeout.
+    maxConnections:
+      label: TCP Max Connections
+      placeholder: e.g. 1024
+      help: Maximum number of HTTP1 /TCP connections to a destination host.
+  outlierDetection:
+    label: Outlier Detection
+    detail: Configure eviction of unhealthy hosts from the load balancing pool
+    baseEjectionTime:
+      label: Base Ejection Time
+      placeholder: e.g. 30s
+      help: Minimum ejection duration. A host will remain ejected for a period equal to the product of minimum ejection duration and the number of times the host has been ejected.
+    consecutiveErrors:
+      label: Consecutive Errors
+      placeholder: e.g. 5
+      help: Number of errors before a host is ejected from the connection pool.
+    interval:
+      label: Interval
+      placeholder: e.g. 10s
+      help: Time interval between ejection sweep analysis.
+    maxEjectionPercent:
+      label: Max Ejection Percent
+      placeholder: e.g. 10
+      help: Maximum % of hosts in the load balancing pool for the upstream service that can be ejected.
+  subsets:
+    label: Subsets
+    noSubsets: No Subsets
+    addSubsetLabel: Add Subset
+    removeSubsetLabel: Remove Subset
+    name:
+      label: Name
+      placeholder: e.g. v1
+      error: Subset Name is required.
+    labels:
+      error: Please input at least one label for subset.
+  tls:
+    label: TLS
+    detail: Configure TLS related settings for connections to the upstream service
+    mode:
+      label: TLS Mode
+      none:
+        label: NONE
+      istio:
+        label: Istio Mutual - Secure connections to the upstream using mutual TLS by Istio
+      disable:
+        label: Disable - Do not setup a TLS connection to the upstream endpoint
+      simple:
+        label: Simple - Originate a TLS connection to the upstream endpoint
+      mutual:
+        label: Mutual - Secure connections to the upstream using mutual TLS by presenting client certificates for authentication
+    clientCertificate:
+      label: Client Certificate
+      placeholder: e.g. /etc/certs/myclientcert.pem
+      error: Client Certificate is required.
+    privateKey:
+      label: Private Key
+      placeholder: e.g. /etc/certs/client_private_key.pem
+      error: Private Key is required.
+    caCertificates:
+      label: CA Certificates
+      placeholder: e.g. /etc/certs/rootcacerts.pem
+    sni:
+      label: SNI
+      placeholder: e.g. nginx.example.com
+    subjectAltNames:
+      label: Subject Alternative Names
+      placeholder: e.g. example.com
+      add: Add Subject Alternative Name
 
 clusterTemplateQuestions:
   label: 'Cluster Option Overrides'
@@ -4306,6 +5072,166 @@ cruStorageClass:
     volumetype:
       label: Volume Type
       placeholder: "e.g. replicate:3"
+
+cruVirtualService:
+  title:
+    new: Add Virtual Service
+    edit: Edit Virtual Service
+    view: "Virtual Service: {name}"
+  name:
+    placeholder: e.g. myservice
+  hosts:
+    label: Hosts
+    add: Add Host
+    error: Please select or input at least one Host
+  gateways:
+    label: Gateways
+    add: Add Gateway
+    placeholder: e.g. mygateway
+  http:
+    routes:
+      label: HTTP Routes
+      noRoutes: No HTTP Routes
+      addRouteLabel: Add HTTP Route
+      removeRouteLabel: Remove HTTP Route
+      moveUp: Move Up
+      moveDown: Move Down
+      timeout:
+        label: Timeout
+        placeholder: e.g. 5s
+      faultInjection:
+        abort:
+          label: Fault Injection Abort
+          httpStatus:
+            label: HTTP Status
+            placeholder: e.g. 400
+          percent:
+            label: Percent
+            placeholder: e.g. 8
+        delay:
+          label: Fault Injection Delay
+          fixedDelay:
+            label: Fixed Delay
+            placeholder: e.g. 5s
+          percent:
+            label: Percent
+            placeholder: e.g. 8
+      mirror:
+        label: Mirror
+        host:
+          label: Host
+        subset:
+          label: Subset
+          placeholder: e.g. v2
+        port:
+          label: Port
+          placeholder: e.g. 8080 or myport
+      retries:
+        label: Retries
+        attempts:
+          label: Attempts
+          placeholder: e.g. 3
+        perTryTimeout:
+          label: Timeout Per Retry Attempt
+          placeholder: e.g. 2s
+      redirect:
+        label: Redirect
+        uri:
+          label: URI
+          placeholder: e.g. /v1/bookRatings
+        authority:
+          label: Authority
+          placeholder: e.g. newratings.default.svc.cluster.local
+        error: Please do not configure destinations and redirect at the same time.
+      rewrite:
+        label: Rewrite
+        uri:
+          label: URI
+          placeholder: e.g. /v1/bookRatings
+        authority:
+          label: Authority
+          placeholder: e.g. newratings.default.svc.cluster.local
+      destination:
+        addDestinationLabel: Add Destination
+        noDestinations: No Destinations
+        port:
+          label: Port
+          placeholder: e.g. 8080 or myport
+        weight:
+          label: Weight
+          placeholder: e.g. 50
+          error: Weight is required
+        subset:
+          label: Subset
+          placeholder: e.g. v1
+          error: Subset is required
+        host:
+          label: Host
+          error: Host is required
+      matches:
+        error: Please input at least one key value pair for match conditions
+        showMatch: Specify match rules for this route
+        addLabel: Add Another Match
+        removeLabel: Remove Match
+        noData: No Matches
+        addMatchLabel: Add Match Condition
+        noMatches: No Match Conditions
+        port:
+          label: Port
+          placeholder: e.g. 8080
+        sourceLabels:
+          label: Source Labels
+          addActionLabel: Add Source Label
+        type:
+          label: Match type
+          uri: URI
+          authority: Authority
+          method: Method
+          scheme: Scheme
+          headers: Headers
+        key:
+          label: Key
+          placeholder: e.g. end-user
+        condition:
+          label: Condition
+          exact: Exact Match
+          prefix: Prefix Match
+          regex: Regex match
+        value:
+          label: Value
+          uri:
+            exact: e.g. /ratings/v2/
+            prefix: e.g. /ratings
+            regex: e.g. /ratings.*
+          authority:
+            exact: e.g. eu.bookinfo.com
+            prefix: e.g. eu
+            regex: e.g. ".*?[.]eu[.]bookinfo[.]com"
+          method:
+            exact: e.g. GET
+            prefix: e.g. GET
+            regex: e.g. ^.*(GET|POST).*$
+          scheme:
+            exact: e.g. http
+            prefix: e.g. http
+            regex: e.g. h.*
+          headers:
+            exact: e.g. jason
+            prefix: e.g. jason
+            regex: e.g. ja.*
+
+
+validationsList:
+  title: Validation Checks
+  detail: Validation Checks for current {resourceType}
+  noPermission: You don't have permission to see the validations. Please contact your cluster owner to give Kiali access to you.
+  table:
+    path: Path
+    severity: Severity
+    message: Message
+  noData: No issues found
+  noMatch: No issues match the current search
+
 
 dangerZone:
   header: Advanced Settings
@@ -5964,6 +6890,235 @@ loginUserPass:
   loggingInLabel: Logging In...
   passwordLabel: Password
 
+loggingPage:
+  targetNav:
+    experimental: Experimental
+    tips:
+      caseA: Logging is disabled in the current {pageScope}.
+      caseB: The current logging target is <code class="text-capitalize">{currentTarget}</code>, Click the Save button below will disable logging in current {pageScope}.
+      caseC: The current logging target is <code class="text-capitalize">{currentTarget}</code>,
+      caseD: click the Save button below to set <span class="text-info text-capitalize">{targetType}</span> as the logging target.
+      caseE: click the Save button below to update the <span class="text-info text-capitalize">{targetType}</span> configuration.
+      caseF: No logging target, click the Save button below to set <code class="text-capitalize">{targetType}</code> as the logging target.
+  targetTypes:
+    embedded: Embedded
+    elasticsearch: Elasticsearch
+    splunk: Splunk
+    kafka: Kafka
+    syslog: Syslog
+    fluentd: Fluentd
+    disable: None
+  endpoint: Endpoint
+  endpointPlaceholder: 'e.g. https://192.168.1.10:9200'
+  logging: Logging
+  clusterHeader: Cluster Logging
+  projectHeader: Project Logging
+  helpText:
+    cluster: We will use fluentd to collect stdout/stderr logs from each container and the log files which exist under path <code >/var/log/containers/</code> on each host. The logs can be shipped to a target you configure below.
+    clusterTarget: The cluster logging target is <code class="text-capitalize">{clusterTargetType}</code>. If project logging is enabled, logs will be shipped to both cluster target and project logging target.
+    noClusterTarget: Logging is disabled at current cluster.
+  tags:
+    keyPlaceholder: e.g. foo
+    valuePlaceholder: e.g. bar
+    addActionLabel: Add Field
+  keyValueForm:
+    keyPlaceholder: e.g. 192.168.1.10
+  targetKafka:
+    addActionLabel: Add Broker
+    host: Host
+    port: Port
+  logPreview:
+    header: Log Format Preview
+  additional:
+    header: Additional Logging Configuration
+    fields:
+      header: Custom Log Fields
+      helpText: You can add custom fields as key/value pairs for better filtering.
+    flushInterval:
+      header: Flush Interval
+      label: Flush Interval
+      placeholder: e.g. 1
+      sec: sec
+      helpText: How often buffered logs would be flushed.
+    includeSystemComponent:
+      label: Include System Log
+  advanced:
+    file: Edit as File
+    cancel: Edit as a Form
+
+  elasticsearch:
+    header: Elasticsearch Configuration
+    endpointHelpText: Copy your endpoint from Elastic Cloud, or input the reachable endpoint of your self-hosted Elacticsearch.
+    endpointProtocolError: Endpoint should start with "http://" or "https://".
+    endpointHostError: Please enter host name or domain name.
+    xpack:
+      header: X-Pack Security
+      headerOptional: (optional)
+      helpText: If your Elasticsearch use X-Pack built-in native authentication features, put your username and password below.
+      username: Username
+      usernamePlaceholder: e.g. John
+      password: Password
+      passwordPlaceholder: Your Password
+    indexPatterns:
+      header: Index Patterns
+      helpText: Index patterns are used to generate Elacticsearch index
+      prefix: Prefix
+      prefixPlaceholder: e.g. logstash
+      dateFormat: 'Date Format:'
+      errors:
+        startsWith: Prefix cannot start with -, _, +
+        required: Prefix is required
+        invalidCharacters: "Prefix cannot include '{char}'"
+
+    generatedIndex: 'The generated index will be: <code class="text-italic text-lowercase">{esIndex}</code>, by default the index pattern is {indexFormat}'
+    endpoint:
+      required: '"Endpoint" is required'
+  splunk:
+    header: Splunk HTTP Event Collector Configuration
+    helpText: 'You can find instructions on how to configure Splunk HEC(HTTP Event Collector) <a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">here</a>.'
+    token: Token
+    tokenPlaceholder: Your Token
+    tokenHelpText: 'Tokens are entities that let logging agents and HTTP clients connect to the HEC input. <a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector#Configure_HTTP_Event_Collector_on_Splunk_Enterprise" target="_blank">Detail</a>'
+    tokenRequired: Token is Required
+    endpointRequired: Endpoint is Required
+    source: Source
+    sourcePlaceholder: e.g. fluentd
+    sourceHelpText: 'A default field that identifies the source of an event, that is, where the event originated. <a href="https://docs.splunk.com/Splexicon:Source" target="_blank">Detail</a>'
+    index: Index
+    indexPlaceholder: e.g. main
+    indexHelpText: 'The index you specify here must be within the list of this token’s allowed indexes. <a href="https://docs.splunk.com/Splexicon:Index" target="_blank">Detail</a>'
+    endpoint:
+      placeholder: 'e.g. https://192.168.1.10:8088'
+  kafka:
+    header: Kafka Configuration
+    endpointType: Endpoint Type
+    zookeeper: Zookeeper
+    broker: Broker
+    brokerTypeHelpText: Use either Zookeeper or Broker list as the Kafka connection entrypoint.
+    zookeeperHelpText: Zookeeper is for building coordination, configuration management, leader detection, and detecting node updates in a kafka cluster.
+    brokerHelpText: A Kafka cluster consists of one or more Brokers, config the host and port for each Broker.
+    addEndpoint: Add Endpoint
+    topic:
+      label: Topic
+      required: '"Topic" is required'
+    topicPlaceholder: e.g. message
+    topicHelpText: Logs will be sent to this topic
+    endpoint:
+      required: '"Endpoint" is required'
+      broker:
+        placeholder: 'e.g. https://192.168.1.10:9092'
+      zookeeper:
+        placeholder: 'e.g. https://192.168.1.10:2181'
+  syslog:
+    endpointPlaceholder: 'e.g. 192.168.1.10:514'
+    header: Syslog Configuration
+    endpointHelpText: Input your Syslog endpoint, SSL certificates configuration will show up when select TCP.
+    program: Program
+    programPlaceholder: e.g. MyProgram
+    programHelpText: The program name of the log.
+    severityHelpText: '<p class="text-info text-small">The severity of logs. The definition of each can be found <a href="https://tools.ietf.org/html/rfc5424#section-6.2.1" target="_blank">here.</a></p>'
+    severities:
+      emergency: Emergency
+      alert: Alert
+      critical: Ctitical
+      error: Error
+      warning: Warning
+      notice: Notice
+      info: Info
+      debug: Debug
+    tokenHelpText: Will add a token to the structured data in every syslog message. For cloud syslog such as <a href="https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/Cloud-Syslog-Source" target="_blank">Sumologic</a>, <a href="https://www.loggly.com/docs/customer-token-authentication-token" target="_blank">Loggly</a>, etc, you could generate a token on their respective configuration pages.
+    endpoint:
+      required: '"Endpoint" is required'
+  fluentd:
+    header: Fluentd Configuration
+    compress:
+      label: Enable Gzip Compression
+      helpText: Enable this to reduce the transferred payload size.
+    endpoint:
+      label: Endpoint
+      placeholder: 'e.g. 192.168.1.10:24224'
+      invalid: '"Endpoint" required end with port.'
+      required: '"Endpoint" is required'
+    password:
+      label: Password
+      placeholder: The password for authentication.
+    sharedKey:
+      label: Shared Key
+      placeholder: The Shared key for authentication.
+    standby:
+      label: Use as Standby Only
+      none: Required at least one Non-Standby endpoint.
+    username:
+      label: Username
+      placeholder: The username for authentication.
+    weight:
+      label: Weight
+      placeholder: The load balancing weight of this endpoint.
+    addServer: Add Fluentd Server
+    endpointHostError: Endpoint can not start with 'http' or 'https', please use host name.
+    endpointPortError: Endpoint required end with port.
+    removeFluentServers: Remove this Fluentd Server
+    enableTls:
+      label: Use TLS
+    certificate:
+      label: CA Certificate PEM
+    hostname:
+      label: Hostname
+      placeholder: The hostname of the server.
+  customTarget:
+    type:
+      error: "@type is not supported, you can chose the following type: ['elasticsearch', 'splunk_hec', 'remote_syslog', 'kafka_buffered', 'forward']"
+  ssl:
+    sslHeader: "{authType} Configuration"
+    headerHelp: Input https endpoint or select TCP to enabled it.
+    certificate:
+      label: CA Certificate PEM
+    clientKey:
+      label: Client Private Key
+    clientCert:
+      label: Client Certificate
+    clientKeyPass:
+      label: Client Key Password
+      password:
+        placeholder: Your Client Key Password.
+    verify:
+      label: SSL Verify
+      enabled: Enabled - Input trusted server certificate
+      disabled: Disabled
+    sslVersion:
+      label: SSL Version
+    saslType:
+      label: Type
+      plain: Plain
+      scram: Scram
+    saslUsername:
+      label: Username
+      placeholder: e.g. John
+    saslPassword:
+      label: Password
+      placeholder: Your Password
+    saslScramMechanism:
+      label: Scram Mechanism
+      sha256: sha256
+      sha512: sha512
+    customTarget:
+      help: You can copy the path to the file.
+      copyAll: Copy All key and value.
+
+  dockerRootDir:
+    header: Docker Configuration
+    label: Docker Root Directory
+    placeholder: "Enter docker root Directory, default value is {dir}"
+
+  testAction:
+    testing: TESTING
+    testOk: Settings validated.
+    testFailed: Something's not quite right. Check your inputs.
+    test: TEST
+    running: RUNNING
+    runOk: Dry run success.
+    dryRun: Dry Run
+
 machineTemplatesPage:
   title: Add Node
   new:
@@ -5975,6 +7130,14 @@ machineTemplatesPage:
     labels:
       region: Region
       zone: Zone
+
+modalDeleteIstio:
+  title: 'Are you sure you want to disable:'
+  onlyIstio:
+    true: Istio Only
+    false: Both Istio and Monitoring
+  disable: Disable
+  disabling: Disabling
 
 newCertificate:
   title:
@@ -7916,6 +9079,8 @@ action:
   revision: New Revision from Default
   rollback: Rollback
   rotate: Rotate Certificates
+  rerun: Rerun
+  run: Run
   setDefault: Set as Login Environment
   setDefaultRevision:
     success:
@@ -8223,3 +9388,288 @@ windowsCluster:
     helpText: We will use fluentd to collect stdout/stderr logs from each container and the log files which exist under path <code >/var/log/containers/</code> on each <b>Linux</b> host and <code >c:/var/log/containers/</code> on each <b>Windows</b> host. The logs can be shipped to a target you configure below.
   istio: Istio is not supported in Windows clusters.
   pipelines: Pipelines are not supported in Windows clusters.
+
+pipelinesPage:
+  table:
+    status: Status
+    noData: There are no pipelines defined.
+    noMatch: No pipelines match the current search.
+  pipelines: Pipelines
+  lastActivity: Last Run
+
+pipelinesSetting:
+  globalConfigChangeLabel: Use OAuth Application in Authentication
+  customConfigChangeLabel: Use another OAuth Application
+  userGlobalConfig: GitHub Authentication is enabled, you can use it directly.
+  gitAuthentication: Git Authentication
+  authenticateWithGit: Authenticate with git repository
+  authenticatedUsers: Authenticated Users
+  sureToDisableOAuth: Are You Sure You Want To Disable Repository Authentication?
+  disableOAuth: Disable Repository Authentication
+  dataClear: Data Clear
+  resetData: Reset all of the pipeline related data.
+  clearing: Clearing
+  sureToClearData: Are You Sure To Clear Data?
+  clearData: Clear Data
+  error:
+    limit: Error saving limit and request
+  info:
+    noPermission: You don't have permission to configure pipelines.
+
+repositories:
+  header: Repositories
+  enable: Configure Repositories
+  message: You can select an example repository or fetch your own repositories to setup pipelines.
+  table:
+    repository: Repository
+    noData: There are no repositories
+    noMatch: No repositories match the current search
+
+newPipeline:
+  steps:
+    label: Configuration
+  save: Save
+
+newPipelineStage:
+  errors:
+    name:
+      required: Name is required.
+  header:
+    create: Add Stage
+    edit: Edit Stage
+  name:
+    placeholder: e.g. compile
+  addStep: Add a Step
+  trigger:
+    webhook: Push
+    webhookPR: Pull Request
+    webhookTag: Tag
+
+newPipelineStep:
+  header:
+    create: Add Step
+    edit: Edit Step
+  stepType:
+    label: Step Type
+    image: Base Image
+    env: Environment Variables
+    enableBranch: Configure pipeline for this branch.
+    publishCatalog:
+      label: Publish Template
+      secret:
+        label: Secret
+        missingKey: The selected secret doesn't have {key} key.
+      auth:
+        http: '<code>USERNAME</code> and <code>PASSWORD</code> in the secret will be used as username and password.'
+        ssh: '<code>DEPLOY_KEY</code> in the secret will be used as deploy key.'
+      stepName: Publish Catalog Template
+      targets:
+        label: Protocal
+        http: Push to Git with HTTP(S)
+        ssh: Push to Git with SSH
+      path:
+        label: Chart Folder
+        placeholder: e.g. ./charts/wordpress/latest
+        helpText: 'The folder path where <code style="padding: 2px 5px;">Chart.yaml</code> is in the repository.'
+      catalogTemplate:
+        label: Catalog Template Name
+        placeholder: e.g. wordpress
+        helpText: The name of the template want to publish.
+      version:
+        label: Catalog Template Version
+        placeholder: e.g. latest
+        helpText: The version of the template you want to publish.
+      gitUrl:
+        label: Git URL
+        placeholder:
+          ssh: e.g. git@github.com:myrepo/charts.git
+          http: e.g. https://github.com/myrepo/charts.git
+        helpText: The Git URL where the template will be published to.
+        error: The Git URL should start with http or https.
+      gitBranch:
+        label: Git Branch
+        placeholder: e.g. dev
+        helpText: The Git branch which the template will be published to.
+      gitAuthor:
+        label: Author Name
+        placeholder: e.g. user
+        helpText: The author name used in the commit message.
+      gitEmail:
+        label: Author Email
+        placeholder: user@example.com
+        helpText: The author email used in the commit message.
+
+
+    applyApp:
+      label: Deploy App
+      stepName: Deploy Catalog App
+      catalog:
+        label: Catalog
+      catalogTemplate:
+        label: Template Name
+        helpText: You can select an existing template or input a new template name.
+      version:
+        label: Template Version
+        helpText: You can select an existing version or input a new version.
+      name:
+        label: App Name
+        placeholder: e.g. myapp
+      targetNamespace:
+        label: Namespace
+        helpText: The target namespace where you want to deploy this app.
+
+    applyYaml:
+      label: Deploy YAML
+      yaml: YAML Path
+      env:
+        header: Environment Variables
+        addActionLabel: Add Variable
+        keyPlaceholder: IMAGE_TAG
+      errors:
+        path:
+          required: YAML Path is required.
+    scm:
+      noYaml: There is no <code>.rancher-pipeline.yml</code> file in the repository.
+      demoGroup: Example repositories
+      selectRepository: Repository
+      add: Select Repository
+      refresh: Refresh Repositories
+      user: User
+      trigger: Pipeline Trigger
+      noWebhook: No permission to set repository webhooks
+    build:
+      imageName:
+        placeholder: e.g. example/app:v1
+      errors:
+        tag:
+          required: Image Name is required.
+        dockerfilePath:
+          required: Dockerfile Path is required.
+        registry:
+          required: Registry is required.
+      noRegistry: There is no registries. You can click <a href="{route}" target="_blank" rel="nofollow noreferrer">here</a> to add a registry.
+      pushRemote: Push image to remote repository.
+      label: Build and Publish Image
+      dockerFilePath: Dockerfile Path
+      buildContext: Build Context
+    task:
+      label: Run Script
+      shellScript: Shell Script
+      customEntryPoint: Custom Entrypoint
+      secret: Inject Environment Variables From Secrets
+      errors:
+        image:
+          required: Base Image is required.
+        shellScript:
+          required: Shell Script is required.
+      privileged:
+        label: Run this step in privileged mode.
+      shell:
+        label: Shell
+      command:
+        label: Command
+        placeholder: Arguments of entrypoint
+      entryPoint:
+        label: EntryPoint
+        placeholder: If you want use the default entrypoint, just leave me empty
+
+pipelineDetailPage:
+  header: 'Pipeline: {name}'
+  repository: Repository
+  lastRun: Last Run
+  triggered: Triggered
+  commitMessage: Commit Message
+  activity:
+    title: Activities
+    detail: Build history of this pipeline.
+    table:
+      noData: There are no activities.
+      noMatch: No activities match the current search.
+      status: Status
+      branch: Branch
+      runNumber: Run
+      commit: Commit
+      triggered: Triggered
+
+runPipeline:
+  title: 'Run "{name}"'
+  noBranch: There is no <code>.rancher-pipeline.yml</code> file in the repository. You can click <b>Edit Config</b> to edit it in wizard or click <b>View/Edit YAML</b> to edit in YAML.
+  branch:
+    label: 'Branch'
+
+pipelineSetting:
+  title: 'Pipeline Setting "{name}"'
+
+buildDetailPage:
+  header: 'Pipeline Run: #{name}'
+  duration: Duration
+  stillRunning: Still Running
+  log:
+    title: Detailed Log
+    detail: The detailed log of the current pipeline run.
+    waiting: Waiting...
+    loading: Loading...
+
+
+enablePipeline:
+  header: Enable Repository Authentication
+  configNow: Config Now
+  helpText:
+    Repository authentication is not enabled. You need to enable it first.
+  noPermission:
+    Repository authentication is not enabled. You need to contact project owner to enable it first.
+
+editYamlPipeline:
+  title: 'View/Edit YAML "{name}"'
+  branch:
+    label: 'Branch'
+
+editPipelineConfig:
+  header: Edit Pipeline Configuration
+  pushToReop: Push the modified configuration to remote repository automatically.
+  download: Download the modified configuration only.
+  timeout:
+    label: Timeout
+    helpText: How long to wait without seeing build finished before aborting the build.
+pipelineSelector:
+  header: Trigger Rules
+  table:
+    type: Type
+    value: Value
+  title:
+    include: 'Run this {type} when:'
+    exclude: 'Do Not Run this {type} when:'
+  addRule: Add Rule
+  branch: Branch
+  event: Event
+  pr: Pull Request
+  push: Push
+  tag: Tag
+
+fromSecret:
+  addFrom: Add From Secret
+  secret:
+    label: Secret
+  prefixOrKey:
+    label: Key
+  prefix:
+    label: Alias
+  keyLabel: Variable
+  keyPlaceholder: e.g. FOO
+  valueLabel: Value
+  valuePlaceholder: e.g. bar
+
+pipelineNotification:
+  header: Notification
+  when: When build status is
+  condition:
+    success:
+      label: Success
+    changed:
+      label: Changed
+    failed:
+      label: Failed
+    required: Build Status is required
+  recipients:
+    required: Recipient is required
+  asMessage: Send a message to

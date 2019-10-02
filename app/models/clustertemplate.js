@@ -30,7 +30,7 @@ const ClusterTemplate =  Resource.extend({
     return isNaN(get(this, 'revisions.length')) ? 0 : get(this, 'revisions.length');
   }),
 
-  latestRevision: computed('revisions.[]', function() {
+  latestRevision: computed('revisions.[]', 'revisions.@each.enabled', function() {
     const revisions = (get(this, 'revisions') || []).filter((revision) => revision.enabled);
 
     return get(revisions, 'length') === 0
