@@ -71,7 +71,7 @@ export default Component.extend(ModalBase, {
 
     done() {
       this.send('cancel');
-      window.location.href = window.location.href;
+      window.location.href = window.location.href; // eslint-disable-line no-self-assign
     },
 
     updateJson(json) {

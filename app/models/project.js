@@ -100,7 +100,7 @@ export default Resource.extend({
     deactivate() {
       return this.doAction('deactivate').then(() => {
         if ( get(this, 'scope.currentProject') === this ) {
-          window.location.href = window.location.href;
+          window.location.href = window.location.href; // eslint-disable-line no-self-assign
         }
       });
     },
@@ -122,7 +122,7 @@ export default Resource.extend({
 
     return promise.then(() => {
       if (get(this, 'active')) {
-        window.location.href = window.location.href;
+        window.location.href = window.location.href; // eslint-disable-line no-self-assign
       }
     }).catch((err) => {
       get(this, 'growl').fromError('Error deleting', err);
