@@ -84,12 +84,6 @@
           </label>
           {{schema/input-boolean value=enablePrometheusPersistence}}
         </div>
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "monitoringPage.config.grafana.enablePersistence.label"}}
-          </label>
-          {{schema/input-boolean value=enableGrafanaPersistence}}
-        </div>
       </div>
 
       {{#if enablePrometheusPersistence}}
@@ -108,26 +102,6 @@
               {{t "monitoringPage.config.prometheus.storageClass.label"}}
             </label>
             {{schema/input-storageclass value=prometheusStorageClass}}
-          </div>
-        </div>
-      {{/if}}
-
-      {{#if enableGrafanaPersistence}}
-        <div class="row">
-          <div class="col span-6">
-            <label class="acc-label">
-              {{t "monitoringPage.config.grafana.size.label"}}
-            </label>
-            {{schema/input-string
-              value=grafanaPersistenceSize
-              placeholder=(t "monitoringPage.config.grafana.size.placeholder")
-            }}
-          </div>
-          <div class="col span-6">
-            <label class="acc-label">
-              {{t "monitoringPage.config.grafana.storageClass.label"}}
-            </label>
-            {{schema/input-storageclass value=grafanaStorageClass}}
           </div>
         </div>
       {{/if}}
@@ -297,6 +271,34 @@
           }}
         </div>
       </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "monitoringPage.config.grafana.enablePersistence.label"}}
+          </label>
+          {{schema/input-boolean value=enableGrafanaPersistence}}
+        </div>
+      </div>
+      {{#if enableGrafanaPersistence}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "monitoringPage.config.grafana.size.label"}}
+            </label>
+            {{schema/input-string
+              value=grafanaPersistenceSize
+              placeholder=(t "monitoringPage.config.grafana.size.placeholder")
+            }}
+          </div>
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "monitoringPage.config.grafana.storageClass.label"}}
+            </label>
+            {{schema/input-storageclass value=grafanaStorageClass}}
+          </div>
+        </div>
+      {{/if}}
 
       {{#advanced-section advanced=advanced}}
         {{form-key-value
