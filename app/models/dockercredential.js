@@ -1,4 +1,4 @@
-import EmberObject, { get, computed } from '@ember/object';
+import { get, computed } from '@ember/object';
 import { alias } from '@ember/object/computed'
 import { inject as service } from '@ember/service';
 import Resource from '@rancher/ember-api-store/models/resource';
@@ -15,10 +15,10 @@ Object.keys(PRESETS).forEach((key) => {
 });
 
 var DockerCredential = Resource.extend({
-  intl:          service(),
+  intl:     service(),
   router:   service(),
 
-  state:         'active',
+  state:    'active',
   canClone: true,
 
   firstRegistry: alias('asArray.firstObject'),
@@ -34,13 +34,13 @@ var DockerCredential = Resource.extend({
       reg = all[key];
       preset = PRESETS[address] || 'custom';
 
-      return new EmberObject({
+      return {
         address,
         auth:     reg.auth,
         username: reg.username,
         password: reg.password,
         preset
-      });
+      };
     });
   }),
 

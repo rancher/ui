@@ -1,8 +1,8 @@
 /* eslint-env node */
 module.exports = {
-  test_page:        'tests/index.html?hidepassed',
-  disable_watching: true,
-  launch_in_ci:     [
+  test_page:             'tests/index.html?hidepassed',
+  disable_watching:      true,
+  launch_in_ci:          [
     'Chrome'
   ],
   launch_in_dev: [
@@ -13,7 +13,6 @@ module.exports = {
       ci: [
         // --no-sandbox is needed when running Chrome inside a container
         '--no-sandbox',
-        '--disable-gpu',
         '--headless',
         '--disable-dev-shm-usage',
         '--disable-software-rasterizer',
