@@ -15,6 +15,7 @@ import CatalogApp from 'shared/mixins/catalog-app';
 import { isNumeric } from 'shared/utils/util';
 import convertDotAnswersToYaml from 'shared/utils/convert-yaml';
 import ChildHook from 'shared/mixins/child-hook';
+import flatMap from 'shared/utils/flat-map';
 
 export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
   catalog:                  service(),
@@ -171,15 +172,20 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
     }
   }),
 
-  answersString: computed('answersArray.@each.{variable,answer}', function() {
+  answersString: computed('answersArray.@each.{variable,answer}', 'selectedTemplateModel.valuesYaml', function() {
     let model = get(this, 'selectedTemplateModel');
 
     if (get(model, 'questions')) {
       let neu = {};
 
-      (get(this, 'answersArray') || []).forEach((a) => {
-        neu[a.variable] = isEmpty(a.answer) ? a.default : a.answer;
-      });
+      if (model.valuesYaml && model.valuesYaml.length > 0) {
+        neu = YAML.parse(model.valuesYaml);
+        neu = flatMap(neu);
+      } else {
+        (get(this, 'answersArray') || []).forEach((a) => {
+          neu[a.variable] = isEmpty(a.answer) ? a.default : a.answer;
+        });
+      }
 
       const customAnswers = get(model, 'customAnswers') || {};
 
