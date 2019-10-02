@@ -6,20 +6,20 @@ import { hasMany } from '@rancher/ember-api-store/utils/denormalize';
 import { get } from '@ember/object';
 
 const cloudCredential = Resource.extend({
-  modal:    service(),
+  modal:         service(),
   globalStore:    service(),
+  nodeTemplates: hasMany('id', 'nodetemplate', 'cloudCredentialId', 'globalStore'),
+
   type:     'cloudCredential',
 
   canClone: false,
   canEdit:  true,
 
-  isAmazon: notEmpty('amazonec2credentialConfig'),
-  isAzure:  notEmpty('azurecredentialConfig'),
-  isDo:     notEmpty('digitaloceancredentialConfig'),
-  isLinode: notEmpty('linodecredentialConfig'),
-  isVMware: notEmpty('vmwarevspherecredentialConfig'),
-  nodeTemplates: hasMany('id', 'nodetemplate', 'cloudCredentialId', 'globalStore'),
-
+  isAmazon:    notEmpty('amazonec2credentialConfig'),
+  isAzure:     notEmpty('azurecredentialConfig'),
+  isDo:        notEmpty('digitaloceancredentialConfig'),
+  isLinode:    notEmpty('linodecredentialConfig'),
+  isVMware:    notEmpty('vmwarevspherecredentialConfig'),
   displayType: computed('amazonec2credentialConfig', 'azurecredentialConfig', 'digitaloceancredentialConfig', 'linodecredentialConfig', 'vmwarevspherecredentialConfig', function() {
     const {
       isAmazon,
