@@ -7,10 +7,11 @@ import C from 'ui/utils/constants';
 
 export default Route.extend({
   globalStore: service(),
+  scope:        service(),
 
-  model(params, transition) {
+  model(/* params, transition */) {
     const cs = get(this, 'globalStore');
-    const clusterId = transition.params['authenticated.cluster'].cluster_id;
+    const clusterId = get(this.scope, 'currentCluster.id');
 
     return hash({ notifiers: cs.find('notifier', null, { filter: { clusterId } }).then(() => cs.all('notifier')) });
   },
