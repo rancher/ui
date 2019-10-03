@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { get, set, setProperties, observer } from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
+import $ from 'jquery';
 
 const KINDS = ['NodePort', 'HostPort', 'ClusterIP', 'LoadBalancer'];
 
@@ -56,7 +57,7 @@ export default Component.extend({
           return;
         }
 
-        this.$('INPUT.public').last()[0].focus();
+        $('INPUT.public').last()[0].focus();
       });
     },
 

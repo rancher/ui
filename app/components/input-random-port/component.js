@@ -2,6 +2,7 @@ import { set, get } from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
 import { next } from '@ember/runloop';
+import $ from 'jquery';
 
 export default Component.extend({
   layout,
@@ -30,7 +31,7 @@ export default Component.extend({
           return;
         }
 
-        this.$('INPUT').last()[0].focus();
+        $('INPUT').last()[0].focus();
       });
     }
   }

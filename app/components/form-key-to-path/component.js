@@ -3,6 +3,7 @@ import { next, debounce } from '@ember/runloop';
 import Component from '@ember/component';
 import EmberObject, { get, set, observer } from '@ember/object';
 import layout from './template';
+import $ from 'jquery';
 const SECRET = 'secret';
 const CONFIG_MAP = 'configmap';
 
@@ -74,7 +75,7 @@ export default Component.extend({
           return;
         }
 
-        let elem = this.$('INPUT.key').last()[0];
+        let elem = $('INPUT.key').last()[0];
 
         if (elem) {
           elem.focus();

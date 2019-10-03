@@ -65,7 +65,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     },
   },
 
-  headerToken: function() {
+  headerToken: computed('actuallySave', 'mode', function() {
     let k = 'cruPersistentVolumeClaim.';
 
     if ( get(this, 'actuallySave' ) ) {
@@ -77,7 +77,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     k += get(this, 'mode');
 
     return k;
-  }.property('actuallySave', 'mode'),
+  }),
 
   persistentVolumeChoices: computed('persistentVolumes.@each.{name,state}', function() {
     return get(this, 'persistentVolumes').map((v) => {

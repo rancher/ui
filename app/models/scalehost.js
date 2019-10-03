@@ -1,7 +1,8 @@
 import Resource from '@rancher/ember-api-store/models/resource';
+import { computed } from '@ember/object';
 
 export default Resource.extend({
-  hostSelectorStr: function() {
+  hostSelectorStr: computed('hostSelector', function() {
     let all = this.get('hostSelector') || [];
 
     return Object.keys(all).map((key) => {
@@ -10,7 +11,7 @@ export default Resource.extend({
       return key + (val ? `=${  val }` : '');
     })
       .join(', ');
-  }.property('hostSelector'),
+  }),
 
   validationErrors() {
     let errors = this._super(...arguments);

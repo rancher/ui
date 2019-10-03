@@ -1,6 +1,7 @@
 import { defineProperty, computed, get, observer } from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
+import $ from 'jquery';
 
 function toPercent(value, min, max) {
   value = Math.max(min, Math.min(max, value));
@@ -107,7 +108,7 @@ export default Component.extend({
   },
 
   zIndexDidChange: observer('zIndex', function() {
-    this.$().css('zIndex', get(this, 'zIndex') || 'inherit');
+    $().css('zIndex', get(this, 'zIndex') || 'inherit');
   }),
 
 });

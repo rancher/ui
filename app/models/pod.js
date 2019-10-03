@@ -84,9 +84,9 @@ var Pod = Resource.extend(Grafana, DisplayImage, {
     }
   }),
 
-  isOn: function() {
+  isOn: computed('state', function() {
     return ['running', 'migrating', 'restarting'].indexOf(get(this, 'state')) >= 0;
-  }.property('state'),
+  }),
 
   displayState: computed('_displayState', 'exitCode', function() {
     let out = get(this, '_displayState');
@@ -113,9 +113,9 @@ var Pod = Resource.extend(Grafana, DisplayImage, {
     return envs;
   }),
 
-  displayIp: function() {
+  displayIp: computed('status.podIp', function() {
     return get(this, 'status.podIp') || null;
-  }.property('status.podIp'),
+  }),
 
   dislayContainerMessage: computed('containers.@each.showTransitioningMessage', function() {
     return !!get(this, 'containers').findBy('showTransitioningMessage', true);
@@ -131,11 +131,11 @@ var Pod = Resource.extend(Grafana, DisplayImage, {
     return out;
   }),
 
-  nodeIp: function() {
+  nodeIp: computed('status.nodeIp', function() {
     return get(this, 'status.nodeIp') || null;
-  }.property('status.nodeIp'),
+  }),
 
-  sortIp: function() {
+  sortIp: computed('primaryIpAddress', 'primaryAssociatedIpAddress', function() {
     var ip = get(this, 'primaryAssociatedIpAddress') || get(this, 'primaryIpAddress');
 
     if ( !ip ) {
@@ -147,11 +147,11 @@ var Pod = Resource.extend(Grafana, DisplayImage, {
       return match.slice(1).map((octet) => strPad(octet, 3, '0', false))
         .join('.');
     }
-  }.property('primaryIpAddress', 'primaryAssociatedIpAddress'),
+  }),
 
-  isGlobalScale: function() {
+  isGlobalScale: computed('labels', function() {
     return `${ (get(this, 'labels') || {})[C.LABEL.SCHED_GLOBAL]  }` === 'true';
-  }.property('labels'),
+  }),
 
   actions: {
     clone() {

@@ -1,5 +1,5 @@
 import { alias } from '@ember/object/computed';
-import { get } from '@ember/object'
+import { get, computed } from '@ember/object'
 import Controller, { inject as controller } from '@ember/controller';
 
 export default Controller.extend({
@@ -35,11 +35,11 @@ export default Controller.extend({
   group:        alias('projectController.group'),
   groupTableBy: alias('projectController.groupTableBy'),
 
-  rows: function() {
+  rows: computed('model.projectCerts.[]', 'model.namespacedCerts.[]', function() {
     const proj = get(this, 'model.projectCerts').slice();
     const ns = get(this, 'model.namespacedCerts').slice();
     const out = proj.concat(ns);
 
     return out;
-  }.property('model.projectCerts.[]', 'model.namespacedCerts.[]'),
+  }),
 });

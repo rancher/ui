@@ -8,6 +8,7 @@ import {
   get, set, computed, observer, setProperties
 } from '@ember/object';
 import moment from 'moment';
+import $ from 'jquery';
 
 export default Component.extend(ModalBase, NewOrEdit, {
   endpointService: service('endpoint'),
@@ -36,7 +37,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
   didInsertElement() {
     setTimeout(() => {
-      this.$('TEXTAREA')[0].focus();
+      $('TEXTAREA')[0].focus();
     }, 250);
   },
 

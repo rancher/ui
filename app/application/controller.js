@@ -9,6 +9,7 @@ export default Controller.extend({
 
   resourceActions:   service('resource-actions'),
   tooltipService:    service('tooltip'),
+  router:            service(),
 
   // GitHub auth params
   queryParams:       ['isPopup', 'fromAuthProvider'],
@@ -32,8 +33,8 @@ export default Controller.extend({
 
   // currentRouteName is set by Ember.Router
   // but getting the application controller to get it is inconvenient sometimes
-  currentRouteNameChanged: observer('currentRouteName', function() {
-    this.set('app.currentRouteName', this.get('currentRouteName'));
+  currentRouteNameChanged: observer('router.currentRouteName', function() {
+    this.set('app.currentRouteName', this.get('router.currentRouteName'));
   }),
 
 });

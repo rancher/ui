@@ -6,6 +6,7 @@ import { normalizeName } from 'shared/settings/service';
 import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
 import { get, set } from '@ember/object';
+import $ from 'jquery';
 
 const cmOpts = {
   autofocus:       true,
@@ -50,7 +51,7 @@ export default Component.extend(ModalBase, {
         return;
       }
 
-      const elem = this.$('.form-control')[0]
+      const elem = $('.form-control')[0]
 
       if ( elem ) {
         setTimeout(() => {

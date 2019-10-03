@@ -1,4 +1,4 @@
-import { get, set } from '@ember/object';
+import { get, set, computed, observer } from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
 import VolumeSource from 'shared/mixins/volume-source';
@@ -44,11 +44,7 @@ export default Component.extend(VolumeSource, {
       set(this, 'useCustomRegex', !get(this, 'useCustomRegex'));
     },
   },
-  mount: function() {
-    return get(this, 'mounts').get('firstObject');
-  }.property('mounts.[]'),
-
-  useCustomRegexChange: function() {
+  useCustomRegexChange: observer('useCustomRegex', function() {
     const useCustomRegex = get(this, 'useCustomRegex');
 
     if (useCustomRegex) {
@@ -57,6 +53,10 @@ export default Component.extend(VolumeSource, {
     } else {
       set(this, 'config.options.format', get(this, 'cachedFormat'));
     }
-  }.observes('useCustomRegex'),
+  }),
+
+  mount: computed('mounts.[]', function() {
+    return get(this, 'mounts').get('firstObject');
+  }),
 
 });

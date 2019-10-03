@@ -76,7 +76,7 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
     return !!get(this, 'links.update') && ( lcType !== 'job' );
   }),
 
-  availableActions: function() {
+  availableActions: computed('actionLinks.{activate,deactivate,pause,restart,rollback,garbagecollect}', 'links.{update,remove}', 'podForShell', 'isPaused', 'canEdit', function() {
     const a = get(this, 'actionLinks') || {};
 
     const podForShell = get(this, 'podForShell');
@@ -130,21 +130,19 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,pause,restart,rollback,garbagecollect}', 'links.{update,remove}',
-    'podForShell', 'isPaused', 'canEdit'
-  ),
+  }),
 
-  displayType: function() {
+  displayType: computed('type', function() {
     let type = this.get('type');
 
     return get(this, 'intl').t(`servicePage.serviceType.${ type }`);
-  }.property('type'),
+  }),
 
-  sortName: function() {
+  sortName: computed('displayName', function() {
     return sortableNumericSuffix(get(this, 'displayName'));
-  }.property('displayName'),
+  }),
 
-  combinedState: function() {
+  combinedState: computed('state', 'healthState', function() {
     var service = get(this, 'state');
     var health = get(this, 'healthState');
 
@@ -155,25 +153,25 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
 
     // Return the service for anything else
     return service;
-  }.property('state', 'healthState'),
+  }),
 
-  isGlobalScale: function() {
+  isGlobalScale: computed('lcType', function() {
     let lcType = get(this, 'lcType');
 
     return lcType === 'daemonset';
-  }.property('lcType'),
+  }),
 
-  canScaleDown: function() {
+  canScaleDown: computed('canScale', 'scale', function() {
     return get(this, 'canScale') && get(this, 'scale') > 0;
-  }.property('canScale', 'scale'),
+  }),
 
-  displayScale: function() {
+  displayScale: computed('scale', 'isGlobalScale', 'lcType', function() {
     if ( get(this, 'isGlobalScale') ) {
       return get(this, 'intl').t('servicePage.multistat.daemonSetScale');
     } else {
       return get(this, 'scale');
     }
-  }.property('scale', 'isGlobalScale', 'lcType'),
+  }),
 
   canScale: computed('lcType', function() {
     let lcType = get(this, 'lcType');
@@ -181,9 +179,9 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
     return lcType !== 'cronjob' && lcType !== 'daemonset' && lcType !== 'job';
   }),
 
-  activeIcon: function() {
+  activeIcon: computed('lcType', function() {
     return activeIcon(this);
-  }.property('lcType'),
+  }),
 
   memoryReservationBlurb: computed('launchConfig.memoryReservation', function() {
     if ( get(this, 'launchConfig.memoryReservation') ) {

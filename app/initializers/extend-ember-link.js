@@ -1,5 +1,7 @@
 import LinkComponent from '@ember/routing/link-component';
-import { get } from '@ember/object'
+import { get } from '@ember/object';
+import { on } from '@ember/object/evented';
+import $ from 'jquery';
 
 export function initialize(/* application */) {
   LinkComponent.reopen({
@@ -9,20 +11,20 @@ export function initialize(/* application */) {
     // class to the parent element of that tag name (like <li>{{link-to}}</li>)
     activeParent: null,
 
-    addActiveObserver: function() {
+    addActiveObserver: on('didInsertElement', function() {
       if ( this.get('activeParent') ) {
         this.addObserver('active', this, 'activeChanged');
         this.addObserver('application.currentRouteName', this, 'activeChanged');
         this.activeChanged();
       }
-    }.on('didInsertElement'),
+    }),
 
     activeChanged() {
       if ( this.isDestroyed || this.isDestroying ) {
         return;
       }
 
-      const parent = this.$().closest(get(this, 'activeParent'));
+      const parent = $().closest(get(this, 'activeParent'));
 
       if ( !parent || !parent.length ) {
         return;

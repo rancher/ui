@@ -95,7 +95,7 @@ export default Component.extend({
 
   didInsertElement() {
     run.scheduleOnce('afterRender', this, function() {
-      this.get('router').on('willTransition', () => {
+      this.get('router').on('routeWillChange', () => {
         $('header > nav').removeClass('nav-open');// eslint-disable-line
       });
     });
@@ -181,7 +181,7 @@ export default Component.extend({
 
   keyUp(e) {
     const code            = e.keyCode;
-    let tabList           = this.$(`.nav-item a:first-of-type`);
+    let tabList           = $(`.nav-item a:first-of-type`);
     let $target           = $(e.target).hasClass('ember-basic-dropdown-trigger') ? $(e.target).find('a') : e.target;
     let currentFocusIndex = tabList.index($target);
     let nextIndex;

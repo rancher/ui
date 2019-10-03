@@ -1,5 +1,6 @@
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
+import { computed, observer } from '@ember/object';
 import Controller from '@ember/controller';
 import C from 'ui/utils/constants';
 
@@ -42,29 +43,7 @@ export default Controller.extend({
     }
   },
 
-  showClusterWelcome: function() {
-    return this.get('scope.currentCluster.state') === 'inactive' && !this.get('nodes.length');
-  }.property('scope.currentCluster.state', 'nodes.[]'),
-
-  groupTableBy: function() {
-    if ( this.get('group') === NAMESPACE ) {
-      return 'namespaceId';
-    } else if ( this.get('group') === NODE ) {
-      return 'nodeId';
-    } else {
-      return null;
-    }
-  }.property('group'),
-
-  preSorts: function() {
-    if ( this.get('groupTableBy') ) {
-      return ['namespace.isDefault:desc', 'namespace.displayName'];
-    } else {
-      return null;
-    }
-  }.property('groupTableBy'),
-
-  groupChanged: function() {
+  groupChanged: observer('group', function() {
     let key = `prefs.${ C.PREFS.CONTAINER_VIEW }`;
     let cur = this.get(key);
     let neu = this.get('group');
@@ -72,5 +51,27 @@ export default Controller.extend({
     if ( cur !== neu ) {
       this.set(key, neu);
     }
-  }.observes('group'),
+  }),
+  showClusterWelcome: computed('scope.currentCluster.state', 'nodes.[]', function() {
+    return this.get('scope.currentCluster.state') === 'inactive' && !this.get('nodes.length');
+  }),
+
+  groupTableBy: computed('group', function() {
+    if ( this.get('group') === NAMESPACE ) {
+      return 'namespaceId';
+    } else if ( this.get('group') === NODE ) {
+      return 'nodeId';
+    } else {
+      return null;
+    }
+  }),
+
+  preSorts: computed('groupTableBy', function() {
+    if ( this.get('groupTableBy') ) {
+      return ['namespace.isDefault:desc', 'namespace.displayName'];
+    } else {
+      return null;
+    }
+  }),
+
 });

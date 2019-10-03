@@ -227,7 +227,6 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
       .split(/\s*,\s*/)
       .filter((x) => x.length > 0 && x !== C.LABEL.SYSTEM_TYPE);
   }),
-
   actions: {
     activate() {
       return this.doAction('activate');

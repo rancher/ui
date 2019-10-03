@@ -1,5 +1,5 @@
 import { alias } from '@ember/object/computed';
-import { get } from '@ember/object';
+import { get, computed } from '@ember/object';
 import Controller, { inject as controller } from '@ember/controller';
 
 export const headers = [
@@ -51,7 +51,7 @@ export default Controller.extend({
   group:        alias('projectController.group'),
   groupTableBy: alias('projectController.groupTableBy'),
 
-  rows: function() {
+  rows: computed('model.configMaps.[].type', function() {
     return get(this, 'model.configMaps').filterBy('type', 'configMap');
-  }.property('model.configMaps.[].type'),
+  }),
 });

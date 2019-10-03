@@ -16,6 +16,7 @@ import { isNumeric } from 'shared/utils/util';
 import convertDotAnswersToYaml from 'shared/utils/convert-yaml';
 import ChildHook from 'shared/mixins/child-hook';
 import flatMap from 'shared/utils/flat-map';
+import $ from 'jquery';
 
 export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
   catalog:                  service(),
@@ -104,11 +105,11 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
     if (!this.get('srcSet')) {
       set(this, 'srcSet', true);
 
-      const $icon = this.$('img');
+      const $icon = $('img');
 
       $icon.attr('src', $icon.data('src'));
 
-      this.$('img').on('error', () => {
+      $('img').on('error', () => {
         $icon.attr('src', `${ this.get('app.baseAssets') }assets/images/generic-catalog.svg`);
       });
     }

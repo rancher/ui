@@ -2,7 +2,7 @@ import { cancel, next, schedule } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
-import { get, set } from '@ember/object';
+import { get, set, observer } from '@ember/object';
 
 export default Route.extend({
   access:   service(),
@@ -176,9 +176,9 @@ export default Route.extend({
     },
   },
 
-  updateWindowTitle: function() {
+  updateWindowTitle: observer('settings.appName', function() {
     document.title = get(this, 'settings.appName');
-  }.observes('settings.appName'),
+  }),
 
   finishLogin() {
     let session = get(this, 'session');
