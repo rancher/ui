@@ -14,13 +14,20 @@
       {{#if hasBlock}}
         {{yield this row}}
       {{else if editing}}
-        {{input-paste
-          pasted=(action "pastedValues")
-          class="form-control input-sm value"
-          type="text"
-          value=row.value
-          placeholder=valuePlaceholder
-        }}
+        {{#if content}}
+          {{new-select
+            content=content
+            value=row.value
+          }}
+        {{else}}
+          {{input-paste
+            pasted=(action "pastedValues")
+            class="form-control input-sm value"
+            type="text"
+            value=row.value
+            placeholder=valuePlaceholder
+          }}
+        {{/if}}
       {{else}}
         {{row.value}}
       {{/if}}
