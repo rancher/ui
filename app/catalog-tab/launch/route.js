@@ -145,11 +145,14 @@ export default Route.extend({
           });
         }
 
+        let catalogTemplateUrlKey = def;
+
         if ( neuApp.id ) {
           verArr.filter((ver) => ver.version === get(neuApp, 'externalIdInfo.version'))
             .forEach((ver) => {
               set(ver, 'version', `${ ver.version } (current)`);
             })
+          catalogTemplateUrlKey = get(neuApp, 'externalIdInfo.version');
         }
 
         return EmberObject.create({
@@ -157,7 +160,7 @@ export default Route.extend({
           namespace,
           allTemplates:       this.modelFor(get(this, 'parentRoute')).get('catalog'),
           catalogApp:         neuApp,
-          catalogTemplateUrl: links[def], // catalogTemplateUrl gets qp's added and this needs with out
+          catalogTemplateUrl: links[catalogTemplateUrlKey], // catalogTemplateUrl gets qp's added and this needs with out
           namespaces:         results.namespaces,
           tpl:                results.tpl,
           tplKind:            kind,
