@@ -207,4 +207,4 @@
       }
     });
   });
-}(Ember, Ember.$));
+}(Ember, jQuery));

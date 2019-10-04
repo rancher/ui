@@ -32,7 +32,7 @@ export default Component.extend(ModalBase, {
   willDestroyElement() {
     clearInterval(this.get('timer'));
   },
-  containerCount: function() {
+  containerCount: computed('pods.length', function() {
     let count = this.get('pods.length');
 
     if ( count > 9 ) {
@@ -40,7 +40,7 @@ export default Component.extend(ModalBase, {
     } else {
       return `0${  count }`;
     }
-  }.property('pods.length'),
+  }),
 
   currentTheme: computed(`prefs.${ C.PREFS.THEME }`, function() {
     return this.get(`prefs.${ C.PREFS.THEME }`);

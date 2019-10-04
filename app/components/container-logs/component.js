@@ -7,6 +7,7 @@ import { alternateLabel } from 'ui/utils/platform';
 import layout from './template';
 import C from 'ui/utils/constants';
 import { downloadFile } from 'shared/utils/download-files';
+import $ from 'jquery';
 
 const LINES = 500;
 
@@ -48,7 +49,7 @@ export default Component.extend({
   didInsertElement() {
     this._super();
     next(this, () => {
-      const body = this.$('.log-body');
+      const body = $('.log-body');
       let lastScrollTop = 0;
 
       body.scroll(() => {
@@ -81,12 +82,12 @@ export default Component.extend({
         return el.clone().find( sel || '>*' ).remove().end();
       };
 
-      const log    = this.$('.log-body').children('.log-msg');
+      const log    = $('.log-body').children('.log-msg');
 
       let stripped = '';
 
       log.each((i, e) => {
-        stripped += `${ ignore(this.$(e), 'span').text() } \n`;
+        stripped += `${ ignore($(e), 'span').text() } \n`;
       });
 
       downloadFile('container.log', stripped);
@@ -100,14 +101,14 @@ export default Component.extend({
     },
 
     clear() {
-      var body = this.$('.log-body')[0];
+      var body = $('.log-body')[0];
 
       body.innerHTML = '';
       body.scrollTop = 0;
     },
 
     scrollToTop() {
-      this.$('.log-body').animate({ scrollTop: '0px' });
+      $('.log-body').animate({ scrollTop: '0px' });
     },
 
     followLog() {
@@ -116,7 +117,7 @@ export default Component.extend({
     },
 
     scrollToBottom() {
-      var body = this.$('.log-body');
+      var body = $('.log-body');
 
       body.stop().animate({ scrollTop: `${ body[0].scrollHeight + 1000  }px` });
     },
@@ -170,7 +171,7 @@ export default Component.extend({
 
     set(this, 'socket', socket);
 
-    var body = this.$('.log-body')[0];
+    var body = $('.log-body')[0];
     var $body = $(body); // eslint-disable-line
 
     set(this, 'status', 'initializing');

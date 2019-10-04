@@ -3,7 +3,7 @@ import { alias, reads } from '@ember/object/computed';
 import ModalBase from 'ui/mixins/modal-base';
 import { resolve } from 'rsvp';
 import layout from './template';
-import { get, set, computed } from '@ember/object'
+import { get, set, computed, observer } from '@ember/object'
 import { inject as service } from '@ember/service';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import C from 'ui/utils/constants';
@@ -141,7 +141,11 @@ export default Component.extend(ModalBase, NewOrEdit, {
         });
     },
   },
-  addBtnLabel: function() {
+  currentTypeChanged: observer('currentType', function() {
+    set(this, 'errors', null);
+  }),
+
+  addBtnLabel: computed('mode', function() {
     const mode = get(this, 'mode');
 
     if (mode === 'edit') {
@@ -151,11 +155,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
     } else if (mode === 'add') {
       return 'generic.add';
     }
-  }.property('mode'),
-
-  currentTypeChanged: function() {
-    set(this, 'errors', null);
-  }.observes('currentType'),
+  }),
 
   isSelectType: computed('currentType', function() {
     const types = TYPES.map((t) => t.type)

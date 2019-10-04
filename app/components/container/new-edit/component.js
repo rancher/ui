@@ -1,5 +1,5 @@
 import Errors from 'ui/utils/errors';
-import { get, set, setProperties } from '@ember/object';
+import { get, set, setProperties, observer } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
@@ -8,6 +8,8 @@ import NewOrEdit from 'shared/mixins/new-or-edit';
 import C from 'ui/utils/constants';
 import ChildHook from 'shared/mixins/child-hook';
 import layout from './template';
+import $ from 'jquery';
+import { on } from '@ember/object/evented';
 
 const WINDOWS_NODE_SELECTOR = 'beta.kubernetes.io/os = windows';
 const LINUX_NODE_SELECTOR = 'beta.kubernetes.io/os != windows';
@@ -120,7 +122,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
   },
 
   didInsertElement() {
-    const input = this.$("INPUT[type='text']")[0];
+    const input = $("INPUT[type='text']")[0];
 
     if (input) {
       input.focus();
@@ -167,7 +169,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
     },
   },
 
-  updateHeader: function() {
+  updateHeader: on('init', observer('isUpgrade', 'isSidekick', 'isGlobal', 'service.displayName', 'intl.locale', function() {
     let args = {};
     let k = 'newContainer.';
 
@@ -194,7 +196,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
 
       set(this, 'header', get(this, 'intl').t(k, args));
     });
-  }.observes('isUpgrade', 'isSidekick', 'isGlobal', 'service.displayName', 'intl.locale').on('init'),
+  })),
 
   // ----------------------------------
   // ----------------------------------

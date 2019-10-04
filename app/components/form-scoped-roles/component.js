@@ -6,6 +6,7 @@ import { computed, get, set, setProperties } from '@ember/object';
 import layout from './template';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import { next } from '@ember/runloop';
+import $ from 'jquery';
 
 const CUSTOM = 'custom';
 
@@ -46,7 +47,7 @@ export default Component.extend(NewOrEdit, {
         return;
       }
 
-      const elem = this.$('INPUT')[0]
+      const elem = $('INPUT')[0]
 
       if ( elem ) {
         setTimeout(() => {

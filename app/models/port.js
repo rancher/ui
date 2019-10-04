@@ -1,9 +1,10 @@
 import Resource from '@rancher/ember-api-store/models/resource';
+import { computed } from '@ember/object';
 
 var Port = Resource.extend({
   _publicIp:       null,
   _publicIpState:  null,
-  displayPublicIp: function() {
+  displayPublicIp: computed('_publicIpState', '_publicIp', 'publicIpAddressId', 'bindAddress', 'publicPort', function() {
     var bind = this.get('bindAddress');
 
     if ( bind ) {
@@ -32,7 +33,7 @@ var Port = Resource.extend({
     }
 
     return null;
-  }.property('_publicIpState', '_publicIp', 'publicIpAddressId', 'bindAddress', 'publicPort'),
+  }),
 });
 
 export default Port;

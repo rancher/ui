@@ -1,9 +1,10 @@
-import { observer } from '@ember/object';
+import { observer, computed } from '@ember/object';
 import $ from 'jquery';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { isMore } from 'ui/utils/platform';
 import layout from './template';
+import { on } from '@ember/object/evented';
 
 export default Component.extend({
   resourceActions: service('resource-actions'),
@@ -16,15 +17,15 @@ export default Component.extend({
   classNames:      ['vertical-middle'],
   type:            'tooltip-action-menu',
   template:        'tooltip-container-dot',
-  alt:        function() {
+  alt:        computed('model.{displayState,displayName}', function() {
     return `${ this.get('model.displayName')  }: ${  this.get('model.displayState') }`;
-  }.property('model.{displayState,displayName}'),
+  }),
 
-  resourceActionsObserver: observer('resourceActions.open', function() {
+  resourceActionsObserver: on('init', observer('resourceActions.open', function() {
     if (this.get('tooltipService.openedViaContextClick')) {
       this.get('tooltipService').set('openedViaContextClick', false);
     }
-  }).on('init'),
+  })),
   click(event) {
     this.details(event);
     this.get('tooltipService').hide();

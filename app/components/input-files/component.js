@@ -1,8 +1,9 @@
 import { inject as service } from '@ember/service';
-import { get, observer } from '@ember/object';
+import { get, observer, computed } from '@ember/object';
 import Component from '@ember/component';
 import { isSafari } from 'ui/utils/platform';
 import layout from './template';
+import $ from 'jquery';
 
 export default Component.extend({
   growl: service(),
@@ -42,7 +43,7 @@ export default Component.extend({
     },
 
     upload() {
-      this.$('.input-files')[0].click();
+      $('.input-files')[0].click();
     },
 
     remove(file) {
@@ -64,13 +65,13 @@ export default Component.extend({
     }
   }),
 
-  actualAccept: function() {
+  actualAccept: computed('accept', function() {
     if ( isSafari ) {
       return '';
     } else {
       return this.get('accept');
     }
-  }.property('accept'),
+  }),
 
   change(event) {
     let ary = this.get('ary');

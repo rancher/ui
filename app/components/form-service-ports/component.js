@@ -3,6 +3,7 @@ import { alias } from '@ember/object/computed';
 import { get, set } from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
+import $ from 'jquery';
 
 const PROTOCOL_OPTIONS = [
   {
@@ -42,7 +43,7 @@ export default Component.extend({
           return;
         }
 
-        this.$('INPUT.public').last()[0].focus();
+        $('INPUT.public').last()[0].focus();
       });
     },
 

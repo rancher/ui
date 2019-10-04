@@ -2,6 +2,7 @@ import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 import { searchFields as containerSearchFields } from 'ui/components/pod-dots/component';
+import { computed } from '@ember/object';
 
 export const headers = [
   {
@@ -62,7 +63,7 @@ export default Controller.extend({
     },
   },
 
-  rows: function() {
+  rows: computed('group', 'model.workloads.@each.{namespaceId,isBalancer}', 'model.pods.@each.{workloadId,namespaceId}', function() {
     const groupBy = this.get('group');
     let out = [];
 
@@ -78,9 +79,9 @@ export default Controller.extend({
     }
 
     return out;
-  }.property('group', 'model.workloads.@each.{namespaceId,isBalancer}', 'model.pods.@each.{workloadId,namespaceId}'),
+  }),
 
-  groupByRef: function() {
+  groupByRef: computed('group', function() {
     const group = this.get('group');
 
     if (group === 'node') {
@@ -88,5 +89,5 @@ export default Controller.extend({
     } else if (group === 'namespace') {
       return 'namespace'
     }
-  }.property('group'),
+  }),
 });

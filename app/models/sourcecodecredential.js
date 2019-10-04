@@ -1,15 +1,15 @@
 import Resource from '@rancher/ember-api-store/models/resource';
-import { get } from '@ember/object';
+import { get, computed } from '@ember/object';
 
 export default Resource.extend({
   type:     'sourcecodecredential',
-  username: function(){
+  username: computed('displayName', function(){
     return get(this, 'displayName');
-  }.property('displayName'),
-  profilePicture: function(){
+  }),
+  profilePicture: computed('avatarUrl', function(){
     return get(this, 'avatarUrl');
-  }.property('avatarUrl'),
-  profileUrl: function(){
+  }),
+  profileUrl: computed('htmlUrl', function(){
     return get(this, 'htmlUrl');
-  }.property('htmlUrl'),
+  }),
 });
