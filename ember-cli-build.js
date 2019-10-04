@@ -18,12 +18,15 @@ module.exports = function(defaults) {
     }
   });
 
-  var isTest = env.EMBER_ENV === 'test';
-  var isProd = env.EMBER_ENV === 'production';
+  // var isDev  = env === 'development';
+  var isTest = env === 'test';
+  var isProd = env === 'production';
 
   var app = new EmberApp(defaults, {
-    hinting:           isTest,
-    tests:             true,
+    // build time linting
+    hinting:           !isProd,
+    // reduce build time by only running tests when env is set to test
+    tests:             isTest,
     autoprefixer:      { sourcemap: false }, // Was never helpful
     babel:             { plugins: [require('ember-auto-import/babel-plugin')] },
     'ember-cli-babel': { includePolyfill: isProd }, // Only include babel polyfill in prod
@@ -36,7 +39,7 @@ module.exports = function(defaults) {
     },
     sassOptions: {
       implementation: nodeSass,
-      sourceMap:      isProd,
+      sourceMap:      !isTest,
     },
     outputPaths: {
       app: {
@@ -74,19 +77,22 @@ module.exports = function(defaults) {
       exclude: [
         // These can be bind-mounted in
         'assets/images/logos',
-
         // These get version added to the query string so JS doesn't have to know the fingerprint
         'assets/intl',
         'assets/images/resources',
-        'ui-light.css', 'ui-light.rtl.css',
-        'ui-dark.css',  'ui-dark.rtl.css',
-        'ui.css',       'ui.rtl.css',
-        'vendor.css',   'vendor.rtl.css',
+        'ui-light.css',
+        'ui-light.rtl.css',
+        'ui-dark.css',
+        'ui-dark.rtl.css',
+        'ui.css',
+        'ui.rtl.css',
+        'vendor.css',
+        'vendor.rtl.css'
       ],
       extensions: (appConfig.fingerprint === 'no' ? [] : ['js', 'css', 'png', 'jpg', 'gif', 'svg', 'map', 'woff', 'woff2', 'ttf']),
     },
     sourcemaps: {
-      enabled:    isProd,
+      enabled:    !isTest,
       extensions: ['js']
     },
   });
