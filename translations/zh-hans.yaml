@@ -559,6 +559,7 @@ authPage:
             li2: '<b>授权Javascript来源: </b> '
             li3: '<b>授权重定向URLs: </b> '
             li4: '点击 "创建"，然后点击"下载JSON"按钮。'
+            li5: '将下载的JSON文件上载到OAuth凭据框中。'
         li4:
           ul:
             li1: '<a href="https://cloud.google.com/iam/docs/service-accounts">点击这里</a>了解有关创建和管理服务帐户的信息。'
@@ -596,7 +597,8 @@ authPage:
       info: '导航到 "OAuth同意屏幕" 选项卡并填写表单'
     stepThree:
       header: '第三步: '
-      info: '导航到 "凭据" 选项卡创建OAuth客户端ID'
+      subHeader: '查看<a href="https://rancher.com/docs/rancher/v2.x/en/admin-settings/authentication/google/#creating-service-account-credentials" target="_blank" rel="nofollow noopener noreferrer">操作指南</a>。'
+      info: '创建服务帐户凭据'
   azuread:
     header:
       disabled:
@@ -889,6 +891,8 @@ projectsPage:
       nameInExists: 名称已经存在，请使用新的项目名称。
       memberNameReq: 成员名称必须设置。
       memberRoleReq: 成员角色必须设置。
+clusterTemplateRevisionUpgradeNotification:
+  tooltip: "{revision}修订可用于升级。"
 
 clustersPage:
   header: 集群列表
@@ -901,10 +905,14 @@ clustersPage:
     new: 添加集群
   cluster:
     label: 集群名称
+  templateRevision:
+    label: '模板/修订'
   provider:
     label: 供应商
-  version:
-    label: kubernetes版本
+  kubernetesVersion:
+    label: Kubernetes 版本
+  rkeTemplate:
+    label: RKE 模板
   nodes:
     label: 主机数
   cpu:
@@ -2700,6 +2708,7 @@ clusterNew:
       placeholder: '例如: example'
     ssh:
       label: 公共密钥
+      placeholder: "粘贴您的SSH公钥"
     security:
       label: 安全
     members:
@@ -4063,6 +4072,13 @@ cruStorageClass:
       label: 卷类型
       pd-standard: '标准'
       pd-ssd: 'SSD'
+    fsType:
+      label: 文件系统类型
+      placeholder: "例如: ext4"
+    replicationType:
+      label: Replication Type
+      none: Zonal
+      regionalPd: Regional
     zone:
       label: 可用区
       automatic: "自动: 集群中有主机的区域"
@@ -5975,7 +5991,8 @@ newCertificate:
     invalidFormat: 无效的证书
     placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
     protip: 包括全部所需的证书链
-    tooltip: '粘贴用于验证server证书的CA证书，它将生成在kubecfg文件中。 查看<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/options/#authorized-cluster-endpoint" target="blank">更多信息</a>。'
+    tooltip: '粘贴用于验证server证书的CA证书，它将生成在kubecfg文件中。 查看<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/options/#authorized-cluster-endpoint" target="blank">
+    >更多信息</a>'
   certChain:
     label: 证书链
     placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
@@ -6094,13 +6111,15 @@ modalAddCloudKey:
       label: Access Token
       placeholder: 您的DigitalOcean API访问令牌。
       help: |
-        粘贴来自DigitalOcean的<a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications & API</a>。
+        粘贴来自DigitalOcean的
+        <a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications & API</a>。
   linode:
     token:
       label: 访问令牌
       placeholder: 您的Linode API访问令牌
       help: |
-        从Linode粘贴个人访问令牌<a href="https://cloud.linode.com/profile/tokens" target="_blank" rel="nofollow noreferrer noopener">API Tokens</a> screen
+        从Linode粘贴个人访问令牌
+        <a href="https://cloud.linode.com/profile/tokens" target="_blank" rel="nofollow noreferrer noopener">API Tokens</a> screen
     authAccountButton: '下一步: 配置实例'
   vmwarevsphere:
     password:
@@ -7461,6 +7480,11 @@ pagination:
     =0 {没有角色}
     =1 {选中{count} {count, plural, =1 {条角色} other {条角色}}}
     other {当前显示{count}条角色中的{from}到{to}条}}
+  clusterTemplates: |
+    {pages, plural,
+    =0 {No Template Revisions}
+    =1 {{count} {count, plural, =1 {Template Revision} other {Template Revisions}}}
+    other {{from} - {to} of {count} Template Revisions}}
   service: |
     {pages, plural,
     =0{无服务}
