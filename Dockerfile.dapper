@@ -12,7 +12,7 @@ RUN apt-get -qq update \
   hicolor-icon-theme g++ google-chrome-stable \
   && npm install -g yarn \
   && update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10 \
-  && yarn config set cache-folder /var/cache/npm \
+  && yarn config set cache-folder /var/cache/yarn \
   && rm -rf /var/lib/apt/lists/*
 
 ENV DAPPER_RUN_ARGS --privileged -v npm-cache:/var/cache/npm
