@@ -17,9 +17,7 @@ module.exports = function(defaults) {
   });
 
   var app = new EmberApp(defaults, {
-    babel: {
-      plugins: [ require('ember-auto-import/babel-plugin') ]
-    },
+    babel:             { plugins: [require('ember-auto-import/babel-plugin')] },
     'ember-cli-babel': { includePolyfill: true, },
     storeConfigInMeta: false,
     inlineContent:     inline,
@@ -39,13 +37,9 @@ module.exports = function(defaults) {
     autoImport: {
       webpack: {
         externals: { jquery: 'jQuery' },
-        node: {
-          fs: 'empty'
-        },
-        plugins: [
-          new webpack.EnvironmentPlugin({
-            LATER_COV: false
-          }),
+        node:      { fs: 'empty' },
+        plugins:   [
+          new webpack.EnvironmentPlugin({ LATER_COV: false }),
           new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         ],
       }
