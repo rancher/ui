@@ -48,6 +48,9 @@ module.exports = function(environment) {
     disablePolyfill: false,
     publicOnly: true,
     inputPath: 'translations',
-    outputPath: 'translations'
+    outputPath: 'translations',
+    requiresTranslation(/* key, locale */) {
+      return false;
+    }
   };
 };
