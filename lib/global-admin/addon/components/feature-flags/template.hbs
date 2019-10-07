@@ -1,0 +1,46 @@
+<section class="warnings">
+  <BannerMessage
+    @color="bg-warning"
+    @message={{t "featureFlags.warningHeader"}}
+  />
+</section>
+
+<section>
+  <SortableTable
+    @body={{filteredFeatures}}
+    @bulkActions={{bulkActions}}
+    @descending={{descending}}
+    @headers={{featuresHeaders}}
+    @pagingLabel="pagination.features"
+    @searchText={{searchText}}
+    @sortBy={{sortBy}}
+    @stickyHeader={{stickyHeader}}
+    class="grid sortable-table"
+    as |sortable kind feature dt|
+  >
+    {{#if (eq kind "row")}}
+      <tr class="main-row">
+        <td data-title="{{dt.state}}" class="state pl-5">
+          <BadgeState @model={{feature}} />
+        </td>
+        <td data-title="{{dt.name}}" class="clip">
+          {{feature.name}}
+        </td>
+        <td data-title="{{dt.description}}" class="pt-5 pb-5">
+          {{feature.description}}
+        </td>
+        <td data-title="{{dt.actions}}" class="actions">
+          <ActionMenu @model={{feature}} />
+        </td>
+      </tr>
+    {{else if (eq kind "nomatch")}}
+      <td colspan="5" class="no-match" >
+        {{t "featureFlags.table.noMatch"}}
+      </td>
+    {{else if (eq kind "norows")}}
+      <td colspan="5" class="no-data" >
+        {{t "featureFlags.table.noData"}}
+      </td>
+    {{/if}}
+  </SortableTable>
+</section>
