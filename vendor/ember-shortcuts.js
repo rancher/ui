@@ -64,10 +64,10 @@
     function triggerShortcut(def, event) {
       var i, action, handler, infos;
 
-      if (!(infos = router.currentHandlerInfos)) return;
+      if (!(infos = router.currentRouteInfos)) return;
 
       for (i = infos.length - 1; i >= 0; i--) {
-        handler = infos[i].handler;
+        handler = infos[i].route;
 
         if (handler.shortcuts && (action = handler.shortcuts[def.raw])) {
           handler.send(action, event);
@@ -207,4 +207,4 @@
       }
     });
   });
-}(Ember, jQuery));
+}(Ember, $));
