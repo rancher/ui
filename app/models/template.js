@@ -123,7 +123,7 @@ const Template = Resource.extend({
     }
   }),
 
-  certified: computed('certifiedType', 'catalogId', 'labels', function() {
+  certified: computed('certifiedType', 'catalogId', 'labels', 'intl.locale', function() {
     let out = null;
     let labels = get(this, 'labels');
 
@@ -145,7 +145,7 @@ const Template = Resource.extend({
     }
 
     // For the standard labels, use translations
-    if ( [C.LABEL.CERTIFIED_RANCHER, C.LABEL.CERTIFIED_PARTNER].includes(out) ) {
+    if ( [C.LABEL.CERTIFIED_RANCHER, C.LABEL.CERTIFIED_PARTNER, C.LABEL.CERTIFIED_RANCHER_EXPERIMENTAL].includes(out) ) {
       let pl = 'pl';
 
       if ( get(this, 'settings.isRancher') ) {
