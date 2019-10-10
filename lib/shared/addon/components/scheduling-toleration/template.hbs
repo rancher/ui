@@ -9,40 +9,38 @@
 </div>
 {{#if tolerationArray.length}}
   <table class="table fixed no-lines mb-20">
-    {{#if editing}}
-      <thead>
-        <tr>
-          <th class="acc-label">
-            {{t "formScheduling.key"}}
-          </th>
-          <th width="40"></th>
-          <th class="acc-label">
-            {{t "formScheduling.operator"}}
-          </th>
-          <th width="40"></th>
-          <th class="acc-label">
-            {{t "formScheduling.value"}}
-          </th>
-          <th width="40"></th>
-          <th class="acc-label">
-            {{t "formScheduling.effect"}}
-          </th>
-          <th width="40"></th>
-          <th class="acc-label">
-            {{t "formScheduling.time"}}
-          </th>
-          <th width="10">&nbsp;</th>
-          <th width="40"></th>
-        </tr>
-      </thead>
-    {{/if}}
+    <thead>
+      <tr>
+        <th class="acc-label">
+          {{t "formScheduling.key"}}
+        </th>
+        <th width="40"></th>
+        <th class="acc-label">
+          {{t "formScheduling.operator"}}
+        </th>
+        <th width="40"></th>
+        <th class="acc-label">
+          {{t "formScheduling.value"}}
+        </th>
+        <th width="40"></th>
+        <th class="acc-label">
+          {{t "formScheduling.effect"}}
+        </th>
+        <th width="40"></th>
+        <th class="acc-label">
+          {{t "formScheduling.time"}}
+        </th>
+        <th width="10">&nbsp;</th>
+        <th width="40"></th>
+      </tr>
+    </thead>
     <tbody>
       {{#each tolerationArray as |toleration|}}
         <tr>
           <td>
             {{#input-or-display
-              editable=editing
-              value=toleration.key
+               editable=editing
+               value=(if (and (not toleration.key) (eq toleration.operator "Exists")) "*" toleration.key)
             }}
               {{input
                 type="text"
@@ -56,8 +54,8 @@
           </td>
           <td>
             {{#input-or-display
-              editable=editing
-              value=toleration.operator
+               editable=editing
+               value=(or toleration.operator "Equal")
             }}
               {{searchable-select
                 class="form-control input-sm pt-0"
@@ -70,16 +68,16 @@
             &nbsp;
           </td>
           <td>
-            {{#if (eq toleration.operator "Equal")}}
+            {{#if (or (eq toleration.operator "Equal") (not toleration.operator))}}
               {{#input-or-display
-                editable=editing
+              editable=editing
+              value=toleration.value
+              }}
+              {{input
+                type="text"
+                class="form-control input-sm"
                 value=toleration.value
               }}
-                {{input
-                  type="text"
-                  class="form-control input-sm"
-                  value=toleration.value
-                }}
               {{/input-or-display}}
             {{else}}
               {{t "generic.na"}}
@@ -90,8 +88,8 @@
           </td>
           <td>
             {{#input-or-display
-              editable=editing
-              value=toleration.effect
+               editable=editing
+               value=(or toleration.effect "*")
             }}
               {{searchable-select
                 class="form-control input-sm pt-0"
@@ -107,8 +105,8 @@
           <td>
             {{#if (eq toleration.effect "NoExecute")}}
               {{#input-or-display
-                editable=editing
-                value=toleration.tolerationSeconds
+                 editable=editing
+                 value=toleration.tolerationSeconds
               }}
                 <div class="input-group">
                   {{input-integer
