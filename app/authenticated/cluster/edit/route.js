@@ -50,6 +50,8 @@ export default Route.extend({
 
         if (transition.queryParams && transition.queryParams.clusterTemplateRevision) {
           clusterTemplateRevisionId = transition.queryParams.clusterTemplateRevision;
+
+          set(cluster, 'clusterTemplateRevisionId', clusterTemplateRevisionId);
         }
 
         ctr  = clusterTemplateRevisions.findBy('id', clusterTemplateRevisionId);
