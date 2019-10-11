@@ -14,6 +14,7 @@ const VALID_ROUTES = ['apps-tab', 'catalog-tab.index', 'authenticated.project.se
   'authenticated.project.monitoring.project-setting', 'authenticated.project.istio.project-istio.graph',
   'authenticated.project.istio.project-istio.metrics', 'authenticated.project.istio.project-istio.rules',
   'authenticated.project.istio.project-istio.destination-rules', 'authenticated.project.istio.project-istio.virtual-services',
+  'authenticated.project.istio.project-istio.gateways',
   'authenticated.project.hpa', 'authenticated.project.pipeline.pipelines'
 ];
 

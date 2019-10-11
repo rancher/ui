@@ -20,11 +20,11 @@ export default Resource.extend({
 
   actions:      {
     edit() {
-      get(this, 'router').transitionTo('authenticated.project.istio.project-istio.destination-rules.detail.edit', get(this, 'id'));
+      get(this, 'router').transitionTo('authenticated.project.istio.destination-rule.detail.edit', get(this, 'id'));
     },
 
     clone() {
-      get(this, 'router').transitionTo('authenticated.project.istio.project-istio.destination-rules.new', get(this, 'projectId'), { queryParams: { id: get(this, 'id') } });
+      get(this, 'router').transitionTo('authenticated.project.istio.destination-rule.new', get(this, 'projectId'), { queryParams: { id: get(this, 'id') } });
     },
   },
 
