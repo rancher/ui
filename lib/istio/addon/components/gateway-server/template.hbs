@@ -1,0 +1,274 @@
+<div class="box mb-10">
+  {{#if (and editing)}}
+    <div class="row">
+      <div class="pull-right">
+        <button
+          class="btn bg-transparent text-small vertical-middle"
+          {{action "removeServer" server}}
+        >
+          {{t "cruGateway.servers.removeServerLabel"}}
+        </button>
+      </div>
+    </div>
+  {{/if}}
+
+  <div class="row">
+    <div class="col span-4">
+      <label
+        class="acc-label"
+        for="{{concat elementId "-input-port-number"}}"
+      >
+        {{t "cruGateway.port.number.label"}}
+        {{#if editing}}
+          {{field-required}}
+        {{/if}}
+      </label>
+      {{#input-or-display
+        editable=editing
+        value=server.port.number
+      }}
+        {{input-integer
+          min=1
+          max=65535
+          id=(concat elementId "-input-port-number")
+          value=server.port.number
+          classNames="form-control"
+          placeholder=(t "cruGateway.port.number.placeholder")
+        }}
+      {{/input-or-display}}
+    </div>
+
+    <div class="col span-4">
+      <label
+        class="acc-label"
+        for="{{concat elementId "-input-port-name"}}"
+      >
+        {{t "cruGateway.port.name.label"}}
+        {{#if editing}}
+          {{field-required}}
+        {{/if}}
+      </label>
+      {{#input-or-display
+        editable=editing
+        value=server.port.name
+      }}
+        {{input
+          type="text"
+          id=(concat elementId "-input-port-name")
+          value=server.port.name
+          classNames="form-control"
+          placeholder=(t "cruGateway.port.name.placeholder")
+        }}
+      {{/input-or-display}}
+    </div>
+
+    <div class="col span-4">
+      <label class="acc-label">
+        {{t "cruGateway.port.protocol.label"}}
+        {{#if editing}}
+          {{field-required}}
+        {{/if}}
+      </label>
+      {{#input-or-display
+        editable=editing
+        value=server.port.protocol
+      }}
+        {{new-select
+          classNames="form-control"
+          content=protocols
+          value=server.port.protocol
+        }}
+      {{/input-or-display}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-12">
+      {{#form-value-array
+        editing=editing
+        valueLabel="cruGateway.hosts.label"
+        addActionLabel="cruGateway.hosts.add"
+        changed=(action "setHosts")
+        addButtonClass="btn bg-link icon-btn"
+        initialValues=server.hosts
+        showProTip=false
+        required=true
+        as |c row|
+      }}
+        {{#input-or-display
+          editable=editing
+          value=row.value
+        }}
+          {{input
+            class="form-control input-sm"
+            type="text"
+            value=row.value
+            placeholder=(t "cruGateway.hosts.placeholder")
+          }}
+        {{/input-or-display}}
+      {{/form-value-array}}
+    </div>
+  </div>
+
+  {{#advanced-section advanced=advanced}}
+    <hr class="mt-20"/>
+    <div class="row">
+      <div class="col span-4">
+        <label class="acc-label">
+          {{t "cruGateway.tls.mode.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=server.tls.mode
+        }}
+          {{new-select
+            classNames="form-control"
+            content=tlsOptions
+            value=server.tls.mode
+            prompt="cruGateway.tls.mode.prompt"
+            localizedPrompt=true
+          }}
+        {{/input-or-display}}
+      </div>
+
+      <div class="col span-4">
+        <label class="acc-label">
+          {{t "cruGateway.tls.httpsRedirect.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=server.tls.httpsRedirect
+        }}
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=server.tls.httpsRedirect
+                value=true
+              }}
+              {{t "cruGateway.tls.httpsRedirect.enabled"}}
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=server.tls.httpsRedirect
+                value=false
+              }}
+              {{t "cruGateway.tls.httpsRedirect.disabled"}}
+            </label>
+          </div>
+        {{/input-or-display}}
+      </div>
+
+      <div class="col span-4">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-server-certificate"}}"
+        >
+          {{t "cruGateway.tls.serverCertificate.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=server.tls.serverCertificate
+        }}
+          {{input
+            type="text"
+            id=(concat elementId "-input-server-certificate")
+            value=server.tls.serverCertificate
+            classNames="form-control"
+            placeholder=(t "cruGateway.tls.serverCertificate.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-4">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-private-key"}}"
+        >
+          {{t "cruGateway.tls.privateKey.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=server.tls.privateKey
+        }}
+          {{input
+            type="text"
+            id=(concat elementId "-input-private-key")
+            value=server.tls.privateKey
+            classNames="form-control"
+            placeholder=(t "cruGateway.tls.privateKey.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+      <div class="col span-4">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-ca-certificates"}}"
+        >
+          {{t "cruGateway.tls.caCertificates.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=server.tls.caCertificates
+        }}
+          {{input
+            type="text"
+            id=(concat elementId "-input-ca-certificates")
+            value=server.tls.caCertificates
+            classNames="form-control"
+            placeholder=(t "cruGateway.tls.caCertificates.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+      <div class="col span-4">
+        <label
+          class="acc-label"
+          for="{{concat elementId "-input-credential-name"}}"
+        >
+          {{t "cruGateway.tls.credentialName.label"}}
+        </label>
+        {{#input-or-display
+          editable=editing
+          value=server.tls.credentialName
+        }}
+          {{input
+            type="text"
+            id=(concat elementId "-input-credential-name")
+            value=server.tls.credentialName
+            classNames="form-control"
+            placeholder=(t "cruGateway.tls.credentialName.placeholder")
+          }}
+        {{/input-or-display}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col span-12">
+        {{#form-value-array
+          editing=editing
+          valueLabel="cruDestinationRule.tls.subjectAltNames.label"
+          addActionLabel="cruDestinationRule.tls.subjectAltNames.add"
+          changed=(action "setSubjectAltNames")
+          addButtonClass="btn bg-link icon-btn"
+          initialValues=server.tls.subjectAltNames
+          showProTip=false
+          as |c row|
+        }}
+          {{#input-or-display
+            editable=editing
+            value=row.value
+          }}
+            {{input
+              class="form-control input-sm"
+              type="text"
+              value=row.value
+              placeholder=(t "cruDestinationRule.tls.subjectAltNames.placeholder")
+            }}
+          {{/input-or-display}}
+        {{/form-value-array}}
+      </div>
+    </div>
+  {{/advanced-section}}
+</div>

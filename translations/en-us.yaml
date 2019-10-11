@@ -2334,6 +2334,9 @@ istio:
     virtualServices:
       label: Virtual Services
       add: Add Virtual Service
+    gateways:
+      label: Gateways
+      add: Add Gateway
 
 k8sImport:
   header: Import Existing Kubernetes
@@ -2708,7 +2711,7 @@ verifyPage:
 
 virtualServicePage:
   noMatch: No Virtual Services match the current search
-  noData: There are no virtual services to defined
+  noData: There are no virtual services defined
   notSupported: networking.istio.io/v1alpha3 API is not available in the cluster.
   table:
     hosts:
@@ -5091,6 +5094,68 @@ cruStorageClass:
       label: Volume Type
       placeholder: "e.g. replicate:3"
 
+gatewayPage:
+  noMatch: No Gateways match the current search
+  noData: There are no gateways defined
+  notSupported: networking.istio.io/v1alpha3 API is not available in the cluster.
+  table:
+    hosts:
+      label: Hosts
+
+cruGateway:
+  title:
+    new: Add Gateway
+    edit: Edit Gateway
+    view: "Gateway: {name}"
+  name:
+    placeholder: e.g. mygateway
+  selector:
+    label: Selector
+    add: Add Key Value
+    error: '"Selector" is required.'
+  tls:
+    mode:
+      label: Mode
+      prompt: Select a mode...
+    httpsRedirect:
+      label: HTTPS Redirect
+      enabled: 'Yes'
+      disabled: 'No'
+    serverCertificate:
+      label: Server Certificate
+      placeholder: e.g. /etc/istio/ingressgateway-certs/tls.crt
+    privateKey:
+      label: Private Key
+      placeholder: e.g. /etc/istio/ingressgateway-certs/tls.key
+    caCertificates:
+      label: CA Certificates
+      placeholder: e.g. /etc/istio/ingressgateway-ca-certs/ca-chain.cert.pem
+    credentialName:
+      label: Credential Name
+      placeholder: e.g. myssl
+  port:
+    number:
+      label: Port Number
+      placeholder: e.g. 80
+      error: '"Port Number" is required.'
+    name:
+      label: Port Name
+      placeholder: e.g. http
+      error: '"Port Name" is required.'
+    protocol:
+      label: Port Protocol
+  hosts:
+    label: Hosts
+    add: Add Host
+    placeholder: e.g. *
+    error: '"Hosts" is required.'
+  servers:
+    label: Servers
+    add: Add Server
+    error: Please input at least one Server
+    noServers: No Servers
+    removeServerLabel: Remove Server
+
 cruVirtualService:
   title:
     new: Add Virtual Service
@@ -5105,7 +5170,8 @@ cruVirtualService:
   gateways:
     label: Gateways
     add: Add Gateway
-    placeholder: e.g. mygateway
+    placeholder: Select or input a gateway
+    prompt: Select a gateway...
   http:
     routes:
       label: HTTP Routes
@@ -5182,7 +5248,6 @@ cruVirtualService:
         subset:
           label: Subset
           placeholder: e.g. v1
-          error: Subset is required
         host:
           label: Host
           error: Host is required
@@ -8174,7 +8239,7 @@ nodeDriver:
     tags:
       title: 4. Tags
       detail: Tags allow you to attach metadata to objects in the vSphere inventory to make it easier to sort and search for these objects.
-      addActionLabel: Add tag  
+      addActionLabel: Add tag
     customAttributes:
       title: 5. Custom attributes (legacy)
       detail: Custom attributes allow you to attach metadata to objects in the vSphere inventory to make it easier to sort and search for these objects.
@@ -8730,6 +8795,11 @@ pagination:
     =0 {No Options}
     =1 {{count} {count, plural, =1 {Virtual Service} other {Virtual Services}}}
     other {{from} - {to} of {count} Virtual Services}}
+  gateways: |
+    {pages, plural,
+    =0 {No Options}
+    =1 {{count} {count, plural, =1 {Gateway} other {Gateways}}}
+    other {{from} - {to} of {count} Gateways}}
   workload: |
     {pages, plural,
     =0 {No Workloads}

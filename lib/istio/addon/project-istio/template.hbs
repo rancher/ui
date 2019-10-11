@@ -25,9 +25,18 @@
       >
         <span>{{t "rulesPage.new"}}</span>
       </a>
+      {{else if (eq currentRouteName "authenticated.project.istio.project-istio.gateways.index")}}
+        {{#link-to
+          "gateway.new"
+          scope.currentProject.id
+          class="btn btn-sm bg-primary"
+          disabled=(rbac-prevents resource="gateway" scope="project" permission="create")
+        }}
+          {{t "istio.nav.gateways.add"}}
+        {{/link-to}}
       {{else if (eq currentRouteName "authenticated.project.istio.project-istio.destination-rules.index")}}
         {{#link-to
-          "project-istio.destination-rules.new"
+          "destination-rule.new"
           scope.currentProject.id
           class="btn btn-sm bg-primary"
           disabled=(rbac-prevents resource="destinationrule" scope="project" permission="create")
@@ -36,7 +45,7 @@
         {{/link-to}}
       {{else if (eq currentRouteName "authenticated.project.istio.project-istio.virtual-services.index")}}
         {{#link-to
-          "project-istio.virtual-services.new"
+          "virtual-service.new"
           scope.currentProject.id
           class="btn btn-sm bg-primary"
           disabled=(rbac-prevents resource="virtualservice" scope="project" permission="create")

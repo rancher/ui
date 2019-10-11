@@ -2,7 +2,7 @@
   <section class="header clearfix">
     <div class="pull-left">
       <h1>
-        {{t (concat "cruVirtualService.title." mode) name=model.displayName}}
+        {{t (concat "cruGateway.title." mode) name=model.displayName}}
       </h1>
     </div>
     <div class="right-buttons">
@@ -43,7 +43,7 @@
 {{else}}
   <section class="header clearfix">
     <h1>
-      {{t (concat "cruVirtualService.title." mode) name=model.displayName}}
+      {{t (concat "cruGateway.title." mode) name=model.displayName}}
     </h1>
   </section>
   <section class="horizontal-form container-fluid">
@@ -51,7 +51,7 @@
       <div class="col span-6">
         {{form-name-description
           model=model
-          namePlaceholder="cruVirtualService.name.placeholder"
+          namePlaceholder="cruGateway.name.placeholder"
           descriptionShown=false
           nameDisabled=isEdit
         }}
@@ -71,57 +71,17 @@
 <hr />
 
 <div class="row">
-  <div class="col span-6">
-    {{#form-value-array
-      editing=(not isView)
-      required=true
-      valueLabel="cruVirtualService.hosts.label"
-      addActionLabel="cruVirtualService.hosts.add"
-      changed=(action "setHosts")
-      initialValues=model.hosts
-      showProTip=false
-      addButtonClass="btn bg-link icon-btn"
-      autoAddIfEmpty=true
-      defaultValue=null
-      as |c row|
+  <div class="col span-12">
+    <div class="clearfix">
+      <label class="acc-label">{{t "cruGateway.selector.label"}}</label>
+    </div>
+
+    {{form-labels
+      initialLabels=model.selector
+      editing=editing
+      addActionLabel="cruGateway.selector.add"
+      setLabels=(action "setSelector")
     }}
-      {{#input-or-display
-        editable=editing
-        value=row.value
-      }}
-        {{istio-host-select
-          showLabel=false
-          namespaceId=namespace.id
-          value=row.value
-          inputClass="input-sm"
-        }}
-      {{/input-or-display}}
-    {{/form-value-array}}
-  </div>
-  <div class="col span-6">
-    {{#form-value-array
-      editing=(not isView)
-      valueLabel="cruVirtualService.gateways.label"
-      addActionLabel="cruVirtualService.gateways.add"
-      changed=(action "setGateways")
-      addButtonClass="btn bg-link icon-btn"
-      initialValues=model.gateways
-      showProTip=false
-      defaultValue=null
-      as |c row|
-    }}
-      {{#input-or-display
-        editable=editing
-        value=row.value
-      }}
-        {{istio-gateway-select
-          showLabel=false
-          namespaceId=namespace.id
-          value=row.value
-          inputClass="input-sm"
-        }}
-      {{/input-or-display}}
-    {{/form-value-array}}
   </div>
 </div>
 
@@ -130,36 +90,30 @@
 <section class="horizontal-form container-fluid mb-30">
   <div class="row mt-30 mb-10">
     <label class="acc-label">
-      {{t "cruVirtualService.http.routes.label"}}
+      {{t "cruGateway.servers.label"}}
     </label>
   </div>
 
-  {{#each httpRoutes as |route index|}}
-    {{virtual-service-http-route-row
+  {{#each servers as |server|}}
+    {{gateway-server
       editing=editing
-      isFirst=(eq route httpRoutes.firstObject)
-      isLast=(eq route httpRoutes.lastObject)
-      route=route
-      routes=httpRoutes
-      hosts=model.hosts
-      isNew=isNew
-      namespace=namespace
-      removeRoute=(action "removeHttpRoute")
+      server=server
+      removeServer=(action "removeServer")
     }}
   {{else}}
     <div class="p-20 text-center text-muted">
-      {{t "cruVirtualService.http.routes.noRoutes"}}
+      {{t "cruGateway.servers.noServers"}}
     </div>
   {{/each}}
 
   {{#if editing}}
     <div class="row">
-      <button class="btn bg-link icon-btn pull-right" {{action "addHttpRoute"}}>
+      <button class="btn bg-link icon-btn pull-right" {{action "addServer"}}>
         <span class="darken">
           <i class="icon icon-plus text-small"></i>
         </span>
         <span>
-          {{t "cruVirtualService.http.routes.addRouteLabel"}}
+          {{t "cruGateway.servers.add"}}
         </span>
       </button>
     </div>
@@ -169,7 +123,7 @@
 {{#if isView}}
   {{#accordion-list as |al expandFn|}}
     {{config-validation-list
-      resourceType="virtualservice"
+      resourceType="gateway"
       expandAll=al.expandAll
       expandFn=expandFn
       namespaceId=model.namespaceId
