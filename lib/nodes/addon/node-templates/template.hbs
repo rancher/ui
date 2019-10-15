@@ -28,6 +28,8 @@
      headers=headers
      descending=descending
      extraSearchFields=extraSearchFields
+     groupByKey="creatorId"
+     groupByRef="nodetemplate"
      body=filteredNodeTemplates
      as |sortable kind row dt|
   }}
@@ -46,6 +48,10 @@
           </td>
         </tr>
       {{/if}}
+    {{else if (eq kind "group")}}
+      <tr class="group-row">
+        <td colspan="8" class="pl-20">{{t "nodeTemplatesPage.table.owner"}}: {{row.items.firstObject.creator.displayName}}</td>
+      </tr>
     {{else if (eq kind "norows")}}
       <tr>
         <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
