@@ -1,4 +1,5 @@
 import Resource from '@rancher/ember-api-store/models/resource';
+import { reference } from '@rancher/ember-api-store/utils/denormalize';
 import { get, set, computed, defineProperty } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { ucFirst } from 'shared/utils/util';
@@ -8,9 +9,11 @@ import { isArray } from '@ember/array';
 export default Resource.extend({
   intl:         service(),
   modalService: service('modal'),
+  globalStore:  service(),
 
   type:         'nodeTemplate',
   canClone:     true,
+  creator:      reference('creatorId', 'user', 'globalStore'),
 
   init() {
     this._super(...arguments);
