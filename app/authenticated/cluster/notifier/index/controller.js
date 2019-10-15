@@ -16,7 +16,7 @@ export default Controller.extend({
       get(this, 'modalService').toggleModal('notifier/modal-new-edit', {
         closeWithOutsideClick: false,
         controller:            this,
-        currentType:           alias('controller.currentType'),
+        currentType:           get(this, 'currentType'),
         mode:                  'add',
       });
     },
