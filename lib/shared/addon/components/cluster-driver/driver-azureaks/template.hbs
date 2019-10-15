@@ -367,6 +367,24 @@
           {{#if (eq netMode "advanced")}}
             <div class="row">
               <div class="col span-6 mt-0">
+                <label class="acc-label" for="azureaks-advanced-network-plugin">
+                  {{t "clusterNew.azureaks.networking.networkPlugin.label"}}
+                </label>
+                {{#input-or-display
+                   editable=isNew
+                   value=config.networkPlugin
+                }}
+                  {{new-select
+                    classNames="form-control"
+                    content=networkPlugins
+                    id="azureaks-advanced-network-plugin"
+                    localizedPrompt=false
+                    prompt=(t "clusterNew.azureaks.networking.networkPlugin.prompt")
+                    value=config.networkPlugin
+                  }}
+                {{/input-or-display}}
+              </div>
+              <div class="col span-6 mt-0">
                 <label class="acc-label" for="azureaks-advanced-virtual-network">
                   {{t "clusterNew.azureaks.networking.vnet.label"}}
                 </label>
@@ -409,6 +427,28 @@
                   {{t "clusterNew.azureaks.networking.serviceCidr.help"}}
                 </p>
               </div>
+              <div class="col span-6 mt-0">
+                <label class="acc-label" for="azureaks-pod-cidr">
+                  {{t "clusterNew.azureaks.networking.podCidr.label"}}
+                </label>
+                {{#input-or-display
+                   editable=isNew
+                   value=config.podCidr
+                }}
+                  {{input
+                    classNames="form-control"
+                    id="azureaks-pod-cidr"
+                    type="text"
+                    value=config.podCidr
+                    placeholder=(t "clusterNew.azureaks.networking.podCidr.placeholder")
+                  }}
+                {{/input-or-display}}
+                <p class="help-block">
+                  {{t "clusterNew.azureaks.networking.podCidr.help"}}
+                </p>
+              </div>
+            </div>
+            <div class="row">
               <div class="col span-6 mt-0">
                 <label class="acc-label" for="azureaks-dns-service-ip">
                   {{t "clusterNew.azureaks.networking.dnsServiceIp.label"}}
@@ -470,7 +510,6 @@
             </div>
           {{/if}}
         </div>
-
         <div class="row">
           <div class="col span-12">
             <label class="acc-label" for="azureaks-advanced-ssh-pub-key">
