@@ -7,6 +7,7 @@ if [[ -n "${BUILD_DEBUG}" ]]; then
     set -x
 fi
 
+# Initialize empty variables
 : ${CI_BRANCH=""}
 : ${UPLOAD_LATEST=""}
 
@@ -44,12 +45,9 @@ EOF
 BRANCH=$CI_BRANCH
 CDN="releases.rancher.com/ui"
 
+# Parse branch argument and set to current branch name if empty
 if [[ -z "$BRANCH" ]]; then
   BRANCH=$(git symbolic-ref HEAD | sed -e "s/^refs\/heads\///")
-fi
-
-if [[ -z "$BRANCH" ]]; then
-  BRANCH="2.3-fixes"
 fi
 
 PKG_VERSION=$(cat package.json | grep version | head -n 1 | cut -f4 -d'"')
