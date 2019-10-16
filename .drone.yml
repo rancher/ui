@@ -36,6 +36,8 @@ steps:
       exclude:
       - pull_request
       - tag
+  depends_on:
+    - test
 
 - name: build-release
   pull: default
@@ -78,6 +80,9 @@ steps:
       exclude:
       - pull_request
       - tag
+  depends_on:
+    - build-latest
+
 
 - name: upload-release
   pull: default
