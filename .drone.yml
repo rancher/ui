@@ -35,7 +35,6 @@ steps:
     event:
       exclude:
       - pull_request
-      - tag
   depends_on:
     - test
 
@@ -49,8 +48,6 @@ steps:
   - name: docker
     path: /var/run/docker.sock
   when:
-    branch:
-    - 2.3-fixes
     event:
       include:
       - tag
@@ -77,7 +74,6 @@ steps:
     event:
       exclude:
       - pull_request
-      - tag
   depends_on:
     - build-latest
 
@@ -94,8 +90,6 @@ steps:
     token:
       from_secret: google_auth_key
   when:
-    branch:
-    - 2.3-fixes
     event:
       include:
       - tag
