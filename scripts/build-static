@@ -11,7 +11,7 @@ fi
 : ${CI_BRANCH=""}
 : ${UPLOAD_LATEST=""}
 # Drone will set this on tag
-: ${CI_BUILD_TAG=""}
+: ${CI_BUILD_TAG="${DRONE_TAG:-}"}
 
 # cd to app root
 CWD=$(dirname $0)
@@ -45,7 +45,7 @@ EOF
 
 # Parse options
 BRANCH=$CI_BRANCH
-BUILD_TAG=$CI_BUILD_TAG
+BUILD_TAG="${CI_BUILD_TAG#v}"
 CDN="releases.rancher.com/ui"
 
 # Parse branch argument and set to current branch name if empty
