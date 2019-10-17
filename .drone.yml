@@ -37,8 +37,6 @@ steps:
       exclude:
       - pull_request
       - tag
-  depends_on:
-    - test
 
 - name: build-release
   pull: default
@@ -58,8 +56,6 @@ steps:
     ref:
       include:
       - "refs/tags/*2.3*"
-  depends_on:
-    - test
 
 - name: upload-latest-2-3
   pull: default
@@ -79,8 +75,6 @@ steps:
       exclude:
       - pull_request
       - tag
-  depends_on:
-    - build-latest
 
 
 - name: upload-release
@@ -103,8 +97,6 @@ steps:
     ref:
       include:
       - "refs/tags/*2.3*"
-  depends_on:
-    - build-release
 
 volumes:
 - name: docker
