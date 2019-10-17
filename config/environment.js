@@ -86,7 +86,7 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-      version: pkg.version,
+      version: process.env.CI_BUILD_TAG || pkg.version,
       appName: 'Rancher',
       environment: environment,
       baseAssets: '/',

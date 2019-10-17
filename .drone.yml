@@ -18,7 +18,6 @@ steps:
     path: /var/run/docker.sock
   when:
     event:
-    - tag
     - pull_request
 
 - name: build-latest
@@ -42,7 +41,7 @@ steps:
   pull: default
   image: rancher/dapper:v0.4.1
   commands:
-  - ENVIRONMENT=production dapper build-static -s -v ${DRONE_TAG##v}
+  - ENVIRONMENT=production CI_BUILD_TAG=${DRONE_TAG##v} dapper ci-release
   privileged: true
   volumes:
   - name: docker
