@@ -11,5 +11,9 @@
     </div>
   {{/if}}
 {{else}}
-  {{yield}}
+  {{#if (and (eq mode "view") (get clusterTemplateRevision paramName)) }}
+    {{get clusterTemplateRevision paramName}}
+  {{else}}
+    {{yield}}
+  {{/if}}
 {{/if}}
