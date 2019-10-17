@@ -2,7 +2,12 @@
 set -e
 
 BUILD_DEBUG="${BUILD_DEBUG:-}"
-CI_BUILD_TAG="${DRONE_TAG#v:-}"
+CI_BUILD_TAG="${DRONE_TAG:-}"
+
+CI_BUILD_TAG="${CI_BUILD_TAG#v}"
+
+echo "CI_BUILD_TAG ${CI_BUILD_TAG}..."
+
 
 if [[ -n "${BUILD_DEBUG}" ]]; then
     set -x
