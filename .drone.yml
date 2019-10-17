@@ -63,9 +63,7 @@ steps:
   - dapper ci
   environment:
     ENVIRONMENT: production
-    CI_BUILD_TAG: ${DRONE_TAG##v}
-    CI_SEMVER_TAG: ${DRONE_SEMVER}
-    DRONE_TAG: ${DRONE_TAG##v}
+    CI_BUILD_TAG: ${DRONE_TAG#v}
   privileged: true
   volumes:
   - name: docker
@@ -81,12 +79,14 @@ steps:
 - name: upload-release
   pull: default
   image: plugins/gcs
+  environment:
+    CI_BUILD_TAG: ${DRONE_TAG#v}
   settings:
     acl:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
-    source: dist/static/${DRONE_TAG##v}
-    target: releases.rancher.com/ui/${DRONE_TAG##v}
+    source: dist/static/${DRONE_TAG#v}
+    target: releases.rancher.com/ui/${DRONE_TAG#v}
     token:
       from_secret: google_auth_key
   when:
