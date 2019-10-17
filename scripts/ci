@@ -35,7 +35,7 @@ if [[ "${BUILD_LATEST}" == "true" ]]; then
   echo "Building latest..."
   ./scripts/build-static -l -v latest-2.3
   # (build-static contains a call to test & build)
-elif [[ -z "${CI_BUILD_TAG}" ]]; then
+elif [[ ! -z "${CI_BUILD_TAG}" ]]; then
   echo "Building v${CI_BUILD_TAG}..."
   ./scripts/build-static -s -v "${CI_BUILD_TAG}"
   # (build-static contains a call to test & build)
