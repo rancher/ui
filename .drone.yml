@@ -37,25 +37,6 @@ steps:
       - pull_request
       - tag
 
-- name: build-release
-  pull: default
-  image: rancher/dapper:v0.4.1
-  commands:
-  - ENVIRONMENT=production CI_BUILD_TAG=${DRONE_TAG##v} dapper ci-release
-  privileged: true
-  volumes:
-  - name: docker
-    path: /var/run/docker.sock
-  when:
-    event:
-      include:
-      - tag
-      exclude:
-      - pull_request
-    ref:
-      include:
-      - "refs/tags/*2.3*"
-
 - name: upload-latest-2-3
   pull: default
   image: plugins/gcs
@@ -74,6 +55,25 @@ steps:
       exclude:
       - pull_request
       - tag
+
+- name: build-release
+  pull: default
+  image: rancher/dapper:v0.4.1
+  commands:
+  - ENVIRONMENT=production CI_BUILD_TAG=${DRONE_TAG##v} dapper ci
+  privileged: true
+  volumes:
+  - name: docker
+    path: /var/run/docker.sock
+  when:
+    event:
+      include:
+      - tag
+      exclude:
+      - pull_request
+    ref:
+      include:
+      - "refs/tags/*2.3*"
 
 
 - name: upload-release
