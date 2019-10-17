@@ -25,16 +25,14 @@ echo "Linting.."
 ./node_modules/.bin/eslint --max-warnings 0 .
 
 if [[ "${BUILD_LATEST}" == "true" ]]; then
-  echo "Building..."
-
-  if [[ -z "${CI_BUILD_TAG}" ]]; then
-    ./scripts/build-static -l -v latest-2.3
-    # (build-static contains a call to test & build)
-  else
-    ./scripts/build-static -s -v "${CI_BUILD_TAG}"
-    # (build-static contains a call to test & build)
-  fi
+  echo "Building latest..."
+  ./scripts/build-static -l -v latest-2.3
+  # (build-static contains a call to test & build)
+elif [[ -z "${CI_BUILD_TAG}" ]]; then
+  echo "Building v${CI_BUILD_TAG}..."
+  ./scripts/build-static -s -v "${CI_BUILD_TAG}"
+  # (build-static contains a call to test & build)
 else
-  echo "Testing.."
+  echo "Testing..."
   yarn test
 fi
