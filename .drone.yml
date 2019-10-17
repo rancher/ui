@@ -60,17 +60,17 @@ steps:
   pull: default
   image: rancher/dapper:v0.4.1
   commands:
-  - ENVIRONMENT=production CI_BUILD_TAG=${DRONE_TAG##v} dapper ci
+  - dapper ci
+  environment:
+    ENVIRONMENT: production
+    CI_BUILD_TAG: ${DRONE_TAG##v}
   privileged: true
   volumes:
   - name: docker
     path: /var/run/docker.sock
   when:
     event:
-      include:
       - tag
-      exclude:
-      - pull_request
     ref:
       include:
       - "refs/tags/*2.3*"
@@ -89,10 +89,7 @@ steps:
       from_secret: google_auth_key
   when:
     event:
-      include:
       - tag
-      exclude:
-      - pull_request
     ref:
       include:
       - "refs/tags/*2.3*"
