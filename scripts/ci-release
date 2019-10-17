@@ -1,0 +1,31 @@
+#!/bin/bash
+set -e
+
+BUILD_DEBUG="${BUILD_DEBUG:-}"
+if [[ -n "${BUILD_DEBUG}" ]]; then
+    set -x
+    env
+fi
+
+# cd to app root
+CWD=$(dirname $0)
+if [[ `basename $(pwd)` = 'scripts' ]]; then
+  cd ../
+else
+  cd `dirname $CWD`
+fi
+
+echo "Cleaning Up.."
+rm -rf node_modules build dist tmp
+
+echo "Bootstrapping.."
+./scripts/bootstrap
+
+if [[ -z "${CI_BUILD_TAG}" ]]; then
+  echo "Testing.."
+  yarn test
+else
+  echo "Building..."
+  ./scripts/build-static -l -v "${CI_BUILD_TAG}"
+  # (build-static contains a call to test & build)
+fi

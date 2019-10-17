@@ -43,6 +43,7 @@ EOF
 
 # Parse options
 BRANCH=$CI_BRANCH
+BUILD_TAG=$CI_BUILD_TAG
 CDN="releases.rancher.com/ui"
 
 # Parse branch argument and set to current branch name if empty
@@ -50,7 +51,12 @@ if [[ -z "$BRANCH" ]]; then
   BRANCH=$(git symbolic-ref HEAD | sed -e "s/^refs\/heads\///")
 fi
 
-PKG_VERSION=$(cat package.json | grep version | head -n 1 | cut -f4 -d'"')
+if [[ -z "$BUILD_TAG" ]]; then
+  PKG_VERSION=$(cat package.json | grep version | head -n 1 | cut -f4 -d'"')
+else
+  PKG_VERSION="$BUILD_TAG"
+fi
+
 FORCE=0
 LATEST=0
 MODE=""
