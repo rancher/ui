@@ -28,8 +28,10 @@ rm -rf node_modules build dist tmp
 echo "Bootstrapping.."
 ./scripts/bootstrap
 
-echo "Linting.."
-./node_modules/.bin/eslint --max-warnings 0 .
+if [[ -z "${CI_BUILD_TAG}" ]]; then
+  echo "Linting.."
+  ./node_modules/.bin/eslint --max-warnings 0 .
+fi
 
 if [[ "${BUILD_LATEST}" == "true" ]]; then
   echo "Building latest..."
