@@ -18,6 +18,7 @@ steps:
     path: /var/run/docker.sock
   when:
     event:
+    - tag
     - pull_request
 
 - name: build-latest
@@ -35,6 +36,7 @@ steps:
     event:
       exclude:
       - pull_request
+      - tag
   depends_on:
     - test
 
@@ -55,7 +57,7 @@ steps:
       - pull_request
     ref:
       include:
-      - "refs/tags/v2.3*"
+      - "refs/tags/*2.3*"
 
 - name: upload-latest-2-3
   pull: default
@@ -74,6 +76,7 @@ steps:
     event:
       exclude:
       - pull_request
+      - tag
   depends_on:
     - build-latest
 
@@ -97,7 +100,7 @@ steps:
       - pull_request
     ref:
       include:
-      - "refs/tags/v2.3*"
+      - "refs/tags/*2.3*"
   depends_on:
     - build-release
 
