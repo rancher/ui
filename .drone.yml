@@ -20,7 +20,7 @@ steps:
     event:
     - pull_request
 
-- name: build
+- name: build-latest
   pull: default
   image: rancher/dapper:v0.4.1
   commands:
@@ -35,8 +35,9 @@ steps:
     event:
       exclude:
       - pull_request
+      - tag
 
-- name: upload
+- name: upload-latest-2-2
   pull: default
   image: plugins/gcs
   settings:
@@ -53,6 +54,44 @@ steps:
     event:
       exclude:
       - pull_request
+      - tag
+
+- name: build-release
+  pull: default
+  image: rancher/dapper:v0.4.1
+  commands:
+  - dapper ci
+  environment:
+    ENVIRONMENT: production
+  privileged: true
+  volumes:
+  - name: docker
+    path: /var/run/docker.sock
+  when:
+    event:
+      - tag
+    ref:
+      include:
+      - "refs/tags/*2.2*"
+
+
+- name: upload-release
+  pull: default
+  image: plugins/gcs
+  settings:
+    acl:
+    - allUsers:READER
+    cache_control: "no-cache,must-revalidate"
+    source: dist/static/${DRONE_TAG##v}
+    target: releases.rancher.com/ui/${DRONE_TAG##v}
+    token:
+      from_secret: google_auth_key
+  when:
+    event:
+      - tag
+    ref:
+      include:
+      - "refs/tags/*2.2*"
 
 volumes:
 - name: docker
