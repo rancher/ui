@@ -1,7 +1,7 @@
 import Resource from '@rancher/ember-api-store/models/resource';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
 import { inject as service } from '@ember/service';
-import { get, computed } from '@ember/object';
+import { computed } from '@ember/object';
 
 export default Resource.extend({
   clusterStore:  service(),
@@ -12,10 +12,10 @@ export default Resource.extend({
 
   displayHosts: computed('servers.@each.hosts', function() {
     const out = [];
-    const servers = get(this, 'servers') || [];
+    const servers = this.servers || [];
 
     servers.forEach((server) => {
-      (get(server, 'hosts') || []).forEach((host) => {
+      (server.hosts || []).forEach((host) => {
         out.push(host);
       });
     });
@@ -24,12 +24,12 @@ export default Resource.extend({
   }),
 
   displayHostsString: computed('displayHosts.[]', function() {
-    return get(this, 'displayHosts').join(', ');
+    return this.displayHosts.join(', ');
   }),
 
   displaySelectorStrings: computed('selector', function() {
     const out = [];
-    const selector = get(this, 'selector') || {};
+    const selector = this.selector || {};
 
     Object.keys(selector).forEach((key) => {
       out.push(`${ key }=${ selector[key] }`);
@@ -40,11 +40,11 @@ export default Resource.extend({
 
   actions:      {
     edit() {
-      get(this, 'router').transitionTo('authenticated.project.istio.gateway.detail.edit', get(this, 'id'));
+      this.router.transitionTo('authenticated.project.istio.gateway.detail.edit', this.id);
     },
 
     clone() {
-      get(this, 'router').transitionTo('authenticated.project.istio.gateway.new', get(this, 'projectId'), { queryParams: { id: get(this, 'id') } });
+      this.router.transitionTo('authenticated.project.istio.gateway.new', this.projectId, { queryParams: { id: this.id } });
     },
   },
 
