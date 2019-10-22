@@ -1,53 +1,43 @@
-{{#accordion-list-item
-  title=(t 'formGlobalRoles.title')
-  detail=(t 'formGlobalRoles.description' appName=settings.appName)
-  expandOnInit=true
-  showExpand=false
-}}
+<AccordionListItem
+  @title={{t "formGlobalRoles.title"}}
+  @detail={{t "formGlobalRoles.description" appName=settings.appName}}
+  @expandOnInit={{true}}
+  @showExpand={{false}}
+>
+  {{#each baseRoles as |baseRole|}}
+    <FormGlobalRolesRow
+      @model={{baseRole}}
+    />
+  {{/each}}
 
-  <div class="radio">
+  <hr/>
+
+  <div class="pb-10">
     <label>
-      {{radio-button selection=mode value="user"}} {{t 'formGlobalRoles.mode.user.label'}}
-      <p class="help-block">{{t 'formGlobalRoles.mode.user.detail'}}</p>
-    </label>
-  </div>
-  <div class="radio">
-    <label>
-      {{radio-button selection=mode value="admin"}} {{t 'formGlobalRoles.mode.admin.label'}}
-      <p class="help-block">{{t 'formGlobalRoles.mode.admin.detail'}}</p>
-    </label>
-  </div>
-  <div class="radio">
-    <label>
-      {{radio-button selection=mode value="custom"}} {{t 'formGlobalRoles.mode.custom.label'}}
-      <p class="help-block">{{t 'formGlobalRoles.mode.custom.detail'}}</p>
+      {{t "formGlobalRoles.mode.custom.label"}}
+      <p class="help-block">
+        {{t "formGlobalRoles.mode.custom.detail"}}
+      </p>
     </label>
   </div>
 
-  {{#if (eq mode 'custom')}}
-    <div class="pl-20">
-      {{#each custom as |row|}}
-        <div class="input-group mb-10 border" onclick={{action "toggle"}}>
-          <label class="input-group-addon bg-default p-10 vertical-middle">
-            {{input type="checkbox" checked=row.active}}
-          </label>
-          <div class="form-control p-10 vertical-middle">
-            {{row.role.displayName}}
-            {{#if row.role.detail}}
-              <p class="help-block">{{row.role.detail}}</p>
-            {{/if}}
-          </div>
-        </div>
-      {{/each}}
-      <div class="input-group mb-10 border">
+  {{#each additionalRoles as |role|}}
+    <FormGlobalRolesRow
+      @model={{role}}
+    >
+      <div class="input-group mb-10 border" onclick={{action "toggle"}}>
         <label class="input-group-addon bg-default p-10 vertical-middle">
-          {{input type="checkbox" checked=true disabled=true}}
+          {{input type="checkbox" checked=role.active}}
         </label>
         <div class="form-control p-10 vertical-middle">
-          {{t 'formGlobalRoles.role.base.label'}}
+          {{role.role.displayName}}
+          {{#if role.role.detail}}
+            <p class="help-block">
+              {{role.role.detail}}
+            </p>
+          {{/if}}
         </div>
       </div>
-    </div>
-  {{/if}}
-
-{{/accordion-list-item}}
+    </FormGlobalRolesRow>
+  {{/each}}
+</AccordionListItem>

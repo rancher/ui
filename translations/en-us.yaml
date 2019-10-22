@@ -2776,7 +2776,7 @@ clusterNew:
         label: Kubernetes pod address range
         help: 'A CIDR notation IP range from which to assign pod IPS. For example: 172.244.0.0/16'
         placeholder: e.g. 172.244.0.0/16
-        
+
     sshUser:
       label: SSH User
       placeholder: usr1
@@ -4895,6 +4895,7 @@ formEnvVar:
 formGlobalRoles:
   title: Global Permissions
   description: Controls what access the user has to administer the overall {appName} installation.
+  loginError: User does not have login access. Administrator, Standard User, or User-Base provide login access.
   mode:
     admin:
       label: Administrator
@@ -4902,6 +4903,9 @@ formGlobalRoles:
     user:
       label: Standard User
       detail: Standard Users can create new clusters and manage clusters and projects they have been granted access to.
+    userBase:
+      label: User-Base
+      detail: User-Base users have login-access only.
     custom:
       label: Custom
       detail: Choose individual permissions for the user.
