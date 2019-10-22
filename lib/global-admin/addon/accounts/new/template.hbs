@@ -55,10 +55,13 @@
 <hr class="mt-30 mb-30" />
 
 <section class="horizontal-form container-fluid">
-  {{form-global-roles
-    user=model.account
-    setSave=(action "setGlobalRoleSave")
-  }}
+  <FormGlobalRoles
+    @errors={{errors}}
+    @mode="new"
+    @setGRValidator={{action "setValidateGlobalRoles"}}
+    @setSave={{action "setGlobalRoleSave"}}
+    @user={{model.account}}
+  />
 </section>
 
 {{top-errors errors=errors}}
