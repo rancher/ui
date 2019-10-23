@@ -19,6 +19,8 @@ steps:
   when:
     event:
     - pull_request
+    exclude:
+    - tag
 
 - name: build-latest
   pull: default
@@ -72,7 +74,7 @@ steps:
       - tag
     ref:
       include:
-      - "refs/tags/*2.3*"
+      - "refs/tags/v2.3.*"
 
 
 - name: upload-release
@@ -91,7 +93,25 @@ steps:
       - tag
     ref:
       include:
-      - "refs/tags/*2.3*"
+      - "refs/tags/v2.3.*"
+
+- name: upload-release-tar
+  pull: default
+  image: plugins/gcs
+  settings:
+    acl:
+    - allUsers:READER
+    cache_control: "no-cache,must-revalidate"
+    source: dist/static/${DRONE_TAG##v}.tar.gz
+    target: releases.rancher.com/ui/${DRONE_TAG##v}.tar.gz
+    token:
+      from_secret: google_auth_key
+  when:
+    event:
+      - tag
+    ref:
+      include:
+      - "refs/tags/v2.3.*"
 
 volumes:
 - name: docker
