@@ -1,0 +1,73 @@
+
+<label class="acc-label block">
+  {{#if valueLabel}}
+    {{t valueLabel}}
+  {{/if}}
+  {{#if (and editing required)}}
+    {{field-required}}
+  {{/if}}
+</label>
+<table class="table fixed no-lines">
+  <tbody>
+    {{#each selections as |selection index|}}
+      <tr>
+        <td data-title="{{selection}}">
+            {{selection}}
+        </td>
+        <td width="10">&nbsp;</td>
+        <td width="30">
+          {{#if editing}}
+            <button
+              class="btn bg-primary btn-sm"
+              {{action "onRemove" index}}>
+              <i class="icon icon-minus"/>
+              <span class="sr-only">
+                {{t "generic.remove"}}
+              </span>
+            </button>
+          {{/if}}
+        </td>
+      </tr>
+    {{/each}}
+    {{#if (and (not (eq values.length 0)) (not (eq filteredContent.length 0)))}}
+      <tr>
+        <td>
+            <NewSelect
+              @selectFirstValueOnStart={{true}}
+              @class="input-sm value"
+              @content={{filteredContent}}
+              @value={{lastValue}}
+            />
+        </td>
+        <td width="10">&nbsp;</td>
+        <td width="30">
+          {{#if editing}}
+            <button
+              class="btn bg-primary btn-sm"
+              {{action "onRemove" lastIndex}}>
+              <i class="icon icon-minus"/>
+              <span class="sr-only">
+                {{t "generic.remove"}}
+              </span>
+            </button>
+          {{/if}}
+        </td>
+      </tr>
+    {{/if}}
+  </tbody>
+</table>
+
+{{#if editing}}
+  <button
+    class={{addButtonClass}}
+    {{action "onAdd"}}
+    disabled={{not canAddMore}}
+  >
+    <span class="darken">
+      <i class="icon icon-plus text-small"/>
+    </span>
+    <span>
+      {{t addActionLabel}}
+    </span>
+  </button>
+{{/if}}
