@@ -2462,6 +2462,11 @@ secretsPage:
   table:
     keys: Keys
 
+settingsPage:
+  tabs:
+    settings: Advanced Settings
+    feature: Feature Flags
+
 configMapsPage:
   index:
     header: Config Maps
@@ -5491,6 +5496,18 @@ stacksPage:
     scale: Scale
     instanceState: Container States
     instanceStateWithIcon: States
+
+featureFlags:
+  warningHeader: "Feature flags allow rancher to gate certain features behind flags. You should enable these features with caution and they should be considered beta functionality which could possibly cause problems for your system."
+  features:
+   istioVirtualServiceUi: "Enabling this feature exposes additional UI pages for Istio."
+   unsupportedStorageDrivers: "Enabling this feature exposes unsupported storage driver options for persistent volumes and storage classes."
+  table:
+    state: State
+    name: Name
+    description: Description
+    noData: There are no features
+    noMatch: No features match the current search
 
 formatIp:
   noIp: None
@@ -8557,6 +8574,11 @@ pagination:
     =0 {No Events}
     =1 {{count} {count, plural, =1 {Event} other {Events}}}
     other {{from} - {to} of {count} Events}}
+  features: |
+    {pages, plural,
+    =0 {No Features}
+    =1 {{count} {count, plural, =1 {Feature} other {Features}}}
+    other {{from} - {to} of {count} Features}}
   generic: |
     {pages, plural,
     =0 {No Items}
