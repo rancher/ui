@@ -73,10 +73,13 @@
   </div>
 {{/if}}
 
-{{form-global-roles
-  user=primaryResource
-  setSave=(action "setGlobalRoleSave")
-}}
+<FormGlobalRoles
+  @errors={{errors}}
+  @mode="edit"
+  @setGRValidator={{action "setValidateGlobalRoles"}}
+  @setSave={{action "setGlobalRoleSave"}}
+  @user={{model.user}}
+/>
 
 {{top-errors errors=errors}}
 {{save-cancel
