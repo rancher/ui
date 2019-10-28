@@ -1,0 +1,33 @@
+<section class="header">
+  <h1>
+    {{t "modalSaveRkeTemplate.title" clusterName=cluster.displayName}}
+  </h1>
+  <p class="help-block">
+    {{t "modalSaveRkeTemplate.subtitle"}}
+  </p>
+</section>
+<section class="horizontal-form container-fluid">
+  <div class="row inline-form">
+    <div class="col span-6">
+      <label for="save-rke-template-cluster-template-name">
+        {{t "modalSaveRkeTemplate.name"}}{{field-required}}
+      </label>
+      <div>
+        {{input
+          type="text"
+          value=clusterTemplateName
+          id="save-rke-template-cluster-template-name"
+        }}
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer-actions">
+  <SaveCancel
+    @save={{action "save"}}
+    @cancel={{action "cancel"}}
+    @saveDisabled={{saveDisabled}}
+    @cancelLabel="generic.closeModal"
+  />
+</div>

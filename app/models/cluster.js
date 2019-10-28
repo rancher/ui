@@ -96,6 +96,25 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return get(this, 'hasSessionToken') ? false : true;
   }),
 
+  canSaveAsTemplate: computed('actionLinks.saveAsTemplate', 'isReady', 'clusterTemplateRevisionId', 'clusterTemplateId', function() {
+    let {
+      actionLinks,
+      isReady,
+      clusterTemplateRevisionId,
+      clusterTemplateId,
+    } = this;
+
+    if (!isReady) {
+      return false;
+    }
+
+    if (clusterTemplateRevisionId || clusterTemplateId) {
+      return false;
+    }
+
+    return !!actionLinks.saveAsTemplate;
+  }),
+
   configName: computed(function() {
     const keys = this.allKeys().filter((x) => x.endsWith('Config'));
 
@@ -254,7 +273,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return false;
   }),
 
-  availableActions: computed('actionLinks.{rotateCertificates}', function() {
+  availableActions: computed('actionLinks.{rotateCertificates}', 'canSaveAsTemplate', function() {
     const a = get(this, 'actionLinks') || {};
 
     return [
@@ -275,6 +294,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
         icon:      'icon icon-history',
         action:    'restoreFromEtcdBackup',
         enabled:   !!a.restoreFromEtcdBackup,
+      },
+      {
+        label:     'action.saveAsTemplate',
+        icon:      'icon icon-file',
+        action:    'saveAsTemplate',
+        enabled:   this.canSaveAsTemplate,
       },
     ];
   }),
@@ -431,6 +456,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
       }
     },
 
+    saveAsTemplate() {
+      this.modalService.toggleModal('modal-save-rke-template', { cluster: this });
+    },
+
     rotateCertificates() {
       const model = this;
 
@@ -508,4 +537,21 @@ export default Resource.extend(Grafana, ResourceUsage, {
       }
     });
   },
+
+  waitForClusterTemplateToBeAttached() {
+    return this._waitForTestFn(() => {
+      return this.hasClusterTemplate();
+    }, `Wait for Cluster Template to be attached`);
+  },
+
+  hasClusterTemplate() {
+    const { clusterTemplateId, clusterTemplateRevisionId } = this;
+
+    if (isEmpty(clusterTemplateId) && isEmpty(clusterTemplateRevisionId)) {
+      return false;
+    }
+
+    return true;
+  },
+
 });
