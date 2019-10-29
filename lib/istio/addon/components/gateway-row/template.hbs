@@ -6,21 +6,18 @@
     {{badge-state model=model}}
   </td>
   <td data-title="{{dt.name}}" class="clip">
-    {{#link-to "destination-rule.detail" model.id}}
+    {{#link-to "gateway.detail" model.id}}
       {{model.displayName}}
     {{/link-to}}
   </td>
-  <td data-title="{{dt.host}}" class="clip">
-    {{model.host}}
-  </td>
-  <td data-title="{{dt.subsets}}" class="clip">
+  <td data-title="{{dt.hosts}}" class="clip">
     {{#tooltip-element
       type="tooltip-basic"
       tooltipTemplate="tooltip-multi-lines"
-      model=model.displaySubsets
+      model=model.displayHosts
       inlineBlock=true
     }}
-      {{model.displaySubsetsString}}
+      {{model.displayHostsString}}
     {{/tooltip-element}}
   </td>
   <td data-title="{{dt.created}}" class="text-right pr-20">
@@ -30,3 +27,16 @@
     {{action-menu model=model}}
   </td>
 </tr>
+
+{{#if model.displaySelectorStrings.length}}
+  <tr class="sub-row">
+    <td colspan="2">{{! checkbox and expand}}</td>
+    <td colspan="4">
+      {{#each model.displaySelectorStrings as |selector|}}
+        <span class="tag-xs bg-warning mr-5">
+          {{selector}}
+        </span>
+      {{/each}}
+    </td>
+  </tr>
+{{/if}}
