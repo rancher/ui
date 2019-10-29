@@ -537,4 +537,21 @@ export default Resource.extend(Grafana, ResourceUsage, {
       }
     });
   },
+
+  waitForClusterTemplateToBeAttached() {
+    return this._waitForTestFn(() => {
+      return this.hasClusterTemplate();
+    }, `Wait for Cluster Template to be attached`);
+  },
+
+  hasClusterTemplate() {
+    const { clusterTemplateId, clusterTemplateRevisionId } = this;
+
+    if (isEmpty(clusterTemplateId) && isEmpty(clusterTemplateRevisionId)) {
+      return false;
+    }
+
+    return true;
+  },
+
 });
