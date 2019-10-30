@@ -65,6 +65,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
   pastedAnswers:            null,
   noAppReadme:              null,
   selectedFileContetnt:     null,
+  editable:              { selectedTemplateUrl: null },
 
   isGKE:                    alias('scope.currentCluster.isGKE'),
 
@@ -98,6 +99,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
           set(this, 'selectedTemplateUrl', null);
         }
       }
+      set(this, 'editable.selectedTemplateUrl', get(this, 'selectedTemplateUrl'));
     });
   },
 
@@ -201,7 +203,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
   }),
 
   getTemplate: task(function * () {
-    var url = get(this, 'selectedTemplateUrl');
+    var url = get(this, 'editable.selectedTemplateUrl');
 
     if ( url === 'default' ) {
       let defaultUrl = get(this, 'defaultUrl');
