@@ -33,11 +33,13 @@ export default Route.extend({
     }
 
     // Find out if auth is enabled
-    return get(this, 'access').detect();
+    return get(this, 'access').detect().finally(() => {
+      return get(this, 'language').initLanguage();
+    });
   },
+
   model(params, transition) {
     transition.finally(() => {
-      get(this, 'language').initLanguage();
       this.controllerFor('application').setProperties({
         state:             null,
         code:              null,
