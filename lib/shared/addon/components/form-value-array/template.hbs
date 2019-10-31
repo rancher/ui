@@ -5,95 +5,45 @@
     {{field-required}}
   {{/if}}
 </label>
+
 {{#if ary.length}}
-
-
-
-<table class="table fixed no-lines">
-  <tbody>
-    {{#each ary as |row|}}
-      <tr>
-        <td data-title="{{t valueLabel}}">
-            {{#if hasBlock}}
-              {{yield this row}}
-            {{else if (and editing (or (eq row lastValue) (not onlyEditLast)))}}
-              {{#if content}}
-                {{new-select
-                  class="input-sm value"
-                  content=content
-                  value=row.value
-                }}
-              {{else}}
-                {{input-paste
-                  pasted=(action "pastedValues")
-                  class="form-control input-sm value"
-                  type="text"
-                  value=row.value
-                  placeholder=valuePlaceholder
-                }}
-              {{/if}}
-            {{else}}
-              {{row.value}}
-            {{/if}}
-        </td>
-        <td width="10">&nbsp;</td>
-        <td width="30">
-          {{#if editing}}
-            <button
-              class="btn bg-primary btn-sm"
-              {{action "remove" row}}>
-              <i class="icon icon-minus"/>
-              <span class="sr-only">
-                {{t "generic.remove"}}
-              </span>
-            </button>
-          {{/if}}
-        </td>
-      </tr>
-    {{/each}}
-      {{#if (and editing onlyEditLast)}}
-        <tr>
-          <td data-title="{{t valueLabel}}">
-              {{#if content}}
-                {{new-select
-                  class="input-sm value"
-                  content=content
-                  value=lastValue
-                }}
-              {{else}}
-                {{input-paste
-                  pasted=(action "pastedValues")
-                  class="form-control input-sm value"
-                  type="text"
-                  value=lastValue
-                  placeholder=valuePlaceholder
-                }}
-              {{/if}}
-          </td>
-          <td width="10">&nbsp;</td>
-          <td width="30">
-            {{#if editing}}
-              <button
-                class="btn bg-primary btn-sm"
-                {{action "remove" lastValue}}>
-                <i class="icon icon-minus"/>
-                <span class="sr-only">
-                  {{t "generic.remove"}}
-                </span>
-              </button>
-            {{/if}}
-          </td>
-        </tr>
+  {{#each ary as |row|}}
+    <div class="input-group mb-10">
+      <span data-title="{{t valueLabel}}">
+        {{#if hasBlock}}
+          {{yield this row}}
+        {{else if editing}}
+          {{input-paste
+            pasted=(action "pastedValues")
+            class="form-control input-sm value"
+            type="text"
+            value=row.value
+            placeholder=valuePlaceholder
+          }}
+        {{else}}
+          {{row.value}}
+        {{/if}}
+      </span>
+      {{#if editing}}
+        <span class="input-group-btn">
+          <button
+            class="btn bg-primary btn-sm"
+            {{action "remove" row}}>
+            <i class="icon icon-minus"/>
+            <span class="sr-only">
+              {{t "generic.remove"}}
+            </span>
+          </button>
+        </span>
       {{/if}}
-  </tbody>
-</table>
-
+    </div>
+  {{/each}}
 
 
 {{else if (not editing)}}
-    <p class="text-center text-muted">
-      {{t noDataLabel}}
-    </p>
+  <p class="text-center text-muted">
+    {{t noDataLabel}}
+  </p>
 {{/if}}
 {{#if editing}}
   <button
