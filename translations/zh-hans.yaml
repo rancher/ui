@@ -134,6 +134,28 @@ generic:
   full: 完整
   linux: Linux
   windows: Windows
+  cpu: CPU
+  memory: 内存
+  noData: 没有数据
+  authorize: 认证 & 同步代码库
+  branch: 分支
+  commit: 构建提交
+  repository: 代码库
+  registry: 镜像库
+  imageName: 镜像名称
+  loginIn: 登入
+  logout: 退出用户{user}
+  pipeline: 项目
+  is: 是
+  push: 提交到代码库
+  noBranch: 该代码库中没有任何分支。
+  github: GitHub
+  gitlab: GitLab
+  bitbucket: Bitbucket
+  required: '{key}为必填项。'
+  host: 主机
+  istioHostPlaceholder: 选择或输入主机
+
 realmNames:
   all: 全部
   usWest: 美国西部
@@ -246,6 +268,138 @@ appDetailPage:
     title: 密文
     detail: 此应用相关的密文(Secrets)。
     nodata: 此应用未使用密文
+
+alertPage:
+  na: 未配置
+  items: 项目
+  addSelectorLabel: 添加选择器
+  create: 创建
+  save: 保存
+  cluster: 集群
+  project: 项目
+  alertGroups: 告警组
+  newOrEdit:
+    showAdvanced: 显示高级选项
+    initialWait: 等待时间
+    interval: 时间间隔
+    initialWaitHelpText: 在触发告警到发送通知需要等待多长时间
+    repeatIntervalHelpText: 当告警处于活动状态时，重复发送通知的时间间隔
+    whenA: 当
+    whenAn: 当
+    happens: 发生
+    sendA: 发送
+    to: 到
+    alert: 告警
+    is: 是
+    lessThan: 少于
+    and: 和
+    critical: 危险
+    addRecipient: 添加接收者
+    info: 信息
+    normal: 正常
+    warning: 警告
+    notReady: 未就绪
+    unhealthy: 不健康
+    cpuUsage: CPU预留超过
+    memUsage: 内存预留超过
+    podPlaceholder: 选择Pod
+    notRunning: 未运行
+    notScheduled: 未调度
+    restarted: 重启
+    restartedTimes: 次在最近的
+    minutes: 分钟
+    available: 可用
+    createOne: 创建一条
+    noNotifierHelpText: 没有定义通知规则，去
+    workloadTypePlaceholder: 选择工作负载类型
+    resourcePlaceholder:  选择资源
+    notifierPlaceholder: 选择通知
+    nodePlaceholder: 选择主机
+    systemServicePlaceholder:  选择系统服务
+    nodeRequired: 需要选择主机
+    nodeSelectorRequired: 需要主机选择器
+    recipient:
+      helpText: 默认情况下使用通知程序中设置的值,您可以用另一个值覆盖它。
+    expression:
+      label: 表达式
+      noData: 图表无数据
+      error: 获取图表数据失败
+      placeholder: 输入表达式
+    removeAlert: 删除告警规则
+    alertRule: 告警规则
+    groupWaitSeconds:
+      label: 告警组等待时长
+      helpText: 告警触发后发送的等待时长
+    groupIntervalSeconds:
+      label: 告警组间隔时长
+      helpText: 添加触发报警的规则进组后,发送告警的间隔
+    repeatIntervalSeconds:
+      label: 重复间隔
+      helpText: 告警发送后再次发送的间隔
+    monitoringDisabled: 表达式类型不可用,点击
+    enableMonitoring: 启用监控
+    for: 持续
+    moreTarget: 更多的规则类型
+    inherited:
+      label: 组继承
+      enabled: 启用 - 从组继承高级选项
+  resourceKinds:
+    # backend use capitalized name
+    Pod: Pod
+    Node: Node
+    Deployment: Deployment
+    DaemonSet: DaemonSet
+    StatefulSet: StatefulSet
+  targetTypes:
+    pod: Pod
+    node: Node
+    deployment: Deployment
+    daemonset: Daemonset
+    statefulset: Statefulset
+    workload: Workload
+    event: Event
+    systemService: System Service
+    nodeSelector: Node Selector
+    workloadSelector: Workload Selector
+    metric: Metric
+    undefined: None
+  index:
+    addAlertGroup: 添加告警组
+    addAlert: 添加告警规则
+    noAlerts: 当前没有配置告警规则。
+    table:
+      noMatch: 没有告警与当前搜索匹配。
+      noData: 没有配置告警规则
+      noGroup: 未分配告警组
+      condition: 条件
+      target: 目标
+      recipients: 接收者
+      displayCondition:
+        notScheduled: 未调度
+        notRunning: 未运行
+        available: '{percent}%可用'
+        restarted: 在{interval}分钟内重启{times}次
+        notready: 未就绪
+        unhealthy: 不健康
+        happens: 发生
+        notReady: 未就绪
+        cpuUsage: 'CPU使用超过{percent}%'
+        memUsage: '内存使用超过{percent}%'
+        expression: 表达式
+
+  new:
+    addHeader: 添加告警组
+    editHeader: 编辑告警组
+    addRuleHeader: 添加告警规则
+    editRuleHeader: 编辑告警规则
+  comparison:
+    equal: 等于
+    not-equal: 不等于
+    greater-than: 大于
+    less-than: 小于
+    greater-or-equal: 大于或等于
+    less-or-equal: 小于或等于
+    has-value: 不为空
 
 podSecurityPoliciesPage:
   index:
@@ -372,6 +526,185 @@ apiPage:
     noData: 没有配置API密钥
 
 authPage:
+  setting:
+    executor:
+      label: 最大流水线运行个数
+      scale: 数量
+    cacerts:
+      label: 配置证书，支持从自签名的Git服务中拉取代码
+      show: 修改证书
+      saveActionLabel: 保存证书
+    limit:
+      label: 为执行程序配置资源预留和限制
+      saveActionLabel: 更新预留和限制
+  header: 流水线设置
+  setup: "1. 配置{type}应用"
+  authenticated:
+    header:
+      text: 代码库认证信息
+      enterpriseHostName: "地址:"
+      clientId:
+        text: "客户端ID:"
+      key:
+        text: "Key:"
+  testAuth:
+    header: '3. 测试并启用验证'
+    subtext: '通过测试认证来检查配置是否正确: '
+    buttonText:
+      preVariable: 授权
+      post: 授权中
+  form:
+    headerVariable: '2. 完成配置后，使用您的{SCM}账号进行验证。'
+    isEnterprise:
+      labelText: 使用https连接
+    enterprise:
+      labelText: '使用私有{type}企业版部署'
+    enterpriseHost:
+      labelText: 地址
+      placeholder: '例如: example.com'
+  gitlab:
+    auth: '标准GitLab: <a href="https://gitlab.com/profile/applications" target="_blank" rel="nofollow noreferrer">点击此处</a>访问并登陆GitLab，在弹出的新窗口中进行应用设置。'
+    enterpriseAuth: "企业版GitLab: 通过企业版GitLab地址访问并登陆GitLab，然后点击Settings，再点击Applications进行设置。"
+    ul:
+      li2:
+        text: '填写表单内容:'
+        ul:
+          li1: '<b>应用名称: </b><span class="text-muted">任意名称，例如: My Pipeline。</span>'
+          li2: '回调URL:'
+      li3:
+        text: '点击Save application'
+    form:
+      subtextVariable: '将新创建应用的Application Id和Secret复制粘贴到对应的输入框中。'
+      clientId:
+        labelText: 应用ID
+      clientSecret:
+        labelText: 秘钥
+  github:
+    standard: GitHub
+    enterprise: GitHub企业版
+    header:
+      disabled:
+        label: GitHub未配置
+    authenticated:
+      header:
+        text: 认证信息
+        enterpriseHostName: "地址:"
+        clientId:
+          text: "客户端 ID: "
+          helpText: '要修改设置的GitHub应用，请在下方禁用访问控制后重新设置'
+      disableAccess:
+        header: "危险区域&trade;"
+        warning: '<b class="text-danger">警告: </b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限。'
+        confirmDisable: "确认关闭吗? 再次点击将关闭访问控制"
+        disable: 禁用Github访问
+    notAuthenticated:
+      header: "1. 设置GitHub应用"
+      ul:
+        li1:
+          text: '标准GitHub。<a href="https://github.com/settings/developers" target="_blank">点击此处</a>并在弹出的新窗口中进行应用设置。'
+          ul:
+            li1: "企业版GitHub。请登录账号，点击Settings，然后点击Applications进行设置"
+        li2:
+          text: '点击 "Register new application" 并填写表单内容: '
+          ul:
+            li1: '<b>应用名称: </b><span class="text-muted">应用名称，例如: My {appName}</span>'
+            li2: '应用首页URL: '
+            li3: '<b>应用描述: </b><span class="text-muted">应用描述，可选</span>'
+            li4: '授权回调URL: '
+        li3:
+          text: '点击 "注册应用程序" '
+      form:
+        header: '2. 配置{appName}以使用GitHub进行身份验证'
+        subtext: '将新创建的GitHub应用Client ID和Secret复制粘贴到下方的对应输入框中'
+        clientId:
+          labelText: 客户端 ID
+        clientSecret:
+          labelText: 客户端秘钥
+        ghEnterprise:
+          labelText: 使用私有GitHub企业版部署
+        isGHEnterprise:
+          labelText: 使用安全连接
+        enterpriseHost:
+          labelText: 地址
+          placeholder: '例如: github.example.com'
+    testAuth:
+      header: '3. 测试并启用认证'
+      subtext: '测试以确认配置是否正确'
+      buttonText:
+        pre: 启用GitHub认证
+        post: 等待GitHub返回
+      authError: '未获取Github访问权限'
+      popupError: '请关闭弹出的窗口并点击认证按钮重新认证。'
+    auth: '标准GitHub: <a href="https://github.com/settings/developers" target="_blank" rel="nofollow noreferrer">点击此处</a>访问并登陆GitHub，在弹出的新窗口中进行应用设置。'
+    enterpriseAuth: "企业版GitHub: 通过企业版GitHub地址访问并登陆企业版GitHub，然后点击Settings，再点击Applications进行设置。"
+    ul:
+      li2:
+        text: '点击"Register new application"并填写表单内容:'
+        ul:
+          li1: '<b>应用名称: </b><span class="text-muted">任意名称，例如: My Pipeline。</span>'
+          li2: '主页URL: '
+          li3: '<b>应用描述: </b><span class="text-muted">应用描述，可选。</span>'
+          li4: '授权回调URL: '
+      li3:
+        text: '点击 注册应用'
+    form:
+      subtextVariable: '将新创建应用的Client ID和Client Secret复制粘贴到对应的输入框中。'
+      clientId:
+        labelText: 客户端ID
+      clientSecret:
+        labelText: 客户端秘钥
+  bitbucketcloud:
+    target:
+      header: '1. 选择你要使用的Bitbucket类型'
+      bitbucketserver: '私有Bitbucket Server'
+      bitbucketcloud: '公有Bitbucket Cloud'
+    setup: '2. 配置Bitbucket Cloud应用'
+    auth: '<a href="https://bitbucket.org/account" target="_blank" rel="nofollow noreferrer">点击此处</a>，在弹出的新窗口中进行应用设置。'
+    ul:
+      li2:
+        text: '点击"OAuth"，然后点击"Add consumer"，并填写表单内容: '
+        ul:
+          li1: '<b>应用名称:</b> <span class="text-muted">任意名称，例如 My Pipeline</span>'
+          li2: '回调URL:'
+          li3: '<b>权限设置: </b> <b>Account Read</b>, <b>Pull Requests Write</b>, <b>Projects Read</b>和<b>Webhooks Read And Write</b>'
+      li3:
+        text: '点击 "Save" '
+    form:
+      headerVariable: '3. 完成配置后，使用您的Bitbucket Cloud账号进行验证。'
+      subtextVariable: '复制并粘贴新创建的consumer的Key和Secret'
+      clientId:
+        labelText: Key
+      clientSecret:
+        labelText: Secret
+  bitbucketserver:
+    warning: Bitbucket Server Webhook需要SSL验证，请确保{appName}服务器的证书在Bitbucket Server中是可信的。点击<a href="https://rancher.com/docs/rancher/v2.x/en/tools/pipelines/configurations/#1-configuring-version-control-providers" target="_blank" rel="nofollow noopener noreferrer">这里</a>获取更多信息。
+    copy: 点击复制
+    target:
+      header: '1. 选择你要使用的Bitbucket类型'
+      bitbucketserver: '私有Bitbucket Server'
+      bitbucketcloud: '公有Bitbucket Cloud'
+    setup: '2. 配置Bitbucket Server应用'
+    auth: '访问Bitbucket Server并登陆你的账户，点击Administration，然后点击Application Links。'
+    ul:
+      li2:
+        text: '创建新的应用链接:'
+        ul:
+          li1: '<b>Link:</b>'
+          li2: '<b>应用名称: </b> <span class="text-muted">任意名称，例如: My Pipeline</span>'
+          li3: '<b>勾选Create incoming link</b>'
+          li4: '<b>点击: "Continue"</b>'
+          li5: 'Consumer Key: '
+          li6: '<b>Consumer Name:</b> <span class="text-muted">任意名称, 例如: pipeline</span>'
+          li7: 'Public Key:'
+          li8: '<b>点击 "Continue"</b>'
+    form:
+      headerVariable: '3. 完成配置后，使用您的Bitbucket Server账号进行验证。'
+      hostname:
+        labelText: Bitbucket Server主机
+        placeholder: '例如: example.com'
+        required: 必须配置私有Bitbucket Server主机地址。
+      tls:
+        labelText: 使用https连接
   saml:
     accessEnabled:
       header: 认证
@@ -469,62 +802,6 @@ authPage:
       shibboleth: Shibboleth
   root:
     header: 访问控制
-  github:
-    standard: GitHub
-    enterprise: GitHub企业版
-    header:
-      disabled:
-        label: GitHub未配置
-    authenticated:
-      header:
-        text: 认证信息
-        enterpriseHostName: "地址:"
-        clientId:
-          text: "客户端 ID: "
-          helpText: '要修改设置的GitHub应用，请在下方禁用访问控制后重新设置'
-      disableAccess:
-        header: "危险区域&trade;"
-        warning: '<b class="text-danger">警告: </b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限。'
-        confirmDisable: "确认关闭吗? 再次点击将关闭访问控制"
-        disable: 禁用Github访问
-    notAuthenticated:
-      header: "1. 设置GitHub应用"
-      ul:
-        li1:
-          text: '标准GitHub。<a href="https://github.com/settings/developers" target="_blank">点击此处</a>并在弹出的新窗口中进行应用设置。'
-          ul:
-            li1: "企业版GitHub。请登录账号，点击Settings，然后点击Applications进行设置"
-        li2:
-          text: '点击 "Register new application" 并填写表单内容: '
-          ul:
-            li1: '<b>应用名称: </b><span class="text-muted">应用名称，例如: My {appName}</span>'
-            li2: '应用首页URL: '
-            li3: '<b>应用描述: </b><span class="text-muted">应用描述，可选</span>'
-            li4: '授权回调URL: '
-        li3:
-          text: '点击 "注册应用程序" '
-      form:
-        header: '2. 配置{appName}以使用GitHub进行身份验证'
-        subtext: '将新创建的GitHub应用Client ID和Secret复制粘贴到下方的对应输入框中'
-        clientId:
-          labelText: 客户端 ID
-        clientSecret:
-          labelText: 客户端秘钥
-        ghEnterprise:
-          labelText: 使用私有GitHub企业版部署
-        isGHEnterprise:
-          labelText: 使用安全连接
-        enterpriseHost:
-          labelText: 地址
-          placeholder: '例如: github.example.com'
-    testAuth:
-      header: '3. 测试并启用认证'
-      subtext: '测试以确认配置是否正确'
-      buttonText:
-        pre: 启用GitHub认证
-        post: 等待GitHub返回
-      authError: '未获取Github访问权限'
-      popupError: '请关闭弹出的窗口并点击认证按钮重新认证。'
   googleoauth:
     header:
       disabled:
@@ -547,7 +824,6 @@ authPage:
             li1: '登录您的帐户，切换到 "APIs和服务" 并点击 "凭证"。'
         li2:
           text: '点击 "OAuth同意屏幕" 并填写以下表单: '
-          helperText: '注意: 这必须是一个FQDN域名，IP地址无效。'
           ul:
             li1: '<b>授权域名: </b> '
             li2: '<b>应用首页: </b> '
@@ -559,13 +835,12 @@ authPage:
             li2: '<b>授权Javascript来源: </b> '
             li3: '<b>授权重定向URLs: </b> '
             li4: '点击 "创建"，然后点击"下载JSON"按钮。'
-            li5: '将下载的JSON文件上载到OAuth凭据框中。'
+            li5: '将下载的JSON文件上传到OAuth凭据框中。'
         li4:
           ul:
             li1: '<a href="https://cloud.google.com/iam/docs/service-accounts">点击这里</a>了解有关创建和管理服务帐户的信息。'
             li2: '选择您的服务帐户。'
             li3: '选择JSON作为键类型并点击"创建".'
-            li4: 'JSON文件将自动保存在本地。'
       form:
         oauthCredential:
           labelText: OAuth凭证
@@ -597,8 +872,8 @@ authPage:
       info: '导航到 "OAuth同意屏幕" 选项卡并填写表单'
     stepThree:
       header: '第三步: '
-      subHeader: '查看<a href="https://rancher.com/docs/rancher/v2.x/en/admin-settings/authentication/google/#creating-service-account-credentials" target="_blank" rel="nofollow noopener noreferrer">操作指南</a>。'
-      info: '创建服务帐户凭据'
+      subHeader: '查看<a href="https://rancher.com/docs/rancher/v2.x/en/admin-settings/authentication/google/#creating-service-account-credentials" target="_blank" rel="nofollow noopener noreferrer">操作指南</a>:'
+      info: '创建服务帐户凭证'
   azuread:
     header:
       disabled:
@@ -891,8 +1166,6 @@ projectsPage:
       nameInExists: 名称已经存在，请使用新的项目名称。
       memberNameReq: 成员名称必须设置。
       memberRoleReq: 成员角色必须设置。
-clusterTemplateRevisionUpgradeNotification:
-  tooltip: "{revision}修订可用于升级。"
 
 clustersPage:
   header: 集群列表
@@ -905,14 +1178,10 @@ clustersPage:
     new: 添加集群
   cluster:
     label: 集群名称
-  templateRevision:
-    label: '模板/修订'
   provider:
     label: 供应商
-  kubernetesVersion:
-    label: Kubernetes 版本
-  rkeTemplate:
-    label: RKE 模板
+  version:
+    label: kubernetes版本
   nodes:
     label: 主机数
   cpu:
@@ -1005,11 +1274,6 @@ containersPage:
     orchestrator: 安装另一个编排引擎
     kubernetesLink: 安装Kubernetes
 
-clusterDashboard:
-  systemProject: "这是包含所有Kubernetes和{appName}系统命名空间的系统项目，修改当前项目中的资源配置可能会导致系统无法正常运行。"
-  notActive: 当前集群<b>{state}</b>中...
-  notReady: 当前集群<b>{state}</b>中...，在API准备就绪之前，直接与API交互的功能将不可用。
-  used: 使用值
 metricsAction:
   description: 实时查看工作负载监控数据。
   noData: 没有足够的数据绘制图表
@@ -1037,6 +1301,41 @@ metricsAction:
     30d: 30天
 
 metrics:
+  cluster-cpu-usage: CPU使用率
+  cluster-cpu-load: 集群负载
+  cluster-memory-usage: 内存使用率
+  cluster-fs-usage-percent: 磁盘使用率
+  cluster-disk-io: 磁盘I/O
+  cluster-network-io: 网络I/O
+  cluster-network-packet: 网络数据包
+  etcd-db-bytes-sum: 数据库大小
+  etcd-grpc-client: GRPC客户端流量
+  etcd-peer-traffic: 传输流量
+  etcd-raft-proposals: Raft提议
+  etcd-rpc-rate: RPC速率
+  etcd-stream: 活动流
+  etcd-sync-duration: 磁盘同步周期
+  apiserver-request-count: API Server请求速率
+  apiserver-request-latency: API Server请求延迟
+  scheduler-e-2-e-scheduling-latency-seconds-quantile: 调度器e2e调度延迟
+  scheduler-pod-unscheduler: 调度失败的Pod
+  scheduler-total-preemption-attempts: 调度器尝试调度次数
+  controllermanager-queue-depth: 控制器队列深度
+  ingresscontroller-nginx-connection: Ingress控制器连接数
+  ingresscontroller-request-process-time: Ingress控制器请求处理时长
+  node-cpu-load: 节点负载
+  node-cpu-usage: CPU使用率
+  node-memory-usage: 内存使用率
+  node-fs-usage-percent: 磁盘使用率
+  node-disk-io: 磁盘I/O
+  node-network-io: 网络I/O
+  node-network-packet: 网络数据包
+  etcd-leader-change: Leader变更
+  etcd-disk-operate: 磁盘操作
+  fluentd-buffer-queue-length: Fluentd缓存区队列长度
+  fluentd-output-errors: Fluentd输出错误速率
+  fluentd-output-record-number: Fluentd输出速率
+  fluentd-input-record-number: Fluentd输入速率
   workload-cpu-usage: CPU
   workload-disk-io: '磁盘I/O'
   workload-memory-usage-bytes-sum: 内存
@@ -1060,6 +1359,7 @@ metrics:
   istio-request-duration-p99-top10: P99 Request Latency by Service
   istio-request-duration-p90-top10: P90 Request Latency by Service
   istio-request-duration-p50-top10: P50 Request Latency by Service
+
 dnsPage:
   noMatch: 没有匹配当前搜索的记录。
   noData: 没有可以显示的DNS记录。
@@ -2011,7 +2311,7 @@ newStack:
     placeholder: '例如: MyApp Stack'
   files:
     label: 额外的Compose文件
-    addActionLabel: 添加Compose文件
+    addActionLabel: 添加文件
     uploadActionLabel: 从磁盘读取
     namePlaceholder: 文件名
     valuePlaceholder: 文件内容
@@ -2708,7 +3008,7 @@ clusterNew:
       placeholder: '例如: example'
     ssh:
       label: 公共密钥
-      placeholder: "粘贴您的SSH公钥"
+      placeholder: "粘贴SSH公钥"
     security:
       label: 安全
     members:
@@ -2837,7 +3137,7 @@ clusterNew:
       loading: '从Alibaba加载可用区域'
     clusters:
       k8s: Kubernetes
-      managed: 纳管Kubernetes
+      managed: 托管Kubernetes
       label: 集群类型
     master:
       title: Master 节点
@@ -4979,7 +5279,7 @@ formScopedRoles:
 formShareMember:
   add: '添加成员'
   public: '转换为公有 (只读)'
-  helpText: '在分配所有者时，用户必须具有 <a href="/g/security/roles">Create Cluster Template</a> 全局角色，以便创建新的修订。这些权限可以由管理员授予。'
+  helpText: '在分配所有者时，用户必须具有<a href="/g/security/roles">Create Cluster Template</a>全局角色，以便创建新的修订。这些权限可以由管理员授予。'
   table:
     headers:
       name: '名称'
@@ -5951,6 +6251,247 @@ loginSaml:
   keycloak:
     buttonText: "使用Keycloak登录"
 
+loggingPage:
+  targetNav:
+    experimental: 实验性
+    tips:
+      caseA: 当前{pageScope}未启用日志收集功能。
+      caseB: 当前日志收集目标是<code class="text-capitalize">{currentTarget}</code>，点击下面的保存按钮将禁止当前{pageScope}的日志收集。
+      caseC: 当前日志收集目标是<code class="text-capitalize">{currentTarget}</code>。
+      caseD: 点击下面的保存按钮去设置<span class="text-info text-capitalize">{targetType}</span>为日志收集目标服务。
+      caseE: 点击下面的保存按钮来更新<span class="text-info text-capitalize">{targetType}</span>配置。
+      caseF: 没有日志收集目标服务，完成以下设置并保存<code class="text-capitalize">{targetType}</code>为日志收集目标服务。
+  targetTypes:
+    embedded: Embedded
+    elasticsearch: Elasticsearch
+    splunk: Splunk
+    kafka: Kafka
+    syslog: Syslog
+    fluentd: Fluentd
+    disable: 禁用
+  endpoint: 访问地址
+  endpointPlaceholder: '例如: https://192.168.1.10:9200'
+  logging: 日志收集
+  clusterHeader: 集群日志收集
+  projectHeader: 项目日志收集
+  helpText:
+    cluster: 我们将使用fluentd从每个容器收集<b>stdout/stderr</b>日志，以及在每个主机上<code>/var/log/containers/</code>路径下的日志文件，日志将被发送到被选择的目标服务。
+    clusterTarget: 当前日志收集目标是<code class="text-capitalize">{clusterTargetType}</code>。如果项目日志收集启用，日志将被发送到集群目标和项目目标。
+    noClusterTarget: 日志收集默认禁用
+  tags:
+    keyPlaceholder: '例如: foo'
+    valuePlaceholder: '例如: bar'
+    addActionLabel: 添加字段
+  keyValueForm:
+    keyPlaceholder: '例如: 192.168.1.10'
+  targetKafka:
+    addActionLabel: 添加代理
+    host: 主机
+    port: 端口
+  logPreview:
+    header: 日志格式预览
+  additional:
+    header: 其他日志配置
+    fields:
+      header: 自定义Log字段
+      helpText: 以键值对的形式添加自定义字段，以便更好地进行过滤。
+    flushInterval:
+      header: 刷新时间间隔
+      label: 刷新时间间隔
+      placeholder: '例如: 1'
+      sec: 秒
+      helpText: 日志刷新频率
+    includeSystemComponent:
+      label: 包含系统日志
+  advanced:
+    file: 以文件形式编辑
+    cancel: 以表单形式编辑
+
+  elasticsearch:
+    header: Elasticsearch配置
+    endpointHelpText: 输入云端Elacticsearch地址，或者私有部署的Elacticsearch地址。
+    endpointProtocolError: 访问地址应该以"http://"或者"https://"开头。
+    endpointHostError: 请输入主机名或域名。
+    xpack:
+      header: X-Pack安全
+      headerOptional: (可选)
+      helpText: 如果您的Elasticsearch开启了X-Pack内置的本地身份验证功能，请在下面设置用户名和密码。
+      username: 用户名
+      usernamePlaceholder: '例如: John'
+      password: 密码
+      passwordPlaceholder: 密码
+    indexPatterns:
+      header: 索引配置
+      helpText: 配置用于生成Elacticsearch索引的参数。
+      prefix: 前缀
+      prefixPlaceholder: '例如: logstash'
+      dateFormat: '日期格式:'
+      errors:
+        startsWith: '前缀不能以 -, _, + 开始'
+        required: 必须添加前缀
+        invalidCharacters: "前缀不能包含'{char}'"
+
+    generatedIndex: '生成的索引格式为: <code class="text-italic">{esIndex}</code>，默认索引格式为: {indexFormat}。'
+    endpoint:
+      required: 必须配置访问地址。
+  splunk:
+    header: Splunk HTTP事件收集配置
+    helpText: '您可以<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">点击这里</a>找到如何配置Splunk HEC(HTTP事件收集器)的说明。'
+    token: Token
+    tokenPlaceholder: Your Token
+    tokenHelpText: 'Token是允许日志收集程序和HTTP客户端连接到HEC的验证信息，<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector#Configure_HTTP_Event_Collector_on_Splunk_Enterprise" target="_blank">了解详情</a>。'
+    tokenRequired: 必须配置Token。
+    endpointRequired: 必须配置访问地址。
+    source: 日志源
+    sourcePlaceholder: '例如: fluentd'
+    sourceHelpText: '标识事件来源的默认字段，即事件发生的位置，<a href="https://docs.splunk.com/Splexicon:Source" target="_blank">了解详情</a>。'
+    index: Index
+    indexPlaceholder: '例如: main'
+    indexHelpText: '您在此处指定的索引必须在此令牌的允许索引列表中，<a href="https://docs.splunk.com/Splexicon:Index" target="_blank">了解详情</a>。'
+    endpoint:
+      placeholder: '例如: https://192.168.1.10:8088'
+  kafka:
+    header: Kafka配置
+    endpointType: 访问端点类型
+    zookeeper: Zookeeper
+    broker: Broker
+    brokerTypeHelpText: 使用Zookeeper或Broker作为Kafka连接入口点。
+    zookeeperHelpText: Zookeeper用于构建协调、配置管理、master检测、检测kafka集群中的节点更新。
+    brokerHelpText: Kafka集群由一个或多个Broker组成，为每个Broker配置主机和端口。
+    addEndpoint: 访问地址
+    topic:
+      label: 主题
+      required: 主题必须填写
+    topicPlaceholder: '例如: message'
+    topicHelpText: 日志将发送到这个主题。
+    endpoint:
+      required: 必须配置访问地址。
+      broker:
+        placeholder: '例如: https://192.168.1.10:9092'
+      zookeeper:
+        placeholder: '例如: https://192.168.1.10:2181'
+  syslog:
+    endpointPlaceholder: '例如: 192.168.1.10:514'
+    header: Syslog配置
+    endpointHelpText: 在这里输入日志服务器的接入地址，选择TCP将显示SSL证书配置。
+    program: 程序名
+    programPlaceholder: '例如: MyProgram'
+    programHelpText: 日志中的程序名称。
+    severityHelpText: '<p class="text-info text-small">日志的严重性列表可以在这里找到<a href="https://tools.ietf.org/html/rfc5424#section-6.2.1" target="_blank">，了解详情</a>。</p>'
+    severities:
+      emergency: 紧急
+      alert: 警报
+      critical: 危险
+      error: 错误
+      warning: 警告
+      notice: 注意
+      info: Info
+      debug: Debug
+    tokenHelpText: '将Token令牌添加到每个系统日志消息的结构化数据中。对于像<a href="https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/Cloud-Syslog-Source" target="_blank">Sumologic</a>, <a href="https://www.loggly.com/docs/customer-token-authentication-token" target="_blank">Loggly</a>等云日志系统，您可以在其配置页面上生成Token令牌。'
+    endpoint:
+      required: 必须配置访问地址。
+    logSeverity: '日志等级:'
+  fluentd:
+    header: Fluentd配置
+    compress:
+      label: 启用Gzip压缩
+      helpText: 启用Gzip压缩可减少传输数据大小。
+    endpoint:
+      label: 访问地址
+      placeholder: '例如: 192.168.1.10:24224'
+      invalid: 访问地址需要填写端口
+      required: 必须配置访问地址。
+    password:
+      label: 密码
+      placeholder: 用于身份验证的用户名密码
+    sharedKey:
+      label: 共享密钥
+      placeholder: 用于身份验证的共享密钥
+    standby:
+      label: 仅作为备用
+      none: 需要一个非待机访问地址.
+    username:
+      label: 用户名
+      placeholder: 用于身份验证的用户名
+    weight:
+      label: 权重
+      placeholder: 此访问地址的负载平衡权重。
+    addServer: 添加Fluentd服务
+    endpointHostError: 访问地址不能以http或https开头。
+    endpointPortError: 访问地址需要添加端口。
+    removeFluentServers: 删除此Fluentd服务
+    enableTls:
+      label: 启用TLS
+    certificate:
+      label: PEM格式的CA证书
+    hostname:
+      label: 主机名
+      placeholder: 服务器主机名
+  customTarget:
+    type:
+      error: "@type不支持, 你可以选择以下类型: ['elasticsearch', 'splunk_hec', 'remote_syslog', 'kafka_buffered', 'forward']"
+  ssl:
+    sslHeader: "{authType}配置"
+    headerHelp: 输入HTTPS地址或选择TCP开启SSL配置
+    certificate:
+      label: PEM格式的CA证书
+    clientKey:
+      label: 客户端私钥
+    clientCert:
+      label: 客户端证书
+    clientKeyPass:
+      label: 客户端私钥密码
+      password:
+        placeholder: 客户端私钥密码
+    verify:
+      label: SSL校验
+      enabled: '启用'
+      disabled: 禁用
+    sslVersion:
+      label: SSL版本
+    saslType:
+      label: 类型
+      plain: Plain
+      scram: Scram
+    saslUsername:
+      label: 用户名
+      placeholder: '例如: John'
+    saslPassword:
+      label: 密码
+      placeholder: Your Password
+    saslScramMechanism:
+      label: 安全机制
+      sha256: sha256
+      sha512: sha512
+    customTarget:
+      help: 您可以将路径复制到文件中。
+      copyAll: 复制所有键和值。
+
+  dockerRootDir:
+    header: Docker配置
+    label: Docker根目录
+    placeholder: "输入Docker根目录，默认值为{dir}"
+
+  testAction:
+    testing: 测试
+    testOk: 设置已验证
+    testFailed: 出了点问题，请检查输入的信息。
+    test: 测试
+    running: 运行中
+    runOk: 运行成功
+    dryRun: 试运行
+  multiLine:
+    title: 多行配置
+    detail: Concat插件配置选项。
+    enableMultiLineFilter:
+      label: 启用多行过滤
+    multiLineStartRegexp:
+      label: 多行开始正则表达式
+    continueLineRegexp:
+      label: 中间行正则表达式
+    multiLineEndRegexp:
+      label: 多行结束正则表达式
+
 loginUserPass:
   local: 使用本地用户
   externalProvider: 使用{externalName}用户。
@@ -5991,8 +6532,7 @@ newCertificate:
     invalidFormat: 无效的证书
     placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
     protip: 包括全部所需的证书链
-    tooltip: '粘贴用于验证server证书的CA证书，它将生成在kubecfg文件中。 查看<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/options/#authorized-cluster-endpoint" target="blank">
-    >更多信息</a>'
+    tooltip: '粘贴用于验证server证书的CA证书，它将生成在kubecfg文件中。 查看<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/options/#authorized-cluster-endpoint" target="blank">更多信息</a>。'
   certChain:
     label: 证书链
     placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
@@ -6111,15 +6651,13 @@ modalAddCloudKey:
       label: Access Token
       placeholder: 您的DigitalOcean API访问令牌。
       help: |
-        粘贴来自DigitalOcean的
-        <a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications & API</a>。
+        粘贴来自DigitalOcean的<a href="https://cloud.digitalocean.com/settings/api/tokens" target="_blank" rel="nofollow noreferrer noopener">Applications & API</a>。
   linode:
     token:
       label: 访问令牌
       placeholder: 您的Linode API访问令牌
       help: |
-        从Linode粘贴个人访问令牌
-        <a href="https://cloud.linode.com/profile/tokens" target="_blank" rel="nofollow noreferrer noopener">API Tokens</a> screen
+        从Linode粘贴个人访问令牌<a href="https://cloud.linode.com/profile/tokens" target="_blank" rel="nofollow noreferrer noopener">API Tokens</a> screen
     authAccountButton: '下一步: 配置实例'
   vmwarevsphere:
     password:
@@ -7480,11 +8018,6 @@ pagination:
     =0 {没有角色}
     =1 {选中{count} {count, plural, =1 {条角色} other {条角色}}}
     other {当前显示{count}条角色中的{from}到{to}条}}
-  clusterTemplates: |
-    {pages, plural,
-    =0 {No Template Revisions}
-    =1 {{count} {count, plural, =1 {Template Revision} other {Template Revisions}}}
-    other {{from} - {to} of {count} Template Revisions}}
   service: |
     {pages, plural,
     =0{无服务}
@@ -7920,6 +8453,8 @@ action:
   revision: 新修订的默认值
   rollback: 回滚
   rotate: 更新证书
+  rerun: 重新运行
+  run: 运行
   setDefault: 设置为默认值
   setDefaultRevision:
     success:
@@ -8289,3 +8824,914 @@ windowsCluster:
     helpText: '我们将使用fluentd从每个容器中收集stdout/stderr日志，以及收集每个<b>Linux</b>主机<code >/var/log/containers/</code>路径和每个<b>Windows</b>主机<code >c:/var/log/containers/</code>路径下的日志文件，并且可以将日志发送到下面配置的目标日志收集服务。'
   istio: 在Windows集群中不支持Istio。
   pipelines: 在Windows集群中不支持pipelines。
+
+clusterIstioPage:
+  header: Istio
+  enabled: "Istio已启用。为了利用Istio，您需要为每个命名空间启用Istio sidecar自动注入。如果在现有命名空间上启用它，则需要重新部署现有工作负载，以利用sidecar自动注入。"
+  disabled: "Istio尚未启用，请单击“启用”按钮启用它。"
+  notReady: 在当前集群中安装Istio…
+  confirmDisable: "你确定吗?再次单击将禁用Istio"
+  monitoringNotDeployed: "监控仍在部署中。 在确保集群中有足够的资源启用Istio之前，请等待监控部署完成。"
+  disable: 禁用
+  enableActionLabel: 启用
+  version: Istio版本
+  customAnswers:
+    title: 自定义应答
+    detail: 配置自定义的应答。
+  links:
+    kiali:
+      label: Kiali UI
+    jaeger:
+      label: Jaeger UI
+    grafana:
+      label: Grafana UI
+    prometheus:
+      label: Prometheus UI
+  config:
+    header:
+      grafana: Grafana
+      gateway: Ingress网关
+      pilot: Pilot
+      prometheus: Prometheus
+      mixer: Mixer
+      tracing: 跟踪
+    tracingEnabled:
+      label: 启用跟踪
+    grafanaEnabled:
+      label: 启用Grafana
+    grafanaPersistenceEnabled:
+      label: 为Grafana启用持久存储
+    mtlsEnabled:
+      label: 服务到服务双向TLS
+    gatewayEnabled:
+      label: 启用Ingress网关
+    gatewayType:
+      label: Ingress网关的服务类型
+    http2Port:
+      label: Http2端口
+    httpsPort:
+      label: Https端口
+    loadBalancerIP:
+      label: Load Balancer IP
+      placeholder: '例如: 192.0.0.1'
+    prometheusRetention:
+      label: Prometheus数据保留
+      placeholder: '例如: 6h'
+    traceSampling:
+      label: 跟踪抽样比例
+      placeholder: '例如: 1'
+    mixerPolicyEnabled:
+      label: Enable Mixer Policy
+  nodeSelector:
+    addSelectorLabel: 添加选择器
+    helpText: 选择要运行{component}工作负载的节点
+  insufficientSize:
+    total:
+      cpu: 请确保至少有{minCpu} milli cpu可供{action} Istio使用。
+      memory: 请确保您至少有{minMemory} MiB的内存可供{action} Istio使用。
+      all: 请确保至少有{minCpu} milli cpu和{minMemory} MiB内存可供{action} Istio使用。
+    workload:
+      cpu: 请确保至少有一个具有{cpu} milli cpu的节点可用来部署{component}工作负载。
+      memory: 请确保您至少有一个具有{memory} MiB内存的节点可用来部署{component}工作负载。
+      all: 请确保至少有一个节点具有{cpu} milli cpu和{memory} MiB内存，可用来部署{component}工作负载。
+    selectors:
+      cpu: 请确保至少有一个节点将节点选择器与{cpu} milli cpu匹配，以启用{component}工作负载。
+      memory: 请确保至少有一个节点将节点选择器与{memory} MiB内存匹配，以启用{component}工作负载。
+      all: 请确保至少有一个节点与{cpu} milli cpu和{memory} MiB内存匹配，以启用{component}工作负载。
+      unsupported: '不支持值为“true”、“false”或number的节点选择器'
+  telemetryAndPolicy: Telemetry And Policy
+  existingClaim:
+    label: 'Existing Claim for {component}'
+  members:
+    title: 成员访问
+    detail:  控制哪些用户能访问Kiali和Jaeger UI
+  pilot:
+    title: Pilot
+    detail: 配置流量管理
+  mixer:
+    title: Mixer
+    detail: 常规策略和遥测配置。
+  tracing:
+    title: 跟踪
+    detail: 配置跟踪请求。
+  ingress:
+    title: Ingress网关
+    detail: 监控和路由规则配置。
+  allowSystemGroup:
+    'true': 允许<b>所有</b>成员访问Kiali和Jaeger UI。
+    'false': 允许集群所有者和指定的</b>成员访问Kiali和Jaeger UI。
+  goToMonitoring: 'istio的工作需要监控。 如果您想修改这些值，请转到<a href="/c/{clusterId}/monitoring/cluster-setting">监控</a>页面修改并保存。'
+  upgradeMonitoring: '在启用Istio之前，您需要首先将集群监视升级到0.0.4或更高版本。访问<a href="/c/{clusterId}/monitoring/cluster-setting">这里</a>去升级集群监控。'
+  enableMonitoring:
+    label: 启用监控
+istio:
+  refreshGraph: 刷新视图
+  noData: 没有足够的数据来绘制图表
+  period: Period
+  table:
+    template: 模板
+    host: Host
+  kiali: 由Kiali提供支持
+  trafficMonitoring:
+    duration: Last {time}
+  nav:
+    graph: 流量图
+    metrics: 流量指标
+    rules: 流量规则
+    destinationRules:
+      label: 目标规则
+      add: 添加目标规则
+    virtualServices:
+      label: 虚拟服务
+      add: 添加虚拟服务
+rulesPage:
+  new: 添加流量规则
+  noMatch: 没有流量规则匹配当前搜索
+  noData: 当前没有流量规则
+ruleDetailPage:
+  header: "流量规则: {appName}"
+  rules:
+    virtualservices: 虚拟服务
+    serviceentries: 服务条目
+    destinationrules: 目标规则
+    gateways: 网关
+    envoyfilters: Envoy Filters
+  answers:
+    title: Answers
+    detail: Customized answers of this traffic rules
+    variable: 变量
+
+projectIstioPage:
+  info:
+    notEnabled: 'Istio尚未启用。访问<a href="/c/{clusterId}/istio/cluster-setting">这里</a>启用它。'
+    notOwner: "Istio尚未启用。请与集群管理员联系。"
+    noPermission: "您没有配置Istio的权限。"
+
+destinationRulePage:
+  noMatch: 没有目标规则匹配当前搜索
+  noData: 没有配置目标规则。
+  notSupported: 'networking.istio.io/v1alpha3 API在集群中不可用。'
+  table:
+    host:
+      label: Host
+    subsets:
+      label: Subsets
+
+
+cruDestinationRule:
+  title:
+    new: 添加目标规则
+    edit: 编辑目标规则
+    view: "目标规则: {name}"
+  port:
+    label: Port
+    placeholder: '例如: 8080 or myport'
+  host:
+    error: 主机是必需的。
+  name:
+    placeholder: '例如: myrule'
+  loadBalancer:
+    label: Load Balancer
+    detail: 配置负载平衡器算法
+    simple:
+      label: 使用标准的负载平衡算法
+      roundRobin:
+        label: 轮询
+      leastConn:
+        label: 最小请求
+      random:
+        label: 随机
+      passthrough:
+        label: 透传
+    consistentHash:
+      label: 使用一致的基于散列的负载平衡实现软会话关联
+      httpHeaderName:
+        label: HTTP Header Name
+        placeholder: '例如: end-user'
+        error: 必须设置HTTP Header名称。
+      minimumRingSize:
+        label: Minimum Ring Size
+        placeholder: '例如: 1024'
+      httpCookie:
+        name:
+          label: Cookie Name
+          placeholder: '例如: username'
+          error: 需要Cookie名称。
+        path:
+          label: Cookie 路径
+          placeholder: '例如: /'
+        ttl:
+          label: TTL
+          placeholder: '例如: 0s'
+          error: TTL是必需的。
+      mode:
+        label: Hash 模式
+        header:
+          label: 基于特定HTTP头的哈希
+        cookie:
+          label: 基于HTTP cookie的Hash
+        sourceIp:
+          label: 基于源IP地址的哈希
+
+  connectionPool:
+    label: 连接池
+    detail: 配置到上游服务的连接量
+    http1MaxPendingRequests:
+      label: HTTP1最大等待请求
+      placeholder: '例如: 1024'
+      help: 到目标端的最大请求等待数
+    http2MaxRequests:
+      label: HTTP2最大等待请求
+      placeholder: '例如: 1024'
+      help: 到后端请求的最大数量。
+    maxRequestsPerConnection:
+      label: 每个连接的HTTP最大请求
+      placeholder: '例如: 10'
+      help: 到后端连接的每个连接的最大请求数。将此参数设置为1将禁用keep alive。
+    maxRetries:
+      label: HTTP最大重试
+      placeholder: '例如: 1024'
+      help: 在给定时间内，集群中所有主机都可以执行的最大重试次数。
+    connectTimeout:
+      label: TCP连接超时
+      placeholder: '例如: 30ms'
+      help: TCP连接超时。
+    maxConnections:
+      label: TCP最大连接数
+      placeholder: '例如: 1024'
+      help: '到目标主机的HTTP1/TCP连接的最大数量。'
+  outlierDetection:
+    label: 异常值检测
+    detail: 配置从负载平衡池中移除不健康主机
+    baseEjectionTime:
+      label: 基本驱逐时间
+      placeholder: '例如: 30s'
+      help: 最小驱逐时间. A host will remain ejected for a period equal to the product of minimum ejection duration and the number of times the host has been ejected.
+    consecutiveErrors:
+      label: 连续错误
+      placeholder: '例如: 5'
+      help: 从连接池中弹出主机之前的错误数。
+    interval:
+      label: 时间间隔
+      placeholder: '例如: 10s'
+      help: Time interval between ejection sweep analysis.
+    maxEjectionPercent:
+      label: Max Ejection Percent
+      placeholder: '例如: 10'
+      help: Maximum % of hosts in the load balancing pool for the upstream service that can be ejected.
+  subsets:
+    label: Subsets
+    noSubsets: No Subsets
+    addSubsetLabel: Add Subset
+    removeSubsetLabel: Remove Subset
+    name:
+      label: Name
+      placeholder: '例如: v1'
+      error: Subset Name is required.
+    labels:
+      error: 请为子集至少设置一个标签。
+  tls:
+    label: TLS
+    detail: 为连接到上游服务配置TLS相关设置
+    mode:
+      label: TLS模式
+      none:
+        label: 无
+      istio:
+        label: Istio Mutual - Secure connections to the upstream using mutual TLS by Istio
+      disable:
+        label: 禁用-不要设置到上游端点的TLS连接
+      simple:
+        label: 简单-创建到上游端点的TLS连接
+      mutual:
+        label: Mutual - 通过提供客户端证书进行身份验证，使用双向TLS安全连接到上游
+    clientCertificate:
+      label: 客户端证书(Client certificate)
+      placeholder: '例如: /etc/certs/myclientcert.pem'
+      error: 必须设置客户端证书。
+    privateKey:
+      label: 私钥(private key)
+      placeholder: '例如: /etc/certs/client_private_key.pem'
+      error: 必须设置私钥。
+    caCertificates:
+      label: CA证书(CA certificate)
+      placeholder: '例如: /etc/certs/rootcacerts.pem'
+    sni:
+      label: SNI
+      placeholder: '例如: nginx.example.com'
+    subjectAltNames:
+      label: Subject Alternative Names
+      placeholder: '例如: example.com'
+      add: Add Subject Alternative Name
+
+virtualServicePage:
+  noMatch: 没有虚拟服务匹配当前搜索
+  noData: 没有要定义的虚拟服务
+  notSupported: networking.istio.io/v1alpha3 API在集群中不可用。
+  table:
+    hosts:
+      label: Hosts
+
+cruVirtualService:
+  title:
+    new: 添加虚拟服务
+    edit: 编辑虚拟服务
+    view: "虚拟服务: {name}"
+  name:
+    placeholder: '例如: myservice'
+  hosts:
+    label: 主机
+    add: 添加主机
+    error: 请选择或输入至少一个主机
+  gateways:
+    label: 网关
+    add: 添加网关
+    placeholder: '例如: mygateway'
+  http:
+    routes:
+      label: HTTP 路由
+      noRoutes: 没有http路由
+      addRouteLabel: 添加http路由
+      removeRouteLabel: 删除http路由
+      moveUp: 向上移动
+      moveDown: 向下移动
+      timeout:
+        label: 超时
+        placeholder: '例如: 5s'
+      faultInjection:
+        abort:
+          label: 故障注入中止
+          httpStatus:
+            label: HTTP 状态码
+            placeholder: '例如: 400'
+          percent:
+            label: 百分比
+            placeholder: '例如: 8'
+        delay:
+          label: 故障注入延迟
+          fixedDelay:
+            label: 固定延迟
+            placeholder: '例如: 5s'
+          percent:
+            label: 百分比
+            placeholder: '例如: 8'
+      mirror:
+        label: 监控
+        host:
+          label: Host
+        subset:
+          label: Subset
+          placeholder: '例如: v2'
+        port:
+          label: Port
+          placeholder: '例如: 8080 or myport'
+      retries:
+        label: Retries
+        attempts:
+          label: Attempts
+          placeholder: '例如: 3'
+        perTryTimeout:
+          label: 每次重试超时
+          placeholder: '例如: 2s'
+      redirect:
+        label: 重定向
+        uri:
+          label: URI
+          placeholder: '例如: /v1/bookRatings'
+        authority:
+          label: Authority
+          placeholder: '例如: newratings.default.svc.cluster.local'
+        error: 请不要同时配置目标地址和重定向。
+      rewrite:
+        label: 地址重写
+        uri:
+          label: URI
+          placeholder: '例如: /v1/bookRatings'
+        authority:
+          label: Authority
+          placeholder: '例如: newratings.default.svc.cluster.local'
+      destination:
+        addDestinationLabel: 增加目标地址
+        noDestinations: 没有目标地址
+        port:
+          label: Port
+          placeholder: '例如: 8080 or myport'
+        weight:
+          label: 权重
+          placeholder: '例如: 50'
+          error: 必须设置权重。
+        subset:
+          label: Subset
+          placeholder: '例如: v1'
+          error: Subset is required
+        host:
+          label: Host
+          error: 必须设置Host。
+      matches:
+        error: 请为匹配条件输入至少一个键值对
+        showMatch: 指定此路由的匹配规则
+        addLabel: 添加其他匹配规则
+        removeLabel: 删除匹配规则
+        noData: 没有匹配规则
+        addMatchLabel: 添加匹配条件
+        noMatches: 没有匹配条件
+        port:
+          label: Port
+          placeholder: '例如: 8080'
+        sourceLabels:
+          label: 源标签
+          addActionLabel: 添加源标签
+        type:
+          label: 匹配类型
+          uri: URI
+          authority: Authority
+          method: Method
+          scheme: Scheme
+          headers: Headers
+        key:
+          label: 键
+          placeholder: '例如: end-user'
+        condition:
+          label: 条件
+          exact: 精确匹配
+          prefix: 前缀匹配
+          regex: 正则表达式匹配
+        value:
+          label: 值
+          uri:
+            exact: '例如: /ratings/v2/'
+            prefix: '例如: /ratings'
+            regex: '例如: /ratings.*'
+          authority:
+            exact: '例如: eu.bookinfo.com'
+            prefix: '例如: eu'
+            regex: '例如: ".*?[.]eu[.]bookinfo[.]com"'
+          method:
+            exact: '例如: GET'
+            prefix: '例如: GET'
+            regex: '例如: ^.*(GET|POST).*$'
+          scheme:
+            exact: '例如: http'
+            prefix: '例如: http'
+            regex: '例如: h.*'
+          headers:
+            exact: '例如: jason'
+            prefix: '例如: jason'
+            regex: '例如: ja.*'
+
+validationsList:
+  title: 验证检查
+  detail: 当前{resourceType}的验证检查
+  noPermission: 您没有权限查看验证。请联系您的集群所有者，让Kiali访问您。
+  table:
+    path: 路径
+    severity: 严重程度
+    message: 消息
+  noData: 没有发现问题
+  noMatch: 没有问题匹配当前搜索
+
+modalDeleteIstio:
+  title: '您确定要禁用:'
+  onlyIstio:
+    true: 仅Istio
+    false: 包括Istio和Monitoring
+  disable: 禁用
+  disabling: 禁用中
+
+
+ingressResponse:
+  host: 主机
+  path: 路径
+  responseTime: 响应时间
+  noData: 没有数据
+  noMatch: 没有记录匹配当前搜索
+  detail: Upstream响应时长（排序前十位）
+  title: Ingress Upstream响应时长
+
+etcd:
+  hasLeader:
+    label: Etcd是否有Leader
+  leaderChange:
+    label: Leader变更次数
+  failedProposals:
+    label: 失败提议次数
+
+clusterDashboard:
+  systemProject: "这是包含所有Kubernetes和{appName}系统命名空间的系统项目，修改当前项目中的资源配置可能会导致系统无法正常运行。"
+  notActive: 当前集群<b>{state}</b>中...
+  notReady: 当前集群<b>{state}</b>中...，在API准备就绪之前，直接与API交互的功能将不可用。
+  used: 使用值
+  title: 仪表盘
+  sections:
+    cluster: 集群监控
+    etcd: Etcd监控
+    k8s: Kubernetes组件监控
+    rancher: '{appName}日志功能监控'
+    node: 节点监控
+  noRancherComponents: '{appName}日志功能未启用或者没有足够的数据绘制图表。'
+  cpu: CPU
+  memory: Memory
+  pods: Pods
+  value: 值
+  more: 更多
+  clusterNotReady: 集群中的图形信息目前不可用。
+  subtitle:
+    reserved: "已预留{total}中的{used}"
+    used: "已使用{total}中的{used}"
+  enableMonitoring: 启用监控并查看实时监控指标
+  upgradeAvailable: "升级监控组件到{version}版本"
+  monitoringNotReady: 监控API未就绪
+  node: Nodes
+  etcd: Etcd
+  scheduler: Scheduler
+  controllerManager: Controller Manager
+  alert:
+    node: "警告: 节点{node}未激活"
+    component: "警告: 组件{component}不健康"
+    nodeCondition:
+      outOfDisk: "警告: 节点 {Node} 磁盘空间不足。"
+      diskPressure: "警告: 节点 {Node} 有磁盘压力。"
+      memoryPressure: "警告: 节点 {Node} 有内存压力。"
+  liveTitle: "已使用{total}中的{used}"
+  reserved: 已预留
+
+monitoringPage:
+  update: 更新监控配置
+  version: 监控组件版本
+  upgrade: 升级监控组件到最新版本 {version}。
+  upgradeAvailable: "(最新版本{version})"
+  confirmDisable: "你确定吗？再次点击将会禁用监控。"
+  disable: 禁用监控
+  enableActionLabel: 启用监控
+  systemProject: "如果您想为系统项目中的Pod收集自定义指标，请直接启用集群级别监控。"
+  noPermission: "您没有权限配置{level}级别监控。"
+  toUpdate:
+    cluster: 集群级别监控已启用。
+    project: 项目级别监控已启用。
+  insufficientSize:
+    prometheus:
+      cpu: 请确保你至少有一个节点有{cpu} milli CPUs 可用来激活Prometheus工作负载。
+      memory: 请确保你至少有一个节点有{memory} MiB 内存可用来激活Prometheus工作负载。
+      all: 请确保你至少有一个节点有{cpu} milli CPUs和{memory} MiB 内存可用来激活Prometheus工作负载。
+    selectors:
+      cpu: 请确保你至少有一个匹配节点选择器的节点有{cpu} milli CPUs 可用来激活Prometheus工作负载。
+      memory: 请确保你至少有一个匹配节点选择器的节点有{memory} MiB 内存可用来激活Prometheus工作负载。
+      all: 请确保你至少有一个匹配节点选择器的节点有{cpu} milli CPUs和{memory} MiB 内存可用来激活Prometheus工作负载。
+    total:
+      cpu: 请确保你至少有{cpu} milli CPUs 可用来激活监控。
+      memory: 请确保你至少有{memory} MiB 内存可用来激活监控。
+      all: 请确保你至少有{cpu} milli CPUs和{memory} MiB 内存可用来激活监控。
+  clusterNotEnabled: 集群级别监控未启用。将只采集自定义指标。
+  prometheus: 监控尚未启用，点击下面的保存按钮去启用监控。
+  resourceLimitsHelp: '启用集群监视时，需要确保工作节点和Prometheus pod具有足够的资源。请访问<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-admin/tools/monitoring/#resource-consumption" target="_blank" rel="nofollow noreferrer">Rancher docs</a>了解建议的资源限制。'
+  config:
+    types:
+      none: 无
+      prometheus: Prometheus
+    header: Prometheus 配置
+    prometheus:
+      cpuLimit:
+        label: Prometheus CPU限制
+        placeholder: '例如: 1000'
+        unit: milli CPUs
+      cpuRequest:
+        label: Prometheus CPU预留
+        placeholder: '例如: 1000'
+        unit: milli CPUs
+      memoryLimit:
+        label: Prometheus 内存限制
+        placeholder: '例如: 1000'
+      memoryRequest:
+        label: Prometheus 内存预留
+        placeholder: '例如: 1000'
+      enablePersistence:
+        label: 为Prometheus启用持久化存储
+      size:
+        label: Prometheus持久化存储大小
+        placeholder: '例如: 50Gi'
+      storageClass:
+        label: Prometheus默认存储类
+    grafana:
+      enablePersistence:
+        label: 为Grafana启用持久化存储
+      size:
+        label: Grafana持久化存储大小
+        placeholder: '例如: 10Gi'
+      storageClass:
+        label: Grafana默认存储类
+    retention:
+      label: 数据保存时间
+    storageClass:
+      label: 存储类
+    operator:
+      memoryLimit:
+        label: Prometheus Operator 内存限制
+        placeholder: '例如: 500'
+    nodeexporter:
+      label: Node Exporter主机端口
+      enable: 启用Node Exporter
+      cpuLimit:
+        label: Node Exporter CPU限制
+        placeholder: '例如: 200'
+        unit: milli CPUs
+      memoryLimit:
+        label: Node Exporter 内存限制
+        placeholder: '例如: 200'
+  nodeSelector:
+    addSelectorLabel: 添加选择器
+    helpText: 选择部署监控相关的工作负载所运行的节点。
+  cluster:
+    title: 集群监控配置
+    disabled: 当前集群监控尚未启用。
+    toDisable: 监控已启用。点击下面的保存按钮来禁用当前集群的监控。
+  project:
+    title: 项目监控配置
+    disabled: 当前项目监控尚未启用。
+    toDisable: 监控已启用。点击下面的保存按钮来禁用当前项目的监控。
+  errors:
+    disableIstioFirst: '在禁用集群监控之前，需要先禁用Istio。'
+
+pipelinesPage:
+  table:
+    status: 状态
+    noData: 没有配置流水线
+    noMatch: 没有符合当前搜索的流水线规则
+  pipelines: 流水线
+  lastActivity: 最后运行
+
+pipelinesSetting:
+  globalConfigChangeLabel: 使用OAuth应用程序去认证
+  customConfigChangeLabel: 使用另一个OAuthe应用程序
+  userGlobalConfig: GitHub身份验证已启用，您可以使用它来直接启用Pipline。
+  gitAuthentication: Git验证
+  authenticateWithGit: 用Git进行身份验证
+  authenticatedUsers: 已授权的用户
+  sureToDisableOAuth: 您确定要取消授权吗？
+  disableOAuth: 取消授权
+  dataClear: 清除数据
+  resetData: 重置所有与流水线相关的数据
+  clearing: 清除中
+  sureToClearData: 确定要清除数据吗？
+  clearData: 清除数据
+  error:
+    limit: 保存限制和预留发生错误
+  info:
+    noPermission: "您没有配置流水线的权限。"
+
+repositories:
+  header: 代码库
+  enable: 设置代码库
+  message: 选择示例代码库或者使用您自己的代码库来设置流水线。
+  table:
+    repository: 代码库
+    noData: 没有任何代码库
+    noMatch: 没有代码库符合当前搜索
+
+newPipeline:
+  steps:
+    label: 流水线配置
+  save: 保存
+
+newPipelineStage:
+  errors:
+    name:
+      required: 请输入名称。
+  header:
+    create: 添加阶段
+    edit: 编辑阶段
+  name:
+    placeholder: "例如: compile"
+  addStep: 添加步骤
+  trigger:
+    webhook: 推送
+    webhookPR: 拉取请求
+    webhookTag: 标签
+
+newPipelineStep:
+  header:
+    create: 添加步骤
+    edit: 编辑步骤
+  stepType:
+    label: 步骤类型
+    image: 基础镜像
+    env: 环境变量
+    enableBranch: 设置流水线
+    publishCatalog:
+      label: 发布应用模版
+      secret:
+        label: 密文
+        missingKey: 所选的密文没有{key}字段.
+      auth:
+        http: '密文中的<code>USERNAME</code>和<code>PASSWORD</code>将被作为用户名和密码。'
+        ssh: '密文中的<code>DEPLOY_KEY</code>将被作为Deploy Key'
+      stepName: 发布应用模版
+      targets:
+        label: 协议
+        http: 通过HTTP协议发布到Git
+        ssh: 通过SSH协议发布到Git
+      path:
+        label: Chart目录
+        placeholder: '例如: ./charts/wordpress/latest'
+        helpText: '代码库中<code style="padding: 2px 5px;">Chart.yaml</code>所在的目录'
+      catalogTemplate:
+        label: 应用模版名称
+        placeholder: '例如: wordpress'
+        helpText: 所发布应用模版的名称。
+      version:
+        label: 应用模版版本
+        placeholder: '例如: latest'
+        helpText: 所发布应用模版的版本。
+      gitUrl:
+        label: Git地址
+        placeholder:
+          ssh: '例如: git@github.com:myrepo/charts.git'
+          http: '例如: https://github.com/myrepo/charts.git'
+        helpText: 把应用模版发布到这个Git地址。
+        error: Git地址必须以http或https开头。
+      gitBranch:
+        label: Git分支
+        placeholder: '例如: dev'
+        helpText: 把应用模版发布到这个Git分支。
+      gitAuthor:
+        label: 作者
+        placeholder: '例如: user'
+        helpText: 提交信息中所包含的作者信息。
+      gitEmail:
+        label: 作者邮箱
+        placeholder: user@example.com
+        helpText: 提交信息中所包含的作者邮箱信息。
+
+
+    applyApp:
+      label: 部署应用
+      stepName: 部署应用
+      catalog:
+        label: 应用商店
+      catalogTemplate:
+        label: 应用模版
+        helpText: 你可以选择已有应用模版或者输入新的模版。
+      version:
+        label: 模版版本
+        helpText: 你可以选择已有版本或者输入新的版本。
+      name:
+        label: 应用名称
+        placeholder: '例如: myapp'
+      targetNamespace:
+        label: 命名空间
+        helpText: 部署应用的命名空间。
+
+    applyYaml:
+      label: 部署YAML
+      yaml: YAML路径
+      env:
+        header: 环境变量
+        addActionLabel: 添加变量
+        keyPlaceholder: IMAGE_TAG
+      errors:
+        path:
+          required: 请输入YAML路径。
+    scm:
+      noYaml: 代码库中没有发现<code>.rancher-pipeline.yml</code>文件。
+      demoGroup: 示例代码库
+      selectRepository: 代码库
+      add: 选择代码库
+      refresh: 刷新代码库
+      user: 用户
+      trigger: 流水线触发
+      noWebhook: 没有设置代码库Webhook的权限
+    build:
+      imageName:
+        placeholder: '例如: example/app:v1'
+      errors:
+        tag:
+          required: 请输入镜像名称
+        dockerfilePath:
+          required: 请输入Dockerfile的路径。
+        registry:
+          required: 请选择镜像仓库。
+      noRegistry: 没有配置镜像仓库。您可以点击<a href="{route}" target="_blank" rel="nofollow noreferrer">这里</a>配置镜像仓库。
+      pushRemote: 推送镜像到远端镜像仓库。
+      label: 构建并发布镜像
+      dockerFilePath: Dockerfile路径
+      buildContext: 构建上下文
+    task:
+      label: 运行脚本
+      shellScript: 脚本
+      customEntryPoint: 自定义EntryPoint
+      secret: 从密文中注入环境变量
+      errors:
+        image:
+          required: 请输入基础镜像。
+        shellScript:
+          required: 请输入要运行的脚本。
+      privileged:
+        label: 以特权模式运行该步骤。
+      shell:
+        label: 脚本
+      command:
+        label: 命令
+        placeholder: EntryPoint的参数
+      entryPoint:
+        label: EntryPoint
+        placeholder: 该项留空将使用默认的EntryPoint
+
+pipelineDetailPage:
+  header: '构建项目: {name}'
+  repository: '代码库:'
+  lastRun: 最后运行
+  triggered: '触发时间'
+  commitMessage: 提交信息
+  activity:
+    title: 构建记录
+    detail: 流水线的历史构建记录
+    table:
+      noData: 没有任何运行任务。
+      noMatch: 没有运行任务符合当前搜索。
+      status: 状态
+      branch: '分支:'
+      runNumber: 运行编号
+      commit: 提交信息
+      triggered: 触发时间
+
+runPipeline:
+  title: '运行{name}'
+  noBranch: '该代码库没有发现<code>.rancher-pipeline.yml</code>文件。您可以点击<b>编辑配置</b>通过向导的方式配置流水线，也可以点击<b>查看/编辑YAML</b>直接修改配置。'
+  branch:
+    label: '分支'
+
+pipelineSetting:
+  title: '流水线设置"{name}"'
+
+buildDetailPage:
+  header: '流水线运行: #{name}'
+  duration: 构建时间
+  stillRunning: 仍在运行
+  log:
+    title: 详细日志
+    detail: 当前流水线运行的详细日志。
+    waiting: 请等待...
+    loading: 加载中...
+
+
+enablePipeline:
+  header: 启用代码库认证
+  configNow: 立即设置
+  helpText:
+    代码库认证尚未开启,需要先开启代码库认证。
+  noPermission:
+    代码库认证尚未开启,需要联系项目管理员设置认证。
+
+editYamlPipeline:
+  title: '查看/编辑YAML{name}'
+  branch:
+    label: '分支'
+
+editPipelineConfig:
+  header: 修改流水线配置
+  pushToReop: 将如下的流水线配置自动推送到远端代码库。
+  download: 仅下载流水线配置。
+  timeout:
+    label: 超时时间
+    helpText: 如果构建在该时间内没有执行完成，则终止本次构建。
+pipelineSelector:
+  header: 触发规则
+  table:
+    type: 类型
+    value: 值
+  title:
+    include: '当满足条件时运行该{type}'
+    exclude: '当满足条件时不运行该{type}'
+  addRule: 添加规则
+  branch: 分支
+  event: 事件
+  pr: 拉取请求
+  push: 推送
+  tag: Tag
+
+fromSecret:
+  addFrom: 从密文中添加
+  secret:
+    label: 密文
+  prefixOrKey:
+    label: 键
+  prefix:
+    label: 别名
+  keyLabel: 变量
+  keyPlaceholder: '例如: Foo'
+  valueLabel: 值
+  valuePlaceholder: '例如: bar'
+
+pipelineNotification:
+  header: 通知
+  when: 当编译状态为
+  condition:
+    success:
+      label: 成功
+    changed:
+      label: 改变
+    failed:
+      label: 失败
+    required: 编译状态必选
+  recipients:
+    required: 接受者必填
+  asMessage: 发送信息到
