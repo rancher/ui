@@ -53,9 +53,9 @@ export default Resource.extend({
       const roleTemplates = res.filter((r) => r.canRemove)
 
       roleTemplates.map((r) => {
-        const { roleTemplateIds = [] } = r
+        const { roleTemplateIds = [] } = r;
 
-        roleTemplateIds.map((id) => {
+        (roleTemplateIds || []).map((id) => {
           if (id === this.id) {
             canDelete = false
             roleNames.pushObject(r.name)
