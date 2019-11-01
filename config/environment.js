@@ -5,7 +5,7 @@ var YAML = require('yamljs');
 
 var packageVersion = process.env.DRONE_TAG || pkg.version;
 
-if (packageVersion.includes('v')) {
+if (packageVersion.startsWith('v')) {
   packageVersion = packageVersion.slice(1);
 }
 
