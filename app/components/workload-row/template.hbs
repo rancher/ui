@@ -21,24 +21,24 @@
   {{#if showImage}}
     <td data-title="{{dt.image}}" class="clip top-half">
       {{#tooltip-element
-          type="tooltip-basic"
-          tooltipTemplate="tooltip-multi-lines"
-          model=model.displayImages
-          inlineBlock=true
+         type="tooltip-basic"
+         tooltipTemplate="tooltip-multi-lines"
+         model=model.displayImages
+         inlineBlock=true
       }}
         <span class="text-small">{{model.displayImage}}</span>
       {{/tooltip-element}}
       <p data-title="{{t "generic.details"}}" class="text-small text-muted m-0 clip">
         {{#if subMatches}}
           {{#if (eq (get subMatches model.id) 0)}}
-            {{t "pagination.podNoSubset" count=model.pods.length htmlSafe=true}}
-          {{else if (lt (get subMatches model.id) model.pods.length)}}
-            {{t "pagination.podHighlightSubset" subset=(get subMatches model.id) count=model.pods.length htmlSafe=true}}
+            {{t "pagination.podNoSubset" count=podCount htmlSafe=true}}
+          {{else if (lt (get subMatches model.id) podCount)}}
+            {{t "pagination.podHighlightSubset" subset=(get subMatches model.id) count=podCount htmlSafe=true}}
           {{else}}
-            <b>{{t "pagination.pod" pages=1 count=model.pods.length}}</b>
+            <b>{{t "pagination.pod" pages=1 count=podCount}}</b>
           {{/if}}
         {{else}}
-          {{t "pagination.pod" pages=1 count=(concat model.pods.length "")}}
+          {{t "pagination.pod" pages=1 count=(concat podCount "")}}
         {{/if}} /
         {{t "generic.createdDate"
           date=(date-from-now model.created)
@@ -51,11 +51,11 @@
 
   <td data-title="{{dt.scale}}" class="text-center">
     {{progress-bar-multi
-        classNames="mt-5"
-        labelKey="state"
-        valueKey="count"
-        values=model.podStates.byColor
-        tooltipValues=model.podStates.byName
+      classNames="mt-5"
+      labelKey="state"
+      valueKey="count"
+      values=model.podStates.byColor
+      tooltipValues=model.podStates.byName
     }}
     <small class="text-muted">
       {{model.displayScale}}
@@ -82,8 +82,8 @@
     <td class="text-center">
       {{#if (and expanded model.canScale)}}
         <div class="btn-group-xs bg-default scale-arrow">
-        <button class="btn btn-xs bg-primary" {{action "scaleDown" target=model}} disabled={{not model.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
-        <button class="btn btn-xs bg-primary" {{action "scaleUp" target=model}} disabled={{not model.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
+          <button class="btn btn-xs bg-primary" {{action "scaleDown" target=model}} disabled={{not model.canScaleDown}}><i class="icon icon-minus icon-fw"/></button>
+          <button class="btn btn-xs bg-primary" {{action "scaleUp" target=model}} disabled={{not model.canScaleUp}}><i class="icon icon-plus icon-fw"/></button>
         </div>
       {{/if}}
     </td>

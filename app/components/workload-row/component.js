@@ -2,9 +2,10 @@ import { or } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from './template';
 import { inject as service } from '@ember/service'
+import { computed } from '@ember/object';
 
 export default Component.extend({
-  scope:          service(),
+  scope:             service(),
   session:           service(),
 
   layout,
@@ -18,6 +19,7 @@ export default Component.extend({
   showImage:         true,
 
   showLabelRow:      or('model.displayUserLabelStrings.length'),
+
   actions:      {
     toggle() {
       if (this.toggle) {
@@ -25,4 +27,10 @@ export default Component.extend({
       }
     },
   },
+
+  podCount: computed('model.pods.[]', function() {
+    const { pods = [] } = this.model;
+
+    return pods.length;
+  }),
 });
