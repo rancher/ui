@@ -1,0 +1,76 @@
+{{#if keyValuePairs.length}}
+    <table class="table fixed no-lines">
+        <thead>
+            <tr class="hidden-sm">
+                <th>{{t keyLabel}}</th>
+                <th width="30">&nbsp;</th>
+                <th>{{t valueLabel}}</th>
+                <th width="10">&nbsp;</th>
+                <th width="30">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each selections as |selection index|}}
+            <tr>
+                <td data-title="{{selection.label}}">
+                    {{selection.label}}
+                </td>
+                <td class="valign-top text-center">{{t "formKeyValue.separator"}}</td>
+                <td data-title="{{selection.value}}">
+                    {{input class="form-control input-sm value" spellcheck="false" type="text" value=selection.value}}
+                </td>
+                <td>&nbsp;</td>
+                <td class="valign-top text-right">
+                    <button
+                        class="btn bg-primary btn-sm"
+                        {{action "onRemove" index}}>
+                        <i class="icon icon-minus"/>
+                        <span class="sr-only">
+                        {{t "generic.remove"}}
+                        </span>
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+            {{#if (and (not (eq keyValuePairs.length 0)) (not (eq filteredKeyContent.length 0)))}}
+            <tr>
+                <td data-title="{{lastValue.key}}">
+                    <NewSelect
+                    @selectFirstValueOnStart={{true}}
+                    @class="input-sm value"
+                    @content={{filteredKeyContent}}
+                    @value={{lastValue.key}}
+                    />
+                </td>
+                <td class="valign-top text-center">{{t "formKeyValue.separator"}}</td>
+                <td data-title="{{lastValue.value}}">
+                    {{input class="form-control input-sm value" spellcheck="false" type="text" value=lastValue.value}}
+                </td>
+                <td>&nbsp;</td>
+                <td class="valign-top text-right">
+                    <button
+                        class="btn bg-primary btn-sm"
+                        {{action "onRemove" lastIndex}}>
+                        <i class="icon icon-minus"/>
+                        <span class="sr-only">
+                        {{t "generic.remove"}}
+                        </span>
+                    </button>
+                </td>
+            </tr>
+            {{/if}}
+        </tbody>
+    </table>
+{{/if}}
+<button
+    class={{addButtonClass}}
+    {{action "onAdd"}}
+    disabled={{not canAddMore}}
+>
+    <span class="darken">
+        <i class="icon icon-plus text-small"/>
+    </span>
+    <span>
+        {{t addActionLabel}}
+    </span>
+</button>
