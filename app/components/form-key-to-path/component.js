@@ -135,7 +135,7 @@ export default Component.extend({
     if (configMapName) {
       const configMap = allConfigMaps.findBy('name', configMapName);
 
-      if (configMap) {
+      if (configMap && configMap.data) {
         set(this, 'keys', Object.keys(configMap.data).map((k) => ({
           label: k,
           value: k,
