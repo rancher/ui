@@ -58,11 +58,11 @@
 {{#accordion-list as |al expandFn|}}
   {{#unless istio}}
     {{#accordion-list-item
-      title=(t "newCatalog.appInfo")
-      detail=(t "newCatalog.appInfoDetail")
-      expandAll=al.expandAll
-      expand=(action expandFn)
-      expanded=detailExpanded
+       title=(t "newCatalog.appInfo")
+       detail=(t "newCatalog.appInfoDetail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expanded=detailExpanded
     }}
       <div class="row">
         {{#if readmeContent}}
@@ -141,6 +141,45 @@
             registerHook=(action "registerHook")
           }}
         {{/if}}
+      </div>
+    </div>
+
+    <div class="over-hr">
+      <span>
+        {{t "newCatalog.helm.options.label"}}
+      </span>
+    </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "newCatalog.helm.options.wait.label"}}
+        </label>
+        {{schema/input-boolean
+          value=catalogApp.wait
+          classNames="form-control"
+        }}
+        <p class="help-block">
+          {{t "newCatalog.helm.options.wait.help"}}
+        </p>
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "newCatalog.helm.options.timeout.label"}}
+        </label>
+        <div class="input-group">
+          {{input-integer
+            value=catalogApp.timeout
+            min=1
+            classNames="form-control"
+          }}
+          <span class="input-group-addon bg-default">
+            {{t "generic.seconds"}}
+          </span>
+        </div>
+        <p class="help-block">
+          {{t "newCatalog.helm.options.timeout.help"}}
+        </p>
       </div>
     </div>
 
