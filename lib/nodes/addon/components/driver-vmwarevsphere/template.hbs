@@ -316,13 +316,12 @@
      expand=(action expandFn)
      expandOnInit=true
   }}
-    {{form-key-value
-        allowEmptyValue=false
-        keyContent=customAttributeContent
-        initialArray=initialCustomAttributes
-        changedArray=(action "customAttributesChanged")
-        addActionLabel="nodeDriver.vmwarevsphere.customAttributes.addActionLabel"
-      }}
+    <FormContextualKeyValue
+      @keyContent={{customAttributeKeyContent}}
+      @keyContentFilter={{action "customAttributeKeyContentFilter"}}
+      @keyValuePairs={{customAttribute}}
+      @addActionLabel="nodeDriver.vmwarevsphere.customAttributes.addActionLabel"
+    />
   {{/accordion-list-item}}
 
   {{#accordion-list-item
