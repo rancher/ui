@@ -46,10 +46,13 @@ export default Route.extend({
 
     if (clusterTemplateRevisionId) {
       if (clusterTemplateRevisions) {
-        let ctr  = null;
+        let ctr               = null;
+        const { queryParams } = transition.to;
 
-        if (transition.queryParams && transition.queryParams.clusterTemplateRevision) {
-          clusterTemplateRevisionId = transition.queryParams.clusterTemplateRevision;
+        if (queryParams && queryParams.clusterTemplateRevision) {
+          clusterTemplateRevisionId = queryParams.clusterTemplateRevision;
+
+          set(cluster, 'clusterTemplateRevisionId', clusterTemplateRevisionId);
         }
 
         ctr  = clusterTemplateRevisions.findBy('id', clusterTemplateRevisionId);
