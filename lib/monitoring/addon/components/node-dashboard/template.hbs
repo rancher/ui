@@ -1,29 +1,47 @@
 <div class="row banner bg-info basics">
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'hostsPage.hostPage.ipAddress'}}:</label>
-    <div class="inline-block">{{node-ip model=model.node textMuted=false}}</div>
+    <label class="acc-label vertical-middle p-0">
+      {{t "hostsPage.hostPage.ipAddress"}}:
+    </label>
+    <div class="inline-block">
+      {{node-ip model=model.node textMuted=false}}
+    </div>
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'hostsPage.hostPage.dockerVersion'}}:</label>
-    {{model.node.info.os.dockerVersion}}
+    <label class="acc-label vertical-middle p-0">
+      {{#if model.node.isContainerD}}
+        {{t "hostsPage.hostPage.containerDVersion"}}:
+      {{else}}
+        {{t "hostsPage.hostPage.dockerVersion"}}:
+      {{/if}}
+    </label>
+    {{model.node.versionBlurb}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'generic.created'}}:</label>
+    <label class="acc-label vertical-middle p-0">
+      {{t "generic.created"}}:
+    </label>
     {{date-calendar model.node.created}}
   </div>
 </div>
 
 <div class="row banner bg-info basics">
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'hostsPage.hostPage.kubeletVersion'}}:</label>
+    <label class="acc-label vertical-middle p-0">
+      {{t "hostsPage.hostPage.kubeletVersion"}}:
+    </label>
     {{model.node.info.kubernetes.kubeletVersion}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'hostsPage.hostPage.kubeProxyVersion'}}:</label>
+    <label class="acc-label vertical-middle p-0">
+      {{t "hostsPage.hostPage.kubeProxyVersion"}}:
+    </label>
     {{model.node.info.kubernetes.kubeProxyVersion}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t 'hostsPage.hostPage.operatingSystem'}}:</label>
+    <label class="acc-label vertical-middle p-0">
+      {{t "hostsPage.hostPage.operatingSystem"}}:
+    </label>
     {{model.node.osBlurb}} <span class="text-small text-muted">{{model.node.info.os.kernelVersion}}</span>
   </div>
 </div>
@@ -45,7 +63,7 @@
       {{/metrics-summary}}
     {{/if}}
     {{resource-condition-list
-      resourceType=(t 'generic.node')
+      resourceType=(t "generic.node")
       conditions=model.node.conditions
       expandAll=al.expandAll
       expandFn=expandFn

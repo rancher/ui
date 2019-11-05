@@ -10,12 +10,12 @@
   <td data-title="{{dt.name}}" class="clip">
     {{#if (eq view "global")}}
       {{#if model.clusterId}}
-        <a href="{{href-to 'authenticated.cluster.monitoring.node-detail' model.clusterId model.id}}">{{model.displayName}}</a>
+        <a href="{{href-to "authenticated.cluster.monitoring.node-detail" model.clusterId model.id}}">{{model.displayName}}</a>
       {{else}}
         {{model.displayName}}
       {{/if}}
     {{else}}
-      <a href="{{href-to 'authenticated.cluster.monitoring.node-detail' model.clusterId model.id}}">{{model.displayName}}</a>
+      <a href="{{href-to "authenticated.cluster.monitoring.node-detail" model.clusterId model.id}}">{{model.displayName}}</a>
     {{/if}}
     {{#if (or model.externalIpAddress model.ipAddress)}}
       {{node-ip model=model}}
@@ -27,14 +27,14 @@
       {{#if model.cluster}}
         {{model.cluster.displayName}}
       {{else}}
-        <b>{{t 'generic.none'}}</b>
+        <b>{{t "generic.none"}}</b>
       {{/if}}
 
       <div class="text-small">
         {{#each model.displayRoles as |role|}}
           <span class="badge badge-xs bg-info">{{role}}</span>
         {{else}}
-          <span class="text-muted">{{t 'generic.none'}}</span>
+          <span class="text-muted">{{t "generic.none"}}</span>
         {{/each}}
       </div>
     </td>
@@ -46,7 +46,7 @@
       {{#each model.displayRoles as |role|}}
         <span class="badge badge-xs bg-info">{{role}}</span>
       {{else}}
-        <span class="text-muted">{{t 'generic.none'}}</span>
+        <span class="text-muted">{{t "generic.none"}}</span>
       {{/each}}
     </td>
   {{/if}}
@@ -54,11 +54,11 @@
   <td data-title="{{dt.version}}">
     {{#if model.info.kubernetes.kubeletVersion}}
       {{model.info.kubernetes.kubeletVersion}}
-      {{#if model.engineBlurb}}
+      {{#if model.versionBlurb}}
         <div class="text-small text-muted">
           <span>
             <i class="icon {{model.engineIcon}}"></i>
-            {{model.engineBlurb}}
+            {{model.versionBlurb}}
           </span>
         </div>
       {{/if}}
@@ -74,7 +74,7 @@
       {{/if}}
     {{else}}
       <span class="text-muted">
-        {{t 'generic.na'}}
+        {{t "generic.na"}}
       </span>
     {{/if}}
   </td>
@@ -84,7 +84,7 @@
       {{model.cpuUsage}}
     {{else}}
       <span class="text-muted">
-        {{t 'generic.na'}}
+        {{t "generic.na"}}
       </span>
     {{/if}}
   </td>
@@ -94,7 +94,7 @@
       {{model.memoryUsage}}
     {{else}}
       <span class="text-muted">
-        {{t 'generic.na'}}
+        {{t "generic.na"}}
       </span>
     {{/if}}
   </td>
@@ -104,7 +104,7 @@
       {{model.podUsage}}
     {{else}}
       <span class="text-muted">
-        {{t 'generic.na'}}
+        {{t "generic.na"}}
       </span>
     {{/if}}
   </td>
@@ -135,7 +135,7 @@
   {{error-sub-row fullColspan=fullColspan model=model}}
 {{/if}}
 
-<tr class="sub-row {{unless expanded 'hide'}}">
+<tr class="sub-row {{unless expanded "hide"}}">
   <td colspan="2">{{! checkbox and expand}}</td>
   <td colspan="{{sub fullColspan 3}}">
     {{#liquid-if expanded}}
