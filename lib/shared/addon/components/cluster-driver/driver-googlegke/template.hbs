@@ -315,14 +315,16 @@
                   selection=config.enableHorizontalPodAutoscaling
                   value=true
                   disabled=editing
-                }} {{t "generic.enabled"}}
+                }}
+                {{t "generic.enabled"}}
               </label>
               <label class={{concat (if editing "text-muted") " hand"}}>
                 {{radio-button
                   selection=config.enableHorizontalPodAutoscaling
                   value=false
                   disabled=editing
-                }} {{t "generic.disabled"}}
+                }}
+                {{t "generic.disabled"}}
               </label>
             </div>
           </div>
@@ -345,6 +347,7 @@
             </div>
           </div>
         </div>
+
         <div class="row">
           <div class="col span-6">
             <label class="acc-label">
@@ -385,111 +388,85 @@
           {{/if}}
         </div>
 
-        {{#advanced-section advanced=clusterAdvanced}}
-          <h4 class="mt-20 mb-10">{{t "clusterNew.googlegke.header.iPAllocationPolicy"}}</h4>
-          <hr/>
-          <div class="row">
-            <div class="col span-6">
-              <label class="acc-label">
-                {{t "clusterNew.googlegke.useIpAliases.label"}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.useIpAliases.label"}}
+            </label>
+            <div class="form-control-static">
+              <label class={{concat (if editing "text-muted") " mr-20 hand"}}>
+                {{radio-button
+                  selection=config.useIpAliases
+                  value=true
+                  disabled=editing
+                }}
+                {{t "generic.enabled"}}
               </label>
-              <div class="form-control-static">
-                <label class={{concat (if editing "text-muted") " mr-20 hand"}}>
-                  {{radio-button
-                    selection=config.useIpAliases
-                    value=true
-                    disabled=editing
-                  }}
-                  {{t "generic.yes"}}
-                </label>
-                <label class={{concat (if editing "text-muted") " hand"}}>
-                  {{radio-button
-                    selection=config.useIpAliases
-                    value=false
-                    disabled=editing
-                  }}
-                  {{t "generic.no"}}
-                </label>
-              </div>
+              <label class={{concat (if editing "text-muted") " hand"}}>
+                {{radio-button
+                  selection=config.useIpAliases
+                  value=false
+                  disabled=(or editing (not config.subNetwork))
+                }}
+                {{t "generic.disabled"}}
+              </label>
             </div>
-            {{#if config.useIpAliases}}
+          </div>
+        </div>
+        {{#if config.useIpAliases}}
+          {{#if (and config.ipPolicyCreateSubnetwork config.useIpAliases)}}
+            <div class="row">
               <div class="col span-6">
                 <label class="acc-label">
-                  {{t "clusterNew.googlegke.ipPolicyCreateSubnetwork.label"}}
+                  {{t "clusterNew.googlegke.ipPolicyClusterIpv4CidrBlock.label"}}
                 </label>
-                <div class="form-control-static">
-                  <label class={{concat (if editing "text-muted") " mr-20 hand"}}>
-                    {{radio-button
-                      selection=config.ipPolicyCreateSubnetwork
-                      value=true
-                      disabled=editing
-                    }}
-                    {{t "generic.enabled"}}
-                  </label>
-                  <label class={{concat (if editing "text-muted") " hand"}} class={{concat (if (eq secondaryIpRangeContent.length 0) "text-muted") " hand"}}>
-                    {{radio-button
-                      selection=config.ipPolicyCreateSubnetwork
-                      value=false
-                      disabled=(or editing (eq secondaryIpRangeContent.length 0))
-                    }}
-                    {{t "generic.disabled"}}
-                  </label>
-                </div>
+                {{input
+                  value=config.ipPolicyClusterIpv4CidrBlock
+                  placeholder=(t "clusterNew.googlegke.ipPolicyClusterIpv4CidrBlock.placeholder")
+                  disabled=editing
+                }}
               </div>
-            {{/if}}
-          </div>
-          {{#if config.useIpAliases}}
-            {{#if (and config.ipPolicyCreateSubnetwork config.useIpAliases)}}
-              <div class="row">
-                <div class="col span-6">
-                  <label class="acc-label">
-                    {{t "clusterNew.googlegke.ipPolicyClusterIpv4CidrBlock.label"}}
-                  </label>
-                  {{input
-                    value=config.ipPolicyClusterIpv4CidrBlock
-                    placeholder=(t "clusterNew.googlegke.ipPolicyClusterIpv4CidrBlock.placeholder")
-                    disabled=editing
-                  }}
-                </div>
-                <div class="col span-6">
-                  <label class="acc-label">
-                    {{t "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.label"}}
-                  </label>
-                  {{input
-                    value=config.ipPolicyServicesIpv4CidrBlock
-                    placeholder=(t "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.placeholder")
-                    disabled=editing
-                  }}
-                </div>
+              <div class="col span-6">
+                <label class="acc-label">
+                  {{t "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.label"}}
+                </label>
+                {{input
+                  value=config.ipPolicyServicesIpv4CidrBlock
+                  placeholder=(t "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.placeholder")
+                  disabled=editing
+                }}
               </div>
-            {{else}}
-              <div class="row">
-                <div class="col span-6">
-                  <label class="acc-label">
-                    {{t "clusterNew.googlegke.ipPolicyClusterSecondaryRangeName.label"}}
-                  </label>
-                  {{searchable-select
-                    content=secondaryIpRangeContent
-                    classNames="form-control"
-                    value=config.ipPolicyClusterSecondaryRangeName
-                    disabled=editing
-                  }}
-                </div>
-                <div class="col span-6">
-                  <label class="acc-label">
-                    {{t "clusterNew.googlegke.ipPolicyServicesSecondaryRangeName.label"}}
-                  </label>
-                  {{searchable-select
-                    content=secondaryIpRangeContent
-                    classNames="form-control"
-                    value=config.ipPolicyServicesSecondaryRangeName
-                    disabled=editing
-                  }}
-                </div>
+            </div>
+          {{else}}
+            <div class="row">
+              <div class="col span-6">
+                <label class="acc-label">
+                  {{t "clusterNew.googlegke.ipPolicyClusterSecondaryRangeName.label"}}
+                </label>
+                {{searchable-select
+                  content=secondaryIpRangeContent
+                  classNames="form-control"
+                  value=config.ipPolicyClusterSecondaryRangeName
+                  disabled=editing
+                }}
               </div>
-            {{/if}}
+              <div class="col span-6">
+                <label class="acc-label">
+                  {{t "clusterNew.googlegke.ipPolicyServicesSecondaryRangeName.label"}}
+                </label>
+                {{searchable-select
+                  content=secondaryIpRangeContent
+                  classNames="form-control"
+                  value=config.ipPolicyServicesSecondaryRangeName
+                  disabled=editing
+                }}
+              </div>
+            </div>
           {{/if}}
+        {{/if}}
 
+
+        {{#advanced-section advanced=clusterAdvanced}}
           <h4 class="mt-20 mb-10">
             {{t "clusterNew.googlegke.header.privateCluster"}}
           </h4>
