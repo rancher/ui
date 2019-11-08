@@ -1,6 +1,8 @@
 {{#if applyClusterTemplate}}
   {{#if (has-override questions=questions paramName=paramName)}}
-    {{yield}}
+    {{yield (hash
+      hasOverride=true
+      )}}
   {{else}}
     <div>
       {{#if value}}
