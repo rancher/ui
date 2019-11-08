@@ -61,7 +61,6 @@ export default Component.extend({
         lastScrollTop = scrollTop;
       });
 
-      this.exec();
       var btn = $('.scroll-bottom')[0]; // eslint-disable-line
 
       if ( btn ) {
