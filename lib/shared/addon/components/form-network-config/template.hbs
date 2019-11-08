@@ -16,9 +16,10 @@
     @paramName="rancherKubernetesEngineConfig.network.plugin"
     @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
     @applyClusterTemplate={{applyClusterTemplate}}
+    as |override|
   >
     {{#input-or-display
-       editable=(not-eq mode "view")
+       editable=(or (and (eq mode "new") (or (not applyClusterTemplate) override.hasOverride)) clusterTemplateCreate)
        value=config.network.plugin
     }}
       {{new-select
