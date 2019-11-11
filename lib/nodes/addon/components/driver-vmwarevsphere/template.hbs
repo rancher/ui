@@ -73,17 +73,41 @@
       <div class="col span-6">
         <label class="acc-label">
           {{t "nodeDriver.vmwarevsphere.dataStore.label"}}
+          <TooltipElement
+            @type="tooltip-basic"
+            @tooltipTemplate="tooltip-static"
+            @model={{t "nodeDriver.vmwarevsphere.dataStore.cluster.tooltip"}}
+            @inlineBlock={{true}}
+          >
+            <BtnToggle
+              @toggled={{action "toggleUseDataStoreCluster"}}
+              @checked={{mut config.useDataStoreCluster}}
+            />
+          </TooltipElement>
         </label>
-        <NewSelect 
-          @class="form-control"
-          @useContentForDefaultValue={{true}}
-          @content={{dataStoreContent}}
-          @value={{config.datastore}}
-        />
-        <p class="help-block">
-          {{t "nodeDriver.vmwarevsphere.dataStore.help"}}
-        </p>
-        <SelectValueCheck @values={{config.datastore}} @options={{dataStoreContent}} />
+        {{#if config.useDataStoreCluster}}
+          <NewSelect 
+            @class="form-control"
+            @useContentForDefaultValue={{true}}
+            @content={{dataStoreClusterContent}}
+            @value={{config.datastoreCluster}}
+          />
+          <p class="help-block">
+            {{t "nodeDriver.vmwarevsphere.dataStore.cluster.help"}}
+          </p>
+          <SelectValueCheck @values={{config.datastoreCluster}} @options={{dataStoreClusterContent}} />
+        {{else}}
+          <NewSelect 
+            @class="form-control"
+            @useContentForDefaultValue={{true}}
+            @content={{dataStoreContent}}
+            @value={{config.datastore}}
+          />
+          <p class="help-block">
+            {{t "nodeDriver.vmwarevsphere.dataStore.help"}}
+          </p>
+          <SelectValueCheck @values={{config.datastore}} @options={{dataStoreContent}} />
+        {{/if}}
       </div>
       <div class="col span-6">
         <label class="acc-label">
@@ -98,7 +122,7 @@
         <p class="help-block">
           {{t "nodeDriver.vmwarevsphere.folder.help"}}
         </p>
-        <SelectValueCheck @values={{floof}} @options={{folderContent}} />
+        <SelectValueCheck @values={{config.folder}} @options={{folderContent}} />
       </div>
     </div>
 
