@@ -57,6 +57,10 @@ Router.map(function() {
       this.route('edit');
       this.route('cluster-catalogs', { path: '/catalogs' })
 
+      this.route('cis/scan');
+      this.route('cis/scan/detail', { path: '/cis/scan/detail/:scan_id' });
+
+
       this.route('backups', function() {
         this.route('index', { path: '/' });
       });

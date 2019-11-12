@@ -1,0 +1,31 @@
+<section class="header clearfix">
+  <h1>{{t 'cis.scan.header'}}</h1>
+</section>
+
+<section>
+  {{#sortable-table
+      tableClassNames="bordered"
+      bulkActions=true
+      bulkActionHandler=bulkActionHandler
+      descending=descending
+      paging=false
+      search=true
+      sortBy=sortBy
+      headers=tableHeaders
+      body=clusterScans
+      rightActions=true
+      as |sortable kind scan dt|
+  }}
+    {{#if (eq kind "row")}}
+      <Cluster::Cis::Scan::TableRow @model={{scan}} />
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'cis.scan.table.empty'}}</td>
+      </tr>
+    {{else if (eq kind "right-actions")}}
+      <button style="margin-left: -5px;" class="btn btn-sm bg-primary pl-40 pr-40" {{action "runScan"}} disabled={{disableRunScanButton}}>
+        {{t 'cis.scan.actions.runScan'}}
+      </button>
+    {{/if}}
+  {{/sortable-table}}
+</section>

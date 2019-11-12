@@ -1,0 +1,35 @@
+<tr>
+    <td valign="middle" class="row-check" style="padding-top: 2px;">
+        {{#if hasExpandableContent}}
+            <i role="button" {{action "toggle"}} class="icon icon-chevron-right eased text-small text-muted {{if expanded "icon-rotate-90"}}"><span class="visually-hidden">Open accordion</span></i>
+        {{/if}}
+    </td>
+    <td width="100" class="pr-30"><BadgeState @model={{badgeState}} class="text-center full-width" /></td>
+    <td>{{model.id}}</td>
+    <td class="vertical-top pt-15">
+        <div class="text-small">{{model.description}}</div>
+        {{#if model.remediation}}
+            <div class="text-small text-error mt-5">{{t "cis.scan.detail.table.nodesTable.row.remediation" remediation=model.remediation}}</div>
+        {{/if}}
+    </td>
+    <td class="pl-15 pr-15">
+        {{#if showSkipButton}}
+            <button class="btn btn-sm bg-primary more-actions full-width bg-transparent" {{action "toggleSkip"}}>
+                {{t "cis.scan.detail.table.skip"}}
+            </button>
+        {{/if}}
+        {{#if showUnskipButton}}
+            <button class="btn btn-sm bg-primary more-actions full-width bg-transparent" {{action "toggleSkip"}}>
+                {{t "cis.scan.detail.table.unskip"}}
+            </button>
+        {{/if}}
+    </td>
+    <td></td>
+</tr>
+{{#if (and expanded hasExpandableContent)}}
+    <tr>
+        <td colspan="6" class="p-20">
+            <Cluster::Cis::Scan::Detail::NodesTable @nodes={{model.nodes}} />
+        </td>
+    </tr>
+{{/if}}

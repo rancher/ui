@@ -1,0 +1,57 @@
+<section class="header clearfix">
+  <h1>{{model.scan.name}}</h1>
+</section>
+
+<div class="fixed-header-actions row clearfix">
+  <div class="bulk-actions pull-left">
+      <a class="btn btn-sm bg-default" href="#" onclick={{action "download"}} tabindex="0">
+        {{t 'cis.scan.actions.download'}}
+        <i class="icon icon-download"></i>
+      </a>
+      <a class="btn btn-sm bg-default" href="#" onclick={{action "delete"}} tabindex="1">
+        {{t 'cis.scan.actions.delete'}}
+        <i class="icon icon-trash"></i>
+      </a>
+  </div>
+
+  <div class="pull-right">
+      <div class="vertical-middle">
+        <div class="search-group input-group">
+          <Input 
+            @value={{searchText}} 
+            autocomplete="off" 
+            autocapitalize="none" 
+            placeholder={{t 'cis.scan.actions.search.placeholder'}}  
+            class="input-sm pull-right ember-text-field ember-view" 
+            type="search" 
+          />
+        </div>
+      </div>  
+      <button class="btn btn-sm bg-primary pl-40 pr-40 ml-20" {{action "runScan"}} disabled={{disableRunScanButton}}>
+        {{t 'cis.scan.actions.runScan'}}
+      </button>      
+  </div>
+</div>
+
+<section>
+  {{#sortable-table
+      tableClassNames="bordered hide-bulk-actions"
+      bulkActions=false
+      descending=descending
+      paging=false
+      search=false
+      sortBy=sortBy
+      headers=tableHeaders
+      body=tests
+      searchText=searchText
+      as |sortable kind test dt|
+  }}
+    {{#if (eq kind "row")}}
+      <Cluster::Cis::Scan::Detail::TableRow @model={{test}} />
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'cis.scan.detail.table.empty'}}</td>
+      </tr>
+    {{/if}}
+  {{/sortable-table}}
+</section>
