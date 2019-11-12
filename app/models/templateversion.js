@@ -57,7 +57,7 @@ export default Resource.extend({
     return out;
   }),
 
-  validationErrors() {
+  validationErrors(answersMap) {
     const {
       intl, allQuestions, valuesYaml
     } = this;
@@ -96,7 +96,7 @@ export default Resource.extend({
     } else {
       if ( filteredQuestions ) {
         filteredQuestions.forEach((item) => {
-          if ( item.required && item.type !== 'boolean' && !item.answer ) {
+          if ( item.required && item.type !== 'boolean' && isEmpty(answersMap[item.variable]) ) {
             errors.push(intl.t('validation.required', { key: item.label }));
           }
 
