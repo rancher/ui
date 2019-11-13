@@ -3620,12 +3620,13 @@ clusterNew:
       label: Master IP range
       placeholder: e.g. 10.42.0.0/28
     useIpAliases:
-      label: Use Ip Aliases
+      label: Ip Aliases
     ipPolicySubnetworkName:
       label: Subnetwork Name
       placeholder: Your Subnetwork Name
     ipPolicyCreateSubnetwork:
       label: Create Subnetwork
+      autoLabel: Auto Create Subnetwork
     ipPolicyClusterSecondaryRangeName:
       label: Cluster Secondary Range Name
       placeholder: Your Cluster Secondary Range Name
@@ -8313,6 +8314,9 @@ nodeDriver:
       valuePlaceholder: "e.g. VM Network"
       help: "Networks to attach VM to"
     dataStore:
+      cluster:
+        tooltip: Use datastore cluster?
+        help: "Datastore cluster to create VM on"
       label: Data Store
       placeholder: "e.g. datastore_cluster_name/datastore_name"
       help: "Datastore to create VM disk on"
@@ -9823,3 +9827,10 @@ pipelineNotification:
   recipients:
     required: Recipient is required
   asMessage: Send a message to
+
+selectValueCheck:
+  message: |
+    {values, plural,
+      =1 {Please select a new value. The following is no longer valid:}
+      other {Please select new values. The following are no longer valid:}
+    }
