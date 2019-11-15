@@ -12,11 +12,14 @@ export default Resource.extend({
   intl:          service(),
   router:        service(),
 
-  canRemove:     false,
   // I think its safe to hack around this - wjw
   _displayState: 'active',
   // because of this the state shows as "Unknown" with bright yellow background
   stateColor:    'text-success',
+
+  canRemove: computed('id', 'builtin', function() {
+    return !this.builtin;
+  }),
 
   isHidden: computed('id', function() {
     return SPECIAL.includes(get(this, 'id'));

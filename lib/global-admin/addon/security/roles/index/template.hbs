@@ -10,19 +10,17 @@
       <a href="#" {{action (action (mut context) ) "project"}} class="{{if (eq context "project") "active" ""}}">{{t "rolesPage.headers.project"}}</a>
     </li>
   </ul>
-  {{#unless (eq context "global")}}
-    <div class="right-buttons">
-      {{#link-to
-        "security.roles.new"
-        (query-params context=context)
-        classNames="btn btn-sm bg-primary right-divider-btn"
-        disabled=(rbac-prevents resource="roletemplate" scope="global" permission="create")
-      }}
-        {{t "rolesPage.addRole" context=readableMode}}
-      {{/link-to}}
-      <span id="header-search"/>
-    </div>
-  {{/unless}}
+  <div class="right-buttons">
+    {{#link-to
+       "security.roles.new"
+       (query-params context=context)
+       classNames="btn btn-sm bg-primary right-divider-btn"
+       disabled=(rbac-prevents resource="roletemplate" scope="global" permission="create")
+    }}
+      {{t "rolesPage.addRole" context=readableMode}}
+    {{/link-to}}
+    <span id="header-search"/>
+  </div>
 </section>
 <section class="instances">
   {{#sortable-table
