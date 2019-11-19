@@ -1,5 +1,5 @@
 {{#each verbs as |verb|}}
-  <td class="text-center"  data-title="{{verb.key}}" >
+  <td class="pt-5 pb-5 text-center"  data-title="{{verb.key}}" >
     {{#if readOnly}}
       {{#if verb.value}}
         <i class="icon icon-check"/>
@@ -7,28 +7,52 @@
         <span class="text-muted">&ndash;</span>
       {{/if}}
     {{else}}
-      {{input type="checkbox" checked=verb.value disabled=readOnly}}
+      <Input
+        @type="checkbox"
+        @checked={{verb.value}}
+        @disabled={{readOnly}}
+      />
     {{/if}}
   </td>
 {{/each}}
-<td>
+<td class="pt-5 pb-5">
   {{#if (and readOnly rule.nonResourceURLs)}}
-    <span class="text-muted">Non-Resource URL: {{join-array rule.nonResourceURLs}}</span>
+    <span class="text-muted">
+      Non-Resource URL: {{join-array rule.nonResourceURLs}}
+    </span>
   {{else}}
-    {{searchable-select allowCustom=true content=rules value=resource readOnly=readOnly}}
+    <InputOrDisplay
+      @editable={{editing}}
+      @value={{resource}}
+    >
+      <SearchableSelect
+        @allowCustom={{true}}
+        @content={{rules}}
+        @value={{resource}}
+        @readOnly={{readOnly}}
+      />
+    </InputOrDisplay>
   {{/if}}
 </td>
-<td>&nbsp;</td>
-<td>
-  {{input type="text"
-    value=apiGroup
-    classNames="form-control"
-    disabled=readOnly
-  }}
+<td class="pt-5 pb-5">&nbsp;</td>
+<td class="pt-5 pb-5">
+  <InputOrDisplay
+    @editable={{editing}}
+    @value={{apiGroup}}
+  >
+    <Input
+      @type="text"
+      @value={{apiGroup}}
+      @classNames="form-control"
+      @disabled={{readOnly}}
+    />
+  </InputOrDisplay>
 </td>
-<td>&nbsp;</td>
+<td class="pt-5 pb-5">&nbsp;</td>
 {{#unless readOnly}}
   <div class="input-group-btn">
-    <button class="btn bg-primary btn-sm" {{action "remove"}}><i class="icon icon-minus"/></button>
+    <button class="btn bg-primary btn-sm" {{action "remove"}}>
+      <i class="icon icon-minus"/>
+    </button>
   </div>
 {{/unless}}

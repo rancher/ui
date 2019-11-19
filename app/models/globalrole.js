@@ -9,14 +9,22 @@ const SPECIAL = [BASE, ADMIN, USER];
 
 export default Resource.extend({
 
+  access:        service(),
   intl:          service(),
   router:        service(),
 
-  canRemove:     false,
   // I think its safe to hack around this - wjw
   _displayState: 'active',
   // because of this the state shows as "Unknown" with bright yellow background
   stateColor:    'text-success',
+
+  canClone: computed('access.me', 'id', function() {
+    return this.access.allows('globalrole', 'create', 'global');
+  }),
+
+  canRemove: computed('id', 'builtin', function() {
+    return !this.builtin;
+  }),
 
   isHidden: computed('id', function() {
     return SPECIAL.includes(get(this, 'id'));
@@ -74,5 +82,14 @@ export default Resource.extend({
     edit() {
       this.get('router').transitionTo('global-admin.security.roles.edit', this.get('id'), { queryParams: { type: 'global' } });
     },
+
+    clone() {
+      this.router.transitionTo('global-admin.security.roles.new', {
+        queryParams: {
+          context: 'global',
+          id:      this.id
+        }
+      });
+    }
   }
 });
