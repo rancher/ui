@@ -306,14 +306,6 @@ const rootNav = [
   },
   {
     scope:          'global',
-    id:             'global-accounts',
-    localizedLabel: 'nav.admin.accounts',
-    route:          'global-admin.accounts',
-    resource:       ['user'],
-    resourceScope:  'global',
-  },
-  {
-    scope:          'global',
     id:             'global-settings',
     localizedLabel: 'nav.settings.tab',
     route:          'global-admin.settings.advanced',
@@ -324,6 +316,22 @@ const rootNav = [
     id:             'global-security',
     localizedLabel: 'nav.admin.security.tab',
     submenu:        [
+      {
+        scope:          'global',
+        id:             'global-accounts',
+        localizedLabel: 'nav.admin.security.accounts',
+        route:          'global-admin.security.accounts.users',
+        resource:       ['user'],
+        resourceScope:  'global',
+      },
+      {
+        scope:          'global',
+        id:             'global-group-accounts',
+        localizedLabel: 'nav.admin.security.groupAccounts',
+        route:          'global-admin.security.accounts.groups',
+        resource:       ['globalrolebinding'],
+        resourceScope:  'global',
+      },
       {
         id:             'global-security-roles',
         localizedLabel: 'nav.admin.security.roles',

@@ -1,0 +1,29 @@
+<div class="container-header-text">
+  <h3>
+    {{t "modalDeleteGroupRoleBinding.header" groupName=modalService.modalOpts.model.groupPrincipalName}}
+  </h3>
+</div>
+
+<div class="horizontal-form container-fluid">
+  <div class="row">
+    <div class="col span-12 text-center">
+      {{#each mappedGroupRoleBindingNamesIds as |grb idx|}}
+        <div>
+          {{grb.groupRoleBindingName}}
+        </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="footer-actions">
+    <SaveCancel
+      @createLabel="modalDeleteGroupRoleBinding.createLabel"
+      @save={{action "save"}}
+      @cancel={{ action "cancel" }}
+    />
+  </div>
+</div>
+
+<div class="text-center protip mt-10">
+  {{t "confirmDelete.protip" key=alternateLabel}}
+</div>

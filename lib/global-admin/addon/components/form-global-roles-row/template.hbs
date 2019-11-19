@@ -1,8 +1,8 @@
 {{#if hasBlock}}
   {{yield}}
 {{else}}
-  <label class="acc-label">
-    {{input type="checkbox" checked=model.active}} {{t model.translationKey}}
-    <p class="help-block">{{t model.descriptionTranslationKey}}</p>
+  <label class="acc-label" style="min-height: 50px;">
+    {{input type="checkbox" checked=model.active}} {{#if model.hasTranslation}}{{t model.translationKey}}{{else}}{{model.role.displayName}}{{/if}}
+    <p class="help-block">{{#if model.hasTranslation}}{{t model.descriptionTranslationKey}}{{else}}{{model.role.detail}}{{/if}}</p>
   </label>
 {{/if}}

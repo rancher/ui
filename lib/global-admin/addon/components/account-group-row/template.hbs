@@ -1,0 +1,24 @@
+<td data-title="{{dt.name}}" class="pr-15">
+  <a href="{{href-to "global-admin.security.accounts.detail" model.id}}">
+    <IdentityBlock
+      @principalId={{ model.id }}
+      @wide={{ false }}
+    />
+  </a>
+</td>
+
+<td data-title="{{dt.globalRoleName}}">
+  <div class="comma-list">
+    {{#each mappedGroupRoleBindingNamesIds as |grb idx|}}
+      <span>
+        <LinkTo @route="security.roles.detail" @model={{grb.groupRoleBindingId}} @query={{hash type="global"}} >
+          {{grb.groupRoleBindingName~}}
+        </LinkTo>
+      </span>
+    {{/each}}
+  </div>
+</td>
+
+<td data-title="{{dt.actions}}" class="actions">
+  <ActionMenu @model={{groupRoleBinding}} />
+</td>

@@ -1,0 +1,54 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    <h1>
+      {{t "accountsPage.newGroup.header"}}
+    </h1>
+  </div>
+</section>
+
+<BannerMessage
+  class="mt-10"
+  @color="bg-warning"
+  @message={{t "accountsPage.newGroup.warning"}}
+/>
+
+<section class="horizontal-form container-fluid">
+  <div class="row">
+    <div class="col span-6">
+      <label class="pb-5 acc-label">
+        {{t "accountsPage.newGroup.form.group.labelText"}}{{field-required}}
+      </label>
+      <InputIdentity
+        @allowTeams={{true}}
+        @allowLocal={{false}}
+        @action={{action "addGroup"}}
+        @onError={{gotError}}
+        @searchOnlyGroups={{true}}
+        @initialPrincipal={{model.principal}}
+      />
+    </div>
+  </div>
+</section>
+
+
+<hr class="mt-30 mb-30" />
+
+<section class="horizontal-form container-fluid">
+  <FormGlobalRoles
+    @errors={{errors}}
+    @mode={{mode}}
+    @setSave={{action "setGlobalRoleSave"}}
+    @setGRValidator={{action "setValidateGlobalRoles"}}
+    @groupPrincipalId={{groupPrincipalId}}
+    @groupGlobalRoleBindings={{model.globalRoleBindings}}
+  />
+</section>
+
+<TopErrors
+  @errors={{errors}}
+/>
+<SaveCancel
+  @save={{action "save"}}
+  @saveDisabled={{not groupPrincipalId}}
+  @cancel={{action "cancel"}}
+/>
