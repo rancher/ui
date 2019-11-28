@@ -211,6 +211,36 @@
         </div>
 
         <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.azureaks.loadBalancerSku.label"}}
+            </label>
+
+            {{#input-or-display
+               editable=isNew
+               value=config.loadBalancerSku
+            }}
+              <div class="form-control-static">
+                <label class="hand mr-20">
+                  {{radio-button
+                    selection=config.loadBalancerSku
+                    value="basic"
+                  }}
+                  {{t "clusterNew.azureaks.loadBalancerSku.basic"}}
+                </label>
+                <label class="hand">
+                  {{radio-button
+                    selection=config.loadBalancerSku
+                    value="standard"
+                  }}
+                  {{t "clusterNew.azureaks.loadBalancerSku.standard"}}
+                </label>
+              </div>
+            {{/input-or-display}}
+          </div>
+        </div>
+
+        <div class="row">
           <div class="col span-12 mb-0">
             <label class="acc-label">
               {{t "clusterNew.azureaks.tags.label"}}
