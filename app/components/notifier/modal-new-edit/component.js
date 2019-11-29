@@ -55,6 +55,9 @@ const RECIPIENT_TYPES = [
     value: 'user'
   }
 ]
+const WECHAT_ENDPOINT_DEFAULT = 'default';
+const WECHAT_ENDPOINT_CUSTOM = 'custom';
+const WECHAT = 'wechat';
 
 export default Component.extend(ModalBase, NewOrEdit, {
   scope:          service('scope'),
@@ -64,11 +67,12 @@ export default Component.extend(ModalBase, NewOrEdit, {
   layout,
   classNames:     ['generic', 'large-modal'],
 
-  modelMap:       null,
-  errors:         null,
-  testing:        false,
-  testOk:         true,
-  recipientTypes: RECIPIENT_TYPES,
+  modelMap:           null,
+  errors:             null,
+  testing:            false,
+  testOk:             true,
+  recipientTypes:     RECIPIENT_TYPES,
+  wechatEndpointMode: WECHAT_ENDPOINT_DEFAULT,
 
   cluster: alias('scope.currentCluster'),
 
@@ -82,6 +86,10 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
     if (mode === 'edit' || mode === 'clone') {
       const t = get(this, 'currentType');
+
+      if ( t === WECHAT && get(this, 'model.wechatConfig.apiUrl') ) {
+        this.wechatEndpointMode = WECHAT_ENDPOINT_CUSTOM;
+      }
 
       this.set('types', TYPES.filterBy('type', t));
     } else if (mode === 'add') {
@@ -143,6 +151,10 @@ export default Component.extend(ModalBase, NewOrEdit, {
   },
   currentTypeChanged: observer('currentType', function() {
     set(this, 'errors', null);
+  }),
+
+  wechatEndpointModeChanged: observer('wechatEndpointMode', function() {
+    set(this, 'model.wechatConfig.apiUrl', '');
   }),
 
   addBtnLabel: computed('mode', function() {
@@ -208,6 +220,10 @@ export default Component.extend(ModalBase, NewOrEdit, {
         afterError = C.NOTIFIER_TABLE_LABEL.SMTP
         errors.splice(errors.findIndex((e) => e === preError), 1, intl.t('validation.required', { key: afterError }))
       }
+    }
+
+    if ( notifierType === WECHAT && this.wechatEndpointMode === WECHAT_ENDPOINT_CUSTOM && !get(this, 'model.wechatConfig.apiUrl') ) {
+      errors.push(intl.t('validation.required', { key: intl.t('notifierPage.wechat.endpoint.label') }));
     }
 
     set(this, 'errors', errors);

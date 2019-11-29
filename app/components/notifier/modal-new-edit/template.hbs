@@ -339,6 +339,47 @@
       }}
     </div>
   </div>
+
+  <label class="acc-label text-capitalize pt-20">
+    {{t "notifierPage.wechat.endpoint.label"}}{{field-required}}
+  </label>
+
+  <div class="row">
+    <div class="col span-3">
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=wechatEndpointMode
+            value="default"
+          }}
+            {{t "notifierPage.wechat.endpoint.default"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=wechatEndpointMode
+            value="custom"
+          }}
+            {{t "notifierPage.wechat.endpoint.custom"}}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  {{#if (eq wechatEndpointMode "custom")}}
+    <div class="row">
+      <div class="col span-12">
+        {{input
+          type="url"
+          value=model.wechatConfig.apiUrl
+          classNames="form-control"
+          placeholder=(t "notifierPage.wechat.endpoint.placeholder")
+        }}
+      </div>
+    </div>
+  {{/if}}
+
   <div class="row">
     <div class="col span-12">
       <label
