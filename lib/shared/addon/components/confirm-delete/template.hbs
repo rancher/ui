@@ -1,8 +1,8 @@
 <div class="container-header-text">
   <h3>
     {{#if resourceType}}
-      {{t 
-        "confirmDelete.titleWithResourceType" 
+      {{t
+        "confirmDelete.titleWithResourceType"
         resourceType=(t (concat "confirmDelete.resourceType." resourceType))
         htmlSafe=true
       }}
@@ -88,6 +88,13 @@
     {{t "confirmDelete.clusterRoleTemplateBindingNote"}}
   </div>
 {{/if}}
+
+{{#if (and isGlobalRole (gte resources.firstObject.globalRoleAssociatedUserCount 1))}}
+  <div class="mb-15 text-center">
+    {{t "confirmDelete.globalRoleNote" count=resources.firstObject.globalRoleAssociatedUserCount }}
+  </div>
+{{/if}}
+
 <div class="footer-actions">
   <button {{action "confirm"}} class="btn bg-error">
     {{t "confirmDelete.confirmAction"}}

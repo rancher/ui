@@ -1,6 +1,7 @@
 import Resource from '@rancher/ember-api-store/models/resource';
 import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { hasMany } from '@rancher/ember-api-store/utils/denormalize';
 
 const BASE = 'user-base';
 const USER = 'user';
@@ -9,9 +10,10 @@ const SPECIAL = [BASE, ADMIN, USER];
 
 export default Resource.extend({
 
-  access:        service(),
-  intl:          service(),
-  router:        service(),
+  access:             service(),
+  intl:               service(),
+  router:             service(),
+  globalRoleBindings: hasMany('id', 'globalRoleBinding', 'globalRoleId'),
 
   // I think its safe to hack around this - wjw
   _displayState: 'active',
@@ -44,6 +46,10 @@ export default Resource.extend({
 
   isCustom: computed('isAdmin', 'isUser', 'isBase', function() {
     return !get(this, 'isAdmin') && !get(this, 'isBase') && !get(this, 'isUser');
+  }),
+
+  globalRoleAssociatedUserCount: computed('globalRoleBindings.@each.{id,state,newUserDefault}', function() {
+    return ( get(this, 'globalRoleBindings') || [] ).length;
   }),
 
   displayName: computed('id', 'name', 'intl.locale', function() {
