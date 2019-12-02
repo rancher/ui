@@ -51,6 +51,7 @@ generic:
   false: 'False'
   generic: 'Generic'
   gigabyte: 'GB'
+  group: 'Group'
   hardware: Hardware
   healthy: Healthy
   help: Help
@@ -178,6 +179,7 @@ accountsPage:
         projectName: Project
         active: Active
         created: Granted
+        group: Group
       global:
         title: Global Permissions
         description: Access to manage things that affect the entire installation
@@ -196,6 +198,7 @@ accountsPage:
   index:
     header: Users
     localLink: Add User
+    groupLink: Assign Global Role
     table:
       id: ID
       kind: Kind
@@ -203,6 +206,14 @@ accountsPage:
       identity: Identity
       noData: There are no users defined.
       noMatch: No users match the current search
+      noName: None
+  groups:
+    header: Groups
+    table:
+      groupName: Group Name
+      globalRole: Global Role Name
+      noData: There are no groups defined.
+      noMatch: No groups match the current search
       noName: None
   new:
     header: Add User
@@ -225,6 +236,17 @@ accountsPage:
       description:
         labelText: Description
         placeholder: "e.g. This account is for John Smith"
+  editGroup:
+    header: Edit Group
+  newGroup:
+    header: Assign Global Roles To Group
+    warning: Assigning global roles to a group only works with external auth providers that support groups. Local authorization does not support groups.
+    errors:
+      group: A group is required.
+      role: A role is required.
+    form:
+      group:
+        labelText: Select Group To Add
   modal:
     password: Change Password
 
@@ -5909,8 +5931,8 @@ formEnvVar:
 
 formGlobalRoles:
   title: Global Permissions
-  description: Controls what access the user has to administer the overall {appName} installation.
-  loginError: User does not have login access. Administrator, Standard User, or User-Base provide login access.
+  description: "Controls what access the {type} has to administer the overall {appName} installation."
+  loginError: "{type} does not have login access. Administrator, Standard User, or User-Base provide login access."
   mode:
     admin:
       label: Administrator
@@ -5921,40 +5943,65 @@ formGlobalRoles:
     userBase:
       label: User-Base
       detail: User-Base users have login-access only.
-    custom:
+    userCreated:
       label: Custom
-      detail: Choose individual permissions for the user.
+      detail: Roles not created by Rancher.
+      noDescription: No description provided.
+    custom:
+      label: Built-in
+      detail: Additional roles to define more fine-grain permissions model.
   role:
-    create-clusters:
+    clusters-create:
       label: Create new Clusters
       detail: Allows the user to create new clusters and become the owner of them.  Standard Users have this permission by default.
-    manage-authn:
+    clustertemplates-create:
+      label: Create new RKE Cluster Templates
+      detail: Allows the user to create new RKE cluster templates and become the owner of them.
+    authn-manage:
       label: Configure Authentication
       detail: Allows the user to enable, configure, and disable all Authentication provider settings.
-    manage-catalogs:
+    catalogs-manage:
       label: Configure Catalogs
-      detail: Allows the user to add, edit, and remove Catalogs
-    manage-clusters:
+      detail: Allows the user to add, edit, and remove Catalogs.
+    clusters-manage:
       label: Manage all Clusters
       detail: Allows the user to manage all clusters, including ones they are not a member of.
-    manage-node-drivers:
+    clusterscans-manage:
+      label: Manage CIS Cluster Scans
+      detail: Allows the user to launch new and manage CIS cluster scans.
+    kontainerdrivers-manage:
+      label: Create new Cluster Drivers
+      detail: Allows the user to create new cluster drivers and become the owner of them.
+    features-manage:
+      label: Configure Feature Flags
+      detail: Allows the user to enable and disable custom features via feature flag settings.
+    nodedrivers-manage:
       label: Configure Node Drivers
-      detail: Allows the user to enable, configure, and remove all Node Driver settings
-    manage-node-templates:
+      detail: Allows the user to enable, configure, and remove all Node Driver settings.
+    nodetemplates-manage:
       label: Manage Node Templates
-      detail: Allows the user to define, edit, and remove Node Templates
-    manage-roles:
+      detail: Allows the user to define, edit, and remove Node Templates.
+    podsecuritypolicytemplates-manage:
+      label: Manage Pod Security Policies (PSPs)
+      detail: Allows the user to define, edit, and remove PSPs.
+    roles-manage:
       label: Manage Roles
-      detail: Allows the user to define, edit, and remove Role definitions
-    manage-users:
+      detail: Allows the user to define, edit, and remove Role definitions.
+    settings-manage:
+      label: Manage Settings
+      detail: Allows the user to manage Rancher Settings.
+    users-manage:
       label: Manage Users
-      detail: Allows the user to create, remove, and set passwords for all Users
-    use-catalogs:
+      detail: Allows the user to create, remove, and set passwords for all Users.
+    catalogs-use:
       label: Use Catalogs
       detail: Allows the user to see and deploy Templates from the Catalog.  Standard Users have this permission by default.
-    use-node-templates:
+    nodetemplates-use:
       label: Use Node Templates
       detail: Allows the user to deploy new Nodes using any existing Node Templates.
+    view-rancher-metrics:
+      label: View Rancher Metrics
+      detail: Allows the user to view Metrics through the API.
     base:
       label: Login Access
 
@@ -7427,6 +7474,10 @@ modalConfirmRemovePayment:
   header: 'Confirm Payment Removal'
   title: 'Are you sure you want to delete'
   card: 'Card ending in {card}'
+
+modalDeleteGroupRoleBinding:
+  header: 'Are you sure you want to remove all permissions for Group: {groupName}'
+  createLabel: Delete
 
 modalEditDriver:
   header:
@@ -9129,7 +9180,6 @@ nav:
     pipelines: Pipelines
   admin:
     tab: Global
-    accounts: Users
     clusters:
       tab: Clusters
       rkeTemplate: RKE Templates
@@ -9142,6 +9192,8 @@ nav:
     globalRegistry: Global Registry
     multiClusterApps: Apps
     security:
+      accounts: Users
+      groupAccounts: Groups
       cloudCredentials: Cloud Credentials
       tab: Security
       roles: Roles

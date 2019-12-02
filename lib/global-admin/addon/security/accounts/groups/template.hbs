@@ -1,0 +1,71 @@
+<section class="header clearfix">
+  <div class="pull-left">
+    <h1>
+      {{t "accountsPage.groups.header"}}
+    </h1>
+  </div>
+
+  <div class="right-buttons">
+    {{#if hasRefreshProviderAccess}}
+      {{#if refreshing}}
+        <button
+          class="btn bg-primary btn-sm btn-disabled"
+          disabled
+        >
+          <i class="icon icon-spinner icon-spin"></i>
+          {{t "generic.loading"}}
+        </button>
+      {{else}}
+        <button
+          {{action "refreshAllTokens"}}
+          class="btn bg-primary btn-sm"
+        >
+          <i class="icon icon-refresh"></i>
+          {{t "siteAccess.refreshGroups"}}
+        </button>
+      {{/if}}
+    {{/if}}
+
+    <LinkTo
+      class="btn btn-sm bg-primary right-divider-btn"
+      @disabled={{rbac-prevents resource="globalrolebinding" scope="global" permission="create"}}
+      @route="security.accounts.new-group"
+    >
+      {{t "accountsPage.index.groupLink"}}
+    </LinkTo>
+  </div>
+</section>
+
+<section class="instances">
+  <SortableTable
+    class="grid sortable-table"
+    @sortBy={{ sortBy }}
+    @descending={{ descending }}
+    @headers={{ headers }}
+    @body={{ parsedGroups }}
+    @bulkActions={{ false }}
+    as |sortable kind row dt|
+  >
+    {{#if (eq kind "row")}}
+      <AccountGroupRow @model={{row}} />
+    {{else if (eq kind "nomatch")}}
+      <tr>
+        <td
+          colspan="{{sortable.fullColspan}}"
+          class="text-center text-muted lacsso pt-20 pb-20"
+        >
+          {{t "accountsPage.groups.table.noMatch"}}
+        </td>
+      </tr>
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td
+          colspan="{{sortable.fullColspan}}"
+          class="text-center text-muted pt-20 pb-20"
+        >
+          {{t "accountsPage.groups.table.noData"}}
+        </td>
+      </tr>
+    {{/if}}
+  </SortableTable>
+</section>

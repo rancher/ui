@@ -272,7 +272,7 @@ export default Route.extend(Preload, {
       this._gotoRoute('global-admin.clusters.index', 'global');
     },
     gotou() {
-      this._gotoRoute('global-admin.accounts.index', 'global');
+      this._gotoRoute('global-admin.security.accounts.users', 'global');
     },
     gotoK() {
       this._gotoRoute('authenticated.apikeys', 'global');

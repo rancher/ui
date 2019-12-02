@@ -26,27 +26,27 @@
       {{/if}}
     {{/if}}
 
-    {{#link-to
-       "accounts.new"
-       classNames="btn btn-sm bg-primary right-divider-btn"
-       disabled=(rbac-prevents resource="user" scope="global" permission="create")
-    }}
+    <LinkTo
+      class="btn btn-sm bg-primary right-divider-btn"
+      @disabled={{rbac-prevents resource="user" scope="global" permission="create"}}
+      @route="security.accounts.new"
+    >
       {{t "accountsPage.index.localLink"}}
-    {{/link-to}}
+    </LinkTo>
   </div>
 </section>
 
 <section class="instances">
-  {{#sortable-table
-    classNames="grid sortable-table"
-    sortBy=sortBy
-    descending=descending
-    headers=headers
-    body=model
+  <SortableTable
+    class="grid sortable-table"
+    @sortBy={{ sortBy }}
+    @descending={{ descending }}
+    @headers={{ headers }}
+    @body={{ model }}
     as |sortable kind row dt|
-  }}
+  >
     {{#if (eq kind "row")}}
-      {{account-row model=row}}
+      <AccountRow @model={{ row }} />
     {{else if (eq kind "nomatch")}}
       <tr>
         <td
@@ -66,5 +66,5 @@
         </td>
       </tr>
     {{/if}}
-  {{/sortable-table}}
+  </SortableTable>
 </section>

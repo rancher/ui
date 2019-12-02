@@ -125,7 +125,7 @@ export default Resource.extend({
     },
 
     edit() {
-      get(this, 'router').transitionTo('global-admin.accounts.edit', get(this, 'id'));
+      this.router.transitionTo('global-admin.security.accounts.edit', this.id);
     },
 
     setPassword(password) {

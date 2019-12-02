@@ -1,6 +1,6 @@
 <AccordionListItem
   @title={{t "formGlobalRoles.title"}}
-  @detail={{t "formGlobalRoles.description" appName=settings.appName}}
+  @detail={{t "formGlobalRoles.description" appName=settings.appName type=(if user "user" "group")}}
   @expandOnInit={{true}}
   @showExpand={{false}}
 >
@@ -9,35 +9,31 @@
       @model={{baseRole}}
     />
   {{/each}}
+</AccordionListItem>
 
-  <hr/>
-
-  <div class="pb-10">
-    <label>
-      {{t "formGlobalRoles.mode.custom.label"}}
-      <p class="help-block">
-        {{t "formGlobalRoles.mode.custom.detail"}}
-      </p>
-    </label>
-  </div>
-
-  {{#each additionalRoles as |role|}}
+<AccordionListItem
+  @title={{t "formGlobalRoles.mode.userCreated.label"}}
+  @detail={{t "formGlobalRoles.mode.userCreated.detail" type=(if user "user" "group")}}
+  @expandOnInit={{true}}
+  @showExpand={{false}}
+>
+  {{#each userRoles as |role|}}
     <FormGlobalRolesRow
       @model={{role}}
-    >
-      <div class="input-group mb-10 border" onclick={{action "toggle"}}>
-        <label class="input-group-addon bg-default p-10 vertical-middle">
-          {{input type="checkbox" checked=role.active}}
-        </label>
-        <div class="form-control p-10 vertical-middle">
-          {{role.role.displayName}}
-          {{#if role.role.detail}}
-            <p class="help-block">
-              {{role.role.detail}}
-            </p>
-          {{/if}}
-        </div>
-      </div>
-    </FormGlobalRolesRow>
+    />
+  {{/each}}
+</AccordionListItem>
+
+<AccordionListItem
+  @title={{t "formGlobalRoles.mode.custom.label"}}
+  @detail={{t "formGlobalRoles.mode.custom.detail" type=(if user "user" "group")}}
+  @expandOnInit={{true}}
+  @showExpand={{false}}
+>
+  {{#each additionalRoles as |role|}}
+    {{log role.role.id}}
+    <FormGlobalRolesRow
+      @model={{role}}
+    />
   {{/each}}
 </AccordionListItem>

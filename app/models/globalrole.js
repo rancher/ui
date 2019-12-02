@@ -73,7 +73,7 @@ export default Resource.extend({
       return intl.t(key);
     }
 
-    return '';
+    return intl.t('formGlobalRoles.mode.userCreated.noDescription');
   }),
 
 

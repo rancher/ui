@@ -1,30 +1,30 @@
 <section class="header clearfix">
   <div class="pull-left">
-    <h1>{{t 'accountsPage.detail.header'}}</h1>
+    <h1>{{t "accountsPage.detail.header"}}</h1>
   </div>
   <div class="right-buttons">
-    {{#link-to 'accounts.edit' model.user.id classNames="btn bg-primary"}}{{t 'generic.edit'}}{{/link-to}}
+    {{#link-to "security.accounts.edit" model.user.id classNames="btn bg-primary"}}{{t "generic.edit"}}{{/link-to}}
   </div>
 </section>
 
 {{#if model.user.description}}
   <div class="row mb-30">
-    {{banner-message color='bg-secondary mb-0 mt-10' message=(linkify model.user.description)}}
+    {{banner-message color="bg-secondary mb-0 mt-10" message=(linkify model.user.description)}}
   </div>
 {{/if}}
 
 <section>
   <div class="row banner bg-info basics">
     <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'accountsPage.new.form.username.labelText'}}</label>
+      <label class="acc-label vertical-middle p-0">{{t "accountsPage.new.form.username.labelText"}}</label>
       {{model.user.username}} {{copy-to-clipboard clipboardText=model.user.username size="small"}}
     </div>
     <div class="vertical-middle">
-      <label class="acc-label vertical-middle p-0">{{t 'accountsPage.new.form.name.labelText'}}</label>
+      <label class="acc-label vertical-middle p-0">{{t "accountsPage.new.form.name.labelText"}}</label>
       {{#if model.user.name.length}}
         {{model.user.name}} {{copy-to-clipboard clipboardText=model.user.name size="small"}}
       {{else}}
-        {{t 'generic.na'}}
+        {{t "generic.na"}}
       {{/if}}
     </div>
   </div>
@@ -34,28 +34,28 @@
 
 <section>
   {{#accordion-list-item
-    title=(t 'accountsPage.detail.table.global.title')
-    detail=(t 'accountsPage.detail.table.global.description')
-    expandOnInit=true
-    showExpand=false
+     title=(t "accountsPage.detail.table.global.title")
+     detail=(t "accountsPage.detail.table.global.description")
+     expandOnInit=true
+     showExpand=false
   }}
     {{#if model.user.hasAdmin}}
       <div class="text-center mt-20 mb-20 text-bold text-success">
-        {{t 'accountsPage.detail.table.global.admin'}}
+        {{t "accountsPage.detail.table.global.admin"}}
       </div>
     {{else}}
       {{#sortable-table
-        classNames="grid sortable-table"
-        body=globalRoleMapping
-        search=false
-        sortBy=sortGlobalBy
-        descending=globalDescending
-        bulkActions=false
-        pagingLabel="pagination.role"
-        headers=globalHeaders as |sortable kind entry dt|
+         classNames="grid sortable-table"
+         body=globalRoleMapping
+         search=false
+         sortBy=sortGlobalBy
+         descending=globalDescending
+         bulkActions=false
+         pagingLabel="pagination.role"
+         headers=globalHeaders as |sortable kind entry dt|
       }}
         {{#if (eq kind "row")}}
-          <tr class="main-row {{if entry.enabled '' 'text-muted'}}">
+          <tr class="main-row {{if entry.enabled "" "text-muted"}}">
             <td data-title="{{dt.enabled}}">
               {{#if entry.enabled}}
                 <i class="icon icon-check"/>
@@ -70,7 +70,7 @@
               {{#if entry.enabled}}
                 {{date-from-now entry.binding.created}}
               {{else}}
-                {{t 'generic.na'}}
+                {{t "generic.na"}}
               {{/if}}
             </td>
             <td data-title="{{dt.actions}}" class="actions">
@@ -82,7 +82,7 @@
         {{else if (eq kind "norows")}}
           <tr>
             <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
-              {{t 'accountsPage.detail.table.global.noRoles'}}
+              {{t "accountsPage.detail.table.global.noRoles"}}
             </td>
           </tr>
         {{/if}}
@@ -93,25 +93,25 @@
 
 <section class="mt-20">
   {{#accordion-list-item
-    title=(t 'accountsPage.detail.table.cluster.title')
-    detail=(t 'accountsPage.detail.table.cluster.description')
-    expandOnInit=true
-    showExpand=false
+     title=(t "accountsPage.detail.table.cluster.title")
+     detail=(t "accountsPage.detail.table.cluster.description")
+     expandOnInit=true
+     showExpand=false
   }}
     {{#sortable-table
-      classNames="grid sortable-table"
-      body=model.user.clusterRoleBindings
-      search=false
-      sortBy=sortClusterBy
-      descending=descending
-      bulkActions=false
-      pagingLabel="pagination.role"
-      headers=clusterHeaders as |sortable kind binding dt|
+       classNames="grid sortable-table"
+       body=model.user.clusterRoleBindings
+       search=false
+       sortBy=sortClusterBy
+       descending=descending
+       bulkActions=false
+       pagingLabel="pagination.role"
+       headers=clusterHeaders as |sortable kind binding dt|
     }}
       {{#if (eq kind "row")}}
         <tr class="main-row">
           <td data-title="{{dt.cluster}}">
-            <a href="#" {{action 'launchOnCluster' binding.project }}>
+            <a href="#" {{action "launchOnCluster" binding.project }}>
               {{binding.cluster.displayName}}
             </a>
           </td>
@@ -128,7 +128,7 @@
       {{else if (eq kind "norows")}}
         <tr>
           <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
-            {{t 'accountsPage.detail.table.cluster.noRoles'}}
+            {{t "accountsPage.detail.table.cluster.noRoles"}}
           </td>
         </tr>
       {{/if}}
@@ -138,25 +138,25 @@
 
 <section class="mt-20">
   {{#accordion-list-item
-    title=(t 'accountsPage.detail.table.project.title')
-    detail=(t 'accountsPage.detail.table.project.description')
-    expandOnInit=true
-    showExpand=false
+     title=(t "accountsPage.detail.table.project.title")
+     detail=(t "accountsPage.detail.table.project.description")
+     expandOnInit=true
+     showExpand=false
   }}
     {{#sortable-table
-      classNames="grid sortable-table"
-      body=model.user.projectRoleBindings
-      search=false
-      sortBy=sortProjectBy
-      descending=projectDescending
-      bulkActions=false
-      pagingLabel="pagination.role"
-      headers=projectHeaders as |sortable kind binding dt|
+       classNames="grid sortable-table"
+       body=model.user.projectRoleBindings
+       search=false
+       sortBy=sortProjectBy
+       descending=projectDescending
+       bulkActions=false
+       pagingLabel="pagination.role"
+       headers=projectHeaders as |sortable kind binding dt|
     }}
       {{#if (eq kind "row")}}
         <tr class="main-row">
           <td data-title="{{dt.project}}">
-            {{#link-to-external 'authenticated.cluster.projects' role.project.id}}
+            {{#link-to-external "authenticated.cluster.projects" role.project.id}}
               {{binding.project.displayName}}
             {{/link-to-external}}
           </td>
@@ -173,7 +173,7 @@
       {{else if (eq kind "norows")}}
         <tr>
           <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
-            {{t 'accountsPage.detail.table.project.noRoles'}}
+            {{t "accountsPage.detail.table.project.noRoles"}}
           </td>
         </tr>
       {{/if}}
