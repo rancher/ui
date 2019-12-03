@@ -284,6 +284,14 @@ const rootNav = [
         resource:                 [],
         ctx:                      [getClusterId],
       },
+      {
+        id:                       'cluster-tools-cis-scan',
+        localizedLabel:           'nav.tools.cisScans',
+        route:                    'authenticated.cluster.cis/scan',
+        resourceScope:            'global',
+        resource:                 [],
+        ctx:                      [getClusterId],
+      },
     ],
   },
 
