@@ -22,6 +22,16 @@
     <span id="header-search"/>
   </div>
 </section>
+
+{{#if defaultGlobalRoleDoesNotExist}}
+  <section>
+    <BannerMessage
+      @color="bg-warning"
+      @message={{t "rolesPage.index.warning" appName=settings.appName}}
+    />
+  </section>
+{{/if}}
+
 <section class="instances">
   {{#sortable-table
        bulkActions=true
