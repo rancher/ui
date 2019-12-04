@@ -4432,7 +4432,12 @@ confirmDelete:
   cancelAction: Cancel
   largeDeleteText: '{key} and {othersCount} others'
   systemChartNote: 'You are removing a system app. It may cause issues with the cluster if it is removed.'
-  globalRoleNote: "{count} users are assigned this role"
+  globalRoleNote: |
+    {count, plural,
+    =0 {No users are assigned this role.}
+    =1 {# user is assigned this role.}
+    other {# users are assigned this role.}
+    }
   forceDelete:
     label: Force Delete
     warning: "IMPORTANT: Force deleting pods does not wait for confirmation that the pod's processes have been terminated. This may result in <b>data corruption or inconsistencies</b>."
