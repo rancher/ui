@@ -8,6 +8,8 @@ export default Controller.extend({
   modalService: service('modal'),
   router:       service(),
   scope:        service(),
+  growl:        service(),
+  intl:         service(),
 
   tableHeaders: [
     {
@@ -122,12 +124,17 @@ export default Controller.extend({
     return get(this, 'model.configMaps').findBy('id', 'security-scan:security-scan-cfg');
   }),
 
-  skipList: computed('securityScanConfig.data.@each', function() {
+  parsedSecurityScanConfig: computed('securityScanConfig.data.@each', function() {
     try {
-      return JSON.parse(get(this, 'securityScanConfig.data')[FILE_KEY]).skip;
-    } catch (ex) {
-      return [];
+      return JSON.parse(get(this, 'securityScanConfig.data')[FILE_KEY]);
+    } catch (error) {
+      this.growl.fromError(this.intl.t('cis.scan.detail.error.parseConfig'), error.message);
     }
+  }).volatile(),
+
+  skipList: computed('securityScanConfig.data.@each', function() {
+    const skip = get(this, 'parsedSecurityScanConfig.skip');
+    return skip ? skip : [];
   }),
 
   clusterScans: computed('model.clusterScans.@each', function() {
@@ -158,16 +165,18 @@ export default Controller.extend({
   },
 
   editSecurityScanConfig(editorFn) {
-    const securityScanConfig = get(this, 'securityScanConfig');
-    const configFile = securityScanConfig.data[FILE_KEY];
-    const value = JSON.parse(configFile);
-    const newValue = editorFn(value);
+      const securityScanConfig = get(this, 'securityScanConfig');
+      const value = get(this, 'parsedSecurityScanConfig');
+      if (!value) {
+        return;
+      }
+      const newValue = editorFn(value);
 
-    set(securityScanConfig, 'data', {
-      ...securityScanConfig.data,
-      [FILE_KEY]: JSON.stringify(newValue)
-    });
-    securityScanConfig.save();
+      set(securityScanConfig, 'data', {
+        ...securityScanConfig.data,
+        [FILE_KEY]: JSON.stringify(newValue)
+      });
+      securityScanConfig.save();
   },
 
   getCheckState(check) {
