@@ -101,6 +101,7 @@ export default Resource.extend({
 
     return moment(createdCondition.lastUpdateTime).format('dddd MMM D HH:mm:ss');
   }),
+
   actions:       {
     async download() {
       const file = await get(this, 'csvFile');

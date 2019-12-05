@@ -16,19 +16,19 @@ export default Controller.extend({
     },
     {
       name:           'state',
-      sort:           ['state', 'id'],
+      sort:           ['state', 'sortableId'],
       translationKey: 'cis.scan.detail.table.state',
       width:          100,
     },
     {
       name:           'id',
-      sort:           ['id'],
+      sort:           ['sortableId'],
       translationKey: 'cis.scan.detail.table.number',
       width:          100,
     },
     {
       name:           'description',
-      sort:           ['description', 'id'],
+      sort:           ['description', 'sortableId'],
       translationKey: 'cis.scan.detail.table.description',
     },
     {
@@ -88,6 +88,7 @@ export default Controller.extend({
       return {
         state,
         id:                test.id,
+        sortableId:        this.createSortableId(test.id),
         description:       test.description,
         remediation:       state === 'Fail' ? test.remediation : null,
         nodes,
@@ -99,6 +100,23 @@ export default Controller.extend({
       };
     });
   }),
+
+  /**
+   * Converts an id that looks like 1.1.9 into 000010000100009. This
+   * allows us to appropriately compare the ids as if they are versions
+   * instead of just doing a naive string comparison.
+   * @param {*} id 
+   */
+  createSortableId(id) {
+    const columnWidth = 5;
+    const splitId = id.split('.');
+    return splitId
+      .map(column => {
+        const columnPaddingWidth = Math.max(columnWidth - column.length, 0)
+        return '0'.repeat(columnPaddingWidth) + column;
+      })
+      .join('');
+  },
 
   securityScanConfig: computed('model.configMaps.@each', function() {
     return get(this, 'model.configMaps').findBy('id', 'security-scan:security-scan-cfg');
