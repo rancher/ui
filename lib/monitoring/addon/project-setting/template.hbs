@@ -1,4 +1,11 @@
-{{enable-monitoring
-  apps=model.apps
-  level="project"
-}}
+{{#if scope.currentProject.isSystemProject}}
+  {{banner-message
+    color="bg-info"
+    message=(t "monitoringPage.systemProject")
+  }}
+{{else}}
+  {{enable-monitoring
+    apps=model.apps
+    level="project"
+  }}
+{{/if}}

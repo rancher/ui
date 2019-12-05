@@ -81,7 +81,7 @@
   }}
 
   {{#if scope.currentCluster.isMonitoringReady}}
-    {{#metrics-summary 
+    {{#metrics-summary
       expandAll=al.expandAll
       expandFn=expandFn
       grafanaUrl=service.grafanaUrl
@@ -242,7 +242,7 @@
     }}
   {{/if}}
 
-  {{#if scope.currentCluster.enableClusterMonitoring}}
+  {{#if (or (and scope.currentProject.isSystemProject scope.currentCluster.enableClusterMonitoring) scope.currentProject.enableProjectMonitoring)}}
     {{container/form-custom-metrics
       classNames="accordion-wrapper"
       workload=service
