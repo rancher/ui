@@ -49,6 +49,7 @@ export default Controller.extend({
 
   disableRunScanButton: computed.notEmpty('runningClusterScans'),
 
+  isRKE:   computed.alias('scope.currentCluster.isRKE'),
   actions: {
     runScan() {
       get(this, 'scope.currentCluster').doAction('runSecurityScan', {
@@ -78,5 +79,4 @@ export default Controller.extend({
   clusterScans: computed('model.clusterScans.@each', function() {
     return get(this, 'model.clusterScans').filterBy('clusterId', get(this, 'scope.currentCluster.id'));
   }),
-
 });
