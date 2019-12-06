@@ -8,6 +8,8 @@ export default Controller.extend({
   modalService: service('modal'),
   router:       service(),
   scope:        service(),
+  growl:        service(),
+  intl:         service(),
 
   tableHeaders: [
     {
@@ -16,19 +18,19 @@ export default Controller.extend({
     },
     {
       name:           'state',
-      sort:           ['state', 'id'],
+      sort:           ['state', 'sortableId'],
       translationKey: 'cis.scan.detail.table.state',
       width:          100,
     },
     {
       name:           'id',
-      sort:           ['id'],
+      sort:           ['sortableId'],
       translationKey: 'cis.scan.detail.table.number',
       width:          100,
     },
     {
       name:           'description',
-      sort:           ['description', 'id'],
+      sort:           ['description', 'sortableId'],
       translationKey: 'cis.scan.detail.table.description',
     },
     {
@@ -88,6 +90,7 @@ export default Controller.extend({
       return {
         state,
         id:                test.id,
+        sortableId:        this.createSortableId(test.id),
         description:       test.description,
         remediation:       state === 'Fail' ? test.remediation : null,
         nodes,
@@ -104,17 +107,42 @@ export default Controller.extend({
     return get(this, 'model.configMaps').findBy('id', 'security-scan:security-scan-cfg');
   }),
 
-  skipList: computed('securityScanConfig.data.@each', function() {
+  parsedSecurityScanConfig: computed('securityScanConfig.data.@each', function() {
     try {
-      return JSON.parse(get(this, 'securityScanConfig.data')[FILE_KEY]).skip;
-    } catch (ex) {
-      return [];
+      return JSON.parse(get(this, 'securityScanConfig.data')[FILE_KEY]);
+    } catch (error) {
+      this.growl.fromError(this.intl.t('cis.scan.detail.error.parseConfig'), error.message);
     }
+  }).volatile(),
+
+  skipList: computed('securityScanConfig.data.@each', function() {
+    const skip = get(this, 'parsedSecurityScanConfig.skip');
+
+    return skip ? skip : [];
   }),
 
   clusterScans: computed('model.clusterScans.@each', function() {
     return get(this, 'model.clusterScans').filterBy('clusterId', get(this, 'scope.currentCluster.id'));
   }),
+
+  /**
+   * Converts an id that looks like 1.1.9 into 000010000100009. This
+   * allows us to appropriately compare the ids as if they are versions
+   * instead of just doing a naive string comparison.
+   * @param {*} id
+   */
+  createSortableId(id) {
+    const columnWidth = 5;
+    const splitId = id.split('.');
+
+    return splitId
+      .map((column) => {
+        const columnPaddingWidth = Math.max(columnWidth - column.length, 0)
+
+        return '0'.repeat(columnPaddingWidth) + column;
+      })
+      .join('');
+  },
 
   toggleSkip(testId) {
     const isSkipped = get(this, 'skipList').indexOf(testId) !== -1;
@@ -141,8 +169,11 @@ export default Controller.extend({
 
   editSecurityScanConfig(editorFn) {
     const securityScanConfig = get(this, 'securityScanConfig');
-    const configFile = securityScanConfig.data[FILE_KEY];
-    const value = JSON.parse(configFile);
+    const value = get(this, 'parsedSecurityScanConfig');
+
+    if (!value) {
+      return;
+    }
     const newValue = editorFn(value);
 
     set(securityScanConfig, 'data', {
