@@ -1,6 +1,9 @@
 ---
 languageName: "İngilizce"
 languageContribute: "Rancher çevirilerine yardım et"
+##############################
+#Really generic things used in multiple places (use sparingly)
+##############################
 generic:
   actions: Aksiyonlar
   activate: Etkinleştir
@@ -49,11 +52,13 @@ generic:
   help: Yardım
   hostname: Makine adı
   hours: saat
+  hpa: HPA
   id: Kimlik
   image: Görsel
   import: İçeri Aktar
   internal: Dahili
   ipAddress: IP Adresi
+  istioRule: Trafik Kuralı
   key: Anahtar
   limit: Limit
   limits: Limitler
@@ -130,6 +135,9 @@ realmNames:
   asia: Asya
   euWest: AB Batı
   euEast: AB Doğu
+##############################
+#Routes
+##############################
 accountsPage:
   detail:
     header: Kullanıcı Detayları
@@ -164,7 +172,6 @@ accountsPage:
       kind: Tür
       username: Yerel kullanıcı adı
       identity: Kimlik
-      noData: Henüz kullanıcı yok
       noMatch: Mevcut aramayla eşleşen kullanıcı yok
       noName: Hiçbiri
   new:
@@ -266,7 +273,6 @@ rolesPage:
       created: Oluşturma Zamanı
       enabled: Aktif
       name: İsim
-      noData: Henüz bir rol yok
       noMatch: Mevcut aramayla eşleşen rol yok
       subjectKind: Tür
       template: Şablon
@@ -319,6 +325,7 @@ rolesPage:
         labelText: İzin ver
         resource: Kaynak
         addAction: Kaynak Ekle
+        apiGroups: API Grupları
       otherRole:
         labelText: Diğer rolleri dahil et
         role: Rol
@@ -419,6 +426,7 @@ authPage:
       disableAccess:
         header: "Tehlikeli Bölge&trade;"
         warning: '<b class="text-danger">Dikkat:</b> Erişim kontrolünü devre dışı bırakmak, bu sayfaya veya API''ye erişebilecek herkes için {appName} üzerinde tam kontrol sağlar.'
+        confirmDisable: "Emin misiniz? Erişim kontrolünü gerçekten devre dışı bırakmak için tekrar tıklayın"
         disable: Erişim kontrolünü devre dışı bırak
       groupsField: 'Gruplar:'
       displayName: 'Görünecek İsim:'
@@ -461,12 +469,12 @@ authPage:
       disableAccess:
         header: "Tehlikeli Bölge&trade;"
         warning: '<b class="text-danger">Dikkat:</b> Erişim kontrolünü devre dışı bırakmak, bu sayfaya veya API''ye erişebilecek herkes için {appName} üzerinde tam kontrol sağlar.'
+        confirmDisable: "Emin misiniz? Erişim kontrolünü gerçekten devre dışı bırakmak için tekrar tıklayın"
         disable: GiHub erişimini devre dışı bırak
     notAuthenticated:
       header: "1. GitHub Uygulamasını Ayarla"
       ul:
         li1:
-          text: 'Standart GitHub için, yeni pencere açara uygulama ayarlarına gitmek için <a href="https://github.com/settings/developers" target="_blank">buraya tıklayın</a>.'
           ul:
             li1: "GitHub Enterprise için hesabınıza giriş yapın. Ayarlara ve ardından Geliştirici ayarlarına tıklayın."
         li2:
@@ -474,7 +482,6 @@ authPage:
           ul:
             li1: '<b>Uygulama adı:</b> <span class="text-muted">İstediğiniz herhangi bir şey, örn. {appName}</span>'
             li2: 'Anasayfa URL:'
-            li3: '<b>Uygulama açıklaması:</b> <span class="text-muted">İstediğiniz herhangi bir şey, (zorunlu değil) </span>'
             li4: 'Yetkilendirme callback URL:'
         li3:
           text: '"Uygulamayı kaydet" e tıklayın'
@@ -506,6 +513,7 @@ authPage:
         label: "Azure AD yapılandırılmamış"
     enabled:
       header: 'Tehlikeli Bölge&trade;'
+      reallyDisable: 'Emin misiniz? Erişim kontrolünü gerçekten devre dışı bırakmak için tekrar tıklayın'
       promptDisable: Azure AD'yi devre dışı bırak
       general:
         header: Genel
@@ -564,6 +572,7 @@ authPage:
       header: 'Tehlikeli Bölge&trade;'
       warning: '<b class="text-danger">Dikkat:</b> Erişim kontrolünü devre dışı bırakmak, bu sayfaya veya API''ye erişebilecek herkes için {appName} üzerinde tam kontrol sağlar.'
       buttonText:
+        disable: 'Emin misiniz? Erişim kontrolünü gerçekten devre dışı bırakmak için tekrar tıklayın'
         prompt: Erişim kontrolünü devre dışı bırak
     accessDisabled:
       header: '1. Admin kullanıcısı ayarlayın'
@@ -587,6 +596,7 @@ authPage:
         post: 'Etkinleştiriliyor...'
 backupsPage:
   header: etcd Snapshotları
+  detail: etcd snapshot, etkinse, önceki sürümlerden kümeleri geri yüklemek için kullanılabilecek önceden tanımlanmış aralıklarla alınan küme anlık görüntüleridir.
   table:
     state: Durum
     target:
@@ -595,13 +605,14 @@ backupsPage:
       local: Yerel
     name: İsim
     created: Oluşturulma
-    noData: etcd snapshot bulunamadı
 balancerPage:
   noMatch: Mevcut aramayla eşleşen balancer yok
   noData: Gösterilecek bir balancer mevcut değil.
   table:
     target: Hedef
 catalogPage:
+  istio:
+    header: Trafik Kuralları Kataloğu
   index:
     header: Katalog
     refreshBtn: Yenile
@@ -633,7 +644,6 @@ cloudCredentialsPage:
     nodeTemplates: Node Şablonlarını Yönet
   index:
     table:
-      noData: Henüz bulut kimlik bilgisi yok
       noMatch: Mevcut aramayla eşleşen bulut kimlik bilgisi yok
 clusterCatalogPage:
   header: Kataloglar
@@ -688,7 +698,6 @@ membersPage:
     table:
       name: İsim
       created: Oluşturulma Zamanı
-      noData: Henüz üye yok
       noMatch: Mevcut aramayla eşleşen üye yok
       userId: Kullanıcı
       subjectKind: Tür
@@ -697,7 +706,6 @@ namespacesPage:
   header: Namespace'ler
   addNamespace: Namespace Ekle
   noMatch: Mevcut aramayla eşleşen namespace yok.
-  noData: Bu cluster'da namespace tanımlanmamış
   table:
     name:
       label: Namespace
@@ -739,9 +747,77 @@ projectsPage:
     placeholder: örn. laboratuar
   created:
     label: Oluşturulma
+  psp:
+    label: Pod Güvenlik Politikaları
+  resourceQuota:
+    title: Kaynak Sınırlamaları
+    detail: Projenin ne kadar kaynak tüketebileceğini yapılandırma
+  containerDefaultLimit:
+    title: Konteyner Varsayılan Kaynak Sınırı
+    detail: Konteynerin varsayılan ne kadar kaynak tüketebileceğini yapılandırma
   members:
+    title: Kullanıcılar
+    detail: Bu projedeki kaynaklara kimlerin erişebileceğini ve hangi izinlere sahip olduklarını yapılandırma
     user: Kullanıcı
+    group: Grup
+    serviceaccount: Servis Hesabı
+    labelText: Üyeler
+    addMember: Kullanıcı Ekle
+    addUser: Kullanıcı Ekle
+    noAddUser: Kayıtlı tek aktif kullanıcı sizsiniz.
+    addGroup: Grup Ekle
+    addServiceAccount: Servis Hesabı Ekle
+    multipleRoles: Birden Fazla Rol
+    customRoles: Özel Roller
+    kind:
+      label: Tür
+    name:
+      label: Ad
+    role:
+      label: Görev
+    errors:
+      nameReq: İsim gereklidir.
+      nameInExists: Bu isim kullanılmakta. Lütfen başka bir proje ismi seçin.
+      memberNameReq: Bir üye için isim gerekli
+      memberRoleReq: Bir üye için isim gerekli
+clustersPage:
+  header: Kümeler
+  newCluster: Yeni Küme Oluştur
+  newClusterName: "Küme Ekle: {name}"
+  editClusterName: "Küme Düzenle: {name}"
+  cluster:
+    label: Küme Adı
+  provider:
+    label: Sağlayıcı
+  nodes:
+    label: Düğümler
+  cpu:
+    label: İşlemci
+  memory:
+    label: Bellek
+  pod:
+    label: Pod'lar
+  storage:
+    label: Disk
+ingressPage:
+  header: 'Ingress: {name}'
+  gkeIngressWarning: 'Kubernetes Engine''in harici bir IP adresi tahsis etmesi ve yük dengeleyicisini hazırlaması birkaç dakika sürebilir. Bu arada, yük dengeleyici trafiğe hazır olana kadar HTTP 404 ve HTTP 500 gibi hatalar alabilirsiniz.'
+  table:
+    targets:
+      label: Hedefler
+    noMatch: Mevcut aramayla eşleşen ingress ler yok.
+    noData: Herhangi bir ingress kuralı tanımlanmamış
 containerPage:
+  header: 'Konteyner: {name}'
+  initContainer:
+    label: konteyleri Hazırla
+  envTab:
+    header: Ortam Değişkenleri
+    detail: 'Bu ortam değişkenleri oluşturma sırasında eklendi.'
+  portsTab:
+    header: Portlar
+    detail: 'Ortak IP adreslerinde ana bağlantı noktalarına konteyner dinleme bağlantı noktalarının eşleştirmeleri'
+    hostPrimaryIp: '({ip})'
   linksTab:
     header: Bağlantılar
     detail: 'Bu özellikler, bu container''daki container''lar arasındaki bağlantıları gösterir.'
@@ -770,7 +846,6 @@ containersPage:
     sparkPrefixMemory: "Hafıza: "
     sparkPrefixNetwork: "Ağ: "
     sparkPrefixStorage: "Depolama: "
-    noData: Gösterilecek herhangi bir container mevcut değil.
     noMatch: Mevcut aramayla eşleşen container yok.
   welcome:
     container: Hemen başlayın
@@ -808,22 +883,24 @@ metricsAction:
     7d: 7 gün
     30d: 30 gün
 metrics:
-  workload-cpu-usage: CPU Kullanımı
-  workload-disk-io: Disk G/Ç
-  workload-memory-usage-bytes-sum: Bellek Kullanımı
-  workload-network-io: Ağ G/Ç
-  workload-network-packet: Ağ Paketleri
+  container-cpu-usage: CPU Kullanımı
+  container-disk-io: Disk G/Ç
+  container-memory-usage-bytes-sum: Bellek Kullanımı
+  istio-global-request-volume-top10: Servis tarafından talep Hacmi
+  istio-global-request-volume: Proje Talep Hacmi
+  istio-global-success-rate: Proje Başarı Oranı
   pod-cpu-usage: CPU Kullanımı
   pod-disk-io: Disk G/Ç
   pod-memory-usage-bytes-sum: Bellek Kullanımı
   pod-network-io: Ağ G/Ç
   pod-network-packet: Ağ Paketleri
-  container-cpu-usage: CPU Kullanımı
-  container-disk-io: Disk G/Ç
-  container-memory-usage-bytes-sum: Bellek Kullanımı
+  workload-cpu-usage: CPU Kullanımı
+  workload-disk-io: Disk G/Ç
+  workload-memory-usage-bytes-sum: Bellek Kullanımı
+  workload-network-io: Ağ G/Ç
+  workload-network-packet: Ağ Paketleri
 dnsPage:
   noMatch: Mevcut aramayla eşleşen kayıt yok
-  noData: Gösterilecek bir DNS kaydı mevcut değil
   type:
     arecord: Dış IP
     cname: Hostname
@@ -835,6 +912,36 @@ dnsPage:
   table:
     target: Hedef
     clusterIpDetail: 'Cluster IP: {ip}'
+cruHpa:
+  status:
+    label: Güncel Durum
+  metrics:
+    addMetricLabel: Metrik Ekle
+    removeMetricLabel: Metriği Kaldır
+    selector:
+      labels:
+        addSelectorLabel: Etiket Ekle
+      expressions:
+        addSelectorLabel: İfade Ekle
+    describedObject:
+      apiVersion:
+        placeholder: örneğin, extensions/v1beta1
+    types:
+      label: Metrik Türü
+      pods: Pod'lar
+      resource: Kaynak
+      external: Harici
+      warning:
+        custom: "Özel ölçümleri HPA ile kullanmak için prometheus adaptörü gibi özel ölçüm sunucusu kurmanız gerekir."
+    name:
+      label: Metrik Adı
+      resources:
+        cpu: İşlemci
+        memory: Bellek
+    value:
+      label: Miktar
+      placeholder: örneğin 200
+      cpuPlaceholder: örneğin 200m
 editDns:
   title:
     new: Kayıt Ekle
@@ -844,6 +951,8 @@ editDns:
     placeholder: örn. benim-uygulamam
   sessionAffinity:
     title: Session Affinity
+  sessionAffinityConfig:
+    placeholder: örn. 10800
   kind:
     nodePort: NodePort(Her node'da)
     externalName: ExternalName
@@ -989,6 +1098,9 @@ multiClusterAppsPage:
   header: Multi-Cluster Uygulamalar
   error:
     appData: Global uygulama verileri yüklenirken hata oluştu
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 failWhalePage:
   header: Hata
   reloadButton: |
@@ -1251,6 +1363,9 @@ notifierPage:
       created: Oluşturulma
       noData: Herhangi bir bildirici tanımlanmamış
       noMatch: Eşleşme Bulunamadı
+##############################
+#Partials
+##############################
 ldap:
   providerName:
     openldap: OpenLDAP
@@ -1301,6 +1416,9 @@ servicePartial:
   noContainers:
     inactive:
       start: Başlat
+##############################
+#Components
+##############################
 accordionRow:
   status:
     none: Hiçbiri
@@ -1406,7 +1524,6 @@ clusterRow:
   noData: Bu cluster'da henüz ortam tanımlanmamış.
   noHosts: Dış cluster'da node bulunmamakta
   noClusterMatch: Mevcut aramayla eşleşen cluster yok.
-  noClusterData: Henüz cluster yok.
   addHost: Node Ekle
   importCluster: Mevcut Kubernete'leri kullan
   loginDefault: Giriş yap
@@ -1422,10 +1539,8 @@ clusterNew:
   description:
     placeholder: örn. geliştirme ve test workload'ları için cluster
   driverLabels:
-    cloud: Barındırılan bir Kubernetes sağlayıcısında
     custom: Kendi node'larımdan
     import: Mevcut cluster'ı içe aktar
-    infra: Altyapı sağlayıcısındaki node'lardan
     noCloud: Etkinleştirilmiş cluster sürücüsü yok.
     noInfra: Etkinleştirilmiş bir node sürücüsü yok.
   externalError: 'Bileşen yüklenemedi. URL''yi kontrol et.'
@@ -1436,7 +1551,6 @@ clusterNew:
     label: Sağlayıcı
     detail: Cluster için node'ların nereden geleceğini seçin
   nodes:
-    title: Node'lar
     detail: Oluşturulacak node'ları özelleştirin
   tencenttke:
     bandwidthType:
@@ -1614,8 +1728,6 @@ clusterNew:
     masterIpv4CidrBlock:
       label: Master IP aralığı
       placeholder: örn. 10.42.0.0/28
-    useIpAliases:
-      label: Ip Alias Kullan
     ipPolicySubnetworkName:
       label: Alt ağ Adı
       placeholder: Alt ağ Adınız
@@ -1800,7 +1912,6 @@ clusterNew:
       text: Node seçeneklerini düzenlemek, mevcut makinelerinizde çalıştıracağınız komutu güncelleyecektir
     command:
       instructions: 'Bu komutu, zaten Docker''ın desteklenen bir sürümünü kullanan bir veya daha fazla makinede çalıştırın.'
-      winInstructions: 'Halihazırda desteklenen bir Docker sürümünü ve Windows Server sürümünün <code class="code-version">{version}</code> veya daha üst sürümünü çalıştıran bir veya daha fazla makinede bu komutu <code>CMD</code> çalıştırın.'
     auth:
       label: Kimlik Doğrulama Sağlayıcısı
       x509: x509
@@ -1822,20 +1933,12 @@ clusterNew:
         vxlan: VXLAN (Overlay)
     windowsSupport:
       label: Windows Desteği
-      help: Kubernetes 1.14 ile Flannel ağ sağlayıcısı için mevcut.
       disabled: '{plugin} ağ sağlayıcısı desteklenmiyor.'
-    advanced:
-      label: Gelişmiş Cluster Seçenekleri
-      detail: Gelişmiş seçenekleri özelleştir
     authorizedEndpoint:
-      title: Yetkilendirilmiş Cluster Endpoint
-      detail: "Yetkili endpoint'in etkinleştirilmesi, Rancher API proxy'sini atlayarak cluster ile doğrudan iletişime izin verir. Yetkili endpoint'ler cluster için kubeconfig üretilerek elde edilebilir."
       label: Yetkilendirilmiş Cluster Endpoint
   custom:
-    label: Özel
     shortLabel: Özel
   import:
-    label: İçe Aktarılan
     shortLabel: İçe Aktarılan
     command:
       instructionsAdminRole: "<b>Not:</b> Bir Google Kubernetes Engine (GKE) cluster'ını (veya size bağlı ClusterRole <b>cluster-admin</b> ile bir kubectl yapılandırma dosyası sağlamayan herhangi bir cluster'ı) içe aktarmak istiyorsanız, ClusterRole'u bağlamanız gerekir. <b>cluster-admin</b> için aşağıdaki komutu kullanın:<br/><br/> <b>[USER_ACCOUNT]</b> Google hesap adresinizle değiştirin (bunu <b>gcloud config get-value hesabı</b>kullanarak gerçekleştirebilirsiniz). Google Kubernetes Engine cluster'ını içe aktarmıyorsanız, kubectl yapılandırma dosyanızda yapılandırılmış yürütücü kullanıcıyla <b>[USER_ACCOUNT]</b> değiştirin."
@@ -1857,13 +1960,11 @@ resourceEventList:
   detail: Mevcut {resourceType} kaynağının olayları
   table:
     type: Tür
-    lastUpdate: Son Güncelleme
     reason: Neden
     message: Mesaj
   noData: Olay yok
   noMatch: Mevcut aramayla eşleşen olay yok
 confirmDelete:
-  titleWithoutResourceType: 'Silmek istediğinizden emin misiniz'
   environmentNote: 'Not: Bu Proje içindeki tüm kaynaklar, {appName} ile oluşturulan ad alanları da dahil olmak üzere kalıcı olarak silinecektir.'
   clusterNote: 'Not: Bulut sağlayıcısında oluşturulan birimler, balancer''lar ve ağlar gibi ilişkili kaynaklar otomatik olarak kaldırılmaz.'
   clusterRoleTemplateBindingNote: "Not: Kullanıcının proje izinleri kaldırılmayacak."
@@ -2089,4 +2190,4 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: 'Yes'
+        default: "true"

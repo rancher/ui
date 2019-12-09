@@ -1,6 +1,9 @@
 ---
 languageName: "Magyar"
 languageContribute: "Segíts lefordítani a Ranchert"
+##############################
+#Really generic things used in multiple places (use sparingly)
+##############################
 generic:
   actions: Műveletek
   activate: Engedélyezés
@@ -79,6 +82,9 @@ realmNames:
   asia: Ázsia
   euWest: Nyugat-EU
   euEast: Kelet-EU
+##############################
+#Routes
+##############################
 accountsPage:
   index:
     table:
@@ -185,7 +191,6 @@ authPage:
       header: "1. GitHub alkalmazás beállítása"
       ul:
         li1:
-          text: 'Standard GitHub esetén <a href="https://github.com/settings/developers" target="_blank">kattints ide</a> az alkalmazás-beállítások megnyitásához (új ablak).'
           ul:
             li1: "Github Enterprise esetén jelentkezz be fiókodba. Kattints a Beállítások, majd az Alkalmazások elemre."
         li2:
@@ -193,7 +198,6 @@ authPage:
           ul:
             li1: '<b>Alkalmazásnév</b> <span class="text-muted">Bármi, ami tetszik, pl.: Az én {appName} alkalmazásom</span>'
             li2: 'Honlap URL-címe'
-            li3: '<b>Alkalmazás leírás:</b> <span class="text-muted">bármi, amit szeretnél, opcionális</span>'
             li4: 'Hitelesítés visszahívási URL'
         li3:
           text: 'Kattints az "Alkalmazás regisztrálásához"'
@@ -341,19 +345,19 @@ metricsAction:
     7d: 7 nap
     30d: 30 nap
 metrics:
-  workload-cpu-usage: CPU kihasználtság
-  workload-disk-io: Lemez I/O
-  workload-memory-usage-bytes-sum: Memóriahasználat
-  workload-network-io: Hálózati I/O
-  workload-network-packet: Hálózati csomagok
+  container-cpu-usage: CPU kihasználtság
+  container-disk-io: Lemez I/O
+  container-memory-usage-bytes-sum: Memóriahasználat
   pod-cpu-usage: CPU kihasználtság
   pod-disk-io: Lemez I/O
   pod-memory-usage-bytes-sum: Memóriahasználat
   pod-network-io: Hálózati I/O
   pod-network-packet: Hálózati csomagok
-  container-cpu-usage: CPU kihasználtság
-  container-disk-io: Lemez I/O
-  container-memory-usage-bytes-sum: Memóriahasználat
+  workload-cpu-usage: CPU kihasználtság
+  workload-disk-io: Lemez I/O
+  workload-memory-usage-bytes-sum: Memóriahasználat
+  workload-network-io: Hálózati I/O
+  workload-network-packet: Hálózati csomagok
 dnsPage:
   table:
     target: Cél
@@ -371,6 +375,9 @@ editDns:
     placeholder: pl. 10800
   kind:
     clusterIP: Klaszter IP (csak belső)
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 failWhalePage:
   header: Hiba
   reloadButton: |
@@ -439,6 +446,9 @@ loginPage:
 machinePage:
   inactive: Inaktív
   builtin: Beépített
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 notFoundPage:
   header: "A keresett oldal nem létezik!"
   linkTo: Nyitóoldalra
@@ -557,6 +567,9 @@ waitingPage:
   hosts:
     setup:
       kubernetes: Kubernetes beállítása
+##############################
+#Partials
+##############################
 ldap:
   providerName:
     openldap: OpenLDAP
@@ -623,6 +636,9 @@ servicePartial:
     label: Még nincs konténerek.
     inactive:
       start: Start
+##############################
+#Components
+##############################
 accordionRow:
   status:
     none: Semmi
@@ -657,7 +673,6 @@ catalogSettings:
       label: Branch
       placeholder: 'pl. master'
 confirmDelete:
-  titleWithoutResourceType: 'Biztosan törölni szeretné?'
   protip: 'Profi tipp: Tartsd nyomva a {key} billenytűt, miközben a Törlés-re kattintasz, hogy kikerüld a megerősítést.'
   confirmAction: Törlés
   cancelAction: Mégsem
@@ -1097,7 +1112,7 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: 'Yes'
+        default: "true"
 pageFooter:
   notARelease: (Nem egy Kiadás)
   issues: Hiba jelentése
@@ -1202,11 +1217,17 @@ waitKubernetes:
   createStack: 'Kubernetes rendszer köteg létrehozása'
   startServices: 'Szolgáltatások indítása'
   waitApi: 'Várakozás a Kubernetes API-ra'
+##############################
+#Mixins
+##############################
 containerChoices:
   hostGroup: "Hoszt: {name}"
   hostGroupWithState: "Hoszt: {name} ({state})"
   unknownHost: "Hoszt: ???"
   containerOption: "{name}"
+##############################
+#Navigation
+##############################
 nav:
   catalog:
     all: Összes
@@ -1220,6 +1241,9 @@ nav:
   user:
     label: "Felhasználói menü: {username}"
     logout: Kijelentkezés
+##############################
+#Resource Actions
+##############################
 action:
   activate: Engedélyezés
   clone: Klónoz
@@ -1242,8 +1266,14 @@ action:
   viewConfig: Konfiguráció megtekintése
   viewGraph: Grafikon megtekintése
   viewInstance: Példány megtekintése
+##############################
+#Resource Actions
+##############################
 validation:
   required: '"{key}" kötelező'
+##############################
+#Model Properties
+##############################
 model:
   account:
     kind:

@@ -1,6 +1,9 @@
 ---
 languageName: "日本語"
 languageContribute: "Rancher の翻訳にご協力ください"
+##############################
+#Really generic things used in multiple places (use sparingly)
+##############################
 generic:
   actions: アクション
   activate: アクティベート
@@ -40,6 +43,7 @@ generic:
   environment: 環境
   expandAll: すべて開く
   from: from
+  false: 'いいえ'
   generic: '一般'
   gigabyte: 'GB'
   hardware: ハードウェア
@@ -47,11 +51,13 @@ generic:
   help: ヘルプ
   hostname: ホスト名
   hours: 時間
+  hpa: HPA
   id: ID
   image: イメージ
   import: インポート
   internal: 内部
   ipAddress: IP アドレス
+  istioRule: トラフィックルール
   key: キー
   limit: 制限
   limits: 制限
@@ -76,10 +82,12 @@ generic:
   owner: 所有者
   paste: ペースト
   pod: pod
+  podRestarts: ポッド再起動
   port: ポート
   ports: ポート
   prefix: 接頭辞
   project: プロジェクト
+  persistentVolumeClaim: 永続ボリューム要求
   persistentVolume: 永続ボリューム
   random: ランダム
   remove: 削除
@@ -103,6 +111,7 @@ generic:
   testing: テスト中
   to: に
   total: 合計
+  true: 'はい'
   type: タイプ
   unknown: 不明
   unknownUser: ユーザー情報を取得できません
@@ -113,6 +122,9 @@ generic:
   value: 値
   version: バージョン
   yes: "はい"
+  readOnly: 読み取り専用
+  readWrite: 読み書き
+  writeOnly: 書き込み専用
 realmNames:
   all: 全て
   usWest: US 西部
@@ -120,6 +132,9 @@ realmNames:
   asia: アジア
   euWest: EU 西部
   euEast: EU 東部
+##############################
+#Routes
+##############################
 accountsPage:
   detail:
     header: ユーザーの詳細
@@ -154,7 +169,6 @@ accountsPage:
       kind: 種類
       username: ローカルユーザー名
       identity: ID
-      noData: まだユーザーはありません
       noMatch: 検索条件に一致するユーザーはいません
       noName: None
   new:
@@ -190,6 +204,7 @@ appDetailPage:
     noData: このアプリケーションには公開エンドポイントは作成されていません
     noMatch: 検索条件に一致する公開エンドポイントはありません
   answers:
+    title: 回答
     variable: 変数
   notes:
     title: Notes
@@ -254,7 +269,6 @@ rolesPage:
       created: 作成時刻
       enabled: 有効
       name: 名前
-      noData: まだロールはありません
       noMatch: 検索条件に一致するロールがありません
       subjectKind: 種類
       template: テンプレート
@@ -294,6 +308,7 @@ rolesPage:
         labelText: 許可
         resource: リソース
         addAction: リソースを追加
+        apiGroups: APIグループ
       otherRole:
         labelText: 他の役割を含める
         role: ロール
@@ -335,6 +350,7 @@ authPage:
       userName: 'ユーザー名:'
       userId: 'ユーザー ID:'
     disabled:
+      label: "{providerName} が設定されていません"
       name:
         labelText: 表示名フィールド
         display: "表示名フィールド:"
@@ -358,6 +374,7 @@ authPage:
       adfs: AD FS
       keycloak: Keycloak
       okta: Okta
+    popupError: 'ポップアップブロッカーを停止して、もう一度 "認証" をクリックしてください。'
   ping:
     buttonText:
       pre: 'Pingによる認証'
@@ -370,6 +387,10 @@ authPage:
     buttonText:
       pre: 'AD FSによる認証'
       post: IDP からの返答を待っています
+  okta:
+    buttonText:
+      pre: 'Okta で認証'
+      post: IDP からの返答を待っています
   shibboleth:
     enabled:
       authenticated:
@@ -378,6 +399,7 @@ authPage:
       disableAccess:
         header: "Danger Zone&trade;"
         warning: '<b class="text-danger">注意:</b> アクセスコントロールを無効化すると、このページや API にアクセスできる全ての人が {appName} 経由でフルコントロールするこ>とができます。'
+        confirmDisable: "本当によろしいですか? アクセスコントロールを無効化する場合は再度クリックしてください"
         disable: アクセスコントロールを無効化
       groupsField: 'グループ:'
       displayName: '表示名:'
@@ -420,12 +442,12 @@ authPage:
       disableAccess:
         header: "Danger Zone&trade;"
         warning: '<b class="text-danger">注意:</b> アクセスコントロールを無効化すると、このページや API にアクセスできる全ての人が {appName} 経由でフルコントロールすることができます。'
+        confirmDisable: "本当によろしいですか? アクセスコントロールを無効化する場合は再度クリックしてください"
         disable: Github アクセスを無効化
     notAuthenticated:
       header: "1. GithHub アプリケーションをセットアップする"
       ul:
         li1:
-          text: '通常の GitHub の場合、新規ウィンドウでアプリケーション設定を行うために <a href="https://github.com/settings/developers" target="_blank">こちらをクリック</a> してください。'
           ul:
             li1: "GitHub エンタープライズの場合、あなたのアカウントでログインし Settings、Applications の順にクリックしてください。"
         li2:
@@ -433,7 +455,6 @@ authPage:
           ul:
             li1: '<b>アプリケーション名:</b> <span class="text-muted">自由記載, e.g. My {appName}</span>'
             li2: 'ホームページ URL'
-            li3: '<b>アプリケーションの詳細情報:</b> <span class="text-muted">自由記載(オプション)</span>'
             li4: '認証コールバック URL'
         li3:
           text: '"アプリケーションを登録" をクリック'
@@ -457,12 +478,14 @@ authPage:
       buttonText:
         pre: GitHubアカウントで認証
         post: GitHub からの返答を待っています
+      popupError: 'ポップアップブロッカーを停止して、もう一度 "認証" をクリックしてください。'
   azuread:
     header:
       disabled:
         label: "Azure ADは設定されていません"
     enabled:
       header: 'Danger Zone&trade;'
+      reallyDisable: '本当によろしいですか? アクセスコントロールを無効化する場合は再度クリックしてください'
       promptDisable: アクセスコントロールを無効化
       general:
         header: 一般
@@ -470,6 +493,7 @@ authPage:
       header: '1. Azure AD アカウントを設定する'
       applicationId:
         label: アプリケーション ID
+        placeholder: 長い UUID 文字列
       applicationSecret:
         label: アプリケーションパスワード
       serverURL:
@@ -517,6 +541,7 @@ authPage:
       header: 'Danger Zone&trade;'
       warning: '<b class="text-danger">注意:</b> アクセスコントロールを無効化すると、このページや API にアクセスできる全ての人が {appName} 経由でフルコントロールすることができます。'
       buttonText:
+        disable: '本当によろしいですか?  アクセスコントロールを無効化する場合は再度クリックしてください'
         prompt: アクセスコントロールを無効化
     accessDisabled:
       header: '1. 管理者ユーザーをセットアップする'
@@ -541,7 +566,9 @@ authPage:
 backupsPage:
   header: etcdスナップショット
   table:
+    state: 状態
     target:
+      label: ターゲット
       s3: S3
       local: ローカル
     name: 名前
@@ -575,6 +602,11 @@ catalogPage:
       launch: 詳細を見る
       notCompatible: 互換性がありません
       alreadyDeployed: 既にデプロイ済みです
+cloudCredentialsPage:
+  rightButtons:
+    nodeTemplates: ノードテンプレートの管理
+clusterCatalogPage:
+  header: カタログ
 certificatesPage:
   cn: ドメイン名
   expiresDate: 有効期限
@@ -624,7 +656,6 @@ membersPage:
     table:
       name: 名前
       created: 作成日
-      noData: まだメンバーはいません
       noMatch: 検索条件に一致するメンバーがいません
       userId: ユーザー
       subjectKind: 種類
@@ -633,7 +664,6 @@ namespacesPage:
   header: 名前空間
   addNamespace: 名前空間を追加
   noMatch: 検索条件に一致する名前空間がありません
-  noData: のクラスタでははまだ名前空間は定義されていません
   table:
     name:
       label: 名前空間
@@ -708,8 +738,6 @@ clustersPage:
     label: クラスター名
   provider:
     label: プロバイダー
-  version:
-    label: バージョン
   nodes:
     label: ノード数
   cpu:
@@ -763,7 +791,6 @@ containersPage:
     sparkPrefixMemory: "メモリ: "
     sparkPrefixNetwork: "ネットワーク: "
     sparkPrefixStorage: "ストレージ: "
-    noData: 表示するコンテナはありません
     noMatch: 検索条件に一致するコンテナがありません
   welcome:
     container: 始めましょう
@@ -774,19 +801,42 @@ clusterDashboard:
   notActive: このクラスターは現在 <b>{state}</b> 状態です
   notReady: このクラスターは現在 <b>{state}</b> 状態です; API が準備されるまでこのページでの直接の操作はできません。
 metricsAction:
+  sections:
+    workload: ワークロードメトリクス
+    pod: Podのメトリック
+    container: コンテナのメトリック
   grafana:
     label: Grafana
+  summary:
+    label: 概要
+  detail:
+    label: 詳細
+  from:
+    label: From
+  periods:
+    custom: カスタム
+    5m: 5 分
+    1h: 1時間
+    6h: 6時間
+    24h: 24時間
+    7d: 7日
+    30d: 30日
 metrics:
+  container-cpu-usage: CPU使用率
+  container-disk-io: ディスク I/O
+  container-memory-usage-bytes-sum: メモリ使用率
+  pod-cpu-usage: CPU使用率
   pod-disk-io: ディスク I/O
   pod-memory-usage-bytes-sum: メモリ使用率
   pod-network-io: ネットワーク I/O
   pod-network-packet: ネットワークパケット
-  container-cpu-usage: CPU使用率
-  container-disk-io: ディスク I/O
-  container-memory-usage-bytes-sum: メモリ使用率
+  workload-cpu-usage: CPU使用率
+  workload-disk-io: ディスク I/O
+  workload-memory-usage-bytes-sum: メモリ使用率
+  workload-network-io: ネットワーク I/O
+  workload-network-packet: ネットワークパケット
 dnsPage:
   noMatch: 検索条件に一致するレコードはありません
-  noData: 表示する DNS レコードはありません
   type:
     arecord: 外部 IP
     cname: ホスト名
@@ -798,6 +848,26 @@ dnsPage:
   table:
     target: 対象
     clusterIpDetail: 'クラスター IP: {ip}'
+cruHpa:
+  title:
+    new: 水平ポッドオートスケーリングを追加
+    edit: 水平ポッドオートスケーリングを編集
+    view: "水平ポッドオートスケーリング: {name}"
+  status:
+    label: 現在の状態
+  minReplicas:
+    placeholder: '例: 1'
+  maxReplicas:
+    placeholder: '例: 10'
+  metrics:
+    label: メトリック
+    addMetricLabel: メトリックを追加
+    removeMetricLabel: メトリックを削除
+    selector:
+      labels:
+        addSelectorLabel: ラベルを追加
+      expressions:
+        addSelectorLabel: 式を追加する
 editDns:
   title:
     new: DNS レコードを追加
@@ -812,8 +882,10 @@ editDns:
     label: ロードバランサー IP
     placeholder: '例: 78.11.24.19'
   loadBalancerSourceRanges:
+    addActionLabel: ソースポート範囲を追加
     placeholder: '例: 143.231.0.0/16'
   healthCheckNodePort:
+    label: ノードポートのヘルスチェック
     placeholder: '例: 8080'
   externalTrafficPolicy:
     local: ローカル
@@ -822,6 +894,11 @@ editDns:
     label: 公開されている IP アドレス
   sessionAffinityConfig:
     placeholder: '例: 10800'
+  kind:
+    label: As a
+    clusterIP: クラスター IP(内部のみ)
+    loadBalancer: L4 ロードバランサー
+    nodePort: ノードポート(全てのノード上)
   description:
     placeholder: '例: 最新版の MyApp'
   selector:
@@ -881,13 +958,46 @@ cruPersistentVolumeClaim:
   storageClass:
     label: ストレージクラス
     prompt: デフォルトクラスを使用
+  secretRequired:
+    name: シークレット名
+    namespace: シークレット名前空間
 cruVolumeClaimTemplate:
+  title:
+    define: ボリューム要求テンプレートを定義
+    new: ボリューム要求テンプレートを追加
+    edit: "ボリューム要求テンプレートを編集: {name}"
+    view: "ボリューム要求テンプレート: {name}"
+  define:
+    addActionLabel: 定義
+  capacity:
+    label: 容量
+    unit: GiB
   name:
     placeholder: '例: myvol'
+  source:
+    label: ソース
   pv:
     label: 永続ボリューム
+    prompt: 永続ボリュームを選択してください...
   storageClass:
     label: ストレージクラス
+    prompt: デフォルトクラスを使用
+  customize:
+    title: カスタマイズ
+    detail: 拡張オプションをカスタマイズ
+cruPrivateRegistry:
+  title:
+    label: プライベートレジストリ
+  noData: このクラスターではまだプライベートレジストリは定義されていません
+  add:
+    label: プライベートレジストリを追加
+  registry:
+    user:
+      label: ユーザー
+    password:
+      label: パスワード
+    url:
+      label: URL
 cruVolume:
   title:
     new: エフェメラルボリュームを定義
@@ -900,6 +1010,51 @@ cruVolume:
     title: ソース設定
     detail: 選択中のボリュームソースのオプションを設定します
     prompt: ボリュームソースを選択してください...
+globalRegistryPage:
+  enableActionLabel: 有効
+  config:
+    databaseLimitCpu:
+      placeholder: '例: 1000'
+    databaseRequestMemory:
+      placeholder: '例: 1000'
+    redisRequestCpu:
+      placeholder: '例: 1000'
+    redisLimitCpu:
+      placeholder: '例: 1000'
+    redisRequestMemory:
+      placeholder: '例: 1000'
+    redisLimitMemory:
+      placeholder: '例: 1000'
+    redis:
+      external:
+        host:
+          placeholder: '例: 192.168.0.2'
+        port:
+          placeholder: '例: 6379'
+        coreDatabaseIndex:
+          placeholder: '例: 0'
+        jobserviceDatabaseIndex:
+          placeholder: '例: 1'
+        registryDatabaseIndex:
+          placeholder: '例: 2'
+    s3:
+      region:
+        label: S3リージョン
+        placeholder: '例: us-west-2'
+      accesskey:
+        label: S3アクセスキー
+      secretkey:
+        label: S3秘密キー
+    database:
+      external:
+        host:
+          placeholder: '例: 192.168.0.1'
+        port:
+          placeholder: '例: 5432'
+        username:
+          placeholder: '例: user'
+        password:
+          placeholder: '例: password'
 globalDnsPage:
   entriesPage:
     table:
@@ -907,18 +1062,33 @@ globalDnsPage:
       fqdn: FQDN
       provider: プロバイダー ID
     config:
+      configType: 解決方法
       project: プロジェクト
       fqdn:
         label: FQDN
         placeholder: dev.example.com
       provider:
         label: プロバイダー
+        placeholder: プロバイダの選択
+      ttl:
+        label: DNS TTL
   providersPage:
+    title: グローバルDNSプロバイダー
+    header:
+      new: グローバルDNSプロバイダーを追加
+      edit: グローバルDNSプロバイダーを編集
+    options:
+      title: プロバイダーオプション
+    table:
+      name: 名前
     config:
       accessKey:
         label: アクセスキー
       secretKey:
         label: 秘密キー
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 failWhalePage:
   header: エラー
   reloadButton: |
@@ -1119,6 +1289,9 @@ machinePage:
   add: ノードドライバーを追加
   builtin: ビルトイン
   url: ロケーション
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 notFoundPage:
   header: "お探しのページは存在しません!"
   linkTo: ホームに戻る
@@ -1132,8 +1305,6 @@ registriesPage:
         address: アドレス
         username: ユーザー名
         created: 作成日
-      body:
-        noData: "まだレジストリの資格情報がありません"
   new:
     header: レジストリを追加
     form:
@@ -1327,6 +1498,8 @@ newStack:
     addActionLabel: 回答を追加
 nodeTemplatesPage:
   header: ノードテンプレート
+  rightButtons:
+    actionButton: テンプレートを追加
   detail: ノードテンプレートはインフラストラクチャプロバイダー上のクラスターに所属するノードを展開する際に利用されます
   table:
     state: 状態
@@ -1442,6 +1615,9 @@ notifierPage:
       created: 作成日
       noData: まだ通知は定義されていません
       noMatch: 一致しません
+##############################
+#Partials
+##############################
 ldap:
   providerName:
     openldap: OpenLDAP
@@ -1556,6 +1732,9 @@ servicePartial:
     label: まだコンテナはありません
     inactive:
       start: 開始
+##############################
+#Components
+##############################
 accordionRow:
   status:
     none: なし
@@ -1628,7 +1807,6 @@ catalogSettings:
       rancher: "{appName} 認証済みライブラリ"
       pl: 認証済みライブラリ
     detail:
-      rancher: テンプレートは Kubernetes オーケストレーションサポートのような Rancher のコアとなる機能に必要となり、Rancher Labs によりメンテナンス、サポートされます。
       pl: 公式にメンテナンスされているテンプレートは Kubernetes のようなコアとなる機能に必要となります。
   community:
     header:
@@ -1663,7 +1841,6 @@ clusterRow:
   noData: このクラスターにはまだ環境はありません。
   noHosts: 外部クラスタにはノードがありません
   noClusterMatch: 検索条件に一致するクラスターがありません。
-  noClusterData: まだクラスターはありません
   addHost: ノードを追加
   importCluster: 既存の Kubernetes を利用
   loginDefault: ログイン
@@ -1685,11 +1862,9 @@ clusterNew:
     label: プロバイダー
     detail: クラスターに追加されるノードをどこに起動するか選択してください
   nodes:
-    title: ノード
     detail: 作成されるノードをカスタマイズする
   customize:
     title: クラスターオプション
-    detail: 作成されるクラスターをカスタマイズする
   psp:
     label: 既定のPodセキュリティポリシー
     prompt: ポッドセキュリティポリシーを選択...
@@ -1701,6 +1876,9 @@ clusterNew:
     access:
       title: アカウントアクセス
       detail: Amazon EKS の起動に使用するリージョンと API キーを選択してください
+  tencenttke:
+    version:
+      label: Kubernetes バージョン
   azureaks:
     label: Azure Container Service
     shortLabel: Azure AKS
@@ -1748,7 +1926,6 @@ clusterNew:
       placeholder: あなたの Azure テナント ID
     image:
       label: イメージ
-      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
     size:
       label: サイズ
     dockerPort:
@@ -1770,6 +1947,10 @@ clusterNew:
         label: サブネット
       serviceCidr:
         prompt: "10.43.0.0/16"
+      dnsServiceIp:
+        placeholder: '例: 10.0.0.10'
+      dockerBridgeCidr:
+        placeholder: '例: 172.17.0.1/16'
     sshUser:
       label: SSH ユーザー
       placeholder: usr1
@@ -1807,6 +1988,39 @@ clusterNew:
       placeholder: あなたのクライアントシークレット
     region:
       label: リージョン
+    enableMonitoring:
+      label: 監視
+    networkPolicy:
+      label: ネットワークポリシー
+    tags:
+      label: タグ
+      addActionLabel: タグを追加する
+  aliyunkcs:
+    access:
+      title: アカウントアクセス
+    clusters:
+      k8s: Kubernetes
+    storageSize:
+      placeholder: '例: 120'
+    masterNum:
+      label: マスターノード数
+    numOfNodes:
+      placeholder: '例: 3'
+    regionId:
+      label: リージョン
+    accessKeyId:
+      label: アクセスキー
+      required: アクセスキーは必須です
+    accessKeySecret:
+      label: 秘密キー
+      provided: 入力済み
+      required: シークレットキーは必須です
+    version:
+      label: Kubernetes バージョン
+    zoneId:
+      label: アベイラビリティゾーン
+    instanceType:
+      label: インスタンスタイプ
   googlegke:
     label: Google Kubernetes Engine
     shortLabel: Google GKE
@@ -1850,8 +2064,58 @@ clusterNew:
       label: Http ロードバランサー
     enableHorizontalPodAutoscaling:
       label: 水平ポッドオートスケーリング
+    ipPolicyServicesIpv4CidrBlock:
+      placeholder: '例: 10.94.0.0/18'
+    imageType:
+      UBUNTU: Ubuntu
+    network:
+      label: ネットワーク
+    userInfo:
+      label: ユーザー情報
+    storage:
+      label: ストレージ
+    taints:
+      effect:
+        label: 効果
+  huaweicce:
+    secretKey:
+      label: 秘密キー
+    region:
+      label: リージョン
+    availableZone:
+      label: ゾーン
+    containerNetworkCidr:
+      placeholder: '例: 172.16.0.0/16'
+    nodeCount:
+      label: ノード数
+    eipSelection:
+      none: 無効
+    clusterLabels:
+      none: ラベルなし
+    highAvailability:
+      label: 高可用性
+    authenticatingProxyCa:
+      label: 証明書
+    loginMode:
+      password: パスワード
+      keyPair: キーペア
+    password:
+      label: パスワード
+      placeholder: パスワードを入力してください
+    userName:
+      label: ユーザ名
+    authentiactionMode:
+      rbac: RBAC
   rke:
     etcd:
+      backupConfig:
+        region:
+          label: S3リージョン
+        accessKey:
+          label: S3アクセスキー
+        secretKey:
+          label: S3秘密キー
+          placeholder: あなたの AWS 秘密キー
       heartbeat:
         label: etcd のハートビート間隔
         placeholder: ハートビート間隔の時間
@@ -1972,7 +2236,6 @@ clusterNew:
         iam: 'Amazonのクラウドプロバイダーを使用する場合は、ノードテンプレートでIAMロール名を指定する必要があります'
     errors:
       etcd: etcd を使うには 1, 3 または 5 台のノードを選択してください
-      controlPlane: Control を使うには少なくとも1台のノードを選択してください
       worker: Worker を使うには少なくとも1台のノードを選択してください
     dockerRootDir:
       placeholder: デフォルトディレクトリは {dir} です。
@@ -1983,10 +2246,8 @@ clusterNew:
     windowsSupport:
       disabled: ネットワークプロバイダーの {plugin} はサポートされていません
   custom:
-    label: カスタム
     shortLabel: カスタム
   import:
-    label: インポート
     shortLabel: インポート
     command:
       instructions: "{appName} にインポートするには以下の kubectl コマンドを既存の Kubernetes 1.8.x クラスター上で実行してください:"
@@ -2006,13 +2267,11 @@ resourceEventList:
   detail: '{resourceType} の現在のイベントです'
   table:
     type: タイプ
-    lastUpdate: 最終更新
     reason: 理由
     message: メッセージ
   noData: イベントはありません
   noMatch: 検索条件に一致するイベントはありません
 confirmDelete:
-  titleWithoutResourceType: '本当に削除してもよろしいですか?'
   environmentNote: 'ノート: このプロジェクト内にある {appName} により作られた名前空間を含むの全てのリソースは完全に削除されます'
   clusterNote: '注意: クラウドプロバイダーにより作成されたボリューム、ロードバランサー、ネットワークなどの関連リソースは自動的には削除されません。'
   protip: 'ProTip: この確認画面を飛ばす場合は削除ボタンのクリック時に {key} キーを長押ししてください。'
@@ -2457,7 +2716,6 @@ cruStorageClass:
     label: プロビジョナー
   reclaimPolicy:
     label: 要求ポリシー
-    Delete: ワークロードによって解放された時にボリュームとデバイスを削除
     Retain: 手動でクリーンアップされるまでボリュームを保持
     Recycle: "リサイクル: ボリュームの内容を空にし次回のワークロードで利用できるようボリュームを保持"
   aws-ebs:
@@ -2715,6 +2973,12 @@ dangerZone:
     'engine-supported-range': 'サポートされる Docker エンジンバージョンの範囲です。この範囲外のバージョンは UI 上で未サポートのマークが付きます。'
     'ui-index': 'UI 向けの HTML index ファイルの場所です'
     'ui-pl': 'プライベートブランド用の会社名です'
+deleteEksCluster:
+  accessKey:
+    label: アクセスキー
+    placeholder: あなたの AWS アクセスキー
+  secretKey:
+    label: 秘密キー
 editAccount:
   title: アカウントを編集
   form:
@@ -3121,6 +3385,8 @@ formResourceQuota:
       placeholder: '例: 10'
       milliCpuPlaceholder: '例: 500'
       memoryPlaceholder: '例: 1Gi'
+    resources:
+      max: 合計
     projectLimit:
       placeholder: '例: 50'
       milliCpuPlaceholder: '例: 2000'
@@ -3160,7 +3426,6 @@ formEnvVar:
     value: 値
 formGlobalRoles:
   title: グローバル権限
-  description: ユーザーが {appName} 環境全体を管理する際に必要なアクセス権を制御します
   mode:
     admin:
       label: 管理者
@@ -3168,40 +3433,7 @@ formGlobalRoles:
     user:
       label: 一般ユーザー
       detail: 一般ユーザーは、新しいクラスターを作成しアクセスが許可されているクラスターおよびプロジェクトを管理できます
-    custom:
-      label: カスタム
-      detail: ユーザー個別のアクセス許可を選択します
   role:
-    create-clusters:
-      label: 新しいクラスタの作成
-      detail: ユーザーが新しいクラスターを作成し、そのクラスターの所有者になることを許可します。一般ユーザーは、デフォルトでこのアクセス許可を持っています。
-    manage-authn:
-      label: 認証の設定
-      detail: ユーザーがすべての認証プロバイダ設定を有効化、設定、および無効化できるようにします
-    manage-catalogs:
-      label: カタログの設定
-      detail: ユーザーがカタログを追加、編集、および削除できるようにします
-    manage-clusters:
-      label: 全てのクラスタの管理
-      detail: ユーザーがメンバーとして所属していないクラスタを含め、すべてのクラスタを管理できるようにします
-    manage-node-drivers:
-      label: ノードドライバーの設定
-      detail: ユーザーがすべてのノードドライバー設定を有効化、設定、および削除できるようにします
-    manage-node-templates:
-      label: ノードテンプレートの管理
-      detail: ユーザーがノードテンプレートを定義、編集、および削除できるようにします
-    manage-roles:
-      label: ロールの管理
-      detail: ユーザーがロールを定義、編集、および削除できるようにします
-    manage-users:
-      label: ユーザーの管理
-      detail: ユーザーがすべてのユーザーの作成、削除、およびパスワードの設定をできるようにします
-    use-catalogs:
-      label: カタログの利用
-      detail: ユーザーがカタログからテンプレートを表示およびデプロイできるようにします。一般ユーザーはデフォルトでこのアクセス許可を持っています。
-    use-node-templates:
-      label: ノードテンプレートの利用
-      detail: ユーザーが既存のノードテンプレートを使用して新しいノードをデプロイできるようにします
     base:
       label: ログインアクセス
 formMembers:
@@ -3310,6 +3542,12 @@ formKeyToPath:
   mode:
     label: モード
     placeholder: "例: 400"
+formMatchExpressions:
+  key:
+    label: キー
+  value:
+    label: 値
+    placeholder: '例: us、eu、ap'
 formKeyValue:
   addAction: ペアを追加
   key:
@@ -3343,6 +3581,13 @@ formNetwork:
     label: DNS ポリシー
     clusterFirstWithHostNet: "Cluster first with host network"
     clusterFirst: "Cluster first"
+  dnsConfig:
+    options:
+      value:
+        placeholder: '例: 5'
+    searches:
+      label: DNS検索ドメイン
+      placeholder: '例: example.com'
   container:
     label: コンテナ
   requestedIp:
@@ -3386,6 +3631,30 @@ formNetwork:
     ip:
       label: IP アドレス
       placeholder: '例: 192.168.0.1'
+formCustomMetrics:
+  port:
+    label: コンテナポート
+    placeholder: '例: 8080'
+  path:
+    label: パス
+  protocol:
+    label: プロトコル
+formServicePorts:
+  header: ポートマッピング
+  addAction: ポートを追加
+  name:
+    label: ポート名
+  port:
+    placeholder: "例: 8088"
+  protocol:
+    label: プロトコル
+  targetPort:
+    label: 対象ポート
+    placeholder: "e.g. 80"
+    default: "サービスポートと同じ"
+  nodePort:
+    label: ノードポート
+    placeholder: "例: 30000"
 formPorts:
   header: ポートマッピング
   addAction: ポートを追加
@@ -3471,9 +3740,7 @@ formScheduling:
   value: 値
   operator: オペレーター
   effect: 効果
-  time: 時間
   toleration:
-    title: トレランス
     add: トレランスを追加
   scaling:
     minMaxDetail: 設定することでユーザー操作や API 呼び出しによるスケーリング時に制限を設けられます
@@ -3652,7 +3919,6 @@ formUserData:
   isVmPlaceholder: "e.g. 仮想マシン用設定情報"
 formLabelsAnnotations:
   title: ラベル & アノテーション
-  detail: コンテナ用のラベル/アノテーションに利用されるキー/バリューペアを指定し、スケジューリングを決定します
 formUserLabels:
   title: ラベル
   detail: ラベルはコンテナに注釈を付与しスケジューリングの決定に利用されるキー/値のペアです
@@ -3678,6 +3944,8 @@ formAnnotations:
   errors:
     invalidJSON: アノテーションのJSONフォーマットが無効です。
     topLevelValueInvalid: アノテーションJSONのトップレベル値はオブジェクトでなければなりません。
+formAuthCloudCredential:
+  add: 新規追加
 formJobConfig:
   completions:
     label: 完了
@@ -3741,8 +4009,6 @@ formVolumeRow:
     subPath: ボリューム内サブパス
     readOnly: 読み取り専用
     helper: ボリュームは現在のコンテナにマウントされません。ポッド内の他のコンテナで使用することができます。
-  customLogPath:
-    helpText: Flexvolume ドライバーを配備してボリュームを作成し、そのログをホストにマウントします。この機能は現在 GKE クラスターでサポートされています。
 formVolumes:
   title: ボリューム
   detail: 個々のコンテナのライフサイクルから分離され、永続化やデータ共有に利用されます
@@ -3894,6 +4160,15 @@ formBasicPodSecurityPolicy:
     label: 読み取り専用ルートファイルシステム
     enable: "はい：読み取り専用のルートファイルシステムを使用する必要があります"
     disable: "いいえ"
+formReservation:
+  limitCpu:
+    placeholder: '例: 1000'
+  limitMemory:
+    placeholder: '例: 1000'
+  requestCpu:
+    placeholder: '例: 1000'
+  requestMemory:
+    placeholder: '例: 1000'
 hostSettings:
   header: ホスト登録 URL
   subtext: '{appName} API に接続するための URL は何にしますか?'
@@ -3947,6 +4222,11 @@ uploadFile:
 podsSection:
   title: ポッド
   detail: このワークロード内のポッド
+containersSection:
+  title: コンテナ
+  detail: このポッド内のコンテナ
+  noData: コンテナはありません
+  noMatch: 検索条件に一致するコンテナがありません
 labelsSection:
   kind: 種類
   title: ラベル
@@ -3967,154 +4247,6 @@ loginGithub:
   buttonText: GitHub でログイン
 loginAzure:
   buttonText: Azure ADでログイン
-
-loggingPage:
-  targetNav:
-    experimental: Experimental
-    tips:
-      caseA: Logging is disabled in the current {pageScope}.
-      caseB: The current logging target is <code class="text-capitalize">{currentTarget}</code>, Click the Save button below will disable logging in current {pageScope}.
-      caseC: The current logging target is <code class="text-capitalize">{currentTarget}</code>,
-      caseD: click the Save button below to set <span class="text-info text-capitalize">{targetType}</span> as the logging target.
-      caseE: click the Save button below to update the <span class="text-info text-capitalize">{targetType}</span> configuration.
-      caseF: No logging target, click the Save button below to set <code class="text-capitalize">{targetType}</code> as the logging target.
-  targetTypes:
-    embedded: Embedded
-    elasticsearch: Elasticsearch
-    splunk: Splunk
-    kafka: Kafka
-    syslog: syslog
-    disable: None
-  endpoint: Endpoint
-  endpointPlaceholder: 'e.g. https://192.168.1.10:9200'
-  logging: Logging
-  clusterHeader: Cluster Logging
-  projectHeader: Project Logging
-  helpText:
-    cluster: We will collect the standard output and standard error for each container, the log files which under path<code> /var/log/containers/ </code>on each host. The log will be shipped to the target you choose below.
-    clusterTarget: The cluster logging target is <code class="text-capitalize">{clusterTargetType}</code>. If project logging is enabled, logs will be shipped to both cluster target and project logging target.
-    noClusterTarget: Logging is disabled at current cluster.
-  tags:
-    keyPlaceholder: e.g. foo
-    valuePlaceholder: e.g. bar
-    addActionLabel: Add Field
-  keyValueForm:
-    keyPlaceholder: e.g. 192.168.1.10
-  targetKafka:
-    addActionLabel: Add Broker
-    host: Host
-    port: Port
-  embedded:
-    esDeployState:
-      message:
-        pending: Elasticsearch deploying in progress
-        failed: Failed to deploy Elasticsearch
-        success: 'Elascticsearch Endpoint:'
-    kibanaDeployState:
-      message:
-        pending: Kibana deploying in progress
-        failed: Failed to deploy Kibana
-        success: 'Kibana endpoint:'
-    header: Embedded Elasticsearch Configuration
-    failed: Failed
-    pending: Deploying
-    helpText:
-      persistantStorage: Embedded Elasticsearch is experimental, no persistent storage will be provided.
-      requirements: The embedded deployment includes Elasticsearch and Kibana. Elasticsearch requests at least 1 CPU and 500M MEM available on the node it is deployed.
-      esEndpoint: 'Elascticsearch Endpoint: <a href="http://47.88.57.141:30022" target="_blank">http://47.88.57.141:30022</a>'
-      kibanaEndpoint: 'Kibana Endpoint: <a href="http://47.88.57.141:30024" target="_blank">http://47.88.57.141:30024</a>'
-    cpuRequests:
-      label: CPU Requests (Core)
-      placeholder: e.g. 1
-    cpuLimits:
-      label: CPU Limits (Core)
-      placeholder: e.g. 4
-    memRequests:
-      label: Memory Requests (M)
-      placeholder: e.g. 500
-    memLimits:
-      label: Memory Limits (M)
-      placeholder: e.g. 2000
-    resouceRequestsAndLimits: CPU and Memory
-
-    indexPatterns:
-      header: Index Patterns
-      helpText: Index patterns are used to generate Elacticsearch index
-      prefix: Prefix
-      prefixPlaceholder: e.g. logstash
-      dateFormat: 'Date Format:'
-    generatedIndex: 'The generated index will be: <code class="text-italic">{esIndex}</code>, by default the index patterns is $\{clusterName\}-$\{dateFormat\}'
-  logPreview:
-    header: Log Format Preview
-  additional:
-    header: Additional Logging Configuration
-    fields:
-      header: Custom Log Fields
-      helpText: You can add custom fields as key/value pairs for better filtering.
-    flushInterval:
-      header: Flush Interval
-      label: Flush Interval
-      placeholder: e.g. 1
-      sec: sec
-      helpText: How often buffered logs would be flushed.
-
-  elasticsearch:
-    header: Elasticsearch Configuration
-    endpointHelpText: Copy your endpoint from Elastic Cloud, or input the reachable endpoint of your self-hosted Elacticsearch.
-    xpack:
-      header: X-Pack Security
-      headerOptional: (optional)
-      helpText: If your Elasticsearch use X-Pack built-in native authentication features, put your username and password below.
-      username: Username
-      usernamePlaceholder: e.g. John
-      password: Password
-      passwordPlaceholder: Your Password
-    indexPatterns:
-      header: Index Patterns
-      helpText: Index patterns are used to generate Elacticsearch index
-      prefix: Prefix
-      prefixPlaceholder: e.g. logstash
-      dateFormat: 'Date Format:'
-    generatedIndex: 'The generated index will be: <code class="text-italic">{esIndex}</code>, by default the index patterns is {indexFormat}'
-  splunk:
-    header: Splunk HTTP Event Collector Configuration
-    helpText: 'You can find instructions on how to configre Splunk HEC(HTTP Event Collector) <a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">here</a>.'
-    token: Token
-    tokenPlaceholder: Your Token
-    tokenHelpText: 'Tokens are entities that let logging agents and HTTP clients connect to the HEC input. <a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector#Configure_HTTP_Event_Collector_on_Splunk_Enterprise" target="_blank">Detail</a>'
-    source: Source
-    sourcePlaceholder: e.g. fluentd
-    sourceHelpText: 'A default field that identifies the source of an event, that is, where the event originated. <a href="https://docs.splunk.com/Splexicon:Source" target="_blank">Detail</a>'
-  kafka:
-    header: Kafka Configuration
-    endpointType: Endpoint Type
-    zookeeper: Zookeeper
-    broker: Broker
-    brokerTypeHelpText: Use either Zookeeper or Broker list as the Kafka connection entrypoint.
-    zookeeperHelpText: Zookeeper is for building coordination, configuration management, leader detection, detecting node update in kafka cluster.
-    brokerHelpText: A Kafka cluster consists of one or more Brokers, config the host and port for each Broker.
-    addEndpoint: Add Endpoint
-    topic: Topic
-    topicPlaceholder: e.g. message
-    topicHelpText: Logs will be send to this topic
-  syslog:
-    endpointPlaceholder: 'e.g. 192.168.1.10:514'
-    header: Syslog Configuration
-    endpointHelpText: Input your syslog server endpoint herecluster.
-    program: Program
-    programPlaceholder: e.g. MyProgram
-    programHelpText: The program name of the log.
-    severityHelpText: '<p class="text-info text-small">The severity of logs, list of severities definition could be found here <a href="https://tools.ietf.org/html/rfc5424#section-6.2.1" target="_blank">here.</a></p>'
-    severities:
-      emergency: Emergency
-      alert: Alert
-      critical: Critical
-      error: Error
-      warning: Warning
-      notice: Notice
-      info: Info
-      debug: Debug
-
 loginUserPass:
   local: ローカルユーザーを使用
   provider: "{kind}"
@@ -4147,10 +4279,8 @@ newCertificate:
     invalidFormat: 無効なプライベートキーです
     placeholder: "-----BEGIN RSA PRIVATE KEY----- から始まるプライベートキーを張り付けてください"
   cert:
-    label: 証明書
     required: 証明書は必須です
     invalidFormat: 無効な証明書です
-    placeholder: "-----BEGIN CERTIFICATE----- から始まる証明書と任意の必要な証明書チェーンを貼り付けてください"
     protip: 必要な証明書チェーンを含めてください。
   certChain:
     label: 証明書チェーン
@@ -4158,6 +4288,8 @@ newCertificate:
   metaXML:
     label: メタデータ XML
     placeholder: "IDPメタデータXMLを貼り付けてください"
+  publicKey:
+    label: SSH 公開鍵
   errors:
     encrypted: プライベートキーはパスワードによって保護されていません
     key:
@@ -4225,6 +4357,22 @@ modalAddPayment:
     yuan: "中国元 (¥)"
     euro: "ユーロ (€)"
     dollar: "US ドル($)"
+modalAddCloudKey:
+  amazonec2:
+    secretKey:
+      label: 秘密キー
+      placeholder: あなたの AWS 秘密キー
+  azure:
+    clientId:
+      label: クライアント ID
+      placeholder: あなたのクライアント ID
+    clientSecret:
+      label: クライアント秘密鍵
+      placeholder: あなたのクライアント秘密鍵
+  digitalocean:
+    accessToken:
+      label: アクセストークン
+      placeholder: あなたの DigitalOcean API アクセストークン
 modalContainerStop:
   header: "本当に停止してもよろしいですか?"
   helpText: "タイムアウト時間内に停止しない場合、コンテナは強制終了されます"
@@ -4319,6 +4467,9 @@ modalDrainNode:
     placeholder: '例: 60'
   timeout:
     placeholder: '例: 60'
+modalRevertSettings:
+  current: 現在の値
+  default: デフォルト値
 modalRollbackService:
   title: '"{instanceName}" をロールバック'
   titleWithSidekicks: '"{instanceName}" と {count, plural, =1 {# サイドカー} other {# サイドカー}} をロールバック'
@@ -4343,6 +4494,7 @@ modalRollbackApp:
 modalShell:
   title: "シェル: "
 modalShortcuts:
+  time: 時刻
   title:
     rancher: "ワープゾーンへようこそ!"
     pl: キーボードショートカット
@@ -4390,6 +4542,8 @@ newBalancer:
     needsCertificate: "SSL/TLS ポートルールであるため証明書が必要です"
     stackName: "新しいスタックには名前が必要です"
 newCatalog:
+  istio:
+    saveNew: '作成'
   answers:
     label: アンサー
     addAction: アンサーを追加
@@ -4432,6 +4586,56 @@ newCatalog:
   version:
     prompt: バージョンを選択してください...
     default: 'デフォルトのバージョン (現在: {version})'
+newMultiClusterApp:
+  answers:
+    label: アンサー
+    addAction: アンサーを追加
+  catalog: "カタログ:"
+  category: "カテゴリー:"
+  config: 設定オプション
+  helm:
+    label: 設定オプション
+    protip: Helm テンプレートではカンマ区切りの文字列リストが許容されます
+  kind: "カタログ種別:"
+  license: "ライセンス:"
+  maintainedBy: コミュニティメンバーによるメンテナンス
+  maintainer: "メンテナー:"
+  newNamespace: 新しい名前空間
+  customizeNamespace: "このアプリケーションは <code>{namespaceId}</code> 名前空間内で起動します"
+  templateFiles: テンプレートファイル
+  targets:
+    cluster: クラスター
+    project: プロジェクト
+  targetDivider:
+    label: ターゲット
+  upgradeDivider:
+    label: アップグレード
+  rolesDivider:
+    label: ロール
+  templateVersion: テンプレートバージョン
+  titleAdd: "{name} アプリケーションを追加"
+  titleConfigure: "{name} アプリケーションを設定"
+  titleUpgrade: "{name} アプリケーションをアップグレード"
+  txt: answers.txt
+  upgrade: "アップグレード:"
+  url: "プロジェクト URL:"
+  version:
+    prompt: バージョンを選択してください...
+    default: 'デフォルトのバージョン (現在: {version})'
+  overrides:
+    add:
+      label: 上書き権限設定を追加
+    table:
+      scope: スコープ
+  roles:
+    table:
+      name: 名前
+      external: 外部
+      noData: まだロールはありません
+  members:
+    title: メンバー
+    table:
+      name: ユーザー名
 newContainer:
   add:
     container: ポッドをデプロイ
@@ -4477,6 +4681,19 @@ newSecret:
   values:
     label: シークレットの値
   addActionLabel: シークレットの値を追加
+clusterDrivers:
+  builtIn: ビルトイン
+  table:
+    noData: このクラスターではまだノードは定義されていません
+    noMatch: 検索条件に一致するノードがありません
+kontainerDriver:
+  displayName:
+    amazonElasticContainerService: Amazon EKS
+    azureKubernetesService: Azure AKS
+    googleKubernetesEngine: Google GKE
+    huaweicontainercloudengine: Huawei CCE
+    import: インポート
+    rancherKubernetesEngine: Rancher NFS
 nodeDriver:
   addTemplate: ノードテンプレートを追加
   editTemplate: "ノードテンプレートを編集: {name}"
@@ -4484,14 +4701,22 @@ nodeDriver:
   displayName:
     aliyunecs: Aliyun ECS
     amazonec2: Amazon EC2
+    amazoneks: Amazon EKS
     azure: Azure
+    azureaks: Azure AKS
+    cloudca: Cloud.ca
     digitalocean: DigitalOcean
     exoscale: Exoscale
+    googlegke: Google GKE
+    huaweicce: Huawei CCE
+    linode: Linode
     openstack: OpenStack
     otc: Open Telekom Cloud
     packet: Packet
     rackspace: RackSpace
     softlayer: SoftLayer
+    tencenttke: Tencent TKE
+    upcloud: UpCloud
     vmwarevsphere: vSphere
     zstack: ZStack
   driverOptions: "{driver} オプション"
@@ -4500,12 +4725,16 @@ nodeDriver:
     access:
       next: "次へ: サービスロールの選択"
       loading: Amazonからサービスロールをロード中...
+    clusterOption:
+      title: クラスターオプション
+    kubernetesVersion:
+      label: Kubernetes バージョン
+    keyPairs:
+      label: SSH キー
     role:
       label: サービスロール
       noneSelected: "Rancherがロールを作成しました"
-      help: "サービスロールを指定しない場合、Rancher により作成されます"
       radio:
-        default: "標準: Rancherによるサービスロールの作成"
         custom: "カスタム: 既存のサービスロールから選択"
       next: "次へ: VPCとサブネットの選択"
       loading: "AmazonからVPCをロード中..."
@@ -4518,7 +4747,6 @@ nodeDriver:
       loadingRancherDefault: "インスタンスオプションを読み込んでいます..."
       noneSelected: "Rancher によりVPCとサブネットが作成されました"
       radio:
-        default: "標準: RancherによるVPCとSubnetの作成"
         custom: "カスタム: 既存のVPCとSubnetから選択"
     subnet:
       title: サブネット
@@ -4526,7 +4754,7 @@ nodeDriver:
       loading: "Amazonからセキュリティグループをロード中..."
     associateWorkerNodePublicIp:
       radio:
-        default: 'true'
+        default: "true"
     securityGroup:
       title: セキュリティグループ
       detail: EKSインスタンスに適用するセキュリティグループを選択してください
@@ -4534,6 +4762,8 @@ nodeDriver:
       defaultExisting: "通常: 既存の <code>{groupName}</code> グループを利用"
       next: "次へ: インスタンスオプションの設定"
       loading: インスタンスオプションを読み込んでいます...
+    userData:
+      label: ユーザーデータ
   amazonec2:
     access:
       title: 1. アカウントアクセス
@@ -4690,9 +4920,7 @@ nodeDriver:
     projectId:
       placeholder: あなたの Packet プロジェクト ID
     apiKey:
-      label: API キー
       placeholder: あなたの Packet API キー
-    apiKeyHelp: 'Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> 画面より取得してください'
     instanceSection: インスタンス
     instanceOptionsSection: インスタンスオプション
     loginAction: "次へ: 認証とインスタンスの選択"
@@ -4733,12 +4961,10 @@ nodeDriver:
       title: 1. アカウントアクセス
       detail: vCenter や ESXi サーバーのアクセス情報を設定します
       help: "ノート: 試用版の ESXi ライセンスでは API アクセスがサポートされません。商用版ライセンスが適用されたサーバーのみサポートされます。"
-    instance:
-      title: 2. インスタンスオプション
-      detail: 仮想マシンの OS とサイズを選択してください
     scheduling:
-      title: 3. スケジューリング
       detail: 仮想マシンが配置されるホストを選択してください
+    instance:
+      detail: 仮想マシンの OS とサイズを選択してください
     vcenter:
       label: vCenter または ESXi サーバー
       placeholder: vCenter または ESXi ホスト名/IP
@@ -4768,17 +4994,12 @@ nodeDriver:
       placeholder: "例: datacenter_name"
       help: "VM を作成するデータセンターです(スタンドアローンの ESXi の場合は空白にしてください)"
     pool:
-      label: リソースプール
       placeholder: "例: /dc_name/host/host_name/Resources/pool_name"
       help: "VM を作成するリソースプールです(スタンドアローンの ESXi の場合は空白にしてください)"
     host:
       label: ホスト
       placeholder: "例: cluster_name/host_name"
       help: "VM を作成する特定ホストです(スタンドアローンの ESXi もしくは DRS が有効なクラスターの場合は空白にしてください)"
-    network:
-      label: ネットワーク
-      placeholder: "例: VM Network"
-      help: "VM にアタッチするネットワークです"
     dataStore:
       label: データストア
       placeholder: "例: datastore_cluster_name/datastore_name"
@@ -4795,6 +5016,12 @@ nodeDriver:
       value:
         placeholder: "例 myrancherhost"
       addActionLabel: パラメーターを追加
+    vappTransport:
+      placeholder: "例: com.vmware.guestInfo"
+    vappProperty:
+      key:
+        placeholder: "例: guestinfo.interface.0.ip.0.address"
+      addActionLabel: プロパティを追加
   azure:
     placement:
       title: 配置
@@ -4816,7 +5043,6 @@ nodeDriver:
       placeholder: あなたの Azure サブスクリプション証明書
     image:
       label: イメージ
-      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
     size:
       label: サイズ
     dockerPort:
@@ -4882,7 +5108,6 @@ nodeDriver:
       placeholder: あなたのキーのシークレット
       provided: 取得済み
     apiEndpoint:
-      label: API エンドポイント
       placeholder: プライベート Aliyun API サーバーのエンドポイント
     instanceOptionsSection:
       label: インスタンス
@@ -5025,7 +5250,6 @@ projectGroup:
   label: "プロジェクト: {name}"
   none: 名前空間
   project: プロジェクト内にありません
-  noNS: このプロジェクトには名前空間がありません
 optionallyNamespaced:
   scope:
     label: スコープ
@@ -5367,15 +5591,29 @@ waitKubernetes:
 searchableSelect:
   noMatch: 該当なし
   noOptions: 利用可能なオプションはありません。
+##############################
+#Mixins
+##############################
 containerChoices:
   hostGroup: "ホスト: {name}"
   hostGroupWithState: "ホスト: {name} ({state})"
   unknownHost: "ホスト: ???"
   containerOption: "{name}"
+##############################
+#Services
+##############################
 allWorkloads:
   namespace: "名前空間: {name}"
+##############################
+#Navigation
+##############################
 nav:
   srToggleDropdown: ドロップダウンを切り替え
+  projectDropdown:
+    label: スコープ
+    clusters: クラスター
+    projects: プロジェクト
+    search: "検索..."
   cluster:
     dashboard: クラスター
     members: メンバー
@@ -5392,6 +5630,7 @@ nav:
     ingresses: ロードバランサー
     containers: ワークロード
     dns: サービスディスカバリ
+    hpa: HPA
     volumes: ボリューム
     pipelines: パイプライン
     deploy: デプロイ
@@ -5415,19 +5654,18 @@ nav:
     library: ライブラリ
     community: コミュニティ
   apps:
+    tab: Apps
+    apps: Apps
     launch: 起動
   infra:
     tab: リソース
     storagePage: ストレージ
     certificates: 証明書
-    configMaps: コンフィグマップ
     registries: レジストリ
     secrets: シークレット
     members: メンバー
   admin:
     tab: グローバル
-    accounts: ユーザー
-    clusters: クラスター
     machines: ノード
     catalogs: カタログ
     security:
@@ -5462,6 +5700,9 @@ nav:
   project:
     none: グループ化されたプロジェクト/名前空間
     namespaces: 名前空間
+##############################
+#Resource Actions
+##############################
 action:
   activate: アクティブ化
   addContainer: ポッドをデプロイ
@@ -5480,7 +5721,6 @@ action:
   exportConfig: 設定をエクスポート
   garbageCollect: クリーンアップ
   logs: ログを見る
-  makeDefault: デフォルトに設定
   move: 移動
   mute: ミュート
   nodeConfig: キーをダウンロード
@@ -5509,6 +5749,9 @@ action:
   viewInApi: API を見る
   viewInstance: インスタンスを見る
   viewYaml: YAMLを見る
+##############################
+#Resource Actions
+##############################
 validation:
   required: '"{key}" が必要です'
   arrayLength:
@@ -5552,6 +5795,9 @@ validation:
       tooLongPrefix: '"{key}" は {max} 文字を超える接頭辞を持つことはできません'
       emptyLabel: '"{key}" は空のキーを持つことはできません'
       tooLongKey: '"{key}" は {max} 文字を超えるキーを持つことはできません'
+##############################
+#Model Properties
+##############################
 model:
   account:
     kind:
@@ -5619,8 +5865,6 @@ storageClass:
     title: Google 永続ディスク
   glusterfs:
     title: Gluster ボリューム
-  local:
-    title: ローカルノードのディスク
   longhorn:
     title: Longhorn
   portworx-volume:
@@ -5665,7 +5909,6 @@ volumeSource:
   glusterfs:
     title: Gluster ボリューム
   host-path:
-    title: ローカルノードパス
     path:
       label: ノード上のパス
       placeholder: '例: /data'
@@ -5681,8 +5924,6 @@ volumeSource:
       BlockDevice: 既存のブロックデバイス
   iscsi:
     title: iSCSI ターゲット
-  local:
-    title: ローカルノードディスク
   nfs:
     title: NFS 共有
   photon:
@@ -5711,3 +5952,6 @@ volumeSource:
       helpText: <a href="http://fluentular.herokuapp.com/" target="_blank"こちら</a> から正規表現のテストができます
 yamlPage:
   errors: yaml でエラーが起きました
+units:
+  percent: '%'
+  cpu: ミリ CPUs

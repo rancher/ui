@@ -1,6 +1,9 @@
 ---
 languageName: "Italiano"
 languageContribute: "Aiuta a tradurre Rancher"
+##############################
+#Really generic things used in multiple places (use sparingly)
+##############################
 generic:
   actions: Azioni
   activate: Attiva
@@ -39,7 +42,9 @@ generic:
   entrypoint: Punto di entrata
   environment: Ambiente
   expandAll: Apri tutto
+  experimental: "(sperimentale)"
   from: da
+  false: 'Falso'
   generic: 'Generico'
   gigabyte: 'GB'
   hardware: Hardware
@@ -47,11 +52,13 @@ generic:
   help: Aiuto
   hostname: Nome host
   hours: ore
+  hpa: HPA
   id: ID
   image: Immagine
   import: Importa
   internal: Interno
   ipAddress: Indirizzo IP
+  istioRule: Regola del traffico
   key: Chiave
   limit: Limite
   limits: Limiti
@@ -76,6 +83,7 @@ generic:
   owner: Proprietario
   paste: Incolla
   pod: pod
+  podRestarts: Riavvii del pod
   port: Porta
   ports: Porte
   prefix: prefisso
@@ -104,6 +112,7 @@ generic:
   testing: Verifica
   to: A
   total: Totale
+  true: 'Vero'
   type: Tipo
   unknown: Sconosciuto
   unknownUser: Impossibile recuperare le informazioni dell'utente
@@ -126,6 +135,9 @@ realmNames:
   asia: Asia
   euWest: Eu Ovest
   euEast: EU Est
+##############################
+#Routes
+##############################
 accountsPage:
   detail:
     header: Dettagli utente
@@ -160,7 +172,6 @@ accountsPage:
       kind: Tipo
       username: Nome utente locale
       identity: Identità
-      noData: Non ci sono ancora utenti
       noMatch: Nessun utente corrisponde alla ricerca corrente
       noName: Nessuno
   new:
@@ -251,6 +262,10 @@ podSecurityPoliciesPage:
         placeholder: "ad esempio politica"
 rolesPage:
   title: Ruolo
+  headers:
+    global: Globale
+    cluster: Clusters
+    project: Progetti
   index:
     localLink: Aggiungi ruolo
     table:
@@ -258,7 +273,6 @@ rolesPage:
       created: Ora di creazione
       enabled: Abilitato
       name: Nome
-      noData: Non sono ancora presenti profili
       noMatch: Nessun ruolo corrisponde alla ricerca corrente
       subjectKind: Tipo
       template: Modello
@@ -266,6 +280,8 @@ rolesPage:
       cluster: Creatore di Cluster predefinito
       project: Creatore di progetto predefinito
       showDefaults: Mostra solo valori predefiniti
+    errors:
+      inherited: "Il ruolo {displayName} è ereditato da: {roleNames}"
   resources:
     title: Concedere Risorse
     detail: Concedi l'accesso a operazioni specifiche sulle risorse Kubernetes
@@ -283,14 +299,19 @@ rolesPage:
       nameInExists: Il nome è già esistente. Utilizzare un nuovo nome per la politica di sicurezza del pod.
       ruleResourceReq: La risorsa è richiesta per una regola.
       roleTemplate: È richiesto un modello di ruolo.
+      noSelectedRoles: Perfavore, seleziona almeno un ruolo per questo utente.
+      roleAlreadyExists: L'utente ha già il ruolo "{key}".
     form:
       name:
         labelText: Nome
         placeholder: "ad esempio gli sviluppatori"
       context:
         labelText: Contesto
+        detail: In quali ambiti è appropriato mostrare questo ruolo.
       locked:
         labelText: Bloccato
+        detail: Ciò non influisce sulle associazioni del ruolo già esistente.
+        enabled: "Sì: Le nuove associazioni non possono utilizzare questo ruolo"
         disabled: "No"
       allow:
         create: Crea
@@ -304,6 +325,7 @@ rolesPage:
         labelText: Consenti
         resource: Risorsa
         addAction: Aggiungi risorsa
+        apiGroups: Gruppi API
       otherRole:
         labelText: Includi altri ruoli
         role: Ruolo
@@ -315,15 +337,21 @@ rolesPage:
         global: Nuovo Utente Predefinito
         cluster: Creatore di Cluster predefinito
         project: Creatore di progetto predefinito
+        enabled:
+          global: "Sì: Ruolo predefinito per i nuovi utenti"
+          cluster: "Sì: Ruolo predefinito per la creazione di un nuovo cluster"
+          project: "Sì: Ruolo predefinito per la creazione di un nuovo progetto"
         disabled: "No"
 apiPage:
   header: API & chiavi
   actionButton: Aggiungi Chiave
   currentEndpoint: 'Punto di arrivo:'
+  detail: Le chiavi API sono legate al tuo utente specifico ({name}) e possono creare, eliminare e manipolare tutti i cluster e i progetti a cui hai accesso.
   table:
     state: Stato
     name: Chiave di accesso
     description: Descrizione
+    scope: Scope
     created: Creato il
     expires:
       label: Scadenza
@@ -333,9 +361,34 @@ authPage:
   saml:
     accessEnabled:
       header: Autenticazione
+      disable: Disabilita il controllo dell'accesso
+    header:
+      disabled:
+        label: "{providerName} non è configurato"
     enabled:
+      authenticated:
+        header:
+          text: Autenticazione
       groupsField: 'Gruppi:'
+      displayName: 'Nome visualizzato:'
+      userName: 'Nome Utente:'
       userId: 'ID utente:'
+    disabled:
+      header: '1. Configura {providerName} Account'
+      headerDetail: 'Inserisci i dettagli del tuo account {providerName}'
+      label: "{providerName} non è configurato"
+      name:
+        labelText: Campo nome visualizzato
+        display: "Nome campo visualizzato:"
+      username:
+        labelText: Campo nome utente
+        display: "Campo nome utente:"
+      uid:
+        labelText: Campo UID
+        display: "Campo UID:"
+      rancherApiHost:
+        labelText: "{appName} API Host"
+        display: "{appName} API Host:"
   shibboleth:
     enabled:
       authenticated:
@@ -344,6 +397,7 @@ authPage:
       disableAccess:
         header: "Zona pericolosa&trade;"
         warning: '<b class="text-danger">Cautela:</b> Disabilitare il controllo degli accessi darà il completo controllo su {appName} a chiunque possa visualizzare questa pagina o le rispettive API.'
+        confirmDisable: "Sei sicuro? Clicca ancora per disabilitare l'access control"
         disable: Disabilita il controllo di accesso
       groupsField: 'Gruppi:'
       displayName: 'Nome visualizzato:'
@@ -386,12 +440,12 @@ authPage:
       disableAccess:
         header: "Zona pericolosa&trade;"
         warning: '<b class="text-danger">Cautela:</b> Disabilitare il controllo degli accessi darà il completo controllo su {appName} a chiunque possa visualizzare questa pagina o le rispettive API.'
+        confirmDisable: "Sei sicuro?  Clicca di nuovo per davvero disattivare controllo di accesso"
         disable: Disabilita l'accesso Github
     notAuthenticated:
       header: "1. installazione di un'applicazione di GitHub"
       ul:
         li1:
-          text: 'Per GitHub standard, <a href="https://github.com/settings/developers" target="_blank"> fare clic qui</a> per passare le impostazioni delle applicazioni in una nuova finestra.'
           ul:
             li1: "Per Github Enterprise, accedi al tuo account. Clicca su Impostazioni, quindi Applicazioni."
         li2:
@@ -399,7 +453,6 @@ authPage:
           ul:
             li1: '<b>Nome applicazione:</b> <span class="text-muted"> qualcosa che ti piace, per esempio il mio {appName}</span>'
             li2: 'URL della Home page'
-            li3: '<b>Descrizione dell''applicazione:</b> <span class="text-muted"> qualsiasi cosa ti piace, opzionale</span>'
             li4: 'Autorizzazione URL di callback'
         li3:
           text: 'Fare clic su "Registro applicazione" '
@@ -426,6 +479,7 @@ authPage:
   azuread:
     enabled:
       header: 'Zona pericolosa'
+      reallyDisable: 'Sei sicuro? Clicca di nuovo per disabilitare il controllo di accesso'
       promptDisable: Disabilita il controllo di accesso
     configure:
       header: '1. Configura l''account Azure AD'
@@ -456,6 +510,7 @@ authPage:
       header: 'Zona pericolosa&trade;'
       warning: '<b class="text-danger">Cautela:</b> Disabilitare il controllo degli accessi darà il completo controllo su {appName} a chiunque possa visualizzare questa pagina o le rispettive API.'
       buttonText:
+        disable: 'Sei sicuro?  Clicca di nuovo per davvero disattivare controllo di accesso'
         prompt: Disabilita il controllo di accesso
     accessDisabled:
       header: 'Aggiungi un utente Amministratore'
@@ -552,7 +607,6 @@ membersPage:
     table:
       name: Nome
       created: Data di creazione
-      noData: Non ci sono ancora utenti
       noMatch: Nessun utente corrisponde alla ricerca corrente
       userId: Utente
       subjectKind: Tipo
@@ -561,7 +615,6 @@ namespacesPage:
   header: Spazio dei nomi
   addNamespace: Aggiungi spazio dei nomi
   noMatch: Nessuno spazio dei nomi corrisponde alla ricerca corrente.
-  noData: Questo cluster non ha alcun spazio dei nomi definito
   table:
     name:
       label: Spazio dei nomi
@@ -628,8 +681,6 @@ clustersPage:
     label: Nome del cluster
   provider:
     label: Provider
-  version:
-    label: Versione
   nodes:
     label: Nodi
   cpu:
@@ -679,7 +730,6 @@ containersPage:
     sparkPrefixMemory: "Memoria: "
     sparkPrefixNetwork: "Rete: "
     sparkPrefixStorage: "Deposito: "
-    noData: Non ci sono contenitori da mostrare.
     noMatch: Nessun container corrisponde alla ricerca.
   welcome:
     container: Inizia subito
@@ -691,7 +741,6 @@ clusterDashboard:
   notReady: Questo cluster è attualmente <b>{state}</b>; le aree che interagiscono direttamente con esso non saranno disponibili fino a quando l'API non sarà pronta.
 dnsPage:
   noMatch: Nessun elemento corrisponde alla ricerca corrente
-  noData: Non ci sono record DNS da mostrare
   type:
     arecord: IP Esterno
     cname: Nome host
@@ -780,6 +829,9 @@ cruVolume:
     title: Configurazione della sorgente
     detail: Configurare le opzioni per la sorgente del volume selezionato
     prompt: Scegli una sorgente per il volume...
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 failWhalePage:
   header: Errore
   reloadButton: |
@@ -957,6 +1009,9 @@ machinePage:
   add: Aggiungi il driver del nodo
   builtin: Integrato
   url: Posizione
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 notFoundPage:
   linkTo: Vai alla Home
 registriesPage:
@@ -969,8 +1024,6 @@ registriesPage:
         address: Indirizzo
         username: Nome utente
         created: Creato
-      body:
-        noData: "Non hai ancora credenziali di registro"
   new:
     header: Aggiungi registro
     form:
@@ -1123,6 +1176,9 @@ notifierPage:
     testOk: Impostazioni convalidate.
     testFailed: Qualcosa non è corretto. Controlla i dati inseriti.
     test: TEST
+##############################
+#Partials
+##############################
 ldap:
   accessConfig:
     defaultDomain:
@@ -1182,6 +1238,9 @@ servicePartial:
     label: Nessun contenitore ancora presente.
     inactive:
       start: Inizio
+##############################
+#Components
+##############################
 accordionRow:
   status:
     none: Nessuno
@@ -1226,8 +1285,6 @@ clusterNew:
     label: Ruolo del membro
   config:
     label: Provider
-  nodes:
-    title: Nodi
   customize:
     title: Opzioni del cluster
   psp:
@@ -1275,4 +1332,4 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: 'Yes'
+        default: "true"

@@ -1,6 +1,9 @@
 ---
 languageName: "Español"
 languageContribute: "Ayuda a traducir Rancher"
+##############################
+#Really generic things used in multiple places (use sparingly)
+##############################
 generic:
   actions: Acciones
   activate: Activar
@@ -115,6 +118,9 @@ realmNames:
   asia: Asia
   euWest: EU West
   euEast: EU East
+##############################
+#Routes
+##############################
 accountsPage:
   detail:
     header: Detalles del usuario
@@ -149,7 +155,6 @@ accountsPage:
       kind: Tipo
       username: Nombre de usuario local
       identity: Identidad
-      noData: Todavía no hay usuarios
       noMatch: Ningún usuario coincide con la búsqueda
       noName: Ninguno
   new:
@@ -243,7 +248,6 @@ rolesPage:
       created: Fecha de Creación
       enabled: Activado
       name: Nombre
-      noData: Aún no hay roles
       noMatch: Ningún rol coincide con el criterio de búsqueda
       subjectKind: Tipo
       template: Plantilla
@@ -433,7 +437,6 @@ authPage:
       header: "1. Configurar una aplicación de GitHub"
       ul:
         li1:
-          text: 'Para GitHub estándar, <a href="https://github.com/settings/developers" target="_blank"> haga clic aquí</a> para ir a la configuración de aplicaciones en una nueva ventana.'
           ul:
             li1: "Para Github empresas, inicie en su cuenta.  Haga clic en ajustes, luego en aplicaciones."
         li2:
@@ -441,7 +444,6 @@ authPage:
           ul:
             li1: '<b>Nombre de la aplicación:</b><span class="text-muted">Lo que tu desees, ej. Mi {appName}</span>'
             li2: 'URL de la página de inicio'
-            li3: '<b>Descripción de la aplicación:</b> <span class="text-muted"> Cualquier cosa que desee, opcional</span>'
             li4: 'URL de devolución de llamada de autorización'
         li3:
           text: 'Haga clic en "Registrar aplicación"'
@@ -633,7 +635,6 @@ membersPage:
     table:
       name: Nombre
       created: Fecha de Creación
-      noData: Aún no hay miembros
       noMatch: Ningún miembro coincide con la búsqueda actual
       userId: Usuario
       subjectKind: Tipo
@@ -642,7 +643,6 @@ namespacesPage:
   header: Espacio de nombres
   addNamespace: Añadir el Namespace
   noMatch: Ningún espacio de nombres coincide con la búsqueda actual.
-  noData: Este clúster no tiene ningún namespace definido
   table:
     name:
       label: Espacio de nombres
@@ -723,8 +723,6 @@ clustersPage:
     label: Nombre del Clúster
   provider:
     label: Proveedor
-  version:
-    label: Versión
   nodes:
     label: Nodos
   cpu:
@@ -779,7 +777,6 @@ containersPage:
     sparkPrefixMemory: "Memoria: "
     sparkPrefixNetwork: "Red: "
     sparkPrefixStorage: "Almacenamiento: "
-    noData: No hay contenedores para mostrar.
     noMatch: Ningún contenedor coincide con el criterio de búsqueda.
   welcome:
     container: Empieza ahora mismo
@@ -792,7 +789,6 @@ clusterDashboard:
   notReady: Este clúster está <b>{state}</b>; las áreas que interactúan directamente con él no estarán disponibles hasta que la API está lista.
 dnsPage:
   noMatch: Ningún registro coincide con la búsqueda actual
-  noData: No hay registros DNS que mostrar
   type:
     arecord: IP externa
     cname: Nombre de host
@@ -882,6 +878,9 @@ cruVolume:
     title: Configuración de fuente
     detail: Configure las opciones para la fuente de volumen seleccionada
     prompt: Elija un volumen de origen...
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 failWhalePage:
   header: Error
   reloadButton: |
@@ -1083,6 +1082,9 @@ machinePage:
   add: Agregar controlador de nodo
   builtin: Incorporado
   url: Ubicación
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 notFoundPage:
   header: "La página que estás buscando no existe!"
   linkTo: Ir al Inicio
@@ -1096,8 +1098,6 @@ registriesPage:
         address: Dirección
         username: Usuario
         created: Fecha de Creacion
-      body:
-        noData: "Aún no tienes credenciales de registro"
   new:
     header: Añadir registro
     form:
@@ -1401,6 +1401,9 @@ notifierPage:
       created: Creado
       noData: No hay certificados definidos
       noMatch: Sin coincidencia
+##############################
+#Partials
+##############################
 ldap:
   providerName:
     openldap: OpenLDAP
@@ -1528,6 +1531,9 @@ servicePartial:
     label: Sin contenedores aún.
     inactive:
       start: Iniciar
+##############################
+#Components
+##############################
 accordionRow:
   status:
     none: Ninguno
@@ -1656,7 +1662,6 @@ catalogSettings:
       rancher: "Biblioteca Certificada por {appName}"
       pl: Biblioteca Certificada
     detail:
-      rancher: Plantillas requeridas por funcionalidades del núcleo de Rancher tales como el soporte de los orquestadores Kubernetes/Mesos/Swarm. Mantenidas y respaldadas por Rancher Labs.
       pl: Se necesitan plantillas con mantenimiento oficial para funciones principales, como Kubernetes.
   community:
     header:
@@ -1697,7 +1702,6 @@ clusterRow:
   noData: Este clúster aún no tiene ningún entorno.
   noHosts: Externo de clúster no tiene nodos
   noClusterMatch: Ningún usuario coincide con la búsqueda.
-  noClusterData: Todavía no hay usuarios.
   addHost: Agregar Nodos
   importCluster: Utilice Kubernetes existentes
   loginDefault: Abrir una sesión
@@ -1712,10 +1716,8 @@ clusterNew:
   description:
     placeholder: por ejemplo, clúster para cargas de trabajo de desarrollo y prueba
   driverLabels:
-    cloud: En un proveedor de Kubernetes alojado
     custom: De mis propios nodos existentes
     import: Importar Cluster Existente
-    infra: A partir de los nodos en un proveedor de infraestructura
   members:
     label: Roles de los miembros
     detail: Controle quién tiene acceso al clúster y qué permiso tienen para cambiarlo.
@@ -1723,11 +1725,9 @@ clusterNew:
     label: Proveedor
     detail: Elija de dónde vendrán los nodos para el clúster
   nodes:
-    title: Nodos
     detail: Personaliza los nodos que se crearán
   customize:
     title: Opciones del Clúster
-    detail: Personaliza los nodos que se crearán
   psp:
     label: Política de seguridad del Pod
     prompt: Seleccione una Política de Seguridad de Pod ...
@@ -1787,7 +1787,6 @@ clusterNew:
       placeholder: Su ID de inquilino Azure
     image:
       label: Imagen
-      placeholder: 'canonical: UbuntuServer: 16.04.0-LTS: más reciente'
     size:
       label: Tamaño
     dockerPort:
@@ -2045,7 +2044,6 @@ clusterNew:
         iam: 'Se debe proporcionar un nombre de función de IAM en la plantilla de nodo cuando se utiliza el proveedor de nube Amazon.'
     errors:
       etcd: Por favor, seleccione 1, 3, o 5 nodos a utilizar para el etcd.
-      controlPlane: Por favor, seleccione al menos un nodo a utilizar para la para la gestión.
       worker: Por favor, seleccione al menos un nodo a utilizar para la para la gestión.
     dockerRootDir:
       placeholder: Directorio predeterminado es {dir}.
@@ -2057,10 +2055,8 @@ clusterNew:
     windowsSupport:
       disabled: No es compatible con {plugin} proveedor de red.
   custom:
-    label: Personalizado
     shortLabel: Personalizado
   import:
-    label: Importar
     shortLabel: Importar
     command:
       instructions: "Ejecute el siguiente comando kubectl en un clúster de Kubernetes existente que ejecute una versión compatible de Kubernetes para importarlo a {appName}:"
@@ -2081,13 +2077,11 @@ resourceEventList:
   detail: Estado actual de las {resourceType}
   table:
     type: Tipo
-    lastUpdate: Última actualización
     reason: Razón
     message: Mensaje
   noData: No hay eventos
   noMatch: No hay eventos de coincidencia con la búsqueda actual
 confirmDelete:
-  titleWithoutResourceType: '¿Está seguro que desea eliminar'
   environmentNote: 'Nota: Todos los recursos dentro de este Proyecto se eliminará de forma permanente, incluyendo cualquier espacio de nombres que fueron creados a través de {appName}.'
   clusterNote: 'Nota: Los recursos asociados como volúmenes, equilibradores y redes que se crearon en el proveedor de la nube no se eliminarán automáticamente.'
   clusterRoleTemplateBindingNote: "Nota: los permisos de proyecto no será eliminado."
@@ -2538,7 +2532,6 @@ cruStorageClass:
     label: Proveedor
   reclaimPolicy:
     label: Política de reclamo
-    Delete: Eliminación de volúmenes y dispositivo subyacente cuando es liberado por las cargas de trabajo
     Retain: Retener el volumen para la limpieza manual
     Recycle: "Reciclar: vacía el contenido y luego preserva el volumen para futuras cargas de trabajo"
   aws-ebs:
@@ -2982,7 +2975,6 @@ formNodeRequirement:
   noRules: Sin Reglas
   key:
     label: Clave
-    placeholder: ej. nombre de host
   operator:
     label: Operador
   values:
@@ -3257,7 +3249,6 @@ formEnvVar:
     value: Valor
 formGlobalRoles:
   title: Permisos globales
-  description: Controla lo que el usuario tiene acceso para administrar el conjunto {appName} instalación.
   mode:
     admin:
       label: Administrador
@@ -3265,40 +3256,7 @@ formGlobalRoles:
     user:
       label: Usuarios Estándar
       detail: Los usuarios estándar pueden crear nuevos clústeres y administrar clústeres y proyectos a los que se les ha otorgado acceso.
-    custom:
-      label: Personalizado
-      detail: Elija permisos individuales para el usuario.
   role:
-    create-clusters:
-      label: Crear nuevos clusters
-      detail: Permite al usuario crear nuevos clústeres y convertirse en el propietario de los mismos. Los usuarios estándar tienen este permiso por defecto.
-    manage-authn:
-      label: Configurar la autenticación
-      detail: Permite al usuario habilitar, configurar y deshabilitar todas las configuraciones del proveedor de autenticación.
-    manage-catalogs:
-      label: Configurar catálogos
-      detail: Permite al usuario agregar, editar y eliminar catálogos
-    manage-clusters:
-      label: Administrar todos los clústeres
-      detail: Permite al usuario administrar todos los clusters, incluidos aquellos de los que no son miembros.
-    manage-node-drivers:
-      label: Configurar los controladores de nodo
-      detail: Permite al usuario habilitar, configurar y eliminar todas las configuraciones de Node Driver
-    manage-node-templates:
-      label: Administrar plantillas de nodo
-      detail: Permite al usuario definir, editar y eliminar plantillas de nodo
-    manage-roles:
-      label: Administrar Roles
-      detail: Permite al usuario definir, editar y eliminar definiciones de roles
-    manage-users:
-      label: Administrar usuarios
-      detail: Permite al usuario crear, eliminar y establecer contraseñas para todos los usuarios
-    use-catalogs:
-      label: El Uso De Catálogos
-      detail: Permite al usuario crear nuevos clústeres y convertirse en el propietario de los mismos. Los usuarios estándar tienen este permiso por defecto.
-    use-node-templates:
-      label: Usar plantillas de nodo
-      detail: Permite al usuario implementar nuevos nodos usando cualquier plantilla de nodos existente.
     base:
       label: Acceso de Inicio de Sesión
 formMembers:
@@ -3568,9 +3526,7 @@ formScheduling:
   value: Valor
   operator: Operador
   effect: Efecto
-  time: Hora
   toleration:
-    title: Tolerancia
     add: Agregar tolerancia
   scaling:
     minMaxDetail: Si se activa, no le será permitido al usuario ajustar el escalamiento usando el API, con valores por encima o por debajo de estos límites.
@@ -3756,7 +3712,6 @@ formUserData:
   isVmPlaceholder: "ej. Información de configuración para la máquina virtual"
 formLabelsAnnotations:
   title: Etiquetas y anotaciones
-  detail: Pares clave / valor que se pueden usar para etiquetar / anotar contenedores y tomar decisiones de programación.
 formUserLabels:
   title: Etiquetas
   detail: Las etiquetas son pares clave/valor que pueden utilizarse para anotar contenedores y tomar decisiones de planificación.
@@ -3867,8 +3822,6 @@ formVolumeRow:
     subPath: Subruta en volumen
     readOnly: Sólo lectura
     helper: El volumen no se montará en el contenedor actual. Puede ser utilizado por otros contenedores en la cápsula.
-  customLogPath:
-    helpText: Implementaremos un controlador de flexvolume para crear un volumen y montar el registro en el host. Esta característica es compatible con el clúster GKE ahora.
 formVolumes:
   title: Volúmenes
   detail: Persistir y compartir datos separados del ciclo de vida de un contenedor individual.
@@ -4127,10 +4080,8 @@ newCertificate:
     invalidFormat: La clave privada no es válida.
     placeholder: "Pegue la clave privada, generalmente comenzando con ----- BEGIN RSA PRIVATE KEY -----"
   cert:
-    label: Certificado
     required: Certificado es requerido.
     invalidFormat: El certificado no es válido.
-    placeholder: "Pega el certificado primario, comenzando con -----BEGIN CERTIFICATE-----"
     protip: Por favor incluya cualquier certificado de cadena que sea necesario.
   certChain:
     label: Cadena de Certificados
@@ -4498,9 +4449,7 @@ nodeDriver:
     role:
       label: Roles de servicio
       noneSelected: "Rancher creó Rol"
-      help: "Puede optar por no seleccionar una Función de servicio y Rancher creará una para usted."
       radio:
-        default: "Estándar: función de servicio generada por Rancher"
         custom: "Personalizado: elija entre sus funciones de servicio existentes"
       next: "Siguiente: Seleccionar VPC y subred"
       loading: "Cargando VPC desde Amazon..."
@@ -4513,7 +4462,6 @@ nodeDriver:
       loadingRancherDefault: "Cargando opciones de instancia..."
       noneSelected: "Rancher creó VPC y Subred"
       radio:
-        default: "Estándar: función de servicio generada por Rancher"
         custom: "Personalizado: elija entre sus funciones de servicio existentes"
     subnet:
       title: Subred
@@ -4521,7 +4469,7 @@ nodeDriver:
       loading: "Cargando grupos de seguridad de Amazon..."
     associateWorkerNodePublicIp:
       radio:
-        default: 'Yes'
+        default: "true"
     securityGroup:
       title: Grupos de seguridad
       detail: Elija los grupos de seguridad que se aplicarán a las instancias de EKS
@@ -4687,9 +4635,7 @@ nodeDriver:
     projectId:
       placeholder: Tu ID de proyecto de Packet
     apiKey:
-      label: Llave de API
       placeholder: Tu llave de API de Packet
-    apiKeyHelp: 'De la pantalla <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> de Packet'
     instanceSection: Instancia
     instanceOptionsSection: Opciones de la Instancia
     loginAction: "Siguiente: Autenticar & seleccionar red"
@@ -4730,12 +4676,10 @@ nodeDriver:
       title: 1. Acceso a la cuenta
       detail: Configurar dónde encontrar el servidor VCenter o ESXi
       help: "Nota: la licencia ESXi gratuita no es compatible con el acceso a la API. Solo se admiten servidores con una licencia válida o de evaluación."
-    instance:
-      title: Opciones de la Instancia
-      detail: Elija el tamaño y el sistema operativo de la máquina virtual
     scheduling:
-      title: Planificación
       detail: Elija qué hipervisor se programará para la máquina virtual
+    instance:
+      detail: Elija el tamaño y el sistema operativo de la máquina virtual
     vcenter:
       label: vCenter o servidor ESXi
       placeholder: nombre de host/IP de vCenter o ESXi
@@ -4765,17 +4709,12 @@ nodeDriver:
       placeholder: "ej. datacenter_name"
       help: "Centro de datos para crear VM en (deje en blanco para ESXi independiente)"
     pool:
-      label: Banco
       placeholder: "ej. /dc_name/ host /nombre_host/Resources/pool_name"
       help: "Centro de datos para crear VM en (deje en blanco para ESXi independiente)"
     host:
       label: Host/Servidor
       placeholder: "ej. cluster_name/host_name"
       help: "Host específico para crear VM activado (déjelo en blanco para ESXi independiente o para clúster con DRS)"
-    network:
-      label: Red
-      placeholder: "ej. VM Network"
-      help: "Red para conectar VM a"
     dataStore:
       label: Almacenamiento de Datos
       placeholder: "ej. datastore_cluster_name / datastore_name"
@@ -4816,7 +4755,6 @@ nodeDriver:
       placeholder: Tu certificado de suscipción de Azure
     image:
       label: Imagen
-      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
     size:
       label: Tamaño
     dockerPort:
@@ -4882,7 +4820,6 @@ nodeDriver:
       placeholder: Tu llave de Acceso de Cuenta de Aliyun
       provided: Provista
     apiEndpoint:
-      label: API Endpoint
       placeholder: Endpoint del servidor de la API privada de Aliyun
     instanceOptionsSection:
       label: Instancia
@@ -5026,7 +4963,6 @@ projectGroup:
   label: "Proyecto: {name}"
   none: Namespaces
   project: No en un proyecto
-  noNS: Este proyecto no contiene espacios de nombres
 optionallyNamespaced:
   scope:
     label: Ámbito
@@ -5155,7 +5091,7 @@ pagination:
     =1 {{count} {count, plural, =1 {Puerto} other {Puertos}}}
     other {{from} - {to} of {count} Puertos}}
   service: |
-    {páginas, plural,
+    {pages, plural,
     =0 {Sin Hosts}
     =1 {{count} {count, plural, =1 {Service} other {Services}}}
     other {{from} - {to} of {count} Hosts}}
@@ -5346,13 +5282,22 @@ waitKubernetes:
 searchableSelect:
   noMatch: Sin coincidencia
   noOptions: No hay opciones disponibles
+##############################
+#Mixins
+##############################
 containerChoices:
   hostGroup: "Host: {name}"
   hostGroupWithState: "Host: {name} ({state})"
   unknownHost: "Host: ???"
   containerOption: "{name}"
+##############################
+#Services
+##############################
 allWorkloads:
   namespace: "Namespace: {name}"
+##############################
+#Navigation
+##############################
 nav:
   srToggleDropdown: Habilitar Cascada
   cluster:
@@ -5399,14 +5344,11 @@ nav:
     tab: Recursos
     storagePage: Almacenamiento
     certificates: Certificados
-    configMaps: Config Maps
     registries: Repositorios
     secrets: Secretos
     members: Miembros
   admin:
     tab: Global
-    accounts: Usuarios
-    clusters: Clúster
     machines: Nodos
     catalogs: Catálogos
     security:
@@ -5441,6 +5383,9 @@ nav:
   project:
     none: Proyectos Agrupados/Namespaces
     namespaces: Namespaces
+##############################
+#Resource Actions
+##############################
 action:
   activate: Activar
   addContainer: Implementar Pod
@@ -5461,7 +5406,6 @@ action:
   exportConfig: Exportar Configuración
   garbageCollect: Limpieza
   logs: Ver Registros
-  makeDefault: Establecer como predeterminado
   move: Mover
   mute: Silenciar
   nodeConfig: Descarga claves
@@ -5492,6 +5436,9 @@ action:
   viewInApi: Ver en la API
   viewInstance: Ver Instancia
   viewYaml: Ver YAML
+##############################
+#Resource Actions
+##############################
 validation:
   required: '"{key}" es requerida'
   arrayLength:
@@ -5535,6 +5482,9 @@ validation:
       tooLongPrefix: '"{key}" no puede contener una sección de más de {max} caracteres'
       emptyLabel: '"{key}" no puede tener un prefijo vacío'
       tooLongKey: '"{key}" no puede tener una clave de más de {max} caracteres'
+##############################
+#Model Properties
+##############################
 model:
   account:
     kind:
@@ -5602,8 +5552,6 @@ storageClass:
     title: Disco persistente de Google
   glusterfs:
     title: Volumen de Gluster
-  local:
-    title: Disco de nodo local
   longhorn:
     title: Longhorn
   portworx-volume:
@@ -5648,7 +5596,6 @@ volumeSource:
   glusterfs:
     title: Volumen maestro
   host-path:
-    title: Ruta de nodo local
     path:
       label: Ruta de acceso en el Nodo
       placeholder: ej. /datos
@@ -5664,8 +5611,6 @@ volumeSource:
       BlockDevice: Un dispositivo de bloque existente
   iscsi:
     title: objetivo iSCSI
-  local:
-    title: Disco de nodo local
   nfs:
     title: Recurso compartido de NFS
   photon:
@@ -5694,45 +5639,3 @@ volumeSource:
       helpText: Puedes probar tu regex <a href="http://fluentular.herokuapp.com/" target="_blank">aquí</a>.
 yamlPage:
   errors: Hay errores en el yaml.
-rkeConfigComment:
-  ingress: |
-    ""
-    "# Actualmente, solo se admite el proveedor de ingreso nginx."
-    "# Para deshabilitar el controlador de ingreso, configure` provider: none` "
-    " # Para habilitar el ingreso en nodos específicos, use el node_selector, p. Ej.: proveedor "
-    ": nginx "
-    " node_selector: "
-    " app: ingreso "
-  network: |
-    ""
-    "# Si está usando calicó en AWS"
-    ""
-    "red:"
-    "complemento: calico"
-    "calico_network_provider:"
-    "cloud_provider: aws"
-    ""
-    "# Para especificar la interfaz de franela"
-    "
-    " red: "
-    " plugin: franela "
-    " flannel_network_provider: "
-    " iface: eth1 "
-    " "
-    " # Para especificar la interfaz de franela para canal plugin "
-    " "
-    " network: "
-    " plugin: canal "
-    " canal_programador_red: "
-    " iface: eth1 "
-  services: |
-    ""
-    "servicios:"
-    "kube_api:"
-    "service_cluster_ip_range: 10.43.0.0/16"
-    "kube_controller:"
-    "cluster_cidr: 10.42.0.0/16"
-    "service_cluster_ip_range: 10.43.0.0/16"
-    "kubelet: "
-    " cluster_domain: cluster.local "
-    " cluster_dns_server: 10.43.0.10 "
