@@ -2,7 +2,11 @@ import Controller from '@ember/controller';
 import { computed, get, set } from '@ember/object';
 import { inject as service } from '@ember/service';
 
-const FILE_KEY = 'config.json';
+const CONFIG_MAP_FILE_KEY = 'config.json';
+const CONFIG_MAP_NAMESPACE_ID = 'security-scan';
+const CONFIG_MAP_NAME = 'security-scan-cfg';
+const CONFIG_MAP_ID = `${ CONFIG_MAP_NAMESPACE_ID }:${ CONFIG_MAP_NAME }`;
+const CONFIG_MAP_DEFAULT_DATA = { [CONFIG_MAP_FILE_KEY]: JSON.stringify({ skip: [] }) };
 
 export default Controller.extend({
   modalService: service('modal'),
@@ -10,6 +14,7 @@ export default Controller.extend({
   scope:        service(),
   growl:        service(),
   intl:         service(),
+  projectStore: service('store'),
 
   tableHeaders: [
     {
@@ -104,12 +109,17 @@ export default Controller.extend({
   }),
 
   securityScanConfig: computed('model.configMaps.@each', function() {
-    return get(this, 'model.configMaps').findBy('id', 'security-scan:security-scan-cfg');
+    const configMaps = get(this, 'model.configMaps');
+    const config = configMaps.findBy('id', CONFIG_MAP_ID);
+
+    return config
+      ? config
+      : this.createAndSaveDefaultConfigMap();
   }),
 
   parsedSecurityScanConfig: computed('securityScanConfig.data.@each', function() {
     try {
-      return JSON.parse(get(this, 'securityScanConfig.data')[FILE_KEY]);
+      return JSON.parse(get(this, 'securityScanConfig.data')[CONFIG_MAP_FILE_KEY]);
     } catch (error) {
       this.growl.fromError(this.intl.t('cis.scan.detail.error.parseConfig'), error.message);
     }
@@ -124,6 +134,37 @@ export default Controller.extend({
   clusterScans: computed('model.clusterScans.@each', function() {
     return get(this, 'model.clusterScans').filterBy('clusterId', get(this, 'scope.currentCluster.id'));
   }),
+
+  createAndSaveDefaultConfigMap() {
+    try {
+      const configMaps = get(this, 'model.configMaps');
+      const systemProjectLink = get(this, 'scope.currentCluster.systemProject.links.self');
+      const creationUrl =  `${ systemProjectLink }/configmap`;
+      const recordLink =  `${ systemProjectLink }/configMaps/${ CONFIG_MAP_ID }`;
+      const configRecord = get(this, 'projectStore').createRecord({
+        type:        'configMap',
+        id:          CONFIG_MAP_ID,
+        namespaceId: CONFIG_MAP_NAMESPACE_ID,
+        name:        CONFIG_MAP_NAME,
+        data:        CONFIG_MAP_DEFAULT_DATA,
+        links:       {}
+      });
+
+      configMaps.pushObject(configRecord);
+      configRecord.save({
+        url:    creationUrl,
+        method: 'POST'
+      });
+
+      // We have to set this link after .save instead of before because .save will attempt to
+      // use the self link to save the record and saving the record isn't setting the self link.
+      set(configRecord, 'links.self', recordLink);
+
+      return configRecord;
+    } catch (error) {
+      this.growl.fromError(this.intl.t('cis.scan.detail.error.createDefault'), error.message);
+    }
+  },
 
   /**
    * Converts an id that looks like 1.1.9 into 000010000100009. This
@@ -169,6 +210,7 @@ export default Controller.extend({
 
   editSecurityScanConfig(editorFn) {
     const securityScanConfig = get(this, 'securityScanConfig');
+
     const value = get(this, 'parsedSecurityScanConfig');
 
     if (!value) {
@@ -178,7 +220,7 @@ export default Controller.extend({
 
     set(securityScanConfig, 'data', {
       ...securityScanConfig.data,
-      [FILE_KEY]: JSON.stringify(newValue)
+      [CONFIG_MAP_FILE_KEY]: JSON.stringify(newValue)
     });
     securityScanConfig.save();
   },
