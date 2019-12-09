@@ -1,6 +1,9 @@
 ---
 languageName: "Française"
 languageContribute: "Aider à traduire Rancher"
+##############################
+#Really generic things used in multiple places (use sparingly)
+##############################
 generic:
   actions: Actions
   activate: Activé
@@ -54,6 +57,7 @@ generic:
   import: Importer
   internal: Interne
   ipAddress: Addresse IP
+  istioRule: Règle de trafic
   key: Clé
   limit: Limite
   limits: Limites
@@ -129,6 +133,9 @@ realmNames:
   asia: Asie
   euWest: Europe
   euEast: Europe de l'Est
+##############################
+#Routes
+##############################
 accountsPage:
   detail:
     header: Détail de l'utilisateur
@@ -163,7 +170,6 @@ accountsPage:
       kind: Type
       username: Nom d'utilisateur local
       identity: Identité
-      noData: Il n'y a pas encore d'utilisateurs
       noMatch: Aucun utilisateur ne correspond à la recherche
       noName: Aucun
   new:
@@ -265,7 +271,6 @@ rolesPage:
       created: Date de création
       enabled: Activé
       name: Nom
-      noData: Il n'y a aucun rôle pour l'instant
       noMatch: Aucun rôle ne correspond à la recherche en cours
       subjectKind: Type
       template: Modèle
@@ -418,6 +423,7 @@ authPage:
       disableAccess:
         header: "Zone dangereuse&trade;"
         warning: '<b class="text-danger">Attention:</b> Désactiver le contrôle d''accès donne le contrôle complet à {appName}, à quiconque accède à cette page ou l''API .'
+        confirmDisable: "Êtes-vous sûr? Cliquez de nouveau pour désactiver le contrôle d'accès"
         disable: Désactiver le contrôle d’accès
       groupsField: 'Groupes :'
       displayName: 'Nom Public :'
@@ -460,12 +466,12 @@ authPage:
       disableAccess:
         header: "Zone Dangereuse&trade;"
         warning: '<b class="text-danger">Attention:</b> Désactivé le control d''accès donne le contrôle complet à {appName}, à quiconque accède à cette page (ou l''API) .'
+        confirmDisable: "Êtes-vous sûr? Cliquez de nouveau pour désactiver le contrôle d'accès"
         disable: Désactiver l'accès Github
     notAuthenticated:
       header: "1. Configurer une authentification Github"
       ul:
         li1:
-          text: 'Pour GitHub standard, <a href="https://github.com/settings/developers" target="_blank">click here</a> to go applications settings in a new window.'
           ul:
             li1: "Pour Github Enterprise, connectez-vous à votre compte, clicker sur settings, puis applications."
         li2:
@@ -473,7 +479,6 @@ authPage:
           ul:
             li1: '<b>Application name:</b> <span class="text-muted">Nom, e.g. Mon {appName}</span>'
             li2: 'URL de la Page d''accueil'
-            li3: '<b>Application description:</b> <span class="text-muted">Descriptions, optionel</span>'
             li4: 'URL de rappel d''Autorisation'
         li3:
           text: 'Clicker sur "Register Application" '
@@ -505,6 +510,7 @@ authPage:
         label: "Azure AD n'est pas configuré"
     enabled:
       header: 'Zone Dangereuse&trade;'
+      reallyDisable: 'Êtes-vous sûr? Cliquez de nouveau pour désactiver le contrôle d''accès'
       promptDisable: Désactiver contrôle d'accès
       general:
         header: Général
@@ -552,6 +558,7 @@ authPage:
       header: 'Zone Dangereuse&trade;'
       warning: '<b class="text-danger">Attention:</b> Désactiver le contrôle d''accès donne le contrôle complet à {appName}, à quiconque accède à cette page ou l''API .'
       buttonText:
+        disable: 'Êtes-vous sûr? Cliquez de nouveau pour désactiver le contrôle d''accès'
         prompt: Désactiver le contrôle d’accès
     accessDisabled:
       header: '1. configurer un utilisateur Admin'
@@ -582,7 +589,6 @@ backupsPage:
       local: Local
     name: Nom
     created: Crée le
-    noData: Il n'y a pas d'instantané etcd
 balancerPage:
   noMatch: Aucun répartisseur ne correspond à la recherche en cours
   noData: Il n’y a aucun répartisseur à afficher.
@@ -617,9 +623,6 @@ cloudCredentialsPage:
   header: Identifiants Cloud
   rightButtons:
     addKey: Ajouter un identifiant Cloud
-  index:
-    table:
-      noData: Il n'y a pas encore d'identifiants cloud
 clusterCatalogPage:
   header: Catalogues
 certificatesPage:
@@ -673,7 +676,6 @@ membersPage:
     table:
       name: Nom
       created: Créé le
-      noData: Il n'y a pas encore de membre
       noMatch: Aucun membre ne correspond à la recherche
       userId: Utilisateur
       subjectKind: Type
@@ -682,7 +684,6 @@ namespacesPage:
   header: Espaces de noms
   addNamespace: Ajouter un espace de noms
   noMatch: Aucun espace de nom de correspond à la recherche.
-  noData: Ce cluster n'a aucun espace de noms de défini
   table:
     name:
       label: Espace de noms
@@ -752,8 +753,6 @@ clustersPage:
     label: Nom du cluster
   provider:
     label: Fournisseur
-  version:
-    label: Version
   nodes:
     label: Nœuds
   cpu:
@@ -808,7 +807,6 @@ containersPage:
     sparkPrefixMemory: "Mémoire: "
     sparkPrefixNetwork: "Réseau: "
     sparkPrefixStorage: "Stockage: "
-    noData: Il n'y a aucun conteneur à afficher.
     noMatch: Aucun conteneur ne correspond à la recherche en cours.
   welcome:
     container: Démarrer maintenant
@@ -844,22 +842,21 @@ metricsAction:
     7d: 7 jours
     30d: 30 jours
 metrics:
-  workload-cpu-usage: Utilisation CPU
-  workload-disk-io: I/O du Disque
-  workload-memory-usage-bytes-sum: Utilisation de la Mémoire
-  workload-network-io: I/O Réseau
-  workload-network-packet: Paquets Réseau
+  container-cpu-usage: Utilisation CPU
+  container-disk-io: I/O du Disque
+  container-memory-usage-bytes-sum: Utilisation de la Mémoire
   pod-cpu-usage: Utilisation CPU
   pod-disk-io: I/O du Disque
   pod-memory-usage-bytes-sum: Utilisation de la Mémoire
   pod-network-io: I/O Réseau
   pod-network-packet: Paquets Réseau
-  container-cpu-usage: Utilisation CPU
-  container-disk-io: I/O du Disque
-  container-memory-usage-bytes-sum: Utilisation de la Mémoire
+  workload-cpu-usage: Utilisation CPU
+  workload-disk-io: I/O du Disque
+  workload-memory-usage-bytes-sum: Utilisation de la Mémoire
+  workload-network-io: I/O Réseau
+  workload-network-packet: Paquets Réseau
 dnsPage:
   noMatch: Aucun enregistrement ne correspond à la recherche en cours
-  noData: Il n'y a aucun enregistrement DNS à montrer
   type:
     arecord: Adresse IP externe
     cname: Nom d’hôte
@@ -871,6 +868,13 @@ dnsPage:
   table:
     target: Cible 
     clusterIpDetail: 'IP du Cluster: {ip}'
+cruHpa:
+  status:
+    label: Statut actuel
+  metrics:
+    name:
+      resources:
+        memory: Mémoire
 editDns:
   title:
     new: Ajouter un enregistrement
@@ -958,6 +962,22 @@ cruVolume:
   source:
     label: Source
     title: Configuration de la source
+globalRegistryPage:
+  enableActionLabel: Activer
+  command:
+    title: Commandes Docker
+  nodeSelector:
+    addSelectorLabel: Ajouter un sélecteur
+globalDnsPage:
+  newDns: Ajouter une entrée DNS
+  entriesPage:
+    table:
+      target: Cible 
+    config:
+      project: Projets
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 failWhalePage:
   header: Erreur
   reloadButton: |
@@ -977,11 +997,13 @@ haPage:
     heartbeat: Dernière Activité détectée
     clustered: Mis en Grappe
 nodesPage:
+  header: Nœuds
   table:
     cpu: Processeur
     memory: RAM
     disk: Disque
     pod: Pods
+    version: Version
     docker: Docker
 hostsPage:
   cloudHostsPage:
@@ -1003,6 +1025,7 @@ hostsPage:
   new:
     header:
       customText: Ajouter un hôte personnalisé
+      text: Ajouter un noeud
     manageLink: Gérer les pilotes docker machine disponibles
     custom: Ajouter un hôte personnalisé
     addCluster:
@@ -1100,9 +1123,12 @@ machinePage:
   inactive: Inactif
   builtin: Embarqué
   url: Emplacement
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 notFoundPage:
   header: "Cette page n'existe pas!"
-  linkTo: Acceuil
+  linkTo: Accueil
 registriesPage:
   index:
     linkTo: Ajouter Registre
@@ -1257,6 +1283,10 @@ storageClassPage:
   header: Classe de stockage
   addActionLabel: Ajouter une classe
   noData: Aucune classe de stockage n'est définie
+persistentVolumePage:
+  addActionLabel: Ajouter un Volume
+  source:
+    label: Source
 userPreferencesPage:
   header: Préférences
   theme:
@@ -1332,6 +1362,9 @@ notifierPage:
     table:
       created: Crée
       noMatch: Pas de concordance
+##############################
+#Partials
+##############################
 ldap:
   providerName:
     openldap: OpenLDAP
@@ -1432,6 +1465,9 @@ servicePartial:
     label: Pas encore de conteneurs.
     inactive:
       start: Démarrer
+##############################
+#Components
+##############################
 accordionRow:
   status:
     none: Aucun
@@ -1449,9 +1485,17 @@ advancedSection:
 annotationsSection:
   key: Clé
   value: Valeur
+taintsSection:
+  value: Valeur
 billingInfo:
   header: Informations de facturation
+  table:
+    title:
+      actions: Actions
 catalogSettings:
+  currentProject: Projet
+  library:
+    label: Bibliothèque
   certified:
     header:
       rancher: "Bibliothèque certifiée {appName}"
@@ -1474,13 +1518,49 @@ catalogSettings:
     branch:
       label: Branche
       placeholder: 'par exemple master'
+    username:
+      label: Nom d'Utilisateur
+    password:
+      label: Mot de Passe
+      required: 'Le mot de passe est requis'
+      placeholder: Votre mot de passe
+clusterRow:
+  addHost: Ajouter des nœuds
+  loginDefault: Se Connecter
 clusterNew:
+  tencenttke:
+    region:
+      label: Région
+    secretKey:
+      label: Clé secrète
+    version:
+      label: Version de Kubernetes
+  azureaks:
+    count:
+      label: Nombre de nœud
+    size:
+      label: Taille
+    environment:
+      label: Environnement
+    networking:
+      default: Défaut
+      advanced: Avancé
+      subnet:
+        label: Sous-réseau
+    storageType:
+      label: Type de stockage
+    staticPublicIp:
+      label: IP publique
+    clientId:
+      label: ID Client
+      placeholder: Votre Id Client
+    region:
+      label: Région
   googlegke:
     project:
       label: Projet
       placeholder: p.ex. mon-projet
 confirmDelete:
-  titleWithoutResourceType: 'Êtes-vous sûr de vouloir le supprimer'
   protip: 'Astuce Pro : Maintenez la touche {key} tout en cliquant sur Supprimer afin de contourner cette confirmation.'
   confirmAction: Supprimer
   cancelAction: Annuler
@@ -2036,11 +2116,10 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: 'Yes'
+        default: true
 projectGroup:
   label: "Projet: {name}"
   project: Pas dans un projet
-  noNS: Ce projet ne contient pas d'espace de noms
 pageFooter:
   notARelease: (Pas une Version)
   help: 'Aide & Docs'
@@ -2154,13 +2233,19 @@ waitKubernetes:
   createStack: 'En création de la pile système Kubernetes'
   startServices: 'Démarrage des services'
   waitApi: 'En attente de l''API Kubernetes'
+##############################
+#Mixins
+##############################
 containerChoices:
   hostGroup: "Hôte : {name}"
   hostGroupWithState: "Hôte : {name} ({state})"
   unknownHost: "Hôte : ???"
   containerOption: "{name}"
+##############################
+#Navigation
+##############################
 nav:
-  srToggleDropdown: Activer/Désactiver la liste déroulante
+  srToggleDropdown: Activer/Désactiver la liste déroulante 
   containers:
     addDns: Ajouter un enregistrement
   catalog:
@@ -2175,6 +2260,9 @@ nav:
   user:
     label: "Menu Utilisateur : {username}"
     logout: Deconnecter
+##############################
+#Resource Actions
+##############################
 action:
   activate: Activer
   clone: Cloner
@@ -2197,6 +2285,9 @@ action:
   viewGraph: Voir Graph
   viewInApi: Vue dans l'API
   viewInstance: Voir l'Instance
+##############################
+#Resource Actions
+##############################
 validation:
   required: '« {key} » est requis'
   number:
@@ -2204,6 +2295,9 @@ validation:
     between: '« {key} » doit être comprise entre {min} et {max}'
     min: '« {key} » doit être au moins {val}'
     max: '« {key} » doit être au plus {val}'
+##############################
+#Model Properties
+##############################
 model:
   account:
     kind:

@@ -1,6 +1,9 @@
 ---
 languageName: "الإنجليزية"
 languageContribute: "ساعد في ترجمة رانشر"
+##############################
+#Really generic things used in multiple places (use sparingly)
+##############################
 generic:
   actions: الإجراءات
   activate: تفعيل
@@ -130,6 +133,9 @@ realmNames:
   asia: آسيا
   euWest: غرب الاتحاد الأوربي
   euEast: شرق الاتحاد الأوربي
+##############################
+#Routes
+##############################
 accountsPage:
   detail:
     header: تفاصيل المستخدم
@@ -164,7 +170,6 @@ accountsPage:
       kind: نوع
       username: اسم المستخدم المحلي
       identity: الهوية
-      noData: لا يوجد مستخدمين بعد
       noMatch: لا يوجد مستخدمون يتطابقون مع البحث الحالي
       noName: لا شيء
   new:
@@ -266,7 +271,6 @@ rolesPage:
       created: وقت الانشاء
       enabled: مُـفعّل
       name: الاسم
-      noData: لا توجد أدوار بعد
       noMatch: لا توجد أدوار تتطابق مع البحث الحالي
       subjectKind: نوع
       template: قالب
@@ -281,9 +285,22 @@ rolesPage:
   inherit:
     title: يرث من دور
   addRole: "أضف دور {context}"
+  editRole: تعديل الدور
+  saveEdit: تعديل
+  saveNew: إنشاء
   new:
+    errors:
+      nameReq: يجب إدخال الإسم.
+      nameInExists: الاسم موجود مسبقاً. الرجاء استخدام اسم دور جديد.
+      roleTemplate: قالب الدور مطلوب.
+      noSelectedRoles: يرجى اختيار دور واحد على الأقل لهذا المستخدم.
+      roleAlreadyExists: المستخدم لديه الدور"{key}" مسبقاً.
     form:
+      name:
+        labelText: الاسم
+        placeholder: "مثال: المطورين"
       allow:
+        list: قائمة
         update: تحديث
         watch: شاهد
         labelText: السماح
@@ -350,6 +367,132 @@ authPage:
       groups:
         labelText: حقل المجموعات
         display: "حقل المجموعات:"
+  ping:
+    buttonText:
+      post: في انتظار الرد من مزود التعريف
+  keycloak:
+    buttonText:
+      post: في انتظار الرد من مزود التعريف
+  adfs:
+    buttonText:
+      pre: 'المصادقة باستخدام AD FS'
+      post: في انتظار الرد من مزود التعريف
+  okta:
+    buttonText:
+      post: في انتظار الرد من مزود التعريف
+  shibboleth:
+    enabled:
+      authenticated:
+        header:
+          text: المصادقة
+      groupsField: 'المجموعات:'
+      displayName: 'الاسم الظاهر:'
+      userName: 'اسم المستخدم:'
+      userId: 'معرف المستخدم:'
+    disabled:
+      name:
+        labelText: حقل الاسم المعروض
+      username:
+        labelText: حقل اسم المستخدم
+      groups:
+        labelText: حقل المجموعات
+      testAuth:
+        header: '2. اختبار وتمكين المصادقة'
+        buttonText:
+          pre: المصادقة مع IDP
+  github:
+    notAuthenticated:
+      ul:
+        li2:
+          ul:
+            li2: 'رابط الصفحة الرئيسية:'
+      form:
+        clientId:
+          labelText: معرف العميل
+        clientSecret:
+          labelText: المفتاح السري للعميل
+        isGHEnterprise:
+          labelText: استخدام اتصال آمن
+        enterpriseHost:
+          placeholder: 'على سبيل المثال github.example.com'
+    testAuth:
+      header: '3. اختبار وتمكين المصادقة'
+      buttonText:
+        pre: المصادقة مع GitHub
+        post: في انتظار الرد من GitHub
+  azuread:
+    enabled:
+      reallyDisable: 'هل أنت واثق؟ انقر مرة أخرى لتعطيل التحكم في الوصول'
+    configure:
+      regions:
+        custom: مُخصّص
+      tenantId:
+        label: هوية المستأجر
+  localAuth:
+    subtext:
+      enabled:
+        linkText: إدارة الحسابات
+    accessControl:
+      buttonText:
+        post: 'جاري التفعيل...'
+backupsPage:
+  table:
+    state: الحالة
+    target:
+      label: الهدف
+      s3: S3
+    name: الاسم
+    created: تم الانشاء
+balancerPage:
+  noMatch: لا يوجد موازنات تطابق البحث الحالي
+  noData: لا يوجد موازنات لإظهارها.
+  table:
+    target: الهدف
+catalogPage:
+  index:
+    certified:
+      pl:
+        partner: الشريك
+membersPage:
+  index:
+    table:
+      userId: المستخدم
+      subjectKind: النوع
+      template: الدور
+namespacesPage:
+  noMatch: لا توجد نطاقات أسماء تطابق البحث الحالي.
+  table:
+    name:
+      label: نطاق الأسماء
+    description:
+      label: التوصيف
+    project:
+      label: المشروع
+projectsPage:
+  addProject: اضافة مشروع
+  editProject: تعديل المشروع
+  noMatch: لا توجد مشاريع تطابق البحث الحالي.
+  members:
+    user: المستخدم
+    group: المجموعة
+    serviceaccount: حساب الخدمة
+    labelText: الأعضاء
+    addMember: إضافة عضو
+    addUser: إضافة مستخدم
+    errors:
+      memberNameReq: اسم مطلوب للعضو
+      memberRoleReq: الدور مطلوب للعضو
+containerPage:
+  linksTab:
+    header: الروابط
+  volumesTab:
+    header: وحدات تخزين
+k8sImport:
+  actionLabel: استيراد
+k8sPage:
+  header: Kubernetes
+  dashboard:
+    title: لوحة القيادة
 loginPage:
   shibbolethError:
     401: "Unauthorized"
@@ -358,4 +501,4 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: 'Yes'
+        default: true

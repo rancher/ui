@@ -1,6 +1,9 @@
 ---
 languageName: "영어"
 languageContribute: "Rancher 번역을 도와주세요"
+##############################
+#Really generic things used in multiple places (use sparingly)
+##############################
 generic:
   actions: 동작
   activate: 활성화
@@ -38,8 +41,10 @@ generic:
   enabled: 활성화됨
   entrypoint: Entrypoint
   environment: 환경
-  expandAll: 모두 확장
+  expandAll: 모두 확장 
+  experimental: "(실험)"
   from: 출처
+  false: '거짓'
   generic: '일반'
   gigabyte: 'GB'
   hardware: 하드웨어
@@ -47,11 +52,13 @@ generic:
   help: 도움말
   hostname: 호스트명
   hours: 시간
+  hpa: HPA
   id: ID
   image: 이미지
   import: 가져오기
   internal: 내부
   ipAddress: IP 주소
+  istioRule: 트래픽 규칙
   key: 키
   limit: 제한
   limits: 제한
@@ -76,6 +83,7 @@ generic:
   owner: 소유자
   paste: 붙여넣기
   pod: pod
+  podRestarts: Pod 재시작
   port: 포트
   ports: 포트
   prefix: 접두사
@@ -104,6 +112,7 @@ generic:
   testing: 테스트 중
   to: 에게
   total: 총합계
+  true: '참'
   type: 타입
   unknown: 알수 없음
   unknownUser: 사용자 정보를 가져올 수 없습니다.
@@ -126,6 +135,9 @@ realmNames:
   asia: 아시아
   euWest: 유럽 서부
   euEast: 유럽 동부
+##############################
+#Routes
+##############################
 accountsPage:
   detail:
     header: 사용자 세부정보
@@ -160,7 +172,6 @@ accountsPage:
       kind: 종류
       username: 로컬 사용자 이름
       identity: 신원
-      noData: 아직 사용자가 없습니다.
       noMatch: 현재 검색어와 일치하는 사용자가 없습니다.
       noName: 없음
   new:
@@ -262,7 +273,6 @@ rolesPage:
       created: 생성 시간
       enabled: 활성화됨
       name: 이름
-      noData: 역할이 없습니다.
       noMatch: 현재 검색과 일치하는 역할이 없음
       subjectKind: 종류
       template: 템플릿
@@ -290,12 +300,14 @@ rolesPage:
       ruleResourceReq: 규칙에는 리소스가 필요합니다.
       roleTemplate: 역할(Role) 템플릿이 필요합니다.
       noSelectedRoles: 이 사용자에게 부여할 역할을 선택하세요.
+      roleAlreadyExists: 사용자는 이미 "{key}"역할을 가지고 있습니다.
     form:
       name:
         labelText: 이름
         placeholder: "예: 개발자"
       context:
         labelText: 컨텍스트
+        detail: 이 역할이 적합한 범위
       locked:
         labelText: 잠김
         detail: 이미 존재하는 역할에 대한 바인딩에는 영향을주지 않습니다.
@@ -313,6 +325,7 @@ rolesPage:
         labelText: 허용
         resource: 리소스
         addAction: 리소스 추가
+        apiGroups: API 그룹
       otherRole:
         labelText: 다른 역할 포함
         role: 역할
@@ -361,6 +374,9 @@ authPage:
       userName: '사용자 이름:'
       userId: '사용자 ID:'
     disabled:
+      header: '1. {providerName} 계정 설성'
+      headerDetail: '{providerName} 계정 세부정보 입력'
+      label: "{providerName} 이 설정되지 않았습니다"
       name:
         labelText: 이름 필드 표시
         display: "이름 필드 표시:"
@@ -386,21 +402,38 @@ authPage:
       okta: Okta
     authError: '액세스 권한이 없습니다.'
     popupError: '팝업 차단을 해제하시고 "인증"을 다시 클릭하십시오.'
+  ping:
+    buttonText:
+      pre: '인증 Ping'
+      post: IDP의 응답을 기다리는 중
+  keycloak:
+    buttonText:
+      pre: '키 클로킹으로 인증'
+      post: IDP의 응답을 기다리는 중
+  adfs:
+    buttonText:
+      pre: 'AD FS 인증'
+      post: IDP의 응답을 기다리는 중
   okta:
     buttonText:
       pre: 'Okta 인증'
+      post: IDP의 응답을 기다리는 중
   shibboleth:
     enabled:
       authenticated:
         header:
           text: 인증
       disableAccess:
+        warning: '<b class="text-danger">주의:</b> 액세스 제어를 비활성화하면이 페이지 또는 API에 접근 할 수있는 모든 사람이 {appName} 전체를 제어 할 수 있습니다.'
+        confirmDisable: "계속 진행 하시겠습니까?  액세스 제어를 비활성화하려면 다시 클릭하세요."
         disable: 액세스 제어 사용 안 함
       groupsField: '그룹'
       displayName: '사용자 이름'
       userName: '사용자 이름:'
       userId: '사용자 ID:'
     disabled:
+      header: '1. Shibboleth 계정 설정'
+      label: "{providerName} 이 설정되지 않았습니다."
       name:
         labelText: 표시 이름 필드
       username:
@@ -411,6 +444,10 @@ authPage:
         labelText: 그룹 필드
       testAuth:
         header: 'Test & 인증 활성화'
+        subtext: '인증 테스트를 수행해 응용 프로그램이 올바르게 구성되었는지 확인하십시오.'
+        buttonText:
+          pre: IDP로 인증
+          post: IDP의 응답을 기다리는 중
     providerName:
       shibboleth: Shibboleth
   root:
@@ -427,9 +464,11 @@ authPage:
         enterpriseHostName: "Enterprise Host:"
         clientId:
           text: "클라이언트 ID:"
+          helpText: "설정되어 있는 GitHub 애플리케이션을 변경하려면 아래의 액세스 제어를 비활성화 한 다음 다시 설정하십시오."
       disableAccess:
         disable: Github 액세스 비활성화
     notAuthenticated:
+      header: "1. GitHub 애플리케이션 설정"
       ul:
         li1:
           ul:
@@ -437,22 +476,49 @@ authPage:
         li2:
           ul:
             li2: '홈페이지 URL'
-            li3: '<b>응용 프로그램 설명:</b> <span class="text-muted">모든 것, 선택 사항</span>'
+            li4: '인증 콜백 URL:'
+        li3:
+          text: '"응용 프로그램 등록"을 클릭하십시오.'
       form:
+        header: '2. 응용 프로그램을 사용 인증을 위해 {appName} 을 설정하십시오.'
         clientId:
           labelText: 클라이언트 ID
+        enterpriseHost:
+          placeholder: '예: github.example.com'
   azuread:
+    enabled:
+      promptDisable: Azure AD 사용 안함
+      general:
+        header: 기본설정
     configure:
+      serverURL:
+        label: 랜처 서버 URL
+      azureADAuthEndpoint:
+        label: 인증 엔드 포인트
+      endpoints:
+        label: 엔드 포인트
       regions:
         china: 중국
+        custom: 사용자 정의
+      tenantId:
+        label: 테넌트 ID
     test:
       username:
+        label: 로그인 사용자 이름
         placeholder: '예: jsmith'
       password:
         label: 로그인 비밀 번호
       pre: Azure를 위한 인증
+      post: Azure에서 응답을 기다리는 중
   localAuth:
+    subtext:
+      enabled:
+        linkText: 계정 관리
+    accessEnabled:
+      buttonText:
+        prompt: 접근 제어 비활성화
     accessDisabled:
+      header: '1. 관리자 설정'
       form:
         login:
           labelText: 로그인 사용자명
@@ -464,6 +530,9 @@ authPage:
           labelText: 암호
         confirmPassword:
           labelText: 암호 확인
+    accessControl:
+      buttonText:
+        post: '활성화 중...'
 backupsPage:
   table:
     state: 상태
@@ -472,6 +541,7 @@ backupsPage:
       s3: S3
       local: 지역
     name: 이름
+    created: 생성됨
 catalogPage:
   index:
     header: 카탈로그
@@ -522,6 +592,7 @@ membersPage:
       member: 멤버
       role: 역할
   index:
+    localLink: '구성원 추가'
     table:
       name: 이름
       created: 생성 시간
@@ -533,8 +604,12 @@ namespacesPage:
   table:
     name:
       label: 네임스페이스
+    description:
+      label: 설명
     project:
       label: 프로젝트
+    pods:
+      label: 포드
     workloads:
       label: 워크로드
     created:
@@ -549,17 +624,25 @@ projectsPage:
   editProject: 프로젝트 편집
   quota:
     label: 리소스 할당량
+  ns:
+    label: 네임스페이스 이름
   created:
     label: 생성일
   members:
     user: 사용자
     group: 그룹
+    serviceaccount: 서비스 계정
+    labelText: 멤버
+    addMember: 구성원 추가
+    addUser: 사용자 추가
     addGroup: 그룹 추가
     addServiceAccount: 서비스 계정 추가
     kind:
       label: 종류
     name:
       label: 이름
+    role:
+      label: 역할
     errors:
       nameReq: 이름은 필수 입력사항입니다.
       nameInExists: 이름이 이미 있습니다. 새 프로젝트 이름을 사용하십시오.
@@ -571,8 +654,6 @@ clustersPage:
     label: 클러스터 이름
   provider:
     label: '프로바이더:'
-  version:
-    label: 버전
   nodes:
     label: 노드
   cpu:
@@ -595,6 +676,7 @@ containerPage:
     table:
       path: 마운트 포인트
       writable: 쓰기가능
+      noContainers: 다른 컨테이너가 없습니다.
 podPage:
   nodeIp: 노드 IP
   image: 이미지
@@ -606,14 +688,28 @@ containersPage:
     sparkPrefixStorage: "저장소: "
   welcome:
     containerLink: 컨테이너 추가
+    orchestrator: 다른 오케 스트레이터 설치
     kubernetesLink: Kubernetes 설치
 metricsAction:
   sections:
     pod: 포드 통계
   grafana:
     label: Grafana
+  summary:
+    label: 요약
+  detail:
+    label: 세부사항
+  periods:
+    5m: 5분
+    1h: 1시간
+    6h: 6시간
+    24h: 24시간
+    7d: 7일
+    30d: 30일
 metrics:
   container-memory-usage-bytes-sum: 메모리 사용률
+  workload-cpu-usage: CPU 알림
+  workload-disk-io: 디스크 I / O
 dnsPage:
   type:
     arecord: 외부 IP
@@ -678,6 +774,9 @@ globalDnsPage:
         label: DNS TTL
   providersPage:
     title: 글로벌 DNS 공급자
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 failWhalePage:
   header: 에러
   reloadButton: |
@@ -871,8 +970,6 @@ clusterRow:
 clusterNew:
   advanced:
     cancel: 양식으로 편집
-  nodes:
-    title: 노드
   azureaks:
     publishSettingsFile:
       label: 게시 설정
@@ -884,7 +981,6 @@ clusterNew:
     ignoreDockerVersion:
       label: 노드의 도커 버전
 confirmDelete:
-  titleWithoutResourceType: '삭제하시겠습니까?'
   confirmAction: 제거
   cancelAction: 취소
 containerLogs:
@@ -967,10 +1063,6 @@ formEnvVar:
   labels:
     key: 키
     value: 값
-formGlobalRoles:
-  role:
-    create-clusters:
-      label: 새 클러스터 생성
 formKeyValue:
   key:
     label: 키
@@ -983,11 +1075,15 @@ modalConfirmDeactivate:
   cancel: 취소
 modalConfirmRemovePayment:
   title: '삭제하시겠습니까?'
+modalRollbackService:
+  action: 되돌리기
+  revisionId:
+    label: 다음 버전으로 되돌리기
 nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: 'Yes'
+        default: true
   azure:
     publishSettingsFile:
       label: 게시 설정
@@ -1005,6 +1101,9 @@ vmConsole:
   footerActions:
     buttonSend: Ctrl-Alt-Delete 보내기
     buttonCancel: 닫기
+##############################
+#Navigation
+##############################
 nav:
   cluster:
     nodes: 노드
@@ -1017,5 +1116,8 @@ nav:
       tab: 설정
   settings:
     tab: 설정
+##############################
+#Resource Actions
+##############################
 action:
   remove: 삭제

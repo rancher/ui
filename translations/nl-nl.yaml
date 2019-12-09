@@ -1,6 +1,9 @@
 ---
 languageName: "Nederlands"
 languageContribute: "Help Rancher vertalen"
+##############################
+#Really generic things used in multiple places (use sparingly)
+##############################
 generic:
   actions: Acties
   activate: Activeer
@@ -39,7 +42,9 @@ generic:
   entrypoint: Toegangspunt
   environment: Omgeving
   expandAll: Alles uitklappen
+  experimental: "(experimenteel)"
   from: van
+  false: 'Onwaar'
   generic: 'Algemeen'
   gigabyte: 'GB'
   hardware: Hardware
@@ -47,11 +52,13 @@ generic:
   help: Help
   hostname: Hostnaam
   hours: uren
+  hpa: HPA
   id: ID
   image: Image
   import: Importeren
   internal: Intern
   ipAddress: IP-Adres
+  istioRule: Verkeer Regel
   key: Sleutel
   limit: Limiet
   limits: Limieten
@@ -76,6 +83,7 @@ generic:
   owner: Eigenaar
   paste: Plakken
   pod: pod
+  podRestarts: Pod wordt opnieuw opgestart
   port: Poort
   ports: Poorten
   prefix: voorvoegsel
@@ -104,6 +112,7 @@ generic:
   testing: Testen
   to: Aan
   total: Totaal
+  true: 'Waar'
   type: Type
   unknown: Onbekend
   unknownUser: Kan gebruikersgegevens niet ophalen
@@ -126,6 +135,9 @@ realmNames:
   asia: Azië
   euWest: EU West
   euEast: EU Oost
+##############################
+#Routes
+##############################
 accountsPage:
   detail:
     header: Gebruikersdetails
@@ -160,7 +172,6 @@ accountsPage:
       kind: Soort
       username: Gebruikersnaam
       identity: Identiteit
-      noData: Er zijn nog geen gebruikers
       noMatch: Geen gebruikers gevonden die overeenkomen met de zoekopdracht
       noName: Geen
   new:
@@ -262,7 +273,6 @@ rolesPage:
       created: Gemaakt
       enabled: Geactiveerd
       name: Naam
-      noData: Er zijn nog geen rollen
       noMatch: Geen rollen gevonden die overeenkomen met de zoekopdracht
       subjectKind: Soort
       template: Sjabloon
@@ -272,6 +282,9 @@ rolesPage:
       showDefaults: Toon standaardwaarden
     errors:
       inherited: "Rol {displayName} wordt overgeërfd door: {roleNames}"
+  resources:
+    title: Verleen Bronnen
+    detail: Verleen toegang tot specifieke operaties op Kubernetes middelen
   inherit:
     title: Overerven van een rol
     detail: Alle permissies van andere rol overnemen
@@ -312,6 +325,7 @@ rolesPage:
         labelText: Toestaan
         resource: Document
         addAction: Bestand toevoegen
+        apiGroups: API Groepen
       otherRole:
         labelText: Andere rollen toevoegen
         role: Rol
@@ -412,6 +426,7 @@ authPage:
       disableAccess:
         header: "Gevarenzone&trade;"
         warning: '<b class="text-danger">Opgelet:</b>Toegangsbeheer uitschakelen geeft volledige toegang tot {appName} aan iedereen die deze pagina kan bereiken of de API.'
+        confirmDisable: "Weet U het zeker? Klik nogmaals om toegangsbeheer echt uit te schakelen"
         disable: Toegangsbeheer uitschakelen
       groupsField: 'Groepen:'
       displayName: 'Weergavenaam:'
@@ -454,15 +469,16 @@ authPage:
       disableAccess:
         header: "Gevarenzone&trade;"
         warning: '<b class="text-danger">Opgelet:</b>Toegangsbeheer uitschakelen geeft volledige toegang tot {appName} aan iedereen die deze pagina kan bereiken of de API.'
+        confirmDisable: "Weet U het zeker? Klik nogmaals om toegangsbeheer echt uit te schakelen"
         disable: Github toegang uitschakelen
     notAuthenticated:
       header: "1. Een GitHub applicatie instellen"
       ul:
         li1:
-          text: 'Voor standaard GitHub, <a href="https://github.com/settings/developers" target="_blank">klik hier</a> om applicatie instellingen te gaan in een nieuw venster.'
           ul:
             li1: "Voor GitHub Enterprise, login in je account. Klik op instellingen en vervolgens op ontwikkelaar instellingen."
         li2:
+          text: 'Klik op "Registreer een nieuwe applicatie" en vul het formulier in:'
           ul:
             li2: 'Homepage URL:'
             li4: 'Autorisatie callback URL:'
@@ -496,6 +512,7 @@ authPage:
         label: "Azure AD is niet geconfigureerd"
     enabled:
       header: 'Gevarenzone&trade;'
+      reallyDisable: 'Weet U het zeker? Klik nogmaals om toegangsbeheer echt uit te schakelen'
       promptDisable: Toegangsbeheer uitschakelen
       general:
         header: Algemeen
@@ -512,6 +529,12 @@ authPage:
         label: Rancher Server Url
       azureADEndpoint:
         label: Endpoint
+      endpoints:
+        label: Eindpunten
+      regions:
+        standard: Standaard
+        china: China
+        custom: Custom
       tenantId:
         help: Van de Azure AD-portal
     test:
@@ -540,6 +563,7 @@ authPage:
       header: 'Gevarenzone&trade;'
       warning: '<b class="text-danger">Opgelet:</b>Toegangsbeheer uitschakelen geeft volledige toegang tot {appName} aan iedereen die deze pagina kan bereiken of de API.'
       buttonText:
+        disable: 'Weet U het zeker? Klik nogmaals om toegangsbeheer echt uit te schakelen'
         prompt: Toegangsbeheer uitschakelen
     accessDisabled:
       header: '1. Stel een beheerder in'
@@ -572,7 +596,6 @@ backupsPage:
       local: Lokaal
     name: Naam
     created: Aangemaakt
-    noData: Er zijn geen etcd snapshots
 balancerPage:
   noMatch: Er zijn geen balancers die overeenkomen met de huidige zoekopdracht
   noData: Er zijn geen balancers om te tonen.
@@ -605,19 +628,71 @@ catalogPage:
       alreadyDeployed: Reeds uitgerold
 cloudCredentialsPage:
   header: Cloud-referenties
+clusterCatalogPage:
+  header: Catalogi
 certificatesPage:
+  cn: Domeinnaam
+  expiresDate: Verloopt
+  fingerprint: Vingerafdruk
+  valid: Geldig begin
+  expires: Verloopt
+  algorithm: Algoritme
+  issuer: Uitgever
+  serialNumber: Serienummer
+  domainNames:
+    labelText: Domeinnamen
   detail:
     header: 'Certificaat: {name}'
   index:
     header: Certificaten
     linkTo: Certificaat toevoegen
   new:
+    header: Certificaat toevoegen
     form:
       name:
         placeholder: bijv. mijndomein.nl
       description:
         placeholder: bijv. EV certificaat voor mijndomein.nl
+membersPage:
+  title: Leden
+  add:
+    title: 'Voeg {type} Lid toe'
+    form:
+      member: Lid
+      role: Rol
+      kind: Soort
+  index:
+    localLink: 'Lid toevoegen'
+    table:
+      name: Naam
+      created: Angemaakt op
+      noMatch: Geen leden komen overeen met de huidige zoekopdracht
+      userId: Gebruiker
+      subjectKind: Soort
+      template: Rol
+namespacesPage:
+  header: Namespaces
+  addNamespace: Namespace toevoegen
+  noMatch: Geen enkele namespaces lijkt op de zoek filter.
+  table:
+    name:
+      label: Namespace
+    description:
+      label: Omschrijving
+    project:
+      label: Project
+    pods:
+      label: Pods
+    workloads:
+      label: Werk lading
+    created:
+      label: Aangemaakt
+clusterPage:
+  edit: Bewerk cluster
+  removeMemberNote: 'Opmerking: Verwijderen van gebruiker zal de project machtigingen niet verwijderen'
 projectsListNamespacePage:
+  header: Namespaces
+  notIn: Niet in een project
   current: In dit project
 projectsPage:
   header: Projecten / Namespaces
@@ -643,15 +718,62 @@ projectsPage:
     label: Pod-beveiligingsbeleid
   resourceQuota:
     title: Resource quota
+    detail: Configureer hoeveel van de bronnen die het project mag gebruiken
+  containerDefaultLimit:
+    title: Container Standaard Bron limiet
+    detail: Configureer hoeveel van de bronnen die het project standaard mag gebruiken
+  members:
+    title: Leden
+    detail: Configureer wie toegang heeft tot de bronnen in dit project en welke machtigingen ze hebben
+    user: Gebruiker
+    group: Groep
+    serviceaccount: Service Account
+    labelText: Leden
+    addMember: Lid toevoegen
+    addUser: Gebruiker toevoegen
+    noAddUser: U bent de enige actieve geregistreerde gebruiker.
+    addGroup: Groep toevoegen
+    addServiceAccount: Service account toevoegen
+    multipleRoles: Meerdere rollen
+    customRoles: Eigen rollen
+    kind:
+      label: Soort
+    name:
+      label: Naam
+    role:
+      label: Rol
+    errors:
+      nameReq: Naam is vereist.
+      nameInExists: Deze naam bestaat al. Gebruik een andere naam voor je project.
+      memberNameReq: Naam is vereist voor een lid
+      memberRoleReq: Rol is vereist voor een lid
 clustersPage:
-  version:
-    label: Versie
+  header: Clusters
+  newCluster: Voeg cluster toe
+  newClusterName: "Bewerk cluster: {name}"
+  editClusterName: "Bewerk cluster: {name}"
+  cluster:
+    label: Cluster Naam
+  provider:
+    label: Provider
   nodes:
     label: Nodes
   cpu:
     label: CPU
   memory:
     label: RAM
+  pod:
+    label: Pods
+  storage:
+    label: Schijf
+ingressPage:
+  header: 'Ingress: {name}'
+  gkeIngressWarning: 'Het kan enkele minuten duren voordat Kubernetes Engine een extern IP-adres toewijst en de load balancer voorbereidt. In de tussentijd kunt u fouten krijgen zoals HTTP 404 en HTTP 500 totdat de load balancer klaar is om het verkeer te bedienen.'
+  table:
+    targets:
+      label: Doelen
+    noMatch: Geen enkele ingresses lijkt op de zoek filter.
+    noData: Er zijn geen Ingress regels gedefinieerd
 containerPage:
   header: 'Container: {name}'
   initContainer:
@@ -691,18 +813,66 @@ containersPage:
     sparkPrefixMemory: "Geheugen: "
     sparkPrefixNetwork: "Netwerk: "
     sparkPrefixStorage: "Opslag: "
-    noData: Er zijn geen containers om te tonen.
     noMatch: Geen containers gevonden die overeenkomen met de zoekopdracht.
   welcome:
+    container: Ga meteen aan de slag
     containerLink: Een container toevoegen
+    orchestrator: Installeer een andere orkestrator
+    kubernetesLink: Installeer Kubernetes
+clusterDashboard:
+  systemProject: Dit is het systeemproject waarin zich alle Kubernetes en {appName} systeem namespaces bevinden. Wijzigingen die aan het systeemproject worden aangebracht kunnen het cluster beschadigen.
+  notActive: Dit cluster is momenteel <b>{state}</b>.
+  notReady: Dit cluster is momenteel <b>{state}</b>; toepassingen die rechtstreeks gebruik maken van deze onderdelen zijn pas beschikbaar als de API gereed is.
+  used: Gebruikt
+metricsAction:
+  description: Vouw uit om live statistieken te bekijken
+  noData: Onvoldoende gegevens voor grafiek
+  sections:
+    workload: Workload statistieken
+  periods:
+    5m: 5 minuten
+    1h: 1 uur
+    6h: 6 uur
+    24h: 24 uur
+    7d: 7 dagen
+    30d: 30 dagen
+metrics:
+  workload-cpu-usage: CPU Gebruik
+  workload-disk-io: Schijf I/O
+  workload-memory-usage-bytes-sum: Geheugengebruik
+  workload-network-io: Netwerk I/O
+  workload-network-packet: Netwerkpakketten
 dnsPage:
+  type:
+    arecord: Externe IP
+    cname: Hostnaam
+    alias: Alias
+    workload: Werk lading
+    selector: Selector
+    clusterIp: Cluster IP
+    unknown: Onbekend
   table:
     target: Doel
+    clusterIpDetail: 'Cluster IP: {ip}'
+cruHpa:
+  status:
+    label: Huidige status
+  metrics:
+    label: Statistieken
+    noMetrics: Geen statistieken
+    addMetricLabel: Metriek toevoegen
+    removeMetricLabel: Metriek verwijderen
+    selector:
+      labels:
+        addSelectorLabel: Label toevoegen
 editDns:
   name:
     placeholder: bijv. myapp
   description:
     placeholder: bijv. huidige versie van MyApp
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 failWhalePage:
   header: Fout
   reloadButton: |
@@ -759,6 +929,9 @@ servicePage:
         placeholder: bijv. website
 verifyResetPasswordPage:
   button: Wachtwoord bijwerken
+##############################
+#Partials
+##############################
 ldap:
   header:
     disabled:
@@ -778,6 +951,9 @@ ldap:
       labelText: Uw gebruikersnaam
     password:
       labelText: Uw wachtwoord
+##############################
+#Components
+##############################
 accordionRow:
   status:
     error: Fout
@@ -841,8 +1017,6 @@ clusterNew:
     masterIpv4CidrBlock:
       label: Master IP reeks
       placeholder: bijv. 10.42.0.0/28
-    useIpAliases:
-      label: Gebruik IP aliassen
     ipPolicySubnetworkName:
       label: Subnetwerk naam
       placeholder: Uw subnetwerk naam
@@ -1031,7 +1205,7 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: 'Yes'
+        default: true
 pageFooter:
   help: 'Hulp & Documentatie'
 telemetryOpt:
@@ -1043,10 +1217,19 @@ viewEditDescription:
       placeholder: bijv. lab
     description:
       placeholder: bijv. Omgeving voor het experimeteren van ontwikkelaars
+##############################
+#Mixins
+##############################
 containerChoices:
   hostGroupWithState: "Host: {name} ({state})"
+##############################
+#Resource Actions
+##############################
 validation:
   required: '"{key}" is vereist'
+##############################
+#Model Properties
+##############################
 model:
   account:
     kind:

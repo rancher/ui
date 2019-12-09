@@ -1,15 +1,22 @@
 ---
 languageName: "فارسی"
 languageContribute: "در ترجمه رنچر کمک کنید!"
+##############################
+#Really generic things used in multiple places (use sparingly)
+##############################
 generic:
   actions: اکشن ها
   activate: قعال سازی
   add: افزودن
+  advanced: پیشرفته
   all: همه
   any: هر
+  application: برنامه‌
   as: به عنوان
+  back: بازگشت
   cancel: لغو
   closeModal: بستن
+  cluster: خوشه
   collapseAll: بستن همه
   comingSoon: به زودی
   command: دستور
@@ -17,6 +24,7 @@ generic:
   containers: کانتینرها
   created: ساخته شد
   createdDate: "ایجاد شد {date}"
+  custom: سفارشی
   customize: شخصی سازی
   default: پیش فرض
   description: توضیح
@@ -27,21 +35,33 @@ generic:
   dockerId: شناسه Docker
   domainName: نام دامنه
   done: انجام شد
+  download: دانلود
   edit: ویرایش
   enable: فعال کردن
   enabled: فعال
+  entrypoint: نقطه ورود
   environment: محیط
   expandAll: بازکردن همه
+  experimental: "(آزمایشی)"
+  from: از
+  false: 'نادرست'
+  generic: 'عمومی'
+  gigabyte: 'گیگابایت'
   hardware: سخت‌افزار
   healthy: سالم
   help: راهنما
+  hostname: نام هاست
+  hours: ساعت
   id: آیدی
   image: تصویر
+  import: وارد کردن
   internal: داخلی
   ipAddress: آدرس آی پی
+  key: کلید
   limit: محدودیت
   limits: محدودیت‌ها
   loading: "در حال بارگزاری..."
+  member: عضو
   mibibyte: 'MiB'
   missing: "*%یافت نشده%*"
   moreActions: اکشن های بیشتر
@@ -51,7 +71,11 @@ generic:
   no: "خیر"
   noRating: بدون امتیاز
   none: هیچ یک
+  owner: مالک
   ports: پورت ها
+  prefix: پیشوند
+  project: پروژه
+  random: تصادفی
   remove: حذف
   role: نقش
   save: ذخیره
@@ -63,6 +87,7 @@ generic:
   select: انتخاب
   service: سرویس
   services: سرویس ها
+  size: حجم
   state: وضعیت
   tags: برچسب‌ها
   test: تست
@@ -71,15 +96,22 @@ generic:
   total: مجموع
   type: نوع
   unknown: ناشناس
+  unknownUser: واکشی اطلاعات کاربر امکان‌پذیر نیست
   upload: بارگذاری
   user: کاربر
   uuid: شناسه منحصر به فرد عمومی
   value: مقدار
   version: نسخه
   yes: "بله"
+  readOnly: فقط خواندنی
 realmNames:
   all: همه
+  usWest: غرب آمریکا
+  usEast: شرق آمریکا
   asia: آسیا
+##############################
+#Routes
+##############################
 accountsPage:
   detail:
     header: مشخصات کاربر
@@ -92,6 +124,7 @@ accountsPage:
       roles:
         title: نقش ها
   index:
+    header: کاربران
     localLink: افزودن کاربر
     table:
       id: آی دی
@@ -102,12 +135,16 @@ accountsPage:
     header: افزودن کاربر
     errors:
       usernameReq: نام کاربری الزامی است.
+      pwReq: کلمه عبور الزامی است.
+      role: کاربران جدید ملزم به داشتن یک نقش هستند. نقشی را از لیست انتخاب کنید.
     form:
       username:
+        labelText: نام کاربری
         placeholder: "مثال. jsmith"
       password:
         labelText: رمز عبور
       name:
+        labelText: نام نمایشی
         placeholder: "مثال. John Smith"
       type:
         labelText: نوع حساب
@@ -117,8 +154,12 @@ accountsPage:
   modal:
     password: تغییر رمز عبور
 appDetailPage:
+  header: "برنامه: {appName}"
   endpoints:
     protocol: پروتکل
+  answers:
+    title: پاسخ‌ها
+    variable: متغیر
   notes:
     title: یادداشت ها
     detail: 'دستورالعمل نحوه استفاده از این برنامه'
@@ -135,16 +176,45 @@ podSecurityPoliciesPage:
     header: خطی مشی
   saveEdit: ویرایش
   saveNew: ایجاد
+  new:
+    errors:
+      nameReq: نام الزامی است.
+    form:
+      name:
+        labelText: نام
 rolesPage:
-  index:
-    table:
-      noData: هنوز نقشی ایجاد نشده است
+  headers:
+    global: سراسری
+    cluster: خوشه‌ها
+  saveEdit: ویرایش
+  saveNew: ایجاد
+  new:
+    errors:
+      nameReq: نام الزامی است.
+    form:
+      locked:
+        disabled: "خیر"
+      allow:
+        create: ساختن
+        delete: پاک کردن
 apiPage:
+  header: API و کلیدها
   table:
     state: وضعیت
     description: توضیح
     created: ساخته شد
 authPage:
+  saml:
+    accessEnabled:
+      header: احراز هویت
+      disable: غیر فعال سازی کنترل دسترسی
+    enabled:
+      authenticated:
+        header:
+          text: احراز هویت
+      groupsField: 'گروه‌ها:'
+      userName: 'نام کاربری:'
+      userId: 'شناسه کاربر:'
   shibboleth:
     enabled:
       authenticated:
@@ -153,6 +223,7 @@ authPage:
       disableAccess:
         header: "محدوده خطر&trade;"
         warning: '<b class="text-danger">هشدار:</b> غیر فعال سازی کنترل دسترسی به هر شهصی که به این صفحه دسترسی یابد کنترل کامل خواهد داد.'
+        confirmDisable: "آیا مطمئن هستید؟  برای تایید عیر فعال سازی دوباره کلیک کنید."
         disable: غیر فعال سازی کنترل دسترسی
       groupsField: 'گروه ها:'
       displayName: 'نام نمایشی:'
@@ -193,11 +264,11 @@ authPage:
       disableAccess:
         header: "محدوده خطر&trade;"
         warning: '<b class="text-danger">هشدار:</b> غیر فعال سازی کنترل دسترسی به هر کاربری در {appName} اجازه می دهد به این صفحه دسترسی داشته باشد.'
+        confirmDisable: "برای غیر فعال سازی کنترل دسترسی دوباره کلیک کنید."
     notAuthenticated:
       header: "1. تنظیم یک برنامه GitHub"
       ul:
         li1:
-          text: 'برای GitHub استاندارد, <a href="https://github.com/settings/developers" target="_blank">کلیک کنید</a>.'
           ul:
             li1: "برای Github Enterprise, وارد حساب کاربری خود شوید. ابتدا روی تنظیمات کلیک کرده, سپس وارد برنامه ها شوید."
         li2:
@@ -205,7 +276,6 @@ authPage:
           ul:
             li1: '<b>نام Application :</b> <span class="text-muted">Anything you like, مثال. My {appName}</span>'
             li2: 'آدرس صفحه اصلی'
-            li3: '<b>توضیحات Application:</b> <span class="text-muted">پر کردن این گزینه دلخواه است</span>'
         li3:
           text: '"ثبت Application" را انتخاب کنید '
       form:
@@ -225,6 +295,7 @@ authPage:
         post: در انتظار پاسخ از GitHub
   azuread:
     enabled:
+      reallyDisable: 'آیا مطمئن هستید؟  برای غیر فعال سازی کنترل دسترسی دوباره کلیک کنید'
       promptDisable: غیر فعال سازی کنترل دسترسی
     configure:
       header: '1. تنظیم Azure AD Account'
@@ -246,6 +317,7 @@ authPage:
       header: 'خطر&trade;'
       warning: '<b class="text-danger">هشدار:</b> غیر فعال سازی کنترل دسترسی دسترسی کامل به {appName} را به هر شخصی که به این صفحه دسترسی پیدا کند می دهد'
       buttonText:
+        disable: 'آیا مطمئن هستید؟  برای غیر فعال سازی کنترل دسترسی دوباره کلیک کنید'
         prompt: غیر فعال سازی کنترل دسترسی
     accessDisabled:
       header: '1. ایجاد کاربر ادمین'
@@ -299,6 +371,9 @@ containersPage:
     sparkPrefixMemory: "حافظه: "
     sparkPrefixNetwork: "شبکه: "
     sparkPrefixStorage: "محل ذخیره: "
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 failWhalePage:
   header: خطا
   reloadButton: |
@@ -333,6 +408,9 @@ loginPage:
     500: "Internal Server Error"
 machinePage:
   inactive: غیر فعال
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 notFoundPage:
   header: "چنین صفحه ای وجود ندارد"
   linkTo: خانه
@@ -381,6 +459,9 @@ waitingPage:
   hosts:
     setup:
       kubernetes: در حال تنظیم Kubernetes
+##############################
+#Partials
+##############################
 ldap:
   header:
     disabled:
@@ -721,7 +802,7 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: 'Yes'
+        default: true
 pageFooter:
   notARelease: (نسخه آزمایشی)
   issues: گزارش مشکل
@@ -786,9 +867,15 @@ waitKubernetes:
   addHost: 'حداقل یک هاست اضافه کنید'
   activateHost: 'در انتظار فعال سازی هاست'
   startServices: 'در حال شروع سرویس ها'
+##############################
+#Mixins
+##############################
 containerChoices:
   hostGroup: "هاست: {name}"
   unknownHost: "هاست: ???"
+##############################
+#Navigation
+##############################
 nav:
   catalog:
     all: همه
@@ -798,6 +885,9 @@ nav:
   user:
     label: "منوی کاربر: {username}"
     logout: خروج
+##############################
+#Resource Actions
+##############################
 action:
   activate: فعال سازی
   clone: همانند سازی
@@ -818,6 +908,9 @@ action:
   viewGraph: مشاهده گراف
   viewInApi: viewGraph in API
   viewInstance: مشاهده Instance
+##############################
+#Model Properties
+##############################
 model:
   account:
     kind:
@@ -841,3 +934,14 @@ model:
       owner: ماکل
       readonly: فقط قابل خواندن
       restricted: دسترسی قطع شده
+volumeSource:
+  rbd:
+    title: Ceph RBD
+  storageos:
+    title: StorageOS
+  customLogPath:
+    mountPath:
+      label: مسیر گزارش‌ها
+    logFormat:
+      label: قالب گزارش
+      useCustomRegex: از یک Regex Fluentd سفارشی استفاده کنید

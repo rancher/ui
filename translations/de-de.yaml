@@ -1,6 +1,9 @@
 ---
 languageName: "Deutsch"
 languageContribute: "Helfen Sie bei der Übersetzung von Rancher"
+##############################
+#Really generic things used in multiple places (use sparingly)
+##############################
 generic:
   actions: Aktionen
   activate: Aktivieren
@@ -49,11 +52,13 @@ generic:
   help: Hilfe
   hostname: Hostname
   hours: Stunden
+  hpa: HPA
   id: Id
   image: Image
   import: Importieren
   internal: Intern
   ipAddress: IP Addresse
+  istioRule: Verkehrsregel
   key: Schlüssel
   limit: Grenze
   limits: Limitierungen
@@ -78,6 +83,7 @@ generic:
   owner: Besitzer
   paste: Einfügen
   pod: pod
+  podRestarts: Pod-Neustarts
   port: Port
   ports: Ports
   prefix: Präfix
@@ -129,6 +135,9 @@ realmNames:
   asia: Asien
   euWest: EU West
   euEast: EU Ost
+##############################
+#Routes
+##############################
 accountsPage:
   detail:
     header: Benutzerdetails
@@ -163,7 +172,6 @@ accountsPage:
       kind: Typ
       username: Lokaler Benutzer
       identity: Identität
-      noData: Noch keine Accounts vorhanden
       noMatch: Keine Benutzer gefunden, die den Suchkriterien entsprechen
       noName: Kein
   new:
@@ -265,7 +273,6 @@ rolesPage:
       created: Erstellungszeit
       enabled: Aktiviert
       name: Name
-      noData: Noch keine Rollen vorhanden
       noMatch: Keine Rollen zur aktuellen Suche gefunden
       subjectKind: Typ
       template: Template
@@ -318,6 +325,7 @@ rolesPage:
         labelText: Erlauben
         resource: Ressource
         addAction: Ressource hinzufügen
+        apiGroups: API-Gruppen
       otherRole:
         labelText: Andere Rollen einschließen
         role: Rolle
@@ -418,6 +426,7 @@ authPage:
       disableAccess:
         header: "Gefahrenzone&trade;"
         warning: '<b class="text-danger">Achtung:</b> Das deaktivieren der Zugriffskontrolle wird jedem, der diese Seite oder API erreicht, volle Kontrolle über {appName} geben.'
+        confirmDisable: "Bist du dir sicher? Klicke noch einmal um die Zugriffskontrolle wirklich zu deaktivieren"
         disable: Zugriffskontrolle deaktivieren
       groupsField: 'Gruppen:'
       displayName: 'Anzeigename:'
@@ -460,12 +469,12 @@ authPage:
       disableAccess:
         header: "Gefahrenzone&trade;"
         warning: '<b class="text-danger">Achtung:</b> Das Deaktiveren der Zugriffskontrolle gibt jedem mit Zugriff auf diese Seite oder die API alle Rechte für {appName}.'
+        confirmDisable: "Sind Sie sicher?  Nochmal klicken um die Zugriffskontrolle zu deaktivieren"
         disable: Deaktivieren des Github-Zugriffs
     notAuthenticated:
       header: "1. Eine GitHub Anwendung einrichten"
       ul:
         li1:
-          text: 'Für das normale GitHub, <a href="https://github.com/settings/developers" target="_blank">hier klicken</a> um die Anwendungseinstellungen in einem neuen Fenster zu öffnen.'
           ul:
             li1: "Für das normale GitHub, melden Sie ich in ihrem Account an und klicken auf 'Einstellungen', dann 'Anwendungen'."
         li2:
@@ -473,7 +482,6 @@ authPage:
           ul:
             li1: '<b>Name der Anwendung:</b> <span class="text-muted">z.B. Meine {appName}</span>'
             li2: 'Homepage URL'
-            li3: '<b>Beschreibung der Anwendung:</b> <span class="text-muted">optional</span>'
             li4: 'Authorisierungs-URL'
         li3:
           text: '"Anwendung registtrieren" anklicken'
@@ -505,6 +513,7 @@ authPage:
         label: "Azure AD ist nicht konfiguriert"
     enabled:
       header: 'Gefahrenzone&trade;'
+      reallyDisable: 'Sind Sie sicher?  Nochmal klicken um die Zugriffskontrolle zu deaktivieren'
       promptDisable: Zugriffskontrolle deaktivieren
       general:
         header: Allgemein
@@ -563,6 +572,7 @@ authPage:
       header: 'Gefahrenzone&trade;'
       warning: '<b class="text-danger">Achtung:</b> Das Deaktiveren der Zugriffskontrolle gibt jedem mit Zugriff auf diese Seite oder die API alle Rechte für {appName}.'
       buttonText:
+        disable: 'Sind Sie sicher?  Nochmal klicken um die Zugriffskontrolle zu deaktivieren'
         prompt: Zugriffskontrolle deaktivieren
     accessDisabled:
       header: '1. Admin Benutzer einrichten'
@@ -595,13 +605,14 @@ backupsPage:
       local: Lokal
     name: Name
     created: Erstellt
-    noData: Es gibt keine etcd Snapshots
 balancerPage:
   noMatch: Keine Balancer gefunden, die den Suchkriterien entsprechen
   noData: Es gibt keine Balancer zum Anzeigen.
   table:
     target: Ziel
 catalogPage:
+  istio:
+    header: Straßenverkehrsordnung
   index:
     header: Katalog
     refreshBtn: Aktualisieren
@@ -633,7 +644,6 @@ cloudCredentialsPage:
     nodeTemplates: Node-Vorlagen verwalten
   index:
     table:
-      noData: Es gibt noch keine Cloud-Anmeldedaten
       noMatch: Keine Ereignisse gefunden, die den Suchkriterien entsprechen
 clusterCatalogPage:
   header: Kataloge
@@ -650,7 +660,7 @@ certificatesPage:
     labelText: Domainname
     single: '<a href="https://{cn}" target="_blank" rel="nofollow noreferrer noopener">{cn} <i class="icon icon-sm icon-external-link"/></a>'
     withSan: |
-
+       
     wildcardSingle: '{cn}'
     wildcardWithSan: |
       {cn} +
@@ -684,7 +694,6 @@ membersPage:
     table:
       name: Name
       created: Erstellungszeit
-      noData: Keine Mitglieder vorhanden
       noMatch: Keine Benutzer gefunden, die den Suchkriterien entsprechen
       userId: Benutzer
       subjectKind: Typ
@@ -693,7 +702,6 @@ namespacesPage:
   header: Namespaces
   addNamespace: Namespace Hinzufügen
   noMatch: Keine Namespaces gefunden, die den Suchkriterien entsprechen.
-  noData: Dieser Cluster hat noch keine Namespaces
   table:
     name:
       label: Namespace
@@ -777,8 +785,6 @@ clustersPage:
     label: Clustername
   provider:
     label: Anbieter
-  version:
-    label: Version
   nodes:
     label: Knoten
   cpu:
@@ -836,7 +842,6 @@ containersPage:
     sparkPrefixMemory: "Hauptspeicher: "
     sparkPrefixNetwork: "Netzwerk: "
     sparkPrefixStorage: "Speicherplatz: "
-    noData: Es sind keine Container zu zeigen.
     noMatch: Keine Container entsprechen der aktuellen Suche.
   welcome:
     container: Sofort loslegen
@@ -874,22 +879,24 @@ metricsAction:
     7d: 7 Tage
     30d: 30 Tage
 metrics:
-  workload-cpu-usage: CPU Auslastung
-  workload-disk-io: Disk I/O
-  workload-memory-usage-bytes-sum: Speicherauslastung
-  workload-network-io: Netzwerk I/O
-  workload-network-packet: Netzwerkpakete
+  container-cpu-usage: CPU Auslastung
+  container-disk-io: Disk I/O
+  container-memory-usage-bytes-sum: Speicherauslastung
+  istio-global-request-volume-top10: Volumen nach Service anfordern
+  istio-global-request-volume: Projektanforderungsvolumen
+  istio-global-success-rate: Projekterfolgsrate
   pod-cpu-usage: CPU Auslastung
   pod-disk-io: Disk I/O
   pod-memory-usage-bytes-sum: Speicherauslastung
   pod-network-io: Netzwerk I/O
   pod-network-packet: Netzwerkpakete
-  container-cpu-usage: CPU Auslastung
-  container-disk-io: Disk I/O
-  container-memory-usage-bytes-sum: Speicherauslastung
+  workload-cpu-usage: CPU Auslastung
+  workload-disk-io: Disk I/O
+  workload-memory-usage-bytes-sum: Speicherauslastung
+  workload-network-io: Netzwerk I/O
+  workload-network-packet: Netzwerkpakete
 dnsPage:
   noMatch: Keine Datensätze stimmen mit der aktuellen Suche überein
-  noData: Es gibt keine DNS-Datensätze zum Anzeigen
   type:
     arecord: Externe IP
     cname: Hostname
@@ -901,6 +908,69 @@ dnsPage:
   table:
     target: Ziel
     clusterIpDetail: 'Cluster-IP: {ip}'
+cruHpa:
+  title:
+    new: Horizontalen Pod Autoscaler hinzufügen
+    edit: Horizontalen Pod-Autoscaler bearbeiten
+  status:
+    label: Aktueller Status
+  name:
+    placeholder: z.B. myscaler
+  description:
+    placeholder: z.B. Mein Skalierer
+  prompt:
+    deployment: Bereitstellung auswählen...
+  minReplicas:
+    placeholder: z.B. 1
+  maxReplicas:
+    placeholder: z.B. 10
+  metrics:
+    label: Metriken
+    noMetrics: Keine Metriken
+    addMetricLabel: Metrik hinzufügen
+    removeMetricLabel: Metrik entfernen
+    selector:
+      labels:
+        addSelectorLabel: Label hinzufügen
+        label: Metriken stimmen mit Labels überein
+      expressions:
+        addSelectorLabel: Ausdruck hinzufügen
+        label: Metriken stimmen mit Ausdrücken überein
+    describedObject:
+      label: Beschriebenes Objekt
+      apiVersion:
+        label: Beschriebene Objekt-API-Version
+        placeholder: z.B. Erweiterungen/v1beta1
+      kind:
+        label: Beschriebene Objektart
+        placeholder: z.B. Ingress
+      name:
+        label: Beschriebener Objektname
+        placeholder: z.B. main-route
+    types:
+      label: Metrikyp
+      object: Objekt
+      pods: Pods
+      resource: Ressource
+      external: Extern
+      warning:
+        cpu: "Die CPU-Reservierung ist in der ausgewählten Bereitstellung nicht festgelegt. HPA kann die Replikatanzahl basierend auf der CPU-Auslastung nicht berechnen."
+    name:
+      placeholder: z.B. Pakete pro Sekunde
+      resources:
+        cpu: CPU
+        memory: Arbeitsspeicher
+    target:
+      label: Zieltyp
+      options:
+        value: Wert
+        averageValue: Durchschnittswert
+        averageUtilization: Durchschnittliche Auslastung
+    value:
+      label: Anzahl
+      placeholder: z.B. 200
+      cpuPlaceholder: z.B. 200m
+      utilizationPlaceholder: z.B. 50
 editDns:
   title:
     new: DNS-Eintrag hinzufügen
@@ -968,6 +1038,7 @@ editDns:
     arecord: Ziel IP hinzufügen
     alias: Ziel hinzufügen
     workload: Ziel-Workload hinzufügen
+    selector: Zielselektor hinzufügen
   placeholder:
     arecord: z. B. 19.82.2.24
     cname: z.B. example.com
@@ -976,6 +1047,8 @@ editDns:
     workload: Wählen Sie einen Workload aus...
   errors:
     targetRequired: 'Eine oder mehrere "Ziel-IP-Adressen" sind erforderlich'
+    selectorRequired: 'Ein oder mehrere "Pod-Selektoren" sind erforderlich'
+    mixedAlias: Ein Alias kann nicht auf eine Mischung aus CNAME und anderen Einträgen zeigen
     multipleCname: Ein Alias ​​kann nicht auf mehr als einen CNAME-Datensatz ausgerichtet sein
 cruPersistentVolumeClaim:
   title:
@@ -1050,14 +1123,102 @@ cruVolume:
     label: Quelle
     title: Ursprungskonfiguration
     prompt: Wählen Sie eine Volumenquelle...
+globalRegistryPage:
+  header: Globale Registry
+  disabled: Registry ist noch nicht aktiviert.
+  confirmDisable: "Sind Sie sicher?  Klicken Sie erneut, um die Globale Registry zu deaktivieren"
+  disable: Registry deaktivieren
+  enableActionLabel: Aktivieren
+  command:
+    title: Docker Befehle
+    detail: Docker Befehle für die Registry
+    dockerPull: Image aus der Registry abrufen
+  setting:
+    adminPassword:
+      label: Administrator Passwort
+  config:
+    header:
+      postgresql: PostgreSQL-Datenbank
+      redis: Redis
+      registryPersistence: Registry
+    persistenceStorageclass:
+      label: Speicherklasse
+    secretKey:
+      description: Der für die Verschlüsselung verwendete Schlüssel. Muss eine Zeichenfolge von 16 Zeichen sein
+    storageType:
+      label: Speicher-Backend-Typ
+    registryExistingClaim:
+      label: Bestehender Anspruch
+      prompt: Bestehenden Anspruch auswählen...
+    registryPVSize:
+      label: Persistente Volumengrösse
+    source:
+      pvc: Verwenden Sie einen vorhandenen persistenten Volumenanspruch
+    storageClass:
+      sizeRequired: '"{component} Persistente Volumengrösse" ist erforderlich'
+    databaseRequestCpu:
+      placeholder: z.B. 1000
+    databaseLimitCpu:
+      label: Datenbank CPU Limit
+      placeholder: z.B. 1000
+    databaseRequestMemory:
+      placeholder: z.B. 1000
+    databaseLimitMemory:
+      label: Datenbank-Speicherlimit
+      placeholder: z.B. 1000
+    redisRequestCpu:
+      placeholder: z.B. 1000
+    redisLimitCpu:
+      placeholder: z.B. 1000
+    redisRequestMemory:
+      placeholder: z.B. 1000
+    redisLimitMemory:
+      placeholder: z.B. 1000
+    redis:
+      external:
+        host:
+          label: Host für Redis
+          placeholder: z.B. 192.168.0.2
+        port:
+          label: Port für Redis
+          placeholder: z.B. 6379
+        coreDatabaseIndex:
+          placeholder: z.B. 0
+        jobserviceDatabaseIndex:
+          placeholder: z.B. 1
+        registryDatabaseIndex:
+          placeholder: z.B. 2
+        password:
+          label: Passwort für Redis
+          placeholder: Ihr Redis-Passwort
+    s3:
+      region:
+        label: S3-Region
+        placeholder: z.B. us-west-2
+      accesskey:
+        label: S3-Zugriffsschlüssel
+    database:
+      external:
+        host:
+          placeholder: z.B. 192.168.0.1
+        port:
+          placeholder: z.B. 5432
+        username:
+          placeholder: z.B. Benutzer
+        password:
+          placeholder: z.B. Passwort
+        coreDatabase:
+          placeholder: z.B. Registry
+        sslmode:
+          label: SSL-Modus für PostgreSQL
+  nodeSelector:
+    addSelectorLabel: Auswahl hinzufügen
 globalDnsPage:
   header: Globale DNS-Einträge
   newDns: DNS-Eintrag hinzufügen
   noDnsMatch: Keine DNS-Einträge stimmen mit der aktuellen Suche überein.
-  noDnsData: Es gibt noch keine globalen DNS-Einträge.
   newProvider: DNS-Anbieter hinzufügen
   noDnsProviderMatch: Kein DNS-Procider stimmt mit der aktuellen Suche überein.
-  noDnsProviderData: Es gibt noch keine globalen DNS-Provider.
   noProjects: Es gibt keine Projekte zur Auswahl
   noApps: Keine zugreifbaren Multi-Cluster-Applikationen
   entriesPage:
@@ -1077,6 +1238,7 @@ globalDnsPage:
       provider: Provider-ID
     config:
       title: DNS-Eintrag konfigurieren
+      detail: Geben Sie Ihre Konfigurationsdetails an, um einen neuen globalen DNS-Eintrag hinzuzufügen
       configType: Löst auf in
       multi: Multi-Cluster-Applikation
       project: Projekte
@@ -1084,6 +1246,7 @@ globalDnsPage:
         label: FQDN
         placeholder: dev.example.com
       multiCluster:
+        label: Multi-Cluster-App-Ziel
         placeholder: Multi-Cluster-Applikation auswählen
         add:
           label: Ziel hinzufügen
@@ -1125,6 +1288,23 @@ globalDnsPage:
       apiKey:
         label: API-Schlüssel
         placeholder: Ihr API-Schlüssel
+      credentialsPath:
+        placeholder: "/.aws"
+      proxySetting:
+        label: Proxy-Einstellungen
+      roleArn:
+        label: Rolle ARN
+      region:
+        label: Region
+        placeholder: us-west-2
+      zone:
+        label: Zone
+        placeholder: Öffentlich
+multiClusterAppsPage:
+  header: Multi-Cluster-Applikationen
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 failWhalePage:
   header: Fehler
   reloadButton: |
@@ -1296,6 +1476,9 @@ loginPage:
   error:
     authFailedCreds: "Anmeldung fehlgeschlagen: Überprüfen Sie die Anmeldeinformationen oder Ihr Konto ist möglicherweise nicht berechtigt, sich anzumelden."
     authFailed: "Anmeldung fehlgeschlagen: Ihr Konto ist möglicherweise nicht berechtigt, sich anzumelden."
+    unknown: "Ein unbekannter Fehler ist beim Anmelden aufgetreten. Bitte kontaktieren Sie Ihren Systemadministrator."
+    invalidSamlAttrs: "Ungültige Saml-Attribute"
+    noResponse: "Keine Antwort erhalten"
   readableProviders:
     ad: Active Directory
     azureAd: Azure AD
@@ -1309,6 +1492,9 @@ machinePage:
   add: Knoten-Treiber hinzufügen
   builtin: Integriert
   url: Adresse
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 notFoundPage:
   header: "Diese Seite existiert nicht!"
   linkTo: Zur Startseite
@@ -1322,8 +1508,6 @@ registriesPage:
         address: Addresse
         username: Benutzername
         created: Erstellt
-      body:
-        noData: "Sie haben noch keine Anmeldeinformationen für die Registry"
   new:
     header: Registry hinzufügen
     form:
@@ -1355,6 +1539,7 @@ servicePage:
     scale: 'Skalieren:'
     image: 'Image:'
     namespace: 'Namensraum:'
+    cronSchedule: Cron-Zeitplan
     created: 'Erstellt:'
     daemonSetScale: '1 pro Knoten'
   serviceType:
@@ -1370,6 +1555,8 @@ servicePage:
       other {Externe IPs:}
       }
     externalHostname: 'Externer Hostname:'
+  selector:
+    label: 'Selektor:'
   containersTab:
     title: 'Container'
     detail: 'Die Container, aus denen dieser Service besteht.'
@@ -1453,7 +1640,7 @@ stackPage:
     detail: 'Load-Balancer-Container, die von diesem Stack getrennt sind'
     status: |
       {count, plural,
-      =0 {Kein Balancer}
+      =0 {Kein Balancer} 
       =1 {# Balancer}
       other {# Balancer}
       }
@@ -1462,7 +1649,7 @@ stackPage:
     detail: 'Load-Balancer, die von diesem Stack getrennt sind'
     status: |
       {count, plural,
-      =0 {Keine Einträge}
+      =0 {Keine Einträge} 
       =1 {# Eintrag}
       other {# Einträge}
       }
@@ -1632,6 +1819,9 @@ notifierPage:
     table:
       created: Erstellt
       noMatch: Keine Übereinstimmung
+##############################
+#Partials
+##############################
 ldap:
   providerName:
     openldap: OpenLDAP
@@ -1711,6 +1901,10 @@ ldap:
         labelText: Objektklasse
       name:
         labelText: Benutzernamens-Attribut
+      search:
+        labelText: Suchattribut
+      searchFilter:
+        labelText: Suchfilter
       searchBase:
         labelText: Benutzersuchbasis
       disabledBitMask:
@@ -1719,12 +1913,18 @@ ldap:
       header: Gruppen
       objectClass:
         labelText: Objektklasse
+      name:
+        labelText: Namensattribut
       search:
         labelText: Suchattribut
+      searchFilter:
+        labelText: Suchfilter
       groupMemberUser:
         placeholder: user Id
       groupDN:
         placeholder: versteckter Name
+      nestedGroup:
+        title: Verschachtelte Gruppenmitgliedschaft
   testAuth:
     header: "3. Authentifizierung testen und aktivieren"
     helpText: "Authentifizierung mit dem {providerName} Zugang überprüfen:"
@@ -1740,6 +1940,9 @@ servicePartial:
     label: Noch keine Container.
     inactive:
       start: Starten
+##############################
+#Components
+##############################
 accordionRow:
   status:
     none: Keine
@@ -1773,9 +1976,11 @@ taintsSection:
 billingInfo:
   header: Zahlungsinformationen
   addNew: Zahlungsmethode hinzufügen
+  card: "{brand}: ...{last}"
   noSub: Sie haben keine aktive Zahlungsmethode
   table:
     title:
+      cardType: "Marke: {brand}"
       last4: "Letzte Vier: {last}"
       exp: "Ablaufdatum: {exp}"
       actions: Aktionen
@@ -1789,10 +1994,16 @@ cloudProvider:
   helpText: |
     Lesen Sie mehr über die <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">Kubernetes Cloud-Anbieter</a>
   warning: Wenn Sie einen Cloud-Provider in Ihrem Cluster konfigurieren, ohne die Voraussetzungen zu konfigurieren, wird Ihr Cluster nicht ordnungsgemäß bereitgestellt. Voraussetzungen für unterstützte Cloud-Anbieter finden Sie in der Dokumentation.
+  azureCloudConfig:
+    vmType:
+      description: "Der Typ der Azure-Knoten. Mögliche Werte sind: vmss und standard"
 catalogSettings:
   header: Kataloge
   notAvailable: "Nicht verfügbar: Es gibt einen benutzerdefinierten Katalog mit der Bezeichnung <code>{name}</code>"
   helpText: Derzeit werden nur Helm-Kataloge unterstützt
+  currentCluster: Cluster
+  currentProject: Projekt
+  globalCatalog: Global
   library:
     label: Bibliothek
     detail: Offizielles Repository für kuratierte Anwendungsvorlagen, die von {appName} verwaltet werden.
@@ -1832,17 +2043,29 @@ catalogSettings:
     url:
       label: URL
     kind:
+      label: Art
       native: Nativ
       helm: Helm
     branch:
       label: Versionszweig
       placeholder: 'z. B. master'
+    private:
+      label: Privaten Katalog verwenden
+    username:
+      label: Benutzername
+      required: '"Benutzername" ist erforderlich'
+      placeholder: Dein Benutzername
+    password:
+      label: Passwort
+      required: '"Passwort" ist erforderlich'
+      placeholder: Ihr Passwort
   errors:
     nameInExists: 'Sie können {key} nicht aktivieren, da bereits ein benutzerdefinierter Katalog mit Name {key} vorhanden ist.'
 clusterRow:
+  noMatch: Keine Umgebungen gefunden, die den Suchkriterien entspechen.
+  noData: Dieser Cluster hat noch keine Umgebungen.
   noHosts: Externer Cluster hat keine Knoten
   noClusterMatch: Keine Cluster entsprechen der aktuellen Suche.
-  noClusterData: Es gibt noch keine Cluster.
   addHost: Knoten hinzufügen
   importCluster: Vorhandenes Kubernetes verwenden
   loginDefault: Anmelden
@@ -1854,13 +2077,15 @@ clusterNew:
   name:
     label: Clustername
     placeholder: z.B. Sandbox
+    required: '"Clustername" ist erforderlich'
   description:
     placeholder: z.B. Cluster für Entwicklungs- und Test-Workloads
   driverLabels:
-    cloud: Bei einem gehosteten Kubernetes-Anbieter
     custom: Aus meinen eigenen bestehenden Knoten
     import: Vorhandenen Cluster importieren
-    infra: Von Knoten eines Infrastrukturanbieters
+    noCloud: Es sind keine Clustertreiber aktiviert.
+    noInfra: Es sind keine Knoten-Treiber aktiviert.
+  externalError: 'Komponente konnte nicht geladen werden. URL überprüfen.'
   members:
     label: Mitgliederrollen
     detail: Legen Sie fest, wer Zugriff auf den Cluster hat und welche Berechtigung er zum Ändern hat.
@@ -1868,11 +2093,9 @@ clusterNew:
     label: Anbieter
     detail: Wählen Sie aus, woher die Knoten für den Cluster kommen sollen
   nodes:
-    title: Knoten
     detail: Passen Sie die zu erstellenden Knoten an
   customize:
     title: Cluster-Optionen
-    detail: Passen Sie den zu erstellenden Cluster an
   psp:
     label: Standard-Pod-Sicherheitsrichtlinie
     prompt: Wählen Sie eine Pod-Sicherheitsrichtlinie aus...
@@ -1884,6 +2107,54 @@ clusterNew:
     access:
       title: Kontozugriff
       detail: Wählen Sie die Region und den API-Schlüssel, der zum Starten von Amazon EKS verwendet werden soll
+  tencenttke:
+    label: Tencent Kubernetes Engine
+    shortLabel: Tencent TKE
+    access:
+      next: "Weiter: Cluster konfigurieren"
+      title: Kontozugriff
+    cluster:
+      title: Cluster-Konfiguration
+      next: "Weiter: Instanztyp wählen"
+    node:
+      title: Instanztyp
+      next: "Weiter: Instanz konfigurieren"
+    instance:
+      title: Instanzkonfiguration
+    subnet:
+      label: Subnetz
+      required: Subnetz ist erforderlich
+    os:
+      label: Betriebssystem
+    rootSize:
+      placeholder: z.B. 25
+    storageType:
+      label: Typ der Datenplatte
+    storageSize:
+      label: Größe der Datenplatte
+      placeholder: z.B. 10
+    bandwidth:
+      label: Bandbreite
+    keyPair:
+      label: Schlüsselpaar
+      required: Schlüsselpaar ist erforderlich
+    region:
+      label: Region
+    secretKey:
+      provided: Bereitgestellt
+    vpc:
+      label: VPC
+      required: VPC ist erforderlich
+    version:
+      label: Kubernetes Version
+    cidr:
+      placeholder: z. B. 172.16.0.0/16
+    zone:
+      label: Verfügbarkeitszone
+      required: Verfügbarkeitszone ist erforderlich
+    instanceType:
+      label: Instanztyp
+      required: Instanztyp ist erforderlich
   azureaks:
     label: Azure-Containerdienst
     shortLabel: Azure AKS
@@ -1892,9 +2163,13 @@ clusterNew:
     access:
       title: Kontozugriff
       help: 'Anweisungen zum Erstellen eines Azure AD Service Principal finden Sie <a href="https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal" target="_blank">hier</a>.'
+    placement:
+      label: Platzierung
     count:
       label: Knotenanzahl
+      placeholder: z.B. 1
     location:
+      label: Ort
       prompt: Wählen Sie einen Ort aus...
     accountAccessSection:
       label: Kontozugriff
@@ -1906,6 +2181,7 @@ clusterNew:
       prompt: Wählen Sie eine Grösse...
     diskSizeGb:
       label: OS-Festplattengrösse
+      placeholder: z.B. 100
     dns:
       label: DNS-Präfix
       placeholder: "z.B. example"
@@ -1923,17 +2199,22 @@ clusterNew:
     admin:
       label: Admin Benutzername
       placeholder: benutzer-1
+    tenant:
+      label: Kunden ID
     image:
       label: Image
     size:
       label: Größe
     dockerPort:
       label: Docker Port
+      placeholder: '2376'
     publishSettingsFile:
       label: Einstellungen veröffentlichen
       placeholder: Ihre Publish Settings-Datei
     environment:
       label: Umgebung
+    resourceGroup:
+      placeholder: 'docker-machine'
     networking:
       label: Netzwerk
       default: Standard
@@ -1945,10 +2226,18 @@ clusterNew:
       serviceCidr:
         label: Kubernetes Service-Adressbereich
         prompt: "10.43.0.0/16"
+      dnsServiceIp:
+        label: Kubernetes DNS-Dienst IP-Adresse
+        placeholder: z. B. 10.0.0.10
+      dockerBridgeCidr:
+        placeholder: z. B. 172.17.0.1/16
     sshUser:
       label: SSH-Benutzer
+      placeholder: usr1
     storageType:
       label: Speichertyp
+    vnet:
+      label: VNet
     subnet:
       label: Subnetz
     subnetPrefix:
@@ -1967,6 +2256,15 @@ clusterNew:
       included:
         parsedDnsServiceIp: 'Die IP-Adresse des Kubernetes DNS-Dienstes muss im angegebenen Adressbereich des Kubernetes-Dienstes liegen.'
         parsedDockerBridgeCidr: 'Die Adresse der Docker Bridge kann sich nicht mit dem ausgewählten virtuellen Netzwerk oder dem Kubernetes-Service-Adressbereich überschneiden'
+  aliyunkcs:
+    clusters:
+      k8s: Kubernetes
+    rootSize:
+      placeholder: z.B. 120
+    storageSize:
+      placeholder: z.B. 120
+    numOfNodes:
+      placeholder: z.B. 3
   googlegke:
     label: Google Kubernetes Engine
     shortLabel: Google GKE
@@ -2102,10 +2400,8 @@ clusterNew:
       linux: Linux
       windows: Windows
   custom:
-    label: Benutzerdefininert
     shortLabel: Benutzerdefininert
   import:
-    label: Importiert
     shortLabel: Importiert
 conditionSections:
   title: Status
@@ -2118,13 +2414,11 @@ resourceEventList:
   title: Ereignisse
   table:
     type: Typ
-    lastUpdate: Geändert
     reason: Grund
     message: Nachricht
   noData: Keine Ereignisse
   noMatch: Keine Ereignisse gefunden, die den Suchkriterien entsprechen
 confirmDelete:
-  titleWithoutResourceType: 'Sind SIe sicher, dass Sie Löschen wollen?'
   environmentNote: 'Hinweis: Alle Ressourcen in diesem Projekt werden dauerhaft entfernt, einschließlich der durch {appName} erstellten Namespaces.'
   clusterNote: 'Hinweis: Zugehörige Ressourcen wie Volumes, Balancer und Netzwerke, die im Cloud-Anbieter erstellt wurden, werden nicht automatisch entfernt.'
   clusterRoleTemplateBindingNote: "Hinweis: Die Projektberechtigungen des Benutzers werden nicht entfernt."
@@ -2507,7 +2801,6 @@ formNodeRequirement:
   noRules: Keine Regeln
   key:
     label: Schlüssel
-    placeholder: z.B. hostname
   values:
     label: Werte
 formIngress:
@@ -2679,27 +2972,6 @@ formGlobalRoles:
     user:
       label: Standardbenutzer
       detail: Standardbenutzer können neue Cluster erstellen und Cluster und Projekte verwalten, auf die sie Zugriff haben.
-    custom:
-      label: Benutzerdefininert
-      detail: Wählen Sie individuelle Berechtigungen für den Benutzer.
-  role:
-    create-clusters:
-      label: Neue Cluster erstellen
-      detail: Erlaubt dem Benutzer, neue Cluster zu erstellen und deren Eigentümer zu werden. Standardbenutzer verfügen standardmäßig über diese Berechtigung.
-    manage-authn:
-      label: Authentifizierung konfigurieren
-      detail: Ermöglicht dem Benutzer das Aktivieren, Konfigurieren und Deaktivieren aller Einstellungen des Authentifizierungsanbieters.
-    manage-catalogs:
-      label: Kataloge konfigurieren
-      detail: Ermöglicht dem Benutzer das Hinzufügen, Bearbeiten und Entfernen von Katalogen
-    manage-clusters:
-      label: Alle Cluster verwalten
-      detail: Ermöglicht dem Benutzer die Verwaltung aller Cluster, einschließlich der Cluster, in denen sie nicht Mitglied sind.
-    manage-roles:
-      label: Rollen verwalten
-    manage-users:
-      label: Benutzer verwalten
-      detail: Ermöglicht dem Benutzer das Erstellen, Entfernen und Festlegen von Kennwörtern für alle Benutzer
 formMembers:
   members:
     user: Benutzer
@@ -2990,10 +3262,8 @@ newCertificate:
     invalidFormat: Der private Schlüssel ist ungültig.
     placeholder: "Den privaten Schlüssel einfügen, in der Regel beginnend mit -----BEGIN RSA PRIVATE KEY-----"
   cert:
-    label: Zertifikat
     required: Zertifikat ist erforderlich.
     invalidFormat: Das Zertifikat ist ungültig.
-    placeholder: "Fügen Sie das Zertifikat und alle erforderlichen Kettenzertifikate ein, beginnend mit ----- BEGIN CERTIFICATE -----"
 modalAboutComponent:
   component: Komponente
   ui: Benutzeroberfläche
@@ -3127,7 +3397,7 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: 'Yes'
+        default: true
   amazonec2:
     portHelp:
       link: Mehr erfahren
@@ -3248,6 +3518,9 @@ waitKubernetes:
   createStack: 'Erstelle Kubernetes System-Stack'
   startServices: 'Starte Services'
   waitApi: 'Warte auf Kubernetes API'
+##############################
+#Navigation
+##############################
 nav:
   srToggleDropdown: Dropdown einblenden
   cluster:
@@ -3267,7 +3540,6 @@ nav:
     registries: Registries
     members: Mitglieder
   admin:
-    accounts: Benutzer
     machines: Knoten
     catalogs: Kataloge
     security:
@@ -3289,6 +3561,9 @@ nav:
     tab: Extras
   project:
     namespaces: Namensräume
+##############################
+#Resource Actions
+##############################
 action:
   activate: Aktivieren
   clone: Klonen
@@ -3313,8 +3588,14 @@ action:
   unmute: Stummschalten aufheben
   viewConfig: Konfiguration betrachten
   viewInApi: In API anzeigen
+##############################
+#Resource Actions
+##############################
 validation:
   required: '"{key}" ist erforderlich'
+##############################
+#Model Properties
+##############################
 model:
   account:
     kind:
@@ -3374,8 +3655,6 @@ storageClass:
     title: Azure-Datei
   gce-pd:
     title: Persistente Festplatte von Google
-  local:
-    title: Lokale Festplatte des Knotens
   longhorn:
     title: Longhorn
   rbd:
@@ -3402,7 +3681,6 @@ volumeSource:
   gce-pd:
     title: Persistente Festplatte von Google
   host-path:
-    title: Lokaler Knotenpfad
     path:
       label: Pfad auf dem Knoten
       placeholder: z.B. /data
@@ -3418,8 +3696,6 @@ volumeSource:
       BlockDevice: Ein vorhandenes blockorientiertes Gerät
   iscsi:
     title: iSCSI-Ziel
-  local:
-    title: Lokale Festplatte des Knotens
   nfs:
     title: NFS-Freigabe
   storageos:
@@ -3435,12 +3711,3 @@ volumeSource:
       useExistingLogFormat: Ein vorhandenes Protokollformat verwenden
 yamlPage:
   errors: Es gibt Fehler in der yaml-Datei.
-rkeConfigComment:
-  ingress: |
-    ""
-    "  # Derzeit wird nur der Nginx-Ingress-Anbieter unterstützt."
-    "  # Um den Ingress-Controller zu deaktivieren, setzen Sie `provider: none`"
-    "  # Um Ingress auf bestimmten Knoten zu aktivieren, verwenden Sie node_selector, z.B.:"
-    "     provider: nginx"
-    "     node_selector:"
-    "       app: ingress"

@@ -1,6 +1,9 @@
 ---
 languageName: "Português"
 languageContribute: "Ajude a traduzir o Rancher"
+##############################
+#Really generic things used in multiple places (use sparingly)
+##############################
 generic:
   actions: Ações
   activate: Ativar
@@ -49,11 +52,13 @@ generic:
   help: Ajuda
   hostname: Nome do servidor
   hours: horas
+  hpa: HPA
   id: Identificador
   image: Imagem
   import: Importar
   internal: Interno
   ipAddress: Endereço de IP
+  istioRule: Regra de Tráfego
   key: Chave
   limit: Limite
   limits: Limites
@@ -130,6 +135,9 @@ realmNames:
   asia: Ásia
   euWest: Oeste da Europa
   euEast: Leste da Europa
+##############################
+#Routes
+##############################
 accountsPage:
   detail:
     header: Detalhes do Usuário
@@ -164,7 +172,6 @@ accountsPage:
       kind: Tipo
       username: Nome de usuário local
       identity: Identidade
-      noData: Ainda não há usuários
       noMatch: Nenhum usuário corresponde à pesquisa atual
       noName: Nenhum
   new:
@@ -266,7 +273,6 @@ rolesPage:
       created: Horário de Criação
       enabled: Ativado
       name: Nome
-      noData: Ainda não existem funções
       noMatch: Nenhuma regra corresponde a pesquisa atual
       subjectKind: Tipo
       template: Modelo
@@ -319,6 +325,7 @@ rolesPage:
         labelText: Permitir
         resource: Recurso
         addAction: Adicionar Recurso
+        apiGroups: Grupos de APIs
       otherRole:
         labelText: Incluir outras funções
         role: Função
@@ -419,6 +426,7 @@ authPage:
       disableAccess:
         header: "Zona perigosa&trade;"
         warning: '<b class="text-danger">Cuidado:</b> Desativar o controle de acesso dará controle total sobre {appName} a qualquer pessoa que possa acessar esta página ou a API.'
+        confirmDisable: "Você tem certeza? Clique novamente para realmente desabilitar o controle de acesso"
         disable: Desativar o controle de acesso
       groupsField: 'Grupos:'
       displayName: 'Exibir Nome:'
@@ -461,12 +469,12 @@ authPage:
       disableAccess:
         header: "Zona Perigosa&trade;"
         warning: '<b class="text-danger">Cuidado:</b> A desativação de controle de acesso dará o controle completo sobre {appName} a qualquer um que pode chegar a esta página ou a API.'
+        confirmDisable: "Você tem certeza?  Clique novamente para realmente desativar o controle de acesso"
         disable: Desabilitar acesso ao GitHub
     notAuthenticated:
       header: "1. Configurar um aplicativo GitHub"
       ul:
         li1:
-          text: 'Para GitHub padrão, <a href="https://github.com/settings/developers" target="_blank">clique aqui</a> para ir as configurações de aplicativos em uma nova janela.'
           ul:
             li1: "Para Github Enterprise, faça login na sua conta.  Clique em Settings e, em seguida, Applications.."
         li2:
@@ -474,7 +482,6 @@ authPage:
           ul:
             li1: '<b>Application name:</b> <span class="text-muted">Qualquer coisa que você goste, p.ex. my {appName}</span>'
             li2: 'URL da Página inicial'
-            li3: '<b>Application description:</b> <span class="text-muted">Qualquer coisa que você gosta, opcional</span>'
             li4: 'URL de retorno de chamada de autorização'
         li3:
           text: 'Clique em "Register Application"'
@@ -506,6 +513,7 @@ authPage:
         label: "O Azure AD não está configurado"
     enabled:
       header: 'Zona Perigosa&trade;'
+      reallyDisable: 'Você tem certeza?  Clique novamente para realmente desativar o controle de acesso'
       promptDisable: Desativar controle de acesso
       general:
         header: Geral
@@ -564,6 +572,7 @@ authPage:
       header: 'Zona Perigosa&trade;'
       warning: '<b class="text-danger">Cuidado:</b> A desativação de controle de acesso dará o controle completo sobre {appName} a qualquer um que pode chegar a esta página ou a API.'
       buttonText:
+        disable: 'Você tem certeza?  Clique novamente para realmente desativar o controle de acesso'
         prompt: Desativar controle de acesso
     accessDisabled:
       header: '1. Configurar um usuário Admin'
@@ -596,13 +605,14 @@ backupsPage:
       local: Local
     name: Nome
     created: Criado
-    noData: Não há snapshots do etcd
 balancerPage:
   noMatch: Nenhum balanciador corresponde à pesquisa atual
   noData: Nenhuma alteração a mostrar.
   table:
     target: Target
 catalogPage:
+  istio:
+    header: Catálogo de Regras de Tráfego
   index:
     header: 'Catálogo:'
     refreshBtn: Atualizar
@@ -634,7 +644,6 @@ cloudCredentialsPage:
     nodeTemplates: Gerenciar modelos de nós
   index:
     table:
-      noData: Ainda não há credenciais na nuvem
       noMatch: Nenhuma credencial de nuvem corresponde à pesquisa atual
 clusterCatalogPage:
   header: Catálogos
@@ -689,7 +698,6 @@ membersPage:
     table:
       name: Nome
       created: Horário de Criação
-      noData: Não há usuários ainda
       noMatch: Nenhum usuário corresponde à pesquisa atual
       userId: Usuário
       subjectKind: Tipo
@@ -698,7 +706,6 @@ namespacesPage:
   header: Espaços de nomes
   addNamespace: Adicionar Espaço De Nomes
   noMatch: Nenhum espaço de nomes corresponde à pesquisa atual.
-  noData: Este cluster não possui namespaces definidos
   table:
     name:
       label: Namespace
@@ -782,8 +789,6 @@ clustersPage:
     label: Nome do Cluster
   provider:
     label: Provedor
-  version:
-    label: Versão
   nodes:
     label: Nós
   cpu:
@@ -841,7 +846,6 @@ containersPage:
     sparkPrefixMemory: "Memória: "
     sparkPrefixNetwork: "Rede: "
     sparkPrefixStorage: "Armazenamento: "
-    noData: Não existem recipientes para mostrar.
     noMatch: Nenhum recipiente corresponde à pesquisa atual.
   welcome:
     container: Começar imediatamente
@@ -879,22 +883,24 @@ metricsAction:
     7d: 7 dias
     30d: 30 dias
 metrics:
-  workload-cpu-usage: Utilização da CPU
-  workload-disk-io: I/O de Disco
-  workload-memory-usage-bytes-sum: Utilização de Memória
-  workload-network-io: I/O de rede
-  workload-network-packet: Pacotes de rede
+  container-cpu-usage: Utilização da CPU
+  container-disk-io: I/O de Disco
+  container-memory-usage-bytes-sum: Utilização de Memória
+  istio-global-request-volume-top10: Pedido de Volume por Serviço
+  istio-global-request-volume: Solicitação de Volume de Projeto
+  istio-global-success-rate: Taxa de sucesso do projeto
   pod-cpu-usage: Utilização da CPU
   pod-disk-io: I/O de disco
   pod-memory-usage-bytes-sum: Utilização de Memória
   pod-network-io: I/O de rede
   pod-network-packet: Pacotes de rede
-  container-cpu-usage: Utilização da CPU
-  container-disk-io: I/O de Disco
-  container-memory-usage-bytes-sum: Utilização de Memória
+  workload-cpu-usage: Utilização da CPU
+  workload-disk-io: I/O de Disco
+  workload-memory-usage-bytes-sum: Utilização de Memória
+  workload-network-io: I/O de rede
+  workload-network-packet: Pacotes de rede
 dnsPage:
   noMatch: Nenhum registro corresponde à pesquisa atual
-  noData: Não há registros DNS para mostrar
   type:
     arecord: IP externo
     cname: Nome do servidor
@@ -906,6 +912,74 @@ dnsPage:
   table:
     target: Alvo
     clusterIpDetail: 'IP de Cluster: {ip}'
+cruHpa:
+  title:
+    new: Adicionar Escala Horizontal Automática de Pod
+    edit: Editar Escala Horizontal Automática de Pod
+    view: "Escala Horizontal Automática de Pod: {name}"
+  status:
+    label: Status Atual
+  name:
+    placeholder: ex. minhaescalaautomatica
+  description:
+    placeholder: ex. Minha Escala Automática
+  prompt:
+    deployment: Selecione uma Implantação...
+  minReplicas:
+    placeholder: ex. 1
+  maxReplicas:
+    placeholder: ex. 10
+  metrics:
+    label: Métricas
+    noMetrics: Sem Métricas
+    addMetricLabel: Adicionar Métrica
+    removeMetricLabel: Remover Métrica
+    selector:
+      labels:
+        addSelectorLabel: Adicionar Etiqueta
+        label: Etiquetas de Métricas Correspondentes
+      expressions:
+        addSelectorLabel: Adicionar Expressão
+        label: Expressão de Métricas Correspondentes
+    describedObject:
+      label: Objeto Descrito
+      apiVersion:
+        label: Versão Descrita da API do Objeto
+        placeholder: ex. extensao/v1beta1
+      kind:
+        label: Tipo de Objeto Descrito
+        placeholder: ex. Ingressão
+      name:
+        label: Nome do Objeto Descrito
+        placeholder: ex. rota-principal
+    types:
+      label: Tipo de Métricas
+      object: Objeto
+      pods: Pods
+      resource: Recurso
+      external: Externo
+      warning:
+        custom: "Para usar métricas HPA personalizadas, você precisa implantar o servidor de métricas personalizadas, como o adaptador prometheus."
+        external: "Para usar métricas HPA externas, você precisa implantar o servidor de métricas externas, como o adaptador prometheus."
+        cpu: "Reserva de CPU não está configurado para a implantação selecionada. HPA não conseguirá a contagem de replica baseada na utilização de CPU."
+        memory: "Reserva de memória não está configurada na implantação selecionada. HPA não conseguirá calcular a contagem de replicas baseada na utilização de memória."
+    name:
+      label: Nome da Métrica
+      placeholder: ex. pacotes-por-segundo
+      resources:
+        cpu: CPU
+        memory: Memória
+    target:
+      label: Tipo de Alvo
+      options:
+        value: Valor
+        averageValue: Valor Médio
+        averageUtilization: Utilização Média
+    value:
+      label: Quantidade
+      placeholder: ex. 200
+      cpuPlaceholder: ex. 200m
+      utilizationPlaceholder: ex. 50
 editDns:
   title:
     new: Adicionar registro
@@ -940,6 +1014,7 @@ editDns:
     readyOnly: Apenas endpoints ativos
     all: Todos os endpoints
   sessionAffinityConfig:
+    label: Tempo de Sessão
     placeholder: ex. 10800
   kind:
     label: Como
@@ -1007,6 +1082,9 @@ cruPersistentVolumeClaim:
   storageClass:
     label: Classe de Armazenamento
     prompt: Use a classe padrão
+  secretRequired:
+    name: Nome do Segredo
+    namespace: Espaço de Nomes do Segredo
 cruVolumeClaimTemplate:
   title:
     define: Definir Modelo de Requisição de Volume
@@ -1036,6 +1114,8 @@ cruVolumeClaimTemplate:
 cruPrivateRegistry:
   title:
     label: Registry Prívado
+    detail: Configure um registro privado padrão para este grupo. Quando habilitado, todas as imagens necessárias para o provisionamento deste cluster e a inicialização de complementos do sistem serão extraídas deste registro.
+  noData: Este grupo não tem um registro privado definido
   defaultError: Você deve designar um registry privado como o padrão
   add:
     label: Adicionar registry privado
@@ -1046,6 +1126,8 @@ cruPrivateRegistry:
       label: Senha
     url:
       label: URL
+    default:
+      label: Registro Padrão do Sistema
 cruVolume:
   sourcePrompt: Escolha uma fonte de volume acima...
   title:
@@ -1059,21 +1141,189 @@ cruVolume:
     title: Configuração De Origem
     detail: Configurar opções para a origem de volume selecionada
     prompt: Escolha uma fonte de volume...
+globalRegistryPage:
+  header: Registro Global
+  enabled: Registro habilitado. Clique <a href="{url}/registry" target="_blank" rel="nofollow noopener noreferrer">aqui</a> para abrir a Harbor Ui em uma nova tab.
+  disabled: O Registro ainda não está habilitado.
+  notReady: Instalando o registro no projeto do sistema do grupo local...
+  confirmDisable: "Você tem certeza? Clique novamente para desabilitar o Registro Global"
+  disable: Desabilitar Registro
+  enableActionLabel: Habilitar
+  command:
+    title: Comandos Docker
+    detail: Comandos Docker para o Registro
+    dockerLogin: Inicia a sessão no Registro
+    dockerPull: Puxe uma imagem do registro
+    dockerTag: Marque uma imagem para o registro
+    dockerPush: Envie uma imagem para o registro
+  setting:
+    adminPassword:
+      label: Senha de Admin
+      placeholder: Senha de Admin do Harbor
+      helpText: "Se você estiver usando uma RVP com dados Harbor, a senha não será afetada."
+  config:
+    header:
+      postgresql: Bando de Dados PostgreSQL
+      redis: Redis
+      registryPersistence: Registro
+      notary: Notary
+      clair: Clair
+    persistenceStorageclass:
+      label: Classe de Armazenamento
+    clairEnabled:
+      label: Habilitar Clair
+    notaryEnabled:
+      label: Habilitar Notary
+    secretKey:
+      label: Chave de Criptografia para Harbor
+      description: A chave usada para criptografia. Precisa ser uma string de 16 caracteres
+      error: '"A Chave de Criptografia para Harbor" precisa ser uma string de 16 caracteres.'
+    storageType:
+      label: Tipo de Armazemento de Plano de Fundo
+    databaseType:
+      label: Tipo de Configuração de Bando de Dados
+    redisType:
+      label: Tipo de Configuração Redis
+    registryExistingClaim:
+      label: Reivindicação Existente
+      prompt: Selecione uma Reivindicação Existente...
+    registryPVSize:
+      label: Tamanho do Volume Persistente
+    source:
+      pvc: Use uma reivindicação de volume persistente existente
+    storageClass:
+      emptyError: 'Pelo menos uma classe de armazenamento padrão é necessária no cluster "local"'
+      sizeRequired: '"{component} Tamanho do Volume Persistente" é obrigatório'
+    databaseRequestCpu:
+      label: Requisição de CPU do Banco de Dados
+      placeholder: ex. 1000
+    databaseLimitCpu:
+      label: Limite de CPU do Banco de Dados
+      placeholder: ex. 1000
+    databaseRequestMemory:
+      label: Requisição de Memória do Banco de Dados
+      placeholder: ex. 1000
+    databaseLimitMemory:
+      label: Limite de Memória do Banco de Dados
+      placeholder: ex. 1000
+    redisRequestCpu:
+      label: Requisição de CPU para Redis
+      placeholder: ex. 1000
+    redisLimitCpu:
+      label: Limite de CPU para Redis
+      placeholder: ex. 1000
+    redisRequestMemory:
+      label: Requisição de Memória para Redis
+      placeholder: ex. 1000
+    redisLimitMemory:
+      label: Limite de Memória para Redis
+      placeholder: ex. 1000
+    redis:
+      external:
+        host:
+          label: Servidor para Redis
+          placeholder: ex. 192.168.0.2
+        port:
+          label: Porta para Redis
+          placeholder: ex. 6379
+        coreDatabaseIndex:
+          label: Índice Principal do Banco de Dados
+          placeholder: ex. 0
+        jobserviceDatabaseIndex:
+          label: Índice de Serviços do Banco de Dados
+          placeholder: ex. 1
+        registryDatabaseIndex:
+          label: Índice de Registro do Banco de Dados
+          placeholder: ex. 2
+        password:
+          label: Senha para Redis
+          placeholder: Sua senha do Redis
+    s3:
+      region:
+        label: Região S3
+        placeholder: ex. br-sul-1
+      bucket:
+        label: Nome do Balde S3
+        placeholder: Seu Nome de Balde
+      accesskey:
+        label: Chave de Acesso S3
+        placeholder: Sua Chave de acesso S3
+      secretkey:
+        label: Chave Segredo S3
+        placeholder: Sua Chave Segredo S3
+      regionendpoint:
+        label: Ponto de Extremidade de Região S3
+        placeholder: ex. s3.br-sul-2.amazonaws.com
+    database:
+      external:
+        host:
+          label: Servidor para PostgreSQL
+          placeholder: ex. 192.168.0.1
+        port:
+          label: Porta para PostgreSQL
+          placeholder: ex. 5432
+        username:
+          label: Usuário para PostgreSQL
+          placeholder: ex. usuário
+        password:
+          label: Senha para PostgreSQL
+          placeholder: ex. senha
+        coreDatabase:
+          label: Banco de dados principal
+          placeholder: 'ex: registro'
+        clairDatabase:
+          label: Banco de dados do Clair
+          placeholder: ex. clair
+        notaryServerDatabase:
+          label: Banco de dados do Notary Server
+          placeholder: 'ex: servidor_notary'
+        notarySignerDatabase:
+          label: Banco de dados do Notary Signer
+          placeholder: 'ex: signer_notary'
+        sslmode:
+          label: Modo SSL para PostgreSQL
+      existingClaim:
+        label: Requisição existente para o PostgreSQL
+    exposeIngressHost:
+      error: '"{hostName}" é um nome de host. Requer nome de domínio para expose.ingress.host'
+  globalRegistryEnabled:
+    error: Erro ao salvar o registry global ativado
+  insufficientSize:
+    total:
+      cpu: Por favor, verifique se você tem pelo menos {minCpu} milli CPUs disponíveis para {action} registro.
+      memory: Por favor, verifique se você tem pelo menos {minMemory} MiB de memória disponível para {action} registro.
+      all: Por favor, verifique se você tem pelo menos {minCpu} milli CPUs e {minMemory} MiB de memória disponíveis para {action} registro.
+    workload:
+      cpu: Certifique-se de ter pelo menos um nó com {cpu} mili CPUs disponíveis para habilitar a carga de trabalho {component}.
+      memory: Certifique-se de ter pelo menos um nó com {memory} MiB de memória disponível para habilitar a carga trabalho {component}.
+      all: Certifique-se de ter pelo menos um nó com {cpu} mili CPUs e {memory} MiB de memória disponível para habilitar a carga trabalho {component}.
+    selectors:
+      cpu: Certifique-se de ter pelo menos um nó com {cpu} mili CPUs disponíveis para habilitar a carga de trabalho {component}.
+      memory: Certifique-se de ter pelo menos um nó com {memory} MiB de memória disponível para habilitar a carga trabalho {component}.
+      all: Certifique-se de ter pelo menos um nó com {cpu} mili CPUs e {memory} MiB de memória disponível para habilitar a carga trabalho {component}.
+  nodeSelector:
+    addSelectorLabel: Adicionar Seletor
 globalDnsPage:
   header: Entradas de DNS globais
   newDns: Adicionar entrada de DNS
   noDnsMatch: Nenhuma entrada de DNS corresponde à pesquisa atual.
-  noDnsData: Ainda não há entradas DNS globais.
   newProvider: Adicionar provedor de DNS
   noDnsProviderMatch: Nenhuma provedor de DNS corresponde à pesquisa atual.
-  noDnsProviderData: Ainda não há provedores de DNS globais.
   noProjects: Não existem projetos para selecionar
+  noApps: Nenhum aplicativo de cluster múltiplo acessível
   noProviders: Nenhum provedor acessível
   entriesPage:
+    header:
+      new: Adicionar entrada de DNS global
+      edit: Editar entrada de DNS global
+    options:
+      title: Opções de Entrada
+      detail: Personalizar opções para a entrada DNS
     access:
       noAccessMulti: Você não tem acesso ao app de destino
       noAccessProvider: Você não tem acesso ao provedor
       noAccessProject: Você não tem acesso ao projeto alvo
+    projectHelp: "Para finalizar a configuração dessa entrada DNS Global, você deve adicionar a seguinte anotação ( <code>rancher.io/globalDNS.hostname</code> ) na entrada no seu aplicativo ou no seu projeto. O valor desta anotação deve ser o nome do host usado nas regras de roteamento de sua entrada e corresponder ao FQDN dessa entrada de DNS global."
     table:
       name: Nome
       fqdn: FQDN
@@ -1099,6 +1349,9 @@ globalDnsPage:
         label: DNS TTL
   providersPage:
     title: Provedores de DNS Globais
+    header:
+      new: Adicionar provedor de DNS Global
+      edit: Editar provedor de DNS Global
     options:
       title: Opções de provedor
       detail: Personalizar opções para o provedor de DNS
@@ -1125,6 +1378,23 @@ globalDnsPage:
       apiKey:
         label: Chave de API
         placeholder: Sua chave de API
+      credentialsPath:
+        placeholder: "/.aws"
+      proxySetting:
+        label: Configurações de Proxy
+      region:
+        label: Região
+        placeholder: us-west-2
+      zone:
+        label: Zona
+        placeholder: pública
+multiClusterAppsPage:
+  header: Multi-Cluster Apps
+  error:
+    appData: Erro ao carregar dados globais do app
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 failWhalePage:
   header: Erro
   reloadButton: |
@@ -1313,6 +1583,9 @@ loginPage:
   error:
     authFailedCreds: "Iniciar sessão falhou: verificação de credenciais, ou a sua conta não pode ser autorizados a iniciar."
     authFailed: "Iniciar sessão falhou: sua conta não pode ser autorizados a iniciar."
+    unknown: "Ocorreu um erro desconhecido ao tentar efetuar login. Entre em contato com o administrador do sistema."
+    invalidSamlAttrs: "Atributos saml inválidos"
+    noResponse: "Nenhuma resposta recebida"
   readableProviders:
     ad: AD Microsoft
     azureAd: AD do Azure
@@ -1326,6 +1599,9 @@ machinePage:
   add: Adicionar Driver de Nó
   builtin: Embutido
   url: Localização
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
 notFoundPage:
   header: "A página que você estava procurando não existe!"
   linkTo: Ir para Página Inicial
@@ -1339,8 +1615,6 @@ registriesPage:
         address: Endereço
         username: Nome de usuário
         created: Criado
-      body:
-        noData: "Você não tem nenhuma credencial de registro ainda"
   new:
     header: Adicionar Registro
     form:
@@ -1380,6 +1654,7 @@ servicePage:
     scale: 'Escala:'
     image: 'Imagem:'
     namespace: 'Espaços de nomes:'
+    cronSchedule: Agendamento Do Cron
     created: 'Criado:'
     daemonSetScale: '1 por nó'
     currentScale: 'Escala Pronta: {count}'
@@ -1636,14 +1911,19 @@ notifierPage:
       label: Endereço de entrega padrão
       helpText: Ao configurar um alerta, o destinatário pode ser substituído.
     defaultRecipientPlaceholder: ex. admin@exemplo.com
+    tls: Usar TLS
   pagerduty:
     serviceKey:
       label: Chave de integração padrão
       helpText: Ao configurar um alerta, a chave de integração pode ser substituída.
     serviceKeyPlaceholder: Sua chave de integração do PagerDuty
+    helpText: |
+      Veja como <a href="https://www.pagerduty.com/docs/guides/prometheus-integration-guide/" target="_blank" rel="nofollow noopener noreferrer">criar uma Chave de Integração</a> para PagerDuty.
   wechat:
     recipientType:
+      label: Tipo de Destinatário
       tag: Tag
+      party: Festa
       user: Usuário
     secret:
       label: Segredo da Aplicação
@@ -1663,12 +1943,18 @@ notifierPage:
   testAction:
     testing: TESTANDO
     testOk: Configurações validadas.
+    testFailed: Algo não está bem certo. Verifique suas entradas.
     test: TESTE
   clone: Clonar
   index:
+    addActionLabel: Adicionar Notificador
     table:
       created: Criado
+      noData: Não há notificadores definidos
       noMatch: Sem correspondência
+##############################
+#Partials
+##############################
 ldap:
   providerName:
     openldap: OpenLDAP
@@ -1677,6 +1963,10 @@ ldap:
     saveLabels:
       openldap: Autenticar com OpenLDAP
       ad: Autenticar com o Active Directory
+      freeipa: Autenticar com FreeIPA
+  header:
+    disabled:
+      label: "{providerName} não está configurado"
   accessEnabled:
     header: Autenticação
     subtext: "Para alterar a configuração do servidor, desativar o controle de acesso abaixo e, em seguida, configurá-lo novamente."
@@ -1712,10 +2002,15 @@ ldap:
     port:
       labelText: Porta
       checkbox: TLS
+    userSearchBase:
+      labelText: Base de pesquisa do usuário
+      placeholder: "ex: ou=users,dc=mycompany,dc=com"
     defaultDomain:
       helpText: "Este domínio será usado se um usuário fizer logon sem especificar um."
       labelText: Domínio de logon padrão*
       placeholder: "p.ex. minhaempresa"
+    serviceAccountDistinguishedName:
+      labelText: Conta De Serviço De Nome Distinto
   customizeSchema:
     header: "2. Personalizar Esquema"
     helpText: "Se o seu esquema não coincide com o formato padrão do ActiveDirectory, você pode personalizá-lo aqui."
@@ -1760,6 +2055,9 @@ servicePartial:
     label: Sem contêineres ainda..
     inactive:
       start: Iniciar
+##############################
+#Components
+##############################
 accordionRow:
   status:
     none: Nenhum
@@ -1791,6 +2089,8 @@ taintsSection:
   effect: Efeito
 billingInfo:
   header: Informações de cobrança
+  addNew: Adicionar método de pagamento
+  card: "{brand}: ...{last}"
   noSub: Você não tem um método de pagamento ativo
   table:
     title:
@@ -1800,6 +2100,15 @@ cloudProvider:
   amazon: Amazon
   azure: Azure
   name: Nome do provedor de nuvem
+  custom:
+    notInList: 'Se o seu provedor de nuvem não estiver listado, use a opção <b>Personalizado</b>.'
+    helpText: 'Edite o arquivo YAML para adicionar outros <a href="http://rancher.com/docs/rke/v0.1.x/en/config-options/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">provedores de nuvem</a>'
+  helpText: |
+    Leia mais sobre os <a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">provedores de nuvem Kubernetes</a>
+  warning: Configurar um provedor de nuvem em seu cluster sem configurar os pré-requisitos fará com que seu cluster não seja provisionado corretamente. Os pré-requisitos necessários para os provedores de nuvem suportados podem ser encontrados na documentação.
+  azureCloudConfig:
+    cloudProviderRateLimit:
+      description: "Ativar limite de taxa"
 catalogSettings:
   header: Catálogos
   currentCluster: Cluster
@@ -1822,8 +2131,11 @@ catalogSettings:
   more:
     header: Mais
     addActionLabel: Adicionar Catálogo
+    addHeader: Adicionar Catálogo
+    editHeader: Editar Catálogo
     name:
       label: Nome
+      placeholder: p.ex. meucatalogo
     url:
       label: URL do catálogo
     kind:
@@ -1841,14 +2153,17 @@ catalogSettings:
       required: '"Senha" é obrigatória'
       placeholder: Sua Senha
 clusterRow:
+  addHost: Adicionar nós
+  importCluster: Usar Kubernetes Existente
   loginDefault: Login
 clusterNew:
+  name:
+    label: Nome do Cluster
+    required: '"Nome do cluster" é obrigatório'
+  driverLabels:
+    import: Importar um Cluster Existente
   config:
     label: Provedor
-  nodes:
-    title: Nós
-  security:
-    title: Segurança
   amazoneks:
     shortLabel: Amazon EKS
   tencenttke:
@@ -1865,6 +2180,8 @@ clusterNew:
       label: Região
     vpc:
       label: VPC
+    version:
+      label: Versão do Kubernetes
     zone:
       label: Zona de Disponibilidade
       required: A zona de disponibilidade é obrigatória
@@ -1873,15 +2190,23 @@ clusterNew:
       required: Tipo de Instância é obrigatório
   azureaks:
     shortLabel: Azure AKS
+    location:
+      label: Localização
     subscriptionId:
       label: ID de Inscrição
     machineType:
       label: Tamanho da VM
       prompt: Escolha um tamanho...
+    diskSizeGb:
+      label: Tamanho do disco do SO
     dns:
       label: Prefixo DNS
+    ssh:
+      label: Chave pública SSH
     security:
       label: Segurança
+    kubernetesVersion:
+      label: Versão do Kubernetes
     image:
       label: Imagem
     size:
@@ -1940,12 +2265,19 @@ clusterNew:
       label: Zona
     project:
       label: Projeto
+    clusterIpv4Cidr:
+      placeholder: ex. 10.42.0.0/16
     enablePrivateNodes:
       label: Cluster Privado
+    locations:
+      label: Zonas Adicionais
     imageType:
       UBUNTU: Ubuntu
     network:
       label: Rede
+    diskType:
+      label: Tipo de disco raiz
+      pd-ssd: Disco persistente SSD
     userInfo:
       label: Informações do usuário
     taints:
@@ -1975,7 +2307,6 @@ clusterNew:
       password:
         label: Senha
 confirmDelete:
-  titleWithoutResourceType: 'Tem certeza de que deseja excluir'
   protip: 'Dica: Mantenha a chave {key} enquanto clicar Delete para ignorar essa confirmação.'
   confirmAction: Excluir
   cancelAction: Cancelar
@@ -2062,6 +2393,11 @@ editStack:
     placeholder: p.ex. myapp
   description:
     label: Descrição
+editUser:
+  form:
+    password:
+      mustChangePassword:
+        new: Peça ao usuário para alterar sua senha no primeiro login
 formatIp:
   noIp: Nenhum
 formCommand:
@@ -2175,6 +2511,10 @@ formUserLabels:
     label: Valor
     placeholder: p.ex. bar
   protip: "Dica: Colar uma ou mais linhas de pares chave=valor em qualquer campo de chave para a fácil entrada em massa."
+formUpgrade:
+  strategy:
+    startFirst: 'Rolling: inicie novos pods, em seguida, pare os antigos'
+    stopFirst: 'Rolling: pare pods antigos, em seguida, inicie novos'
 formValueArray:
   addActionLabel: Adicionar Valor
   valueLabel: Valor
@@ -2237,11 +2577,24 @@ modalEditDriver:
     link: Ver <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> para mais informações.
   checksum:
     help: "Opcional: Verifique se o driver baixado corresponde ao checksum esperada."
+modalEditPassword:
+  firstLogin:
+    title: Bem-vindo à {appName}
+    help: A primeira ordem do dia é definir uma senha forte para o usuário <code>admin</code> padrão.
+    actionButton: Avançar
+  mode:
+    generate: 'Use uma nova senha gerada aleatoriamente:'
+    manual: 'Defina uma senha específica para usar:'
+modalFeedback:
+  header: Bem-vindo à {appName}!
 modalProcessError:
   header: Informação de Exceção
   cause: "Causa:"
   none: N/D
   close: Fechar
+modalWelcome:
+  header: Bem-vindo à {appName}!
+  closeModal: Entendi
 newCatalog:
   catalog: "Catálogo:"
   category: "Categoria:"
@@ -2271,7 +2624,29 @@ nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
-        default: 'Yes'
+        default: true
+  amazonec2:
+    securityGroup:
+      title: 3. Grupos de Segurança
+    portHelp:
+      link: Saiba Mais
+  exoscale:
+    securityGroupSection: Grupo de Segurança
+    securityGroup:
+      label: Grupo de Segurança
+    portHelp:
+      link: Saiba Mais
+  aliyunecs:
+    securitySection:
+      label: Segurança
+  zstack:
+    portHelp:
+      link: Saiba Mais
+orchestrationWelcome:
+  simple:
+    title: Simples
+  enhanced:
+    title: Aprimorado com Kubernetes
 pageFooter:
   notARelease: (Não é uma Release)
   help: 'Ajuda'
@@ -2299,8 +2674,20 @@ schedulingRuleRow:
   theHost: O host
   haveA: tem um
   of: de
+serverUrl:
+  header:
+    detail: "Qual a URL deve ser usada para esta instalação {appName}? Todos os nós em seus clusters precisarão ser capazes de chegar a este endereço."
+  button:
+    save: Salvar URL
+telemetryOpt:
+  subtext: |
+    Rancher Labs gostaria de coletar informações anônimas sobre a configuração da sua instalação para ajudar a fazer {appName} melhor.<br/>Seus dados não serão compartilhados com mais ninguém e nenhum nome ou endereço específico dos recursos serão coletados.
+  learnMore:
+    label: Saiba Mais
+  label: Permitir a coleta de estatísticas anônimas
 tooltipLink:
   list: Lista
+  composeYaml: Compor YAML
 tooltipWarning:
   notConfigured: Controle de Acesso Não Configurado
   dismiss: Dispensar
@@ -2316,6 +2703,9 @@ vmConsole:
   footerActions:
     buttonSend: Enviar Ctrl-Alt-Delete
     buttonCancel: Fechar
+##############################
+#Navigation
+##############################
 nav:
   srToggleDropdown: Alternar Dropdown
   catalog:
@@ -2326,6 +2716,9 @@ nav:
     certificates: Certificados
     registries: Registros
   admin:
+    catalogs: Catálogos
+    security:
+      tab: Segurança
     settings:
       tab: Configurações
       auth: Controle de Acesso
@@ -2335,6 +2728,19 @@ nav:
     logout: Sair
   userPreferences:
     link: "Preferências"
+  api:
+    link: "API & Chaves"
+  settings:
+    tab: Configurações
+  tools:
+    alerts: Alertas
+    catalogs: Catálogos
+    monitoring: Monitoramento
+    notifiers: Notificadores
+    tab: Ferramentas
+##############################
+#Resource Actions
+##############################
 action:
   activate: Ativar
   clone: Clonar
@@ -2344,6 +2750,7 @@ action:
   execute: Executar Shell
   exportConfig: Configuração de Exportação
   logs: Exibir Logs
+  nodeConfig: Baixar Chaves
   remove: Excluir
   restart: Reiniciar
   retry: Tente novamente
@@ -2353,6 +2760,9 @@ action:
   viewConfig: Exibir Configuração
   viewGraph: Exibir Gráfico
   viewInApi: Exibir na API
+##############################
+#Model Properties
+##############################
 model:
   identity:
     displayType:
