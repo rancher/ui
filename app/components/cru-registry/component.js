@@ -5,20 +5,20 @@ import OptionallyNamespaced from 'shared/mixins/optionally-namespaced';
 import layout from './template';
 import  { PRESETS_BY_NAME } from  'ui/models/dockercredential';
 import { inject as service } from '@ember/service'
+import { isEmpty } from '@ember/utils';
 
 export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
-  globalStore: service(),
+  globalStore:  service(),
+  clusterStore: service(),
+  scopeService: service('scope'),
 
   layout,
 
-  model: null,
-
-  titleKey: 'cruRegistry.title',
-
-  scope:     'project',
-  namespace: null,
-  asArray:   null,
-
+  model:          null,
+  titleKey:       'cruRegistry.title',
+  scope:          'project',
+  namespace:      null,
+  asArray:        null,
   projectType:    'dockerCredential',
   namespacedType: 'namespacedDockerCredential',
 
@@ -100,7 +100,7 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
 
     const errors = get(this, 'errors') || [];
 
-    if ( get(this, 'scope') !== 'project' ) {
+    if ( get(this, 'scope') === 'namespace' && isEmpty(get(this, 'primaryResource.namespaceId')) ) {
       errors.pushObjects(get(this, 'namespaceErrors') || []);
     }
     set(this, 'errors', errors);
@@ -109,10 +109,17 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   },
 
   doSave() {
-    let self = this;
-    let sup = self._super;
+    let self                       = this;
+    let sup                        = self._super;
+    const currentProjectsNamespace = get(this, 'clusterStore').all('namespace').findBy('projectId', get(this, 'scopeService.currentProject.id'));
 
-    return this.namespacePromise().then(() => sup.apply(self, arguments));
+    if (isEmpty(currentProjectsNamespace)) {
+      return this.namespacePromise().then(() => sup.apply(self, arguments));
+    } else {
+      set(this, 'namespace', currentProjectsNamespace);
+
+      return sup.apply(self, arguments);
+    }
   },
 
   doneSaving() {
