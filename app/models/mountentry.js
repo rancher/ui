@@ -29,10 +29,10 @@ export default Resource.extend({
 
     switch (permission) {
     case 'ro':
-      out = intl.findTranslationByKey('formVolumeRow.opts.ro');
+      out = intl.t('formVolumeRow.opts.ro');
       break;
     case 'rw':
-      out = intl.findTranslationByKey('formVolumeRow.opts.rw');
+      out = intl.t('formVolumeRow.opts.rw');
       break;
     default:
       out = permission;

@@ -278,7 +278,7 @@ export default Component.extend(NewOrEdit, {
     let principal = get(this, 'principal');
 
     if ( !principal ) {
-      errors.push(this.get('intl').findTranslationByKey('rolesPage.new.errors.memberReq'));
+      errors.push(this.get('intl').t('rolesPage.new.errors.memberReq'));
       set(this, 'errors', errors);
 
       return false;
