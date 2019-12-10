@@ -34,8 +34,12 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     }
   }),
 
-  pods: computed('namespace.pods.@each.workloadId', 'workloads.@each.workloadLabels', function() {
+  pods: computed('namespace.pods.@each.{workloadId,state}', 'workloads.@each.workloadLabels', function() {
     return (get(this, 'namespace.pods') || []).filter((item) => {
+      if ( item.state === 'removed' ) {
+        return false;
+      }
+
       if ( item['labels'] ) {
         const inApp = item['labels']['io.cattle.field/appId'] === get(this, 'name');
 
