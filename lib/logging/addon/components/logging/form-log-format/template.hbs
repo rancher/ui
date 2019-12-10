@@ -1,46 +1,64 @@
-<main class="row mt-30">
-<h2 class="mt-0">{{t "loggingPage.additional.header"}}</h2>
-<hr/>
-<div class="col span-5">
-<section class="additional-logging-configuration-content">
-    <label>{{t "loggingPage.additional.fields.header"}}</label>
-    <div class="mb-30">
-      <p class="text-info text-small">{{t "loggingPage.additional.fields.helpText"}}</p>
-      {{form-key-value
+<div class="row mt-30">
+  <h2 class="mt-0">
+    {{t "loggingPage.additional.header"}}
+  </h2>
+
+  <hr/>
+
+  <div class="col span-5">
+    <section class="additional-logging-configuration-content">
+      <label>{{t "loggingPage.additional.fields.header"}}</label>
+      <div class="mb-30">
+        <p class="text-info text-small">{{t "loggingPage.additional.fields.helpText"}}</p>
+        {{form-key-value
           addActionLabel="loggingPage.tags.addActionLabel"
           initialMap=model.outputTags
           changed=(action (mut model.outputTags))
-      }}
-    </div>
-    {{#if (not-eq targetType "customTarget")}}
-      <div class="row mb-30">
-        <div class="col">
-          <label class="acc-label">{{t "loggingPage.additional.flushInterval.label"}}</label>
-          <div class="input-group">
-            {{input-integer
+        }}
+      </div>
+      {{#if (not-eq targetType "customTarget")}}
+        <div class="row mb-30">
+          <div class="col">
+            <label class="acc-label">{{t "loggingPage.additional.flushInterval.label"}}</label>
+            <div class="input-group">
+              {{input-integer
                 min=1
                 value=model.outputFlushInterval
                 class="form-control"
                 placeholder=(t "loggingPage.additional.flushInterval.placeholder")
                 aria-describedby="basic-addon2"
-            }}
-            <span class="input-group-addon bg-default" id="basic-addon2">{{t "loggingPage.additional.flushInterval.sec"}}</span>
+              }}
+              <span class="input-group-addon bg-default" id="basic-addon2">{{t "loggingPage.additional.flushInterval.sec"}}</span>
+            </div>
+            <p class="text-info text-small mb-0">{{t "loggingPage.additional.flushInterval.helpText"}}</p>
           </div>
-          <p class="text-info text-small mb-0">{{t "loggingPage.additional.flushInterval.helpText"}}</p>
         </div>
-      </div>
-    {{/if}}
+      {{/if}}
 
-    {{#if (eq pageScope "cluster")}}
+      {{#if (eq pageScope "cluster")}}
+        <div class="row">
+          {{input
+            type="checkbox"
+            classNames="form-control"
+            checked=model.includeSystemComponent
+          }}
+          {{t "loggingPage.additional.includeSystemComponent.label"}}
+        </div>
+      {{/if}}
+
       <div class="row">
-        {{input type="checkbox" classNames="form-control" checked=model.includeSystemComponent}}
-        {{t "loggingPage.additional.includeSystemComponent.label"}}
+        {{input
+          type="checkbox"
+          classNames="form-control"
+          checked=model.enableJSONParsing
+        }}
+        {{t "loggingPage.additional.jsonParsing.label"}}
       </div>
-    {{/if}}
-  </section>
-</div>
 
-<div class="col span-7 logging-format">
+    </section>
+  </div>
+
+  <div class="col span-7 logging-format">
     {{logging/code-block code=logPreview language="json"}}
+  </div>
 </div>
-</main>
