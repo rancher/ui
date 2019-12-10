@@ -131,18 +131,22 @@
                 {{t "nodeDriver.amazoneks.role.radio.default"}}
               </label>
               <label>
-                {{radio-button selection=serviceRoleMode value="custom"}}
+                {{radio-button
+                  selection=serviceRoleMode
+                  value="custom"
+                  disabled=editing
+                }}
                 {{t "nodeDriver.amazoneks.role.radio.custom"}}
               </label>
             </div>
             {{#unless (eq serviceRoleMode "default")}}
-              {{new-select
-                classNames="form-control"
-                value=selectedServiceRole
-                content=serviceRoles
-                optionValuePath="RoleName"
-                optionLabelPath="RoleName"
-              }}
+              <NewSelect
+                class="form-control"
+                @value={{ selectedServiceRole }}
+                @content={{ serviceRoles }}
+                @optionValuePath="RoleName"
+                @optionLabelPath="RoleName"
+              />
             {{/unless}}
           {{else}}
             <div>
@@ -220,35 +224,35 @@
             {{t "nodeDriver.amazoneks.vpc.title"}}
           </label>
           {{#if (or (eq step 3) (eq step 4))}}
-            <div class="radio">
-              <label>
-                {{radio-button
-                  selection=vpcSubnetMode
-                  value="default"
-                  disabled=(or editing (eq config.associateWorkerNodePublicIp false))
-                }}
-                {{t "nodeDriver.amazoneks.vpc.radio.default"}}
-              </label>
-            </div>
-            <div class="radio">
-              <label>
-                {{radio-button
-                  selection=vpcSubnetMode
-                  value="custom"
-                  disabled=(eq config.associateWorkerNodePublicIp false)
-                }}
-                {{t "nodeDriver.amazoneks.vpc.radio.custom"}}
-              </label>
-            </div>
-            {{#unless (eq vpcSubnetMode "default")}}
-              {{new-select
-                classNames="form-control"
-                value=config.virtualNetwork
-                content=filteredVpcs
-                optionValuePath="id"
-                optionLabelPath="label"
-              }}
-            {{/unless}}
+              <div class="radio">
+                <label>
+                  {{radio-button
+                    selection=vpcSubnetMode
+                    value="default"
+                    disabled=(or editing (eq config.associateWorkerNodePublicIp false))
+                  }}
+                  {{t "nodeDriver.amazoneks.vpc.radio.default"}}
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  {{radio-button
+                    selection=vpcSubnetMode
+                    value="custom"
+                    disabled=(or editing (eq config.associateWorkerNodePublicIp false))
+                  }}
+                  {{t "nodeDriver.amazoneks.vpc.radio.custom"}}
+                </label>
+              </div>
+              {{#unless (eq vpcSubnetMode "default")}}
+                <NewSelect
+                  class="form-control"
+                  @value={{config.virtualNetwork}}
+                  @content={{filteredVpcs}}
+                  @optionValuePath="id"
+                  @optionLabelPath="label"
+                />
+              {{/unless}}
           {{else}}
             {{#if (eq vpcSubnetMode "default")}}
               <div>
