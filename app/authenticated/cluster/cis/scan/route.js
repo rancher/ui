@@ -1,10 +1,11 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import { get } from '@ember/object';
+import { get, } from '@ember/object';
 import { hash } from 'rsvp';
 
 export default Route.extend({
-  globalStore: service(),
+  globalStore:        service(),
+  securityScanConfig: service(),
 
   model() {
     const clusterScans = get(this, 'globalStore').findAll('clusterScan');
@@ -16,7 +17,8 @@ export default Route.extend({
         const reportPromises = scans.map((scan) => scan.loadReport('report'));
 
         return await Promise.all(reportPromises);
-      })()
+      })(),
+      configMaps: get(this, 'securityScanConfig.asyncConfigMap')
     });
   },
 });

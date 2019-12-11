@@ -4,8 +4,10 @@ import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default Controller.extend({
-  scope:        service(),
-  modalService: service('modal'),
+  scope:              service(),
+  modalService:       service('modal'),
+  securityScanConfig: service(),
+
   tableHeaders: [
     {
       name:           'state',
@@ -52,6 +54,7 @@ export default Controller.extend({
   isRKE:   computed.alias('scope.currentCluster.isRKE'),
   actions: {
     runScan() {
+      this.securityScanConfig.validateSecurityScanConfig();
       get(this, 'scope.currentCluster').doAction('runSecurityScan', {
         failuresOnly: false,
         skip:         []

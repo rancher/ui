@@ -4,8 +4,9 @@ import { get } from '@ember/object';
 import { hash } from 'rsvp';
 
 export default Route.extend({
-  globalStore: service(),
-  scope:       service(),
+  globalStore:        service(),
+  scope:              service(),
+  securityScanConfig: service(),
   model(params) {
     const scan = get(this, 'globalStore').find('clusterScan', params.scan_id);
 
@@ -16,7 +17,7 @@ export default Route.extend({
         return (await scan).loadReport('report');
       })(),
       nodes:      get(this, 'scope.currentCluster.nodes'),
-      configMaps: get(this, 'scope.currentCluster.systemProject').followLink('configMaps')
+      configMaps: get(this, 'securityScanConfig.asyncConfigMap')
     });
   }
 });
