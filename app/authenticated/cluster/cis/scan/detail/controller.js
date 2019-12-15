@@ -84,7 +84,7 @@ export default Controller.extend({
       }), {}));
       const checkNodes = test.nodes || [];
       const nodes = uniqueNodeNames.map((nodeName) => ({
-        state: this.getNodeState(test, nodeName, checkNodes),
+        state:  this.getNodeState(test, nodeName, checkNodes),
         nodeId: get(this, 'model.nodes').findBy('nodeName', nodeName).id,
         name:   nodeName
       }));

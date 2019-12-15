@@ -12,8 +12,9 @@ export default Route.extend({
     const report = (async() => {
       return (await scan).loadReport('report');
     })();
-    const configMaps = (async () => {
+    const configMaps = (async() => {
       this.securityScanConfig.setReport(await report);
+
       return get(this, 'securityScanConfig.asyncConfigMap');
     })();
 
@@ -21,7 +22,7 @@ export default Route.extend({
       clusterScans: get(this, 'globalStore').findAll('clusterScan'),
       scan,
       report,
-      nodes:      get(this, 'scope.currentCluster.nodes'),
+      nodes:        get(this, 'scope.currentCluster.nodes'),
       configMaps,
     });
   }
