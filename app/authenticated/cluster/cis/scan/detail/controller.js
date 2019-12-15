@@ -48,7 +48,7 @@ export default Controller.extend({
       this.securityScanConfig.validateSecurityScanConfig();
       await get(this, 'scope.currentCluster').doAction('runSecurityScan', {
         failuresOnly: false,
-        skip:         []
+        skip:         null
       });
       get(this, 'router').replaceWith('authenticated.cluster.cis/scan');
     },
