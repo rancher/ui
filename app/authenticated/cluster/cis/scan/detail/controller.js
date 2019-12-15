@@ -82,8 +82,9 @@ export default Controller.extend({
         ...agg,
         [nodeName]: true
       }), {}));
+      const checkNodes = test.nodes || [];
       const nodes = uniqueNodeNames.map((nodeName) => ({
-        state,
+        state: this.getNodeState(test, nodeName, checkNodes),
         nodeId: get(this, 'model.nodes').findBy('nodeName', nodeName).id,
         name:   nodeName
       }));
@@ -158,6 +159,31 @@ export default Controller.extend({
     default:
       return 'Fail';
     }
+  },
+
+  /**
+   * Per the API.
+   * When check state is pass Pass.
+   * When check state is fail Fail.
+   * When check state is skip Skip.
+   * When check state is mixed fail if nodeName is in checkNodes otherwise pass
+   */
+  getNodeState(check, nodeName, checkNodes) {
+    if (check.state === 'pass') {
+      return 'Pass';
+    }
+
+    if (check.state === 'fail') {
+      return 'Fail';
+    }
+
+    if (check.state === 'skip') {
+      return 'Skipped';
+    }
+
+    return checkNodes.includes(nodeName)
+      ? 'Fail'
+      : 'Pass';
   }
 
 });
