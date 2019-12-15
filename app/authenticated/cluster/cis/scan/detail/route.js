@@ -9,15 +9,21 @@ export default Route.extend({
   securityScanConfig: service(),
   model(params) {
     const scan = get(this, 'globalStore').find('clusterScan', params.scan_id);
+    const report = (async() => {
+      return (await scan).loadReport('report');
+    })();
+    const configMaps = (async() => {
+      this.securityScanConfig.setReport(await report);
+
+      return get(this, 'securityScanConfig.asyncConfigMap');
+    })();
 
     return hash({
       clusterScans: get(this, 'globalStore').findAll('clusterScan'),
       scan,
-      report:       (async() => {
-        return (await scan).loadReport('report');
-      })(),
-      nodes:      get(this, 'scope.currentCluster.nodes'),
-      configMaps: get(this, 'securityScanConfig.asyncConfigMap')
+      report,
+      nodes:        get(this, 'scope.currentCluster.nodes'),
+      configMaps,
     });
   }
 });
