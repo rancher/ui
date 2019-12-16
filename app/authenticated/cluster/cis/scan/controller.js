@@ -54,7 +54,6 @@ export default Controller.extend({
   isRKE:   computed.alias('scope.currentCluster.isRKE'),
   actions: {
     runScan() {
-      this.securityScanConfig.validateSecurityScanConfig();
       get(this, 'scope.currentCluster').doAction('runSecurityScan', {
         failuresOnly: false,
         skip:         null
