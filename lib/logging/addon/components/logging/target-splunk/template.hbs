@@ -1,7 +1,7 @@
 <h2 class="mt-30">
   {{t "loggingPage.splunk.header"}}
   <span class="text-info text-small">
-  {{t "loggingPage.splunk.helpText" htmlSafe=true}}
+    {{t "loggingPage.splunk.helpText" htmlSafe=true}}
   </span>
 </h2>
 <hr/>
@@ -9,11 +9,11 @@
   <div class="mb-30">
     <label class="acc-label" for="">{{t "loggingPage.endpoint"}}{{field-required}}</label>
     {{input
-        type="text"
-        value=config.endpoint
-        classNames="form-control"
-        placeholder=(t "loggingPage.splunk.endpoint.placeholder")
-        id="splunk-endpoint"
+      type="text"
+      value=config.endpoint
+      classNames="form-control"
+      placeholder=(t "loggingPage.splunk.endpoint.placeholder")
+      id="splunk-endpoint"
     }}
   </div>
 
@@ -21,10 +21,10 @@
     <div class="col span-12 mt-0 pt-0">
       <label class="acc-label" for="">{{t "loggingPage.splunk.token"}}{{field-required}}</label>
       {{input
-          type="text"
-          value=config.token
-          classNames="form-control"
-          placeholder=(t "loggingPage.splunk.tokenPlaceholder")
+        type="text"
+        value=config.token
+        classNames="form-control"
+        placeholder=(t "loggingPage.splunk.tokenPlaceholder")
       }}
       <p class="text-info text-small">
         {{t "loggingPage.splunk.tokenHelpText" htmlSafe=true}}
@@ -35,10 +35,10 @@
     <div class="col span-6 mt-0 pt-0">
       <label class="acc-label" for="">{{t "loggingPage.splunk.source"}}</label>
       {{input
-          type="text"
-          value=config.source
-          classNames="form-control"
-          placeholder=(t "loggingPage.splunk.sourcePlaceholder")
+        type="text"
+        value=config.source
+        classNames="form-control"
+        placeholder=(t "loggingPage.splunk.sourcePlaceholder")
       }}
       <p class="text-info text-small">
         {{t "loggingPage.splunk.sourceHelpText" htmlSafe=true}}
@@ -47,10 +47,10 @@
     <div class="col span-6 mt-0 pt-0">
       <label class="acc-label" for="">{{t "loggingPage.splunk.index"}}</label>
       {{input
-          type="text"
-          value=config.index
-          classNames="form-control"
-          placeholder=(t "loggingPage.splunk.indexPlaceholder")
+        type="text"
+        value=config.index
+        classNames="form-control"
+        placeholder=(t "loggingPage.splunk.indexPlaceholder")
       }}
       <p class="text-info text-small">
         {{t "loggingPage.splunk.indexHelpText" htmlSafe=true}}
@@ -60,16 +60,17 @@
 </section>
 
 {{logging/form-log-ssl
-    config=config
-    targetType=targetType
-    disabled=(not enableSSLConfig)
+  config=config
+  targetType=targetType
+  disabled=(not enableSSLConfig)
 }}
 
 {{logging/form-log-format
-    logPreview=logPreview
-    model=model
+  logPreview=logPreview
+  model=model
+  loggingModel=parentModel
 }}
 {{!--
-  {{#advanced-section advanced=showAdvanced}}
+{{#advanced-section advanced=showAdvanced}}
   {{logging/form-log-docker model=model parentModel=parentModel}}
-  {{/advanced-section}} --}}
+    {{/advanced-section}} --}}
