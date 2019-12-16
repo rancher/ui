@@ -21,6 +21,7 @@ registerProvisioner('portworx-volume', 'kubernetes.io/portworx-volume', true, fa
 registerProvisioner('scaleio',        'kubernetes.io/scaleio',         true, false);
 registerProvisioner('storageos',      'kubernetes.io/storageos',       true, false);
 registerProvisioner('longhorn',      'rancher.io/longhorn',       true, true);
+registerProvisioner('local-storage',  'kubernetes.io/no-provisioner',  true, false);
 
 export function registerProvisioner(name, provisioner, component, supported) {
   if ( component === true ) {

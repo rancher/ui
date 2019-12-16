@@ -7,6 +7,7 @@ export default Route.extend({
       provisioner:          'kubernetes.io/aws-ebs',
       reclaimPolicy:        'Delete',
       allowVolumeExpansion: false,
+      volumeBindingMode:    'Immediate',
     });
   },
 });

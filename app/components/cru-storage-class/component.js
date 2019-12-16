@@ -1,11 +1,15 @@
 import Component from '@ember/component';
 import ViewNewEdit from 'shared/mixins/view-new-edit';
 import { inject as service } from '@ember/service';
-import { get, set, computed } from '@ember/object';
+import { get, set, computed, observer } from '@ember/object';
 import layout from './template';
 import { getProvisioners } from 'ui/models/storageclass';
 import ChildHook from 'shared/mixins/child-hook';
 import C from 'ui/utils/constants';
+
+const WAIT_FOR_FIRST_CONSUMER = 'WaitForFirstConsumer';
+const IMMEDIATE = 'Immediate';
+const LOCAL_STORAGE = 'kubernetes.io/no-provisioner';
 
 export default Component.extend(ViewNewEdit, ChildHook, {
   intl:        service(),
@@ -29,6 +33,14 @@ export default Component.extend(ViewNewEdit, ChildHook, {
       set(this, 'primaryResource.mountOptions', ary);
     },
   },
+
+  provisionerChanged: observer('primaryResource.provisioner', function() {
+    const provisioner = get(this, 'primaryResource.provisioner');
+
+    if ( this.isNew ) {
+      set(this, 'primaryResource.volumeBindingMode', provisioner === LOCAL_STORAGE ? WAIT_FOR_FIRST_CONSUMER : IMMEDIATE);
+    }
+  }),
 
   paramsComponent: computed('primaryResource.provisioner', function() {
     const provisioner = get(this, 'primaryResource.provisioner');
