@@ -1,5 +1,12 @@
 <section class="header clearfix">
   <div class="right-buttons">
+    <button
+      {{action "importYaml"}}
+      class="btn btn-sm bg-default mr-10"
+      disabled={{rbac-prevents resource="persistentvolume" scope="cluster" permission="create"}}
+    >
+      {{t "nav.containers.importCompose"}}
+    </button>
     {{#link-to "authenticated.cluster.storage.persistent-volumes.new" class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="persistentvolume" scope="cluster" permission="create")}}
       {{t 'persistentVolumePage.addActionLabel'}}
     {{/link-to}}
