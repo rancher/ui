@@ -50,7 +50,15 @@
     {{#if (eq kind "row")}}
       <tr>
         <td data-title="{{t 'formSources.type.label'}}:" class="force-wrap">{{source.source}}</td>
-        <td data-title="{{t 'formSources.source.label'}}:" class="force-wrap">{{source.sourceName}}</td>
+        <td data-title="{{t 'formSources.source.label'}}:" class="force-wrap">
+          {{#if (eq source.source "configMap")}}
+            {{#link-to-external "authenticated.project.config-maps.detail" (concat namespace.id ":" source.sourceName)}}
+              {{source.sourceName}}
+            {{/link-to-external}}
+          {{else}}
+            {{source.sourceName}}
+          {{/if}}
+        </td>
         <td data-title="{{t 'formSources.prefixOrKey.label'}}:" class="force-wrap">
           {{#if source.sourceKey}}
             {{source.sourceKey}}
