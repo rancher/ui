@@ -34,63 +34,63 @@
   </div>
   <hr/>
   <section class="mb-30">
-  {{#if (eq brokerType "zookeeper")}}
-    <div>
-      <label class="acc-label" for="">
-        {{t "loggingPage.endpoint"}}
-        {{field-required}}
-      </label>
-      {{input
-        type="text"
-        value=config.zookeeperEndpoint
-        classNames="form-control"
-        placeholder=(t "loggingPage.kafka.endpoint.zookeeper.placeholder")
-        id="kafka-endpoint"
-      }}
-    </div>
-    <p class="text-info text-small mb-0">
-      {{t "loggingPage.kafka.zookeeperHelpText"}}
-    </p>
-  {{else}}
-    {{#each brokerEndpoints as |item idx|}}
-      <div class="row">
-        <div class="col span-11">
-          <label class="acc-label" for="">
-            {{t "loggingPage.endpoint"}}
-            {{#if (eq idx 0)}}
-              {{field-required}}
-            {{/if}}
-          </label>
-          {{input
-            type="text"
-            value=item.endpoint
-            classNames="form-control"
-            placeholder=(t "loggingPage.kafka.endpoint.broker.placeholder")
-          }}
-        </div>
-        <div class="col span-1" style="padding-top: 29px">
-          <button class="btn bg-primary icon-btn {{if canRemove "" "disabled"}}" {{action "remove" item}}>
-            <span class="darken">
-              <i class="icon icon-minus"></i>
-            </span>
-          </button>
-        </div>
+    {{#if (eq brokerType "zookeeper")}}
+      <div>
+        <label class="acc-label" for="">
+          {{t "loggingPage.endpoint"}}
+          {{field-required}}
+        </label>
+        {{input
+          type="text"
+          value=config.zookeeperEndpoint
+          classNames="form-control"
+          placeholder=(t "loggingPage.kafka.endpoint.zookeeper.placeholder")
+          id="kafka-endpoint"
+        }}
       </div>
-    {{/each}}
-    <p class="text-info text-small mb-0">
-      {{t "loggingPage.kafka.brokerHelpText"}}
-    </p>
-    <div class="mt-20">
-      <button class="btn bg-link icon-btn p-0" {{action "add"}}>
-        <span class="darken">
-          <i class="icon icon-plus text-small"/>
-        </span>
-        <span>
-          {{t "loggingPage.kafka.addEndpoint"}}
-        </span>
-      </button>
-    </div>
-  {{/if}}
+      <p class="text-info text-small mb-0">
+        {{t "loggingPage.kafka.zookeeperHelpText"}}
+      </p>
+    {{else}}
+      {{#each brokerEndpoints as |item idx|}}
+        <div class="row">
+          <div class="col span-11">
+            <label class="acc-label" for="">
+              {{t "loggingPage.endpoint"}}
+              {{#if (eq idx 0)}}
+                {{field-required}}
+              {{/if}}
+            </label>
+            {{input
+              type="text"
+              value=item.endpoint
+              classNames="form-control"
+              placeholder=(t "loggingPage.kafka.endpoint.broker.placeholder")
+            }}
+          </div>
+          <div class="col span-1" style="padding-top: 29px">
+            <button class="btn bg-primary icon-btn {{if canRemove "" "disabled"}}" {{action "remove" item}}>
+              <span class="darken">
+                <i class="icon icon-minus"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+      {{/each}}
+      <p class="text-info text-small mb-0">
+        {{t "loggingPage.kafka.brokerHelpText"}}
+      </p>
+      <div class="mt-20">
+        <button class="btn bg-link icon-btn p-0" {{action "add"}}>
+          <span class="darken">
+            <i class="icon icon-plus text-small"/>
+          </span>
+          <span>
+            {{t "loggingPage.kafka.addEndpoint"}}
+          </span>
+        </button>
+      </div>
+    {{/if}}
   </section>
   <hr/>
   <div class="row">
@@ -126,8 +126,9 @@
 {{logging/form-log-format
   logPreview=logPreview
   model=model
+  loggingModel=parentModel
 }}
 {{!--
-  {{#advanced-section advanced=showAdvanced}}
-  {{logging/form-log-docker model=model parentModel=parentModel}}
-  {{/advanced-section}} --}}
+{{#advanced-section advanced=showAdvanced}}
+{{logging/form-log-docker model=model parentModel=parentModel}}
+{{/advanced-section}} --}}
