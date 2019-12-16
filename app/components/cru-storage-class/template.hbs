@@ -168,6 +168,38 @@
         }}
       </div>
     </div>
+
+    <div class="row">
+      <div class="col span-12">
+        <label class="acc-label">
+          {{t "cruStorageClass.volumeBindingMode.label"}}
+        </label>
+        {{#if isView}}
+          <div>
+            {{primaryResource.volumeBindingMode}}
+          </div>
+        {{else}}
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=primaryResource.volumeBindingMode
+                value="Immediate"
+              }}
+              {{t "cruStorageClass.volumeBindingMode.immediate"}}
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=primaryResource.volumeBindingMode
+                value="WaitForFirstConsumer"
+              }}
+              {{t "cruStorageClass.volumeBindingMode.waitForFirstConsumer"}}
+            </label>
+          </div>
+        {{/if}}
+      </div>
+    </div>
   {{/accordion-list-item}}
 
   {{#if isView}}
