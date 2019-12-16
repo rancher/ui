@@ -15,6 +15,7 @@ export default Route.extend(Preload, {
   scope:        service(),
   globalStore:  service(),
   clusterStore: service(),
+  modalService: service('modal'),
 
   model(params, transition) {
     return get(this, 'globalStore').find('cluster', params.cluster_id)
@@ -56,6 +57,13 @@ export default Route.extend(Preload, {
     becameReady() {
       get(this, 'clusterStore').reset();
       this.refresh();
+    },
+
+    importYaml() {
+      this.modalService.toggleModal('modal-import', {
+        escToClose:  true,
+        clusterOnly: true,
+      });
     },
   },
 
