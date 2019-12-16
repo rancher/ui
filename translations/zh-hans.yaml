@@ -1043,6 +1043,9 @@ cruPersistentVolumeClaim:
   storageClass:
     label: 存储类(Storage Class)
     prompt: 使用默认storage class
+  secretRequired:
+    name: Secret名称
+    namespace: Secret命名空间
 
 cruVolumeClaimTemplate:
   title:
@@ -1781,6 +1784,9 @@ notifierPage:
     agentPlaceholder: '例如: 1000003'
     corpPlaceholder: '例如: wwc0cc3d58f9b021b6'
     defaultRecipientPlaceholder: '例如: 2'
+  proxyUrl:
+    label: Proxy URL
+    placeholder: '例如: http://my-proxy/'
 
   webhook:
     url: URL
@@ -2511,6 +2517,8 @@ clusterNew:
     nodeCount:
       label: 主机数量
       prompt: 选择类型...
+      required: 需要节点计数
+      outsideError: "节点池中指定的节点数超出了指定的自动缩放限制"
     diskSizeGb:
       label: 根磁盘大小
     masterVersion:
@@ -2838,6 +2846,9 @@ clusterNew:
         endpoint:
           label: S3 Region Endpoint
           placeholder: "s3.us-west-2.amazonaws.com"
+        folder:
+          label: S3目录
+          placeholder: '例如: cluster-backup'
         accessKey:
           label: Access Key
           placeholder: Your AWS access key
@@ -2845,6 +2856,9 @@ clusterNew:
           label: Secret Key
           placeholder: Your AWS secret key
           provided: Provided
+        customCa:
+          label: 自定义CA证书
+          placeholder: "粘贴证书和所有中间链证书，以-----BEGIN CERTIFICATE-----开始"
       location:
         label: Etcd备份存储
         s3:
@@ -3382,6 +3396,14 @@ cruPersistentVolume:
     volumeID:
       label: 卷 ID
       placeholder: "例如: vol"
+    secretRef:
+      name:
+        label: Secret Name
+        placeholder: "e.g. abc"
+      namespace:
+        label: Secret Namespace
+        placeholder: "e.g. default"
+      label: Secret Name
   photonPersistentDisk:
     fsType:
       label: 文件系统类型
@@ -5546,6 +5568,7 @@ modalEditPassword:
   mode:
     generate: '使用新的随机生成的密码: '
     manual: '设置特定的密码来使用: '
+  deleteTokens: 删除所有现有的API密钥
 
 modalFeedback:
   header: "欢迎使用{appName}!"
@@ -5628,6 +5651,9 @@ modalRotateCertificates:
   dropdownLabel: 服务
   select:
     all: 选择服务...
+  expiring:
+    until: '{ cert } (expires { expiresIn })'
+    from: '{ cert } (expired { expiresIn })'
 
 modalRollbackService:
   title: '回滚"{instanceName}"'
@@ -6009,6 +6035,9 @@ nodeDriver:
     kubernetesVersion:
       label: Kubernetes版本
       placeholder: 选择要安装的Kubernetes版本
+    keyPairs:
+      label: SSH Key
+      prompt: 没有选择
     role:
       label: 服务角色
       noneSelected: "Rancher创建角色"
@@ -6922,6 +6951,10 @@ tooltipLink:
 tooltipWarning:
   notConfigured: 未设置访问控制
   dismiss: 取消
+
+tooltipExpire:
+  label: '此集群证书即将到期或已过期。'
+  link: '立即轮换证书'
 
 upgradeBtn:
   version:
