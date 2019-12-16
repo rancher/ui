@@ -1,66 +1,66 @@
-<h2 class="mt-30">{{t 'loggingPage.elasticsearch.header'}}</h2>
+<h2 class="mt-30">{{t "loggingPage.elasticsearch.header"}}</h2>
 <hr/>
 <div class="box">
   <section class="mb-30">
     <div>
-      <label class="acc-label" for="">{{t 'loggingPage.endpoint'}}{{field-required}}</label>
+      <label class="acc-label" for="">{{t "loggingPage.endpoint"}}{{field-required}}</label>
       {{input
-          type="text"
-          value=config.endpoint
-          classNames="form-control"
-          placeholder=(t 'loggingPage.endpointPlaceholder')
-          id="elasticsearch-endpoint"
-          focus-out=(action "alertMessage")
+        type="text"
+        value=config.endpoint
+        classNames="form-control"
+        placeholder=(t "loggingPage.endpointPlaceholder")
+        id="elasticsearch-endpoint"
+        focus-out=(action "alertMessage")
       }}
     </div>
     {{#if endpointError}}
       <p class="text-error text-small">{{t endpointErrorText}}</p>
     {{else}}
-      <p class="text-info text-small">{{t 'loggingPage.elasticsearch.endpointHelpText'}}</p>
+      <p class="text-info text-small">{{t "loggingPage.elasticsearch.endpointHelpText"}}</p>
     {{/if}}
   </section>
-  <h4>{{t 'loggingPage.elasticsearch.xpack.header'}} <span class="text-muted">{{t 'loggingPage.elasticsearch.xpack.headerOptional'}}</span></h4>
+  <h4>{{t "loggingPage.elasticsearch.xpack.header"}} <span class="text-muted">{{t "loggingPage.elasticsearch.xpack.headerOptional"}}</span></h4>
   <section>
-    <p class="text-info text-small"> {{t 'loggingPage.elasticsearch.xpack.helpText'}} </p>
+    <p class="text-info text-small"> {{t "loggingPage.elasticsearch.xpack.helpText"}} </p>
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label" for=""> {{t 'loggingPage.elasticsearch.xpack.username'}} </label>
+        <label class="acc-label" for=""> {{t "loggingPage.elasticsearch.xpack.username"}} </label>
         {{input
-            type="text"
-            utocomplete="off"
-            value=config.authUsername
-            classNames="form-control"
-            placeholder=(t 'loggingPage.elasticsearch.xpack.usernamePlaceholder')
+          type="text"
+          utocomplete="off"
+          value=config.authUsername
+          classNames="form-control"
+          placeholder=(t "loggingPage.elasticsearch.xpack.usernamePlaceholder")
         }}
       </div>
       <div class="col span-6">
-        <label class="acc-label"> {{t 'loggingPage.elasticsearch.xpack.password'}} </label>
+        <label class="acc-label"> {{t "loggingPage.elasticsearch.xpack.password"}} </label>
         {{input
-            utocomplete="off"
-            type="password"
-            value=config.authPassword
-            classNames="form-control"
-            placeholder=(t 'loggingPage.elasticsearch.xpack.passwordPlaceholder')
+          utocomplete="off"
+          type="password"
+          value=config.authPassword
+          classNames="form-control"
+          placeholder=(t "loggingPage.elasticsearch.xpack.passwordPlaceholder")
         }}
       </div>
     </div>
   </section>
-  <h4 class="mt-20">{{t 'loggingPage.elasticsearch.indexPatterns.header'}}</h4>
-  <p class="text-info text-small">{{t 'loggingPage.elasticsearch.indexPatterns.helpText'}}</p>
+  <h4 class="mt-20">{{t "loggingPage.elasticsearch.indexPatterns.header"}}</h4>
+  <p class="text-info text-small">{{t "loggingPage.elasticsearch.indexPatterns.helpText"}}</p>
   <section>
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label">{{t 'loggingPage.elasticsearch.indexPatterns.prefix'}}{{field-required}}</label>
+        <label class="acc-label">{{t "loggingPage.elasticsearch.indexPatterns.prefix"}}{{field-required}}</label>
         {{input
-            type="text"
-            value=config.indexPrefix
-            className="form-control"
-            placeholder=(t 'loggingPage.elasticsearch.indexPatterns.prefixPlaceholder')
-          }}
+          type="text"
+          value=config.indexPrefix
+          className="form-control"
+          placeholder=(t "loggingPage.elasticsearch.indexPatterns.prefixPlaceholder")
+        }}
       </div>
       <div class="col span-6">
         <div style="margin-top: 34px;">
-          <label>{{t 'loggingPage.elasticsearch.indexPatterns.dateFormat'}}</label>
+          <label>{{t "loggingPage.elasticsearch.indexPatterns.dateFormat"}}</label>
           <label class="mr-10">{{radio-button selection=config.dateFormat value="YYYY-MM-DD"}} YYYY-MM-DD</label>
           <label class="mr-10">{{radio-button selection=config.dateFormat value="YYYY-MM"}} YYYY-MM</label>
           <label class="mr-10">{{radio-button selection=config.dateFormat value="YYYY"}} YYYY</label>
@@ -68,10 +68,10 @@
       </div>
     </div>
     <div>
-    {{t 'loggingPage.elasticsearch.generatedIndex'
-      esIndex=esIndex
-      indexFormat=indexFormat
-      htmlSafe=true
+      {{t "loggingPage.elasticsearch.generatedIndex"
+        esIndex=esIndex
+        indexFormat=indexFormat
+        htmlSafe=true
       }}
     </div>
   </section>
@@ -79,13 +79,17 @@
 
 
 {{logging/form-log-ssl
-    config=config
-    targetType=targetType
-    disabled=(not enableSSLConfig)
+  config=config
+  targetType=targetType
+  disabled=(not enableSSLConfig)
 }}
 
-{{logging/form-log-format logPreview=logPreview model=model}}
+{{logging/form-log-format
+  logPreview=logPreview
+  model=model
+  loggingModel=parentModel
+}}
 {{!--
-  {{#advanced-section advanced=showAdvanced}}
-  {{logging/form-log-docker model=model parentModel=parentModel}}
-  {{/advanced-section}} --}}
+{{#advanced-section advanced=showAdvanced}}
+{{logging/form-log-docker model=model parentModel=parentModel}}
+{{/advanced-section}} --}}
