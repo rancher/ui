@@ -4,7 +4,7 @@ import moment from 'moment';
 import { downloadFile } from 'shared/utils/download-files';
 import ObjectsToCsv from 'objects-to-csv';
 
-export default Resource.extend({
+const ClusterScan = Resource.extend({
   type:          'clusterScan',
   report:        'null',
   reportPromise: null,
@@ -143,3 +143,7 @@ export default Resource.extend({
   },
 
 });
+
+ClusterScan.reopenClass({ stateMap: { 'running': { color: 'text-info' } } });
+
+export default ClusterScan;
