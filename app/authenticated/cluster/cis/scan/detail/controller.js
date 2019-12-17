@@ -45,7 +45,6 @@ export default Controller.extend({
 
   actions: {
     async runScan() {
-      this.securityScanConfig.validateSecurityScanConfig();
       await get(this, 'scope.currentCluster').doAction('runSecurityScan', {
         failuresOnly: false,
         skip:         null
