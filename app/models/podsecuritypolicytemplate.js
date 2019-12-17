@@ -5,6 +5,9 @@ export default Resource.extend({
   router: service(),
 
   type:    'podSecurityPolicyTemplate',
+
+  canHaveLabels: true,
+
   actions: {
     edit() {
       this.get('router').transitionTo('global-admin.security.policies.edit', this.get('id'));
