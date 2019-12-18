@@ -64,7 +64,7 @@ var DockerCredential = Resource.extend({
     } else if (address === window.location.host) {
       return address;
     } else if ( PRESETS[address] ) {
-      return `cruRegistry.address.${  PRESETS[address] }`;
+      return get(this, 'intl').t(`cruRegistry.address.${  PRESETS[address] }`);
     } else {
       return address;
     }
