@@ -18,7 +18,7 @@ export default Route.extend({
 
         return await Promise.all(reportPromises);
       })(),
-      configMaps: get(this, 'securityScanConfig.asyncConfigMap')
+      configMaps: this.securityScanConfig.loadAsyncConfigMap()
     });
   },
 });
