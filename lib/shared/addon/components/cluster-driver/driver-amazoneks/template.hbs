@@ -455,10 +455,12 @@
         </div>
       </div>
       <div class="row">
-        <div class="col span-6">
+    <div class="row-same-height row-full-height">
+      <div class="col span-6 col span-height col full-height col-top mb-20">
+        <div class="no-padding-margin full-height">
           <label class="acc-label" for="aws-eks-key-piar">
             {{t "nodeDriver.amazoneks.keyPairs.label"}}
-              <span class="inline-block">
+            <span class="inline-block">
               {{#tooltip-element
                  type="tooltip-basic"
                  model=(t "nodeDriver.amazoneks.keyPairs.tooltip" htmlSafe=true)
@@ -482,6 +484,25 @@
             prompt=(t "nodeDriver.amazoneks.keyPairs.prompt")
           }}
         </div>
+      </div>
+      <div class="col span-6 col span-height col full-height col-top mb-20">
+        <div class="no-padding-margin full-height">
+          <label class="acc-label" for="ebs-encryption">
+            {{t "nodeDriver.amazoneks.encryptEbs.label"}}
+          </label>
+          <div>
+            {{input
+              id="ebs-encryption"
+              type="checkbox"
+              checked=config.ebsEncryption
+            }}
+          </div>
+          <p class="help-block">
+            {{t "nodeDriver.amazoneks.encryptEbs.detail"}}
+          </p>
+        </div>
+      </div>
+    </div>
       </div>
       <div class="row">
         <div class="col span-12">
