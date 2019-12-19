@@ -24,7 +24,7 @@
     </div>
     <h1>{{title}}</h1>
   </section>
-{{else}}
+{{else if (or showCopy showUpload showDownload)}}
   <div class="text-right mb-20">
     {{#if showCopy}}
       {{copy-to-clipboard
@@ -62,6 +62,7 @@
         placeholder=placeholder
         value=value
         valueUpdated=(if valueUpdated valueUpdated (action (mut value)) )
+        isVisible=_isEditorVisible
         options=(hash
           autofocus=true
           theme="monokai"
