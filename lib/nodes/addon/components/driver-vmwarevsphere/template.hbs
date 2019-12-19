@@ -278,17 +278,33 @@
 
     <div class="row">
       <div class="col span-12">
-        <label class="acc-label">
-          {{t "nodeDriver.vmwarevsphere.cloudinit.label"}}
-        </label>
-        {{textarea-autogrow
-          value=config.cloudConfig
-          classNames="form-control no-resize"
-          placeholder="nodeDriver.vmwarevsphere.cloudinit.placeholder"
-        }}
-        <p class="help-block">
-          {{t "nodeDriver.vmwarevsphere.cloudinit.help"}}
-        </p>
+        {{#if showRancherOsIso }}
+          <label class="acc-label">
+            {{t "nodeDriver.vmwarevsphere.cloudinit.label"}}
+          </label>
+          {{input
+            type="text"
+            value=config.cloudinit 
+            classNames="form-control"
+            placeholder=(t "nodeDriver.vmwarevsphere.cloudinit.placeholder")
+          }}
+          <p class="help-block">
+            {{t "nodeDriver.vmwarevsphere.cloudinit.help"}}
+          </p>
+        {{else}}
+          <label class="acc-label">
+            {{t "nodeDriver.vmwarevsphere.cloudconfig.label"}}
+          </label>
+          {{input-yaml
+            showDownload=false
+            showUpload=false
+            canChangeName=false
+            gutters=(array)
+            minHeight=500
+            value=config.cloudConfig
+            valueUpdated=(action "updateCloudConfig")
+          }}
+        {{/if}}
       </div>
     </div>
 
