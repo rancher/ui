@@ -14,6 +14,7 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   titleKey:       'newConfigMap.title',
   scope:          'namespace',
   namespacedType: 'configMap',
+  keyValueLabel:  'newConfigMap.values.label',
 
   isView:  equal('mode', VIEW),
   isNew:   equal('mode', NEW),
@@ -22,11 +23,19 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
 
   init() {
     this._super(...arguments);
+    const {
+      primaryResource: {
+        namespace,
+        binaryData
+      }
+    } = this;
 
-    const ns = get(this, 'primaryResource.namespace');
+    if (namespace) {
+      set(this, 'namespace', namespace);
+    }
 
-    if (ns) {
-      set(this, 'namespace', ns);
+    if (binaryData) {
+      set(this, 'keyValueLabel', 'newConfigMap.values.binaryLabel');
     }
   },
 
