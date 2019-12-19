@@ -74,15 +74,9 @@ export default Controller.extend({
 
     return tests.map((test) => {
       const state = this.getCheckState(test);
-      const nodeTypes = test.node_type;
-
-      const nodeNames = nodeTypes.reduce((agg, nodeType) => [...agg, ...get(this, `model.scan.report.nodes.${ nodeType }`)], []);
-      const uniqueNodeNames = Object.keys(nodeNames.reduce((agg, nodeName) => ({
-        ...agg,
-        [nodeName]: true
-      }), {}));
+      const nodeNames = get(this, 'model.scan').getNodeNamesFromNodeType(test.node_type);
       const checkNodes = test.nodes || [];
-      const nodes = uniqueNodeNames.map((nodeName) => ({
+      const nodes = nodeNames.map((nodeName) => ({
         state:  this.getNodeState(test, nodeName, checkNodes),
         nodeId: get(this, 'model.nodes').findBy('nodeName', nodeName).id,
         name:   nodeName
