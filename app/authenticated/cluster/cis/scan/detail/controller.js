@@ -76,11 +76,16 @@ export default Controller.extend({
       const state = this.getCheckState(test);
       const nodeNames = get(this, 'model.scan').getNodeNamesFromNodeType(test.node_type);
       const checkNodes = test.nodes || [];
-      const nodes = nodeNames.map((nodeName) => ({
-        state:  this.getNodeState(test, nodeName, checkNodes),
-        nodeId: get(this, 'model.nodes').findBy('nodeName', nodeName).id,
-        name:   nodeName
-      }));
+      const nodes = nodeNames.map((nodeName) => {
+        const node = get(this, 'model.nodes').findBy('nodeName', nodeName);
+        const nodeId = node ? node.id : null;
+
+        return {
+          state:  this.getNodeState(test, nodeName, checkNodes),
+          nodeId,
+          name:   nodeName
+        };
+      });
 
       return {
         state,
