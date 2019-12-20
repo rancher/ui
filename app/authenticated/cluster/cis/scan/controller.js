@@ -49,9 +49,7 @@ export default Controller.extend({
 
   runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
 
-  disableRunScanButton: computed.notEmpty('runningClusterScans'),
-
-  isRKE:   computed.alias('scope.currentCluster.isRKE'),
+  isRKE:                computed.alias('scope.currentCluster.isRKE'),
   actions: {
     runScan() {
       get(this, 'scope.currentCluster').doAction('runSecurityScan', {
@@ -60,6 +58,10 @@ export default Controller.extend({
       });
     }
   },
+  disableRunScanButton: computed('runningClusterScans', 'scope.currentCluster.systemProject', function() {
+    return get(this, 'runningClusterScans') || !get(this, 'scope.currentCluster.systemProject');
+  }),
+
   bulkActionHandler: computed(function() {
     return {
       download: async(scans) => {
