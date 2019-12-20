@@ -3,6 +3,7 @@ import { alias } from '@ember/object/computed';
 import { computed, get } from '@ember/object';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
 import Resource from '@rancher/ember-api-store/models/resource';
+import { isEmpty } from '@ember/utils';
 
 export default Resource.extend({
   router:       service(),
@@ -24,8 +25,29 @@ export default Resource.extend({
     });
   }),
 
-  keys:     computed('data', function() {
-    return Object.keys(get(this, 'data') || {}).sort();
+  keys: computed('model.data', 'model.binaryData', function() {
+    const {
+      data       = {},
+      binaryData = {}
+    } = this;
+
+    const dataKeys       = Object.keys(data);
+    const binaryDataKeys = Object.keys(binaryData);
+
+    if (isEmpty(dataKeys)) {
+      return binaryDataKeys;
+    } else {
+      return dataKeys;
+    }
+  }),
+
+  configData: computed('model.data', 'model.binaryData', function() {
+    const {
+      data       = {},
+      binaryData = {}
+    } = this;
+
+    return Object.assign({}, data, binaryData);
   }),
 
   actions: {
