@@ -3,6 +3,7 @@ import { computed, get, set, observer } from '@ember/object';
 import moment from 'moment';
 import { downloadFile } from 'shared/utils/download-files';
 import ObjectsToCsv from 'objects-to-csv';
+import { extractUniqueStrings } from '../utils/util';
 
 const ClusterScan = Resource.extend({
   type:          'clusterScan',
@@ -49,25 +50,23 @@ const ClusterScan = Resource.extend({
   }),
 
   referencedResults: computed('report', function() {
-    const results = (get(this, 'report.results') || [])
+    return (get(this, 'report.results') || [])
       .map((result) => result.checks)
       .reduce((agg, check) => [...agg, ...(check || [])], []);
-    const nodes = get(this, 'report.nodes') || {};
-
-    return results.map((result) => {
-      return {
-        ...result,
-        nodes: this.getNodes(nodes, result.node_type)
-      };
-    });
   }),
 
-  resultsForCsv: computed('referencedResults', function() {
+  resultsForCsv: computed('referencedResults', 'report', function() {
     return get(this, 'referencedResults').map((result) => {
+      const nodesAndStateForTest = this.getNodesAndStateForTestResult(result);
+      const version = `Version: ${ get(this, 'report.version') }`;
+
       return {
+        [version]:    '',
         ...result,
-        nodes:     result.nodes.join(','),
-        node_type: result.node_type.join(',')
+        nodes:        nodesAndStateForTest.nodes.join(','),
+        passed_nodes: nodesAndStateForTest.passedNodes.join(','),
+        failed_nodes: nodesAndStateForTest.failedNodes.join(','),
+        node_type:    result.node_type.join(',')
       };
     })
   }),
@@ -112,6 +111,48 @@ const ClusterScan = Resource.extend({
 
   getNodes(nodes, nodeTypes) {
     return nodeTypes.reduce((agg, nodeType) => [...agg, ...nodes[nodeType]], []);
+  },
+
+  getNodeNamesFromNodeType(nodeType) {
+    const nodeNames = nodeType
+      .reduce((agg, nodeType) => [...agg, ...get(this, `report.nodes.${ nodeType }`)], []);
+
+    return extractUniqueStrings(nodeNames);
+  },
+
+  getNodesAndStateForTestResult(testResult) {
+    if (testResult.state === 'skip') {
+      return {
+        nodes:       [],
+        passedNodes: [],
+        failedNodes: []
+      }
+    }
+
+    const nodeNames = this.getNodeNamesFromNodeType(testResult.node_type);
+
+    if (testResult.state === 'pass') {
+      return {
+        nodes:       nodeNames,
+        passedNodes: nodeNames,
+        failedNodes: []
+      }
+    }
+
+    if (testResult.state === 'fail') {
+      return {
+        nodes:       nodeNames,
+        passedNodes: [],
+        failedNodes: nodeNames
+      }
+    }
+
+    // if mixed
+    return {
+      nodes:       nodeNames,
+      passedNodes: nodeNames.filter((node) => !testResult.nodes.includes(node)),
+      failedNodes: testResult.nodes
+    }
   },
 
   async _loadReport() {
