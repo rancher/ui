@@ -12,7 +12,7 @@ export default Route.extend({
     const original = this.modelFor('authenticated.project.hpa.detail').hpa;
 
     return hash({
-      deployments: store.findAll('deployment'),
+      deployments: store.findAll('workload').then((workloads) => workloads.filter((w) => w.type === 'statefulSet' || w.type === 'deployment')),
       apiServices: clusterStore.findAll('apiService'),
       hpa:         original.clone(),
     });
