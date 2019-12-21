@@ -1,0 +1,287 @@
+<div class="row mb-20">
+  <div class="col span-6">
+    <label
+      class="acc-label"
+      for="input-driver"
+    >
+      {{t "cruPersistentVolume.csi.driver.label"}}
+    </label>
+    <InputOrDisplay
+      @editable={{editing}}
+      @value={{config.driver}}
+    >
+      <Input
+        @id="input-driver"
+        @type="text"
+        @value={{config.driver}}
+        @classNames="form-control"
+        @placeholder={{t "cruPersistentVolume.csi.driver.placeholder"}}
+      />
+    </InputOrDisplay>
+  </div>
+
+  <div class="col span-6">
+    <label
+      class="acc-label"
+      for="input-fs-type"
+    >
+      {{t "cruPersistentVolume.csi.fsType.label"}}
+    </label>
+    <InputOrDisplay
+      @editable={{editing}}
+      @value={{config.fsType}}
+    >
+      <Input
+        @id="input-fs-type"
+        @type="text"
+        @value={{config.fsType}}
+        @classNames="form-control"
+        @placeholder={{t "cruPersistentVolume.csi.fsType.placeholder"}}
+      />
+    </InputOrDisplay>
+  </div>
+</div>
+
+<div class="row mb-20">
+  {{#if (eq volume.type "persistentVolume")}}
+    <div class="col span-6">
+      <label
+        class="acc-label"
+        for="input-volume-handle"
+      >
+        {{t "cruPersistentVolume.csi.volumeHandle.label"}}
+      </label>
+      <InputOrDisplay
+        @editable={{editing}}
+        @value={{config.volumeHandle}}
+      >
+        <Input
+          @id="input-volume-handle"
+          @type="text"
+          @value={{config.volumeHandle}}
+          @classNames="form-control"
+          @placeholder={{t "cruPersistentVolume.csi.volumeHandle.placeholder"}}
+        />
+      </InputOrDisplay>
+    </div>
+  {{/if}}
+
+  <div class="col span-6">
+    <label class="acc-label">
+      {{t "cruPersistentVolume.csi.readOnly.label"}}
+    </label>
+    <InputOrDisplay
+      @editable={{editing}}
+      @value={{config.readOnly}}
+    >
+      <div>
+        <label class="text-muted">
+          <RadioButton
+            @selection={{config.readOnly}}
+            @value={{true}}
+          />
+          {{t "generic.yes"}}
+        </label>
+        <label class="text-muted">
+          <RadioButton
+            @selection={{config.readOnly}}
+            @value={{false}}
+          />
+          {{t "generic.no"}}
+        </label>
+      </div>
+    </InputOrDisplay>
+  </div>
+</div>
+
+<div class="row mb-20">
+  <div class="col span-12">
+    <FormKeyValue
+      @initialMap={{config.volumeAttributes}}
+      @editing={{editing}}
+      @header={{t "cruPersistentVolume.csi.volumeAttributes.label"}}
+      @addActionLabel="cruPersistentVolume.csi.volumeAttributes.addActionLabel"
+      @changed={{action (mut config.volumeAttributes)}}
+    />
+  </div>
+</div>
+
+<div class="row mb-20">
+  <div class="col span-6">
+    <label
+      class="acc-label"
+      for="input-node-pub-name"
+    >
+      {{t "cruPersistentVolume.csi.nodePublishSecretRef.name.label"}}
+    </label>
+    <InputOrDisplay
+      @editable={{editing}}
+      @value={{config.nodePublishSecretRef.name}}
+    >
+      <Input
+        @id="input-node-pub-name"
+        @type="text"
+        @value={{config.nodePublishSecretRef.name}}
+        @classNames="form-control"
+        @placeholder={{t "cruPersistentVolume.csi.nodePublishSecretRef.name.placeholder"}}
+      />
+    </InputOrDisplay>
+  </div>
+
+  {{#if (eq volume.type "persistentVolume")}}
+    <div class="col span-6">
+      <label
+        class="acc-label"
+        for="input-node-pub-namespace"
+      >
+        {{t "cruPersistentVolume.csi.nodePublishSecretRef.namespace.label"}}
+      </label>
+      <InputOrDisplay
+        @editable={{editing}}
+        @value={{config.nodePublishSecretRef.namespace}}
+      >
+        <Input
+          @id="input-node-pub-namespace"
+          @type="text"
+          @value={{config.nodePublishSecretRef.namespace}}
+          @classNames="form-control"
+          @placeholder={{t "cruPersistentVolume.csi.nodePublishSecretRef.namespace.placeholder"}}
+        />
+      </InputOrDisplay>
+    </div>
+  {{/if}}
+</div>
+
+{{#if (eq volume.type "persistentVolume")}}
+  <div class="row mb-20">
+    <div class="col span-6">
+      <label
+        class="acc-label"
+        for="input-node-stage-name"
+      >
+        {{t "cruPersistentVolume.csi.nodeStageSecretRef.name.label"}}
+      </label>
+      <InputOrDisplay
+        @editable={{editing}}
+        @value={{config.nodeStageSecretRef.name}}
+      >
+        <Input
+          @id="input-node-stage-name"
+          @type="text"
+          @value={{config.nodeStageSecretRef.name}}
+          @classNames="form-control"
+          @placeholder={{t "cruPersistentVolume.csi.nodeStageSecretRef.name.placeholder"}}
+        />
+      </InputOrDisplay>
+    </div>
+
+    <div class="col span-6">
+      <label
+        class="acc-label"
+        for="input-node-stage-namespace"
+      >
+        {{t "cruPersistentVolume.csi.nodeStageSecretRef.namespace.label"}}
+      </label>
+      <InputOrDisplay
+        @editable={{editing}}
+        @value={{config.nodeStageSecretRef.namespace}}
+      >
+        <Input
+          @id="input-node-stage-namespace"
+          @type="text"
+          @value={{config.nodeStageSecretRef.namespace}}
+          @classNames="form-control"
+          @placeholder={{t "cruPersistentVolume.csi.nodeStageSecretRef.namespace.placeholder"}}
+        />
+      </InputOrDisplay>
+    </div>
+  </div>
+
+  <div class="row mb-20">
+    <div class="col span-6">
+      <label
+        class="acc-label"
+        for="input-controller-expand-name"
+      >
+        {{t "cruPersistentVolume.csi.controllerExpandSecretRef.name.label"}}
+      </label>
+      <InputOrDisplay
+        @editable={{editing}}
+        @value={{config.controllerExpandSecretRef.name}}
+      >
+        <Input
+          @id="input-controller-expand-name"
+          @type="text"
+          @value={{config.controllerExpandSecretRef.name}}
+          @classNames="form-control"
+          @placeholder={{t "cruPersistentVolume.csi.controllerExpandSecretRef.name.placeholder"}}
+        />
+      </InputOrDisplay>
+    </div>
+
+    <div class="col span-6">
+      <label
+        class="acc-label"
+        for="input-controller-expand-namespace"
+      >
+        {{t "cruPersistentVolume.csi.controllerExpandSecretRef.namespace.label"}}
+      </label>
+      <InputOrDisplay
+        @editable={{editing}}
+        @value={{config.controllerExpandSecretRef.namespace}}
+      >
+        <Input
+          @id="input-controller-expand-namespace"
+          @type="text"
+          @value={{config.controllerExpandSecretRef.namespace}}
+          @classNames="form-control"
+          @placeholder={{t "cruPersistentVolume.csi.controllerExpandSecretRef.namespace.placeholder"}}
+        />
+      </InputOrDisplay>
+    </div>
+  </div>
+
+  <div class="row mb-20">
+    <div class="col span-6">
+      <label
+        class="acc-label"
+        for="input-controller-pub-name"
+      >
+        {{t "cruPersistentVolume.csi.controllerPublishSecretRef.name.label"}}
+      </label>
+      <InputOrDisplay
+        @editable={{editing}}
+        @value={{config.controllerPublishSecretRef.name}}
+      >
+        <Input
+          @id="input-controller-pub-name"
+          @type="text"
+          @value={{config.controllerPublishSecretRef.name}}
+          @classNames="form-control"
+          @placeholder={{t "cruPersistentVolume.csi.controllerPublishSecretRef.name.placeholder"}}
+        />
+      </InputOrDisplay>
+    </div>
+
+    <div class="col span-6">
+      <label
+        class="acc-label"
+        for="input-controller-pub-namespace"
+      >
+        {{t "cruPersistentVolume.csi.controllerPublishSecretRef.namespace.label"}}
+      </label>
+      <InputOrDisplay
+        @editable={{editing}}
+        @value={{config.controllerPublishSecretRef.namespace}}
+      >
+        <Input
+          @id="input-controller-pub-namespace"
+          @type="text"
+          @value={{config.controllerPublishSecretRef.namespace}}
+          @classNames="form-control"
+          @placeholder={{t "cruPersistentVolume.csi.controllerPublishSecretRef.namespace.placeholder"}}
+        />
+      </InputOrDisplay>
+    </div>
+  </div>
+{{/if}}

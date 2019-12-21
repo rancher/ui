@@ -8,6 +8,7 @@ const SOURCES = [];
 registerSource('aws-ebs',              'awsElasticBlockStore',   true, true,  true, true);
 registerSource('azure-disk',           'azureDisk',              true, true,  true, true);
 registerSource('azure-file',           'azureFile',              true, true,  true, true);
+registerSource('csi',                  'csi',                    true, true,  true, false);
 registerSource('cephfs',               'cephfs',                 true, true,  true, false);
 registerSource('cinder',               'cinder',                 true, true,  true, false);
 registerSource('config-map',           'configMap',              true, false, false, false);
@@ -125,7 +126,9 @@ var Volume = Resource.extend({
     const intl       = get(this, 'intl');
     const sourceName = get(this, 'sourceName');
 
-    if ( sourceName ) {
+    if ( sourceName === 'csi' ) {
+      return get(this, 'csi.driver')
+    } else {
       return intl.t(`volumeSource.${ sourceName }.title`);
     }
   }),
@@ -139,7 +142,23 @@ var Volume = Resource.extend({
         set(this, key, null);
       }
     }
+
+    if ( keep === 'csi' ) {
+      this.clearCsiSecretRef();
+    }
   },
+
+  clearCsiSecretRef() {
+    const csi = this.csi;
+
+    Object.keys(csi).filter((key) => key.endsWith('SecretRef')).forEach((key) => {
+      const ref = csi[key];
+
+      if ( !ref.name && !ref.namespace ) {
+        delete csi[key]
+      }
+    });
+  }
 });
 
 Volume.reopenClass({
