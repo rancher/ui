@@ -102,7 +102,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     if ( kind === HEADLESS ) {
       kind = CLUSTER_IP;
       set(this, 'model.clusterIp', 'None');
-    } else {
+    } else if ( this.mode === 'new' ) {
       set(this, 'model.clusterIp', '');
     }
 
@@ -195,6 +195,12 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
     if ( get(this, 'mode') === 'edit' && get(this, 'recordType') === WORKLOAD ) {
       delete get(this, 'model')[SELECTOR];
+    }
+
+    const ports = this.primaryResource.ports || [];
+
+    if ( this.primaryResource.kind !== LOAD_BALANCER && this.primaryResource.kind !== NODE_PORT ) {
+      ports.forEach((port) => delete port['nodePort']);
     }
 
     set(this, 'model.namespaceId', get(this, 'namespace.id') || '__placeholder__');
