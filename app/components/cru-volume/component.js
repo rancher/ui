@@ -104,6 +104,8 @@ export default Component.extend(ViewNewEdit, {
       return false;
     }
 
+    vol.clearSourcesExcept(entry.value);
+
     let ok = this._super(...arguments);
 
     if ( ok ) {
