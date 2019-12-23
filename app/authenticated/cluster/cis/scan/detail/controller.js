@@ -62,7 +62,7 @@ export default Controller.extend({
   },
 
   disableRunScanButton: computed('runningClusterScans', 'scope.currentCluster.systemProject', function() {
-    return get(this, 'runningClusterScans') || !get(this, 'scope.currentCluster.systemProject');
+    return get(this, 'runningClusterScans.length') > 0 || !get(this, 'scope.currentCluster.systemProject');
   }),
 
   tests: computed('model.scan.report', 'securityScanConfig.skipList', function() {
