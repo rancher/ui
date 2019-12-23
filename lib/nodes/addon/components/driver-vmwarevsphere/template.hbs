@@ -234,7 +234,7 @@
       {{#if showContentLibrary}}
           <div class="col span-4">
               <label class="acc-label">
-                Content library:
+                {{t "nodeDriver.vmwarevsphere.contentLibrary"}}
               </label>
               <NewSelect
                 @useContentForDefaultValue={{true}}
@@ -244,7 +244,7 @@
           </div>
           <div class="col span-4">
             <label class="acc-label">
-              Library template:
+              {{t "nodeDriver.vmwarevsphere.libraryTemplate"}}
             </label>
             <SearchableSelect
               @content={{libraryTemplateContent}}
@@ -255,7 +255,7 @@
       {{#if showVirtualMachine}}
             <div class="col span-6">
               <label class="acc-label">
-                Virtual machine:
+                {{t "nodeDriver.vmwarevsphere.virtualMachine"}}
               </label>
               <SearchableSelect
                 @content={{virtualMachineContent}}
@@ -266,7 +266,7 @@
       {{#if showTemplate}}
           <div class="col span-6">
             <label class="acc-label">
-              Template:
+              {{t "nodeDriver.vmwarevsphere.template"}}
             </label>
             <SearchableSelect
               @content={{templateContent}}
@@ -278,17 +278,33 @@
 
     <div class="row">
       <div class="col span-12">
-        <label class="acc-label">
-          {{t "nodeDriver.vmwarevsphere.cloudinit.label"}}
-        </label>
-        {{textarea-autogrow
-          value=config.cloudConfig
-          classNames="form-control no-resize"
-          placeholder="nodeDriver.vmwarevsphere.cloudinit.placeholder"
-        }}
-        <p class="help-block">
-          {{t "nodeDriver.vmwarevsphere.cloudinit.help"}}
-        </p>
+        {{#if showRancherOsIso }}
+          <label class="acc-label">
+            {{t "nodeDriver.vmwarevsphere.cloudinit.label"}}
+          </label>
+          {{input
+            type="text"
+            value=config.cloudinit 
+            classNames="form-control"
+            placeholder=(t "nodeDriver.vmwarevsphere.cloudinit.placeholder")
+          }}
+          <p class="help-block">
+            {{t "nodeDriver.vmwarevsphere.cloudinit.help"}}
+          </p>
+        {{else}}
+          <label class="acc-label">
+            {{t "nodeDriver.vmwarevsphere.cloudconfig.label"}}
+          </label>
+          {{input-yaml
+            showDownload=false
+            showUpload=false
+            canChangeName=false
+            gutters=(array)
+            minHeight=500
+            value=config.cloudConfig
+            valueUpdated=(action "updateCloudConfig")
+          }}
+        {{/if}}
       </div>
     </div>
 
