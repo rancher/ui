@@ -7,11 +7,11 @@ export default Resource.extend({
   router:       service(),
   allWorkloads: service(),
 
-  state:    'active',
-  canClone: true,
-
-  firstKey: alias('keys.firstObject'),
-  keys:     computed('data', function() {
+  state:         'active',
+  canClone:      true,
+  canHaveLabels: true,
+  firstKey:      alias('keys.firstObject'),
+  keys:          computed('data', function() {
     return Object.keys(get(this, 'data') || {}).sort();
   }),
 

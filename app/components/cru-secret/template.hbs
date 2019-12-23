@@ -57,6 +57,16 @@
   }}
 </div>
 
+<div class="row mt-20">
+  <FormLabelsAnnotations
+    @classNames="accordion-wrapper"
+    @expandAll={{al.expandAll}}
+    @initialLabels={{primaryResource.labels}}
+    @model={{primaryResource}}
+    @editing={{editing}}
+  />
+</div>
+
 {{#accordion-list showExpandAll=false as | al expandFn |}}
   {{#if isView}}
     {{form-related-workloads
