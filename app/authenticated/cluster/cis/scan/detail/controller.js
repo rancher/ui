@@ -41,8 +41,6 @@ export default Controller.extend({
 
   runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
 
-  disableRunScanButton: computed.notEmpty('runningClusterScans'),
-
   actions: {
     async runScan() {
       await get(this, 'scope.currentCluster').doAction('runSecurityScan', {
@@ -62,6 +60,10 @@ export default Controller.extend({
       });
     }
   },
+
+  disableRunScanButton: computed('runningClusterScans', 'scope.currentCluster.systemProject', function() {
+    return get(this, 'runningClusterScans') || !get(this, 'scope.currentCluster.systemProject');
+  }),
 
   tests: computed('model.scan.report', 'securityScanConfig.skipList', function() {
     const results = get(this, 'model.scan.report.results');
