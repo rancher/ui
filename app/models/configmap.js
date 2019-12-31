@@ -9,10 +9,10 @@ export default Resource.extend({
   router:       service(),
   clusterStore: service(),
 
-  state:        'active',
-  canClone:     true,
-
-  namespace: reference('namespaceId', 'namespace', 'clusterStore'),
+  state:         'active',
+  canClone:      true,
+  canHaveLabels:  true,
+  namespace:     reference('namespaceId', 'namespace', 'clusterStore'),
 
   firstKey:  alias('keys.firstObject'),
 
