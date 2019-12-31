@@ -13,24 +13,24 @@ export default Component.extend(ManageLabels, {
   headers:       [
     {
       name:           'displayState',
-      sort:           ['displayState'],
+      sort:           ['displayState', 'sortName', 'id'],
       translationKey: 'generic.state',
       width:          120
     },
     {
       name:           'name',
-      sort:           ['name'],
+      sort:           ['sortName', 'id'],
       translationKey: 'generic.name',
       width:          350
     },
     {
       name:           'displayImage',
-      sort:           ['displayImage'],
+      sort:           ['displayImage', 'displayIp', 'created'],
       translationKey: 'generic.image',
     },
     {
       name:           'node',
-      sort:           ['displayName'],
+      sort:           ['node.sortName', 'node.ipAddress', 'node.id'],
       translationKey: 'generic.node',
 
     },
