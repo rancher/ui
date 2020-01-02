@@ -866,10 +866,10 @@
                 @questions={{model.clusterTemplateRevision.questions}}
               >
                 {{#input-or-display
-                  tagName="div"
-                  classNames="input-group"
-                  editable=notView
-                  value=(concat config.services.etcd.backupConfig.intervalHours (concat " " (t "generic.hours")))
+                   tagName="div"
+                   classNames="input-group"
+                   editable=notView
+                   value=(concat config.services.etcd.backupConfig.intervalHours (concat " " (t "generic.hours")))
                 }}
                   {{input-integer
                     value=config.services.etcd.backupConfig.intervalHours
@@ -902,10 +902,10 @@
                 @questions={{model.clusterTemplateRevision.questions}}
               >
                 {{#input-or-display
-                  tagName="div"
-                  classNames="input-group"
-                  editable=notView
-                  value=config.services.etcd.backupConfig.retention
+                   tagName="div"
+                   classNames="input-group"
+                   editable=notView
+                   value=config.services.etcd.backupConfig.retention
                 }}
                   <span class="input-group-addon bg-default">{{t "clusterNew.rke.etcd.backupConfig.retention.prefix"}}</span>
                   {{input-integer
@@ -1028,95 +1028,81 @@
                     </div>
                     {{#advanced-section advanced=commandAdvanced}}
                       <div class="row mt-20">
-                        {{t "clusterNew.rke.address.title"}}
-                        <p class="help-block">{{t "clusterNew.rke.address.detail"}}</p>
-                        <ul class="list-unstyled">
-                          <li>
-                            <div class="row">
-                              <div class="col span-6">
-                                <label class="acc-label">
-                                  {{t "clusterNew.rke.address.public.label"}}
-                                </label>
-                                {{input
-                                  type="text"
-                                  value=address
-                                  placeholder=(t "clusterNew.rke.address.public.placeholder")
-                                }}
-                                {{#unless isAddressValid}}
-                                  <div class="banner bg-warning">
-                                    <div class="banner-icon"><span class="icon icon-alert"></span></div>
-                                    <div class="banner-message">
-                                      <p>{{t "clusterNew.rke.address.warning"}}</p>
-                                    </div>
-                                  </div>
-                                {{/unless}}
-                              </div>
-                              <div class="col span-6">
-                                <label class="acc-label">
-                                  {{t "clusterNew.rke.address.private.label"}}
-                                </label>
-                                {{input
-                                  type="text"
-                                  value=internalAddress
-                                  placeholder=(t "clusterNew.rke.address.private.placeholder")
-                                }}
-                                {{#unless isInternalAddressValid}}
-                                  <div class="banner bg-warning">
-                                    <div class="banner-icon"><span class="icon icon-alert"></span></div>
-                                    <div class="banner-message">
-                                      <p>{{t "clusterNew.rke.address.warning"}}</p>
-                                    </div>
-                                  </div>
-                                {{/unless}}
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
+                        <div class="col span-6">
+                          <label class="acc-label">
+                            {{t "clusterNew.rke.address.public.label"}}
+                          </label>
+                          {{input
+                            type="text"
+                            value=address
+                            placeholder=(t "clusterNew.rke.address.public.placeholder")
+                          }}
+                          <p class="help-block">{{t "clusterNew.rke.address.detail"}}</p>
+                          {{#unless isAddressValid}}
+                            <BannerMessage
+                              @color="bg-warning"
+                              @message={{t "clusterNew.rke.address.warning"}}
+                            />
+                          {{/unless}}
+                        </div>
+                        <div class="col span-6">
+                          <label class="acc-label">
+                            {{t "clusterNew.rke.address.private.label"}}
+                          </label>
+                          {{input
+                            type="text"
+                            value=internalAddress
+                            placeholder=(t "clusterNew.rke.address.private.placeholder")
+                          }}
+                          {{#unless isInternalAddressValid}}
+                            <BannerMessage
+                              @color="bg-warning"
+                              @message={{t "clusterNew.rke.address.warning"}}
+                            />
+                          {{/unless}}
+                        </div>
                       </div>
                       <div class="row mt-20">
-                        {{t "clusterNew.rke.nodeName.title"}}
-                        <p class="help-block">
-                          {{t "clusterNew.rke.nodeName.detail"}}
-                        </p>
-                        <ul class="list-unstyled">
-                          <li>
-                            <div class="row">
-                              <div class="col span-6">
-                                {{input
-                                  type="text"
-                                  value=nodeName
-                                  placeholder=(t "clusterNew.rke.nodeName.placeholder")
-                                }}
-                                {{#unless isNodeNameValid}}
-                                  {{top-errors errors=nodeNameErrors}}
-                                {{/unless}}
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
+                        <div class="col span-6">
+                          <label class="acc-label">
+                            {{t "clusterNew.rke.nodeName.title"}}
+                          </label>
+                          {{input
+                            type="text"
+                            value=nodeName
+                            placeholder=(t "clusterNew.rke.nodeName.placeholder")
+                          }}
+                          <p class="help-block">
+                            {{t "clusterNew.rke.nodeName.detail"}}
+                          </p>
+                          {{#unless isNodeNameValid}}
+                            {{top-errors errors=nodeNameErrors}}
+                          {{/unless}}
+                        </div>
                       </div>
                       <div class="row mt-20">
-                        {{t "clusterNew.rke.labels.title"}}
-                        <p class="help-block">
-                          {{t "clusterNew.rke.labels.detail"}}
-                        </p>
-                        <ul class="list-unstyled">
-                          <li>
-                            {{#form-user-labels
-                               setLabels=(action "setLabels")
-                               expandAll=al.expandAll
-                               expand=(action expandFn)
-                               detailKey="formUserLabels.nodeDetail"
-                               as | userLabelArray removeLabel addUserLabel |
-                            }}
-                              {{#if userLabelArray.length}}
-                                <table class="table fixed no-lines mt-20">
-                                  <tr class="hidden-xs hidden-sm">
+                        <div class="col span-12">
+                          <label class="acc-label">
+                            {{t "clusterNew.rke.labels.title"}}
+                          </label>
+                          {{#form-user-labels
+                             setLabels=(action "setLabels")
+                             expandAll=al.expandAll
+                             expand=(action expandFn)
+                             detailKey="formUserLabels.nodeDetail"
+                             as | userLabelArray removeLabel addUserLabel |
+                          }}
+                            {{#if userLabelArray.length}}
+                              <table class="table fixed no-lines small mb-10">
+                                <thead>
+                                  <tr class="hidden-sm">
                                     <th>{{t "formUserLabels.key.label"}}{{field-required}}</th>
                                     <th width="30">&nbsp;</th>
                                     <th>{{t "formUserLabels.value.label"}}</th>
                                     <th width="40">&nbsp;</th>
                                   </tr>
+                                </thead>
+                                <tbody>
                                   {{#each userLabelArray as |label|}}
                                     <tr>
                                       <td data-title="key">
@@ -1130,10 +1116,8 @@
                                         }}
                                       </td>
 
-                                      <td class="text-center">
-                                        <p class="input-sm">
-                                          {{t "formUserLabels.separator"}}
-                                        </p>
+                                      <td class="valign-top text-center">
+                                        {{t "formKeyValue.separator"}}
                                       </td>
 
                                       <td data-title="label">
@@ -1156,33 +1140,32 @@
                                       </td>
                                     </tr>
                                   {{/each}}
-                                </table>
-                                <div class="protip pt-10">
-                                  {{t "formUserLabels.protip"}}
-                                </div>
-                              {{/if}}
+                                </tbody>
+                              </table>
+                              <div class="protip mb-5">
+                                {{t "formUserLabels.protip"}}
+                              </div>
+                            {{/if}}
 
-                              <button class="btn bg-link icon-btn" {{action addUserLabel}}>
-                                <span class="darken">
-                                  <i class="icon icon-plus text-small"/>
-                                </span>
-                                <span>
-                                  {{t "formUserLabels.addAction"}}
-                                </span>
-                              </button>
-                            {{/form-user-labels}}
+                            <button class="btn bg-link icon-btn" {{action addUserLabel}}>
+                              <span class="darken">
+                                <i class="icon icon-plus text-small"/>
+                              </span>
+                              <span>
+                                {{t "formUserLabels.addAction"}}
+                              </span>
+                            </button>
+                          {{/form-user-labels}}
 
-                            <div class="row mt-20 mb-20">
-                              {{t "clusterNew.rke.taints.title"}}
-                              <p class="help-block">
-                                {{t "clusterNew.rke.taints.detail"}}
-                              </p>
-                              {{node-taints
-                                setTaints=(action "setTaints")
-                              }}
-                            </div>
-                          </li>
-                        </ul>
+                        </div>
+                        <div class="col span-12">
+                          <label class="acc-label">
+                            {{t "clusterNew.rke.taints.title"}}
+                          </label>
+                          {{node-taints
+                            setTaints=(action "setTaints")
+                          }}
+                        </div>
                       </div>
                     {{/advanced-section}}
                   </li>
@@ -1216,12 +1199,10 @@
     {{/accordion-list}}
 
     {{#if newNodeCount}}
-      <div class="banner bg-success">
-        <div class="banner-icon"><span class="icon icon-success"></span></div>
-        <div class="banner-message">
-          <p>{{t "clusterNew.rke.detected" count=newNodeCount}}</p>
-        </div>
-      </div>
+      <BannerMessage
+        @color="bg-success"
+        @message={{t "clusterNew.rke.detected" count=newNodeCount}}
+      />
     {{/if}}
   {{/if}} {{!-- endif (and isCustom (eq step 2)) --}}
 
