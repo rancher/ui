@@ -47,7 +47,7 @@
     </div>
   {{/if}}
 
-  <div class="row mt-10 mb-10 center">
+  <div class="row mt-10 mb-10">
     <div class="col span-6">
       <label class="acc-label">
         {{t "clusterIstioPage.version"}}
@@ -65,11 +65,13 @@
         }}
       </div>
     </div>
-    <div class="col span-7">
-      <label class="acc-label">
-        &nbsp;
-      </label>
-      {{#unless enableClusterMonitoring}}
+  </div>
+  <div class="row mt-10 mb-10">
+    {{#unless enableClusterMonitoring}}
+      <div class="col span-6">
+        <label class="acc-label">
+          &nbsp;
+        </label>
         <div>
           {{input
             type="checkbox"
@@ -79,339 +81,115 @@
           }}
           {{t "clusterIstioPage.enableMonitoring.label"}}
           {{#tooltip-element
-            type="tooltip-basic"
-            model=(t "clusterIstioPage.goToMonitoring" clusterId=cluster.id htmlSafe=true)
-            tooltipTemplate="tooltip-static"
-            aria-describedby="tooltip-base"
-            baseClass="text-left"
+             type="tooltip-basic"
+             model=(t "clusterIstioPage.goToMonitoring" clusterId=cluster.id htmlSafe=true)
+             tooltipTemplate="tooltip-static"
+             aria-describedby="tooltip-base"
+             baseClass="text-left"
           }}
-          <span>
-            <i class="icon icon-help icon-blue"/>
-          </span>
+            <span>
+              <i class="icon icon-help icon-blue"/>
+            </span>
           {{/tooltip-element}}
         </div>
-      {{/unless}}
-    </div>
+      </div>
+    {{/unless}}
+    {{#if (and enabled upgradeAvailable)}}
+      <div class="col span-6">
+        <label>
+          {{input
+            type="checkbox"
+            checked=forceUpgrade
+          }}
+          {{t "newCatalog.forceUpgrade"}}
+        </label>
+      </div>
+    {{/if}}
   </div>
 
-{{#accordion-list as | al expandFn |}}
-  {{#accordion-list-item
-     title=(t "clusterIstioPage.members.title")
-     detail=(t "clusterIstioPage.members.detail")
-     expandAll=al.expandAll
-     expand=(action expandFn)
-     expandOnInit=true
-  }}
-    <div class="radio">
-      <label>
-        {{radio-button
-          selection=allowSystemGroup
-          value=true
-        }}
-        {{t "clusterIstioPage.allowSystemGroup.true" htmlSafe=true}}
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        {{radio-button
-          selection=allowSystemGroup
-          value=false
-        }}
-        {{t "clusterIstioPage.allowSystemGroup.false" htmlSafe=true}}
-      </label>
-      {{#unless allowSystemGroup}}
-        {{form-members-catalog-access
-          readOnly=false
-          members=members
-          addAuthorizedPrincipal=(action "addAuthorizedPrincipal")
-          removeMember=(action "removeMember")
-          searchOnlyGroups=true
-          includeLocal=false
-        }}
-      {{/unless}}
-    </div>
-  {{/accordion-list-item}}
-  {{#accordion-list-item
-    title=(t "clusterIstioPage.pilot.title")
-    detail=(t "clusterIstioPage.pilot.detail")
-    expandAll=al.expandAll
-    expand=(action expandFn)
-    expandOnInit=false
-  }}
-    {{form-reservation
-      component="Pilot"
-      requestCpu=config.pilotRequestCpu
-      requestMemory=config.pilotRequestMemory
-      limitCpu=config.pilotLimitCpu
-      limitMemory=config.pilotLimitMemory
+  {{#accordion-list as | al expandFn |}}
+    {{#accordion-list-item
+       title=(t "clusterIstioPage.members.title")
+       detail=(t "clusterIstioPage.members.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=true
     }}
-
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label" for="input-trace-sampling">
-          {{t "clusterIstioPage.config.traceSampling.label"}}
-          {{field-required}}
-        </label>
-        <div class="input-group">
-          {{input-float
-            min="0"
-            max="100"
-            id="input-trace-sampling"
-            value=config.traceSampling
-            classNames="form-control"
-            placeholder=(t "clusterIstioPage.config.traceSampling.placeholder")
-            precision=2
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=allowSystemGroup
+            value=true
           }}
-          <div class="input-group-addon bg-default">
-            {{t "units.percent"}}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col span-12">
-        <label class="acc-label">
-          {{t "clusterIstioPage.nodeSelector.helpText" component="Pilot"}}
+          {{t "clusterIstioPage.allowSystemGroup.true" htmlSafe=true}}
         </label>
-        {{form-key-value
-          changedArray=(action (mut pilotNodeSelectors))
-          initialMap=pilotNodeSelector
-          allowEmptyValue=true
-          addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
-        }}
       </div>
-    </div>
-    <div class="row">
-      <div class="col span-12">
-        {{scheduling-toleration
-          editing=true
-          tolerate=pilotTolerations
-          title=(t "formScheduling.toleration.workloadTitle" workload="Pilot")
-        }}
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=allowSystemGroup
+            value=false
+          }}
+          {{t "clusterIstioPage.allowSystemGroup.false" htmlSafe=true}}
+        </label>
+        {{#unless allowSystemGroup}}
+          {{form-members-catalog-access
+            readOnly=false
+            members=members
+            addAuthorizedPrincipal=(action "addAuthorizedPrincipal")
+            removeMember=(action "removeMember")
+            searchOnlyGroups=true
+            includeLocal=false
+          }}
+        {{/unless}}
       </div>
-    </div>
-  {{/accordion-list-item}}
-
-  {{#accordion-list-item
-    title=(t "clusterIstioPage.mixer.title")
-    detail=(t "clusterIstioPage.mixer.detail")
-    expandAll=al.expandAll
-    expand=(action expandFn)
-    expandOnInit=false
-  }}
-    {{form-reservation
-      component="MixerTelemetry"
-      requestCpu=config.mixerTelemetryRequestCpu
-      requestMemory=config.mixerTelemetryRequestMemory
-      limitCpu=config.mixerTelemetryLimitCpu
-      limitMemory=config.mixerTelemetryLimitMemory
+    {{/accordion-list-item}}
+    {{#accordion-list-item
+       title=(t "clusterIstioPage.pilot.title")
+       detail=(t "clusterIstioPage.pilot.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=false
     }}
-
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label" for="input-mixer-policy-enabled">
-          {{t "clusterIstioPage.config.mixerPolicyEnabled.label"}}
-        </label>
-        {{schema/input-boolean
-          id="input-mixer-policy-enabled"
-          value=config.mixerPolicyEnabled
-          classNames="form-control"
-        }}
-      </div>
-    </div>
-
-    {{#if config.mixerPolicyEnabled}}
       {{form-reservation
-        component="MixerPolicy"
-        requestCpu=config.mixerPolicyRequestCpu
-        requestMemory=config.mixerPolicyRequestMemory
-        limitCpu=config.mixerPolicyLimitCpu
-        limitMemory=config.mixerPolicyLimitMemory
+        component="Pilot"
+        requestCpu=config.pilotRequestCpu
+        requestMemory=config.pilotRequestMemory
+        limitCpu=config.pilotLimitCpu
+        limitMemory=config.pilotLimitMemory
       }}
-    {{/if}}
 
-    <div class="row">
-      <div class="col span-12">
-        <label class="acc-label">
-          {{t "clusterIstioPage.nodeSelector.helpText" component="Mixer"}}
-        </label>
-        {{form-key-value
-          changedArray=(action (mut mixerNodeSelectors))
-          initialMap=mixerNodeSelector
-          allowEmptyValue=true
-          addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
-        }}
-      </div>
-    </div>
-    <div class="row">
-      <div class="col span-12">
-        {{scheduling-toleration
-          editing=true
-          tolerate=mixerTolerations
-          title=(t "formScheduling.toleration.workloadTitle" workload="Mixer")
-        }}
-      </div>
-    </div>
-  {{/accordion-list-item}}
-
-  {{#accordion-list-item
-    title=(t "clusterIstioPage.tracing.title")
-    detail=(t "clusterIstioPage.tracing.detail")
-    expandAll=al.expandAll
-    expand=(action expandFn)
-    expandOnInit=false
-  }}
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "clusterIstioPage.config.tracingEnabled.label"}}
-        </label>
-        {{schema/input-boolean
-          value=config.tracingEnabled
-          classNames="form-control"
-        }}
-      </div>
-    </div>
-
-    {{#if config.tracingEnabled}}
-      {{form-reservation
-        component="Tracing"
-        requestCpu=config.tracingRequestCpu
-        requestMemory=config.tracingRequestMemory
-        limitCpu=config.tracingLimitCpu
-        limitMemory=config.tracingLimitMemory
-      }}
       <div class="row">
-        <div class="col span-12">
-          <label class="acc-label">
-            {{t "clusterIstioPage.nodeSelector.helpText" component="Tracing"}}
-          </label>
-          {{form-key-value
-            changedArray=(action (mut tracingNodeSelectors))
-            initialMap=tracingNodeSelector
-            allowEmptyValue=true
-            addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
-          }}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col span-12">
-          {{scheduling-toleration
-            editing=true
-            tolerate=tracingTolerations
-            title=(t "formScheduling.toleration.workloadTitle" workload="Tracing")
-          }}
-        </div>
-      </div>
-    {{/if}}
-  {{/accordion-list-item}}
-
-  {{#accordion-list-item
-    title=(t "clusterIstioPage.ingress.title")
-    detail=(t "clusterIstioPage.ingress.detail")
-    expandAll=al.expandAll
-    expand=(action expandFn)
-    expandOnInit=false
-  }}
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "clusterIstioPage.config.gatewayEnabled.label"}}
-        </label>
-        {{schema/input-boolean
-          value=config.gatewayEnabled
-          classNames="form-control"
-        }}
-      </div>
-      {{#if config.gatewayEnabled}}
         <div class="col span-6">
-          <label class="acc-label" for="input-gateway-type-select">
-            {{t "clusterIstioPage.config.gatewayType.label"}}
+          <label class="acc-label" for="input-trace-sampling">
+            {{t "clusterIstioPage.config.traceSampling.label"}}
+            {{field-required}}
           </label>
-          {{new-select
-            id="input-gateway-type-select"
-            class="form-control"
-            content=gatewayTypeContent
-            value=config.gatewayType
-          }}
-        </div>
-      {{/if}}
-    </div>
-
-    {{#if config.gatewayEnabled}}
-      {{#if (eq config.gatewayType "NodePort")}}
-        <div class="row">
-          <div class="col span-6">
-            <label class="acc-label" for="input-http2-port">
-              {{t "clusterIstioPage.config.http2Port.label"}}
-              {{field-required}}
-            </label>
-            {{input-integer
-              min="30000"
-              max="32767"
-              step="1"
-              id="input-http2-port"
-              value=config.http2Port
+          <div class="input-group">
+            {{input-float
+              min="0"
+              max="100"
+              id="input-trace-sampling"
+              value=config.traceSampling
               classNames="form-control"
+              placeholder=(t "clusterIstioPage.config.traceSampling.placeholder")
+              precision=2
             }}
-          </div>
-          <div class="col span-6">
-            <label class="acc-label" for="input-https-port">
-              {{t "clusterIstioPage.config.httpsPort.label"}}
-              {{field-required}}
-            </label>
-            {{input-integer
-              min="30000"
-              max="32767"
-              step="1"
-              id="input-https-port"
-              value=config.httpsPort
-              classNames="form-control"
-            }}
+            <div class="input-group-addon bg-default">
+              {{t "units.percent"}}
+            </div>
           </div>
         </div>
-      {{else if (eq config.gatewayType "LoadBalancer")}}
-        <div class="row">
-          <div class="col span-6">
-            <label class="acc-label" for="input-load-balancer-ip">
-              {{t "clusterIstioPage.config.loadBalancerIP.label"}}
-            </label>
-            {{schema/input-string
-              value=config.loadBalancerIP
-              id="input-load-balancer-ip"
-              placeholder=(t "clusterIstioPage.config.loadBalancerIP.placeholder")
-            }}
-          </div>
-          <div class="col span-6">
-            {{form-value-array
-              initialValues=loadBalancerSourceRanges
-              addActionLabel="editDns.loadBalancerSourceRanges.addActionLabel"
-              valueLabel="editDns.loadBalancerSourceRanges.value"
-              valuePlaceholder="editDns.loadBalancerSourceRanges.placeholder"
-              changed=(action (mut loadBalancerSourceRanges))
-              addButtonClass="btn bg-link icon-btn"
-            }}
-          </div>
-        </div>
-      {{/if}}
-
-      {{form-reservation
-        component="IngressGateway"
-        requestCpu=config.gatewayRequestCpu
-        requestMemory=config.gatewayRequestMemory
-        limitCpu=config.gatewayLimitCpu
-        limitMemory=config.gatewayLimitMemory
-      }}
+      </div>
 
       <div class="row">
         <div class="col span-12">
           <label class="acc-label">
-            {{t "clusterIstioPage.nodeSelector.helpText" component="Gateway"}}
+            {{t "clusterIstioPage.nodeSelector.helpText" component="Pilot"}}
           </label>
           {{form-key-value
-            changedArray=(action (mut gatewayNodeSelectors))
-            initialMap=gatewayNodeSelector
+            changedArray=(action (mut pilotNodeSelectors))
+            initialMap=pilotNodeSelector
             allowEmptyValue=true
             addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
           }}
@@ -421,20 +199,255 @@
         <div class="col span-12">
           {{scheduling-toleration
             editing=true
-            tolerate=gatewayTolerations
-            title=(t "formScheduling.toleration.workloadTitle" workload=(parse-camelcase "IngressGateway"))
+            tolerate=pilotTolerations
+            title=(t "formScheduling.toleration.workloadTitle" workload="Pilot")
           }}
         </div>
       </div>
-    {{/if}}
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-      title=(t "clusterIstioPage.customAnswers.title")
-      detail=(t "clusterIstioPage.customAnswers.detail")
-      expandAll=al.expandAll
-      expand=(action expandFn)
-      expandOnInit=false
+       title=(t "clusterIstioPage.mixer.title")
+       detail=(t "clusterIstioPage.mixer.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=false
+    }}
+      {{form-reservation
+        component="MixerTelemetry"
+        requestCpu=config.mixerTelemetryRequestCpu
+        requestMemory=config.mixerTelemetryRequestMemory
+        limitCpu=config.mixerTelemetryLimitCpu
+        limitMemory=config.mixerTelemetryLimitMemory
+      }}
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label" for="input-mixer-policy-enabled">
+            {{t "clusterIstioPage.config.mixerPolicyEnabled.label"}}
+          </label>
+          {{schema/input-boolean
+            id="input-mixer-policy-enabled"
+            value=config.mixerPolicyEnabled
+            classNames="form-control"
+          }}
+        </div>
+      </div>
+
+      {{#if config.mixerPolicyEnabled}}
+        {{form-reservation
+          component="MixerPolicy"
+          requestCpu=config.mixerPolicyRequestCpu
+          requestMemory=config.mixerPolicyRequestMemory
+          limitCpu=config.mixerPolicyLimitCpu
+          limitMemory=config.mixerPolicyLimitMemory
+        }}
+      {{/if}}
+
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "clusterIstioPage.nodeSelector.helpText" component="Mixer"}}
+          </label>
+          {{form-key-value
+            changedArray=(action (mut mixerNodeSelectors))
+            initialMap=mixerNodeSelector
+            allowEmptyValue=true
+            addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+          }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-12">
+          {{scheduling-toleration
+            editing=true
+            tolerate=mixerTolerations
+            title=(t "formScheduling.toleration.workloadTitle" workload="Mixer")
+          }}
+        </div>
+      </div>
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+       title=(t "clusterIstioPage.tracing.title")
+       detail=(t "clusterIstioPage.tracing.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=false
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "clusterIstioPage.config.tracingEnabled.label"}}
+          </label>
+          {{schema/input-boolean
+            value=config.tracingEnabled
+            classNames="form-control"
+          }}
+        </div>
+      </div>
+
+      {{#if config.tracingEnabled}}
+        {{form-reservation
+          component="Tracing"
+          requestCpu=config.tracingRequestCpu
+          requestMemory=config.tracingRequestMemory
+          limitCpu=config.tracingLimitCpu
+          limitMemory=config.tracingLimitMemory
+        }}
+        <div class="row">
+          <div class="col span-12">
+            <label class="acc-label">
+              {{t "clusterIstioPage.nodeSelector.helpText" component="Tracing"}}
+            </label>
+            {{form-key-value
+              changedArray=(action (mut tracingNodeSelectors))
+              initialMap=tracingNodeSelector
+              allowEmptyValue=true
+              addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+            }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-12">
+            {{scheduling-toleration
+              editing=true
+              tolerate=tracingTolerations
+              title=(t "formScheduling.toleration.workloadTitle" workload="Tracing")
+            }}
+          </div>
+        </div>
+      {{/if}}
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+       title=(t "clusterIstioPage.ingress.title")
+       detail=(t "clusterIstioPage.ingress.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=false
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "clusterIstioPage.config.gatewayEnabled.label"}}
+          </label>
+          {{schema/input-boolean
+            value=config.gatewayEnabled
+            classNames="form-control"
+          }}
+        </div>
+        {{#if config.gatewayEnabled}}
+          <div class="col span-6">
+            <label class="acc-label" for="input-gateway-type-select">
+              {{t "clusterIstioPage.config.gatewayType.label"}}
+            </label>
+            {{new-select
+              id="input-gateway-type-select"
+              class="form-control"
+              content=gatewayTypeContent
+              value=config.gatewayType
+            }}
+          </div>
+        {{/if}}
+      </div>
+
+      {{#if config.gatewayEnabled}}
+        {{#if (eq config.gatewayType "NodePort")}}
+          <div class="row">
+            <div class="col span-6">
+              <label class="acc-label" for="input-http2-port">
+                {{t "clusterIstioPage.config.http2Port.label"}}
+                {{field-required}}
+              </label>
+              {{input-integer
+                min="30000"
+                max="32767"
+                step="1"
+                id="input-http2-port"
+                value=config.http2Port
+                classNames="form-control"
+              }}
+            </div>
+            <div class="col span-6">
+              <label class="acc-label" for="input-https-port">
+                {{t "clusterIstioPage.config.httpsPort.label"}}
+                {{field-required}}
+              </label>
+              {{input-integer
+                min="30000"
+                max="32767"
+                step="1"
+                id="input-https-port"
+                value=config.httpsPort
+                classNames="form-control"
+              }}
+            </div>
+          </div>
+        {{else if (eq config.gatewayType "LoadBalancer")}}
+          <div class="row">
+            <div class="col span-6">
+              <label class="acc-label" for="input-load-balancer-ip">
+                {{t "clusterIstioPage.config.loadBalancerIP.label"}}
+              </label>
+              {{schema/input-string
+                value=config.loadBalancerIP
+                id="input-load-balancer-ip"
+                placeholder=(t "clusterIstioPage.config.loadBalancerIP.placeholder")
+              }}
+            </div>
+            <div class="col span-6">
+              {{form-value-array
+                initialValues=loadBalancerSourceRanges
+                addActionLabel="editDns.loadBalancerSourceRanges.addActionLabel"
+                valueLabel="editDns.loadBalancerSourceRanges.value"
+                valuePlaceholder="editDns.loadBalancerSourceRanges.placeholder"
+                changed=(action (mut loadBalancerSourceRanges))
+                addButtonClass="btn bg-link icon-btn"
+              }}
+            </div>
+          </div>
+        {{/if}}
+
+        {{form-reservation
+          component="IngressGateway"
+          requestCpu=config.gatewayRequestCpu
+          requestMemory=config.gatewayRequestMemory
+          limitCpu=config.gatewayLimitCpu
+          limitMemory=config.gatewayLimitMemory
+        }}
+
+        <div class="row">
+          <div class="col span-12">
+            <label class="acc-label">
+              {{t "clusterIstioPage.nodeSelector.helpText" component="Gateway"}}
+            </label>
+            {{form-key-value
+              changedArray=(action (mut gatewayNodeSelectors))
+              initialMap=gatewayNodeSelector
+              allowEmptyValue=true
+              addActionLabel="clusterIstioPage.nodeSelector.addSelectorLabel"
+            }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-12">
+            {{scheduling-toleration
+              editing=true
+              tolerate=gatewayTolerations
+              title=(t "formScheduling.toleration.workloadTitle" workload=(parse-camelcase "IngressGateway"))
+            }}
+          </div>
+        </div>
+      {{/if}}
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+       title=(t "clusterIstioPage.customAnswers.title")
+       detail=(t "clusterIstioPage.customAnswers.detail")
+       expandAll=al.expandAll
+       expand=(action expandFn)
+       expandOnInit=false
     }}
       {{form-key-value
         initialMap=customAnswers
@@ -451,26 +464,26 @@
       }}
     {{/accordion-list-item}}
   {{/accordion-list}}
-{{#if (or pilotWarning mixerTelemetryWarning tracingWarning gatewayWarning (and mixerPolicyWarning config.mixerPolicyEnabled) mixerWarning istioWarning)}}
-  {{#banner-message color="bg-warning"}}
-    {{#if istioWarning}}
-      <p>{{istioWarning}}</p>
-    {{else}}
-      <p>{{pilotWarning}}</p>
-      <p>{{mixerWarning}}</p>
-      <p>{{mixerTelemetryWarning}}</p>
-      {{#if config.tracingEnabled}}
-        <p>{{tracingWarning}}</p>
+  {{#if (or pilotWarning mixerTelemetryWarning tracingWarning gatewayWarning (and mixerPolicyWarning config.mixerPolicyEnabled) mixerWarning istioWarning)}}
+    {{#banner-message color="bg-warning"}}
+      {{#if istioWarning}}
+        <p>{{istioWarning}}</p>
+      {{else}}
+        <p>{{pilotWarning}}</p>
+        <p>{{mixerWarning}}</p>
+        <p>{{mixerTelemetryWarning}}</p>
+        {{#if config.tracingEnabled}}
+          <p>{{tracingWarning}}</p>
+        {{/if}}
+        {{#if config.gatewayEnabled}}
+          <p>{{gatewayWarning}}</p>
+        {{/if}}
+        {{#if config.mixerPolicyEnabled}}
+          <p>{{mixerPolicyWarning}}</p>
+        {{/if}}
       {{/if}}
-      {{#if config.gatewayEnabled}}
-        <p>{{gatewayWarning}}</p>
-      {{/if}}
-      {{#if config.mixerPolicyEnabled}}
-        <p>{{mixerPolicyWarning}}</p>
-      {{/if}}
-    {{/if}}
-  {{/banner-message}}
-{{/if}}
+    {{/banner-message}}
+  {{/if}}
 
   {{top-errors errors=errors}}
 
@@ -483,12 +496,12 @@
   {{/if}}
 
   {{#save-cancel
-    saveDisabled=saveDisabled
-    editing=enabled
-    createLabel="clusterIstioPage.enableActionLabel"
-    save=(action "save")
-    saved=saved
-    cancelDisabled=true
+     saveDisabled=saveDisabled
+     editing=enabled
+     createLabel="clusterIstioPage.enableActionLabel"
+     save=(action "save")
+     saved=saved
+     cancelDisabled=true
   }}
     {{#if (and enabled canEnable)}}
       <button class="btn bg-error" {{action "disable"}}>
