@@ -56,6 +56,10 @@ export default Route.extend(Preload, {
       .catch((err) => this.loadingError(err, transition));
   },
 
+  afterModel(model) {
+    return this.scope.finishSwitchToProject(get(model, 'project'));
+  },
+
   redirect(model, transition) {
     let route = this.get(`session.${ C.SESSION.PROJECT_ROUTE }`);
 
@@ -63,11 +67,6 @@ export default Route.extend(Preload, {
     if ( get(transition, 'targetName') === 'authenticated.project.index' && VALID_ROUTES.includes(route) ) {
       this.replaceWith(route);
     }
-  },
-
-  setupController(controller, model) {
-    this._super(...arguments);
-    get(this, 'scope').finishSwitchToProject(get(model, 'project'));
   },
 
   actions: {
