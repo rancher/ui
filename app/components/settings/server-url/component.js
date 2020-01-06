@@ -10,6 +10,7 @@ const SCHEME = 'https://';
 
 export default Component.extend({
   router:           service(),
+  settings:         service(),
 
   layout,
 
