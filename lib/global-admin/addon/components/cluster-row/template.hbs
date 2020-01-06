@@ -52,7 +52,11 @@
   {{else}}
     <td data-title="{{dt.nodes}}">
       {{#link-to-external "authenticated.cluster.nodes" model.id}}
-        {{model.machines.length}}
+        {{#if (gt (get subMatches model.id) 0)}}
+          <b>{{model.machines.length}}</b>
+        {{else}}
+          {{model.machines.length}}
+        {{/if}}
       {{/link-to-external}}
     </td>
     <td data-title="{{dt.cpu}}">

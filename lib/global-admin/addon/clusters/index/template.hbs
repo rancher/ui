@@ -24,6 +24,8 @@
    sortBy=sortBy
    bulkActions=true
    extraSearchFields=extraSearchFields
+   extraSearchSubFields=extraSearchSubFields
+   subSearchField="nodes"
    pagingLabel="pagination.cluster"
    headers=headers as |sortable kind inst dt|
 }}
@@ -33,6 +35,7 @@
       fullColspan=sortable.fullColspan
       launchOnCluster=(action "launchOnCluster")
       useKubernetes=(action "useKubernetes")
+      subMatches=sortable.subMatches
       dt=dt
     }}
   {{else if (eq kind "nomatch")}}
