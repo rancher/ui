@@ -2657,6 +2657,7 @@ nodeTemplatesPage:
     noData: 没有配置主机模板
     usedByNone: 没有集群
     unknown: 未知
+    owner: 所有者
 
 storageClassPage:
   header: 存储类列表
@@ -4162,7 +4163,7 @@ cruDestinationRule:
     consistentHash:
       label: 使用一致的基于散列的负载平衡实现软会话关联
       httpHeaderName:
-        label: HTTP Header Name
+        label: HTTP Header 名称
         placeholder: '例如: end-user'
         error: 必须设置HTTP Header名称。
       minimumRingSize:
@@ -4170,7 +4171,7 @@ cruDestinationRule:
         placeholder: '例如: 1024'
       httpCookie:
         name:
-          label: Cookie Name
+          label: Cookie 名称
           placeholder: '例如: username'
           error: 需要Cookie名称。
         path:
@@ -4231,7 +4232,7 @@ cruDestinationRule:
       placeholder: '例如: 10s'
       help: Time interval between ejection sweep analysis.
     maxEjectionPercent:
-      label: Max Ejection Percent
+      label: 最大驱逐百分比
       placeholder: '例如: 10'
       help: Maximum % of hosts in the load balancing pool for the upstream service that can be ejected.
   subsets:
@@ -4242,7 +4243,7 @@ cruDestinationRule:
     name:
       label: Name
       placeholder: '例如: v1'
-      error: Subset Name is required.
+      error: 子网名称需要设置.
     labels:
       error: 请为子集至少设置一个标签。
   tls:
@@ -5091,7 +5092,7 @@ cruStorageClass:
     volumetype:
       label: '卷类型'
       placeholder: '例如: replicate:3'
-      
+
 gatewayPage:
   noMatch: 没有网关匹配当前搜索
   noData: 没有配置网关
@@ -6654,6 +6655,8 @@ formVersions:
   downgrade: "(不能降级)"
   notallowed: "(模板不允许)"
   unsupported: "(不支持)"
+  helpBlock:
+    label: 升级Kubernetes版本时，请查看<a href="https://groups.google.com/forum/#!forum/kubernetes-announce" target="_blank" rel="nofollow noreferrer noopener">Kubernetes release notes</a>了解功能变化。
 
 formIstioHost:
   prompt: 选择节点...
@@ -7692,7 +7695,7 @@ newCatalog:
   titleConfigure: "设置{name}应用"
   titleUpgrade: "升级{name}应用"
   txt: answers.txt
-  unknownType: "未识别问题类型:"
+  unknownType: "未识别的问题类型:"
   upgrade: "升级:"
   url: "项目URL:"
   version:
@@ -8229,6 +8232,12 @@ nodeDriver:
     hostOptions:
       any:
         label: 'Any'
+    cloudconfig:
+      label: Cloud Config YAML
+    contentLibrary: 'Content library:'
+    libraryTemplate: 'Library template:'
+    virtualMachine: '虚拟机:'
+    template: '模板:'
     creationType:
       label: 创建方法
       library: '模板部署: Content Library'
@@ -8241,7 +8250,7 @@ nodeDriver:
       help: '注意: 免费的ESXi license不支持API访问，只支持具有有效或评估许可证的服务器。'
     scheduling:
       title: 2. 调度
-      detail: Choose what hypervisor the virtual machine will be scheduled to
+      detail: 选择将调度虚拟机的管理程序
     instance:
       title: 3. 实例配置
       detail: 选择虚拟机的大小和操作系统
@@ -8281,7 +8290,7 @@ nodeDriver:
       placeholder: '缺省: 最新的rancheros-vmware镜像'
     cloudConfig:
       label: Cloud config
-      placeholder: /etc/kubernetes/vsphere.conf
+      placeholder: '/etc/kubernetes/vsphere.conf'
     cloneFrom:
       label: VM/Template
       placeholder: '例如: http://my_host/template.yml'
@@ -9885,7 +9894,7 @@ pipelineNotification:
   recipients:
     required: 接受者必填
   asMessage: 发送信息到
-  
+
 selectValueCheck:
   message: |
     {values, plural,
