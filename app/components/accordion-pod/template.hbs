@@ -59,17 +59,23 @@
           {{action-menu model=inst}}
         </td>
       </tr>
-      {{#if inst.dislayContainerMessage}}
+      {{#if (or inst.dislayContainerMessage inst.status.message)}}
         <tr class="sub-row no-top auto-height">
           <td colspan="1"></td>
           <td class="pb-5" colspan="4">
-            {{#each inst.containers as |container|}}
-              {{#if container.showTransitioningMessage}}
-                <div>
-                  <small class="text-small {{container.stateColor}}">{{uc-first container.transitioningMessage}}</small>
-                </div>
-              {{/if}}
-            {{/each}}
+            {{#if inst.dislayContainerMessage}}
+              {{#each inst.containers as |container|}}
+                {{#if container.showTransitioningMessage}}
+                  <div>
+                    <small class="text-small {{container.stateColor}}">{{uc-first container.transitioningMessage}}</small>
+                  </div>
+                {{/if}}
+              {{/each}}
+            {{else if inst.status.message}}
+              <div class="clip text-small {{inst.stateColor}}">
+                {{uc-first inst.status.message}}
+              </div>
+            {{/if}}
           </td>
           <td colspan="1"></td>
         </tr>
