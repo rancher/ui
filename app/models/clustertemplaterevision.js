@@ -24,9 +24,13 @@ export default Resource.extend({
   }),
 
   canMakeDefault: computed('clusterTemplate.defaultRevisionId', function() {
-    let { clusterTemplate: { defaultRevisionId = '' } } = this;
+    let defaultRevisionId = get(this, 'clusterTemplate.defaultRevisionId') || null;
 
-    return this.id !== defaultRevisionId;
+    if (defaultRevisionId) {
+      return this.id !== defaultRevisionId;
+    }
+
+    return false;
   }),
 
   availableActions: computed('actionLinks.[]', 'enabled', 'clusterTemplate.defaultRevisionId', function() {
