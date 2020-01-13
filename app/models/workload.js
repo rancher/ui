@@ -341,9 +341,10 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
     if ( get(this, 'scaleTimer') ) {
       cancel(get(this, 'scaleTimer'));
     }
+    const scale = get(this, 'scale');
 
     var timer = later(this, function() {
-      this.save({ data: { scale: get(this, 'scale') } }).catch((err) => {
+      this.save({ data: { scale } }).catch((err) => {
         get(this, 'growl').fromError('Error updating scale', err);
       });
     }, 500);
