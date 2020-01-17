@@ -1,0 +1,575 @@
+{{#unless isEnabled}}
+  <section>
+    <BannerMessage
+      @color="bg-warning"
+      @message={{t "authPage.saml.header.disabled.label" providerName=(t providerNamePath)}}
+    />
+  </section>
+{{/unless}}
+
+<AccordionList
+  @showExpandAll={{false}}
+  as |al expandFn|
+>
+  {{#if canEditConfig}}
+    <AccordionListItem
+      class="mt-30"
+      @detail={{t "authPage.saml.disabled.headerDetail" providerName=(t providerNamePath)}}
+      @expand={{action expandFn}}
+      @expandAll={{al.expandAll}}
+      @expandOnInit={{true}}
+      @expanded={{true}}
+      @showExpand={{false}}
+      @title={{t "authPage.saml.disabled.header" providerName=(t providerNamePath)}}
+    >
+      <section>
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label pb-5">
+              {{t "authPage.saml.disabled.name.labelText"}}{{field-required}}
+            </label>
+            {{input
+              type="text"
+              value=authConfig.displayNameField
+              classNames="form-control"
+            }}
+          </div>
+          <div class="col span-6">
+            <label class="acc-label pb-5">
+              {{t "authPage.saml.disabled.username.labelText"}}{{field-required}}
+            </label>
+            {{input
+              type="text"
+              value=authConfig.userNameField
+              classNames="form-control"
+            }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label pb-5">
+              {{t "authPage.saml.disabled.uid.labelText"}}{{field-required}}
+            </label>
+            {{input
+              type="text"
+              value=authConfig.uidField
+              classNames="form-control"
+            }}
+          </div>
+          <div class="col span-6">
+            <label class="acc-label pb-5">
+              {{t "authPage.saml.disabled.groups.labelText"}}{{field-required}}
+            </label>
+            {{input
+              type="text"
+              value=authConfig.groupsField
+              classNames="form-control"
+            }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label pb-5">
+              {{t "authPage.saml.disabled.rancherApiHost.labelText" appName=settings.appName}}{{field-required}}
+            </label>
+            <div class="input-group">
+              <span class="input-group-addon bg-default">
+                <label>
+                  {{protocol}}
+                </label>
+              </span>
+
+              {{input-url
+                classNames="form-control"
+                id="server-url"
+                isInvalid=(action (mut urlInvalid))
+                urlWarning=(action (mut urlWarning))
+                urlError=(action (mut urlError))
+                value=apiHost
+              }}
+            </div>
+            <div>
+              {{#if urlInvalid}}
+                {{#each urlError as |error|}}
+                  <BannerMessage
+                    @color="bg-{{error.type}}"
+                    @message={{t error.msg
+                               activeValue=authConfig.rancherApiHost
+                               htmlSafe=true
+                             }}
+                  />
+                {{/each}}
+              {{/if}}
+            </div>
+            <div>
+              {{#each urlWarning as |warning|}}
+                <BannerMessage
+                  @color="bg-{{warning.type}}"
+                  @message={{t warning.msg
+                             activeValue=authConfig.rancherApiHost
+                             htmlSafe=true
+                           }}
+                />
+              {{/each}}
+            </div>
+          </div>
+        </div>
+        <div class="row pt-20">
+          <div class="col span-4">
+            <div class="inline-form">
+              <label class="acc-label pb-5">
+                {{t "newCertificate.key.label"}}{{field-required}}
+              </label>
+              {{input-text-file
+                accept="text/*, .pem, .pkey, .key"
+                canChangeName=false
+                classNames="box"
+                minHeight=60
+                placeholder="newCertificate.key.placeholder"
+                value=authConfig.spKey
+              }}
+            </div>
+          </div>
+          <div class="col span-4">
+            <div class="inline-form">
+              <label class="acc-label pb-5">
+                {{t "newCertificate.cert.label"}}{{field-required}}
+              </label>
+              {{input-text-file
+                accept="text/*, .pem, .crt"
+                canChangeName=false
+                classNames="box"
+                minHeight=60
+                placeholder="newCertificate.cert.placeholder"
+                value=authConfig.spCert
+              }}
+            </div>
+          </div>
+          <div class="col span-4">
+            <div class="inline-form">
+              <label class="acc-label pb-5">
+                {{t "newCertificate.metaXML.label"}}{{field-required}}
+              </label>
+              {{input-text-file
+                accept="text/xml"
+                canChangeName=false
+                classNames="box"
+                minHeight=60
+                placeholder="newCertificate.metaXML.placeholder"
+                value=authConfig.idpMetadataContent
+              }}
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </AccordionListItem>
+
+    {{#if isShibboleth}}
+      <AccordionListItem
+        class="mt-30"
+        @detail={{t "authPage.shibboleth.openLdap.detail"}}
+        @expand={{action expandFn}}
+        @expandAll={{al.expandAll}}
+        @title={{t "authPage.shibboleth.openLdap.header"}}
+      >
+        <section class="mb-10">
+          <div class="row">
+            <div class="col span-6 mb-0">
+              <div class="inline-form">
+                <label class="acc-label pb-5">
+                  {{t "model.openldapconfig.server.label"}}{{field-required}}
+                </label>
+                {{input
+                  value=configServers
+                  classNames="form-control"
+                }}
+              </div>
+            </div>
+            <div class="col span-6 mb-0">
+              <label class="acc-label pb-5">
+                {{t "ldap.accessConfig.port.labelText"}}
+              </label>
+              <div class="input-group">
+                {{input-integer
+                  value=authConfig.port
+                  min=1
+                  max=65535
+                  classNames="form-control"
+                }}
+                <span class="input-group-addon bg-default">
+                  <label>
+                    {{t "ldap.accessConfig.port.checkbox"}} {{input type="checkbox" checked=authConfig.tls}}
+                  </label>
+                </span>
+              </div>
+            </div>
+          </div>
+          {{#if authConfig.tls}}
+            <hr/>
+            <div class="row pt-10">
+              <div class="col span-12 input-group mt-0">
+                {{input-text-file
+                  label="ldap.customizeSchema.cert.labelText"
+                  value=authConfig.certificate
+                  canChangeName=false
+                  accept="text/plain,.pem,.pkey,.key"
+                  minHeight=60
+                  placeholder="ldap.customizeSchema.cert.placeholder"
+                  shouldChangeName=false
+                }}
+                <p class="help-block">{{t "ldap.customizeSchema.cert.helpText"}}</p>
+              </div>
+            </div>
+          {{/if}}
+          <div class="row">
+            <div class="col span-6 mb-0">
+              <label class="acc-label pb-5">
+                {{t "ldap.accessConfig.connectionTimeout.labelText"}}{{field-required}}
+              </label>
+              <div class="input-group">
+                {{input-integer
+                  value=authConfig.connectionTimeout
+                  min=1
+                  classNames="form-control"
+                }}
+                <span class="input-group-addon bg-default">
+                  <label>
+                    {{t "generic.milliseconds"}}
+                  </label>
+                </span>
+              </div>
+            </div>
+          </div>
+          <hr class="mt-30 mb-30"/>
+          <p class="text-info mb-0">
+            {{t "ldap.accessConfig.subtext2" appName=settings.appName}}
+          </p>
+          <div class="row">
+            <div class="col span-6">
+              <div class="inline-form">
+                <label class="acc-label pb-5">
+                  {{t "ldap.accessConfig.serviceAccountDistinguishedName.labelText"}}{{field-required}}
+                </label>
+                {{input
+                  value=authConfig.serviceAccountDistinguishedName
+                  classNames="form-control"
+                }}
+              </div>
+            </div>
+            <div class="col span-6">
+              <div class="inline-form">
+                <label class="acc-label pb-5">
+                  {{t "model.openldapconfig.serviceAccountPassword.label"}}{{field-required}}
+                </label>
+                {{input
+                  type="password"
+                  value=authConfig.serviceAccountPassword
+                  classNames="form-control"
+                }}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col span-6">
+              <div class="inline-form">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.users.searchBase.labelText"}}{{field-required}}
+                </label>
+                {{input
+                  value=authConfig.userSearchBase
+                  classNames="form-control"
+                  placeholder=(t "ldap.accessConfig.userSearchBase.placeholder")
+                }}
+                <p class="help-block">
+                  {{t "model.openldapconfig.domain.help"}}
+                </p>
+              </div>
+            </div>
+            <div class="col span-6">
+              <div class="inline-form">
+                <label class="acc-label pb-5">
+                  {{t "ldap.accessConfig.groupSearchBase.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.groupSearchBase
+                  classNames="form-control"
+                  placeholder=(t "ldap.accessConfig.groupSearchBase.placeholder")
+                }}
+                <p class="help-block">
+                  {{t "ldap.accessConfig.groupSearchBase.helpText"}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="row">
+            <div class="col span-6">
+              <h3>{{t "ldap.customizeSchema.users.header"}}</h3>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.users.objectClass.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.userObjectClass
+                  classNames="form-control"
+                }}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.users.name.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.userNameAttribute
+                  classNames="form-control"
+                }}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.users.login.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.userLoginAttribute
+                  classNames="form-control"
+                }}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.users.userMemberAttribute.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.userMemberAttribute
+                  classNames="form-control"
+                }}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.users.search.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.userSearchAttribute
+                  classNames="form-control"
+                }}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.users.searchFilter.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.userSearchFilter
+                  classNames="form-control"
+                }}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.users.enabledAttribute.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.userEnabledAttribute
+                  classNames="form-control"
+                }}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.users.disabledBitMask.labelText"}}
+                </label>
+                {{input-integer
+                  value=authConfig.userDisabledBitMask
+                  min=1
+                  classNames="form-control"
+                }}
+              </div>
+            </div>
+            <div class="col span-6">
+              <h3>
+                {{t "ldap.customizeSchema.groups.header"}}
+              </h3>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.groups.objectClass.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.groupObjectClass
+                  classNames="form-control"
+                }}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.groups.name.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.groupNameAttribute
+                  classNames="form-control"
+                }}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.groups.groupMemberUser.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.groupMemberUserAttribute
+                  classNames="form-control"
+                  placeholder=(t "ldap.customizeSchema.groups.groupMemberUser.placeholder")
+                }}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.groups.search.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.groupSearchAttribute
+                  classNames="form-control"
+                }}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.groups.searchFilter.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.groupSearchFilter
+                  classNames="form-control"
+                }}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.groups.groupMemberMapping.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.groupMemberMappingAttribute
+                  classNames="form-control"
+                }}
+              </div>
+              <div class="pb-20">
+                <label class="acc-label pb-5">
+                  {{t "ldap.customizeSchema.groups.groupDN.labelText"}}
+                </label>
+                {{input
+                  value=authConfig.groupDNAttribute
+                  classNames="form-control"
+                  placeholder=(t "ldap.customizeSchema.groups.groupDN.placeholder")
+                }}
+              </div>
+              {{#if (not-eq authConfig.id "freeipa")}}
+                <div class="pb-20">
+                  <label class="acc-label pb-5">
+                    {{t "ldap.customizeSchema.groups.nestedGroup.title"}}
+                  </label>
+                  <div class="radio">
+                    <label class="acc-label pb-5">
+                      {{radio-button
+                        selection=authConfig.nestedGroupMembershipEnabled
+                        value=false
+                      }}
+                      {{t "ldap.customizeSchema.groups.nestedGroup.disabled.labelText"}}
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label class="acc-label pb-5">
+                      {{radio-button
+                        selection=authConfig.nestedGroupMembershipEnabled
+                        value=true
+                      }}
+                      {{t "ldap.customizeSchema.groups.nestedGroup.enabled.labelText"}}
+                      <p class="help-block">
+                        {{t "ldap.customizeSchema.groups.nestedGroup.enabled.helpText"}}
+                      </p>
+                    </label>
+                  </div>
+                </div>
+              {{/if}}
+            </div>
+          </div>
+        </section>
+      </AccordionListItem>
+    {{/if}}
+
+    <AccordionListItem
+      @detail={{t "authPage.github.testAuth.subtext"}}
+      @expand={{action expandFn}}
+      @expandAll={{al.expandAll}}
+      @expandOnInit={{true}}
+      @expanded={{true}}
+      @showExpand={{false}}
+      @title={{t "authPage.saml.disabled.testAuth.header" step=(if isShibboleth "3" "2")}}
+    >
+      <section>
+        <TopErrors @errors={{errors}} />
+        <SaveCancel
+          @editing={{editing}}
+          @save={{action "authTest"}}
+          @cancel={{action "cancel"}}
+          @createLabel={{createLabel}}
+          @savingLabel={{saveLabel}}
+          @saving={{testing}}
+        />
+      </section>
+    </AccordionListItem>
+  {{else}}
+    <AccordionListItem
+      class="mt-30"
+      @expand={{action expandFn}}
+      @expandAll={{al.expandAll}}
+      @expandOnInit={{true}}
+      @expanded={{true}}
+      @showExpand={{false}}
+      @title={{t "authPage.saml.accessEnabled.header"}}
+    >
+      <section>
+        <div class="clearfix">
+          <div class="pull-right">
+            <button class="btn btn-sm bg-primary" {{action "edit"}}>
+              {{t "generic.edit"}}
+            </button>
+            <button class="btn btn-sm right-divider-btn bg-error" {{action "disable"}}>
+              {{t "authPage.saml.accessEnabled.disable"}}
+            </button>
+          </div>
+        </div>
+
+        <hr/>
+
+        <div class="row">
+          <div class="col span-12 force-wrap">
+            <div class="mb-10">
+              <b>{{t "authPage.saml.disabled.name.display"}} </b> <span class="text-muted">{{authConfig.displayNameField}}</span>
+            </div>
+            <div class="mb-10">
+              <b>{{t "authPage.saml.disabled.username.display"}} </b> <span class="text-muted">{{authConfig.userNameField}}</span>
+            </div>
+            <div class="mb-10">
+              <b>{{t "authPage.saml.disabled.uid.display"}} </b> <span class="text-muted">{{authConfig.uidField}}</span>
+            </div>
+            <div class="mb-10">
+              <b>{{t "authPage.saml.disabled.rancherApiHost.display" appName=settings.appName}} </b> <span class="text-muted">{{authConfig.rancherApiHost}}</span>
+            </div>
+            <div class="mb-10">
+              <b>{{t "authPage.saml.disabled.groups.display"}} </b> <span class="text-muted">{{authConfig.groupsField}}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </AccordionListItem>
+  {{/if}}
+
+  {{#if isEnabled}}
+    <AccordionListItem
+      class="mt-30"
+      @expand={{action expandFn}}
+      @expandAll={{al.expandAll}}
+      @expandOnInit={{true}}
+      @expanded={{true}}
+      @showExpand={{false}}
+      @title={{t "siteAccess.header"}}
+      @detail={{t "siteAccess.helpText" appName=settings.appName htmlSafe=true}}
+    >
+      <SiteAccess
+        @model={{authConfig}}
+        @principals={{model.principals}}
+        @collection="siteAccess.organizations"
+      />
+    </AccordionListItem>
+  {{/if}}
+</AccordionList>
