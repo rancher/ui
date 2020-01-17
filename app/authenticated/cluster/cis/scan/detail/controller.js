@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { computed, get } from '@ember/object';
+import { computed, get, set } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default Controller.extend({
@@ -58,6 +58,9 @@ export default Controller.extend({
         resources:        [get(this, 'model.scan')],
         onDeleteFinished: () => get(this, 'router').replaceWith('authenticated.cluster.cis/scan')
       });
+    },
+    clearSearchText() {
+      set(this, 'searchText', '');
     }
   },
 
