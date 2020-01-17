@@ -121,15 +121,15 @@ const ClusterScan = Resource.extend({
   },
 
   getNodesAndStateForTestResult(testResult) {
+    const nodeNames = this.getNodeNamesFromNodeType(testResult.node_type);
+
     if (testResult.state === 'skip') {
       return {
-        nodes:       [],
+        nodes:       nodeNames,
         passedNodes: [],
         failedNodes: []
       }
     }
-
-    const nodeNames = this.getNodeNamesFromNodeType(testResult.node_type);
 
     if (testResult.state === 'pass') {
       return {
