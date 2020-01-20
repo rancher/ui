@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { computed, get } from '@ember/object';
+import { computed, get, set } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default Controller.extend({
@@ -58,6 +58,9 @@ export default Controller.extend({
         resources:        [get(this, 'model.scan')],
         onDeleteFinished: () => get(this, 'router').replaceWith('authenticated.cluster.cis/scan')
       });
+    },
+    clearSearchText() {
+      set(this, 'searchText', '');
     }
   },
 
@@ -123,9 +126,11 @@ export default Controller.extend({
 
     return splitId
       .map((column) => {
-        const columnPaddingWidth = Math.max(columnWidth - column.length, 0)
+        const suffix = column.match(/[a-z]$/i) ? '' : 'a';
+        const columnWithSuffix = column + suffix;
+        const columnPaddingWidth = Math.max(columnWidth - columnWithSuffix.length, 0)
 
-        return '0'.repeat(columnPaddingWidth) + column;
+        return '0'.repeat(columnPaddingWidth) + columnWithSuffix;
       })
       .join('');
   },
