@@ -25,7 +25,7 @@ export default Resource.extend({
     });
   }),
 
-  keys: computed('model.data', 'model.binaryData', function() {
+  keys: computed('data', 'binaryData', function() {
     const {
       data       = {},
       binaryData = {}
@@ -41,7 +41,7 @@ export default Resource.extend({
     }
   }),
 
-  configData: computed('model.data', 'model.binaryData', function() {
+  configData: computed('data', 'binaryData', function() {
     const {
       data       = {},
       binaryData = {}
