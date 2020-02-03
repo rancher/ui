@@ -5,6 +5,7 @@ import Component from '@ember/component';
 import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
 import { eachLimit } from 'async';
+import { prepareForBackend } from 'shared/components/drain-node/component';
 
 export default Component.extend(ModalBase, {
   growl: service(),
@@ -12,25 +13,16 @@ export default Component.extend(ModalBase, {
   layout,
   classNames: ['large-modal'],
 
-  aggressive:         false,
-  usePodGracePeriod:  true,
-  gracePeriod:        30,
-  unlimitedTimeout:   false,
-  timeout:            60,
+  selection: {},
 
   resources: alias('modalService.modalOpts.resources'),
 
   actions: {
     drain() {
-      const aggressive = get(this, 'aggressive');
+      const nodeDrainInput = { ...get(this, 'selection') };
 
-      const opts = {
-        deleteLocalData:  aggressive,
-        force:            aggressive,
-        ignoreDaemonSets: true,
-        gracePeriod:      get(this, 'usePodGracePeriod') ? -1 : get(this, 'gracePeriod'),
-        timeout:          get(this, 'unlimitedTimeout')  ?  0 : get(this, 'timeout'),
-      };
+      prepareForBackend(nodeDrainInput);
+
 
       const resources = get(this, 'resources').slice();
 
@@ -39,7 +31,7 @@ export default Component.extend(ModalBase, {
           return cb();
         }
 
-        resource.doAction('drain', opts).finally(cb);
+        resource.doAction('drain', nodeDrainInput).finally(cb);
       });
 
       this.send('cancel');

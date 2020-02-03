@@ -924,6 +924,69 @@
               </CheckOverrideAllowed>
             </div>
           </div>
+
+          <div class="row">
+            <div class="col">
+              <label class="acc-label">
+                {{t "clusterNew.rke.upgradeStrategy.maximumWorkersDown.label"}}
+              </label>
+              {{#input-or-display
+                  editable=notView
+                  value=maxUnavailable
+              }}
+                <div class="input-group">
+                  {{input-integer
+                    value=upgradeStrategy.maxUnavailable
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.upgradeStrategy.maximumWorkersDown.placeholder")
+                  }}
+                  <span class="input-group-input-addon bg-default">
+                    {{new-select
+                      classNames="form-control"
+                      optionValuePath="id"
+                      optionLabelPath="name"
+                      content=maxUnavailableNodesOptions
+                      value=upgradeStrategy.maxUnavailableUnit
+                      localizedPrompt=true
+                      disabled=isEdit
+                    }}
+                  </span>
+                </div>
+              {{/input-or-display}}
+            </div>
+            
+          </div>
+          <div class="row">
+            <label class="acc-label">
+              {{t "clusterNew.rke.upgradeStrategy.drainNodes.label"}}
+            </label>
+            {{#input-or-display
+                editable=notView
+                value=upgradeStrategy.drain
+            }}
+              <div class="text-muted">
+                <label>
+                  {{radio-button
+                    selection=upgradeStrategy.drain
+                    value=true
+                  }}
+                  {{t "generic.yes"}}
+                </label>
+                <label>
+                  {{radio-button
+                    selection=upgradeStrategy.drain
+                    value=false
+                  }}
+                  {{t "generic.no"}}
+                </label>
+              </div>
+            {{/input-or-display}}
+          </div>
+          {{#if upgradeStrategy.drain}}
+            <div class="row">
+              {{drain-node selection=upgradeStrategy.nodeDrainInput editable=notView}}
+            </div>
+          {{/if}}
         {{/accordion-list-item}}
 
         {{#accordion-list-item
