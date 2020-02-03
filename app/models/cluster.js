@@ -301,6 +301,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
         action:    'saveAsTemplate',
         enabled:   this.canSaveAsTemplate,
       },
+      {
+        label:     'action.runCISScan',
+        icon:      'icon icon-play',
+        action:    'runCISScan',
+        enabled:   !get(this, 'isWindows'),
+      },
     ];
   }),
 
@@ -458,6 +464,14 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
     saveAsTemplate() {
       this.modalService.toggleModal('modal-save-rke-template', { cluster: this });
+    },
+
+    async runCISScan() {
+      await get(this, 'scope.currentCluster').doAction('runSecurityScan', {
+        failuresOnly: false,
+        skip:         null
+      });
+      get(this, 'router').replaceWith('authenticated.cluster.cis/scan');
     },
 
     rotateCertificates() {

@@ -17,7 +17,7 @@ export default Controller.extend({
     },
     {
       name:           'state',
-      sort:           ['state', 'sortableId'],
+      sort:           ['sortableState', 'sortableId'],
       translationKey: 'cis.scan.detail.table.state',
       width:          100,
     },
@@ -37,7 +37,7 @@ export default Controller.extend({
       width:          120,
     }
   ],
-  sortBy: 'id',
+  sortBy: 'state',
 
   runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
 
@@ -94,6 +94,7 @@ export default Controller.extend({
 
       return {
         state,
+        sortableState:     this.getSortableState(state),
         id:                test.id,
         sortableId:        this.createSortableId(test.id),
         description:       test.description,
@@ -164,6 +165,22 @@ export default Controller.extend({
     default:
       return 'Fail';
     }
+  },
+
+  getSortableState(state) {
+    if (state === 'Fail') {
+      return 0;
+    }
+
+    if (state === 'Skipped') {
+      return 1;
+    }
+
+    if (state === 'Pass') {
+      return 2;
+    }
+
+    return 3;
   },
 
   /**

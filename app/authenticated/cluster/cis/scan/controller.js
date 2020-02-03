@@ -46,6 +46,8 @@ export default Controller.extend({
       width:          250,
     }
   ],
+  sortBy:     'date',
+  descending: true,
 
   runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
 
