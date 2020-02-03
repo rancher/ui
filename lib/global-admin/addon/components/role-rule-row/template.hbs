@@ -16,23 +16,31 @@
   </td>
 {{/each}}
 <td class="pt-5 pb-5">
-  {{#if (and readOnly rule.nonResourceURLs)}}
-    <span class="text-muted">
-      Non-Resource URL: {{join-array rule.nonResourceURLs}}
-    </span>
-  {{else}}
-    <InputOrDisplay
-      @editable={{editing}}
+  <InputOrDisplay
+    @editable={{editing}}
+    @value={{resource}}
+  >
+    <SearchableSelect
+      @allowCustom={{true}}
+      @content={{rules}}
       @value={{resource}}
-    >
-      <SearchableSelect
-        @allowCustom={{true}}
-        @content={{rules}}
-        @value={{resource}}
-        @readOnly={{readOnly}}
-      />
-    </InputOrDisplay>
-  {{/if}}
+      @readOnly={{or readOnly (and nonResourceURL nonResourceURL.length)}}
+    />
+  </InputOrDisplay>
+</td>
+<td class="pt-5 pb-5">&nbsp;</td>
+<td class="pt-5 pb-5">
+  <InputOrDisplay
+    @editable={{editing}}
+    @value={{nonResourceURL}}
+  >
+    <Input
+      @type="text"
+      @value={{nonResourceURL}}
+      @disabled={{or readOnly (and resource resource.length)}}
+      @classNames="form-control"
+    />
+  </InputOrDisplay>
 </td>
 <td class="pt-5 pb-5">&nbsp;</td>
 <td class="pt-5 pb-5">
