@@ -1,5 +1,6 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
+import { run } from '@ember/runloop';
 
 export default Route.extend({
   storeReset: service(),
@@ -12,6 +13,13 @@ export default Route.extend({
   afterModel(model) {
     if ( model ) {
       this.get('storeReset').reset();
+
+      // This ensures the loading over/underlays are hidden even if a failure
+      // happens in the middle of loading.
+      run.scheduleOnce('afterRender', function() { // eslint-disable-line
+        $('#loading-underlay').hide(); // eslint-disable-line
+        $('#loading-overlay').hide(); // eslint-disable-line
+      });
     } else {
       this.transitionTo('authenticated');
     }
