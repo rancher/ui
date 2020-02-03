@@ -60,11 +60,11 @@ var DockerCredential = Resource.extend({
     const address = get(this, 'firstRegistry.address');
 
     if ( get(this, 'registryCount') > 1 ) {
-      return 'cruRegistry.multiple';
+      return this.intl.t('cruRegistry.multiple');
     } else if (address === window.location.host) {
       return address;
     } else if ( PRESETS[address] ) {
-      return `cruRegistry.address.${  PRESETS[address] }`;
+      return this.intl.t(`cruRegistry.address.${  PRESETS[address] }`);
     } else {
       return address;
     }
