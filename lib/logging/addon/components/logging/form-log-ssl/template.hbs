@@ -1,6 +1,12 @@
 <div class="mt-20 clearfix">
   <h2 class={{concat "pt-30 inline-block " (if (and disabled (not-eq targetType "fluentForwarder")) "text-muted")}}>
-    {{t "loggingPage.ssl.sslHeader" authType=(if (eq targetType "syslog") "Encryption" "SSL") }}
+    {{#if (eq targetType "graylog")}}
+      {{t "loggingPage.ssl.sslHeader" authType="TLS" }}
+    {{else if (eq targetType "syslog")}}
+      {{t "loggingPage.ssl.sslHeader" authType="Encryption" }}
+    {{else}}
+      {{t "loggingPage.ssl.sslHeader" authType="SSL" }}
+    {{/if}}
   </h2>
   {{#if (and (not-eq targetType "kafka") (not-eq targetType "fluentForwarder"))}}
     <span class="text-info text-small">
@@ -9,7 +15,7 @@
   {{/if}}
   <hr/>
 
-  {{#if (eq targetType "syslog")}}
+  {{#if (or (eq targetType "syslog") (eq targetType "graylog"))}}
     <div class="row">
       <div class={{concat "col span-6 pt-0 " (if isUdp "text-muted")}}>
         {{input

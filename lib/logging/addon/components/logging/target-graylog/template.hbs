@@ -1,0 +1,46 @@
+<h2 class="mt-30">{{t "loggingPage.graylog.header"}}</h2>
+<hr/>
+<section class="box">
+  <div class="row">
+    <label class="acc-label">{{t "loggingPage.endpoint"}}{{field-required}}</label>
+    <div class="input-group">
+      {{input
+        type="text"
+        value=config.endpoint
+        classNames="form-control"
+        placeholder=(t "loggingPage.graylog.endpointPlaceholder")
+        id="graylog-endpoint"
+      }}
+      <div class="input-group-btn bg-primary">
+        {{#basic-dropdown
+           horizontalPosition="right"
+           as |dd|}}
+          {{#dd.trigger class="btn bg-default text-uppercase"}}
+            <span class="pr-5">{{config.protocol}}</span><i class="icon icon-chevron-down"></i>
+          {{/dd.trigger}}
+
+          {{#dd.content}}
+            <li><a {{action "changeProtocol" "tcp"}}>TCP</a></li>
+            <li><a {{action "changeProtocol" "udp"}}>UDP</a></li>
+          {{/dd.content}}
+
+        {{/basic-dropdown}}
+      </div>
+    </div>
+    <p class="text-info text-small mb-0">{{t "loggingPage.graylog.endpointHelpText"}}</p>
+  </div>
+
+</section>
+
+{{logging/form-log-ssl
+  config=config
+  targetType=targetType
+  disabled=(or (not enableSSLConfig) (not config.enableTls))
+}}
+
+{{logging/form-log-format
+  logPreview=logPreview
+  model=model
+  loggingModel=parentModel
+}}
+

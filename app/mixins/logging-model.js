@@ -22,6 +22,7 @@ export default Mixin.create({
       'splunk',
       'syslog',
       'fluentForwarder',
+      'graylog',
       'customTarget',
     ];
 
@@ -63,9 +64,9 @@ export default Mixin.create({
     return this;
   },
 
-  targetType: computed('elasticsearchConfig', 'splunkConfig', 'kafkaConfig', 'syslogConfig', 'fluentForwarderConfig', 'customTargetConfig', function() {
+  targetType: computed('elasticsearchConfig', 'splunkConfig', 'kafkaConfig', 'syslogConfig', 'fluentForwarderConfig', 'graylogConfig', 'customTargetConfig', function() {
     const {
-      customTargetConfig, elasticsearchConfig, splunkConfig, syslogConfig, kafkaConfig, fluentForwarderConfig
+      customTargetConfig, elasticsearchConfig, splunkConfig, syslogConfig, kafkaConfig, fluentForwarderConfig, graylogConfig
     } = this
 
     if (customTargetConfig) {
@@ -86,16 +87,20 @@ export default Mixin.create({
     if (fluentForwarderConfig) {
       return 'fluentForwarder'
     }
+    if (graylogConfig){
+      return 'graylog'
+    }
 
     return DEFAULT_TARGET_TYPE;
   }),
 
-  sslTargetType: computed('elasticsearchConfig', 'splunkConfig', 'kafkaConfig', 'syslogConfig', 'fluentForwarderConfig', function() {
+  sslTargetType: computed('elasticsearchConfig', 'splunkConfig', 'kafkaConfig', 'syslogConfig', 'fluentForwarderConfig', 'graylogConfig', function() {
     const es = get(this, 'elasticsearchConfig');
     const splunk = get(this, 'splunkConfig');
     const kafka = get(this, 'kafkaConfig');
     const syslog = get(this, 'syslogConfig');
     const fluentd = get(this, 'fluentForwarderConfig');
+    const graylog = this.graylogConfig
 
     if (es) {
       return 'elasticsearch';
@@ -111,6 +116,9 @@ export default Mixin.create({
     }
     if (fluentd) {
       return 'fluentForwarder'
+    }
+    if (graylog){
+      return 'graylog'
     }
 
     return DEFAULT_TARGET_TYPE;
