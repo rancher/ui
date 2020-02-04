@@ -466,12 +466,15 @@ export default Resource.extend(Grafana, ResourceUsage, {
       this.modalService.toggleModal('modal-save-rke-template', { cluster: this });
     },
 
-    async runCISScan() {
-      await get(this, 'scope.currentCluster').doAction('runSecurityScan', {
+    runCISScan() {
+      const intl = get(this, 'intl');
+
+      this.doAction('runSecurityScan', {
         failuresOnly: false,
         skip:         null
+      }).then(() => {
+        this.growl.success(intl.t('cis.scan.growl.success', { clusterName: get(this, 'name') }), '');
       });
-      get(this, 'router').replaceWith('authenticated.cluster.cis/scan');
     },
 
     rotateCertificates() {
