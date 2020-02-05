@@ -171,40 +171,41 @@
     </div>
   {{/if}}
 
-  <div class="col span-4">
-    <label class="acc-label">
-      {{t "clusterNew.rke.networkMTU.label"}}
-      {{#if clusterTemplateCreate}}
-        <ClusterTemplateOverrideToggle
-          @path="rancherKubernetesEngineConfig.network.mtu"
-          @configVariable={{config.network.mtu}}
-          @addOverride={{addOverride}}
-          @questions={{clusterTemplateRevision.questions}}
-        />
-      {{/if}}
-    </label>
+  {{#if (not-eq config.network.plugin "flannel")}}
+    <div class="col span-4">
+      <label class="acc-label">
+        {{t "clusterNew.rke.networkMTU.label"}}
+        {{#if clusterTemplateCreate}}
+          <ClusterTemplateOverrideToggle
+            @path="rancherKubernetesEngineConfig.network.mtu"
+            @configVariable={{config.network.mtu}}
+            @addOverride={{addOverride}}
+            @questions={{clusterTemplateRevision.questions}}
+          />
+        {{/if}}
+      </label>
 
-    <CheckOverrideAllowed
-      @questions={{clusterTemplateRevision.questions}}
-      @paramName="rancherKubernetesEngineConfig.network.mtu"
-      @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
-      @applyClusterTemplate={{applyClusterTemplate}}
-    >
-      {{#input-or-display
-         editable=(not-eq mode "view")
-         value=config.network.mtu
-      }}
-        {{input-integer
-          value=config.network.mtu
-          min=1
-          classNames="form-control"
-          placeholder=(t "clusterNew.rke.networkMTU.detail")
+      <CheckOverrideAllowed
+        @questions={{clusterTemplateRevision.questions}}
+        @paramName="rancherKubernetesEngineConfig.network.mtu"
+        @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
+        @applyClusterTemplate={{applyClusterTemplate}}
+      >
+        {{#input-or-display
+           editable=(not-eq mode "view")
+           value=config.network.mtu
         }}
-      {{/input-or-display}}
-      <p class="help-block">
-        {{t "clusterNew.rke.networkMTU.help"}}
-      </p>
-    </CheckOverrideAllowed>
-
-  </div>
+          {{input-integer
+            value=config.network.mtu
+            min=1
+            classNames="form-control"
+            placeholder=(t "clusterNew.rke.networkMTU.detail")
+          }}
+        {{/input-or-display}}
+        <p class="help-block">
+          {{t "clusterNew.rke.networkMTU.help"}}
+        </p>
+      </CheckOverrideAllowed>
+    </div>
+  {{/if}}
 </div>
