@@ -3942,6 +3942,18 @@ clusterNew:
     eipShareType:
       label: EIP Share Type
   rke:
+    upgradeStrategy:
+      maximumWorkersDown: 
+        view:
+          count: "{value}"
+          percentage: "{value}%"
+        label: Maxiumum Worker Nodes Unavailable
+        placeholder: e.g. 6
+        mode:
+          percentage: Percentage
+          count: Count
+      drainNodes:
+        label: Drain nodes
     clustersSelectTemplate:
       label: "Use an existing RKE Template and revision"
       select:
@@ -7675,7 +7687,7 @@ modalProcessError:
   stackTrace: "Stack Trace:"
   close: Close
 
-modalDrainNode:
+drainNode:
   titleOne: 'Drain "{name}"'
   titleMultiple: 'Drain {count} Nodes'
   action: Drain
@@ -7691,11 +7703,15 @@ modalDrainNode:
     default: Honor the default from each pod
     placeholder: e.g. 30
     custom: "Ignore the defaults and give each pod:"
+    view:
+      custom: "Ignore the defaults and give each pod {seconds} seconds"
   timeout:
     title: "Drain timeout"
     default: Keep trying forever
     placeholder: e.g. 60
     custom: "Give up after:"
+    view:
+      custom: Give up after {seconds} seconds
 
 modalRevertSettings:
   title: "Revert {setting} to default value?"
