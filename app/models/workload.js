@@ -289,8 +289,12 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
     },
 
     redeploy() {
-      this.updateTimestamp();
-      this.save();
+      if ( this.hasAction('redeploy') ) {
+        this.doAction('redeploy');
+      } else {
+        this.updateTimestamp();
+        this.save();
+      }
     },
 
     addSidekick() {
