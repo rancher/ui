@@ -163,6 +163,87 @@
           </p>
         </div>
       </div>
+    {{else if (eq cloudCredentialType "oci")}}
+      <div class="row">
+
+        <div class="col span-6">
+          <label class="acc-label" for="oci-tenancy">
+            {{t "modalAddCloudKey.oci.tenancyOcid.label"}}{{field-required}}
+          </label>
+          {{input
+            type="text"
+            name="tenancy"
+            classNames="form-control"
+            placeholder=(t "modalAddCloudKey.oci.tenancyOcid.placeholder")
+            value=config.tenancyId
+            id="oci-tenancy"
+          }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label" for="oci-userId">
+            {{t "modalAddCloudKey.oci.userOcid.label"}}{{field-required}}
+          </label>
+          {{input
+            type="text"
+            name="username"
+            classNames="form-control"
+            placeholder=(t "modalAddCloudKey.oci.userOcid.placeholder")
+            value=config.userId
+            id="oci-userId"
+          }}
+        </div>
+
+        <div class="col span-6">
+          <label class="acc-label" for="oci-fingerprint">
+            {{t "modalAddCloudKey.oci.userFingerprint.label"}}{{field-required}}
+          </label>
+          {{input
+            type="text"
+            name="fingerprint"
+            classNames="form-control"
+            placeholder=(t "modalAddCloudKey.oci.userFingerprint.placeholder")
+            value=config.fingerprint
+            id="oci-fingerprint"
+          }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label" for="oci-privateKeyContents">
+            {{t "modalAddCloudKey.oci.secretKey.label"}}{{field-required}}
+          </label>
+          {{input-text-file
+            classNames="box"
+            value=config.privateKeyContents
+            multiple=False
+            canChangeName=false
+            accept="text/plain,.pem,.pkey,.key"
+            minHeight=40
+            placeholder="modalAddCloudKey.oci.secretKey.placeholder"
+            shouldChangeName=false
+            concealValue=true
+          }}
+        </div>
+
+        <div class="col span-6">
+          <label class="acc-label" for="oci-privateKeyPassphrase">
+            {{t "modalAddCloudKey.oci.secretKeyPassphrase.label"}}
+          </label>
+          {{input
+            type="password"
+            name="fingerprint"
+            classNames="form-control"
+            placeholder=(t "modalAddCloudKey.oci.secretKeyPassphrase.placeholder")
+            value=config.privateKeyPassphrase
+            id="oci-privateKeyPassphrase"
+          }}
+        </div>
+      </div>
+
     {{else if (eq cloudCredentialType "vmware")}}
       <div class="row">
         <div class="col span-6">
