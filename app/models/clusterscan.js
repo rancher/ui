@@ -14,7 +14,7 @@ const ClusterScan = Resource.extend({
   skipped:       computed.alias('summary.skipped'),
   failed:        computed.alias('summary.failed'),
 
-  isRunning: computed.equal('state', 'activating'),
+  isRunning: computed.equal('state', 'running'),
 
   loader: observer('store', 'state', function() {
     this.loadReport();
