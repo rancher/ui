@@ -173,6 +173,10 @@
         @expandAll={{al.expandAll}}
         @title={{t "authPage.shibboleth.openLdap.header"}}
       >
+        <BannerMessage
+          @color="bg-warning"
+          @message={{t "authPage.shibboleth.openLdap.help" htmlSafe=true}}
+        />
         <section class="mb-10">
           <div class="row">
             <div class="col span-6 mb-0">
@@ -192,7 +196,7 @@
               </label>
               <div class="input-group">
                 {{input-integer
-                  value=authConfig.port
+                  value=shibbolethOpenLdapConfig.port
                   min=1
                   max=65535
                   classNames="form-control"
@@ -211,7 +215,7 @@
               <div class="col span-12 input-group mt-0">
                 {{input-text-file
                   label="ldap.customizeSchema.cert.labelText"
-                  value=authConfig.certificate
+                  value=shibbolethOpenLdapConfig.certificate
                   canChangeName=false
                   accept="text/plain,.pem,.pkey,.key"
                   minHeight=60
@@ -229,7 +233,7 @@
               </label>
               <div class="input-group">
                 {{input-integer
-                  value=authConfig.connectionTimeout
+                  value=shibbolethOpenLdapConfig.connectionTimeout
                   min=1
                   classNames="form-control"
                 }}
@@ -252,7 +256,7 @@
                   {{t "ldap.accessConfig.serviceAccountDistinguishedName.labelText"}}{{field-required}}
                 </label>
                 {{input
-                  value=authConfig.serviceAccountDistinguishedName
+                  value=shibbolethOpenLdapConfig.serviceAccountDistinguishedName
                   classNames="form-control"
                 }}
               </div>
@@ -264,7 +268,7 @@
                 </label>
                 {{input
                   type="password"
-                  value=authConfig.serviceAccountPassword
+                  value=shibbolethOpenLdapConfig.serviceAccountPassword
                   classNames="form-control"
                 }}
               </div>
@@ -277,7 +281,7 @@
                   {{t "ldap.customizeSchema.users.searchBase.labelText"}}{{field-required}}
                 </label>
                 {{input
-                  value=authConfig.userSearchBase
+                  value=shibbolethOpenLdapConfig.userSearchBase
                   classNames="form-control"
                   placeholder=(t "ldap.accessConfig.userSearchBase.placeholder")
                 }}
@@ -292,7 +296,7 @@
                   {{t "ldap.accessConfig.groupSearchBase.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.groupSearchBase
+                  value=shibbolethOpenLdapConfig.groupSearchBase
                   classNames="form-control"
                   placeholder=(t "ldap.accessConfig.groupSearchBase.placeholder")
                 }}
@@ -313,7 +317,7 @@
                   {{t "ldap.customizeSchema.users.objectClass.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.userObjectClass
+                  value=shibbolethOpenLdapConfig.userObjectClass
                   classNames="form-control"
                 }}
               </div>
@@ -322,7 +326,7 @@
                   {{t "ldap.customizeSchema.users.name.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.userNameAttribute
+                  value=shibbolethOpenLdapConfig.userNameAttribute
                   classNames="form-control"
                 }}
               </div>
@@ -331,7 +335,7 @@
                   {{t "ldap.customizeSchema.users.login.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.userLoginAttribute
+                  value=shibbolethOpenLdapConfig.userLoginAttribute
                   classNames="form-control"
                 }}
               </div>
@@ -340,7 +344,7 @@
                   {{t "ldap.customizeSchema.users.userMemberAttribute.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.userMemberAttribute
+                  value=shibbolethOpenLdapConfig.userMemberAttribute
                   classNames="form-control"
                 }}
               </div>
@@ -349,7 +353,7 @@
                   {{t "ldap.customizeSchema.users.search.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.userSearchAttribute
+                  value=shibbolethOpenLdapConfig.userSearchAttribute
                   classNames="form-control"
                 }}
               </div>
@@ -358,7 +362,7 @@
                   {{t "ldap.customizeSchema.users.searchFilter.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.userSearchFilter
+                  value=shibbolethOpenLdapConfig.userSearchFilter
                   classNames="form-control"
                 }}
               </div>
@@ -367,7 +371,7 @@
                   {{t "ldap.customizeSchema.users.enabledAttribute.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.userEnabledAttribute
+                  value=shibbolethOpenLdapConfig.userEnabledAttribute
                   classNames="form-control"
                 }}
               </div>
@@ -376,7 +380,7 @@
                   {{t "ldap.customizeSchema.users.disabledBitMask.labelText"}}
                 </label>
                 {{input-integer
-                  value=authConfig.userDisabledBitMask
+                  value=shibbolethOpenLdapConfig.userDisabledBitMask
                   min=1
                   classNames="form-control"
                 }}
@@ -391,7 +395,7 @@
                   {{t "ldap.customizeSchema.groups.objectClass.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.groupObjectClass
+                  value=shibbolethOpenLdapConfig.groupObjectClass
                   classNames="form-control"
                 }}
               </div>
@@ -400,7 +404,7 @@
                   {{t "ldap.customizeSchema.groups.name.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.groupNameAttribute
+                  value=shibbolethOpenLdapConfig.groupNameAttribute
                   classNames="form-control"
                 }}
               </div>
@@ -409,7 +413,7 @@
                   {{t "ldap.customizeSchema.groups.groupMemberUser.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.groupMemberUserAttribute
+                  value=shibbolethOpenLdapConfig.groupMemberUserAttribute
                   classNames="form-control"
                   placeholder=(t "ldap.customizeSchema.groups.groupMemberUser.placeholder")
                 }}
@@ -419,7 +423,7 @@
                   {{t "ldap.customizeSchema.groups.search.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.groupSearchAttribute
+                  value=shibbolethOpenLdapConfig.groupSearchAttribute
                   classNames="form-control"
                 }}
               </div>
@@ -428,7 +432,7 @@
                   {{t "ldap.customizeSchema.groups.searchFilter.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.groupSearchFilter
+                  value=shibbolethOpenLdapConfig.groupSearchFilter
                   classNames="form-control"
                 }}
               </div>
@@ -437,7 +441,7 @@
                   {{t "ldap.customizeSchema.groups.groupMemberMapping.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.groupMemberMappingAttribute
+                  value=shibbolethOpenLdapConfig.groupMemberMappingAttribute
                   classNames="form-control"
                 }}
               </div>
@@ -446,7 +450,7 @@
                   {{t "ldap.customizeSchema.groups.groupDN.labelText"}}
                 </label>
                 {{input
-                  value=authConfig.groupDNAttribute
+                  value=shibbolethOpenLdapConfig.groupDNAttribute
                   classNames="form-control"
                   placeholder=(t "ldap.customizeSchema.groups.groupDN.placeholder")
                 }}
@@ -459,7 +463,7 @@
                   <div class="radio">
                     <label class="acc-label pb-5">
                       {{radio-button
-                        selection=authConfig.nestedGroupMembershipEnabled
+                        selection=shibbolethOpenLdapConfig.nestedGroupMembershipEnabled
                         value=false
                       }}
                       {{t "ldap.customizeSchema.groups.nestedGroup.disabled.labelText"}}
@@ -468,7 +472,7 @@
                   <div class="radio">
                     <label class="acc-label pb-5">
                       {{radio-button
-                        selection=authConfig.nestedGroupMembershipEnabled
+                        selection=shibbolethOpenLdapConfig.nestedGroupMembershipEnabled
                         value=true
                       }}
                       {{t "ldap.customizeSchema.groups.nestedGroup.enabled.labelText"}}
