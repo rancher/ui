@@ -163,7 +163,8 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
 
     out = out.replace(/\s+\(.*?\)/, ''); // Remove details in parens
     out = out.replace(/;.*$/, ''); // Or after semicolons
-    out = out.replace('Red Hat Enterprise Linux Server', 'RHEL'); // That's kinda long
+    // RHEL 7 uses 'Red Hat Enterprise Linux Server', RHEL 8 uses 'Red Hat Enterprise Linux'
+    out = out.replace(/(Red Hat Enterprise Linux(\sServer|))/, 'RHEL'); // That's kinda long
 
     return out;
   }),
