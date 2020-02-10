@@ -49,10 +49,13 @@
           <label class="acc-label">
             {{t "nodeDriver.amazonec2.region.label"}}{{field-required}}
           </label>
-          <select class="form-control" onchange={{action (mut region) value="target.value"}}>
-            <option value="" selected={{eq region choice}}>Select a region</option>
+          <select
+            class="form-control" onchange={{action (mut config.region) value="target.value"}}>
+            <option value="" selected={{eq config.region choice}}>
+              {{t "nodeDriver.amazonec2.region.selectLabel"}}
+            </option>
             {{#each regionChoices as |choice|}}
-              <option value={{choice}} selected={{eq region choice}}>{{choice}}</option>
+              <option value={{choice}} selected={{eq config.region choice}}>{{choice}}</option>
             {{/each}}
           </select>
         </div>
