@@ -23,6 +23,7 @@ export default Route.extend(Preload, {
         .then(() => {
           if ( get(cluster, 'isReady') ) {
             return this.loadSchemas('clusterStore').then(() => PromiseAll([
+              this.preload('clusterScan', 'globalStore'),
               this.preload('namespace', 'clusterStore'),
               this.preload('storageClass', 'clusterStore'),
               this.preload('persistentVolume', 'clusterStore'),

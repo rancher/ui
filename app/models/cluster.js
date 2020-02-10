@@ -26,6 +26,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
   nodePools:                   hasMany('id', 'nodePool', 'clusterId'),
   nodes:                       hasMany('id', 'node', 'clusterId'),
   projects:                    hasMany('id', 'project', 'clusterId'),
+  clusterScans:                hasMany('id', 'clusterScan', 'clusterId'),
   expiringCerts:               null,
   grafanaDashboardName:        'Cluster',
   isMonitoringReady:           false,
@@ -36,6 +37,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
   isAKS:                       equal('driver', 'azureKubernetesService'),
   isGKE:                       equal('driver', 'googleKubernetesEngine'),
+
+  runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
 
   conditionsDidChange:        on('init', observer('enableClusterMonitoring', 'conditions.@each.status', function() {
     if ( !get(this, 'enableClusterMonitoring') ) {
@@ -305,7 +308,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         label:     'action.runCISScan',
         icon:      'icon icon-play',
         action:    'runCISScan',
-        enabled:   !get(this, 'isWindows'),
+        enabled:   !this.isClusterScanDisabled,
       },
     ];
   }),
@@ -318,6 +321,14 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
   isWindows:  computed('windowsPreferedCluster', function() {
     return !!get(this, 'windowsPreferedCluster');
+  }),
+
+  isClusterScanDisabled: computed('runningClusterScans', 'systemProject', 'state', 'actionLinks.runSecurityScan', 'isWindows', function() {
+    return (get(this, 'runningClusterScans.length') > 0)
+      || !get(this, 'systemProject')
+      || get(this, 'state') !== 'active'
+      || !get(this, 'actionLinks.runSecurityScan')
+      || get(this, 'isWindows');
   }),
 
   unhealthyComponents: computed('componentStatuses.@each.conditions', function() {

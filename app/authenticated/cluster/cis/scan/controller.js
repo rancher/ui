@@ -60,10 +60,6 @@ export default Controller.extend({
       });
     }
   },
-  disableRunScanButton: computed('runningClusterScans', 'scope.currentCluster.systemProject', function() {
-    return get(this, 'runningClusterScans.length') > 0 || !get(this, 'scope.currentCluster.systemProject');
-  }),
-
   bulkActionHandler: computed(function() {
     return {
       download: async(scans) => {
