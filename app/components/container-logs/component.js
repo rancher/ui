@@ -8,6 +8,7 @@ import layout from './template';
 import C from 'ui/utils/constants';
 import { downloadFile } from 'shared/utils/download-files';
 import $ from 'jquery';
+import { on } from '@ember/object/evented';
 
 const LINES = 500;
 
@@ -102,8 +103,10 @@ export default Component.extend({
     clear() {
       var body = $('.log-body')[0];
 
-      body.innerHTML = '';
-      body.scrollTop = 0;
+      if (body) {
+        body.innerHTML = '';
+        body.scrollTop = 0;
+      }
     },
 
     scrollToTop() {
@@ -122,21 +125,24 @@ export default Component.extend({
     },
   },
 
-  watchReconnect: observer('containerName', 'isPrevious', function() {
-    this.disconnect();
-    this.send('clear');
-    this.exec();
-  }),
-
   wrapLinesDidChange: observer('wrapLines', function() {
     set(this, `prefs.${ C.PREFS.WRAP_LINES }`, get(this, 'wrapLines'));
   }),
+
+  watchReconnect: on('init', observer('containerName', 'isPrevious', function() {
+    this.disconnect();
+    this.send('clear');
+
+    if (this.containerName) {
+      this.exec();
+    }
+  })),
 
   _bootstrap() {
     setProperties(this, {
       wrapLines:     !!get(this, `prefs.${ C.PREFS.WRAP_LINES }`),
       containerName: get(this, 'containerName') || get(this, 'instance.containers.firstObject.name'),
-    })
+    });
 
     this._initTimer();
   },
@@ -170,8 +176,7 @@ export default Component.extend({
 
     set(this, 'socket', socket);
 
-    var body = $('.log-body')[0];
-    var $body = $(body); // eslint-disable-line
+    var body = null;
 
     set(this, 'status', 'initializing');
 
@@ -180,6 +185,8 @@ export default Component.extend({
     };
 
     socket.onmessage = (message) => {
+      body = $('.log-body')[0];
+
       let ansiup = new AnsiUp;
 
       set(this, 'status', 'connected');
