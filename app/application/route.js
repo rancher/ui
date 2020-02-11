@@ -33,10 +33,16 @@ export default Route.extend({
       return;
     }
 
-    // Find out if auth is enabled
-    return get(this, 'access').detect().finally(() => {
-      return get(this, 'language').initLanguage();
-    });
+    return (async() => {
+      if (!window.Prettycron) {
+        window.Prettycron = await import('prettycron');
+      }
+
+      // Find out if auth is enabled
+      return get(this, 'access').detect().finally(() => {
+        return get(this, 'language').initLanguage();
+      });
+    })();
   },
 
   model(params, transition) {
