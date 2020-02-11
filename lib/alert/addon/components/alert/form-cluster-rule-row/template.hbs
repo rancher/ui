@@ -148,6 +148,17 @@
       </div>
       <div class="row">
         <div class="col span-2">
+          <label class="acc-label">
+            {{radio-button
+              selection=model._targetType
+              value="cisScan"
+            }}
+            {{t "alertPage.targetTypes.cisScan"}}
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-2">
           <label class="acc-label" style={{expressionStyle}}>
             {{radio-button
               selection=model._targetType
@@ -204,7 +215,22 @@
       {{/if}}
     {{else}}
       <div class="col span-10">
-        {{#if (eq model._targetType "systemService")}}
+        {{#if (eq model._targetType "cisScan")}}
+          <label class="acc-label pr-20">
+            {{radio-button
+              selection=model.nodeRule.condition
+              value="completedScan"
+            }}
+            {{t "alertPage.newOrEdit.run"}}
+          </label>
+          <label class="acc-label">
+            {{radio-button
+              selection=model.nodeRule.condition
+              value="hasFailure"
+            }}
+            {{t "alertPage.newOrEdit.failed"}}
+          </label>
+        {{else if (eq model._targetType "systemService")}}
           <label class="acc-label">
             {{radio-button
               selection="whatever"
