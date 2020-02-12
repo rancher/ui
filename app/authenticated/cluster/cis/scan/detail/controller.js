@@ -47,7 +47,7 @@ export default Controller.extend({
         failuresOnly: false,
         skip:         null
       });
-      get(this, 'router').replaceWith('authenticated.cluster.cis/scan');
+      get(this, 'scope.currentCluster').send('runCISScan', { onRun: () => get(this, 'router').replaceWith('authenticated.cluster.cis/scan') });
     },
     download() {
       get(this, 'model.scan').send('download');

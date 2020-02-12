@@ -7,6 +7,7 @@ export default Controller.extend({
   scope:              service(),
   modalService:       service('modal'),
   securityScanConfig: service(),
+  router:             service(),
 
   tableHeaders: [
     {
@@ -54,10 +55,13 @@ export default Controller.extend({
   isRKE:   computed.alias('scope.currentCluster.isRKE'),
   actions: {
     runScan() {
-      get(this, 'scope.currentCluster').doAction('runSecurityScan', {
-        failuresOnly: false,
-        skip:         null
-      });
+      get(this, 'scope.currentCluster').send('runCISScan');
+    },
+    setSchedule() {
+      get(this, 'scope.currentCluster').send('edit', { scrollTo: 'security-scan' });
+    },
+    setAlert() {
+      get(this, 'router').transitionTo('authenticated.cluster.alert.new', { queryParams: { for: 'security-scan' } });
     }
   },
   bulkActionHandler: computed(function() {

@@ -4,6 +4,7 @@ import Route from '@ember/routing/route';
 import { hash, hashSettled/* , all */ } from 'rsvp';
 import { loadScript, loadStylesheet, proxifyUrl } from 'shared/utils/load-script';
 import { isEmpty } from '@ember/utils';
+import { scheduleOnce } from '@ember/runloop';
 
 export default Route.extend({
   access:                 service(),
@@ -140,6 +141,20 @@ export default Route.extend({
     if (isExiting) {
       controller.set('errors', null);
       controller.set('provider', null);
+    }
+  },
+
+  activate() {
+    this._super(...arguments);
+
+    scheduleOnce('afterRender', this, function() {
+      set(this, 'controller.model.activated', true);
+    });
+  },
+
+  actions: {
+    willTransition() {
+      set(this, 'controller.scrollTo', null);
     }
   },
 

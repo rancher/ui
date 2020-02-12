@@ -456,9 +456,14 @@ export default Resource.extend(Grafana, ResourceUsage, {
       }
     },
 
-    edit() {
+    edit(additionalQueryParams = {}) {
       let provider = get(this, 'provider') || get(this, 'driver');
-      let queryParams = { queryParams: { provider } };
+      let queryParams = {
+        queryParams: {
+          provider,
+          ...additionalQueryParams
+        }
+      };
 
       if (this.clusterTemplateRevisionId) {
         set(queryParams, 'queryParams.clusterTemplateRevision', this.clusterTemplateRevisionId);
@@ -487,14 +492,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
       this.modalService.toggleModal('modal-save-rke-template', { cluster: this });
     },
 
-    runCISScan() {
-      const intl = get(this, 'intl');
-
-      this.doAction('runSecurityScan', {
-        failuresOnly: false,
-        skip:         null
-      }).then(() => {
-        this.growl.success(intl.t('cis.scan.growl.success', { clusterName: get(this, 'name') }), '');
+    runCISScan(options) {
+      this.get('modalService').toggleModal('run-scan-modal', {
+        closeWithOutsideClick: true,
+        cluster:               this,
+        onRun:                 (options || {}).onRun
       });
     },
 

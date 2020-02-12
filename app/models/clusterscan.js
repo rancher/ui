@@ -4,8 +4,11 @@ import moment from 'moment';
 import { downloadFile } from 'shared/utils/download-files';
 import ObjectsToCsv from 'objects-to-csv';
 import { extractUniqueStrings } from '../utils/util';
+import { inject as service } from '@ember/service';
 
 const ClusterScan = Resource.extend({
+  intl:        service(),
+
   type:          'clusterScan',
   report:        'null',
   reportPromise: null,
@@ -57,16 +60,17 @@ const ClusterScan = Resource.extend({
 
   resultsForCsv: computed('referencedResults', 'report', function() {
     return get(this, 'referencedResults').map((result) => {
+      const intl = get(this, 'intl');
       const nodesAndStateForTest = this.getNodesAndStateForTestResult(result);
-      const version = `Version: ${ get(this, 'report.version') }`;
+      const profile = intl.t('cis.scan.report.headers.profile', { profile: get(this, 'profile') });
 
       return {
-        [version]:    '',
+        [profile]:                                        '',
         ...result,
-        nodes:        nodesAndStateForTest.nodes.join(','),
-        passed_nodes: nodesAndStateForTest.passedNodes.join(','),
-        failed_nodes: nodesAndStateForTest.failedNodes.join(','),
-        node_type:    result.node_type.join(',')
+        [intl.t('cis.scan.report.headers.nodes')]:        nodesAndStateForTest.nodes.join(','),
+        [intl.t('cis.scan.report.headers.passed_nodes')]: nodesAndStateForTest.passedNodes.join(','),
+        [intl.t('cis.scan.report.headers.failed_nodes')]: nodesAndStateForTest.failedNodes.join(','),
+        [intl.t('cis.scan.report.headers.node_type')]:    result.node_type.join(',')
       };
     })
   }),
@@ -85,6 +89,10 @@ const ClusterScan = Resource.extend({
       skipped:           report.skip,
       failed:            report.fail
     };
+  }),
+
+  profile: computed(() => {
+    return 'RKE-CIS-1.4 Permissive';
   }),
 
   createdDate: computed('status.conditions.@each.[status,type]', function() {
