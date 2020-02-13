@@ -7,7 +7,7 @@ import { addQueryParams, parseUrl } from 'shared/utils/util';
 import { reject } from 'rsvp';
 import VerifyAuth from 'ui/mixins/verify-auth';
 
-const samlProviders = ['ping', 'adfs', 'keycloak', 'okta'];
+const samlProviders = ['ping', 'adfs', 'keycloak', 'okta', 'shibboleth'];
 const allowedForwards = ['localhost'];
 
 export default Route.extend(VerifyAuth, {

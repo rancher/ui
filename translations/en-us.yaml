@@ -690,13 +690,14 @@ authPage:
         labelText: Groups Field
         display: "Groups Field:"
       testAuth:
-        header: '2. Test and enable authentication'
+        header: '{step}. Test and enable authentication'
         subtext: 'Check that your application is configured correctly by testing authentication with it:'
     providerName:
       ping: Ping
       adfs: AD FS
       keycloak: Keycloak
       okta: Okta
+      shibboleth: Shibboleth
     authError: 'Access was not authorized'
     popupError: 'Please disable your pop-up blocker and click "Authenticate" again.'
   ping:
@@ -718,38 +719,18 @@ authPage:
 
 
   shibboleth:
-    enabled:
-      authenticated:
-        header:
-          text: Authentication
-      disableAccess:
-        header: "Danger Zone&trade;"
-        warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
-        confirmDisable: "Are you sure?  Click again to disable access control"
-        disable: Disable access control
-      groupsField: 'Groups:'
-      displayName: 'Display Name:'
-      userName: 'Username:'
-      userId: 'User ID:'
-    disabled:
-      header: '1. Configure Shibboleth Account'
-      label: "{providerName} is not configured"
-      name:
-        labelText: Display Name Field
-      username:
-        labelText: User Name Field
-      uid:
-        labelText: UID Field
-      groups:
-        labelText: Groups Field
-      testAuth:
-        header: '2. Test and enable authentication'
-        subtext: 'Check that your application is configured correctly by testing authentication with it:'
-        buttonText:
-          pre: Authenticate with IDP
-          post: Waiting to hear back from IDP
+    buttonText:
+      pre: 'Authenticate with Shibboleth'
+      post: Waiting to hear back from IDP
+      edit: 'Test Config with Shibboleth'
     providerName:
       shibboleth: Shibboleth
+    openLdap:
+      header: 2. OpenLDAP Search Configuration
+      detail: Add your OpenLDAP configuration below to configure search capabilities.
+      help: "<span class='text-italic'>Note: Required Fields in this section are only required if you are configuring OpenLDAP Search with Shibboleth authorization.</span>"
+    advanced:
+      hr: Additional Configuration Parameters
   root:
     header: Access Control
   github:
@@ -7149,6 +7130,8 @@ loginSaml:
     buttonText: "Log In with Okta"
   keycloak:
     buttonText: "Log In with Keycloak"
+  shibboleth:
+    buttonText: Log In with Shibboleth
 
 loginUserPass:
   local: Use a Local User
