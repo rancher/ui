@@ -27,29 +27,11 @@ module.exports = function(app, options) {
 
     let targetHost = config.apiServer.replace(/^https?:\/\//, '');
     let host = req.headers['host'];
-    let port;
 
-    if ( socket.ssl ) {
-      req.headers['x-forwarded-proto'] = 'https';
-      port = 443;
-    } else {
-      req.headers['x-forwarded-proto'] = 'http';
-      port = 80;
-    }
-
-    if ( host ) {
-      idx = host.lastIndexOf(':');
-      if ( ( host.startsWith('[') && host.includes(']:') || !host.startsWith('[') ) && idx > 0 ){
-        port = host.substr(idx+1);
-        host = host.substr(0, host.lastIndexOf(':'));
-      }
-    }
-
-    req.headers['x-forwarded-host'] = host;
-    req.headers['x-forwarded-port'] = port;
-    req.headers['host'] = targetHost;
-    req.headers['origin'] = config.apiServer;
-    req.socket.servername = targetHost;
+    req.headers['x-api-host'] = host;
+    req.headers['host']       = targetHost;
+    req.headers['origin']     = config.apiServer;
+    req.socket.servername     = targetHost;
 
     proxyLog('WS', req);
 
@@ -96,11 +78,8 @@ module.exports = function(app, options) {
       }
 
       // include root path in proxied request
-      req.url = req.originalUrl;
-      req.headers['X-Forwarded-Proto'] = req.protocol;
-
-      // don't include the original host header
-      req.headers['X-Forwarded-Host'] = req.headers['host'];
+      req.url                   = req.originalUrl;
+      req.headers['X-Api-Host'] = req.headers['host'];
       delete req.headers['host'];
 
       proxyLog(label, req);
