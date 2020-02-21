@@ -22,6 +22,7 @@ export default Component.extend({
   // Injections
   intl:             service(),
   scope:            service(),
+  features:         service(),
   settings:         service(),
   access:           service(),
   prefs:            service(),
@@ -125,6 +126,28 @@ export default Component.extend({
     return !!get(this, 'stackSchema.resourceFields.system.update');
   }),
 
+  dashboardLink: computed('pageScope', 'clusterId', function() {
+    if ( !get(this, 'features').isFeatureEnabled(C.FEATURES.DASHBOARD) ) {
+      // Only if Steve/dashboard are deployed
+      return;
+    }
+
+    if ( get(this, 'pageScope') === 'global' || !this.clusterId ) {
+      // Only inside a cluster
+      return;
+    }
+
+    let link;
+
+    if ( get(this, 'app.environment') === 'development' ) {
+      link = `https://localhost:8005/c/${ escape(this.clusterId) }`;
+    } else {
+      link = `/dashboard/c/${ escape(this.clusterId) }`;
+    }
+
+    return link;
+  }),
+
   updateNavTree() {
     const currentScope = get(this, 'pageScope');
 
@@ -222,4 +245,5 @@ export default Component.extend({
     default:
     }
   },
+
 });
