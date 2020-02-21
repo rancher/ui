@@ -26,42 +26,6 @@
         </div>
       </div>
     {{/if}}
-    <div class="row">
-      <label>
-        {{radio-button
-          selection=generate
-          value=false
-        }}
-        {{t "modalEditPassword.mode.manual"}}
-      </label>
-    </div>
-    {{#liquid-if (not generate) class="row mb-20"}}
-      <div class="row">
-        <div class="col span-12">
-          <label class="acc-label">
-            {{t "modalEditPassword.new"}}
-          </label>
-          {{input
-            type="password"
-            value=password
-            classNames="form-control start"
-          }}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col span-12">
-          <label class="acc-label">
-            {{t "modalEditPassword.confirm"}}
-          </label>
-          {{input
-            type="password"
-            value=confirm
-            classNames="form-control"
-            focusOut=(action "blurredConfirm")
-          }}
-        </div>
-      </div>
-    {{/liquid-if}}
 
     <div class="row">
       <label>
@@ -91,7 +55,46 @@
         </div>
       </div>
     {{/liquid-if}}
+
+    <div class="row">
+      <label>
+        {{radio-button
+          selection=generate
+          value=false
+        }}
+        {{t "modalEditPassword.mode.manual"}}
+      </label>
+    </div>
+    {{#liquid-if (not generate) class="row mb-20"}}
+      <div class="row pr-5 pl-5">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "modalEditPassword.new"}}
+          </label>
+          {{input
+            type="password"
+            value=password
+            classNames="form-control start"
+          }}
+        </div>
+      </div>
+      <div class="row pr-5 pl-5">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "modalEditPassword.confirm"}}
+          </label>
+          {{input
+            type="password"
+            value=confirm
+            classNames="form-control"
+            focusOut=(action "blurredConfirm")
+          }}
+        </div>
+      </div>
+    {{/liquid-if}}
   </div>
+
+  {{yield}}
 
   {{top-errors errors=errors}}
   {{save-cancel
