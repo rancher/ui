@@ -12,7 +12,6 @@ import { isEmpty } from '@ember/utils';
 const M_CONFIG = {
   type:                  'projectRoleTemplateBinding',
   subjectKind:           '',
-  userId:                '',
   projectRoleTemplateId: '',
   projectId:             '',
 };
