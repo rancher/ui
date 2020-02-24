@@ -17,13 +17,14 @@ export default Component.extend({
   access:      service(),
 
   layout,
-  showCurrent:      true,
-  generate:         false,
-  setOrChange:      CHANGE,
-  editLabel:        'modalEditPassword.actionButton',
-  currentPassword:  null,
-  user:             null,
-  showDeleteTokens: false,
+  showCurrent:       true,
+  generate:          false,
+  setOrChange:       CHANGE,
+  editLabel:         'modalEditPassword.actionButton',
+  currentPassword:   null,
+  user:              null,
+  showDeleteTokens:  false,
+  forceSaveDisabled: false,
 
   confirmBlurred:   false,
   serverErrors:     null,
@@ -113,21 +114,33 @@ export default Component.extend({
     }
   }),
 
-  saveDisabled: computed('generate', 'password', 'confirm', function() {
+  saveDisabled: computed('generate', 'passwordsMatch', 'forceSaveDisabled', 'showCurrent', 'currentPassword', function() {
+    if ( get(this, 'forceSaveDisabled') ) {
+      return true;
+    }
+
+    if ( get(this, 'showCurrent') && !get(this, 'currentPassword') ) {
+      return true;
+    }
+
     if ( get(this, 'generate') ) {
       return false;
     }
 
+    return !get(this, 'passwordsMatch');
+  }),
+
+  passwordsMatch: computed('password', 'confirm', function() {
     const pass = (get(this, 'password') || '').trim();
     const confirm = (get(this, 'confirm') || '').trim();
 
-    return !pass || !confirm || pass !== confirm;
+    return pass && confirm && pass === confirm;
   }),
 
-  errors: computed('saveDisabled', 'confirm', 'confirmBlurred', 'serverErrors.[]', function() {
+  errors: computed('passwordsMatch', 'confirm', 'confirmBlurred', 'serverErrors.[]', function() {
     let out = get(this, 'serverErrors') || [];
 
-    if ( get(this, 'confirmBlurred') && get(this, 'confirm') && get(this, 'saveDisabled') ) {
+    if ( get(this, 'confirmBlurred') && get(this, 'confirm') && !get(this, 'passwordsMatch') ) {
       out.push(get(this, 'intl').t('modalEditPassword.mismatch'));
     }
 
