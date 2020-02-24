@@ -303,6 +303,46 @@
         </div>
 
         <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.amazonec2.requestSpotInstance.label"}}
+          </label>
+          <div class="checkbox">
+            <label class="acc-label" for="amazonec2-requestspotinstance">
+              {{input
+                id="amazonec2-requestspotinstance"
+                type="checkbox"
+                checked=config.requestSpotInstance
+              }}&nbsp;
+              {{t "nodeDriver.amazonec2.requestSpotInstance.enable"}}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      {{#if config.requestSpotInstance}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label" for="amazonec2-spotprice">
+              {{t "nodeDriver.amazonec2.spotPrice.label"}}
+            </label>
+            <div class="input-group">
+              {{input
+                id="amazonec2-spotprice"
+                type="text"
+                classNames="form-control"
+                placeholder=""
+                value=config.spotPrice
+              }}
+              <span class="input-group-addon bg-default">
+                {{t "nodeDriver.amazonec2.spotPrice.unit"}}
+              </span>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+
+      <div class="row">
+        <div class="col span-6">
           <label class="acc-label" for="amazonec2-rootsize">
             {{t "nodeDriver.amazonec2.rootSize.label"}}
           </label>
@@ -319,7 +359,61 @@
             </span>
           </div>
         </div>
+
+        <div class="col span-6">
+          <div class="checkbox">
+            <label class="acc-label">
+              {{t "nodeDriver.amazonec2.encryptEbsVolume.label"}}
+            </label>
+            <div class="checkbox">
+              <label class="acc-label" for="amazonec2-encrypt-ebs-vol">
+                {{input
+                  id="amazonec2-encrypt-ebs-vol"
+                  type="checkbox"
+                  checked=config.encryptEbsVolume
+                }}&nbsp;
+                {{t "nodeDriver.amazonec2.encryptEbsVolume.radioLabel"}}
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <!-- not sure if we are going to show these yet but we can -->
+      {{#unless true}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label" for="amazonec2-volumeType">
+              {{t "nodeDriver.amazonec2.volumeType.label"}}
+            </label>
+            {{input
+              id="amazonec2-volumeType"
+              type="text"
+              classNames="form-control"
+              placeholder=""
+              value=config.volumeType
+            }}
+          </div>
+
+          <div class="col span-6">
+            <div class="checkbox">
+              <label class="acc-label">
+                {{t "nodeDriver.amazonec2.useEbsOptimizedInstance.label"}}
+              </label>
+              <div class="checkbox">
+                <label class="acc-label" for="amazonec2-use-opt-instance">
+                  {{input
+                    id="amazonec2-use-opt-instance"
+                    type="checkbox"
+                    checked=config.useEbsOptimizedInstance
+                  }}&nbsp;
+                  {{t "nodeDriver.amazonec2.useEbsOptimizedInstance.radioLabel"}}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/unless}}
 
       <div class="row">
         <div class="col span-6">
@@ -347,21 +441,6 @@
         </div>
 
         <div class="col span-6">
-          <label class="acc-label" for="amazonec2-sshUser">
-            {{t "nodeDriver.amazonec2.sshUser.label"}}
-          </label>
-          {{input
-            id="amazonec2-sshUser"
-            type="text"
-            classNames="form-control"
-            placeholder=(t "nodeDriver.amazonec2.sshUser.placeholder")
-            value=config.sshUser
-          }}
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col span-6">
           <label class="acc-label" for="amazonec2-iam">
             {{t "nodeDriver.amazonec2.iam.label"}}
           </label>
@@ -371,6 +450,21 @@
             classNames="form-control"
             value=config.iamInstanceProfile
             placeholder=(t "nodeDriver.amazonec2.iam.placeholder")
+          }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label" for="amazonec2-sshUser">
+            {{t "nodeDriver.amazonec2.sshUser.label"}}
+          </label>
+          {{input
+            id="amazonec2-sshUser"
+            type="text"
+            classNames="form-control"
+            placeholder=(t "nodeDriver.amazonec2.sshUser.placeholder")
+            value=config.sshUser
           }}
         </div>
 
@@ -389,44 +483,6 @@
             </label>
           </div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "nodeDriver.amazonec2.requestSpotInstance.label"}}
-          </label>
-          <div class="checkbox">
-            <label class="acc-label" for="amazonec2-requestspotinstance">
-              {{input
-                id="amazonec2-requestspotinstance"
-                type="checkbox"
-                checked=config.requestSpotInstance
-              }}&nbsp;
-              {{t "nodeDriver.amazonec2.requestSpotInstance.enable"}}
-            </label>
-          </div>
-        </div>
-
-        {{#if config.requestSpotInstance}}
-          <div class="col span-6">
-            <label class="acc-label" for="amazonec2-spotprice">
-              {{t "nodeDriver.amazonec2.spotPrice.label"}}
-            </label>
-            <div class="input-group">
-              {{input
-                id="amazonec2-spotprice"
-                type="text"
-                classNames="form-control"
-                placeholder=""
-                value=config.spotPrice
-              }}
-              <span class="input-group-addon bg-default">
-                {{t "nodeDriver.amazonec2.spotPrice.unit"}}
-              </span>
-            </div>
-          </div>
-        {{/if}}
       </div>
 
       <div class="row">
