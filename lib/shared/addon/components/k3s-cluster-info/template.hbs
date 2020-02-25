@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label">Kubernetes Version</label>
+    <div class="form-control">
+      {{input-or-display
+        editable=false
+        value=k3sConfig.kubernetesVersion.gitVersion
+      }}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label">Server Concurrency</label>
+    <div class="form-control">
+      {{#input-or-display
+         editable=editing
+         value=k3sConfig.serverConcurrency
+      }}
+        {{input
+          class="form-control"
+          type="number"
+          value=k3sConfig.serverConcurrency
+        }}
+      {{/input-or-display}}
+    </div>
+  </div>
+  <div class="col span-6">
+    <label class="acc-label">Worker Concurrency</label>
+    <div class="form-control">
+      {{#input-or-display
+         editable=editing
+         value=k3sConfig.workerConcurrency
+      }}
+        {{input
+          class="form-control"
+          type="number"
+          value=k3sConfig.workerConcurrency
+        }}
+      {{/input-or-display}}
+    </div>
+  </div>
+</div>

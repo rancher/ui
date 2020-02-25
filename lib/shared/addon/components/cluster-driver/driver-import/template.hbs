@@ -1,5 +1,31 @@
-{{#if (and (eq step 2) (eq originalCluster.state "pending"))}}
+{{#if (and (eq step 1) isK3sCluster)}}
+  {{#accordion-list showExpandAll=false as |al expandFn|}}
+    {{#accordion-list-item
+       title=(t "k3sClusterInfo.title")
+       detail=(t "k3sClusterInfo.detail")
+       expandAll=al.expandAll
+       everExpanded=true
+       expandOnInit=true
+       expanded=true
+       expand=(action expandFn)
+    }}
+      <K3sClusterInfo
+        @cluster={{model.cluster}}
+        @originalCluster={{model.originalCluster}}
+        @editing={{isEdit}}
+      />
+    {{/accordion-list-item}}
+  {{/accordion-list}}
 
+  {{top-errors errors=errors}}
+  {{top-errors errors=otherErrors}}
+  {{top-errors errors=clusterErrors}}
+  {{save-cancel
+    save=(action "driverUpdateK3sCluster")
+    editing=isEdit
+    cancel=(action "close")
+  }}
+{{else if (and (eq step 2) (eq originalCluster.state "pending"))}}
   {{#banner-message color="bg-info m-0"}}
     <div class="mt-20">
       {{t "clusterNew.import.command.instructionsAdminRole"
