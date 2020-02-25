@@ -78,19 +78,7 @@
            as | parent |
         }}
           <div class="row">
-            <div class="col span-12 box">
-              <label class="acc-label">
-                {{t "clusterDashboard.k3sInfo.nodeArgs.title"}}
-              </label>
-              <p class="help-block">
-                {{t "clusterDashboard.k3sInfo.nodeArgs.detail"}}
-              </p>
-              {{#if (gte model.node.k3sNodeArgs.length 1)}}
-                <pre style="font-size: 14px;">{{model.node.k3sNodeArgs}}</pre>
-              {{else}}
-                {{t "clusterDashboard.k3sInfo.nodeArgs.noArgs"}}
-              {{/if}}
-            </div>
+            <K3sNodeArgs @node={{model.node}} />
             <K3sNodeEnvVar @node={{model.node}} />
           </div>
         {{/accordion-list-item}}
