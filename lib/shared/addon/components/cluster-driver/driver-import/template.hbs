@@ -1,30 +1,65 @@
 {{#if (and (eq step 1) isK3sCluster)}}
-  {{#accordion-list showExpandAll=false as |al expandFn|}}
-    {{#accordion-list-item
-       title=(t "k3sClusterInfo.title")
-       detail=(t "k3sClusterInfo.detail")
-       expandAll=al.expandAll
-       everExpanded=true
-       expandOnInit=true
-       expanded=true
-       expand=(action expandFn)
-    }}
+  <AccordionList @showExpandAll={{false}} as |al expandFn|>
+    <AccordionListItem
+      @title={{t "k3sClusterInfo.title"}}
+      @detail={{t "k3sClusterInfo.detail"}}
+      @expandAll={{al.expandAll}}
+      @everExpanded={{true}}
+      @expandOnInit={{true}}
+      @expanded={{true}}
+      @expand={{action expandFn}}
+    >
       <K3sClusterInfo
         @cluster={{model.cluster}}
         @originalCluster={{model.originalCluster}}
         @editing={{isEdit}}
       />
-    {{/accordion-list-item}}
-  {{/accordion-list}}
+    </AccordionListItem>
 
-  {{top-errors errors=errors}}
-  {{top-errors errors=otherErrors}}
-  {{top-errors errors=clusterErrors}}
-  {{save-cancel
-    save=(action "driverUpdateK3sCluster")
-    editing=isEdit
-    cancel=(action "close")
-  }}
+    <AccordionListItem
+      @title={{t "k3sClusterInfo.nodeInfo.title"}}
+      @detail={{t "k3sClusterInfo.nodeInfo.detail"}}
+      @expandAll={{al.expandAll}}
+      @everExpanded={{true}}
+      @expandOnInit={{true}}
+      @expanded={{true}}
+      @expand={{action expandFn}}
+    >
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label" for="master-node-select">
+            {{t "k3sClusterInfo.nodeInfo.label"}}
+          </label>
+          {{new-select
+            id="master-node-select"
+            classNames="form-control"
+            optionValuePath="id"
+            optionLabelPath="displayName"
+            content=nodesOptions
+            value=nodeForInfo.id
+            action=(action "setActiveNodeForInfo")
+            prompt="k3sClusterInfo.nodeInfo.selectPrompt"
+            localizedPrompt=true
+          }}
+        </div>
+        {{#if nodeForInfo}}
+          <div class="col span-12">
+            <K3sNodeArgs @node={{nodeForInfo}} />
+            <K3sNodeEnvVar @node={{nodeForInfo}} />
+          </div>
+        {{/if}}
+      </div>
+    </AccordionListItem>
+  </AccordionList>
+
+  <TopErrors @errors={{errors}} />
+  <TopErrors @errors={{otherErrors}} />
+  <TopErrors @errors={{clusterErrors}} />
+  <SaveCancel
+    @save={{action "driverUpdateK3sCluster"}}
+    @editing={{isEdit}}
+    @cancel={{action "close"}}
+  />
 {{else if (and (eq step 2) (eq originalCluster.state "pending"))}}
   {{#banner-message color="bg-info m-0"}}
     <div class="mt-20">

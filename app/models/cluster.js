@@ -336,6 +336,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
       .filter((s) => !(s.conditions || []).any((c) => c.status === 'True'));
   }),
 
+  masterNodes: computed('nodes.@each.{state,labels}', function() {
+    return (this.nodes || []).filter((node) => node.labels && node.labels[C.NODES.MASTER_NODE]);
+  }),
+
   inactiveNodes: computed('nodes.@each.state', function() {
     return (get(this, 'nodes') || []).filter( (n) => C.ACTIVEISH_STATES.indexOf(get(n, 'state')) === -1 );
   }),
