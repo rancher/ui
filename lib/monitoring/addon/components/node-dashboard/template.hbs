@@ -68,6 +68,34 @@
       expandAll=al.expandAll
       expandFn=expandFn
     }}
+    {{#if isK3sNode}}
+      <div class="mt-20">
+        {{#accordion-list-item
+           title=(t "clusterDashboard.k3sInfo.title")
+           detail=(t "clusterDashboard.k3sInfo.detail")
+           expandAll=expandAll
+           expand=(action expandFn)
+           as | parent |
+        }}
+          <div class="row">
+            <div class="col span-12 box">
+              <label class="acc-label">
+                {{t "clusterDashboard.k3sInfo.nodeArgs.title"}}
+              </label>
+              <p class="help-block">
+                {{t "clusterDashboard.k3sInfo.nodeArgs.detail"}}
+              </p>
+              {{#if (gte model.node.k3sNodeArgs.length 1)}}
+                <pre style="font-size: 14px;">{{model.node.k3sNodeArgs}}</pre>
+              {{else}}
+                {{t "clusterDashboard.k3sInfo.nodeArgs.noArgs"}}
+              {{/if}}
+            </div>
+            <K3sNodeEnvVar @node={{model.node}} />
+          </div>
+        {{/accordion-list-item}}
+      </div>
+    {{/if}}
     <div class="mt-20">
       {{system-info-section
         node=model.node
