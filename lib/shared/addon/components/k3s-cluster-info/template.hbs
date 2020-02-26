@@ -3,10 +3,17 @@
     <!-- TODO use form-versions here when we have the api ready -->
     <label class="acc-label">Kubernetes Version</label>
     <div class="form-control">
-      {{input-or-display
-        editable=false
-        value=k3sConfig.kubernetesVersion.gitVersion
+      {{#input-or-display
+         editable=editing
+         value=k3sConfig.kubernetesVersion.gitVersion
       }}
+        {{input
+          id="node-kube-version"
+          class="form-control"
+          type="text"
+          value=k3sConfig.kubernetesVersion.gitVersion
+        }}
+      {{/input-or-display}}
     </div>
   </div>
 </div>
