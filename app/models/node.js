@@ -158,6 +158,36 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     return taints.some((taint) => UNSCHEDULABLE_KEYS.includes(taint.key) && UNSCHEDULABLE_EFFECTS.includes(taint.effect));
   }),
 
+  isK3sNode: computed('labels', function() {
+    const labels = get(this, 'labels') || {};
+
+    return Object.prototype.hasOwnProperty.call(labels, C.LABEL.NODE_INSTANCE_TYPE);
+  }),
+
+  k3sNodeArgs: computed('annotations', function() {
+    const { annotations } = this;
+    const nodeArgs        = annotations[C.LABEL.K3S_NODE_ARGS] ? JSON.parse(annotations[C.LABEL.K3S_NODE_ARGS]) : [];
+
+    return nodeArgs.join(' ');
+  }),
+
+  k3sNodeEnvVar: computed('annotations', function() {
+    const { annotations } = this;
+    const nodeEnv         = annotations[C.LABEL.K3S_NODE_ENV] ? JSON.parse(annotations[C.LABEL.K3S_NODE_ENV]) : {};
+    const nodeEnvArr      = [];
+
+    Object.keys(nodeEnv).forEach((envKey) => {
+      const out = {
+        key:   envKey,
+        value: nodeEnv[envKey]
+      };
+
+      nodeEnvArr.push(out)
+    })
+
+    return nodeEnvArr;
+  }),
+
   osBlurb: computed('info.os.operatingSystem', function() {
     var out = get(this, 'info.os.operatingSystem') || '';
 
