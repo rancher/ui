@@ -59,7 +59,7 @@ export default Component.extend(ModalBase, {
 
       return {
         id:      backup.id,
-        label:   `( ${ time.format('MMMM Do YYYY, H:mm:ss') })${ hyphenatedVersion }`,
+        label:   `${ backup.displayName } (${ time.format('MMMM Do YYYY, H:mm:ss') })${ hyphenatedVersion }`,
         created: backup.created,
         state:   backup.state,
       }
