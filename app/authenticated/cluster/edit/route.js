@@ -8,12 +8,14 @@ import { isEmpty } from '@ember/utils';
 export default Route.extend({
   access:                 service(),
   globalStore:            service(),
+  k3s:                    service(),
   clusterTemplateService: service('clusterTemplates'),
   roleTemplateService:    service('roleTemplate'),
 
   model() {
     const globalStore = this.get('globalStore');
     const cluster     = this.modelFor('authenticated.cluster');
+
     let modelOut      = {
       originalCluster:            cluster,
       cluster:                    cluster.clone(),
@@ -26,6 +28,10 @@ export default Route.extend({
       clusterRoleTemplateBinding: globalStore.findAll('clusterRoleTemplateBinding'),
       me:                         get(this, 'access.principal'),
     };
+
+    if (cluster.driver === 'k3s') {
+      modelOut['k3sVersions'] = this.k3s.getAllVersions();
+    }
 
     if (!isEmpty(cluster.clusterTemplateRevisionId)) {
       setProperties(modelOut, {
