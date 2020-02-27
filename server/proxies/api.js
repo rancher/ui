@@ -43,20 +43,21 @@ module.exports = function(app, options) {
   });
 
   let map = {
-    'Project':   config.projectEndpoint.replace(config.projectToken, ''),
-    'Cluster':   config.clusterEndpoint.replace(config.clusterToken, ''),
-    'Global':    config.apiEndpoint,
-    'Public':    config.publicApiEndpoint,
-    'Magic':     config.magicEndpoint,
-    'Telemetry': config.telemetryEndpoint,
+    'Project':    config.projectEndpoint.replace(config.projectToken, ''),
+    'Cluster':    config.clusterEndpoint.replace(config.clusterToken, ''),
+    'Global':     config.apiEndpoint,
+    'Public':     config.publicApiEndpoint,
+    'Magic':      config.magicEndpoint,
+    'Telemetry':  config.telemetryEndpoint,
 
-    'K8s':       '/k8s',
-    'Meta':      '/meta',
-    'Swagger':   '/swaggerapi',
-    'Version':   '/version',
-    'Apiui':     '/api-ui',
-    'Samlauth':  '/v1-saml',
-    'Drivers':   '/assets/rancher-ui-driver-*',
+    'K8s':        '/k8s',
+    'Meta':       '/meta',
+    'Swagger':    '/swaggerapi',
+    'Version':    '/version',
+    'Apiui':      '/api-ui',
+    'Samlauth':   '/v1-saml',
+    'Drivers':    '/assets/rancher-ui-driver-*',
+    'K3Versions': '/v1-release',
   }
 
   app.use('/', function(req, res, next) {
