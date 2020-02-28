@@ -95,6 +95,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return hasSessionToken;
   }),
 
+  canRotateCerts: computed('actionLinks.rotateCertificates', function() {
+    return !!this.actionLinks.rotateCertificates;
+  }),
+
   canBulkRemove: computed('action.remove', function() { // eslint-disable-line
     return get(this, 'hasSessionToken') ? false : true;
   }),
