@@ -144,6 +144,14 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return get(this, 'configName') === 'rancherKubernetesEngineConfig';
   }),
 
+  displayLocation: computed('configName', function() {
+    const configName = this.configName;
+
+    if ( configName ) {
+      return get(this, `${ configName }.region`) || get(this, `${ configName }.location`) || get(this, `${ configName }.zone`);
+    }
+  }),
+
   provider: computed('configName', 'nodePools.@each.{driver,nodeTemplateId}', 'driver', function() {
     const pools = get(this, 'nodePools') || [];
     const firstPool = pools.objectAt(0);
