@@ -51,6 +51,7 @@ generic:
   false: 'False'
   generic: '常规'
   gigabyte: 'GB'
+  group: 'Group'
   hardware: 硬件
   healthy: 健康
   help: 帮助
@@ -84,6 +85,7 @@ generic:
   noRating: 无评价
   node: 主机
   none: 无
+  completedOf: "{completed} of {total}"
   owner: 所有者
   paste: 粘贴
   pod: pod
@@ -92,8 +94,8 @@ generic:
   ports: 端口
   prefix: 前缀
   project: 项目
-  persistentVolumeClaim: PVC
   persistentVolume: 持久卷(PV)
+  persistentVolumeClaim: PVC
   random: 随机
   remove: 移除
   restarts: Pod重启次数
@@ -134,6 +136,8 @@ generic:
   full: 完整
   linux: Linux
   windows: Windows
+  host: 主机
+  istioHostPlaceholder: 选择或输入主机
   cpu: CPU
   memory: 内存
   noData: 没有数据
@@ -153,8 +157,6 @@ generic:
   gitlab: GitLab
   bitbucket: Bitbucket
   required: '{key}为必填项。'
-  host: 主机
-  istioHostPlaceholder: 选择或输入主机
 
 realmNames:
   all: 全部
@@ -178,6 +180,7 @@ accountsPage:
         projectName: 项目
         active: 激活
         created: 已授权
+        group: 用户组
       global:
         title: 全局角色
         description: 访问管理影响整个安装的事情
@@ -196,14 +199,23 @@ accountsPage:
   index:
     header: 用户列表
     localLink: 添加用户
+    groupLink: 分配全局角色
     table:
-      id: '用户 ID'
+      id: '用户ID'
       kind: 类型
       username: 本地用户名
       identity: 标识
       noData: 目前还没有用户
       noMatch: 没有用户匹配当前搜索
       noName: 无
+  groups:
+    header: 用户组
+    table:
+      groupName: 组名称
+      globalRole: 全局角色名称
+      noData: 没有定义组。
+      noMatch: 没有组匹配当前搜索
+      noName: None
   new:
     header: 添加用户
     errors:
@@ -225,6 +237,17 @@ accountsPage:
       description:
         labelText: 描述
         placeholder: '例如: 这是John Smith的账号'
+  editGroup:
+    header: 编辑组
+  newGroup:
+    header: 将全局角色分配给组
+    warning: 为组分配全局角色只能与支持组的外部auth提供程序一起工作。本地授权不支持组。
+    errors:
+      group: 需要指定组。
+      role: 需要指定角色
+    form:
+      group:
+        labelText: 选择要添加的组
   modal:
     password: 修改密码
 
@@ -232,11 +255,11 @@ appDetailPage:
   header: "App: {appName}"
   endpoints:
     title: 端点
-    detail: '此应用的公共端点'
+    detail: '此应用的公共接入点'
     endpoint: Endpoint
     protocol: 协议
-    noData: 此应用未创建公开终端
-    noMatch: 没有满足当前搜索的公共终端
+    noData: 此应用未创建公开接入点
+    noMatch: 没有满足当前搜索的公共接入点
   answers:
     title: 应答
     detail: 自定义应用应答
@@ -386,7 +409,6 @@ alertPage:
         cpuUsage: 'CPU使用超过{percent}%'
         memUsage: '内存使用超过{percent}%'
         expression: 表达式
-
   new:
     addHeader: 添加告警组
     editHeader: 编辑告警组
@@ -433,6 +455,7 @@ rolesPage:
     project: 项目
   index:
     localLink: 添加角色
+    warning: "不存在在用户首次登录时可能产生意外后果的默认角色。请将其中一个角色设置为新用户默认值。"
     table:
       builtin: 内置
       created: 创建时间
@@ -469,7 +492,7 @@ rolesPage:
       roleAlreadyExists: 用户已经具有"{key}"角色。
     form:
       name:
-        labelText: 姓名
+        labelText: 名称
         placeholder: '例如: 开发者'
       context:
         labelText: 上下文
@@ -490,6 +513,7 @@ rolesPage:
         watch: 观察
         labelText: 允许
         resource: 资源
+        nonResourceUrl: 非资源url(仅路径)
         addAction: 添加资源
         apiGroups: API 组
       otherRole:
@@ -560,7 +584,7 @@ authPage:
     enterprise:
       labelText: '使用私有{type}企业版部署'
     enterpriseHost:
-      labelText: 地址
+      labelText: 企业版主机
       placeholder: '例如: example.com'
   gitlab:
     auth: '标准GitLab: <a href="https://gitlab.com/profile/applications" target="_blank" rel="nofollow noreferrer">点击此处</a>访问并登陆GitLab，在弹出的新窗口中进行应用设置。'
@@ -576,19 +600,167 @@ authPage:
     form:
       subtextVariable: '将新创建应用的Application Id和Secret复制粘贴到对应的输入框中。'
       clientId:
-        labelText: 应用ID
+        labelText: Application Id
       clientSecret:
-        labelText: 秘钥
+        labelText: Secret
+  bitbucketcloud:
+    target:
+      header: '1. 选择你要使用的Bitbucket类型'
+      bitbucketserver: '私有Bitbucket Server'
+      bitbucketcloud: '公有Bitbucket Cloud'
+    setup: '2. 配置Bitbucket Cloud应用'
+    auth: '<a href="https://bitbucket.org/account" target="_blank" rel="nofollow noreferrer">点击此处</a>，在弹出的新窗口中进行应用设置。'
+    ul:
+      li2:
+        text: '点击"OAuth"，然后点击"Add consumer"，并填写表单内容: '
+        ul:
+          li1: '<b>应用名称:</b> <span class="text-muted">任意名称，例如 My Pipeline</span>'
+          li2: '回调URL:'
+          li3: '<b>权限设置: </b> <b>Account Read</b>, <b>Pull Requests Write</b>, <b>Projects Read</b>和<b>Webhooks Read And Write</b>'
+      li3:
+        text: '点击 "Save" '
+    form:
+      headerVariable: '3. 完成配置后，使用您的Bitbucket Cloud账号进行验证。'
+      subtextVariable: '复制并粘贴新创建的consumer的Key和Secret'
+      clientId:
+        labelText: Key
+      clientSecret:
+        labelText: Secret
+  bitbucketserver:
+    warning: Bitbucket Server Webhook需要SSL验证，请确保{appName}服务器的证书在Bitbucket Server中是可信的。点击<a href="https://rancher.com/docs/rancher/v2.x/en/tools/pipelines/configurations/#1-configuring-version-control-providers" target="_blank" rel="nofollow noopener noreferrer">这里</a>获取更多信息。
+    copy: 点击复制
+    target:
+      header: '1. 选择你要使用的Bitbucket类型'
+      bitbucketserver: '私有Bitbucket Server'
+      bitbucketcloud: '公有Bitbucket Cloud'
+    setup: '2. 配置Bitbucket Server应用'
+    auth: '访问Bitbucket Server并登陆你的账户，点击Administration，然后点击Application Links。'
+    ul:
+      li2:
+        text: '创建新的应用链接:'
+        ul:
+          li1: '<b>Link:</b>'
+          li2: '<b>应用名称: </b> <span class="text-muted">任意名称，例如: My Pipeline</span>'
+          li3: '<b>勾选Create incoming link</b>'
+          li4: '<b>点击: "Continue"</b>'
+          li5: 'Consumer Key:'
+          li6: '<b>Consumer Name:</b> <span class="text-muted">任意名称, 例如: pipeline</span>'
+          li7: 'Public Key:'
+          li8: '<b>点击"Continue"</b>'
+    form:
+      headerVariable: '3. 完成配置后，使用您的Bitbucket Server账号进行验证。'
+      hostname:
+        labelText: Bitbucket Server主机
+        placeholder: '例如: example.com'
+        required: 必须配置私有Bitbucket Server主机地址。
+      tls:
+        labelText: 使用https连接
+  saml:
+    accessEnabled:
+      header: 认证
+      disable: 禁用访问控制
+    header:
+      disabled:
+        label: "{providerName}未配置。"
+    enabled:
+      authenticated:
+        header:
+          text: 认证
+      groupsField: '组: '
+      displayName: '显示名称'
+      userName: '用户名: '
+      userId: '用户 ID: '
+    disabled:
+      header: "1. 配置{providerName}账户。"
+      headerDetail: "填写{providerName}账户信息。"
+      label: "{providerName}未配置"
+      name:
+        labelText: 显示名称
+        display: "显示名称: "
+      username:
+        labelText: 用户名
+        display: "用户名: "
+      uid:
+        labelText: UID
+        display: "UID: "
+      rancherApiHost:
+        labelText: "{appName} API地址"
+        display: "{appName} API地址: "
+      groups:
+        labelText: 组
+        display: "组: "
+      testAuth:
+        header: '{step}. 测试并启用认证'
+        subtext: '测试以确认配置是否正确'
+    providerName:
+      ping: Ping
+      adfs: AD FS
+      keycloak: Keycloak
+      okta: Okta
+      shibboleth: Shibboleth
+    authError: '未授权访问'
+    popupError: '请禁用弹出窗口拦截器并再次单击“验证”。'
+  ping:
+    buttonText:
+      pre: '启用Ping认证 '
+      post: '等待返回'
+  keycloak:
+    buttonText:
+      pre: '启用Keycloak认证'
+      post: '等待返回'
+  adfs:
+    buttonText:
+      pre: '启用AD FS认证'
+      post: '等待返回'
+  okta:
+    buttonText:
+      pre: '启用Okta认证'
+      post: '等待返回'
+
+
+  shibboleth:
+    buttonText:
+      pre: '启用Shibboleth认证'
+      post: 等待IDP响应
+      edit: '测试Shibboleth配置'
+    providerName:
+      shibboleth: Shibboleth
+    openLdap:
+      header: 2. OpenLDAP搜索配置
+      detail: 在下面添加OpenLDAP配置来配置搜索功能。
+      help: "<span class='text-italic'>注意: 只有在使用Shibboleth授权配置OpenLDAP搜索时，才需要本节中的必需字段。</span>"
+    advanced:
+      hr: 额外的配置参数
+  root:
+    header: 访问控制
   github:
-    standard: GitHub
+    auth: '标准GitHub: <a href="https://github.com/settings/developers" target="_blank" rel="nofollow noreferrer">点击此处</a>访问并登陆GitHub，在弹出的新窗口中进行应用设置。'
+    enterpriseAuth: "企业版GitHub: 通过企业版GitHub地址访问并登陆企业版GitHub，然后点击Settings，再点击Applications进行设置。"
+    ul:
+      li2:
+        text: '点击 "注册新应用" 并填写表单内容:'
+        ul:
+          li1: '<b>应用名称: </b><span class="text-muted">任意名称，例如: My Pipeline。</span>'
+          li2: '主页URL: '
+          li3: '<b>应用描述: </b><span class="text-muted">应用描述，可选。</span>'
+          li4: '授权回调URL: '
+      li3:
+        text: '点击 注册应用'
+    form:
+      subtextVariable: '将新创建应用的Client ID和Client Secret复制粘贴到对应的输入框中。'
+      clientId:
+        labelText: 客户端ID
+      clientSecret:
+        labelText: 客户端秘钥
+    standard: GitHub标准版
     enterprise: GitHub企业版
     header:
       disabled:
-        label: GitHub未配置
+        label: GitHub没有配置
     authenticated:
       header:
         text: 认证信息
-        enterpriseHostName: "地址:"
+        enterpriseHostName: "企业版主机地址:"
         clientId:
           text: "客户端 ID: "
           helpText: '要修改设置的GitHub应用，请在下方禁用访问控制后重新设置'
@@ -635,173 +807,6 @@ authPage:
         post: 等待GitHub返回
       authError: '未获取Github访问权限'
       popupError: '请关闭弹出的窗口并点击认证按钮重新认证。'
-    auth: '标准GitHub: <a href="https://github.com/settings/developers" target="_blank" rel="nofollow noreferrer">点击此处</a>访问并登陆GitHub，在弹出的新窗口中进行应用设置。'
-    enterpriseAuth: "企业版GitHub: 通过企业版GitHub地址访问并登陆企业版GitHub，然后点击Settings，再点击Applications进行设置。"
-    ul:
-      li2:
-        text: '点击"Register new application"并填写表单内容:'
-        ul:
-          li1: '<b>应用名称: </b><span class="text-muted">任意名称，例如: My Pipeline。</span>'
-          li2: '主页URL: '
-          li3: '<b>应用描述: </b><span class="text-muted">应用描述，可选。</span>'
-          li4: '授权回调URL: '
-      li3:
-        text: '点击 注册应用'
-    form:
-      subtextVariable: '将新创建应用的Client ID和Client Secret复制粘贴到对应的输入框中。'
-      clientId:
-        labelText: 客户端ID
-      clientSecret:
-        labelText: 客户端秘钥
-  bitbucketcloud:
-    target:
-      header: '1. 选择你要使用的Bitbucket类型'
-      bitbucketserver: '私有Bitbucket Server'
-      bitbucketcloud: '公有Bitbucket Cloud'
-    setup: '2. 配置Bitbucket Cloud应用'
-    auth: '<a href="https://bitbucket.org/account" target="_blank" rel="nofollow noreferrer">点击此处</a>，在弹出的新窗口中进行应用设置。'
-    ul:
-      li2:
-        text: '点击"OAuth"，然后点击"Add consumer"，并填写表单内容: '
-        ul:
-          li1: '<b>应用名称:</b> <span class="text-muted">任意名称，例如 My Pipeline</span>'
-          li2: '回调URL:'
-          li3: '<b>权限设置: </b> <b>Account Read</b>, <b>Pull Requests Write</b>, <b>Projects Read</b>和<b>Webhooks Read And Write</b>'
-      li3:
-        text: '点击 "Save" '
-    form:
-      headerVariable: '3. 完成配置后，使用您的Bitbucket Cloud账号进行验证。'
-      subtextVariable: '复制并粘贴新创建的consumer的Key和Secret'
-      clientId:
-        labelText: Key
-      clientSecret:
-        labelText: Secret
-  bitbucketserver:
-    warning: Bitbucket Server Webhook需要SSL验证，请确保{appName}服务器的证书在Bitbucket Server中是可信的。点击<a href="https://rancher.com/docs/rancher/v2.x/en/tools/pipelines/configurations/#1-configuring-version-control-providers" target="_blank" rel="nofollow noopener noreferrer">这里</a>获取更多信息。
-    copy: 点击复制
-    target:
-      header: '1. 选择你要使用的Bitbucket类型'
-      bitbucketserver: '私有Bitbucket Server'
-      bitbucketcloud: '公有Bitbucket Cloud'
-    setup: '2. 配置Bitbucket Server应用'
-    auth: '访问Bitbucket Server并登陆你的账户，点击Administration，然后点击Application Links。'
-    ul:
-      li2:
-        text: '创建新的应用链接:'
-        ul:
-          li1: '<b>Link:</b>'
-          li2: '<b>应用名称: </b> <span class="text-muted">任意名称，例如: My Pipeline</span>'
-          li3: '<b>勾选Create incoming link</b>'
-          li4: '<b>点击: "Continue"</b>'
-          li5: 'Consumer Key: '
-          li6: '<b>Consumer Name:</b> <span class="text-muted">任意名称, 例如: pipeline</span>'
-          li7: 'Public Key:'
-          li8: '<b>点击 "Continue"</b>'
-    form:
-      headerVariable: '3. 完成配置后，使用您的Bitbucket Server账号进行验证。'
-      hostname:
-        labelText: Bitbucket Server主机
-        placeholder: '例如: example.com'
-        required: 必须配置私有Bitbucket Server主机地址。
-      tls:
-        labelText: 使用https连接
-  saml:
-    accessEnabled:
-      header: 认证
-      disable: 禁用访问控制
-    header:
-      disabled:
-        label: "{providerName}未配置。"
-    enabled:
-      authenticated:
-        header:
-          text: 认证
-      groupsField: '组: '
-      displayName: '显示名称'
-      userName: '用户名: '
-      userId: '用户 ID: '
-    disabled:
-      header: "1. 配置{providerName}账户。"
-      headerDetail: "填写{providerName}账户信息。"
-      label: "{providerName}未配置"
-      name:
-        labelText: 显示名称
-        display: "显示名称: "
-      username:
-        labelText: 用户名
-        display: "用户名: "
-      uid:
-        labelText: UID
-        display: "UID: "
-      rancherApiHost:
-        labelText: "{appName} API地址"
-        display: "{appName} API地址: "
-      groups:
-        labelText: 组
-        display: "组: "
-      testAuth:
-        header: '2. 测试并启用认证'
-        subtext: '测试以确认配置是否正确'
-    providerName:
-      ping: Ping
-      adfs: AD FS
-      keycloak: Keycloak
-      okta: Okta
-    authError: '账号未经授权'
-    popupError: '请关闭弹出验证窗口，然后再次单击“验证”。'
-  ping:
-    buttonText:
-      pre: '启用Ping认证 '
-      post: '等待返回'
-  keycloak:
-    buttonText:
-      pre: '启用Keycloak认证'
-      post: '等待返回'
-  adfs:
-    buttonText:
-      pre: '启用AD FS认证'
-      post: '等待返回'
-  okta:
-    buttonText:
-      pre: '启用Okta认证'
-      post: '等待返回'
-
-
-  shibboleth:
-    enabled:
-      authenticated:
-        header:
-          text: 认证
-      disableAccess:
-        header: '危险区域&trade;'
-        warning: '<b class="text-danger">警告:</b>禁用访问控制将导致任何能够访问此页面或API的用户拥有对{appName}的完全控制权限。'
-        confirmDisable: '确认关闭吗? 再次点击将关闭访问控制'
-        disable: 关闭访问控制
-      groupsField: '组: '
-      displayName: '显示名称: '
-      userName: '用户名: '
-      userId: '用户 ID: '
-    disabled:
-      header: '1. 配置Shibboleth账户'
-      label: "{providerName}未配置"
-      name:
-        labelText: 显示名称字段
-      username:
-        labelText: 用户名字段
-      uid:
-        labelText: UID 字段
-      groups:
-        labelText: 组织字段
-      testAuth:
-        header: '2. 测试并启用认证'
-        subtext: '测试以确认配置是否正确: '
-        buttonText:
-          pre: 使用IDP验证
-          post: 等待IDP响应
-    providerName:
-      shibboleth: Shibboleth
-  root:
-    header: 访问控制
   googleoauth:
     header:
       disabled:
@@ -906,7 +911,7 @@ authPage:
       endpoints:
         label: Azure AD访问地址
       regions:
-        standard: Standard
+        standard: 标准
         china: China
         custom: 自定义
       tenantId:
@@ -914,7 +919,7 @@ authPage:
         placeholder: UUID字符串
         help: 由Azure AD portal获取
     test:
-      header: '2. 测试并启用认证'
+      header: '测试并启用认证'
       help: '测试验证以确认配置是否正确: '
       username:
         label: 登录用户名
@@ -999,9 +1004,11 @@ catalogPage:
       rancher:
         rancher: Rancher Labs
         partner: 官方
+        experimental: "实验性"
       pl:
         rancher: 核心
         partner: 官方
+        experimental: "实验性"
     noData:
       singular: 没有符合的应用模板
       plural: 当前目录下没有符合的应用模板
@@ -1009,6 +1016,49 @@ catalogPage:
       launch: 查看详情
       notCompatible: 不兼容
       alreadyDeployed: 已经部署
+
+cis:
+  scan:
+    growl:
+      success: 在'{clusterName}'上运行CIS扫描
+    header: CIS扫描
+    rkeOnly: CIS扫描只适用于RKE集群
+    actions:
+      delete: 删除
+      download: 下载
+      runScan: 运行扫描
+      search:
+          placeholder: 搜索
+    table:
+      state: 状态
+      name: 名称
+      passed: 通过
+      skipped: 跳过
+      failed: 失败
+      date: 日期
+      empty: 当前没有扫描
+    detail:
+      error:
+        parseConfig: 解析security-scan-cfg配置映射时出错。
+        createDefault: 创建默认的security-scan-cfg配置映射失败。
+      actions:
+        delete: 删除
+        download: 下载
+        runScan: 运行扫描
+        search:
+          placeholder: 搜索
+      table:
+        state: 状态
+        number: 序号
+        description: 描述
+        empty: 当前没有测试
+        skip: 跳过
+        unskip: Unskip
+        nodesTable:
+          title: 节点
+          notAvailable: Node不是集群的一部分
+          row:
+            remediation: "Remediation: {remediation}"
 
 cloudCredentialsPage:
   header: 云凭证
@@ -1019,9 +1069,110 @@ cloudCredentialsPage:
     table:
       noData: 当前没有云凭证
       noMatch: 没有云凭证匹配当前搜索
+  numberNodeTemplates: "# 节点模板"
 
 clusterCatalogPage:
   header: 应用商店
+
+clusterIstioPage:
+  header: Istio
+  enabled: "Istio已启用。为了利用Istio，您需要为每个命名空间启用Istio sidecar自动注入。如果在现有命名空间上启用它，则需要重新部署现有工作负载，以利用sidecar自动注入。"
+  disabled: "Istio尚未启用，请单击“启用”按钮启用它。"
+  notReady: 在当前集群中安装Istio…
+  confirmDisable: "你确定吗?再次单击将禁用Istio"
+  monitoringNotDeployed: "监控仍在部署中。 在确保集群中有足够的资源启用Istio之前，请等待监控部署完成。"
+  disable: 禁用
+  enableActionLabel: 启用
+  version: Istio版本
+  customAnswers:
+    title: 自定义应答
+    detail: 配置自定义的应答。
+  links:
+    kiali:
+      label: Kiali UI
+    jaeger:
+      label: Jaeger UI
+    grafana:
+      label: Grafana UI
+    prometheus:
+      label: Prometheus UI
+  config:
+    header:
+      grafana: Grafana
+      gateway: Ingress网关
+      pilot: Pilot
+      prometheus: Prometheus
+      mixer: Mixer
+      tracing: 跟踪
+    tracingEnabled:
+      label: 启用跟踪
+    grafanaEnabled:
+      label: 启用Grafana
+    grafanaPersistenceEnabled:
+      label: 为Grafana启用持久存储
+    mtlsEnabled:
+      label: 服务到服务双向TLS
+    gatewayEnabled:
+      label: 启用Ingress网关
+    gatewayType:
+      label: Ingress网关的服务类型
+    http2Port:
+      label: Http2端口
+    httpsPort:
+      label: Https端口
+    loadBalancerIP:
+      label: Load Balancer IP
+      placeholder: '例如: 192.0.0.1'
+    prometheusRetention:
+      label: Prometheus数据保留
+      placeholder: '例如: 6h'
+    traceSampling:
+      label: 跟踪抽样比例
+      placeholder: '例如: 1'
+    mixerPolicyEnabled:
+      label: Enable Mixer Policy
+  nodeSelector:
+    addSelectorLabel: 添加选择器
+    helpText: 选择要运行{component}工作负载的节点
+  insufficientSize:
+    total:
+      cpu: 请确保至少有{minCpu} milli cpu可供{action} Istio使用。
+      memory: 请确保您至少有{minMemory} MiB的内存可供{action} Istio使用。
+      all: 请确保至少有{minCpu} milli cpu和{minMemory} MiB内存可供{action} Istio使用。
+    workload:
+      cpu: 请确保至少有一个具有{cpu} milli cpu的节点可用来部署{component}工作负载。
+      memory: 请确保您至少有一个具有{memory} MiB内存的节点可用来部署{component}工作负载。
+      all: 请确保至少有一个节点具有{cpu} milli cpu和{memory} MiB内存，可用来部署{component}工作负载。
+    selectors:
+      cpu: 请确保至少有一个节点将节点选择器与{cpu} milli cpu匹配，以启用{component}工作负载。
+      memory: 请确保至少有一个节点将节点选择器与{memory} MiB内存匹配，以启用{component}工作负载。
+      all: 请确保至少有一个节点与{cpu} milli cpu和{memory} MiB内存匹配，以启用{component}工作负载。
+      unsupported: '不支持值为“true”、“false”或number的节点选择器'
+  telemetryAndPolicy: Telemetry And Policy
+  existingClaim:
+    label: 'Existing Claim for {component}'
+  members:
+    title: 成员访问
+    detail:  控制哪些用户能访问Kiali和Jaeger UI
+  pilot:
+    title: Pilot
+    detail: 配置流量管理
+  mixer:
+    title: Mixer
+    detail: 常规策略和遥测配置。
+  tracing:
+    title: 跟踪
+    detail: 配置跟踪请求。
+  ingress:
+    title: Ingress网关
+    detail: 监控和路由规则配置。
+  allowSystemGroup:
+    'true': 允许<b>所有</b>成员访问Kiali和Jaeger UI。
+    'false': 允许集群所有者和指定的</b>成员访问Kiali和Jaeger UI。
+  goToMonitoring: 'istio的工作需要监控。 如果您想修改这些值，请转到<a href="/c/{clusterId}/monitoring/cluster-setting">监控</a>页面修改并保存。'
+  upgradeMonitoring: '在启用Istio之前，您需要首先将集群监视升级到0.0.4或更高版本。访问<a href="/c/{clusterId}/monitoring/cluster-setting">这里</a>去升级集群监控。'
+  enableMonitoring:
+    label: 启用监控
 
 certificatesPage:
   cn: 域名
@@ -1145,7 +1296,7 @@ projectsPage:
     title: 成员
     detail: 配置可以访问该项目中资源的用户以及用户权限。
     user: 用户
-    group: 组
+    group: 用户组
     serviceaccount: 服务账号
     labelText: 成员
     addMember: 添加成员
@@ -1167,6 +1318,9 @@ projectsPage:
       memberNameReq: 成员名称必须设置。
       memberRoleReq: 成员角色必须设置。
 
+clusterTemplateRevisionUpgradeNotification:
+  tooltip: 修订 {revision} 可用于升级。
+
 clustersPage:
   header: 集群列表
   newCluster: 添加集群
@@ -1178,10 +1332,14 @@ clustersPage:
     new: 添加集群
   cluster:
     label: 集群名称
+  templateRevision:
+    label: '模板/修订'
   provider:
     label: 供应商
-  version:
-    label: kubernetes版本
+  kubernetesVersion:
+    label: Kubernetes版本
+  rkeTemplate:
+    label: RKE 模板
   nodes:
     label: 主机数
   cpu:
@@ -1270,9 +1428,169 @@ containersPage:
     noMatch: 没有符合当前搜索的容器
   welcome:
     container: 立即开始
-    containerLink: 创建容器
-    orchestrator: 安装另一个编排引擎
-    kubernetesLink: 安装Kubernetes
+    containerLink: 添加容器
+    orchestrator: Install another orchestrator
+    kubernetesLink: 安装 Kubernetes
+
+clusterDashboard:
+  systemProject: "这是包含所有Kubernetes和{appName}系统命名空间的系统项目，修改当前项目中的资源配置可能会导致系统无法正常运行。"
+  notActive: 当前集群<b>{state}</b>中...
+  notReady: 当前集群<b>{state}</b>中...，在API准备就绪之前，直接与API交互的功能将不可用。
+  used: 使用值
+  title: 仪表盘
+  sections:
+    cluster: 集群监控
+    etcd: Etcd监控
+    k8s: Kubernetes组件监控
+    rancher: '{appName}日志功能监控'
+    node: 节点监控
+  noRancherComponents: '{appName}日志功能未启用或者没有足够的数据绘制图表。'
+  cpu: CPU
+  memory: Memory
+  pods: Pods
+  value: 值
+  more: 更多
+  clusterNotReady: 集群中的图形信息目前不可用。
+  subtitle:
+    reserved: "已预留{total}中的{used}"
+    used: "已使用{total}中的{used}"
+  enableMonitoring: 启用监控并查看实时监控指标
+  upgradeAvailable: "升级监控组件到{version}版本"
+  monitoringNotReady: 监控API未就绪
+  node: Nodes
+  etcd: Etcd
+  scheduler: Scheduler
+  controllerManager: Controller Manager
+  alert:
+    node: "警告: 节点{node}未激活"
+    component: "警告: 组件{component}不健康"
+    nodeCondition:
+      outOfDisk: "警告: 节点 {node} 磁盘空间不足。"
+      diskPressure: "警告: 节点 {node} 有磁盘压力。"
+      memoryPressure: "警告: 节点 {node} 有内存压力。"
+  liveTitle: "已使用{total}中的{used}"
+  reserved: 已预留
+  k3sInfo:
+    title: k3S相关信息
+    detail: 导入的K3S集群节点系统信息。
+    nodeArgs:
+      title: k3S节点参数
+      detail: 当前节点的K3S参数的只读列表。
+      noArgs: 没有节点参数
+
+
+ingressResponse:
+  host: 主机
+  path: 路径
+  responseTime: 响应时间
+  noData: 没有数据
+  noMatch: 没有记录匹配当前搜索
+  detail: Upstream响应时长（排序前十位）
+  title: Ingress Upstream响应时长   
+
+etcd:
+  hasLeader:
+    label: Etcd是否有Leader
+  leaderChange:
+    label: Leader变更次数
+  failedProposals:
+    label: 失败提议次数
+
+monitoringPage:
+  update: 更新监控配置
+  version: 监控组件版本
+  upgrade: 升级监控组件到最新版本 {version}。
+  upgradeAvailable: "(最新版本{version})"
+  confirmDisable: "你确定吗？再次点击将会禁用监控。"
+  disable: 禁用监控
+  enableActionLabel: 启用监控
+  systemProject: "如果您想为系统项目中的Pod收集自定义指标，请直接启用集群级别监控。"
+  noPermission: "您没有权限配置{level}级别监控。"
+  toUpdate:
+    cluster: 集群级别监控已启用。
+    project: 项目级别监控已启用。
+  insufficientSize:
+    prometheus:
+      cpu: 请确保你至少有一个节点有{cpu} milli CPUs 可用来激活Prometheus工作负载。
+      memory: 请确保你至少有一个节点有{memory} MiB 内存可用来激活Prometheus工作负载。
+      all: 请确保你至少有一个节点有{cpu} milli CPUs和{memory} MiB 内存可用来激活Prometheus工作负载。
+    selectors:
+      cpu: 请确保你至少有一个匹配节点选择器的节点有{cpu} milli CPUs 可用来激活Prometheus工作负载。
+      memory: 请确保你至少有一个匹配节点选择器的节点有{memory} MiB 内存可用来激活Prometheus工作负载。
+      all: 请确保你至少有一个匹配节点选择器的节点有{cpu} milli CPUs和{memory} MiB 内存可用来激活Prometheus工作负载。
+    total:
+      cpu: 请确保你至少有{cpu} milli CPUs 可用来激活监控。
+      memory: 请确保你至少有{memory} MiB 内存可用来激活监控。
+      all: 请确保你至少有{cpu} milli CPUs和{memory} MiB 内存可用来激活监控。
+  clusterNotEnabled: 集群级别监控未启用。将只采集自定义指标。
+  prometheus: 监控尚未启用，点击下面的保存按钮去启用监控。
+  resourceLimitsHelp: '启用集群监视时，需要确保工作节点和Prometheus pod具有足够的资源。请访问<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-admin/tools/monitoring/#resource-consumption" target="_blank" rel="nofollow noreferrer">Rancher docs</a>了解建议的资源限制。'
+  config:
+    types:
+      none: 无
+      prometheus: Prometheus
+    header: Prometheus 配置
+    prometheus:
+      cpuLimit:
+        label: Prometheus CPU限制
+        placeholder: '例如: 1000'
+        unit: milli CPUs
+      cpuRequest:
+        label: Prometheus CPU预留
+        placeholder: '例如: 1000'
+        unit: milli CPUs
+      memoryLimit:
+        label: Prometheus 内存限制
+        placeholder: '例如: 1000'
+      memoryRequest:
+        label: Prometheus 内存预留
+        placeholder: '例如: 1000'
+      enablePersistence:
+        label: 为Prometheus启用持久化存储
+      size:
+        label: Prometheus持久化存储大小
+        placeholder: '例如: 50Gi'
+      storageClass:
+        label: Prometheus默认存储类
+    grafana:
+      enablePersistence:
+        label: 为Grafana启用持久化存储
+      size:
+        label: Grafana持久化存储大小
+        placeholder: '例如: 10Gi'
+      storageClass:
+        label: Grafana默认存储类
+    retention:
+      label: 数据保存时间
+    storageClass:
+      label: 存储类
+    operator:
+      memoryLimit:
+        label: Prometheus Operator 内存限制
+        placeholder: '例如: 500'
+    nodeexporter:
+      label: Node Exporter主机端口
+      enable: 启用Node Exporter
+      cpuLimit:
+        label: Node Exporter CPU限制
+        placeholder: '例如: 200'
+        unit: milli CPUs
+      memoryLimit:
+        label: Node Exporter 内存限制
+        placeholder: '例如: 200'
+  nodeSelector:
+    addSelectorLabel: 添加选择器
+    helpText: 选择部署监控相关的工作负载所运行的节点。
+  cluster:
+    title: 集群监控配置
+    disabled: 当前集群监控尚未启用。
+    toDisable: 监控已启用。点击下面的保存按钮来禁用当前集群的监控。
+  project:
+    title: 项目监控配置
+    disabled: 当前项目监控尚未启用。
+    toDisable: 监控已启用。点击下面的保存按钮来禁用当前项目的监控。
+  errors:
+    disableIstioFirst: '在禁用集群监控之前，需要先禁用Istio。'
 
 metricsAction:
   description: 实时查看工作负载监控数据。
@@ -1284,7 +1602,7 @@ metricsAction:
   grafana:
     label: Grafana
   summary:
-    label: 概览模式
+    label: 聚合模式
   detail:
     label: 详情模式
   from:
@@ -1301,64 +1619,64 @@ metricsAction:
     30d: 30天
 
 metrics:
-  cluster-cpu-usage: CPU使用率
+  apiserver-request-count: API Server请求速率
+  apiserver-request-latency: API Server请求延迟
   cluster-cpu-load: 集群负载
-  cluster-memory-usage: 内存使用率
-  cluster-fs-usage-percent: 磁盘使用率
+  cluster-cpu-usage: CPU使用率
   cluster-disk-io: 磁盘I/O
+  cluster-fs-usage-percent: 磁盘使用率
+  cluster-memory-usage: 内存使用率
   cluster-network-io: 网络I/O
   cluster-network-packet: 网络数据包
+  container-cpu-usage: CPU
+  container-disk-io: '磁盘I/O'
+  container-memory-usage-bytes-sum: 内存
+  controllermanager-queue-depth: 控制器队列深度
   etcd-db-bytes-sum: 数据库大小
+  etcd-disk-operate: 磁盘操作
   etcd-grpc-client: GRPC客户端流量
+  etcd-leader-change: Leader变更
   etcd-peer-traffic: 传输流量
   etcd-raft-proposals: Raft提议
   etcd-rpc-rate: RPC速率
   etcd-stream: 活动流
   etcd-sync-duration: 磁盘同步周期
-  apiserver-request-count: API Server请求速率
-  apiserver-request-latency: API Server请求延迟
-  scheduler-e-2-e-scheduling-latency-seconds-quantile: 调度器e2e调度延迟
-  scheduler-pod-unscheduler: 调度失败的Pod
-  scheduler-total-preemption-attempts: 调度器尝试调度次数
-  controllermanager-queue-depth: 控制器队列深度
-  ingresscontroller-nginx-connection: Ingress控制器连接数
-  ingresscontroller-request-process-time: Ingress控制器请求处理时长
-  node-cpu-load: 节点负载
-  node-cpu-usage: CPU使用率
-  node-memory-usage: 内存使用率
-  node-fs-usage-percent: 磁盘使用率
-  node-disk-io: 磁盘I/O
-  node-network-io: 网络I/O
-  node-network-packet: 网络数据包
-  etcd-leader-change: Leader变更
-  etcd-disk-operate: 磁盘操作
   fluentd-buffer-queue-length: Fluentd缓存区队列长度
+  fluentd-input-record-number: Fluentd输入速率
   fluentd-output-errors: Fluentd输出错误速率
   fluentd-output-record-number: Fluentd输出速率
-  fluentd-input-record-number: Fluentd输入速率
-  workload-cpu-usage: CPU
-  workload-disk-io: '磁盘I/O'
-  workload-memory-usage-bytes-sum: 内存
-  workload-network-io: '网络I/O'
-  workload-network-packet: 网络数据包
+  ingresscontroller-nginx-connection: Ingress控制器连接数
+  ingresscontroller-request-process-time: Ingress控制器请求处理时长
+  istio-4xxs-top10: 服务4xx错误代码计数
+  istio-4xxs: 项目4xx错误代码计数
+  istio-5xxs-top10: 服务5xx错误代码计数
+  istio-5xxs: 项目5xx错误代码计数
+  istio-global-request-volume-top10: Request Volume by Service
+  istio-global-request-volume: Project Request Volume
+  istio-global-success-rate: 项目成功率
+  istio-request-duration-p99-top10: P99 Request Latency by Service
+  istio-request-duration-p90-top10: P90 Request Latency by Service
+  istio-request-duration-p50-top10: P50 Request Latency by Service
+  node-cpu-load: 节点负载
+  node-cpu-usage: CPU使用率  
+  node-disk-io: 磁盘I/O
+  node-fs-usage-percent: 磁盘使用率
+  node-memory-usage: 内存使用率
+  node-network-io: 网络I/O
+  node-network-packet: 网络数据包
   pod-cpu-usage: CPU
   pod-disk-io: '磁盘I/O'
   pod-memory-usage-bytes-sum: 内存
   pod-network-io: 网络I/O
   pod-network-packet: 网络数据包
-  container-cpu-usage: CPU
-  container-disk-io: '磁盘I/O'
-  container-memory-usage-bytes-sum: 内存
-  istio-global-request-volume: Project Request Volume
-  istio-global-success-rate: 项目成功率
-  istio-4xxs: 项目4xx错误代码计数
-  istio-5xxs: 项目5xx错误代码计数
-  istio-global-request-volume-top10: Request Volume by Service
-  istio-4xxs-top10: 服务4xx错误代码计数
-  istio-5xxs-top10: 服务5xx错误代码计数
-  istio-request-duration-p99-top10: P99 Request Latency by Service
-  istio-request-duration-p90-top10: P90 Request Latency by Service
-  istio-request-duration-p50-top10: P50 Request Latency by Service
+  scheduler-e-2-e-scheduling-latency-seconds-quantile: 调度器e2e调度延迟
+  scheduler-pod-unscheduler: 调度失败的Pod
+  scheduler-total-preemption-attempts: 调度器尝试调度次数
+  workload-cpu-usage: CPU
+  workload-disk-io: '磁盘I/O'
+  workload-memory-usage-bytes-sum: 内存
+  workload-network-io: '网络I/O'
+  workload-network-packet: 网络数据包
 
 dnsPage:
   noMatch: 没有匹配当前搜索的记录。
@@ -1613,6 +1931,15 @@ cruVolume:
     title: 源配置
     detail: 配置选定存储源的选项
     prompt: 选择存储源...
+destinationRulePage:
+  noMatch: 没有与当前搜索匹配的目标规则
+  noData: 没有定义目标规则。
+  notSupported: '集群networking.istio.io/v1alpha3 API不可用。'
+  table:
+    host:
+      label: Host
+    subsets:
+      label: Subsets
 
 globalRegistryPage:
   header: 全局镜像库
@@ -1730,16 +2057,16 @@ globalRegistryPage:
     database:
       external:
         host:
-          label: Host for PostgreSQL
+          label: PostgreSQL地址
           placeholder: '例如: 192.168.0.1'
         port:
-          label: Port for PostgreSQL
+          label: PostgreSQL端口
           placeholder: '例如: 5432'
         username:
-          label: Username for PostgreSQL
+          label: PostgreSQL用户名
           placeholder: '例如: user'
         password:
-          label: Password for PostgreSQL
+          label: PostgreSQL密码
           placeholder: '例如: password'
         coreDatabase:
           label: Core Database
@@ -1760,7 +2087,7 @@ globalRegistryPage:
     exposeIngressHost:
       error: '"{hostName}"是一个主机名，需要使用expose.ingress.host这样的域名。'
   globalRegistryEnabled:
-    error: Error saving global-registry-enabled
+    error: 保存global-registry-enabled错误
   insufficientSize:
     total:
       cpu: 请确保至少有{minCpu} milli cpu供{action} registry使用。
@@ -2010,7 +2337,7 @@ hostsPage:
         labelText: '供应商: '
         noHost: 自定义
       kernel: '内核'
-      docker: 'Docker: '
+      docker: 'Docker:'
       os: '操作系统'
       milliCpu:
         labelText: mCPU
@@ -2038,6 +2365,30 @@ hostsPage:
           mounts: 挂载
         body:
           noData: 主机未使用任何数据卷
+
+istio:
+  refreshGraph: 刷新视图
+  noData: 没有足够的数据来绘制图表
+  period: Period
+  table:
+    template: 模板
+    host: Host
+  kiali: 由Kiali提供支持
+  trafficMonitoring:
+    duration: Last {time}
+  nav:
+    graph: 流量图
+    metrics: 流量指标
+    rules: 流量规则
+    destinationRules:
+      label: 目标规则
+      add: 添加目标规则
+    virtualServices:
+      label: 虚拟服务
+      add: 添加虚拟服务
+    gateways:
+      label: 网关
+      add: 添加网关
 
 k8sImport:
   header: 导入现有的Kubernetes
@@ -2107,6 +2458,12 @@ notFoundPage:
   header: "当前页面不存在！"
   linkTo: 回到首页
 
+projectIstioPage:
+  info:
+    notEnabled: 'Istio尚未启用。访问<a href="/c/{clusterId}/istio/cluster-setting">这里</a>启用它。'
+    notOwner: "Istio尚未启用。请与集群管理员联系。"
+    noPermission: "您没有配置Istio的权限。"
+
 registriesPage:
   index:
     header: 镜像库凭证列表
@@ -2134,6 +2491,23 @@ registriesPage:
         labelText: 密码
         placeholder: '例如: password'
 
+rulesPage:
+  new: 添加流量规则
+  noMatch: 没有流量规则匹配当前搜索
+  noData: 当前没有流量规则
+ruleDetailPage:
+  header: "流量规则: {appName}"
+  rules:
+    virtualservices: 虚拟服务
+    serviceentries: 服务条目
+    destinationrules: 目标规则
+    gateways: 网关
+    envoyfilters: Envoy Filters
+  answers:
+    title: 应答
+    detail: 自定义流量规则应答
+    variable: 变量
+
 secretsPage:
   index:
     header: 密文列表
@@ -2142,6 +2516,11 @@ secretsPage:
     noMatch: 没有符合搜索条件的密文
   table:
     keys: 键
+
+settingsPage:
+  tabs:
+    settings: 高级设置
+    feature: 功能选项
 
 configMapsPage:
   index:
@@ -2243,7 +2622,7 @@ signupPage:
   form:
     button: 注册
     labels:
-      loginUsername: 姓名
+      loginUsername: 用户名
       email: 电子邮箱
   emailSuccess:
     header: '欢迎使用{appName}'
@@ -2336,6 +2715,7 @@ nodeTemplatesPage:
     noData: 没有配置主机模板
     usedByNone: 没有集群
     unknown: 未知
+    owner: 所有者
 
 storageClassPage:
   header: 存储类列表
@@ -2366,7 +2746,7 @@ userPreferencesPage:
   generalInfo:
     header: 账号
     name:
-      label: 姓名
+      label: 显示名称
     username:
       label: 用户名
     email:
@@ -2379,8 +2759,16 @@ verifyPage:
   subtext: 在完成账号设置前，我们还需要一些信息。
   account:
     header: 账号创建完成
-    subtext: 点击以下链接登录
-    linkText: 登录
+    subtext: 点击下面的链接进入登录页面。
+    linkText: Login
+
+virtualServicePage:
+  noMatch: 没有虚拟服务匹配当前搜索
+  noData: 没有定义虚拟服务
+  notSupported: 'networking.istio.io/v1alpha3 API在集群中不可用。'
+  table:
+    hosts:
+      label: 主机
 
 verifyResetPasswordPage:
   header: 重置密码
@@ -2521,7 +2909,7 @@ ldap:
       enabled: "启用字段:"
       disabledBitMask: "禁用位掩码:"
     group:
-      header: 组
+      header: 用户组
       objectClass: "对象分类:"
       name: "名称字段:"
       search: "搜索字段:"
@@ -2579,7 +2967,7 @@ ldap:
       userMemberAttribute:
         labelText: 用户成员属性
     groups:
-      header: 组
+      header: 用户组
       objectClass:
         labelText: 对象分类
       name:
@@ -2653,7 +3041,7 @@ authorizedEndpoint:
   enabled:
     label: '此地址必须是能够访问k8s api-server的域名或者IP。在Rancher Server不可用时，可使用包含此地址的kubecfg文件，通过命令 "kubectl --context" 直接访问k8s集群。'
   fqdn:
-    label: FQDN(域名，后面的证书为ca证书 → )
+    label: FQDN(域名和后面的CA证书可不用填写。 )
 
 taintsSection:
   title: Taints
@@ -3045,6 +3433,9 @@ clusterNew:
       label: 网络
       default: 默认
       advanced: 高级
+      networkPlugin:
+        label: 网络插件
+        prompt: 选择网络插件
       vnet:
         label: '虚拟网络-子网(子网CIDR)'
         prompt: '选择虚拟网络/子网'
@@ -3066,6 +3457,11 @@ clusterNew:
         label: Docker bridge地址
         help: '分配给Docker Bridge的IP地址和网络掩码，它不能位于任何子网IP范围或Kubernetes服务地址范围内。例如: 172.17.0.1/16.'
         placeholder: '例如: 172.17.0.1/16'
+      podCidr:
+        label: Kubernetes pod地址范围
+        help: '一个IP范围，用于分配Pod IP。例如: 172.244.0.0/16'
+        placeholder: '例如: 172.244.0.0/16'
+
     sshUser:
       label: SSH用户
       placeholder: usr1
@@ -3282,6 +3678,7 @@ clusterNew:
       placeholder: 子网名称
     ipPolicyCreateSubnetwork:
       label: 创建子网
+      autoLabel: 自动创建子网
     ipPolicyClusterSecondaryRangeName:
       label: Cluster Secondary Range Name
       placeholder: Your Cluster Secondary Range Name
@@ -3390,6 +3787,9 @@ clusterNew:
         placeholder: Value
       required: '污点的 "key"和"value"必须设置.'
     tablesOnly: Tables Only
+  k3simport:
+    label: Rancher K3S
+    shortLabel: K3S
   huaweicce:
     label: 华为云容器引擎
     shortLabel: Huawei CCE
@@ -3488,7 +3888,7 @@ clusterNew:
       label: 弹性 IP
       none: 无可用弹性 IP
     eipType:
-      label: Eip Type
+      label: Eip 类型
     clusterLabels:
       label: 集群标签
       none: 无标签
@@ -3529,6 +3929,18 @@ clusterNew:
     eipShareType:
       label: 共享Eip类型
   rke:
+    upgradeStrategy:
+      maximumWorkersDown:
+        view:
+          count: "{value}"
+          percentage: "{value}%"
+        label: 最大不可用Worker节点数
+        placeholder: '例如: 6'
+        mode:
+          percentage: 百分比
+          count: 台数
+      drainNodes:
+        label: 节点驱逐（当节点不可用时是否执行自动驱逐Pod）
     clustersSelectTemplate:
       label: "使用现有的集群模板和修订"
       select:
@@ -3628,6 +4040,8 @@ clusterNew:
       add: 添加主机池
       addTemplate: 添加主机模板
       templatePrompt: '选择模板...'
+      myTemplatesGroup: "我的模板"
+      othersTemplatesGroup: "其他模板"
       hostnamePrefix: 主机池名称前缀
       count: 数量
       template: 主机模板
@@ -3682,6 +4096,10 @@ clusterNew:
       label: 监控指标
     networkPolicy:
       label: 项目网络隔离
+    networkMTU:
+      label: 容器网卡 MTU
+      help: "自定义容器网卡MTU值。默认网络传输的MTU为1500，对于有些网络驱动(比如canal)，由于使用vxlan后端，会有50bit用于传输vxlan的tag，所以在主机上创建的网桥flannel.1的MTU值是1450，非标准的1500。默认情况容器的网卡MTU值是1500，为了对应flannel.1的MTU值，可通过这个参数来自定义容器的MTU值。"
+      detail: '例如: 1500'
     version:
       label: Kubernetes版本
     registry:
@@ -3715,6 +4133,7 @@ clusterNew:
         etcd: '1,3或5'
         controlplane: '1或更多'
         worker: '1或更多'
+    helptext: 更改的主机模板只会影响新创建的节点。
     kubeApi:
       label: Kube API
       ipRange: 服务集群IP范围
@@ -3791,7 +4210,150 @@ cruClusterTemplate:
     label: '编辑集群模板'
   selectRevision:
     label: '选择默认修订'
-
+cruDestinationRule:
+  title:
+    new: 添加目标规则
+    edit: 编辑目标规则
+    view: "目标规则: {name}"
+  port:
+    label: Port
+    placeholder: '例如: 8080 or myport'
+  host:
+    error: 主机是必需的。
+  name:
+    placeholder: '例如: myrule'
+  loadBalancer:
+    label: Load Balancer
+    detail: 配置负载平衡器算法
+    simple:
+      label: 使用标准的负载平衡算法
+      roundRobin:
+        label: 轮询
+      leastConn:
+        label: 最小请求
+      random:
+        label: 随机
+      passthrough:
+        label: 透传
+    consistentHash:
+      label: 使用一致的基于散列的负载平衡实现软会话关联
+      httpHeaderName:
+        label: HTTP Header 名称
+        placeholder: '例如: end-user'
+        error: 必须设置HTTP Header名称。
+      minimumRingSize:
+        label: Minimum Ring Size
+        placeholder: '例如: 1024'
+      httpCookie:
+        name:
+          label: Cookie 名称
+          placeholder: '例如: username'
+          error: 需要Cookie名称。
+        path:
+          label: Cookie 路径
+          placeholder: '例如: /'
+        ttl:
+          label: TTL
+          placeholder: '例如: 0s'
+          error: TTL是必需的。
+      mode:
+        label: Hash 模式
+        header:
+          label: 基于特定HTTP头的哈希
+        cookie:
+          label: 基于HTTP cookie的Hash
+        sourceIp:
+          label: 基于源IP地址的哈希
+  connectionPool:
+    label: 连接池
+    detail: 配置到上游服务的连接量
+    http1MaxPendingRequests:
+      label: HTTP1最大等待请求
+      placeholder: '例如: 1024'
+      help: 到目标端的最大请求等待数
+    http2MaxRequests:
+      label: HTTP2最大等待请求
+      placeholder: '例如: 1024'
+      help: 到后端请求的最大数量。
+    maxRequestsPerConnection:
+      label: 每个连接的HTTP最大请求
+      placeholder: '例如: 10'
+      help: 到后端连接的每个连接的最大请求数。将此参数设置为1将禁用keep alive。
+    maxRetries:
+      label: HTTP最大重试
+      placeholder: '例如: 1024'
+      help: 在给定时间内，集群中所有主机都可以执行的最大重试次数。
+    connectTimeout:
+      label: TCP连接超时
+      placeholder: '例如: 30ms'
+      help: TCP连接超时。
+    maxConnections:
+      label: TCP最大连接数
+      placeholder: '例如: 1024'
+      help: '到目标主机的HTTP1/TCP连接的最大数量。'
+  outlierDetection:
+    label: 异常值检测
+    detail: 配置从负载平衡池中移除不健康主机
+    baseEjectionTime:
+      label: 基本驱逐时间
+      placeholder: '例如: 30s'
+      help: 最小驱逐时间. A host will remain ejected for a period equal to the product of minimum ejection duration and the number of times the host has been ejected.
+    consecutiveErrors:
+      label: 连续错误
+      placeholder: '例如: 5'
+      help: 从连接池中弹出主机之前的错误数。
+    interval:
+      label: 时间间隔
+      placeholder: '例如: 10s'
+      help: Time interval between ejection sweep analysis.
+    maxEjectionPercent:
+      label: 最大驱逐百分比
+      placeholder: '例如: 10'
+      help: Maximum % of hosts in the load balancing pool for the upstream service that can be ejected.
+  subsets:
+    label: Subsets
+    noSubsets: No Subsets
+    addSubsetLabel: Add Subset
+    removeSubsetLabel: Remove Subset
+    name:
+      label: Name
+      placeholder: '例如: v1'
+      error: 子网名称需要设置.
+    labels:
+      error: 请为子集至少设置一个标签。
+  tls:
+    label: TLS
+    detail: 为连接到上游服务配置TLS相关设置
+    mode:
+      label: TLS模式
+      none:
+        label: 无
+      istio:
+        label: Istio Mutual - 通过Istio实现与上游的双向安全连接
+      disable:
+        label: 禁用-不要设置到上游端点的TLS连接
+      simple:
+        label: 简单-创建到上游端点的TLS连接
+      mutual:
+        label: Mutual - 通过提供客户端证书进行身份验证，使用双向TLS安全连接到上游
+    clientCertificate:
+      label: 客户端证书(Client certificate)
+      placeholder: '例如: /etc/certs/myclientcert.pem'
+      error: 必须设置客户端证书。
+    privateKey:
+      label: 私钥(private key)
+      placeholder: '例如: /etc/certs/client_private_key.pem'
+      error: 必须设置私钥。
+    caCertificates:
+      label: CA证书(CA certificate)
+      placeholder: '例如: /etc/certs/rootcacerts.pem'
+    sni:
+      label: SNI
+      placeholder: '例如: nginx.example.com'
+    subjectAltNames:
+      label: Subject Alternative Names
+      placeholder: '例如: example.com'
+      add: Add Subject Alternative Name
 
 clusterTemplateQuestions:
   label: '集群默认应答参数'
@@ -3880,6 +4442,12 @@ confirmDelete:
   cancelAction: 取消
   largeDeleteText: '{key} and {othersCount} others'
   systemChartNote: '您正在删除一个系统应用程序。如果删除该应用程序，可能会导致集群出现问题。'
+  globalRoleNote: |
+    {count, plural,
+    =0 {No users are assigned this role.}
+    =1 {# user is assigned this role.}
+    other {# users are assigned this role.}
+    }
   forceDelete:
     label: 强制删除
     warning: '强制删除Pod并不等待确认Pod中的进程是否终止，这可能导致这些进程一直运行，直到节点检测到并完成优雅的删除。如果您的进程使用共享存储或与远程API通信，并且依赖于pod的名称来标识自己，那么强制删除这些pod可能导致多个进程使用相同的标识运行在不同的机器上，这可能导致数据损坏或不一致。只有在确定Pod已终止，或者应用程序可以同时运行同一pod的多个副本时，才强制删除pod。此外，如果强制删除Pod，调度器可能会在节点释放这些资源之前在这些节点上运行新的Pod，并导致这些Pod立即被驱逐。'
@@ -4111,6 +4679,49 @@ cruPersistentVolume:
     wwids:
       label: Wwids
       addActionLabel: 添加
+  csi:
+    driver:
+      label: 驱动
+      placeholder: '例如: driver.longhorn.io'
+    fsType:
+      label: 文件系统
+      placeholder: '例如: ext4'
+    readOnly:
+      label: 只读
+    volumeHandle:
+      label: Volume Handle
+      placeholder: "e.g. pvc-xxxx"
+    volumeAttributes:
+      label: 卷属性
+      addActionLabel: 添加卷属性
+    controllerExpandSecretRef:
+      name:
+        label: Controller Expand Secret Name
+        placeholder: "e.g. secret"
+      namespace:
+        label: Controller Expand Secret Namespace
+        placeholder: "e.g. default"
+    controllerPublishSecretRef:
+      name:
+        label: Controller Publish Secret Name
+        placeholder: "e.g. secret"
+      namespace:
+        label: Controller Publish Secret Namespace
+        placeholder: "e.g. default"
+    nodePublishSecretRef:
+      name:
+        label: Node Publish Secret Name
+        placeholder: "e.g. secret"
+      namespace:
+        label: Node Publish Secret Namespace
+        placeholder: "e.g. default"
+    nodeStageSecretRef:
+      name:
+        label: Node Stage Secret Name
+        placeholder: "e.g. secret"
+      namespace:
+        label: Node Stage Secret Namespace
+        placeholder: "e.g. default"
   flexVolume:
     driver:
       label: 驱动
@@ -4346,7 +4957,14 @@ cruStorageClass:
     Delete: 在工作负载释放后删除卷和底层设备
     Retain: 保留卷以进行手动清理
     Recycle: '回收: 清空内容，然后为以后的工作负载保留卷'
+  volumeBindingMode:
+    label: 卷绑定模式
+    immediate: 创建PersistentVolumeClaim后，绑定并提供一个持久卷
+    waitForFirstConsumer: 使用PersistentVolumeClaim创建一个Pod后，绑定并提供一个持久卷
   aws-ebs:
+    fsType:
+      label: 文件系统
+      placeholder: '例如: ext4'
     type:
       label: 卷类型
       gp2: 'GP2 - 通用SSD'
@@ -4603,13 +5221,235 @@ cruStorageClass:
       label: GID MAX
       placeholder: "例如: 50000"
     volumetype:
-      label: 卷类型
-      placeholder: "例如: replicate: 3"
+      label: '卷类型'
+      placeholder: '例如: replicate:3'
+
+gatewayPage:
+  noMatch: 没有网关匹配当前搜索
+  noData: 没有配置网关
+  notSupported: 集群networking.istio.io/v1alpha3 API 不可用。
+  table:
+    hosts:
+      label: Hosts
+
+cruGateway:
+  title:
+    new: 添加网关
+    edit: 编辑网关
+    view: "网关: {name}"
+  name:
+    placeholder: ’例如：mygateway‘
+  selector:
+    label: 选择器
+    add: Add Key Value
+    error: '"选择器必需设置.'
+  tls:
+    mode:
+      label: 运行模式
+      prompt: '选择模式...'
+    httpsRedirect:
+      label: HTTPS重定向
+      enabled: 'Yes'
+      disabled: 'No'
+    serverCertificate:
+      label: 服务证书
+      placeholder: '例如：/etc/istio/ingressgateway-certs/tls.crt'
+    privateKey:
+      label: 服务私钥
+      placeholder: '例如: /etc/istio/ingressgateway-certs/tls.key'
+    caCertificates:
+      label: CA 证书
+      placeholder: '例如: /etc/istio/ingressgateway-ca-certs/ca-chain.cert.pem'
+    credentialName:
+      label: 凭据名称
+      placeholder: '例如: myssl'
+  port:
+    number:
+      label: 端口号
+      placeholder: '例如: 80'
+      error: '端口号必须设置'
+    name:
+      label: 端口名称
+      placeholder: '例如: http'
+      error: '端口名称必须设置'
+    protocol:
+      label: 端口协议
+  hosts:
+    label: Hosts
+    add: Add Host
+    placeholder: '例如: *'
+    error: '"Hosts" is required.'
+  servers:
+    label: Servers
+    add: 添加Server
+    error: 请输入至少一个server
+    noServers: 没有Servers
+    removeServerLabel: 移除server
+
+cruVirtualService:
+  title:
+    new: 添加虚拟服务
+    edit: 编辑虚拟服务
+    view: "虚拟服务: {name}"
+  name:
+    placeholder: '例如: myservice'
+  hosts:
+    label: 主机
+    add: 添加主机
+    error: 请选择或输入至少一个主机
+  gateways:
+    label: 网关
+    add: 添加网关
+    placeholder: '例如: mygateway'
+    prompt: 选择网关...
+  http:
+    routes:
+      label: HTTP路由
+      noRoutes: 没有http路由
+      addRouteLabel: 添加http路由
+      removeRouteLabel: 删除http路由
+      moveUp: 向上移动
+      moveDown: 向下移动
+      timeout:
+        label: 超时
+        placeholder: '例如: 5s'
+      faultInjection:
+        abort:
+          label: 故障注入中止
+          httpStatus:
+            label: HTTP 状态码
+            placeholder: '例如: 400'
+          percent:
+            label: 百分比
+            placeholder: '例如: 8'
+        delay:
+          label: 故障注入延迟
+          fixedDelay:
+            label: 固定延迟
+            placeholder: '例如: 5s'
+          percent:
+            label: 百分比
+            placeholder: '例如: 8'
+      mirror:
+        label: 监控
+        host:
+          label: Host
+        subset:
+          label: Subset
+          placeholder: '例如: v2'
+        port:
+          label: Port
+          placeholder: '例如: 8080 or myport'
+      retries:
+        label: 重试
+        attempts:
+          label: 重试次数
+          placeholder: '例如: 3'
+        perTryTimeout:
+          label: 每次重试超时
+          placeholder: '例如: 2s'
+      redirect:
+        label: 重定向
+        uri:
+          label: URI
+          placeholder: '例如: /v1/bookRatings'
+        authority:
+          label: Authority
+          placeholder: '例如: newratings.default.svc.cluster.local'
+        error: 请不要同时配置目标地址和重定向。
+      rewrite:
+        label: 地址重写
+        uri:
+          label: URI
+          placeholder: '例如: /v1/bookRatings'
+        authority:
+          label: Authority
+          placeholder: '例如: newratings.default.svc.cluster.local'
+      destination:
+        addDestinationLabel: 增加目标地址
+        noDestinations: 没有目标地址
+        port:
+          label: Port
+          placeholder: '例如: 8080 or myport'
+        weight:
+          label: 权重
+          placeholder: '例如: 50'
+          error: 必须设置权重。
+        subset:
+          label: Subset
+          placeholder: '例如: v1'
+        host:
+          label: Host
+          error: 必须设置Host。
+      matches:
+        error: 请为匹配条件输入至少一个键值对
+        showMatch: 指定此路由的匹配规则
+        addLabel: 添加其他匹配规则
+        removeLabel: 删除匹配规则
+        noData: 没有匹配规则
+        addMatchLabel: 添加匹配条件
+        noMatches: 没有匹配条件
+        port:
+          label: Port
+          placeholder: '例如: 8080'
+        sourceLabels:
+          label: 源标签
+          addActionLabel: 添加源标签
+        type:
+          label: 匹配类型
+          uri: URI
+          authority: Authority
+          method: Method
+          scheme: Scheme
+          headers: Headers
+        key:
+          label: 键
+          placeholder: '例如: end-user'
+        condition:
+          label: 条件
+          exact: 精确匹配
+          prefix: 前缀匹配
+          regex: 正则表达式匹配
+        value:
+          label: 值
+          uri:
+            exact: '例如: /ratings/v2/'
+            prefix: '例如: /ratings'
+            regex: '例如: /ratings.*'
+          authority:
+            exact: '例如: eu.bookinfo.com'
+            prefix: '例如: eu'
+            regex: '例如: ".*?[.]eu[.]bookinfo[.]com"'
+          method:
+            exact: '例如: GET'
+            prefix: '例如: GET'
+            regex: '例如: ^.*(GET|POST).*$'
+          scheme:
+            exact: '例如: http'
+            prefix: '例如: http'
+            regex: '例如: h.*'
+          headers:
+            exact: '例如: jason'
+            prefix: '例如: jason'
+            regex: '例如: ja.*'
+
+
+validationsList:
+  title: 验证检查
+  detail: 当前{resourceType}的验证检查
+  noPermission: 您没有权限查看验证。请联系您的集群所有者，让Kiali访问您。
+  table:
+    path: 路径
+    severity: 严重程度
+    message: 消息
+  noData: 没有发现问题
+  noMatch: 没有问题匹配当前搜索
+
 
 dangerZone:
   header: 高级设置
   subtext: "通常情况下用户不需要修改以下设置。请谨慎操作，不正确的值可能导致{appName}无法正常运行。修改默认设置后将以<b>粗体</b>显示配置名。"
-  showLabel: 我已经确认修改高级设置可能会导致问题。
+  showLabel: 我已确认修改高级设置可能导致{appName}出问题。
   show: 显示
   hide: 隐藏
   description:
@@ -4853,6 +5693,18 @@ stacksPage:
     instanceState: 容器状态
     instanceStateWithIcon: 状态
 
+featureFlags:
+  warningHeader: '您应该谨慎地启用这些功能，它们应该被视为可能会给您的系统带来问题的beta功能'
+  features:
+   istioVirtualServiceUi: "启用此功能将为Istio公开额外的UI页面"
+   unsupportedStorageDrivers: "启用此功能将为持久卷和存储类公开不受支持的存储驱动程序选项。"
+  table:
+    state: 状态
+    name: 名称
+    description: 描述
+    noData: There are no features
+    noMatch: 没有与当前搜索匹配的功能
+
 formatIp:
   noIp: 无
 
@@ -4930,6 +5782,7 @@ formIngressBackends:
   targetPort:
     label: 容器端口
     placeholder: '例如: 80'
+    prompt: 选择端口 ...
   path:
     label: '访问路径(如需使用后端重写功能,请查看下方标签/注释)。'
     placeholder: '例如: /foo'
@@ -5184,6 +6037,7 @@ formEnvVar:
 formGlobalRoles:
   title: 全局角色
   description: 控制用户管理整个{appName}安装的访问权限。
+  loginError: 用户没有登录权限。Administrator, Standard User或User-Base提供登录权限。
   mode:
     admin:
       label: 管理员
@@ -5191,46 +6045,76 @@ formGlobalRoles:
     user:
       label: 标准用户
       detail: 标准用户可以创建新的集群并管理他们已被授权访问的集群和项目。
+    userBase:
+      label: User-Base
+      detail: User-Base 用户只有登录访问权限。
+    userCreated:
+      label: 自定义
+      detail: 非Rancher创建的角色。
+      noDescription: 没有提供描述。
     custom:
       label: 自定义
       detail: 为这个用户选择独立的权限。
   role:
-    create-clusters:
+    clusters-create:
       label: 创建新的集群
       detail: 允许用户创建新的集群并成为它们的所有者，标准用户默认具有此权限。
-    manage-authn:
+    clustertemplates-create:
+      label: 创建新的RKE集群模板
+      detail: 允许用户创建新的RKE集群模板并成为它们的所有者。
+    authn-manage:
       label: 配置身份验证
       detail: 允许用户启用，配置和禁用所有身份验证程序设置。
-    manage-catalogs:
+    catalogs-manage:
       label: 配置应用商店
       detail: 允许用户添加，编辑和删除应用商店。
-    manage-clusters:
+    clusters-manage:
       label: 管理所有集群
       detail: 允许用户管理全部集群，即使这个用户不是被管理集群中的成员也可以管理。
-    manage-node-drivers:
+    clusterscans-manage:
+      label: 管理CIS集群扫描
+      detail: 允许用户启动新的并管理CIS集群扫描。
+    kontainerdrivers-manage:
+      label: 创建新的集群驱动程序
+      detail: 允许用户创建新的集群驱动程序并成为它们的所有者。
+    features-manage:
+      label: 配置功能标志
+      detail: 允许用户通过特性标志设置启用和禁用自定义特性。
+    nodedrivers-manage:
       label: 配置主机驱动
       detail: 允许用户启用，配置和移除所有主机驱动设置。
-    manage-node-templates:
+    nodetemplates-manage:
       label: 管理主机模板
       detail: 允许用户配置，编辑和删除主机模板。
-    manage-roles:
+    podsecuritypolicytemplates-manage:
+      label: 管理Pod安全策略(PSPs)
+      detail: 允许用户定义、编辑和删除psp。
+    roles-manage:
       label: 管理角色
       detail: 允许用户配置，编辑和删除角色。
-    manage-users:
+    settings-manage:
+      label: 管理设置
+      detail: 允许用户管理Rancher设置。
+    users-manage:
       label: 管理用户
       detail: 允许用户为所有用户创建，删除和设置密码。
-    use-catalogs:
+    catalogs-use:
       label: 使用应用商店
       detail: 允许用户查看和应用商店中的模板。标准用户默认具有此权限。
-    use-node-templates:
+    nodetemplates-use:
       label: 使用主机模板
       detail: 允许用户使用现有的主机模板部署新的主机。
+    view-rancher-metrics:
+      label: 查看Rancher指标
+      detail: 允许用户通过API查看指标。
     base:
       label: 登录访问
+
 formMembers:
+  owner: '{type} 所有者'
   members:
     user: 用户
-    group: 组
+    group: 用户组
     serviceaccount: 服务账号
     labelText: 成员
     addMember: 添加成员
@@ -5293,9 +6177,9 @@ shareMemberRow:
       name: '公有 (all members & groups)'
       accessType: '只读'
   accessType:
-    owner: 'Owner'
-    member: 'Member'
-    'read-only': 'User'
+    owner: '所有者'
+    member: '成员'
+    'read-only': '只读用户'
 
 formHealthCheck:
   title: 健康检查
@@ -5928,6 +6812,8 @@ formVersions:
   downgrade: "(不能降级)"
   notallowed: "(模板不允许)"
   unsupported: "(不支持)"
+  helpBlock:
+    label: 升级Kubernetes版本时，请查看<a href="https://groups.google.com/forum/#!forum/kubernetes-announce" target="_blank" rel="nofollow noreferrer noopener">Kubernetes release notes</a>了解功能变化。
 
 formIstioHost:
   prompt: 选择节点...
@@ -6192,7 +7078,7 @@ inputIdentity:
     generic: 添加用户名或组名
   dropdownLabel:
     teams: 团队和组织
-    groups: 组
+    groups: 组织
 
 inputPassword:
   buttonText: 生成
@@ -6211,8 +7097,28 @@ containersSection:
   title: 容器
   detail: Pod中的容器
   noData: 没有容器
-  noMatch: 没有容器匹配当前搜索
-  initContainer: '初始化容器(Init)'
+  noMatch: 没有容器与当前搜索匹配
+  initContainer: Init Container
+
+k3sClusterInfo:
+  title: K3S选项
+  detail: 自定义K3S集群选项
+  workerConcurrency: Worker Concurrency
+  serverConcurrency: Server Concurrency
+  nodeInfo:
+    title: K3s节点信息
+    detail: K3S主节点参数和环境变量的只读视图。
+    label: Master 节点
+    datail: 附加的K3S主节点详细信息
+    selectPrompt: 选择节点
+
+k3sNodeEnvVarSection:
+  title: K3S节点环境变量
+  detail: 只读取此K3S节点的环境变量列表。
+  key: Key
+  value: Value
+  noData: 没有环境变量
+  noMatch: 没有环境变量与当前搜索匹配
 
 labelsSection:
   kind: 类型
@@ -6250,6 +7156,20 @@ loginSaml:
     buttonText: "使用Okta登录"
   keycloak:
     buttonText: "使用Keycloak登录"
+  shibboleth:
+    buttonText: 通过Shibboleth登录
+
+loginUserPass:
+  local: 使用本地用户
+  externalProvider: 使用{externalName}用户
+  provider: "{kind}"
+  userLabel: 用户名
+  remember: 记住
+  userPlaceholder: '例如: jsmith'
+  genericLoginLabel: 登录
+  loginLabel: 通过{provider}登录
+  loggingInLabel: '登录中...'
+  passwordLabel: 密码
 
 loggingPage:
   targetNav:
@@ -6303,6 +7223,8 @@ loggingPage:
       helpText: 日志刷新频率
     includeSystemComponent:
       label: 包含系统日志
+    jsonParsing:
+      label: 支持JSON解析
   advanced:
     file: 以文件形式编辑
     cancel: 以表单形式编辑
@@ -6390,7 +7312,6 @@ loggingPage:
     tokenHelpText: '将Token令牌添加到每个系统日志消息的结构化数据中。对于像<a href="https://help.sumologic.com/Send-Data/Sources/02Sources-for-Hosted-Collectors/Cloud-Syslog-Source" target="_blank">Sumologic</a>, <a href="https://www.loggly.com/docs/customer-token-authentication-token" target="_blank">Loggly</a>等云日志系统，您可以在其配置页面上生成Token令牌。'
     endpoint:
       required: 必须配置访问地址。
-    logSeverity: '日志等级:'
   fluentd:
     header: Fluentd配置
     compress:
@@ -6458,7 +7379,7 @@ loggingPage:
       placeholder: '例如: John'
     saslPassword:
       label: 密码
-      placeholder: Your Password
+      placeholder: 密码
     saslScramMechanism:
       label: 安全机制
       sha256: sha256
@@ -6474,35 +7395,12 @@ loggingPage:
 
   testAction:
     testing: 测试
-    testOk: 设置已验证
-    testFailed: 出了点问题，请检查输入的信息。
+    testOk: 设置验证通过。
+    testFailed: 设置验证失败，请检查配置。
     test: 测试
     running: 运行中
-    runOk: 运行成功
-    dryRun: 试运行
-  multiLine:
-    title: 多行配置
-    detail: Concat插件配置选项。
-    enableMultiLineFilter:
-      label: 启用多行过滤
-    multiLineStartRegexp:
-      label: 多行开始正则表达式
-    continueLineRegexp:
-      label: 中间行正则表达式
-    multiLineEndRegexp:
-      label: 多行结束正则表达式
-
-loginUserPass:
-  local: 使用本地用户
-  externalProvider: 使用{externalName}用户。
-  provider: "{kind}"
-  userLabel: 用户名
-  remember: 记住登录
-  userPlaceholder: '例如: jsmith'
-  genericLoginLabel: 登录
-  loginLabel: 登录{provider}
-  loggingInLabel: 登录中...
-  passwordLabel: 密码
+    runOk: 试运行成功。
+    dryRun: 试运行。
 
 machineTemplatesPage:
   title: 添加主机
@@ -6515,6 +7413,14 @@ machineTemplatesPage:
     labels:
       region: 实例所在地区
       zone: 区域
+
+modalDeleteIstio:
+  title: '您确定要禁用:'
+  onlyIstio:
+    true: 仅Istio
+    false: 包括Istio和Monitoring
+  disable: 禁用
+  disabling: 禁用中
 
 newCertificate:
   title:
@@ -6532,7 +7438,8 @@ newCertificate:
     invalidFormat: 无效的证书
     placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
     protip: 包括全部所需的证书链
-    tooltip: '粘贴用于验证server证书的CA证书，它将生成在kubecfg文件中。 查看<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/options/#authorized-cluster-endpoint" target="blank">更多信息</a>。'
+    tooltip: '粘贴用于验证server证书的CA证书，它将生成在kubecfg文件中。 查看<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/options/#authorized-cluster-endpoint" target="blank"
+    >更多信息</a>。'
   certChain:
     label: 证书链
     placeholder: "粘贴或导入证书，以-----BEGIN CERTIFICATE-----开头"
@@ -6698,6 +7605,10 @@ modalConfirmRemovePayment:
   title: '是否确认要删除'
   card: '以{card}结尾的信用卡'
 
+modalDeleteGroupRoleBinding:
+  header: '您确定要删除组的所有权限吗: {groupName}'
+  createLabel: 确定删除
+
 modalEditDriver:
   header:
     create: 添加驱动
@@ -6783,7 +7694,7 @@ modalProcessError:
   stackTrace: "堆栈跟踪: "
   close: 关闭
 
-modalDrainNode:
+drainNode:
   titleOne: '驱散节点: "{name}"'
   titleMultiple: '驱散{count}个节点'
   action: 驱散
@@ -6799,11 +7710,15 @@ modalDrainNode:
     default: 使用默认设置时间
     placeholder: '例如: 30'
     custom: "忽略默认值自定义延时时间: "
+    view:
+      custom: "忽略默认值并给每个pod {seconds}秒"
   timeout:
     title: "驱散超时时间: "
     default: 一直不断重试
     placeholder: '例如: 60'
     custom: "自定义超时时间: "
+    view:
+      custom: "{seconds} 秒后放弃"
 
 modalRevertSettings:
   title: "将{setting}还原为默认值?"
@@ -6815,8 +7730,16 @@ modalRestoreBackup:
   backups: 可用备份
   error: 需要备份
   fetching: 获取新的备份
+  restoreButton: 恢复
   select:
     all: 选择备份
+  type:
+    label: 恢复类型
+    etcd: Restore etcd
+    k8sVersion: "恢复Kubernetes版本 - {version}"
+    versionUnknown: '未知'
+    etcdAndK8sVersion: "恢复etcd和Kubernetes版本 - {version}"
+    k8sVersionUnknown: 我们无法还原此快照的kubernetes版本，因为该版本未知。
 
 modalRotateCertificates:
   title: 更新集群证书
@@ -6853,6 +7776,11 @@ modalRollbackApp:
     prompt: 选择版本...
   difference:
     label: 差异
+modalSaveRkeTemplate:
+  title: "通过{clusterName}创建RKE模板"
+  subtitle: 从当前集群配置创建一个新的RKE集群模板和初始修订。这将修改当前集群，设置集群以使用新创建的集群模板和修订
+  name: 集群模板名称
+  revName: 集群模板修订名称
 
 modalShell:
   title: "命令行: "
@@ -6921,7 +7849,7 @@ newBalancer:
 
 newCatalog:
   istio:
-    catalog: 'Traffic Rules Catalog: '
+    catalog: 'Traffic Rules Catalog:'
     saveNew: '创建'
   answers:
     label: 应答
@@ -6932,7 +7860,15 @@ newCatalog:
   helm:
     label: 配置选项
     protip: Helm模板接受逗号做为分隔符的字符串列表。
-  kind: "应用分类: "
+    options:
+      label: Helm 选项
+      wait:
+        label: Helm 等待
+        help: 在将应用程序标记为激活之前，等待所有的Kubernetes资源准备完成，如果超过超时时间，应用程序安装将失败。
+      timeout:
+        label: Helm 超时
+        help: 等待Kubernetes命令完成的超时时间。
+  kind: "应用商店类型:"
   license: "授权:"
   maintainedBy: 由社区成员维护
   maintainer: "维护者:"
@@ -6962,7 +7898,7 @@ newCatalog:
   titleConfigure: "设置{name}应用"
   titleUpgrade: "升级{name}应用"
   txt: answers.txt
-  unknownType: "未识别问题类型:"
+  unknownType: "未识别的问题类型:"
   upgrade: "升级:"
   url: "项目URL:"
   version:
@@ -7098,7 +8034,6 @@ newContainer:
     globalService: 升级全局服务
     sidekick: 升级Sidecar
     sidekickName: '升级{name}的Sidecar'
-  selectUpgrade: 选择一个或者多个服务进行升级。
   saveUpgrade: 升级
   saveNew: 启动
   windows: Windows
@@ -7165,7 +8100,6 @@ clusterDrivers:
   table:
     noData: 当前集群没有配置任何节点
     noMatch: 没有节点匹配当前搜索
-  downloadRancherImages: 下载镜像列表
 
 kontainerDriver:
   displayName:
@@ -7223,6 +8157,9 @@ nodeDriver:
     clusterOption:
       title: 集群选项
       detail: 为集群自定义Kubernetes选项
+    encryptEbs:
+      label: EBS Encryption
+      detail: Enables EBS encryption on worker nodes.
     kubernetesVersion:
       label: Kubernetes版本
       placeholder: 选择要安装的Kubernetes版本
@@ -7276,7 +8213,7 @@ nodeDriver:
     min:
       label: 最小平均比重
     desired:
-      label: Desired ASG Size
+      label: 预期ASG大小
     userData:
       label: 用户数据
       help: 将用户数据传递给节点以执行自动配置任务
@@ -7318,6 +8255,7 @@ nodeDriver:
       provided: 已提供
     region:
       label: 区域
+      selectLabel: 选择区域
     availabilityZone: 可用区域
     subnet: 'VPC/Subnet'
     noSubnet: 当前没有子网可选择
@@ -7349,6 +8287,14 @@ nodeDriver:
     rootSize:
       label: 根磁盘大小
       unit: GB
+    encryptEbsVolume:
+      label: Encryption
+      radioLabel: Encrypt EBS Volume
+    volumeType:
+      label: Amazon EBS卷类型
+    useEbsOptimizedInstance:
+      label: 优化实例
+      radioLabel: 创建EBS优化实例
     ami:
       label: AMI
       placeholder: Ubuntu AMI
@@ -7498,18 +8444,41 @@ nodeDriver:
     flavor:
       label: 偏好
   vmwarevsphere:
+    hostOptions:
+      any:
+        label: 'Any'
+    cloudconfig:
+      label: Cloud Config YAML
+    contentLibrary: 'Content library:'
+    libraryTemplate: 'Library template:'
+    virtualMachine: '虚拟机:'
+    template: '模板:'
+    creationType:
+      label: 创建方法
+      library: '模板部署: Content Library'
+      template: "模板部署: Data Center"
+      vm: "克隆一个现有的虚拟机"
+      legacy: 从boot2docker ISO 安装(Legacy)
     access:
       title: '1. 帐户访问'
       detail: 配置在哪里查找vCenter或ESXi服务器
       help: '注意: 免费的ESXi license不支持API访问，只支持具有有效或评估许可证的服务器。'
-    instance:
-      title: 2. 实例选项
-      detail: 选择虚拟机的大小和操作系统
     scheduling:
-      title: 3. 调度
-      detail: 选择将虚拟机调度到何种hypervisor
+      title: 2. 调度
+      detail: 选择将调度虚拟机的管理程序
+    instance:
+      title: 3. 实例配置
+      detail: 选择虚拟机的大小和操作系统
+    tags:
+      title: 4. 标签
+      detail: 标签允许您将元数据附加到vSphere目录中的对象，以便更容易地对这些对象进行排序和搜索。
+      addActionLabel: Add tag
+    customAttributes:
+      title: 5. 自定义属性 (legacy)
+      detail: 自定义属性允许您将元数据附加到vSphere目录中的对象，以便更容易地对这些对象进行排序和搜索。
+      addActionLabel: 添加自定义属性
     vappOptions:
-      title: '4. vApp选项'
+      title: '6. vApp选项'
       detail: 选择OVF环境属性
     vcenter:
       label: vCenter或ESXi服务器
@@ -7534,7 +8503,16 @@ nodeDriver:
     boot2dockerUrl:
       label: 操作系统ISO下载地址
       placeholder: '缺省: 最新的rancheros-vmware镜像'
-    schedulingSection: 调度
+    cloudConfig:
+      label: Cloud config
+      placeholder: '/etc/kubernetes/vsphere.conf'
+    cloneFrom:
+      label: VM/Template
+      placeholder: '例如: http://my_host/template.yml'
+    library:
+      label: Library
+      placeholder: dsl_linux_v4-4-10.ova
+    schedulingSection: Scheduling
     dataCenter:
       label: 数据中心
       placeholder: '例如: datacenter_name'
@@ -7548,13 +8526,19 @@ nodeDriver:
       placeholder: '例如: cluster_name/host_name'
       help: '用于创建虚拟机的特定主机(对于独立ESXi或具有DRS的集群留空)。'
     network:
-      label: 网络
-      placeholder: '例如: VM网络'
-      help: 'VM连接到的网络'
+      addActionLabel: "添加网络"
+      valueLabel: "网络"
+      valuePlaceholder: "例如：VM Network"
+      help: "连接VM的网络"
     dataStore:
+      cluster:
+        tooltip: 使用数据存储集群?
+        help: "在数据存储集群上创建VM"
       label: 数据存储
-      placeholder: '例如: datastore_cluster_name/datastore_name'
-      help: '用于创建VM磁盘的存储'
+      placeholder: "例如：datastore_cluster_name/datastore_name"
+      help: "创建VM磁盘的数据存储"
+    cloudinitType:
+      label: Cloud Init type
     cloudinit:
       label: Cloud Init
       placeholder: '例如: http://my_host/cloud-config.yml'
@@ -7617,20 +8601,20 @@ nodeDriver:
       label: 镜像
       placeholder: '推荐: UbuntuServer:16.04.0-LTS:latest'
     diskSize:
-      label: Disk Size
+      label: 磁盘大小
       placeholder: '例如: 30'
     managedDisks:
       label: 磁盘类型
-      unmanaged: Unmanaged Disk
-      managed: Managed Disk
+      unmanaged: 非托管的磁盘
+      managed: 托管的磁盘
     updateDomainCount:
       label: Update Domain Count
       placeholder: '例如: 5'
-      helpText: If the availability set has already been created, the update domain count will be ignored.
+      helpText: 如果已经创建了可用性集，更新域计数将被忽略。
     faultDomainCount:
       label: Fault Domain Count
       placeholder: '例如: 3'
-      helpText: If the availability set has already been created, the fault domain count will be ignored.
+      helpText: 如果已经创建了可用性集，则将忽略故障域计数。
     size:
       label: 规格
     dockerPort:
@@ -7836,7 +8820,8 @@ newConfigMap:
     placeholder: '例如: app'
   values:
     label: 配置映射
-  addActionLabel: 添加配置映射
+    binaryLabel: 配置映射值(二进制值)
+  addActionLabel: 添加配置映射值
 
 projectGroup:
   label: "项目: {name}"
@@ -7921,6 +8906,11 @@ pagination:
     =0{无事件}
     =1{选中{count}{count, plural,=1{个事件}other{个事件}}}
     other{当前显示{count}个事件中的{from}到{to}个}}
+  features: |
+    {pages, plural,
+    =0 {No Features}
+    =1 {{count} {count, plural, =1 {Feature} other {Features}}}
+    other {{from} - {to} of {count} Features}}
   generic: |
     {pages, plural,
     =0{无条目}
@@ -8018,6 +9008,11 @@ pagination:
     =0 {没有角色}
     =1 {选中{count} {count, plural, =1 {条角色} other {条角色}}}
     other {当前显示{count}条角色中的{from}到{to}条}}
+  clusterTemplates: |
+    {pages, plural,
+    =0 {No Template Revisions}
+    =1 {{count} {count, plural, =1 {Template Revision} other {Template Revisions}}}
+    other {{from} - {to} of {count} Template Revisions}}
   service: |
     {pages, plural,
     =0{无服务}
@@ -8038,6 +9033,11 @@ pagination:
     =0 {No Options}
     =1 {{count} {count, plural, =1 {Virtual Service} other {Virtual Services}}}
     other {{from} - {to} of {count} Virtual Services}}
+  gateways: |
+    {pages, plural,
+    =0 {No Options}
+    =1 {{count} {count, plural, =1 {Gateway} other {Gateways}}}
+    other {{from} - {to} of {count} Gateways}}
   workload: |
     {pages, plural,
     =0{无工作负载}
@@ -8049,7 +9049,7 @@ projectRow:
   orchestration: 编排
 
 publicEndpoints:
-  endpoint: 终端
+  endpoint: 入口点
   bindIpAddress: 绑定 IP
   publicPort: 映射端口
   target: 目标
@@ -8125,7 +9125,7 @@ schedulingRuleRow:
 
 serverUrl:
   header:
-    label: "{appName} Server URL"
+    label: Rancher Server URL
     detail: "{appName}安装使用的地址，集群中的所有节点都需要能够访问此地址"
   button:
     save: 保存URL
@@ -8141,7 +9141,7 @@ siteAccess:
   minimum: '您必须至少添加一条授权条目。'
   noIdentity: 无
   users: 用户
-  groups: 组
+  groups: 用户组
   organizations: 组织
   refreshGroups: 刷新组成员
   refreshHelp: 这将触发所有组的刷新并更新它们的用户列表。
@@ -8159,7 +9159,6 @@ systemInfoSection:
   kubeletVersion: Kubelet版本
   kubeProxyVersion: Kube代理版本
   operatingSystem: 操作系统映像
-
   osType: 系统类型
   noMatch: 没有与当前搜索匹配的系统信息。
 
@@ -8167,12 +9166,16 @@ tableCountSelect:
   header: 每页显示行数
 
 telemetryOpt:
-  header: 信息统计
+  header: 统计数据
   subtext: |
     Rancher Labs希望能够收集您环境的匿名配置信息以帮助改进{appName}产品。<br/>信息不会被提供给任何第三方，收集的信息不包含特定的资源名称或地址。
   learnMore:
     label: 了解更多
   label: 允许收集匿名统计信息。
+  eula:
+    prefix: 我同意
+    suffix: ''
+    link: '条款和条件'
 
 tooltipLink:
   list: 列表
@@ -8344,7 +9347,6 @@ nav:
     pipelines: 流水线
   admin:
     tab: 全局
-    accounts: 用户
     clusters:
       tab: 集群
       rkeTemplate: RKE集群模板
@@ -8357,6 +9359,8 @@ nav:
     globalRegistry: 全局镜像库
     multiClusterApps: 多集群应用
     security:
+      accounts: 用户
+      groupAccounts: 用户组
       cloudCredentials: 云凭证
       tab: 安全
       roles: 角色
@@ -8392,9 +9396,12 @@ nav:
     pipeline: 流水线
     tab: 工具
     istio: Istio
+    cisScans: CIS扫描
   project:
     none: '项目/命名空间'
     namespaces: 命名空间
+  dashboard:
+    try: 仪表盘
 
 
 ##############################
@@ -8416,6 +9423,7 @@ action:
   cordon: 暂停
   deactivate: 停用
   downloadYaml: 下载YAML
+  download: 下载
   drain: 驱散
   edit: 升级
   editConfig: 编辑配置
@@ -8455,6 +9463,8 @@ action:
   rotate: 更新证书
   rerun: 重新运行
   run: 运行
+  runCISScan: 运行CIS扫描
+  saveAsTemplate: 另存为RKE模板
   setDefault: 设置为默认值
   setDefaultRevision:
     success:
@@ -8550,7 +9560,7 @@ model:
     displayType:
       user: 用户
       team: 团队
-      group: 组
+      group: 用户组
       org: 组织
       localUser: 本地用户
       unknown: "{type}？"
@@ -8599,6 +9609,8 @@ storageClass:
     title: Azure Disk
   azure-file:
     title: Azure File
+  local-storage:
+    title: Local Storage
   cinder:
     title: Openstack Cinder Volume
   gce-pd:
@@ -8606,7 +9618,7 @@ storageClass:
   glusterfs:
     title: Gluster Volume
   local:
-    title: Local Node Disk
+    title: Local
   longhorn:
     title: Longhorn
   portworx-volume:
@@ -8629,6 +9641,8 @@ volumeSource:
     title: Azure Disk
   azure-file:
     title: Azure Filesystem
+  csi:
+    title: CSI
   cephfs:
     title: Ceph Filesystem
   config-map:
@@ -8652,7 +9666,7 @@ volumeSource:
   glusterfs:
     title: Gluster Volume
   host-path:
-    title: Local Node Path
+    title: HostPath
     path:
       label: 主机路径
       placeholder: '例如: /data'
@@ -8706,104 +9720,102 @@ rkeConfigComment:
     "  # 当前仅支持nginx的ingress"
     "  # 设置`provider: none`禁用ingress控制器"
     "  # 通过node_selector可以指定在某些节点上运行ingress控制器，例如: "
-    "     provider: nginx"
-    "     node_selector:"
-    "       app: ingress"
+    "   provider: nginx"
+    "   node_selector:"
+    "     app: ingress"
   network: |
     ""
     "  # 如果您在AWS上使用calico"
     ""
-    "     network:"
-    "       plugin: calico"
-    "       calico_network_provider:"
-    "         cloud_provider: aws"
+    "   network:"
+    "     plugin: calico"
+    "     calico_network_provider:"
+    "       cloud_provider: aws"
     ""
     "  # 指定flannel网络接口"
     ""
-    "     network:"
-    "       plugin: flannel"
-    "       flannel_network_provider:"
-    "         iface: eth1"
+    "   network:"
+    "     plugin: flannel"
+    "     flannel_network_provider:"
+    "     iface: eth1"
     ""
     "  # 指定canal网络插件的flannel网络接口"
     ""
-    "     network:"
-    "       plugin: canal"
-    "       canal_network_provider:"
-    "         iface: eth1"
+    "   network:"
+    "     plugin: canal"
+    "     canal_network_provider:"
+    "       iface: eth1"
   services: |
     ""
     " # 自定义服务参数，仅适用于Linux环境"
-    "     services:"
-    "       kube-api:"
-    "         service_cluster_ip_range: 10.43.0.0/16"
-    "         extra_args: "
-    "           watch-cache: true   "
-    "       kube-controller:"
-    "         cluster_cidr: 10.42.0.0/16"
-    "         service_cluster_ip_range: 10.43.0.0/16"
-    "         extra_args:     "
-    "           # 修改每个节点子网大小(cidr掩码长度)，默认为24，可用IP为254个；23，可用IP为510个；22，可用IP为1022个；"
-    "           node-cidr-mask-size: 24  "
-    "           # 控制器定时与节点通信以检查通信是否正常，周期默认5s  "
-    "           node-monitor-period: '5s'  "
-    "           # 当节点通信失败后，再等一段时间kubernetes判定节点为notready状态。这个时间段必须是kubelet的nodeStatusUpdateFrequency(默认10s)的N倍，其中N表示允许kubelet同步节点状态的重试次数，默认40s。"
-    "           node-monitor-grace-period: '20s' "
-    "           # 再持续通信失败一段时间后，kubernetes判定节点为unhealthy状态，默认1m0s。"
-    "           node-startup-grace-period: '30s' "
-    "           # 再持续失联一段时间，kubernetes开始迁移失联节点的Pod，默认5m0s。"
-    "           pod-eviction-timeout: '1m'   "
-    "       kubelet:"
-    "         cluster_domain: cluster.local"
-    "         cluster_dns_server: 10.43.0.10"
-    "         # 扩展变量 "
-    "         extra_args:"
-    "           # 与apiserver会话时的并发数，默认是10 "
-    "           kube-api-burst: '30'      "
-    "           # 与apiserver会话时的 QPS,默认是5   "
-    "           kube-api-qps: '15'  "
-    "           # 修改节点最大Pod数量"
-    "           max-pods: '250' "
-    "           # secrets和configmaps同步到Pod需要的时间，默认一分钟"
-    "           sync-frequency: '3s'"
-    "           # kubelet默认一次拉取一个镜像，设置为false可以同时拉取多个镜像，前提是存储驱动要为overlay2，对应的Dokcer也需要增加下载并发数     "
-    "           serialize-image-pulls: false  "
-    "           # 拉取镜像的最大并发数，registry-burst不能超过registry-qps ，仅当registry-qps大于0(零)时生效，(默认10)。如果registry-qps为0则不限制(默认5)。"
-    "           registry-burst: '10' "
-    "           registry-qps: '0'   "
-    "           # 以下配置用于配置节点资源预留和限制  "
-    "           cgroups-per-qos: 'true'   "
-    "           cgroup-driver: cgroupfs   "
-    "           # 以下两个参数指明为相关服务预留多少资源，仅用于调度，不做实际限制"
-    "           system-reserved: 'memory=300Mi'   "
-    "           kube-reserved: 'memory=2Gi'  "
-    "           enforce-node-allocatable: 'pods'  "
-    "           # 硬驱逐伐值，当节点上的可用资源少于这个值时，就会触发强制驱逐。强制驱逐会强制kill掉POD，不会等POD自动退出。"
-    "           eviction-hard: 'memory.available<300Mi,nodefs.available<10%,imagefs.available<15%,nodefs.inodesFree<5%'   "
-    "           # 软驱逐伐值  "
-    "           ## 以下四个参数配套使用，当节点上的可用资源少于这个值时但大于硬驱逐伐值时候，会等待eviction-soft-grace-period设置的时长；"
-    "           ## 等待中每10s检查一次，当最后一次检查还触发了软驱逐伐值就会开始驱逐，驱逐不会直接Kill POD，先发送停止信号给POD，然后等待eviction-max-pod-grace-period设置的时长； "
-    "           ## 在eviction-max-pod-grace-period时长之后，如果POD还未退出则发送强制kill POD"
-    "           eviction-soft: 'memory.available<500Mi,nodefs.available<50%,imagefs.available<50%,nodefs.inodesFree<10%'   "
-    "           eviction-soft-grace-period: 'memory.available=1m30s'    "
-    "           eviction-max-pod-grace-period: '30'      "
-    "           ## 当处于驱逐状态的节点不可调度，当节点恢复正常状态后"
-    "           eviction-pressure-transition-period: '5m0s'       "
+    "   services:"
+    "     kube-api:"
+    "       service_cluster_ip_range: 10.43.0.0/16"
+    "       extra_args: "
+    "         watch-cache: true   "
+    "     kube-controller:"
+    "       cluster_cidr: 10.42.0.0/16"
+    "       service_cluster_ip_range: 10.43.0.0/16"
+    "       extra_args:     "
+    "         # 修改每个节点子网大小(cidr掩码长度)，默认为24，可用IP为254个；23，可用IP为510个；22，可用IP为1022个；"
+    "         node-cidr-mask-size: 24  "
+    "         # 控制器定时与节点通信以检查通信是否正常，周期默认5s  "
+    "         node-monitor-period: '5s'  "
+    "         # 当节点通信失败后，再等一段时间kubernetes判定节点为notready状态。这个时间段必须是kubelet的nodeStatusUpdateFrequency(默认10s)的N倍，其中N表示允许kubelet同步节点状态的重试次数，默认40s。"
+    "         node-monitor-grace-period: '20s' "
+    "         # 再持续通信失败一段时间后，kubernetes判定节点为unhealthy状态，默认1m0s。"
+    "         node-startup-grace-period: '30s' "
+    "         # 再持续失联一段时间，kubernetes开始迁移失联节点的Pod，默认5m0s。"
+    "         pod-eviction-timeout: '1m'   "
+    "     kubelet:"
+    "       cluster_domain: cluster.local"
+    "       cluster_dns_server: 10.43.0.10"
+    "       # 扩展变量 "
+    "       extra_args:"
+    "         # 与apiserver会话时的并发数，默认是10 "
+    "         kube-api-burst: '30'      "
+    "         # 与apiserver会话时的 QPS,默认是5   "
+    "         kube-api-qps: '15'  "
+    "         # 修改节点最大Pod数量"
+    "         max-pods: '250' "
+    "         # secrets和configmaps同步到Pod需要的时间，默认一分钟"
+    "         sync-frequency: '3s'"
+    "         # kubelet默认一次拉取一个镜像，设置为false可以同时拉取多个镜像，前提是存储驱动要为overlay2，对应的Dokcer也需要增加下载并发数     "
+    "         serialize-image-pulls: false  "
+    "         # 拉取镜像的最大并发数，registry-burst不能超过registry-qps ，仅当registry-qps大于0(零)时生效，(默认10)。如果registry-qps为0则不限制(默认5)。"
+    "         registry-burst: '10' "
+    "         registry-qps: '0'   "
+    "         # 以下配置用于配置节点资源预留和限制  "
+    "         cgroups-per-qos: 'true'   "
+    "         cgroup-driver: cgroupfs   "
+    "         # 以下两个参数指明为相关服务预留多少资源，仅用于调度，不做实际限制"
+    "         system-reserved: 'memory=300Mi'   "
+    "         kube-reserved: 'memory=2Gi'  "
+    "         enforce-node-allocatable: 'pods'  "
+    "         # 硬驱逐阈值，当节点上的可用资源少于这个值时，就会触发强制驱逐。强制驱逐会强制kill掉POD，不会等POD自动退出。"
+    "         eviction-hard: 'memory.available<300Mi,nodefs.available<10%,imagefs.available<15%,nodefs.inodesFree<5%'   "
+    "         # 软驱逐阈值  "
+    "         ## 以下四个参数配套使用，当节点上的可用资源少于这个值时但大于硬驱逐阈值时候，会等待eviction-soft-grace-period设置的时长；"
+    "         ## 等待中每10s检查一次，当最后一次检查还触发了软驱逐阈值就会开始驱逐，驱逐不会直接Kill POD，先发送停止信号给POD，然后等待eviction-max-pod-grace-period设置的时长； "
+    "         ## 在eviction-max-pod-grace-period时长之后，如果POD还未退出则发送强制kill POD"
+    "         eviction-soft: 'memory.available<500Mi,nodefs.available<50%,imagefs.available<50%,nodefs.inodesFree<10%'   "
+    "         eviction-soft-grace-period: 'memory.available=1m30s'    "
+    "         eviction-max-pod-grace-period: '30'      "
+    "         ## 当处于驱逐状态的节点不可调度，当节点恢复正常状态后"
+    "         eviction-pressure-transition-period: '5m0s'       "
     "       extra_binds:      "
     "         - "/usr/libexec/kubernetes/kubelet-plugins:/usr/libexec/kubernetes/kubelet-plugins"    "
     "         - "/etc/iscsi:/etc/iscsi"     "
     "         - "/sbin/iscsiadm:/sbin/iscsiadm"       "
-    "       etcd:     "
-    "         # 修改空间配额为$((4*1024*1024*1024))，默认2G,最大8G    "
-    "         extra_args:"
-    "           quota-backend-bytes: '4294967296'        "
-    "           auto-compaction-retention: 240 #(单位小时)      "
-    "       kubeproxy:    "
-    "         extra_args:     "
-    "         # 默认使用iptables进行数据转发    "
-    "           proxy-mode: ""    # 如果要启用ipvs，则此处设置为`ipvs` "
-    "         extra_binds:    "
-    "           - "/lib/modules:/lib/modules"     "
+    "     etcd:     "
+    "       # 修改空间配额为$((4*1024*1024*1024))，默认2G,最大8G    "
+    "       extra_args:"
+    "         quota-backend-bytes: '4294967296'        "
+    "         auto-compaction-retention: 240 #(单位小时)      "
+    "     kubeproxy:    "
+    "       extra_args:     "
+    "       # 默认使用iptables进行数据转发    "
+    "         proxy-mode: ""    # 如果要启用ipvs，则此处设置为`ipvs` "
   rancher_kubernetes_engine_config: |
     ""
     "Rancher Config"
@@ -8820,636 +9832,10 @@ windowsCluster:
     vxlanWarning: |
       由于<a href="https://github.com/kubernetes/kubernetes/issues/79359" target="_blank">kubernetes/kubernetes#79359</a>这个问题，{appName} Logging目前无法运行在VxLan模式下。我们正在与微软合作， 以修复Kubernetes相关的问题。
     kafka:
-      brokerTypeHelpText: 使用Broker列表作为Kafka连接接入点。
+      brokerTypeHelpText: 使用Broker列表作为Kafka连接入口点。
     helpText: '我们将使用fluentd从每个容器中收集stdout/stderr日志，以及收集每个<b>Linux</b>主机<code >/var/log/containers/</code>路径和每个<b>Windows</b>主机<code >c:/var/log/containers/</code>路径下的日志文件，并且可以将日志发送到下面配置的目标日志收集服务。'
   istio: 在Windows集群中不支持Istio。
   pipelines: 在Windows集群中不支持pipelines。
-
-clusterIstioPage:
-  header: Istio
-  enabled: "Istio已启用。为了利用Istio，您需要为每个命名空间启用Istio sidecar自动注入。如果在现有命名空间上启用它，则需要重新部署现有工作负载，以利用sidecar自动注入。"
-  disabled: "Istio尚未启用，请单击“启用”按钮启用它。"
-  notReady: 在当前集群中安装Istio…
-  confirmDisable: "你确定吗?再次单击将禁用Istio"
-  monitoringNotDeployed: "监控仍在部署中。 在确保集群中有足够的资源启用Istio之前，请等待监控部署完成。"
-  disable: 禁用
-  enableActionLabel: 启用
-  version: Istio版本
-  customAnswers:
-    title: 自定义应答
-    detail: 配置自定义的应答。
-  links:
-    kiali:
-      label: Kiali UI
-    jaeger:
-      label: Jaeger UI
-    grafana:
-      label: Grafana UI
-    prometheus:
-      label: Prometheus UI
-  config:
-    header:
-      grafana: Grafana
-      gateway: Ingress网关
-      pilot: Pilot
-      prometheus: Prometheus
-      mixer: Mixer
-      tracing: 跟踪
-    tracingEnabled:
-      label: 启用跟踪
-    grafanaEnabled:
-      label: 启用Grafana
-    grafanaPersistenceEnabled:
-      label: 为Grafana启用持久存储
-    mtlsEnabled:
-      label: 服务到服务双向TLS
-    gatewayEnabled:
-      label: 启用Ingress网关
-    gatewayType:
-      label: Ingress网关的服务类型
-    http2Port:
-      label: Http2端口
-    httpsPort:
-      label: Https端口
-    loadBalancerIP:
-      label: Load Balancer IP
-      placeholder: '例如: 192.0.0.1'
-    prometheusRetention:
-      label: Prometheus数据保留
-      placeholder: '例如: 6h'
-    traceSampling:
-      label: 跟踪抽样比例
-      placeholder: '例如: 1'
-    mixerPolicyEnabled:
-      label: Enable Mixer Policy
-  nodeSelector:
-    addSelectorLabel: 添加选择器
-    helpText: 选择要运行{component}工作负载的节点
-  insufficientSize:
-    total:
-      cpu: 请确保至少有{minCpu} milli cpu可供{action} Istio使用。
-      memory: 请确保您至少有{minMemory} MiB的内存可供{action} Istio使用。
-      all: 请确保至少有{minCpu} milli cpu和{minMemory} MiB内存可供{action} Istio使用。
-    workload:
-      cpu: 请确保至少有一个具有{cpu} milli cpu的节点可用来部署{component}工作负载。
-      memory: 请确保您至少有一个具有{memory} MiB内存的节点可用来部署{component}工作负载。
-      all: 请确保至少有一个节点具有{cpu} milli cpu和{memory} MiB内存，可用来部署{component}工作负载。
-    selectors:
-      cpu: 请确保至少有一个节点将节点选择器与{cpu} milli cpu匹配，以启用{component}工作负载。
-      memory: 请确保至少有一个节点将节点选择器与{memory} MiB内存匹配，以启用{component}工作负载。
-      all: 请确保至少有一个节点与{cpu} milli cpu和{memory} MiB内存匹配，以启用{component}工作负载。
-      unsupported: '不支持值为“true”、“false”或number的节点选择器'
-  telemetryAndPolicy: Telemetry And Policy
-  existingClaim:
-    label: 'Existing Claim for {component}'
-  members:
-    title: 成员访问
-    detail:  控制哪些用户能访问Kiali和Jaeger UI
-  pilot:
-    title: Pilot
-    detail: 配置流量管理
-  mixer:
-    title: Mixer
-    detail: 常规策略和遥测配置。
-  tracing:
-    title: 跟踪
-    detail: 配置跟踪请求。
-  ingress:
-    title: Ingress网关
-    detail: 监控和路由规则配置。
-  allowSystemGroup:
-    'true': 允许<b>所有</b>成员访问Kiali和Jaeger UI。
-    'false': 允许集群所有者和指定的</b>成员访问Kiali和Jaeger UI。
-  goToMonitoring: 'istio的工作需要监控。 如果您想修改这些值，请转到<a href="/c/{clusterId}/monitoring/cluster-setting">监控</a>页面修改并保存。'
-  upgradeMonitoring: '在启用Istio之前，您需要首先将集群监视升级到0.0.4或更高版本。访问<a href="/c/{clusterId}/monitoring/cluster-setting">这里</a>去升级集群监控。'
-  enableMonitoring:
-    label: 启用监控
-istio:
-  refreshGraph: 刷新视图
-  noData: 没有足够的数据来绘制图表
-  period: Period
-  table:
-    template: 模板
-    host: Host
-  kiali: 由Kiali提供支持
-  trafficMonitoring:
-    duration: Last {time}
-  nav:
-    graph: 流量图
-    metrics: 流量指标
-    rules: 流量规则
-    destinationRules:
-      label: 目标规则
-      add: 添加目标规则
-    virtualServices:
-      label: 虚拟服务
-      add: 添加虚拟服务
-rulesPage:
-  new: 添加流量规则
-  noMatch: 没有流量规则匹配当前搜索
-  noData: 当前没有流量规则
-ruleDetailPage:
-  header: "流量规则: {appName}"
-  rules:
-    virtualservices: 虚拟服务
-    serviceentries: 服务条目
-    destinationrules: 目标规则
-    gateways: 网关
-    envoyfilters: Envoy Filters
-  answers:
-    title: Answers
-    detail: Customized answers of this traffic rules
-    variable: 变量
-
-projectIstioPage:
-  info:
-    notEnabled: 'Istio尚未启用。访问<a href="/c/{clusterId}/istio/cluster-setting">这里</a>启用它。'
-    notOwner: "Istio尚未启用。请与集群管理员联系。"
-    noPermission: "您没有配置Istio的权限。"
-
-destinationRulePage:
-  noMatch: 没有目标规则匹配当前搜索
-  noData: 没有配置目标规则。
-  notSupported: 'networking.istio.io/v1alpha3 API在集群中不可用。'
-  table:
-    host:
-      label: Host
-    subsets:
-      label: Subsets
-
-
-cruDestinationRule:
-  title:
-    new: 添加目标规则
-    edit: 编辑目标规则
-    view: "目标规则: {name}"
-  port:
-    label: Port
-    placeholder: '例如: 8080 or myport'
-  host:
-    error: 主机是必需的。
-  name:
-    placeholder: '例如: myrule'
-  loadBalancer:
-    label: Load Balancer
-    detail: 配置负载平衡器算法
-    simple:
-      label: 使用标准的负载平衡算法
-      roundRobin:
-        label: 轮询
-      leastConn:
-        label: 最小请求
-      random:
-        label: 随机
-      passthrough:
-        label: 透传
-    consistentHash:
-      label: 使用一致的基于散列的负载平衡实现软会话关联
-      httpHeaderName:
-        label: HTTP Header Name
-        placeholder: '例如: end-user'
-        error: 必须设置HTTP Header名称。
-      minimumRingSize:
-        label: Minimum Ring Size
-        placeholder: '例如: 1024'
-      httpCookie:
-        name:
-          label: Cookie Name
-          placeholder: '例如: username'
-          error: 需要Cookie名称。
-        path:
-          label: Cookie 路径
-          placeholder: '例如: /'
-        ttl:
-          label: TTL
-          placeholder: '例如: 0s'
-          error: TTL是必需的。
-      mode:
-        label: Hash 模式
-        header:
-          label: 基于特定HTTP头的哈希
-        cookie:
-          label: 基于HTTP cookie的Hash
-        sourceIp:
-          label: 基于源IP地址的哈希
-
-  connectionPool:
-    label: 连接池
-    detail: 配置到上游服务的连接量
-    http1MaxPendingRequests:
-      label: HTTP1最大等待请求
-      placeholder: '例如: 1024'
-      help: 到目标端的最大请求等待数
-    http2MaxRequests:
-      label: HTTP2最大等待请求
-      placeholder: '例如: 1024'
-      help: 到后端请求的最大数量。
-    maxRequestsPerConnection:
-      label: 每个连接的HTTP最大请求
-      placeholder: '例如: 10'
-      help: 到后端连接的每个连接的最大请求数。将此参数设置为1将禁用keep alive。
-    maxRetries:
-      label: HTTP最大重试
-      placeholder: '例如: 1024'
-      help: 在给定时间内，集群中所有主机都可以执行的最大重试次数。
-    connectTimeout:
-      label: TCP连接超时
-      placeholder: '例如: 30ms'
-      help: TCP连接超时。
-    maxConnections:
-      label: TCP最大连接数
-      placeholder: '例如: 1024'
-      help: '到目标主机的HTTP1/TCP连接的最大数量。'
-  outlierDetection:
-    label: 异常值检测
-    detail: 配置从负载平衡池中移除不健康主机
-    baseEjectionTime:
-      label: 基本驱逐时间
-      placeholder: '例如: 30s'
-      help: 最小驱逐时间. A host will remain ejected for a period equal to the product of minimum ejection duration and the number of times the host has been ejected.
-    consecutiveErrors:
-      label: 连续错误
-      placeholder: '例如: 5'
-      help: 从连接池中弹出主机之前的错误数。
-    interval:
-      label: 时间间隔
-      placeholder: '例如: 10s'
-      help: Time interval between ejection sweep analysis.
-    maxEjectionPercent:
-      label: Max Ejection Percent
-      placeholder: '例如: 10'
-      help: Maximum % of hosts in the load balancing pool for the upstream service that can be ejected.
-  subsets:
-    label: Subsets
-    noSubsets: No Subsets
-    addSubsetLabel: Add Subset
-    removeSubsetLabel: Remove Subset
-    name:
-      label: Name
-      placeholder: '例如: v1'
-      error: Subset Name is required.
-    labels:
-      error: 请为子集至少设置一个标签。
-  tls:
-    label: TLS
-    detail: 为连接到上游服务配置TLS相关设置
-    mode:
-      label: TLS模式
-      none:
-        label: 无
-      istio:
-        label: Istio Mutual - Secure connections to the upstream using mutual TLS by Istio
-      disable:
-        label: 禁用-不要设置到上游端点的TLS连接
-      simple:
-        label: 简单-创建到上游端点的TLS连接
-      mutual:
-        label: Mutual - 通过提供客户端证书进行身份验证，使用双向TLS安全连接到上游
-    clientCertificate:
-      label: 客户端证书(Client certificate)
-      placeholder: '例如: /etc/certs/myclientcert.pem'
-      error: 必须设置客户端证书。
-    privateKey:
-      label: 私钥(private key)
-      placeholder: '例如: /etc/certs/client_private_key.pem'
-      error: 必须设置私钥。
-    caCertificates:
-      label: CA证书(CA certificate)
-      placeholder: '例如: /etc/certs/rootcacerts.pem'
-    sni:
-      label: SNI
-      placeholder: '例如: nginx.example.com'
-    subjectAltNames:
-      label: Subject Alternative Names
-      placeholder: '例如: example.com'
-      add: Add Subject Alternative Name
-
-virtualServicePage:
-  noMatch: 没有虚拟服务匹配当前搜索
-  noData: 没有要定义的虚拟服务
-  notSupported: networking.istio.io/v1alpha3 API在集群中不可用。
-  table:
-    hosts:
-      label: Hosts
-
-cruVirtualService:
-  title:
-    new: 添加虚拟服务
-    edit: 编辑虚拟服务
-    view: "虚拟服务: {name}"
-  name:
-    placeholder: '例如: myservice'
-  hosts:
-    label: 主机
-    add: 添加主机
-    error: 请选择或输入至少一个主机
-  gateways:
-    label: 网关
-    add: 添加网关
-    placeholder: '例如: mygateway'
-  http:
-    routes:
-      label: HTTP 路由
-      noRoutes: 没有http路由
-      addRouteLabel: 添加http路由
-      removeRouteLabel: 删除http路由
-      moveUp: 向上移动
-      moveDown: 向下移动
-      timeout:
-        label: 超时
-        placeholder: '例如: 5s'
-      faultInjection:
-        abort:
-          label: 故障注入中止
-          httpStatus:
-            label: HTTP 状态码
-            placeholder: '例如: 400'
-          percent:
-            label: 百分比
-            placeholder: '例如: 8'
-        delay:
-          label: 故障注入延迟
-          fixedDelay:
-            label: 固定延迟
-            placeholder: '例如: 5s'
-          percent:
-            label: 百分比
-            placeholder: '例如: 8'
-      mirror:
-        label: 监控
-        host:
-          label: Host
-        subset:
-          label: Subset
-          placeholder: '例如: v2'
-        port:
-          label: Port
-          placeholder: '例如: 8080 or myport'
-      retries:
-        label: Retries
-        attempts:
-          label: Attempts
-          placeholder: '例如: 3'
-        perTryTimeout:
-          label: 每次重试超时
-          placeholder: '例如: 2s'
-      redirect:
-        label: 重定向
-        uri:
-          label: URI
-          placeholder: '例如: /v1/bookRatings'
-        authority:
-          label: Authority
-          placeholder: '例如: newratings.default.svc.cluster.local'
-        error: 请不要同时配置目标地址和重定向。
-      rewrite:
-        label: 地址重写
-        uri:
-          label: URI
-          placeholder: '例如: /v1/bookRatings'
-        authority:
-          label: Authority
-          placeholder: '例如: newratings.default.svc.cluster.local'
-      destination:
-        addDestinationLabel: 增加目标地址
-        noDestinations: 没有目标地址
-        port:
-          label: Port
-          placeholder: '例如: 8080 or myport'
-        weight:
-          label: 权重
-          placeholder: '例如: 50'
-          error: 必须设置权重。
-        subset:
-          label: Subset
-          placeholder: '例如: v1'
-          error: Subset is required
-        host:
-          label: Host
-          error: 必须设置Host。
-      matches:
-        error: 请为匹配条件输入至少一个键值对
-        showMatch: 指定此路由的匹配规则
-        addLabel: 添加其他匹配规则
-        removeLabel: 删除匹配规则
-        noData: 没有匹配规则
-        addMatchLabel: 添加匹配条件
-        noMatches: 没有匹配条件
-        port:
-          label: Port
-          placeholder: '例如: 8080'
-        sourceLabels:
-          label: 源标签
-          addActionLabel: 添加源标签
-        type:
-          label: 匹配类型
-          uri: URI
-          authority: Authority
-          method: Method
-          scheme: Scheme
-          headers: Headers
-        key:
-          label: 键
-          placeholder: '例如: end-user'
-        condition:
-          label: 条件
-          exact: 精确匹配
-          prefix: 前缀匹配
-          regex: 正则表达式匹配
-        value:
-          label: 值
-          uri:
-            exact: '例如: /ratings/v2/'
-            prefix: '例如: /ratings'
-            regex: '例如: /ratings.*'
-          authority:
-            exact: '例如: eu.bookinfo.com'
-            prefix: '例如: eu'
-            regex: '例如: ".*?[.]eu[.]bookinfo[.]com"'
-          method:
-            exact: '例如: GET'
-            prefix: '例如: GET'
-            regex: '例如: ^.*(GET|POST).*$'
-          scheme:
-            exact: '例如: http'
-            prefix: '例如: http'
-            regex: '例如: h.*'
-          headers:
-            exact: '例如: jason'
-            prefix: '例如: jason'
-            regex: '例如: ja.*'
-
-validationsList:
-  title: 验证检查
-  detail: 当前{resourceType}的验证检查
-  noPermission: 您没有权限查看验证。请联系您的集群所有者，让Kiali访问您。
-  table:
-    path: 路径
-    severity: 严重程度
-    message: 消息
-  noData: 没有发现问题
-  noMatch: 没有问题匹配当前搜索
-
-modalDeleteIstio:
-  title: '您确定要禁用:'
-  onlyIstio:
-    true: 仅Istio
-    false: 包括Istio和Monitoring
-  disable: 禁用
-  disabling: 禁用中
-
-
-ingressResponse:
-  host: 主机
-  path: 路径
-  responseTime: 响应时间
-  noData: 没有数据
-  noMatch: 没有记录匹配当前搜索
-  detail: Upstream响应时长（排序前十位）
-  title: Ingress Upstream响应时长
-
-etcd:
-  hasLeader:
-    label: Etcd是否有Leader
-  leaderChange:
-    label: Leader变更次数
-  failedProposals:
-    label: 失败提议次数
-
-clusterDashboard:
-  systemProject: "这是包含所有Kubernetes和{appName}系统命名空间的系统项目，修改当前项目中的资源配置可能会导致系统无法正常运行。"
-  notActive: 当前集群<b>{state}</b>中...
-  notReady: 当前集群<b>{state}</b>中...，在API准备就绪之前，直接与API交互的功能将不可用。
-  used: 使用值
-  title: 仪表盘
-  sections:
-    cluster: 集群监控
-    etcd: Etcd监控
-    k8s: Kubernetes组件监控
-    rancher: '{appName}日志功能监控'
-    node: 节点监控
-  noRancherComponents: '{appName}日志功能未启用或者没有足够的数据绘制图表。'
-  cpu: CPU
-  memory: Memory
-  pods: Pods
-  value: 值
-  more: 更多
-  clusterNotReady: 集群中的图形信息目前不可用。
-  subtitle:
-    reserved: "已预留{total}中的{used}"
-    used: "已使用{total}中的{used}"
-  enableMonitoring: 启用监控并查看实时监控指标
-  upgradeAvailable: "升级监控组件到{version}版本"
-  monitoringNotReady: 监控API未就绪
-  node: Nodes
-  etcd: Etcd
-  scheduler: Scheduler
-  controllerManager: Controller Manager
-  alert:
-    node: "警告: 节点{node}未激活"
-    component: "警告: 组件{component}不健康"
-    nodeCondition:
-      outOfDisk: "警告: 节点 {node} 磁盘空间不足。"
-      diskPressure: "警告: 节点 {node} 有磁盘压力。"
-      memoryPressure: "警告: 节点 {node} 有内存压力。"
-  liveTitle: "已使用{total}中的{used}"
-  reserved: 已预留
-
-monitoringPage:
-  update: 更新监控配置
-  version: 监控组件版本
-  upgrade: 升级监控组件到最新版本 {version}。
-  upgradeAvailable: "(最新版本{version})"
-  confirmDisable: "你确定吗？再次点击将会禁用监控。"
-  disable: 禁用监控
-  enableActionLabel: 启用监控
-  systemProject: "如果您想为系统项目中的Pod收集自定义指标，请直接启用集群级别监控。"
-  noPermission: "您没有权限配置{level}级别监控。"
-  toUpdate:
-    cluster: 集群级别监控已启用。
-    project: 项目级别监控已启用。
-  insufficientSize:
-    prometheus:
-      cpu: 请确保你至少有一个节点有{cpu} milli CPUs 可用来激活Prometheus工作负载。
-      memory: 请确保你至少有一个节点有{memory} MiB 内存可用来激活Prometheus工作负载。
-      all: 请确保你至少有一个节点有{cpu} milli CPUs和{memory} MiB 内存可用来激活Prometheus工作负载。
-    selectors:
-      cpu: 请确保你至少有一个匹配节点选择器的节点有{cpu} milli CPUs 可用来激活Prometheus工作负载。
-      memory: 请确保你至少有一个匹配节点选择器的节点有{memory} MiB 内存可用来激活Prometheus工作负载。
-      all: 请确保你至少有一个匹配节点选择器的节点有{cpu} milli CPUs和{memory} MiB 内存可用来激活Prometheus工作负载。
-    total:
-      cpu: 请确保你至少有{cpu} milli CPUs 可用来激活监控。
-      memory: 请确保你至少有{memory} MiB 内存可用来激活监控。
-      all: 请确保你至少有{cpu} milli CPUs和{memory} MiB 内存可用来激活监控。
-  clusterNotEnabled: 集群级别监控未启用。将只采集自定义指标。
-  prometheus: 监控尚未启用，点击下面的保存按钮去启用监控。
-  resourceLimitsHelp: '启用集群监视时，需要确保工作节点和Prometheus pod具有足够的资源。请访问<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-admin/tools/monitoring/#resource-consumption" target="_blank" rel="nofollow noreferrer">Rancher docs</a>了解建议的资源限制。'
-  config:
-    types:
-      none: 无
-      prometheus: Prometheus
-    header: Prometheus 配置
-    prometheus:
-      cpuLimit:
-        label: Prometheus CPU限制
-        placeholder: '例如: 1000'
-        unit: milli CPUs
-      cpuRequest:
-        label: Prometheus CPU预留
-        placeholder: '例如: 1000'
-        unit: milli CPUs
-      memoryLimit:
-        label: Prometheus 内存限制
-        placeholder: '例如: 1000'
-      memoryRequest:
-        label: Prometheus 内存预留
-        placeholder: '例如: 1000'
-      enablePersistence:
-        label: 为Prometheus启用持久化存储
-      size:
-        label: Prometheus持久化存储大小
-        placeholder: '例如: 50Gi'
-      storageClass:
-        label: Prometheus默认存储类
-    grafana:
-      enablePersistence:
-        label: 为Grafana启用持久化存储
-      size:
-        label: Grafana持久化存储大小
-        placeholder: '例如: 10Gi'
-      storageClass:
-        label: Grafana默认存储类
-    retention:
-      label: 数据保存时间
-    storageClass:
-      label: 存储类
-    operator:
-      memoryLimit:
-        label: Prometheus Operator 内存限制
-        placeholder: '例如: 500'
-    nodeexporter:
-      label: Node Exporter主机端口
-      enable: 启用Node Exporter
-      cpuLimit:
-        label: Node Exporter CPU限制
-        placeholder: '例如: 200'
-        unit: milli CPUs
-      memoryLimit:
-        label: Node Exporter 内存限制
-        placeholder: '例如: 200'
-  nodeSelector:
-    addSelectorLabel: 添加选择器
-    helpText: 选择部署监控相关的工作负载所运行的节点。
-  cluster:
-    title: 集群监控配置
-    disabled: 当前集群监控尚未启用。
-    toDisable: 监控已启用。点击下面的保存按钮来禁用当前集群的监控。
-  project:
-    title: 项目监控配置
-    disabled: 当前项目监控尚未启用。
-    toDisable: 监控已启用。点击下面的保存按钮来禁用当前项目的监控。
-  errors:
-    disableIstioFirst: '在禁用集群监控之前，需要先禁用Istio。'
 
 pipelinesPage:
   table:
@@ -9723,7 +10109,7 @@ fromSecret:
 
 pipelineNotification:
   header: 通知
-  when: 当编译状态为
+  when: 当构建状态为
   condition:
     success:
       label: 成功
@@ -9731,7 +10117,14 @@ pipelineNotification:
       label: 改变
     failed:
       label: 失败
-    required: 编译状态必选
+    required: 构建状态必选
   recipients:
     required: 接受者必填
   asMessage: 发送信息到
+
+selectValueCheck:
+  message: |
+    {values, plural,
+      =1 {请选择新的值。以下内容不再有效:}
+      other {请选择新的值。以下内容不再有效:}
+    }
