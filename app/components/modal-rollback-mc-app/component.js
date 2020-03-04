@@ -6,7 +6,7 @@ import jsondiffpatch from 'jsondiffpatch';
 import moment from 'moment';
 import { notEmpty } from '@ember/object/computed';
 
-const HIDDEN_FIELDS = ['digest'];
+const HIDDEN_FIELDS = ['digest', 'created', 'createdTS', 'links', 'uuid', 'id', 'name'];
 
 function sanitizeToRemoveHiddenKeys(config) {
   HIDDEN_FIELDS.forEach((key) => {
