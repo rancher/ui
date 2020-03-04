@@ -4,8 +4,8 @@
     <label class="acc-label">Kubernetes Version</label>
     <div class="form-control">
       {{#input-or-display
-         editable=editing
-         value=k3sConfig.kubernetesVersion
+        editable=(and editing (gt allVersions.length 1))
+        value=k3sConfig.kubernetesVersion
       }}
         {{searchable-select
           classNames="form-control"
