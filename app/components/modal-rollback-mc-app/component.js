@@ -65,15 +65,18 @@ export default Component.extend(ModalBase, {
       });
   }),
 
-  currentMultiClusterAppRevision: computed('choices.[]', function() {
+
+  currentMultiClusterAppRevision: computed('choices.[]', 'revisionId', 'selectedMultiClusterAppRevision', function() {
     return get(this, 'choices.firstObject.data');
   }),
 
-  selectedMultiClusterAppRevision: computed('revisionId', 'revisions.[]', function() {
-    return get(this, 'revisions').findBy('name', get(this, 'revisionId'));
+  selectedMultiClusterAppRevision: computed('choices.[]', 'revisionId', 'currentMultiClusterAppRevision', function() {
+    const match = get(this, 'choices').findBy('value', get(this, 'revisionId'));
+
+    return match ? match.data : null;
   }),
 
-  answersDiff: computed('currentMultiClusterAppRevision', 'selectedMultiClusterAppRevision', function() {
+  answersDiff: computed('currentMultiClusterAppRevision', 'selectedMultiClusterAppRevision', 'revisionId', function() {
     if (get(this, 'currentMultiClusterAppRevision') && get(this, 'selectedMultiClusterAppRevision')) {
       const { currentMultiClusterAppRevision, selectedMultiClusterAppRevision }  = this;
 
