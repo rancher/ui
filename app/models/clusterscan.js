@@ -4,6 +4,7 @@ import moment from 'moment';
 import { downloadFile } from 'shared/utils/download-files';
 import ObjectsToCsv from 'objects-to-csv';
 import { extractUniqueStrings } from '../utils/util';
+import { toTitle } from 'shared/utils/util';
 import { inject as service } from '@ember/service';
 
 const ClusterScan = Resource.extend({
@@ -91,8 +92,8 @@ const ClusterScan = Resource.extend({
     };
   }),
 
-  profile: computed(() => {
-    return 'RKE-CIS-1.4 Permissive';
+  profile: computed('report.version', 'scanConfig.cisScanConfig.profile', function() {
+    return toTitle(`${ get(this, 'report.version').toUpperCase() } ${ get(this, 'scanConfig.cisScanConfig.profile') }`);
   }),
 
   createdDate: computed('status.conditions.@each.[status,type]', function() {
@@ -152,6 +153,14 @@ const ClusterScan = Resource.extend({
         nodes:       nodeNames,
         passedNodes: [],
         failedNodes: nodeNames
+      }
+    }
+
+    if (testResult.state === 'notApplicable') {
+      return {
+        nodes:       nodeNames,
+        passedNodes: [],
+        failedNodes: []
       }
     }
 

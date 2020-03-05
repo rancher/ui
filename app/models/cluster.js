@@ -9,6 +9,7 @@ import { equal, alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
 import C from 'ui/utils/constants';
 import { isEmpty } from '@ember/utils';
+import { toTitle } from 'shared/utils/util';
 import moment from 'moment';
 const TRUE = 'True';
 const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
@@ -412,6 +413,41 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return out;
   }),
 
+
+  cisScanConfigProfiles: computed(function() {
+    return this.globalStore.getById('schema', 'cisscanconfig').optionsFor('profile');
+  }),
+
+  cisScanBenchmarks: computed(() => {
+    return [
+      'rke-cis-1.4',
+      'rke-cis-1.5'
+    ]
+  }),
+
+  cisScanProfiles: computed('cisScanConfigProfiles', 'cisScanBenchmarks', function() {
+    const profiles = get(this, 'cisScanConfigProfiles');
+    const benchmarks = get(this, 'cisScanBenchmarks');
+
+    const asArray = profiles.flatMap((profile) => {
+      return benchmarks.map((benchmark) => ({
+        [`${ benchmark.toUpperCase() } ${ profile }`]: {
+          benchmark,
+          profile
+        }
+      }))
+    });
+
+    return Object.assign.apply({}, asArray);
+  }),
+
+  cisScanProfileOptions: computed('cisScanProfiles', function() {
+    return Object.keys(get(this, 'cisScanProfiles')).map((key) => ({
+      label: toTitle(key),
+      value: key
+    }))
+  }),
+
   actions: {
     backupEtcd() {
       const getBackupType = () => {
@@ -595,3 +631,4 @@ export default Resource.extend(Grafana, ResourceUsage, {
   },
 
 });
+

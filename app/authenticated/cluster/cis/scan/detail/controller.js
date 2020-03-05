@@ -158,6 +158,8 @@ export default Controller.extend({
       return 'Pass';
     case 'skip':
       return 'Skipped';
+    case 'notApplicable':
+      return 'N/A';
     default:
       return 'Fail';
     }

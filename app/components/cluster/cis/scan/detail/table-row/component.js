@@ -38,6 +38,8 @@ export default Component.extend({
       return 'bg-success';
     case 'Skipped':
       return 'bg-warning'
+    case 'N/A':
+      return 'bg-warning';
     default:
       return 'bg-error';
     }
