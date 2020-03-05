@@ -6,7 +6,7 @@ import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import C from 'ui/utils/constants';
 
-const { HELM_VERSION_2: helmV2, HELM_VERSION_3: helmv3 } = C.CATALOG;
+const { HELM_VERSION_2: helmV2, HELM_VERSION_3: helmV3 } = C.CATALOG;
 
 const MultiClusterApp = Resource.extend({
   catalog:         service(),
@@ -22,7 +22,7 @@ const MultiClusterApp = Resource.extend({
   isHelm3: computed('helmVersion', function() {
     const { helmVersion = helmV2 } = this;
 
-    if (helmVersion === helmv3) {
+    if (helmVersion === helmV3) {
       return true;
     }
 
