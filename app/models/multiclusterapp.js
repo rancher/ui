@@ -4,6 +4,9 @@ import { computed, get } from '@ember/object';
 import { parseHelmExternalId } from 'ui/utils/parse-externalid';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
+import C from 'ui/utils/constants';
+
+const { HELM_VERSION_2: helmV2, HELM_VERSION_3: helmv3 } = C.CATALOG;
 
 const MultiClusterApp = Resource.extend({
   catalog:         service(),
@@ -15,6 +18,16 @@ const MultiClusterApp = Resource.extend({
 
   templateVersion: reference('templateVersionId', 'templateversion', 'globalStore'),
   catalogTemplate: reference('templateId', 'template', 'globalStore'),
+
+  isHelm3: computed('helmVersion', function() {
+    const { helmVersion = helmV2 } = this;
+
+    if (helmVersion === helmv3) {
+      return true;
+    }
+
+    return false;
+  }),
 
   externalIdInfo: computed('templateVersion.externalId', function() {
     return parseHelmExternalId(get(this, 'templateVersion.externalId'));

@@ -4,9 +4,21 @@ import { computed, get } from '@ember/object';
 import { ucFirst } from 'shared/utils/util';
 import C from 'ui/utils/constants';
 
+const { HELM_VERSION_2: helmV2, HELM_VERSION_3: helmv3 } = C.CATALOG;
+
 const Catalog = Resource.extend({
   modalService: service('modal'),
   level:        'global',
+
+  isHelm3: computed('helmVersion', function() {
+    const { helmVersion = helmV2 } = this;
+
+    if (helmVersion === helmv3) {
+      return true;
+    }
+
+    return false;
+  }),
 
   displayKind: computed('kind', function() {
     return ucFirst(get(this, 'kind'));
