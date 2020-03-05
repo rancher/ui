@@ -19,6 +19,35 @@
 </div>
 <div class="row">
   <div class="col span-6">
+    <div class="form-control checkbox">
+      {{input
+        id="drain-master-nodes"
+        class="form-control"
+        type="checkbox"
+        checked=k3sConfig.k3supgradeStrategy.drainServerNodes
+      }}
+      <label for="drain-master-nodes">
+        {{t "k3sClusterInfo.drainServerNodes"}}
+      </label>
+    </div>
+  </div>
+  <div class="col span-6">
+    <div class="form-control checkbox">
+      {{input
+        id="drain-worker-nodes"
+        class="form-control"
+        type="checkbox"
+        checked=k3sConfig.k3supgradeStrategy.drainWorkerNodes
+        disabled=(not editing)
+      }}
+      <label for="drain-worker-nodes">
+        {{t "k3sClusterInfo.drainWorkerNodes"}}
+      </label>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col span-6">
     <label class="acc-label" for="node-server-concurrency">
       {{t "k3sClusterInfo.serverConcurrency"}}
     </label>
