@@ -98,9 +98,16 @@
   <div class="catalog-group">
     <div class="clearfix">
       <button class="btn btn-sm bg-transparent mt-10 pull-right" {{action "toggleCollapse" group}}>
-        {{t (if group.collapsed 'generic.expand' 'generic.collapse')}}
+        {{t (if group.collapsed "generic.expand" "generic.collapse")}}
       </button>
-      <p>{{group.name}}</p>
+      <p>
+        <span class="group-name-container">
+          {{group.name}}
+          {{#if group.isHelm3}}
+            <img class="helm-version-3" src="{{app.baseAssets}}assets/images/logos/helm-v3.svg" />
+          {{/if}}
+        </span>
+      </p>
     </div>
     {{#if (not group.collapsed) }}
       <div class="clearfix">
