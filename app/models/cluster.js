@@ -9,7 +9,7 @@ import { equal, alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
 import C from 'ui/utils/constants';
 import { isEmpty } from '@ember/utils';
-import { toTitle } from 'shared/utils/util';
+import { createProfileKey, toTitle } from 'shared/utils/util';
 import moment from 'moment';
 const TRUE = 'True';
 const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
@@ -431,7 +431,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
     const asArray = profiles.flatMap((profile) => {
       return benchmarks.map((benchmark) => ({
-        [`${ benchmark.toUpperCase() } ${ profile }`]: {
+        [createProfileKey(profile, benchmark)]: {
           benchmark,
           profile
         }
@@ -446,6 +446,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
       label: toTitle(key),
       value: key
     }))
+  }),
+
+  defaultCisScanProfileOption: computed('cisScanProfileOptions', function() {
+    return get(this, 'cisScanProfileOptions')[0].value;
   }),
 
   actions: {

@@ -22,8 +22,8 @@ export default Controller.extend({
     const intervalId = setInterval(() => {
       const element = $(`#${ get(this, 'scrollTo') }`); // eslint-disable-line
 
-      if (element.length > 0) {
-        element.get(0).scrollIntoView();
+      if (element.length > 0 && element.get(0).getBoundingClientRect().top !== 0) {
+        element.get(0).scrollIntoView(true);
         clearInterval(intervalId);
       }
     }, 10);
