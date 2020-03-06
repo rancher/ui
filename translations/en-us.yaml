@@ -157,6 +157,7 @@ generic:
   gitlab: GitLab
   bitbucket: Bitbucket
   required: '{key} is required.'
+  run: Run
 
 realmNames:
   all: All
@@ -306,6 +307,8 @@ alertPage:
     initialWait: Initial Wait
     interval: Interval
     initialWaitHelpText: How long to wait before sending a notification when an alert is triggered.
+    failed: Has Failure
+    run: Completed Scan
     repeatIntervalHelpText: Repeat interval of sending a notification when an alert is active.
     whenA: When A
     whenAn: When An
@@ -385,6 +388,7 @@ alertPage:
     nodeSelector: Node Selector
     workloadSelector: Workload Selector
     metric: Metric
+    cisScan: Security Scan
     undefined: None
   index:
     addAlertGroup: Add Alert Group
@@ -1022,6 +1026,21 @@ catalogPage:
 
 cis:
   scan:
+    report:
+      headers:
+        profile: "Profile: {profile}"
+        id: id
+        description: description
+        remediation: remediation
+        state: state
+        node_type: node_type
+        nodes: nodes
+        passed_nodes: passed_nodes
+        failed_nodes: failed_nodes
+          
+    modal:
+      chooseAProfile: Choose a profile
+      title: Run Security Scan
     growl:
       success: Running CIS scan on '{clusterName}'
     header: CIS Scans
@@ -3958,6 +3977,17 @@ clusterNew:
         prompt: Select a RKE Template revision
         default: '{name} - Default (Created {ago})'
         other: '{name} (Created {ago})'
+    cisScan:
+      scheduled:
+        enabled:
+          label: Recurring Security Scan Enabled
+        interval:
+          label: Recurring Security Scan Interval (cron)
+        retention:
+          label: Recurring Security Scan Report Retention
+        profile:
+          label: Recurring Security Scan Profile
+      
     etcd:
       enabled:
         label: Recurring etcd Snapshot Enabled

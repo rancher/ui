@@ -9,6 +9,7 @@ import { equal, alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
 import C from 'ui/utils/constants';
 import { isEmpty } from '@ember/utils';
+import { createProfileKey, toTitle } from 'shared/utils/util';
 import moment from 'moment';
 const TRUE = 'True';
 const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
@@ -412,6 +413,45 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return out;
   }),
 
+
+  cisScanConfigProfiles: computed(function() {
+    return this.globalStore.getById('schema', 'cisscanconfig').optionsFor('profile');
+  }),
+
+  cisScanBenchmarks: computed(() => {
+    return [
+      'rke-cis-1.4',
+      'rke-cis-1.5'
+    ]
+  }),
+
+  cisScanProfiles: computed('cisScanConfigProfiles', 'cisScanBenchmarks', function() {
+    const profiles = get(this, 'cisScanConfigProfiles');
+    const benchmarks = get(this, 'cisScanBenchmarks');
+
+    const asArray = profiles.flatMap((profile) => {
+      return benchmarks.map((benchmark) => ({
+        [createProfileKey(profile, benchmark)]: {
+          benchmark,
+          profile
+        }
+      }))
+    });
+
+    return Object.assign.apply({}, asArray);
+  }),
+
+  cisScanProfileOptions: computed('cisScanProfiles', function() {
+    return Object.keys(get(this, 'cisScanProfiles')).map((key) => ({
+      label: toTitle(key),
+      value: key
+    }))
+  }),
+
+  defaultCisScanProfileOption: computed('cisScanProfileOptions', function() {
+    return get(this, 'cisScanProfileOptions')[0].value;
+  }),
+
   actions: {
     backupEtcd() {
       const getBackupType = () => {
@@ -456,9 +496,14 @@ export default Resource.extend(Grafana, ResourceUsage, {
       }
     },
 
-    edit() {
+    edit(additionalQueryParams = {}) {
       let provider = get(this, 'provider') || get(this, 'driver');
-      let queryParams = { queryParams: { provider } };
+      let queryParams = {
+        queryParams: {
+          provider,
+          ...additionalQueryParams
+        }
+      };
 
       if (this.clusterTemplateRevisionId) {
         set(queryParams, 'queryParams.clusterTemplateRevision', this.clusterTemplateRevisionId);
@@ -487,14 +532,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
       this.modalService.toggleModal('modal-save-rke-template', { cluster: this });
     },
 
-    runCISScan() {
-      const intl = get(this, 'intl');
-
-      this.doAction('runSecurityScan', {
-        failuresOnly: false,
-        skip:         null
-      }).then(() => {
-        this.growl.success(intl.t('cis.scan.growl.success', { clusterName: get(this, 'name') }), '');
+    runCISScan(options) {
+      this.get('modalService').toggleModal('run-scan-modal', {
+        closeWithOutsideClick: true,
+        cluster:               this,
+        onRun:                 (options || {}).onRun
       });
     },
 
@@ -593,3 +635,4 @@ export default Resource.extend(Grafana, ResourceUsage, {
   },
 
 });
+

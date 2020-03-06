@@ -925,6 +925,153 @@
             </div>
           </div>
 
+          <div class="row" id="security-scan">
+            <div class="col span-3">
+              <label class="acc-label">
+                {{t "clusterNew.rke.cisScan.scheduled.enabled.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="rancherKubernetesEngineConfig.services.cisScan.scheduled.enabled"
+                    @configVariable={{config.services.etcd.backupConfig.enabled}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
+              </label>
+              <CheckOverrideAllowed
+                @paramName="scheduledClusterScan.enabled"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                {{#input-or-display
+                   editable=notView
+                   value=scheduledClusterScan.enabled
+                }}
+                  <div class="text-muted">
+                    <label>
+                      {{radio-button
+                        selection=scheduledClusterScan.enabled
+                        value=true
+                      }}
+                      {{t "generic.yes"}}
+                    </label>
+                    <label>
+                      {{radio-button
+                        selection=scheduledClusterScan.enabled
+                        value=false
+                      }}
+                      {{t "generic.no"}}
+                    </label>
+                  </div>
+                {{/input-or-display}}
+              </CheckOverrideAllowed>
+            </div>
+
+            <div class="col span-3">
+              <label class="acc-label">
+                {{t "clusterNew.rke.cisScan.scheduled.profile.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="cisProfile"
+                    @configVariable={{cisProfile}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
+              </label>
+              <CheckOverrideAllowed
+                @paramName="cisProfile"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                {{#input-or-display
+                   tagName="div"
+                   editable=notView
+                   value=cisProfile
+                }}
+                  {{new-select
+                    id="cis-scan-profile"
+                    classNames="form-control"
+                    content=model.cluster.cisScanProfileOptions
+                    value=cisProfile
+                    disabled=(not scheduledClusterScan.enabled)
+                  }}
+                {{/input-or-display}}
+              </CheckOverrideAllowed>
+            </div>
+
+            <div class="col span-3">
+              <label class="acc-label">
+                {{t "clusterNew.rke.cisScan.scheduled.interval.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="scheduledClusterScan.scheduleConfig.cronSchedule"
+                    @configVariable={{scheduledClusterScan.scheduleConfig.cronSchedule}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
+              </label>
+              <CheckOverrideAllowed
+                @paramName="scheduledClusterScan.scheduleConfig.cronSchedule"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                {{#if notView}}
+                  {{input
+                    type="text"
+                    value=scheduledClusterScan.scheduleConfig.cronSchedule
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.etcd.backupConfig.interval.placeholder")
+                    disabled=(if (not scheduledClusterScan.enabled) true)
+                  }}
+                {{else}}
+                  <div>{{scheduledClusterScan.scheduleConfig.cronSchedule}}</div>
+                {{/if}}
+                <div class="text-small text-muted">{{pretty-cron scheduledClusterScan.scheduleConfig.cronSchedule "toString"}}</div>
+
+              </CheckOverrideAllowed>
+            </div>
+
+            <div class="col span-3">
+              <label class="acc-label">
+                {{t "clusterNew.rke.cisScan.scheduled.retention.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="rancherKubernetesEngineConfig.services.cisScan.scheduled.retention"
+                    @configVariable={{scheduledClusterScan.scheduleConfig.retention}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
+              </label>
+              <CheckOverrideAllowed
+                @paramName="scheduledClusterScan.scheduleConfig.retention"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                {{#input-or-display
+                   tagName="div"
+                   classNames="input-group"
+                   editable=notView
+                   value=scheduledClusterScan.scheduleConfig.retention
+                }}
+                  <span class="input-group-addon bg-default">{{t "clusterNew.rke.etcd.backupConfig.retention.prefix"}}</span>
+                  {{input-integer
+                    value=scheduledClusterScan.scheduleConfig.retention
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.etcd.backupConfig.retention.placeholder")
+                    disabled=(if (not scheduledClusterScan.enabled) true)
+                  }}
+                {{/input-or-display}}
+              </CheckOverrideAllowed>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col">
               <label class="acc-label">

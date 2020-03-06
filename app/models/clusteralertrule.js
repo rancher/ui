@@ -30,6 +30,9 @@ const clusterAlertRule = Resource.extend(Alert, {
     if ( get(this, 'metricRule.expression') ) {
       return 'metric'
     }
+    if ( get(this, 'clusterScanRule.scanRunType') ) {
+      return 'cisScan';
+    }
   }),
 
   displayTargetType: computed('targetType', function() {
