@@ -43,10 +43,6 @@ export default Controller.extend({
 
   actions: {
     async runScan() {
-      await get(this, 'scope.currentCluster').doAction('runSecurityScan', {
-        failuresOnly: false,
-        skip:         null
-      });
       get(this, 'scope.currentCluster').send('runCISScan', { onRun: () => get(this, 'router').replaceWith('authenticated.cluster.cis/scan') });
     },
     download() {
