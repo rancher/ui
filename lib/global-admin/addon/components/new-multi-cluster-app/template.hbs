@@ -1,20 +1,21 @@
 {{#if showHeader}}
   <section class="header clearfix">
-    {{#if editing}}
-      <h1>
+    <h1>
+      {{#if editing}}
         {{t "newMultiClusterApp.upgrade"}}
         <span class="text-normal">
           {{primaryResource.displayName}}
         </span>
-      </h1>
-    {{else}}
-      <h1>
-      {{#link-to (unbound parentRoute)}}
-        {{t "newMultiClusterApp.catalog"}}
-        {{templateResource.displayName}}
-      {{/link-to}}
-      </h1>
-    {{/if}}
+      {{else}}
+        {{#link-to (unbound parentRoute)}}
+          {{t "newMultiClusterApp.catalog"}}
+          {{templateResource.displayName}}
+        {{/link-to}}
+      {{/if}}
+      {{#if templateResource.catalogRef.isHelm3}}
+        <img class="helm-version-3 vertical-middle" src="{{app.baseAssets}}assets/images/logos/helm-v3.svg" />
+      {{/if}}
+    </h1>
   </section>
 {{/if}}
 
