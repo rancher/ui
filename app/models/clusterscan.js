@@ -17,6 +17,7 @@ const ClusterScan = Resource.extend({
   passed:        computed.alias('summary.passed'),
   skipped:       computed.alias('summary.skipped'),
   failed:        computed.alias('summary.failed'),
+  notApplicable: computed.alias('summary.notApplicable'),
 
   isRunning: computed.equal('state', 'running'),
 
@@ -88,7 +89,8 @@ const ClusterScan = Resource.extend({
       total:             report.total,
       passed:            report.pass,
       skipped:           report.skip,
-      failed:            report.fail
+      failed:            report.fail,
+      notApplicable:     report.notApplicable,
     };
   }),
 
