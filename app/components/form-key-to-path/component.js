@@ -117,7 +117,7 @@ export default Component.extend({
       const secret = allSecrets.findBy('name', secretName);
 
       if (secret) {
-        set(this, 'keys', Object.keys(secret.data).map((k) => ({
+        set(this, 'keys', Object.keys(secret.data || {}).map((k) => ({
           label: k,
           value: k,
         })));
