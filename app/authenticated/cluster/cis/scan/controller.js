@@ -34,9 +34,15 @@ export default Controller.extend({
       width:          150,
     },
     {
-      name:           'expires',
+      name:           'failed',
       sort:           ['failed', 'id'],
       translationKey: 'cis.scan.table.failed',
+      width:          150,
+    },
+    {
+      name:           'notapplicable',
+      sort:           ['notApplicable', 'id'],
+      translationKey: 'cis.scan.table.notApplicable',
       width:          150,
     },
     {
