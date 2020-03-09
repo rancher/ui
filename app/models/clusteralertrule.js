@@ -46,7 +46,8 @@ const clusterAlertRule = Resource.extend(Alert, {
     const c = get(this, 'nodeRule.condition')
     const cpuThreshold = get(this, 'nodeRule.cpuThreshold');
     const memThreshold = get(this, 'nodeRule.memThreshold');
-    const metricRule = get(this, 'metricRule')
+    const metricRule = get(this, 'metricRule');
+    const clusterScanRule = get(this, 'clusterScanRule');
 
     switch (t) {
     case 'systemService':
@@ -71,6 +72,11 @@ const clusterAlertRule = Resource.extend(Alert, {
       break;
     case 'metric':
       out = metricRule.comparison === C.ALERTING_COMPARISON.HAS_VALUE ? intl.t(`alertPage.comparison.${ metricRule.comparison }`) : `${ intl.t(`alertPage.comparison.${ metricRule.comparison }`) } ${ metricRule.thresholdValue }`
+      break;
+    case 'cisScan':
+      out = clusterScanRule.failuresOnly
+        ? intl.t('alertPage.index.table.displayCondition.failure')
+        : intl.t('alertPage.index.table.displayCondition.happens');
       break;
     }
 
