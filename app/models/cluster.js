@@ -122,7 +122,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!actionLinks.saveAsTemplate;
   }),
 
-  configName: computed(function() {
+  configName: computed('driver', 'state', function() {
     const keys = this.allKeys().filter((x) => x.endsWith('Config'));
 
     for ( let key, i = 0 ; i < keys.length ; i++ ) {
@@ -595,4 +595,3 @@ export default Resource.extend(Grafana, ResourceUsage, {
   },
 
 });
-
