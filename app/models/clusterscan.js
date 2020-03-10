@@ -95,7 +95,10 @@ const ClusterScan = Resource.extend({
   }),
 
   profile: computed('report.version', 'scanConfig.cisScanConfig.profile', function() {
-    return toTitle(`${ get(this, 'report.version').toUpperCase() } ${ get(this, 'scanConfig.cisScanConfig.profile') }`);
+    const version = (get(this, 'report.version') || '').toUpperCase();
+    const profile = (get(this, 'scanConfig.cisScanConfig.profile') || '');
+
+    return version && profile ? toTitle(`${ version } ${ profile }`) : '';
   }),
 
   createdDate: computed('status.conditions.@each.[status,type]', function() {
