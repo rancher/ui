@@ -31,10 +31,6 @@ export default Controller.extend({
       name:           'description',
       sort:           ['description', 'sortableId'],
       translationKey: 'cis.scan.detail.table.description',
-    },
-    {
-      name:           'buttons',
-      width:          120,
     }
   ],
   sortBy: 'state',

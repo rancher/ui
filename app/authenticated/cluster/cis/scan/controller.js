@@ -20,7 +20,7 @@ export default Controller.extend({
       name:           'name',
       sort:           ['id'],
       translationKey: 'cis.scan.table.name',
-      width:          200,
+      width:          220,
     },
     {
       name:           'profile',
@@ -31,19 +31,19 @@ export default Controller.extend({
       name:           'passed',
       sort:           ['passed', 'id'],
       translationKey: 'cis.scan.table.passed',
-      width:          150,
+      width:          120,
     },
     {
       name:           'skipped',
       sort:           ['skipped', 'id'],
       translationKey: 'cis.scan.table.skipped',
-      width:          150,
+      width:          120,
     },
     {
       name:           'failed',
       sort:           ['failed', 'id'],
       translationKey: 'cis.scan.table.failed',
-      width:          150,
+      width:          120,
     },
     {
       name:           'notapplicable',
