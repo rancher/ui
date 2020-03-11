@@ -26,24 +26,25 @@ export default Controller.extend({
       name:           'profile',
       sort:           ['profile', 'id'],
       translationKey: 'cis.scan.table.profile',
+      width:          200
     },
     {
       name:           'passed',
       sort:           ['passed', 'id'],
       translationKey: 'cis.scan.table.passed',
-      width:          120,
+      width:          80,
     },
     {
       name:           'skipped',
       sort:           ['skipped', 'id'],
       translationKey: 'cis.scan.table.skipped',
-      width:          120,
+      width:          90,
     },
     {
       name:           'failed',
       sort:           ['failed', 'id'],
       translationKey: 'cis.scan.table.failed',
-      width:          120,
+      width:          80,
     },
     {
       name:           'notapplicable',
@@ -53,10 +54,9 @@ export default Controller.extend({
     },
     {
       name:           'date',
-      sort:           ['date', 'id'],
+      sort:           ['createdTS', 'id'],
       searchField:    false,
       translationKey: 'cis.scan.table.date',
-      width:          200,
     }
   ],
   sortBy:     'date',
