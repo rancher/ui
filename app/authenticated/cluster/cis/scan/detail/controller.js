@@ -9,6 +9,7 @@ export default Controller.extend({
   growl:              service(),
   intl:               service(),
   securityScanConfig: service(),
+  cisHelpers:         service(),
 
   tableHeaders: [
     {
@@ -84,7 +85,7 @@ export default Controller.extend({
         state,
         sortableState:     this.getSortableState(state),
         id:                test.id,
-        sortableId:        this.createSortableId(test.id),
+        sortableId:        this.cisHelpers.createSortableId(test.id),
         description:       test.description,
         remediation:       state === 'Fail' ? test.remediation : null,
         nodes,
@@ -102,27 +103,6 @@ export default Controller.extend({
   clusterScans: computed('model.clusterScans.@each', function() {
     return get(this, 'model.clusterScans').filterBy('clusterId', get(this, 'scope.currentCluster.id'));
   }),
-
-  /**
-   * Converts an id that looks like 1.1.9 into 000010000100009. This
-   * allows us to appropriately compare the ids as if they are versions
-   * instead of just doing a naive string comparison.
-   * @param {*} id
-   */
-  createSortableId(id) {
-    const columnWidth = 5;
-    const splitId = id.split('.');
-
-    return splitId
-      .map((column) => {
-        const suffix = column.match(/[a-z]$/i) ? '' : 'a';
-        const columnWithSuffix = column + suffix;
-        const columnPaddingWidth = Math.max(columnWidth - columnWithSuffix.length, 0)
-
-        return '0'.repeat(columnPaddingWidth) + columnWithSuffix;
-      })
-      .join('');
-  },
 
   toggleSkip(testId) {
     this.securityScanConfig.validateSecurityScanConfig();
