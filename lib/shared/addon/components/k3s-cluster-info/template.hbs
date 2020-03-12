@@ -1,6 +1,5 @@
 <div class="row">
   <div class="col span-6">
-    <!-- TODO use form-versions here when we have the api ready -->
     <label class="acc-label">Kubernetes Version</label>
     <div class="form-control">
       {{#input-or-display
@@ -60,6 +59,7 @@
           id="node-server-concurrency"
           class="form-control"
           type="number"
+          min=1
           value=k3sConfig.k3supgradeStrategy.serverConcurrency
         }}
       {{/input-or-display}}
@@ -78,6 +78,7 @@
           id="node-worker-concurrency"
           class="form-control"
           type="number"
+          min=1
           value=k3sConfig.k3supgradeStrategy.workerConcurrency
         }}
       {{/input-or-display}}
