@@ -157,6 +157,7 @@ generic:
   gitlab: GitLab
   bitbucket: Bitbucket
   required: '{key}为必填项。'
+  run: Run
 
 realmNames:
   all: 全部
@@ -306,6 +307,8 @@ alertPage:
     initialWait: 等待时间
     interval: 时间间隔
     initialWaitHelpText: 在触发告警到发送通知需要等待多长时间
+    failed: 扫描失败
+    run: 扫描完成
     repeatIntervalHelpText: 当告警处于活动状态时，重复发送通知的时间间隔
     whenA: 当
     whenAn: 当
@@ -385,6 +388,7 @@ alertPage:
     nodeSelector: Node Selector
     workloadSelector: Workload Selector
     metric: Metric
+    cisScan: CIS 扫描
     undefined: None
   index:
     addAlertGroup: 添加告警组
@@ -398,6 +402,7 @@ alertPage:
       target: 目标
       recipients: 接收者
       displayCondition:
+        failure: 失败
         notScheduled: 未调度
         notRunning: 未运行
         available: '{percent}%可用'
@@ -1020,6 +1025,21 @@ catalogPage:
 
 cis:
   scan:
+    report:
+      headers:
+        profile: "配置文件: {profile}"
+        id: id
+        description: 描述
+        remediation: 修复
+        state: 状态
+        node_type: 节点类型
+        nodes: nodes
+        passed_nodes: 节点密码
+        failed_nodes: 失败的节点
+
+    modal:
+      chooseAProfile: 选择配置文件
+      title: 运行CIS扫描
     growl:
       success: 在'{clusterName}'上运行CIS扫描
     header: CIS扫描
@@ -1028,14 +1048,18 @@ cis:
       delete: 删除
       download: 下载
       runScan: 运行扫描
+      addAlert: 添加告警
+      addSchedule: 添加调度
       search:
           placeholder: 搜索
     table:
       state: 状态
       name: 名称
+      profile: 配置文件
       passed: 通过
       skipped: 跳过
       failed: 失败
+      notApplicable: 不适用
       date: 日期
       empty: 当前没有扫描
     detail:
@@ -1057,7 +1081,6 @@ cis:
         unskip: Unskip
         nodesTable:
           title: 节点
-          notAvailable: Node不是集群的一部分
           row:
             remediation: "Remediation: {remediation}"
 
@@ -1413,8 +1436,8 @@ containerPage:
       noContainers: 无其他容器
   pod: Pod
 podPage:
-  header: "Pod: {name}"
-  nodeIp: 主机
+  header: 'Pod: {name}'
+  nodeIp: Node
   podIp: Pod IP
   containerImage: "{container}的镜像"
   image: 镜像
@@ -1487,7 +1510,7 @@ ingressResponse:
   noData: 没有数据
   noMatch: 没有记录匹配当前搜索
   detail: Upstream响应时长（排序前十位）
-  title: Ingress Upstream响应时长   
+  title: Ingress Upstream响应时长
 
 etcd:
   hasLeader:
@@ -2315,11 +2338,11 @@ hostsPage:
     hostname: 主机名
     ipAddress: IP地址
     version: 版本
-    kubeletVersion: Kubelet 版本
-    kubeProxyVersion: Kube Proxy 版本
-    dockerVersion: Docker 版本
+    kubeletVersion: Kubelet版本
+    kubeProxyVersion: Kube-Proxy版本
+    dockerVersion: Docker版本
     containerDVersion: Containerd版本
-    kernelVersion: 内核版本	
+    kernelVersion: 内核版本
     operatingSystem: 操作系统
     conditions:
       diskSpace: 磁盘空间
@@ -3209,6 +3232,8 @@ catalogSettings:
       label: 密码
       required: '密码必须填写'
       placeholder:  password
+    helmVersion:
+      label: Helm 版本
   errors:
     nameInExists: '在启用{key}之前，请移除名称为{key}的应用商店。'
 
@@ -3792,6 +3817,9 @@ clusterNew:
   k3simport:
     label: Rancher K3S
     shortLabel: K3S
+    errors:
+      concurrency:
+        negative: 只有非负和非零的并发值是有效的。
   huaweicce:
     label: 华为云容器引擎
     shortLabel: Huawei CCE
@@ -3953,6 +3981,18 @@ clusterNew:
         prompt: 选择一个集群模板修订
         default: '{name} - Default (Created {ago})'
         other: '{name} (Created {ago})'
+    cisScan:
+      scheduled:
+        enabled:
+          label: 启用CIS扫描
+        interval:
+          label: CIS 定时扫描间隔
+          placeholder: e.g. 0 0 * * *
+        retention:
+          label: CIS扫描报告保留副本数
+        profile:
+          label: CIS扫描配置文件
+
     etcd:
       enabled:
         label: Etcd备份轮换
@@ -7106,7 +7146,9 @@ k3sClusterInfo:
   title: K3S选项
   detail: 自定义K3S集群选项
   workerConcurrency: Worker Concurrency
-  serverConcurrency: Server Concurrency
+  serverConcurrency: Control Plane Concurrency
+  drainServerNodes: Drain Control Plane Nodes
+  drainWorkerNodes: Drain Worker Nodes
   nodeInfo:
     title: K3s节点信息
     detail: K3S主节点参数和环境变量的只读视图。
@@ -9783,7 +9825,7 @@ rkeConfigComment:
     "         max-pods: '250' "
     "         # secrets和configmaps同步到Pod需要的时间，默认一分钟"
     "         sync-frequency: '3s'"
-    "         # kubelet默认一次拉取一个镜像，设置为false可以同时拉取多个镜像，前提是存储驱动要为overlay2，对应的Dokcer也需要增加下载并发数     "
+    "         # kubelet默认一次拉取一个镜像，设置为false可以同时拉取多个镜像，前提是存储驱动要为overlay2，对应的Docker也需要增加下载并发数     "
     "         serialize-image-pulls: false  "
     "         # 拉取镜像的最大并发数，registry-burst不能超过registry-qps ，仅当registry-qps大于0(零)时生效，(默认10)。如果registry-qps为0则不限制(默认5)。"
     "         registry-burst: '10' "
