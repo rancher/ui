@@ -6,6 +6,7 @@ languageContribute: "در ترجمه رنچر کمک کنید!"
 ##############################
 generic:
   actions: اکشن ها
+  active: فعال
   activate: قعال سازی
   add: افزودن
   advanced: پیشرفته
@@ -17,6 +18,7 @@ generic:
   cancel: لغو
   closeModal: بستن
   cluster: خوشه
+  collapse: بستن
   collapseAll: بستن همه
   comingSoon: به زودی
   command: دستور
@@ -41,12 +43,14 @@ generic:
   enabled: فعال
   entrypoint: نقطه ورود
   environment: محیط
+  expand: باز کردن
   expandAll: بازکردن همه
   experimental: "(آزمایشی)"
   from: از
   false: 'نادرست'
   generic: 'عمومی'
   gigabyte: 'گیگابایت'
+  group: 'گروه'
   hardware: سخت‌افزار
   healthy: سالم
   help: راهنما
@@ -104,6 +108,15 @@ generic:
   version: نسخه
   yes: "بله"
   readOnly: فقط خواندنی
+  cpu: پردازشگر
+  memory: حافظه
+  branch: شاخه
+  commit: کامیت
+  repository: مخزن
+  logout: خروج کاربر {user}
+  github: گیت‌هاب
+  gitlab: گیت‌لب
+  bitbucket: بیت‌باکت
 realmNames:
   all: همه
   usWest: غرب آمریکا
@@ -119,8 +132,16 @@ accountsPage:
       headers:
         permission: سطح دسترسی
         role: نقش
+        clusterName: خوشه
         projectName: پروژه
         active: فعال
+        group: گروه
+      global:
+        title: مجوزهای سراسری
+      cluster:
+        title: نقش‌های خوشه
+      project:
+        title: نقش‌های پروژه
       roles:
         title: نقش ها
   index:
@@ -131,6 +152,10 @@ accountsPage:
       kind: نوع
       identity: هویت
       noName: هیچ یک
+  groups:
+    header: گروه‌ها
+    table:
+      groupName: نام گروه
   new:
     header: افزودن کاربر
     errors:
@@ -151,6 +176,8 @@ accountsPage:
       description:
         labelText: توضیح
         placeholder: "مثال. این حساب متعلق به آقای حسینی است"
+  editGroup:
+    header: ویرایش گروه
   modal:
     password: تغییر رمز عبور
 appDetailPage:
@@ -166,6 +193,27 @@ appDetailPage:
   services:
     title: سرویس ها
     nodata: هیچ سرویس برای این برنامه ایجاد نشده است.
+alertPage:
+  create: ایجاد
+  save: ذخیره
+  cluster: خوشه
+  newOrEdit:
+    whenA: هنگامی که یک
+    whenAn: هنگامی که یک
+    sendA: ارسال یک
+    to: به
+    alert: هشدار
+    is: هست
+    lessThan: کمتر از
+    and: و
+    critical: بحرانی
+    info: اطلاعات
+    normal: عادی
+    warning: هشدار
+    notReady: آماده نیست
+    notRunning: در حال اجرا نیست
+    notScheduled: زمانبندی نشده
+    removeAlert: حذف این هشدار
 podSecurityPoliciesPage:
   index:
     table:
@@ -365,12 +413,92 @@ certificatesPage:
         placeholder: مثال. mydomain.com
       description:
         placeholder: مثال. EV cert for mydomain.com
+clusterPage:
+  edit: ویرایش خوشه
+projectsPage:
+  members:
+    kind:
+      label: نوع
+    name:
+      label: نام
+    role:
+      label: نقش
+clustersPage:
+  header: خوشه‌ها
+  newCluster: افزودن خوشه
+  newTemplate: افزودن الگو
+  newClusterName: "افزودن خوشه: {name}"
+  editClusterName: "ویرایش خوشه: {name}"
+  launch:
+    new: افزودن خوشه
+  cluster:
+    label: نام خوشه
+  cpu:
+    label: پردازشگر
+  memory:
+    label: رم
+clusterRibbonNav:
+  title: خوشه‌های اخیر
+containerPage:
+  linksTab:
+    header: پیوند‌ها
 containersPage:
   table:
     sparkPrefixCpu: "پردازشگر: "
     sparkPrefixMemory: "حافظه: "
     sparkPrefixNetwork: "شبکه: "
     sparkPrefixStorage: "محل ذخیره: "
+clusterDashboard:
+  sections:
+    cluster: معیارهای خوشه
+  value: مقدار
+  scheduler: زمانبند
+ingressResponse:
+  host: هاست
+  responseTime: زمان پاسخ
+editDns:
+  externalTrafficPolicy:
+    cluster: خوشه
+globalRegistryPage:
+  config:
+    databaseRequestCpu:
+      placeholder: مثال 1000
+    databaseLimitCpu:
+      placeholder: مثال 1000
+    databaseRequestMemory:
+      placeholder: مثال 1000
+    databaseLimitMemory:
+      placeholder: مثال 1000
+    redisRequestCpu:
+      placeholder: مثال 1000
+    redisLimitCpu:
+      placeholder: مثال 1000
+    redisRequestMemory:
+      placeholder: مثال 1000
+    redisLimitMemory:
+      placeholder: مثال 1000
+    redis:
+      external:
+        port:
+          placeholder: مثال 6379
+        coreDatabaseIndex:
+          placeholder: مثال 0
+        jobserviceDatabaseIndex:
+          placeholder: مثال 1
+        registryDatabaseIndex:
+          placeholder: مثال 2
+globalDnsPage:
+  entriesPage:
+    table:
+      name: نام
+    config:
+      project: پروژه‌ها
+  providersPage:
+    table:
+      name: نام
+    config:
+      zone:
+        placeholder: عمومی
 #If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 #those are present in case we have an error in the app and can not load the translations file
 #the error page will at least make a little sense
@@ -383,8 +511,19 @@ haPage:
   setup:
     link: به راهنما مراجعه کنید
     suffix: " برای اطلاع رسانی در مورد راه اندازی و استفاده."
+  table:
+    clustered: خوشه‌بندی شده
+nodesPage:
+  editCluster: ویرایش خوشه
+  table:
+    clusterName: خوشه
 hostsPage:
   addContainer: افزودن Container
+  new:
+    addCluster:
+      label: "گزینه‌های خوشه"
+      cluster:
+        label: خوشه
   hostPage:
     portsTab:
       table:
@@ -514,6 +653,8 @@ servicePartial:
     inactive:
       start: شروع
 catalogSettings:
+  currentCluster: خوشه
+  globalCatalog: سراسری
   more:
     addActionLabel: افزودن Catalog
     name:
@@ -522,6 +663,13 @@ catalogSettings:
     branch:
       label: شاخه
       placeholder: 'مثال. master'
+clusterNew:
+  header: نوع خوشه را انتخاب کنید
+  name:
+    label: نام خوشه
+    required: 'وارد کردن "نام خوشه" اجباری است'
+  driverLabels:
+    import: وارد کردن خوشه‌ی موجود
 confirmDelete:
   cancelAction: لغو
 containerLogs:
@@ -588,6 +736,12 @@ stackHeader:
   outputs: خروجی ها
 formatIp:
   noIp: هیچ یک
+formMembersGlobalAccess:
+  title: اعضا
+  table:
+    name: نام
+    accessType: نوع دسترسی
+    prompt: یک مقدار را انتخاب کنید...
 formCommand:
   command:
     label: دستور
@@ -639,6 +793,23 @@ formEngineOpts:
   engineRegistryMirror:
     addActionLabel: افزودن Registry Mirror
     valuePlaceholder: مثال. https://my-mirror.example.com:5000
+formGlobalRoles:
+  mode:
+    admin:
+      label: مدیر
+    user:
+      label: کاربر استاندارد
+  role:
+    catalogs-manage:
+      label: پیکربندی کاتالوگ‌ها
+    settings-manage:
+      label: مدیریت تنظیمات
+    users-manage:
+      label: مدیریت کاربران
+    catalogs-use:
+      label: استفاده از کاتالوگ‌ها
+    base:
+      label: دسترسی ورود
 formHealthCheck:
   checkType:
     none: هیچ یک
@@ -773,6 +944,8 @@ modalEditDriver:
 modalProcessError:
   cause: "علت:"
   close: بستن
+modalShortcuts:
+  global: سراسری
 modalWelcome:
   header: به {appName} خوش آمدید!
   closeModal: بستن
@@ -882,6 +1055,8 @@ nav:
     library: کتابخانه
   infra:
     storagePage: محل ذخیره
+  admin:
+    tab: سراسری
   user:
     label: "منوی کاربر: {username}"
     logout: خروج

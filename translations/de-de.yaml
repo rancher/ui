@@ -6,6 +6,7 @@ languageContribute: "Helfen Sie bei der Übersetzung von Rancher"
 ##############################
 generic:
   actions: Aktionen
+  active: Aktiv
   activate: Aktivieren
   add: Hinzufügen
   advanced: Erweiterte Einstellungen
@@ -17,6 +18,7 @@ generic:
   cancel: Abbrechen
   closeModal: Schließen
   cluster: Cluster
+  collapse: Einklappen
   collapseAll: Alles schliessen
   comingSoon: In Kürze verfügbar
   command: Befehl
@@ -41,12 +43,14 @@ generic:
   enabled: Aktiviert
   entrypoint: Einstiegspunkt
   environment: Umgebung
+  expand: Aufklappen
   expandAll: Alles öffnen
   experimental: "(experimentell)"
   from: von
   false: 'Falsch'
   generic: 'Allgemein'
   gigabyte: 'GB'
+  group: 'Gruppe'
   hardware: Hardware
   healthy: Bereit
   help: Hilfe
@@ -80,6 +84,7 @@ generic:
   noRating: Keine Bewertung
   node: Knoten
   none: Kein
+  completedOf: "{completed} von {total}"
   owner: Besitzer
   paste: Einfügen
   pod: pod
@@ -128,6 +133,11 @@ generic:
   readWrite: Schreib-/Lesezugriff
   writeOnly: Nur Schreiben
   full: Voll
+  linux: Linux
+  windows: Windows
+  host: Server
+  cpu: CPU
+  required: '{key} ist erforderlich.'
 realmNames:
   all: Alle
   usWest: US Westküste
@@ -174,6 +184,11 @@ accountsPage:
       identity: Identität
       noMatch: Keine Benutzer gefunden, die den Suchkriterien entsprechen
       noName: Kein
+  groups:
+    table:
+      groupName: Gruppenname
+      noData: Es wurden keine Gruppen definiert.
+      noMatch: Keine Gruppen zur aktuellen Suche gefunden
   new:
     header: Benutzer hinzufügen
     errors:
@@ -237,6 +252,15 @@ appDetailPage:
     title: Geheimnisse
     detail: Es wurden Secrets mit dieser Applikation verknüpft
     nodata: Diese Anwendung hat keine Geheimnisse
+alertPage:
+  create: Erstellen
+  save: Speichern
+  cluster: Cluster
+  project: Projekt
+  newOrEdit:
+    addRecipient: Empfänger hinzufügen
+  resourceKinds:
+    Node: Knoten
 podSecurityPoliciesPage:
   index:
     header: Pod-Sicherheitsrichtlinien
@@ -660,7 +684,7 @@ certificatesPage:
     labelText: Domainname
     single: '<a href="https://{cn}" target="_blank" rel="nofollow noreferrer noopener">{cn} <i class="icon icon-sm icon-external-link"/></a>'
     withSan: |
-
+       
     wildcardSingle: '{cn}'
     wildcardWithSan: |
       {cn} +
@@ -1640,7 +1664,7 @@ stackPage:
     detail: 'Load-Balancer-Container, die von diesem Stack getrennt sind'
     status: |
       {count, plural,
-      =0 {Kein Balancer}
+      =0 {Kein Balancer} 
       =1 {# Balancer}
       other {# Balancer}
       }
@@ -1649,7 +1673,7 @@ stackPage:
     detail: 'Load-Balancer, die von diesem Stack getrennt sind'
     status: |
       {count, plural,
-      =0 {Keine Einträge}
+      =0 {Keine Einträge} 
       =1 {# Eintrag}
       other {# Einträge}
       }

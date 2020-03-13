@@ -6,6 +6,7 @@ languageContribute: "Ayuda a traducir Rancher"
 ##############################
 generic:
   actions: Acciones
+  active: Activo
   activate: Activar
   add: Agregar
   advanced: Avanzado
@@ -13,9 +14,11 @@ generic:
   any: Cualquier
   application: aplicación
   as: como
+  back: Regresar
   cancel: Cancelar
   closeModal: Cerrar
   cluster: Clúster
+  collapse: Contraer
   collapseAll: Contraer todo
   comingSoon: Próximamente
   command: Command
@@ -40,24 +43,33 @@ generic:
   enabled: Activado
   entrypoint: Entrypoint
   environment: Entorno
+  expand: Expandir
   expandAll: Expandir todo
+  experimental: "(experimental)"
   from: de
+  false: 'Falso'
   generic: 'Genérico'
   gigabyte: 'GB'
+  group: 'Grupo'
   hardware: Hardware
   healthy: Correcta
   help: Ayuda
+  hostname: Nombre de Host
+  hours: horas
+  hpa: AHP
   id: ID
   image: Imágen
   import: Importar
   internal: Interno
   ipAddress: Dirección IP
+  istioRule: Regla de Tráfico
   key: Llave
   limit: Límite
   limits: Límites
   loading: "Cargando..."
   loggingOut: "Cerrando sesión..."
   member: Miembro
+  mbps: Mbps
   mibibyte: 'MiB'
   minutes: minutos
   milliseconds: 'Milisegundos'
@@ -72,9 +84,11 @@ generic:
   noRating: Sin Calificación
   node: Nodo
   none: Ninguno
+  completedOf: "{completed} de {total}"
   owner: Propietario
   paste: Pegar
   pod: pod
+  podRestarts: Reinicios de Pod
   port: Puerto
   ports: Puertos
   prefix: prefijo
@@ -83,10 +97,12 @@ generic:
   persistentVolume: volumen persistente
   random: Aleatorio
   remove: Eliminar
+  restarts: Reinicios
   role: Rol
   save: Guardar
   saved: Guardado
   saving: Guardando
+  scope: Ámbito
   search: Buscar
   searchOrCustomInput: Busque o ingrese su valor personalizado.
   searching: 'Buscando...'
@@ -101,6 +117,7 @@ generic:
   testing: En pruebas
   to: Para
   total: Total
+  true: 'Verdadero'
   type: Tipo
   unknown: Desconocido
   unknownUser: No se puede obtener información del usuario
@@ -111,6 +128,30 @@ generic:
   value: Valor
   version: Versión
   yes: "Sí"
+  isRequired: es requerido
+  readOnly: Solo Lectura
+  readWrite: Lectura Escritura
+  writeOnly: Solo Escritura
+  full: Lleno
+  linux: Linux
+  windows: Windows
+  host: Host
+  istioHostPlaceholder: Seleccione o ingrese un host
+  cpu: CPU
+  memory: Memoria
+  noData: Sin Datos
+  authorize: Autoriza y Obtén tus repositorios
+  branch: Ramas
+  commit: Commit
+  repository: Repositorio
+  registry: Registro
+  imageName: Nombre de Imagen
+  loginIn: Iniciar sessión en
+  is: es
+  github: Github
+  gitlab: Gitlab
+  bitbucket: Bitbucket
+  required: '{key} is requerido.'
 realmNames:
   all: Todos
   usWest: US West
@@ -132,6 +173,7 @@ accountsPage:
         projectName: Proyecto
         active: Activo
         created: Concedido
+        group: Grupo
       global:
         title: Permisos globales
         description: Acceso para administrar elementos que afectan toda la instalación
@@ -150,13 +192,19 @@ accountsPage:
   index:
     header: Usuarios
     localLink: Añadir usuario
+    groupLink: Asignar Rol Global
     table:
       id: ID
       kind: Tipo
       username: Nombre de usuario local
       identity: Identidad
+      noData: No hay usuarios definidos.
       noMatch: Ningún usuario coincide con la búsqueda
       noName: Ninguno
+  groups:
+    header: Grupos
+    table:
+      groupName: Nombre de Grupo
   new:
     header: Añadir usuario
     errors:
@@ -189,6 +237,8 @@ appDetailPage:
     protocol: Protocolo
     noData: No se crearon endpoints públicos para esta aplicación.
     noMatch: Ningún endpoint público coincide con la búsqueda.
+  answers:
+    variable: Variable
   notes:
     title: Notas
     detail: 'Instrucciones de cómo usar esta aplicación'
@@ -390,6 +440,7 @@ authPage:
       disableAccess:
         header: "Zona peligrosa&trade;"
         warning: '<b class="text-danger"> PRECAUCIÓN:</b> Deshabilitar control de acceso le dará control total sobre {appName} a cualquier persona que pueda acceder a esta página o la API.'
+        confirmDisable: "¿Está seguro?  Haga clic de nuevo para desactivar realmente el control de acceso"
         disable: Deshabilitar control de acceso
       groupsField: 'Grupos:'
       displayName: 'Nombre a mostrar:'
@@ -432,6 +483,7 @@ authPage:
       disableAccess:
         header: "Zona peligrosa&trade;"
         warning: '<b class="text-danger">Cuidado:</b> Deshabilitar el control de acceso sobre {appName} otorgará control completo a todo aquel que pueda ver esta página o la API.'
+        confirmDisable: "¿Estás seguro?  Haga clic de nuevo para desactivar realmente el control de acceso"
         disable: Desactivar el acceso de Github
     notAuthenticated:
       header: "1. Configurar una aplicación de GitHub"
@@ -475,6 +527,7 @@ authPage:
         label: "Azure AD no está configurado"
     enabled:
       header: 'Zona peligrosa&trade;'
+      reallyDisable: '¿Estás seguro?  Haga clic de nuevo para desactivar realmente el control de acceso'
       promptDisable: Desactivar control de acceso
       general:
         header: General
@@ -533,6 +586,7 @@ authPage:
       header: 'Zona peligrosa&trade;'
       warning: '<b class="text-danger">Cuidado:</b> Deshabilitar el control de acceso sobre {appName} otorgará control completo a todo aquel que pueda ver esta página o la API.'
       buttonText:
+        disable: '¿Estás Seguro/a? Haz click de nuevo si realmente deseas deshabilitar el control de acceso'
         prompt: Desactivar control de acceso
     accessDisabled:
       header: '1. Configurar el usuario administrador'
@@ -2282,7 +2336,7 @@ cruPersistentVolume:
       placeholder: "ej. / etc / ceph / keyring"
     monitors:
       label: Monitores
-      addActionLabel: Añadir
+      addActionLabel: Añadir 	
     pool:
       label: Banco
       placeholder: "ej. rbd"
@@ -5091,7 +5145,7 @@ pagination:
     =1 {{count} {count, plural, =1 {Puerto} other {Puertos}}}
     other {{from} - {to} of {count} Puertos}}
   service: |
-    {pages, plural,
+    {páginas, plural,
     =0 {Sin Hosts}
     =1 {{count} {count, plural, =1 {Service} other {Services}}}
     other {{from} - {to} of {count} Hosts}}
