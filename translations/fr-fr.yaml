@@ -6,6 +6,7 @@ languageContribute: "Aider à traduire Rancher"
 ##############################
 generic:
   actions: Actions
+  active: Actif
   activate: Activé
   add: Ajouter
   advanced: Avancé
@@ -17,6 +18,7 @@ generic:
   cancel: Annuler
   closeModal: Fermer
   cluster: Cluster
+  collapse: Replier
   collapseAll: Tout réduire
   comingSoon: Prochainement
   command: Commande
@@ -41,12 +43,14 @@ generic:
   enabled: Activé
   entrypoint: Point d’entrée
   environment: Environnement
+  expand: Développer
   expandAll: Tout développer
   experimental: "(expérimental)"
   from: de
   false: 'Faux'
   generic: 'Générique'
   gigabyte: 'GB'
+  group: 'Groupe'
   hardware: Matériel
   healthy: Sans erreur
   help: Aide
@@ -79,9 +83,11 @@ generic:
   noRating: Aucun avis
   node: Nœud
   none: Aucun
+  completedOf: "{completed} sur {total}"
   owner: Propriétaire
   paste: Coller
   pod: pod
+  podRestarts: Redémarrages du pod
   port: Port
   ports: Ports
   prefix: préfixe
@@ -126,6 +132,28 @@ generic:
   readWrite: Lecture/Ecriture
   writeOnly: Écriture seule
   full: Plein
+  linux: Linux
+  windows: Windows
+  host: Hôte
+  istioHostPlaceholder: Sélectionner ou saisir un hôte
+  cpu: Processeur
+  memory: Mémoire
+  noData: Aucun résultat
+  branch: Branche
+  commit: Révision
+  repository: Dépôt
+  registry: Registre
+  imageName: Nom de l'Image
+  loginIn: Se connecter
+  logout: "Déconnexion de l'utilisateur {user}"
+  pipeline: Pipeline
+  is: est
+  push: Pousser vers le dépôt
+  noBranch: Il n'y a pas de branche dans ce dépôt.
+  github: GitHub
+  gitlab: GitLab
+  bitbucket: Bitbucket
+  required: '{key} est requis.'
 realmNames:
   all: Tous
   usWest: EU - Ouest
@@ -147,6 +175,7 @@ accountsPage:
         projectName: Projet
         active: Actif
         created: Accordé
+        group: Groupe
       global:
         title: Autorisations globales
         description: Accès pour gérer les choses qui affectent l'ensemble de l'installation
@@ -165,12 +194,22 @@ accountsPage:
   index:
     header: Utilisateurs
     localLink: Ajouter un utilisateur
+    groupLink: Attribuer un rôle global
     table:
       id: Id
       kind: Type
       username: Nom d'utilisateur local
       identity: Identité
+      noData: Aucun utilisateur n'est défini.
       noMatch: Aucun utilisateur ne correspond à la recherche
+      noName: Aucun
+  groups:
+    header: Groupes
+    table:
+      groupName: Nom du groupe
+      globalRole: Nom du rôle global
+      noData: Aucun groupe n'est défini.
+      noMatch: Aucun groupe ne correspond à la recherche actuelle
       noName: Aucun
   new:
     header: Ajouter un utilisateur
@@ -193,6 +232,17 @@ accountsPage:
       description:
         labelText: Description 
         placeholder: "e.g. Compte de John Smith"
+  editGroup:
+    header: Éditer le groupe
+  newGroup:
+    header: Assigner des rôles globaux au groupe
+    warning: L'attribution de rôles globaux à un groupe ne fonctionne qu'avec les fournisseurs d'authentification externes qui supportent les groupes. L'autorisation locale ne supporte pas les groupes.
+    errors:
+      group: Un groupe est requis.
+      role: Un rôle est requis.
+    form:
+      group:
+        labelText: Sélectionner le groupe à ajouter
   modal:
     password: Modifier le mot de passe
 appDetailPage:
@@ -235,6 +285,19 @@ appDetailPage:
     title: Secrets
     detail: Secrets associés avec cette application
     nodata: Cette application n'a aucun secret
+alertPage:
+  na: Non configuré
+  items: Éléments
+  addSelectorLabel: Ajouter un sélecteur
+  create: Créer
+  save: Enregistrer
+  cluster: Cluster
+  newOrEdit:
+    podPlaceholder: Choisissez un pod
+    restarted: Redémarré
+    minutes: Minutes
+    available: disponible
+    createOne: créer une.
 podSecurityPoliciesPage:
   index:
     header: Politique de sécurité des Pods
