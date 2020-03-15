@@ -21,18 +21,16 @@
           class="form-control"
           onchange={{action (mut backupId) value="target.value"}}
         >
-          {{#unless (eq backupId value)}}
-            <option
-              value=""
-              selected=true
-            >
-              {{t "modalRestoreBackup.select.all"}}
-            </option>
-          {{/unless}}
+          <option
+            value=""
+            selected={{eq backupId ""}}
+          >
+            {{t "modalRestoreBackup.select.all"}}
+          </option>
           {{#each availableBackups as |backup|}}
             <option
               value={{backup.id}}
-              selected={{eq backup.id value}}
+              selected={{eq backup.id backupId}}
               disabled={{eq backup.state "activating"}}
             >
               {{backup.label}}

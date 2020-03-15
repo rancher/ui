@@ -89,8 +89,12 @@ export default Component.extend(ModalBase, {
   }),
 
   initOwnProperties() {
+    const backupId = this.modalOpts.selection ? this.modalOpts.selection.id : '';
+    const restoreRkeConfig = backupId ? 'etcd' : '';
+
     setProperties(this, {
-      backupId: '',
+      backupId,
+      restoreRkeConfig,
       errors:   [],
     });
   },

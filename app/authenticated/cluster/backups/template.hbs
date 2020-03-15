@@ -8,10 +8,11 @@
      bulkActions=false
      descending=descending
      paging=false
-     search=false
+     search=true
      sortBy=sortBy
      headers=headers
      body=rows
+     rightActions=true
      as |sortable kind backup dt|
   }}
     {{#if (eq kind "row")}}
@@ -39,6 +40,10 @@
       {{#if backup.showTransitioningMessage}}
         {{error-sub-row fullColspan=sortable.fullColspan model=backup}}
       {{/if}}
+    {{else if (eq kind "right-actions")}}
+      <button style="margin-left: -5px;" class="btn btn-sm bg-primary pl-40 pr-40" {{action "snapshotNow"}}>
+        {{t 'action.backupEtcd'}}
+      </button>
     {{else if (eq kind "norows")}}
       <tr>
         <td
