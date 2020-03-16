@@ -15,7 +15,7 @@ export default Route.extend({
     const configMaps = (async() => {
       this.securityScanConfig.setReport(await report);
 
-      return this.securityScanConfig.loadAsyncConfigMap();
+      return this.securityScanConfig.loadAsyncConfigMap(get(this, 'scope.currentCluster'));
     })();
 
     return hash({
