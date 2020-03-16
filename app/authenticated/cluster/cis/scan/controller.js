@@ -20,7 +20,6 @@ export default Controller.extend({
       name:           'name',
       sort:           ['id'],
       translationKey: 'cis.scan.table.name',
-      width:          220,
     },
     {
       name:           'profile',
@@ -57,6 +56,7 @@ export default Controller.extend({
       sort:           ['createdTS', 'id'],
       searchField:    false,
       translationKey: 'cis.scan.table.date',
+      width:          220
     }
   ],
   sortBy:     'date',
