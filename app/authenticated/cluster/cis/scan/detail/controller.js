@@ -173,6 +173,10 @@ export default Controller.extend({
       return 'Skipped';
     }
 
+    if (check.state === 'notApplicable') {
+      return 'N/A';
+    }
+
     return checkNodes.includes(nodeName)
       ? 'Fail'
       : 'Pass';

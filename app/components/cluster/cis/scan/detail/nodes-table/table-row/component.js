@@ -23,6 +23,7 @@ export default Component.extend({
     case 'Pass':
       return 'bg-success';
     case 'Skipped':
+    case 'N/A':
       return 'bg-warning'
     default:
       return 'bg-error';
