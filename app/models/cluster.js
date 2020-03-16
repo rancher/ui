@@ -438,8 +438,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
         .catch((err) => this.growl.fromError(err));
     },
 
-    restoreFromEtcdBackup() {
-      get(this, 'modalService').toggleModal('modal-restore-backup', { cluster: this, });
+    restoreFromEtcdBackup(options) {
+      get(this, 'modalService').toggleModal('modal-restore-backup', {
+        cluster:   this,
+        selection: (options || {}).selection
+      });
     },
 
     promptDelete() {
