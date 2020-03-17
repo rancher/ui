@@ -329,12 +329,16 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!get(this, 'windowsPreferedCluster');
   }),
 
-  isClusterScanDisabled: computed('runningClusterScans', 'systemProject', 'state', 'actionLinks.runSecurityScan', 'isWindows', function() {
-    return (get(this, 'runningClusterScans.length') > 0)
-      || !get(this, 'systemProject')
+  isClusterScanDown: computed('systemProject', 'state', 'actionLinks.runSecurityScan', 'isWindows', function() {
+    return !get(this, 'systemProject')
       || get(this, 'state') !== 'active'
       || !get(this, 'actionLinks.runSecurityScan')
       || get(this, 'isWindows');
+  }),
+
+  isClusterScanDisabled: computed('runningClusterScans.length', 'isClusterScanDown', function() {
+    return (get(this, 'runningClusterScans.length') > 0)
+      || get(this, 'isClusterScanDown');
   }),
 
   unhealthyComponents: computed('componentStatuses.@each.conditions', function() {
