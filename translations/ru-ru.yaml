@@ -237,13 +237,13 @@ appDetailPage:
     nodata: У этого приложения нет секретов
 podSecurityPoliciesPage:
   index:
-    header: Политики безопасности Устручков
+    header: Политики безопасности подов
     description: Применить политики к элементам, созданным пользователем с этой ролью
     table:
       name: Имя
       created: Время создания
       noData: Не определены политики безопасности капсулы
-      noMatch: Политики безопасности стручка не соответствуют текущему поиску
+      noMatch: Политики безопасности пода не соответствуют текущему поиску
   addPodSecurityPolicy: Добавить политику
   editPodSecurityPolicy: Изменить политику
   detail:
@@ -419,7 +419,7 @@ authPage:
     enabled:
       authenticated:
         header:
-          text: Аунтификация
+          text: Аутентификация
       disableAccess:
         header: "Опасная Зона&trade;"
         warning: '<b class="text-danger">Внимание:</b> Отключение контроля доступа предоставит полный доступ к Системе {appName} любому, кто может зайти на эту страницу или достучаться до API. Мы предупреждали.'
@@ -852,7 +852,7 @@ dnsPage:
     cname: Имя хоста
     alias: Псевдоним
     workload: Нагрузка
-    selector: Выборщик
+    selector: Селектор
     clusterIp: Кластер IP
     unknown: Неизвестно
   table:
@@ -958,7 +958,7 @@ nodesPage:
     cpu: ЦП
     memory: ОЗУ
     disk: Диски
-    pod: Устручки
+    pod: Поды
     version: Версия
     docker: Docker
     instanceState: Состояние контейнеров
@@ -1017,8 +1017,8 @@ hostsPage:
     operatingSystem: Операционная система
     conditions:
       diskSpace: Дисковое пространство
-      diskPressure: Давление диска
-      memoryPressure: Давление в памяти
+      diskPressure: Нагрузка диска
+      memoryPressure: Нагрузка памяти
       ready: Kubelet
     limits:
       cpu: 'Лимит процессора:'
@@ -1166,7 +1166,7 @@ servicePage:
       }
     externalHostname: 'Внешнее доменное имя:'
   selector:
-    label: 'Выборщик:'
+    label: 'Селектор:'
   containersTab:
     title: 'Контейнеры'
     detail: 'Контейнеры, которые составляют эту услугу.'
@@ -1207,11 +1207,11 @@ servicePage:
     detail: 'Недавние события оркестровки, которые произошли для этой службы'
   type:
     service: Сервис
-    selectorservice: Выборщик
+    selectorservice: Селектор
     loadbalancerservice: Балансировщик нагрузки
     dnsservice: Алиас
     externalservice-ip: Внешний IP
-    externalservice-host: Внешнее Имя
+    externalservice-host: Внешнее Имя(Домен)
     kubernetesservice: K8s сервис
     composeservice: Составить сервис
     networkdriverservice: Сетевая служба
@@ -1377,9 +1377,9 @@ ldap:
       freeipa: Аутентифицироваться с FreeIPA
   header:
     disabled:
-      label: "Аунтификация через {providerName} не настроена"
+      label: "Аутентификация через {providerName} не настроена"
   accessEnabled:
-    header: Аунтификация
+    header: Аутентификация
     subtext: "Чтобы изменить настройки сервера - отключите контроль доступа чуть ниже и настройте всё по-новой."
     general:
       header: Общие
@@ -1451,7 +1451,7 @@ ldap:
     password:
       labelText: Ваш пароль
     authenticate:
-      pre: Аунтифицировать
+      pre: Аутентифицировать
       post: "Проверяем..."
 servicePartial:
   noContainers:
@@ -2643,7 +2643,7 @@ formSupplementalGroupsPodSecurityPolicy:
       placeholder: напр. 1
 formBasicPodSecurityPolicy:
   title: Основные правила
-  detail: Конфигурировать основные правила безопасности стручка
+  detail: Конфигурировать основные правила безопасности пода
   allowPrivilegeEscalation:
     label: Разрешить эскалацию привилегий
     disable: "Нет"
@@ -2948,7 +2948,7 @@ schedulingRuleRow:
   of: для
   hostLabel: Метка хоста
   containerLabel: контейнер с меткой
-  serviceName: услуга с именем
+  serviceName: сервис с именем
   containerName: контейнер с именем
 siteAccess:
   header: Доступ к сайту
@@ -2968,7 +2968,7 @@ systemInfoSection:
   dockerVersion: Версия Docker
   kernelVersion: Версия ядра
   kubeletVersion: Версия Kubelet
-  kubeProxyVersion: Kube-Прокси Версия
+  kubeProxyVersion: Версия Kube-Прокси
   operatingSystem: Изображение операционной системы
   osType: Операционная система
   noMatch: Никакая системная информация не соответствует текущему поиску
@@ -3011,10 +3011,10 @@ volumeRow:
     readOnly: "(только для чтения)"
 waitKubernetes:
   addHost: 'Добавьте хотя бы один хост'
-  activateHost: 'В ожидании активности хоста'
-  createStack: 'Создание для Kubernetes системных стеков'
+  activateHost: 'Выполняется активация хоста'
+  createStack: 'Создание системных стеков для Kubernetes'
   startServices: 'Запуск сервисов'
-  waitApi: 'Ожидание для Kubernetes API'
+  waitApi: 'Ожидание API Kubernetes'
 ##############################
 #Mixins
 ##############################
@@ -3044,7 +3044,7 @@ nav:
     containers: Нагрузки
     dns: Служба Обнаружения
     volumes: Тома
-    deploy: Развернут
+    deploy: Развернуть
     addContainer: Добавить контейнер
     addDns: Добавить запись
     addVolume: Добавить раздел
@@ -3075,7 +3075,7 @@ nav:
     security:
       tab: Безопасность
       roles: Роли
-      podSecurityPolicies: Политики безопасности Устручков
+      podSecurityPolicies: Политики безопасности Подов
       authentication: Аунтификация
     settings:
       tab: Настройки
