@@ -23,32 +23,6 @@
       <h3 class="mb-0">{{t "cis.scan.modal.testsWontRun"}}</h3>
       {{#accordion-list showExpandAll=false as |al expandFn|}}
         {{#accordion-list-item
-            title=(t "cis.scan.modal.notApplicableTests" count=testsNotRunning.notApplicableChecks.length)
-            expand=(action expandFn)
-            expandOnInit=false
-        }}
-          <table>
-            <thead>
-              <tr>
-                <td width="70">
-                  {{t "cis.scan.modal.tableHeaders.id"}}
-                </td>
-                <td>
-                  {{t "cis.scan.modal.tableHeaders.explanation"}}
-                </td>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each testsNotRunning.notApplicableChecks as |test|}}
-                <tr>
-                  <td>{{ test.id }}</td>
-                  <td class="text-small text-muted">{{ test.why }}</td>
-                </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        {{/accordion-list-item}}
-        {{#accordion-list-item
             title=(t "cis.scan.modal.skippedTests" count=testsNotRunning.skippedChecks.length)
             expand=(action expandFn)
             expandOnInit=false
@@ -74,8 +48,39 @@
             </tbody>
           </table>
         {{/accordion-list-item}}
+        {{#accordion-list-item
+            title=(t "cis.scan.modal.notApplicableTests" count=testsNotRunning.notApplicableChecks.length)
+            expand=(action expandFn)
+            expandOnInit=false
+        }}
+          <table>
+            <thead>
+              <tr>
+                <td width="70">
+                  {{t "cis.scan.modal.tableHeaders.id"}}
+                </td>
+                <td>
+                  {{t "cis.scan.modal.tableHeaders.explanation"}}
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each testsNotRunning.notApplicableChecks as |test|}}
+                <tr>
+                  <td>{{ test.id }}</td>
+                  <td class="text-small text-muted">{{ test.why }}</td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        {{/accordion-list-item}}
       {{/accordion-list}}
       <div class="text-small text-muted">{{{testDocsHtml}}}</div>
+
+      {{#if (not (eq testsNotRunning.userSkippedChecks.length 0))}}
+        <h3 class="mt-10 mb-0">{{t "cis.scan.modal.userSkippedTestsWontRun"}}</h3>
+        <div class="text-small mb-10">{{testsNotRunning.userSkippedChecks}}</div>
+      {{/if}}
     {{/if}}
   </div>
 
