@@ -1,19 +1,21 @@
 <section class="header clearfix">
-  <div class="pull-left"><h1>{{t "multiClusterAppsPage.header"}}</h1></div>
+  <div class="pull-left">
+    <h1>{{t "multiClusterAppsPage.header"}}</h1>
+  </div>
 
   <div class="right-buttons">
     {{#link-to
        "catalog"
        classNames="btn btn-sm bg-primary mr-10"
     }}
-      <i class="icon icon-gear icon-fw"/>{{t "nav.apps.manage"}}
+    <i class="icon icon-gear icon-fw" />{{t "nav.apps.manage"}}
     {{/link-to}}
 
     {{#link-to
        "multi-cluster-apps.catalog.index"
        classNames="btn btn-sm bg-primary mr-10"
     }}
-      {{t "nav.apps.launch"}}
+    {{t "nav.apps.launch"}}
     {{/link-to}}
   </div>
 </section>
@@ -24,22 +26,22 @@
   </div>
 
   {{#each filteredApps as |group|}}
-    <div class="row flex">
-      {{#each group as |app|}}
-        <div class="col span-6 mt-0">
-          {{multi-cluster-app
+  <div class="row flex">
+    {{#each group as |app|}}
+    <div class="col span-6 mt-0">
+      {{multi-cluster-app
             model=app
           }}
-        </div>
-      {{/each}}
     </div>
+    {{/each}}
+  </div>
   {{else}}
-    <div class="text-center text-muted">
-      {{#if searchText}}
-        {{t "multiClusterAppsPage.noMatch"}}
-      {{else}}
-        {{t "multiClusterAppsPage.noData"}}
-      {{/if}}
-    </div>
+  <div class="text-center text-muted">
+    {{#if searchText}}
+    {{t "multiClusterAppsPage.noMatch"}}
+    {{else}}
+    {{t "multiClusterAppsPage.noData"}}
+    {{/if}}
+  </div>
   {{/each}}
 </section>

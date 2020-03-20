@@ -48,40 +48,159 @@
   width: 100px;
   margin: 0 auto;
 
-  &.generic { @include generic; }
-  &.amazonec2 { @include amazonec2; }
-  &.azure { @include azure; }
-  &.digitalocean { @include digitalocean; }
-  &.exoscale { @include exoscale; }
-  &.openstack { @include openstack; }
-  &.packet { @include packet; }
-  &.rackspace { @include rackspace; }
-  &.vmwarevsphere { @include vmwarevsphere; }
-  &.other { @include other; }
-  &.custom { @include custom; }
-  &.custom-driver { @include custom-driver; }
-  &.import-driver { @include import-driver; }
-  &.import { @include import; }
-  &.aliyunecs { @include aliyunecs; }
-  &.amazoneks { @include amazoneks; }
-  &.azureaks { @include azureaks; }
-  &.googlegke { @include googlegke; }
-  &.tencenttke { @include tencenttke; }
-  &.aliyunkcs { @include aliyunkcs; }
-  &.huaweicce { @include huaweicce; }
-  &.otc { @include otc; }
-  &.route53 { @include route53; }
-  &.cloudflare { @include cloudflare; }
-  &.alidns { @include alidns; }
+  &.generic {
+    @include generic;
+  }
+  &.amazonec2 {
+    @include amazonec2;
+  }
+  &.azure {
+    @include azure;
+  }
+  &.digitalocean {
+    @include digitalocean;
+  }
+  &.exoscale {
+    @include exoscale;
+  }
+  &.openstack {
+    @include openstack;
+  }
+  &.packet {
+    @include packet;
+  }
+  &.rackspace {
+    @include rackspace;
+  }
+  &.vmwarevsphere {
+    @include vmwarevsphere;
+  }
+  &.other {
+    @include other;
+  }
+  &.custom {
+    @include custom;
+  }
+  &.custom-driver {
+    @include custom-driver;
+  }
+  &.import-driver {
+    @include import-driver;
+  }
+  &.import {
+    @include import;
+  }
+  &.aliyunecs {
+    @include aliyunecs;
+  }
+  &.amazoneks {
+    @include amazoneks;
+  }
+  &.azureaks {
+    @include azureaks;
+  }
+  &.googlegke {
+    @include googlegke;
+  }
+  &.tencenttke {
+    @include tencenttke;
+  }
+  &.aliyunkcs {
+    @include aliyunkcs;
+  }
+  &.huaweicce {
+    @include huaweicce;
+  }
+  &.otc {
+    @include otc;
+  }
+  &.route53 {
+    @include route53;
+  }
+  &.cloudflare {
+    @include cloudflare;
+  }
+  &.alidns {
+    @include alidns;
+  }
 }
 
 .cluster-launch {
+  border: 1px solid #d7d7d7;
+  margin-top: 50px;
+  padding: 10px;
+  h1 {
+    background-color: #f1f1f1;
+    margin: -10px;
+    border-bottom: 1px solid #d7d7d7;
+    padding: 12px;
+    color: black;
+  }
+  .breadcrumb {
+    padding: 0px;
+    list-style: none;
+    overflow: hidden;
+    margin-left: -10px;
+
+    li {
+      float: left;
+      padding: 20px 55px 20px;
+      background: #d7d7d7;
+      position: relative;
+      font-weight: 500;
+      font-size: 18px;
+      letter-spacing: 1px;
+      content: counter(li);
+      &.active {
+        background: #3497da;
+        color: black;
+        &:after {
+          border-left: 50px solid #3497da;
+        }
+      }
+      &:before {
+        content: " ";
+        display: block;
+        width: 0;
+        height: 0;
+        border-top: 50px solid transparent;
+        border-bottom: 50px solid transparent;
+        border-left: 50px solid white;
+        position: absolute;
+        top: 50%;
+        margin-top: -50px;
+        margin-left: 5px;
+        left: 100%;
+        z-index: 1;
+      }
+      &:after {
+        content: " ";
+        display: block;
+        width: 0;
+        height: 0;
+        border-top: 50px solid transparent; /* Go big on the size, and let overflow hide */
+        border-bottom: 50px solid transparent;
+        border-left: 50px solid hsla(0, 0%, 83%, 1);
+        position: absolute;
+        top: 50%;
+        margin-top: -50px;
+        left: 100%;
+        z-index: 2;
+      }
+      &:first-child {
+        padding-left: 15px;
+      }
+    }
+  }
   .cluster-driver-box {
     border: solid $light-grey 1px;
     padding: 15px 0px;
     max-height: 130px;
     text-decoration: none;
-
+    &.selected {
+      outline: 4px solid $link-color;
+      border-color: $link-color;
+    }
     &.small {
       max-height: 100px;
       min-width: 175px;
@@ -128,7 +247,7 @@
   border: 2px solid red !important;
 }
 
-.api-field LABEL {
+.api-field label {
   text-transform: initial;
   display: block;
 }
@@ -229,7 +348,7 @@
     }
 
     p {
-      margin-top: 0
+      margin-top: 0;
     }
 
     .driver-badge {
@@ -242,12 +361,12 @@
   }
 
   .driver-coming-soon {
-    opacity : 0.5;
+    opacity: 0.5;
     border: 0;
     background-color: transparent;
 
     &:after {
-      content: 'Coming Soon';
+      content: "Coming Soon";
       position: absolute;
       bottom: -10px;
       left: 0;
@@ -259,7 +378,7 @@
     content: $icon-check;
     top: -15px;
     right: -15px;
-    font-family: 'rancher-icons';
+    font-family: "rancher-icons";
     font-size: 18px;
     position: absolute;
     background-color: $info;
@@ -273,7 +392,6 @@
 
 .launch-cluster {
   .driver {
-
     &.nav-box-item {
       opacity: 1;
       filter: none;
@@ -307,34 +425,48 @@ ol {
   padding-left: 0;
 }
 ol > li {
-    position: relative;
-    margin: 0 0 25px 2em;
-    padding: 10px 20px 10px 40px;
-    list-style: none;
-    background: $accent-bg;
-    border: solid $accent-border 1px;
+  position: relative;
+  margin: 0 0 25px 2em;
+  padding: 10px 20px 10px 40px;
+  list-style: none;
+  background: $accent-bg;
+  border: solid $accent-border 1px;
 }
 ol > li::before {
-    content: counter(li);
-    counter-increment: li;
-    position: absolute;
-    // top: calc(50% - 20px);
-    left: -14.5px;
-    width: 25px;
-    height: 25px;
-    line-height: 26px;
-    margin-right: 8px;
-    border-radius: 50%;
-    text-align: center;
-    background: $info;
-    color: white;
-  }
-
-.box ol > li {
-    background: lighten($accent-bg, 2);
-    border: solid $accent-border 1px;
+  content: counter(li);
+  counter-increment: li;
+  position: absolute;
+  // top: calc(50% - 20px);
+  left: -14.5px;
+  width: 25px;
+  height: 25px;
+  line-height: 26px;
+  margin-right: 8px;
+  border-radius: 50%;
+  text-align: center;
+  background: $info;
+  color: white;
 }
 
+.box ol > li {
+  background: lighten($accent-bg, 2);
+  border: solid $accent-border 1px;
+}
+.btn-dark {
+  color: #fff;
+  background-color: #343a40;
+  border-color: #343a40;
+  border-radius: 5px;
+}
+.btn-light {
+  color: #6c757d;
+  background-color: #f8f9fa;
+  border-color: #f8f9fa;
+  border-radius: 5px;
+}
+.noHover {
+  pointer-events: none;
+}
 .host-blurb {
   margin-right: 10px;
 }

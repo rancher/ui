@@ -1,14 +1,10 @@
-<section class="header">
-  <h1>
-    {{#if (eq router.currentRoute.localName "select")}}
-      {{t "clustersPage.select.provider.label"}}
-    {{else if (eq router.currentRoute.localName "cluster-template")}}
-      {{t "clustersPage.select.template.label"}}
-    {{else}}
-      {{t "clustersPage.launch.new"}} - {{driver-name provider}}
-    {{/if}}
-  </h1>
-</section>
 <section class="cluster-launch">
+  <h1>{{t "clustersPage.newCluster"}}</h1>
+  <ul class="breadcrumb">
+    <li class="{{if (eq router.currentRoute.localName "select") "active"}}">1.&nbsp; {{t "clustersPage.step1"}}</li>
+    <li class="{{if (eq router.currentRoute.localName "launch") "active"}}">2.&nbsp;
+      {{t "clustersPage.step2"}}</li>
+    <li>3.&nbsp; {{t "clustersPage.step3"}}</li>
+  </ul>
   {{outlet}}
 </section>

@@ -4,22 +4,29 @@
   </a>
 
   <ul class="nav-main nav-list no-inline-space">
-    {{page-header-project
-      pageScope=pageScope
-    }}
+
+    <li class="nav-item">
+      {{#link-to
+        "global-admin.clusters.new"
+          class="nav-link"
+          disabled=(rbac-prevents resource="cluster" scope="global" permission="create")
+        }}
+      {{t "clustersPage.newCluster"}}
+      {{/link-to}}
+    </li>
 
     {{#each navTree as |item|}}
-      {{#if item.submenu.length}}
-        {{! Has a submenu }}
-        {{#hover-dropdown
+    {{#if item.submenu.length}}
+    {{! Has a submenu }}
+    {{#hover-dropdown
            tagName="li"
            class="nav-item"
            as |dd|
         }}
-          {{#dd.trigger}}
-            {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
-              {{#if item.route}}
-                {{#link-to-as-attrs
+    {{#dd.trigger}}
+    {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
+    {{#if item.route}}
+    {{#link-to-as-attrs
                    ourRoute=item.route
                    ctx=item.ctx
                    qp=item.qp
@@ -29,58 +36,58 @@
                    aria-haspopup="true"
                    aria-expanded="false"
                 }}
-                  {{t item.localizedLabel default=item.label}}
-                  <span class="icon icon-chevron-down"/>
-                {{/link-to-as-attrs}}
-              {{else}}
-                <a class="nav-link" role="button" aria-haspopup="true" aria-label={{t item.localizedLabel default=item.label}}>
-                  {{t item.localizedLabel default=item.label}}
-                  <span class="icon icon-chevron-down"/>
-                </a>
-              {{/if}}
-            {{/if}}
-          {{/dd.trigger}}
+    {{t item.localizedLabel default=item.label}}
+    <span class="icon icon-chevron-down" />
+    {{/link-to-as-attrs}}
+    {{else}}
+    <a class="nav-link" role="button" aria-haspopup="true" aria-label={{t item.localizedLabel default=item.label}}>
+      {{t item.localizedLabel default=item.label}}
+      <span class="icon icon-chevron-down" />
+    </a>
+    {{/if}}
+    {{/if}}
+    {{/dd.trigger}}
 
-          {{#dd.content}}
-            {{#each item.submenu as |subitem|}}
-              {{#if subitem.route}}
-                {{#if (or (not subitem.resource) (rbac-allows resource=subitem.resource scope=subitem.resourceScope))}}
-                  <li>
-                    {{#link-to-as-attrs
+    {{#dd.content}}
+    {{#each item.submenu as |subitem|}}
+    {{#if subitem.route}}
+    {{#if (or (not subitem.resource) (rbac-allows resource=subitem.resource scope=subitem.resourceScope))}}
+    <li>
+      {{#link-to-as-attrs
                        ourRoute=subitem.route
                        ctx=subitem.ctx
                        qp=subitem.qp
                        activeParent="LI"
                        currentWhen=subitem.currentWhen
                     }}
-                      <span>
-                        {{t subitem.localizedLabel default=subitem.label}}
-                      </span>
-                      <i class="{{subitem.icon}}"/>
-                    {{/link-to-as-attrs}}
-                  </li>
-                {{/if}}
-              {{else if subitem.divider}}
-                <li class="divider"></li>
-              {{else}}
-                {{! Just a label }}
-                <li class="dropdown-header">
-                  <span>
-                    {{t subitem.localizedLabel default=subitem.label}}
-                  </span>
-                  <i class="{{subitem.icon}}"/>
-                </li>
-              {{/if}}
-            {{/each}}
-          {{/dd.content}}
-        {{/hover-dropdown}}
+      <span>
+        {{t subitem.localizedLabel default=subitem.label}}
+      </span>
+      <i class="{{subitem.icon}}" />
+      {{/link-to-as-attrs}}
+    </li>
+    {{/if}}
+    {{else if subitem.divider}}
+    <li class="divider"></li>
+    {{else}}
+    {{! Just a label }}
+    <li class="dropdown-header">
+      <span>
+        {{t subitem.localizedLabel default=subitem.label}}
+      </span>
+      <i class="{{subitem.icon}}" />
+    </li>
+    {{/if}}
+    {{/each}}
+    {{/dd.content}}
+    {{/hover-dropdown}}
 
-      {{else if item.route}}
+    {{else if item.route}}
 
-        {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
-          {{! No submenu }}
-          <li class="nav-item {{if (and item.disableIfClusterNotReady (not cluster.isReady)) "pointer-events-none"}}">
-            {{#link-to-as-attrs
+    {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
+    {{! No submenu }}
+    <li class="nav-item {{if (and item.disableIfClusterNotReady (not cluster.isReady)) "pointer-events-none"}}">
+      {{#link-to-as-attrs
                ourRoute=item.route
                ctx=item.ctx
                qp=item.qp
@@ -88,26 +95,26 @@
                currentWhen=item.currentWhen
                class="nav-link"
             }}
-              {{t item.localizedLabel default=item.label}}
-            {{/link-to-as-attrs}}
-          </li>
-        {{/if}}
+      {{t item.localizedLabel default=item.label}}
+      {{/link-to-as-attrs}}
+    </li>
+    {{/if}}
 
-      {{else}}
+    {{else}}
 
-        {{! Just a label }}
-        <li class="dropdown-header">
-          {{t item.localizedLabel default=item.label}}
-        </li>
+    {{! Just a label }}
+    <li class="dropdown-header">
+      {{t item.localizedLabel default=item.label}}
+    </li>
 
-      {{/if}}
+    {{/if}}
     {{/each}}
   </ul>
 
   {{#if dashboardLink}}
-    <div class="try-dashboard bg-secondary">
-      <a href="{{dashboardLink}}" {{action "clickDashboard"}} class="btn bg-warning">{{t "nav.dashboard.try"}}</a>
-    </div>
+  <div class="try-dashboard bg-secondary">
+    <a href="{{dashboardLink}}" {{action "clickDashboard"}} class="btn bg-warning">{{t "nav.dashboard.try"}}</a>
+  </div>
   {{/if}}
 
   {{#hover-dropdown
@@ -117,66 +124,66 @@
      delay=250
      as |dd|
   }}
-    <li class="nav-item">
-      {{#dd.trigger
+  <li class="nav-item">
+    {{#dd.trigger
          class="btn"
          ariaLabel=(t "nav.user.label" username=session.user)
       }}
-        <a role="button" aria-haspopup="true" class="nav-link">
-          {{#if accessEnabled}}
-            {{identity-avatar
+    <a role="button" aria-haspopup="true" class="nav-link">
+      {{#if accessEnabled}}
+      {{identity-avatar
               link=false
               identity=access.principal
             }}
-          {{else}}
-            <div class="gh-avatar">
-              <div class="gh-placeholder">
-                <i class="icon icon-user"></i>
-              </div>
-            </div>
-          {{/if}}
-          <span class="sr-only">
-            {{t "nav.srToggleDropdown"}}
-          </span>
-          <i class="icon icon-chevron-down text-muted"></i>
-        </a>
-      {{/dd.trigger}}
-    </li>
-
-    {{#dd.content class="text-right"}}
-      {{#if accessEnabled}}
-        <li role="presentation" class="user-auth">
-          {{identity-block principal=access.principal}}
-        </li>
+      {{else}}
+      <div class="gh-avatar">
+        <div class="gh-placeholder">
+          <i class="icon icon-user"></i>
+        </div>
+      </div>
       {{/if}}
+      <span class="sr-only">
+        {{t "nav.srToggleDropdown"}}
+      </span>
+      <i class="icon icon-chevron-down text-muted"></i>
+    </a>
+    {{/dd.trigger}}
+  </li>
 
-      <li role="separator" class="divider"></li>
-      <li>
-        {{#link-to "authenticated.apikeys"}}
-          <span>{{t "nav.api.link"}}</span>
-        {{/link-to}}
-      </li>
-      <li>
-        {{#link-to "global-admin.security.cloud-credentials"}}
-          <span>{{t "nav.admin.security.cloudCredentials"}}</span>
-        {{/link-to}}
-      </li>
-      <li>
-        {{#link-to "nodes.node-templates"}}
-          <span>{{t "nav.nodeTemplates.link"}}</span>
-        {{/link-to}}
-      </li>
-      <li>
-        {{#link-to "authenticated.prefs"}}
-          <span>{{t "nav.userPreferences.link"}}</span>
-        {{/link-to}}
-      </li>
-      <li role="separator" class="divider"></li>
-      <li>
-        {{#link-to "logout" class="user-logout"}}
-          <span>{{t "nav.user.logout"}}</span>
-        {{/link-to}}
-      </li>
-    {{/dd.content}}
+  {{#dd.content class="text-right"}}
+  {{#if accessEnabled}}
+  <li role="presentation" class="user-auth">
+    {{identity-block principal=access.principal}}
+  </li>
+  {{/if}}
+
+  <li role="separator" class="divider"></li>
+  <li>
+    {{#link-to "authenticated.apikeys"}}
+    <span>{{t "nav.api.link"}}</span>
+    {{/link-to}}
+  </li>
+  <li>
+    {{#link-to "global-admin.security.cloud-credentials"}}
+    <span>{{t "nav.admin.security.cloudCredentials"}}</span>
+    {{/link-to}}
+  </li>
+  <li>
+    {{#link-to "nodes.node-templates"}}
+    <span>{{t "nav.nodeTemplates.link"}}</span>
+    {{/link-to}}
+  </li>
+  <li>
+    {{#link-to "authenticated.prefs"}}
+    <span>{{t "nav.userPreferences.link"}}</span>
+    {{/link-to}}
+  </li>
+  <li role="separator" class="divider"></li>
+  <li>
+    {{#link-to "logout" class="user-logout"}}
+    <span>{{t "nav.user.logout"}}</span>
+    {{/link-to}}
+  </li>
+  {{/dd.content}}
   {{/hover-dropdown}}
 </nav>
