@@ -1078,61 +1078,91 @@
             <div class="col">
               <label class="acc-label">
                 {{t "clusterNew.rke.upgradeStrategy.maximumWorkersDown.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="rancherKubernetesEngineConfig.upgradeStrategy.maxUnavailableWorker"
+                    @configVariable={{upgradeStrategy.maxUnavailableWorker}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
               </label>
-              {{#input-or-display
-                  editable=notView
-                  value=maxUnavailableWorker
-              }}
-                <div class="input-group">
-                  {{input-integer
-                    value=upgradeStrategy.maxUnavailableWorker
-                    classNames="form-control"
-                    placeholder=(t "clusterNew.rke.upgradeStrategy.maximumWorkersDown.placeholder")
-                  }}
-                  <span class="input-group-input-addon bg-default">
-                    {{new-select
+              <CheckOverrideAllowed
+                @paramName="upgradeStrategy.maxUnavailableWorker"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                {{#input-or-display
+                    editable=notView
+                    value=maxUnavailable
+                }}
+                  <div class="input-group">
+                    {{input-integer
+                      value=upgradeStrategy.maxUnavailableWorker
                       classNames="form-control"
-                      optionValuePath="id"
-                      optionLabelPath="name"
-                      content=maxUnavailableNodesOptions
-                      value=upgradeStrategy.maxUnavailableUnit
-                      localizedPrompt=true
+                      placeholder=(t "clusterNew.rke.upgradeStrategy.maximumWorkersDown.placeholder")
                     }}
-                  </span>
-                </div>
-              {{/input-or-display}}
+                    <span class="input-group-input-addon bg-default">
+                      {{new-select
+                        classNames="form-control"
+                        optionValuePath="id"
+                        optionLabelPath="name"
+                        content=maxUnavailableNodesOptions
+                        value=upgradeStrategy.maxUnavailableUnit
+                        localizedPrompt=true
+                      }}
+                    </span>
+                  </div>
+                {{/input-or-display}}
+              </CheckOverrideAllowed>
             </div>
             
           </div>
           <div class="row">
             <label class="acc-label">
               {{t "clusterNew.rke.upgradeStrategy.drainNodes.label"}}
+              {{#if clusterTemplateCreate}}
+                <ClusterTemplateOverrideToggle
+                  @path="rancherKubernetesEngineConfig.upgradeStrategy.drain"
+                  @configVariable={{upgradeStrategy.drain}}
+                  @addOverride={{action "addOverride"}}
+                  @questions={{model.clusterTemplateRevision.questions}}
+                />
+              {{/if}}
             </label>
-            {{#input-or-display
-                editable=notView
-                value=upgradeStrategy.drain
-            }}
-              <div class="text-muted">
-                <label>
-                  {{radio-button
-                    selection=upgradeStrategy.drain
-                    value=true
-                  }}
-                  {{t "generic.yes"}}
-                </label>
-                <label>
-                  {{radio-button
-                    selection=upgradeStrategy.drain
-                    value=false
-                  }}
-                  {{t "generic.no"}}
-                </label>
-              </div>
-            {{/input-or-display}}
+            <CheckOverrideAllowed
+              @paramName="upgradeStrategy.drain"
+              @applyClusterTemplate={{applyClusterTemplate}}
+              @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+              @questions={{model.clusterTemplateRevision.questions}}
+            >
+              {{#input-or-display
+                  editable=notView
+                  value=upgradeStrategy.drain
+              }}
+                <div class="text-muted">
+                  <label>
+                    {{radio-button
+                      selection=upgradeStrategy.drain
+                      value=true
+                    }}
+                    {{t "generic.yes"}}
+                  </label>
+                  <label>
+                    {{radio-button
+                      selection=upgradeStrategy.drain
+                      value=false
+                    }}
+                    {{t "generic.no"}}
+                  </label>
+                </div>
+              {{/input-or-display}}
+            </CheckOverrideAllowed>
           </div>
           {{#if upgradeStrategy.drain}}
             <div class="row">
-              {{drain-node selection=upgradeStrategy.nodeDrainInput editable=notView}}
+              {{drain-node selection=upgradeStrategy.nodeDrainInput clusterTemplateCreate=clusterTemplateCreate editable=notView applyClusterTemplate=applyClusterTemplate clusterTemplateRevision=model.clusterTemplateRevision.clusterConfig questions=model.clusterTemplateRevision.questions addOverride=(action "addOverride")}}
             </div>
           {{/if}}
         {{/accordion-list-item}}
