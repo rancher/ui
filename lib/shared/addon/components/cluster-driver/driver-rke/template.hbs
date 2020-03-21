@@ -931,7 +931,7 @@
                 {{t "clusterNew.rke.cisScan.scheduled.enabled.label"}}
                 {{#if clusterTemplateCreate}}
                   <ClusterTemplateOverrideToggle
-                    @path="rancherKubernetesEngineConfig.services.cisScan.scheduled.enabled"
+                    @path="scheduledClusterScan.enabled"
                     @configVariable={{config.services.etcd.backupConfig.enabled}}
                     @addOverride={{action "addOverride"}}
                     @questions={{model.clusterTemplateRevision.questions}}
@@ -952,7 +952,7 @@
                     <label class="text-muted">
                       {{radio-button
                         selection=scheduledClusterScan.enabled
-                        value=true
+                        value="true"
                         disabled=isScheduledClusterScanDisabled
                       }}
                       {{t "generic.yes"}}
@@ -960,7 +960,7 @@
                     <label class="text-muted">
                       {{radio-button
                         selection=scheduledClusterScan.enabled
-                        value=false
+                        value="false"
                         disabled=isScheduledClusterScanDisabled
                       }}
                       {{t "generic.no"}}
@@ -987,18 +987,19 @@
                 @applyClusterTemplate={{applyClusterTemplate}}
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
+                @value={{cisProfileDisplay}}
               >
                 {{#input-or-display
                    tagName="div"
                    editable=notView
-                   value=cisProfile
+                   value=cisProfileDisplay
                 }}
                   {{new-select
                     id="cis-scan-profile"
                     classNames="form-control"
                     content=cisHelpers.cisScanProfileOptions
                     value=cisProfile
-                    disabled=(not scheduledClusterScan.enabled)
+                    disabled=(not (eq scheduledClusterScan.enabled "true"))
                   }}
                 {{/input-or-display}}
               </CheckOverrideAllowed>
@@ -1021,6 +1022,7 @@
                 @applyClusterTemplate={{applyClusterTemplate}}
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
+                @value={{scheduledClusterScan.scheduleConfig.cronSchedule}}
               >
                 {{#if notView}}
                   {{input
@@ -1028,7 +1030,7 @@
                     value=scheduledClusterScan.scheduleConfig.cronSchedule
                     classNames="form-control"
                     placeholder=(t "clusterNew.rke.cisScan.scheduled.interval.placeholder")
-                    disabled=(if (not scheduledClusterScan.enabled) true)
+                    disabled=(not (eq scheduledClusterScan.enabled "true"))
                   }}
                 {{else}}
                   <div>{{scheduledClusterScan.scheduleConfig.cronSchedule}}</div>
@@ -1043,7 +1045,7 @@
                 {{t "clusterNew.rke.cisScan.scheduled.retention.label"}}
                 {{#if clusterTemplateCreate}}
                   <ClusterTemplateOverrideToggle
-                    @path="rancherKubernetesEngineConfig.services.cisScan.scheduled.retention"
+                    @path="scheduledClusterScan.scheduleConfig.retention"
                     @configVariable={{scheduledClusterScan.scheduleConfig.retention}}
                     @addOverride={{action "addOverride"}}
                     @questions={{model.clusterTemplateRevision.questions}}
@@ -1055,11 +1057,12 @@
                 @applyClusterTemplate={{applyClusterTemplate}}
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
+                @value={{scheduledClusterScan.scheduleConfig.retention}}
               >
                 {{#input-or-display
                    tagName="div"
-                   classNames="input-group"
                    editable=notView
+                   classNames="input-group"
                    value=scheduledClusterScan.scheduleConfig.retention
                 }}
                   <span class="input-group-addon bg-default">{{t "clusterNew.rke.etcd.backupConfig.retention.prefix"}}</span>
@@ -1067,7 +1070,7 @@
                     value=scheduledClusterScan.scheduleConfig.retention
                     classNames="form-control"
                     placeholder=(t "clusterNew.rke.etcd.backupConfig.retention.placeholder")
-                    disabled=(if (not scheduledClusterScan.enabled) true)
+                    disabled=(not (eq scheduledClusterScan.enabled "true"))
                   }}
                 {{/input-or-display}}
               </CheckOverrideAllowed>
@@ -1080,7 +1083,7 @@
                 {{t "clusterNew.rke.upgradeStrategy.maximumWorkersDown.label"}}
                 {{#if clusterTemplateCreate}}
                   <ClusterTemplateOverrideToggle
-                    @path="rancherKubernetesEngineConfig.upgradeStrategy.maxUnavailableWorker"
+                    @path="upgradeStrategy.maxUnavailableWorker"
                     @configVariable={{upgradeStrategy.maxUnavailableWorker}}
                     @addOverride={{action "addOverride"}}
                     @questions={{model.clusterTemplateRevision.questions}}
@@ -1092,6 +1095,7 @@
                 @applyClusterTemplate={{applyClusterTemplate}}
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
+                @value={{maxUnavailable}}
               >
                 {{#input-or-display
                     editable=notView
@@ -1132,10 +1136,11 @@
               {{/if}}
             </label>
             <CheckOverrideAllowed
-              @paramName="upgradeStrategy.drain"
+              @paramName="rancherKubernetesEngineConfig.upgradeStrategy.drain"
               @applyClusterTemplate={{applyClusterTemplate}}
               @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
               @questions={{model.clusterTemplateRevision.questions}}
+              @value={{upgradeStrategy.drain}}
             >
               {{#input-or-display
                   editable=notView
@@ -1145,14 +1150,15 @@
                   <label>
                     {{radio-button
                       selection=upgradeStrategy.drain
-                      value=true
+                      value="true"
                     }}
                     {{t "generic.yes"}}
+                    
                   </label>
                   <label>
                     {{radio-button
                       selection=upgradeStrategy.drain
-                      value=false
+                      value="false"
                     }}
                     {{t "generic.no"}}
                   </label>
@@ -1160,7 +1166,7 @@
               {{/input-or-display}}
             </CheckOverrideAllowed>
           </div>
-          {{#if upgradeStrategy.drain}}
+          {{#if (eq upgradeStrategy.drain "true")}}
             <div class="row">
               {{drain-node selection=upgradeStrategy.nodeDrainInput clusterTemplateCreate=clusterTemplateCreate editable=notView applyClusterTemplate=applyClusterTemplate clusterTemplateRevision=model.clusterTemplateRevision.clusterConfig questions=model.clusterTemplateRevision.questions addOverride=(action "addOverride")}}
             </div>

@@ -12,10 +12,11 @@
       {{/if}}
     </label>
     <CheckOverrideAllowed
-      @paramName="upgradeStrategy.drain"
+      @paramName="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.deleteLocalData"
       @applyClusterTemplate={{applyClusterTemplate}}
       @clusterTemplateRevision={{clusterTemplateRevision}}
       @questions={{questions}}
+      @value={{mode}}
     >
       {{#input-or-display
           editable=editable
@@ -25,7 +26,7 @@
           <label class="radio mt-0">
             {{radio-button
               selection=selection.deleteLocalData
-              value=false
+              value="false"
               disabled=view
             }}
             {{t "drainNode.safe.label"}}
@@ -38,7 +39,7 @@
           <label class="radio text-error">
             {{radio-button
               selection=selection.deleteLocalData
-              value=true
+              value="true"
               disabled=view
             }}
             {{t "drainNode.aggressive.label"}}
@@ -56,7 +57,7 @@
       {{t "drainNode.gracePeriod.title"}}
       {{#if clusterTemplateCreate}}
         <ClusterTemplateOverrideToggle
-          @path="rancherKubernetesEngineConfig.upgradeStrategy.drain"
+          @path="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.usePodGracePeriod"
           @configVariable={{selection.maxUnavailableWorker}}
           @addOverride={{addOverride}}
           @questions={{questions}}
@@ -64,10 +65,11 @@
       {{/if}}
     </label>
     <CheckOverrideAllowed
-      @paramName="selection.usePodGracePeriod"
+      @paramName="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.usePodGracePeriod"
       @applyClusterTemplate={{applyClusterTemplate}}
       @clusterTemplateRevision={{clusterTemplateRevision}}
       @questions={{questions}}
+      @value={{gracePeriodForPods}}
     >
       {{#input-or-display
           editable=editable
@@ -76,7 +78,7 @@
         <div>
           <label class="radio mt-0">
             {{radio-button
-              selection=selection.usePodGracePeriod
+              selection=usePodGracePeriod
               value=true
               disabled=view
             }}
@@ -86,7 +88,7 @@
         <div>
           <label class="radio">
             {{radio-button
-              selection=selection.usePodGracePeriod
+              selection=usePodGracePeriod
               value=false
               disabled=view
             }}
@@ -95,8 +97,8 @@
         </div>
         <div class="input-group">
           {{input-integer
-            value=selection.gracePeriod
-            disabled=(or selection.usePodGracePeriod view)
+            value=proxyGracePeriod
+            disabled=(or usePodGracePeriod view)
             min=1
             classNames="form-control"
             placeholder=(t "drainNode.gracePeriod.placeholder")
@@ -120,10 +122,11 @@
       {{/if}}
     </label>
     <CheckOverrideAllowed
-      @paramName="selection.unlimitedTimeout"
+      @paramName="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.unlimitedTimeout"
       @applyClusterTemplate={{applyClusterTemplate}}
       @clusterTemplateRevision={{clusterTemplateRevision}}
       @questions={{questions}}
+      @value={{timeout}}
     >
       {{#input-or-display
           editable=editable
@@ -132,7 +135,7 @@
         <div>
           <label class="radio mt-0">
             {{radio-button
-              selection=selection.unlimitedTimeout
+              selection=unlimitedTimeout
               value=true
               disabled=view
             }}
@@ -142,7 +145,7 @@
         <div>
           <label class="radio">
             {{radio-button
-              selection=selection.unlimitedTimeout
+              selection=unlimitedTimeout
               value=false
               disabled=view
             }}
@@ -153,8 +156,8 @@
           {{input-integer
             min=1
             max=10800
-            disabled=(or selection.unlimitedTimeout view)
-            value=selection.timeout
+            disabled=(or unlimitedTimeout view)
+            value=proxyTimeout
             classNames="form-control"
             placeholder=(t "drainNode.timeout.placeholder")
           }}
