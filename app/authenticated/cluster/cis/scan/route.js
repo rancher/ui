@@ -19,7 +19,8 @@ export default Route.extend({
 
         return await Promise.all(reportPromises);
       })(),
-      configMaps: this.securityScanConfig.loadAsyncConfigMap(get(this, 'scope.currentCluster'))
+      configMaps:               this.securityScanConfig.loadAsyncConfigMap(get(this, 'scope.currentCluster')),
+      clusterTemplateRevisions: get(this, 'globalStore').findAll('clustertemplaterevision')
     });
   },
 });

@@ -12,6 +12,7 @@ import { isEmpty } from '@ember/utils';
 import moment from 'moment';
 const TRUE = 'True';
 const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
+const SCHEDULE_CLUSTER_SCAN_QUESTION_KEY = 'scheduledClusterScan.enabled';
 
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
@@ -334,6 +335,23 @@ export default Resource.extend(Grafana, ResourceUsage, {
       || get(this, 'state') !== 'active'
       || !get(this, 'actionLinks.runSecurityScan')
       || get(this, 'isWindows');
+  }),
+
+  isAddClusterScanScheduleDisabled: computed('isClusterScanDown', 'scheduledClusterScan.enabled', 'clusterTemplateRevision', 'clusterTemplateRevision.questions.@each', function() {
+    if (get(this, 'clusterTemplateRevision') === null) {
+      return get(this, 'isClusterScanDown');
+    }
+
+    if (get(this, 'isClusterScanDown')) {
+      return true;
+    }
+
+    if (get(this, 'scheduledClusterScan.enabled')) {
+      return false;
+    }
+
+    return !get(this, 'clusterTemplateRevision.questions')
+      || get(this, 'clusterTemplateRevision.questions').every((question) => question.variable !== SCHEDULE_CLUSTER_SCAN_QUESTION_KEY)
   }),
 
   isClusterScanDisabled: computed('runningClusterScans.length', 'isClusterScanDown', function() {
