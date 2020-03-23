@@ -5,7 +5,7 @@
       )}}
   {{else}}
     <div>
-      {{#if value}}
+      {{#if (or value (eq value false))}}
         {{value}}
       {{else}}
         {{get clusterTemplateRevision paramName}}
@@ -13,7 +13,7 @@
     </div>
   {{/if}}
 {{else}}
-  {{#if (and (eq mode "view") (get clusterTemplateRevision paramName)) }}
+  {{#if (and (eq mode "view") (or (get clusterTemplateRevision paramName) (eq (get clusterTemplateRevision paramName) false))) }}
     {{get clusterTemplateRevision paramName}}
   {{else}}
     {{yield}}
