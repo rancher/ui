@@ -5,7 +5,6 @@ import { hash } from 'rsvp';
 
 export default Route.extend({
   globalStore:        service(),
-  securityScanConfig: service(),
   scope:              service(),
 
   model() {
@@ -19,7 +18,6 @@ export default Route.extend({
 
         return await Promise.all(reportPromises);
       })(),
-      configMaps:               this.securityScanConfig.loadAsyncConfigMap(get(this, 'scope.currentCluster')),
       clusterTemplateRevisions: get(this, 'globalStore').findAll('clustertemplaterevision')
     });
   },
