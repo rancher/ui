@@ -999,7 +999,7 @@
                     classNames="form-control"
                     content=cisHelpers.cisScanProfileOptions
                     value=cisProfile
-                    disabled=(not (eq scheduledClusterScan.enabled "true"))
+                    disabled=(not scheduledClusterScan.enabled)
                   }}
                 {{/input-or-display}}
               </CheckOverrideAllowed>
@@ -1030,7 +1030,7 @@
                     value=scheduledClusterScan.scheduleConfig.cronSchedule
                     classNames="form-control"
                     placeholder=(t "clusterNew.rke.cisScan.scheduled.interval.placeholder")
-                    disabled=(not (eq scheduledClusterScan.enabled "true"))
+                    disabled=(not scheduledClusterScan.enabled)
                   }}
                 {{else}}
                   <div>{{scheduledClusterScan.scheduleConfig.cronSchedule}}</div>
@@ -1070,8 +1070,9 @@
                     value=scheduledClusterScan.scheduleConfig.retention
                     classNames="form-control"
                     placeholder=(t "clusterNew.rke.etcd.backupConfig.retention.placeholder")
-                    disabled=(not (eq scheduledClusterScan.enabled "true"))
+                    disabled=(not scheduledClusterScan.enabled)
                   }}
+                  {{log true scheduledClusterScan.enabled}}
                 {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
