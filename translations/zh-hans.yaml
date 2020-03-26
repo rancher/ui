@@ -157,7 +157,7 @@ generic:
   gitlab: GitLab
   bitbucket: Bitbucket
   required: '{key}为必填项。'
-  run: Run
+  run: 运行
 
 realmNames:
   all: 全部
@@ -2451,9 +2451,9 @@ k8sPage:
     generating: 生成中...
     usage:
       helpText: |
-        将设置保存到<code>~/.kube/config</code>
+        将配置保存到<code>~/.kube/config</code>
       downloadText: |
-        然后<a href="https://www.cnrancher.com/docs/rancher/v2.x/cn/install-prepare/download/kubernetes/" target="_blank"><code>下载kubectl</code></a>(如有需要)并运行。
+        然后下载<a href="https://www.cnrancher.com/docs/rancher/v2.x/cn/install-prepare/download/kubernetes/" target="_blank"><code>kubectl</code></a>(如有需要)安装并运行。
 
 loginPage:
   greeting: "您好！<br>欢迎使用{appName}"
@@ -3979,7 +3979,7 @@ clusterNew:
           percentage: 百分比
           count: 台数
       drainNodes:
-        label: 节点驱逐（当节点不可用时是否执行自动驱逐Pod）
+        label: 节点驱逐（升级节点之前，是否先驱散节点Pod）
     clustersSelectTemplate:
       label: "使用现有的集群模板和修订"
       select:
@@ -3996,7 +3996,7 @@ clusterNew:
           label: 启用CIS扫描
         interval:
           label: CIS 定时扫描间隔
-          placeholder: e.g. 0 0 * * *
+          placeholder: '例如: 0 0 * * *'
         retention:
           label: CIS扫描报告保留副本数
         profile:
@@ -4149,7 +4149,7 @@ clusterNew:
       label: 项目网络隔离
     networkMTU:
       label: 容器网卡 MTU
-      help: "自定义容器网卡MTU值。默认网络传输的MTU为1500，对于有些网络驱动(比如canal)，由于使用vxlan后端，会有50bit用于传输vxlan的tag，所以在主机上创建的网桥flannel.1的MTU值是1450，非标准的1500。默认情况容器的网卡MTU值是1500，为了对应flannel.1的MTU值，可通过这个参数来自定义容器的MTU值。"
+      help: "自定义容器网卡MTU值。默认网络传输的MTU为1500，对于有些网络驱动(比如canal)，由于使用vxlan后端，会有50bit用于传输vxlan的tag，所以在主机上创建的网桥flannel.1的MTU值是1450。而默认创建的容器网卡MTU值是1500，为了对应网桥flannel.1的MTU值，可通过这个参数来自定义容器网卡的MTU值。"
       detail: '例如: 1500'
     version:
       label: Kubernetes版本
@@ -6907,7 +6907,7 @@ formVolumeRow:
 
 formVolumes:
   title: 数据卷
-  detail: 持久化及共享数据并与独立容器的生命周期分离。
+  detail: 持久化和共享独立于单个容器生命周期的数据
   value:
     prompt: 选择容器...
   volumes: 卷
@@ -7700,16 +7700,16 @@ modalEditPassword:
     actionButton: 继续
   edit:
     title: 修改密码
-    help: 请输入新密码。
-  current: 当前密码
+    help: 请输入新密码
+  current: 旧密码
   new: 新密码
   confirm: 确认密码
   mismatch: 密码不匹配
-  actionButton: 修改
+  actionButton: 确认修改
   mode:
-    generate: '使用新的随机生成的密码: '
-    manual: '设置特定的密码来使用: '
-  deleteTokens: 删除所有现有的API键
+    generate: '随机生成新密码: '
+    manual: '自定义新密码: '
+  deleteTokens: 删除所有现有的API KEY
 
 modalFeedback:
   header: "欢迎使用{appName}!"
@@ -7726,9 +7726,9 @@ modalImport:
   title: 导入YAML
   mode:
     label: 导入模式
-    cluster: "集群: 直接将资源导入到此集群中"
+    cluster: "集群: 将资源导入到此集群中"
     project: "项目: 将资源导入此项目"
-    namespace: "命名空间: 将资源导入特定的命名空间"
+    namespace: "命名空间: 将资源导入指定的命名空间"
   detail:
     cluster1: 如果资源指定了命名空间，那么会自动创建命名空间，但是不会自动加入到项目中。
     cluster2: 如果资源没有指定命名空间，它将被导入到default命名空间中。
@@ -7755,17 +7755,17 @@ drainNode:
   mode: 模式
   safe:
     label: 安全
-    helpText: 如果节点具有独立的Pod或临时的数据，它将被隔离但不会被驱散。
+    helpText: 如果节点拥有独立的Pod或临时的数据，它将被隔离但不会被驱散。
   aggressive:
-    label: Aggressive
-    helpText: <b>永久删除</b>':' <ul class="m-0"><li>独立Pods和它们的数据</li><li>Pods和"Empty Dir"卷以及它们的数据。</li></ul>
+    label: 强制
+    helpText: "<b>永久删除</b> <ul class=m-0><li>独立Pods和它们的数据</li><li>配置了Empty Dir卷的Pods和它们的数据</li></ul>"
   gracePeriod:
     title: 'Pod终止延时时间: '
-    default: 使用默认设置时间
+    default: 使用每个Pod中设置的默认延时时间
     placeholder: '例如: 30'
-    custom: "忽略默认值自定义延时时间: "
+    custom: "自定义延时时间: "
     view:
-      custom: "忽略默认值并给每个pod {seconds}秒"
+      custom: "忽略默认值并给每个pod设置{seconds}秒"
   timeout:
     title: "驱散超时时间: "
     default: 一直不断重试
@@ -8310,7 +8310,6 @@ nodeDriver:
       provided: 已提供
     region:
       label: 区域
-      selectLabel: 选择区域
     availabilityZone: 可用区域
     subnet: 'VPC/Subnet'
     noSubnet: 当前没有子网可选择
