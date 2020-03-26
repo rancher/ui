@@ -135,13 +135,10 @@
             <label class="acc-label" for="azureaks-kube-version">
               {{t "clusterNew.azureaks.kubernetesVersion.label"}}
             </label>
-            {{form-versions
-              cluster=cluster
-              editing=(eq mode "edit")
-              initialVersion=config.kubernetesVersion
+            {{new-select
+              classNames="form-control"
+              content=versionChoices
               value=config.kubernetesVersion
-              versions=versions
-              showNotAllowed=false
             }}
           </div>
           <div class="col span-6">
