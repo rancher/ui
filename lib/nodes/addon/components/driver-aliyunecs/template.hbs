@@ -54,15 +54,22 @@
           {{t "nodeDriver.aliyunecs.apiEndpoint.label"}}
         </label>
         {{#input-or-display
-           editable=(eq step 1)
-           value=config.apiEndpoint
-        }}
-          {{input
-            type="text"
-            class="form-control"
+            editable=(eq step 1)
             value=config.apiEndpoint
-            placeholder=(t "nodeDriver.aliyunecs.apiEndpoint.placeholder")
-          }}
+        }}
+          <Input
+            @type="checkbox"
+            @classNames="form-control"
+            @checked={{showCustomApiEndpoint}}
+          />
+          {{#if showCustomApiEndpoint}} 
+            <Input
+              @type="text"
+              @value={{config.apiEndpoint}}
+              @classNames="form-control"
+              @placeholder={{t "nodeDriver.aliyunecs.apiEndpoint.placeholder"}}
+            />
+          {{/if}}
         {{/input-or-display}}
       </div>
     </div>
@@ -337,6 +344,21 @@
         </div>
         <div class="col span-6">
           <label class="acc-label">
+            {{t "nodeDriver.aliyunecs.aliyunSLB.label"}}
+          </label>
+          <Input
+            @type="text"
+            @value={{config.slbId}}
+            @classNames="form-control"
+            @placeholder={{t "nodeDriver.aliyunecs.aliyunSLB.placeholder"}}
+          />
+        </div>   
+      </div>
+
+      {{#unless config.privateAddressOnly}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
             {{t "nodeDriver.aliyunecs.internetMaxBandwidth.label"}}
           </label>
           <div class="input-group">
@@ -350,21 +372,29 @@
             <div class="input-group-addon bg-default">Mbps</div>
           </div>
         </div>
-      </div>
-
-      <div class="row">
         <div class="col span-6">
           <label class="acc-label">
-            {{t "nodeDriver.aliyunecs.aliyunSLB.label"}}
+            {{t "nodeDriver.aliyunecs.internetChargeType.label"}}
           </label>
-          {{input
-            type="text"
-            class="form-control"
-            value=config.slbId
-            placeholder=(t "nodeDriver.aliyunecs.aliyunSLB.placeholder")
-          }}
+            <div>
+              <label class="mr-20 hand">
+                <RadioButton
+                  @selection={{config.internetChargeType}}
+                  @value="PayByBandwidth"
+                />
+                {{t "nodeDriver.aliyunecs.internetChargeType.payByBandwidth"}}
+              </label>
+              <label class="hand">
+                <RadioButton
+                  @selection={{config.internetChargeType}}
+                  @value="PayByTraffic"
+                />
+                {{t "nodeDriver.aliyunecs.internetChargeType.payByTraffic"}}
+              </label>
+            </div>
         </div>
       </div>
+      {{/unless}}
 
       <div class="row">
         <div class="col span-6">
