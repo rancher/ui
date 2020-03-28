@@ -142,6 +142,8 @@ export default Route.extend({
       let access = get(this, 'access');
 
       access.clearToken().finally(() => {
+        let url =  `${ window.location.origin }/login`;
+
         get(this, 'tab-session').clear();
         set(this, `session.${ C.SESSION.CONTAINER_ROUTE }`, undefined);
         set(this, `session.${ C.SESSION.ISTIO_ROUTE }`, undefined);
@@ -156,13 +158,11 @@ export default Route.extend({
           get(this, 'modal').toggleModal();
         }
 
-        let params = { queryParams: {} };
-
         if ( errorMsg ) {
-          params.queryParams.errorMsg = errorMsg;
+          url = `${ url }?errorMsg=${ errorMsg }`;
         }
 
-        this.transitionTo('login', params);
+        window.location.replace(url);
       });
     },
 
