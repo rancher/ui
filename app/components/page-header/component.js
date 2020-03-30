@@ -145,6 +145,13 @@ export default Component.extend({
       return;
     }
 
+    const cluster = get(this, 'cluster');
+
+    if ( !cluster || !cluster.isReady ) {
+      // Only in ready/active clusters
+      return;
+    }
+
     let link;
 
     if ( get(this, 'app.environment') === 'development' ) {
