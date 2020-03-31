@@ -22,7 +22,7 @@ steps:
     exclude:
     - tag
 
-- name: build
+- name: build-latest
   pull: default
   image: rancher/dapper:v0.4.1
   commands:
@@ -33,30 +33,86 @@ steps:
     path: /var/run/docker.sock
   when:
     branch:
-    - master
+    - 2.4-fixes
     event:
       exclude:
       - pull_request
       - tag
 
-- name: upload
+- name: upload-latest-2-4
   pull: default
   image: plugins/gcs
   settings:
     acl:
     - allUsers:READER
     cache_control: "no-cache,must-revalidate"
-    source: dist/static/latest2
-    target: releases.rancher.com/ui/latest2
+    source: dist/static/latest-2.4
+    target: releases.rancher.com/ui/latest-2.4
     token:
       from_secret: google_auth_key
   when:
     branch:
-    - master
+    - 2.4-fixes
     event:
       exclude:
       - pull_request
       - tag
+
+- name: build-release
+  pull: default
+  image: rancher/dapper:v0.4.1
+  commands:
+  - dapper ci
+  environment:
+    ENVIRONMENT: production
+  privileged: true
+  volumes:
+  - name: docker
+    path: /var/run/docker.sock
+  when:
+    event:
+      - tag
+    ref:
+      include:
+      - "refs/tags/v2.4.*"
+
+
+- name: upload-release
+  pull: default
+  image: plugins/gcs
+  settings:
+    acl:
+    - allUsers:READER
+    cache_control: "no-cache,must-revalidate"
+    source: dist/static/${DRONE_TAG##v}
+    target: releases.rancher.com/ui/${DRONE_TAG##v}
+    token:
+      from_secret: google_auth_key
+  when:
+    event:
+      - tag
+    ref:
+      include:
+      - "refs/tags/v2.4.*"
+
+- name: upload-release-tar
+  pull: default
+  image: plugins/gcs
+  settings:
+    acl:
+    - allUsers:READER
+    cache_control: "no-cache,must-revalidate"
+    source: dist/static/${DRONE_TAG##v}.tar.gz
+    target: releases.rancher.com/ui/${DRONE_TAG##v}.tar.gz
+    token:
+      from_secret: google_auth_key
+  when:
+    event:
+      - tag
+    ref:
+      include:
+      - "refs/tags/v2.4.*"
+
 volumes:
 - name: docker
   host:
