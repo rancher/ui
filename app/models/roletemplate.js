@@ -38,7 +38,12 @@ export default Resource.extend({
     },
 
     clone() {
-      get(this, 'router').transitionTo('global-admin.security.roles.new', { queryParams: { id: get(this, 'id'),  } });
+      get(this, 'router').transitionTo('global-admin.security.roles.new', {
+        queryParams: {
+          id:      get(this, 'id'),
+          context: get(this, 'context')
+        }
+      });
     }
   },
 
