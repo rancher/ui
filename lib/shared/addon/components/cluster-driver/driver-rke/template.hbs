@@ -1121,7 +1121,7 @@
                 {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
-            
+
           </div>
           <div class="row">
             <label class="acc-label">
@@ -1153,7 +1153,7 @@
                       value="true"
                     }}
                     {{t "generic.yes"}}
-                    
+
                   </label>
                   <label>
                     {{radio-button
@@ -1484,23 +1484,37 @@
       {{/accordion-list}}
     {{/if}}
   {{/if}}
+{{/if}}
 
-  {{top-errors errors=allErrors}}
+{{top-errors errors=allErrors}}
 
-  {{#if (or (and notView (eq step 1)) (and isEdit (eq step 2)))}}
+{{#if (or (and notView (eq step 1)) (and isEdit (eq step 2)))}}
+  {{#if (and clusterTemplatesEnforced (not clusterTemplateRevisionId) )}}
+    <section class="mt-20 mb-20">
+      <BannerMessage
+        @color="bg-warning m-0"
+        @message=(t "clusterNew.rke.clusterTempalteMissing")
+      />
+    </section>
+    <div class="footer-actions">
+      <button {{action "close"}} class="btn bg-primary">
+        {{t "clusterNew.rke.done"}}
+      </button>
+    </div>
+  {{else}}
     {{save-cancel
       createLabel=(or overrideCreateLabel (if isCustom "saveCancel.next" "saveCancel.create"))
       editing=isEdit
       save=(action "driverSave")
       cancel=(action "close")
     }}
-  {{else}}
-    <div class="footer-actions">
-      <button {{action "close"}} class="btn bg-primary">
-        {{t "clusterNew.rke.done"}}
-      </button>
-    </div>
   {{/if}}
+{{else}}
+  <div class="footer-actions">
+    <button {{action "close"}} class="btn bg-primary">
+      {{t "clusterNew.rke.done"}}
+    </button>
+  </div>
 {{/if}}
 
 <input
