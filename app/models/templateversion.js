@@ -8,7 +8,11 @@ import jsyaml from 'js-yaml';
 import flatMap from 'shared/utils/flat-map';
 import { isEmpty } from '@ember/utils';
 
-const { HELM_VERSION_2: helmV2, HELM_VERSION_3: helmV3 } = C.CATALOG;
+const {
+  HELM_VERSION_2:       helmV2,
+  HELM_VERSION_3:       helmV3,
+  HELM_VERSION_3_SHORT: helmV3Short,
+} = C.CATALOG;
 
 export default Resource.extend({
   scope: service(),
@@ -17,7 +21,7 @@ export default Resource.extend({
   isHelm3: computed('helmVersion', function() {
     const { helmVersion = helmV2 } = this;
 
-    if (helmVersion === helmV3) {
+    if (helmVersion === helmV3 || helmVersion === helmV3Short) {
       return true;
     }
 
