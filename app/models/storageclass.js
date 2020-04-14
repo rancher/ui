@@ -2,6 +2,8 @@ import Resource from '@rancher/ember-api-store/models/resource';
 import { get, set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { all } from 'rsvp';
+import C from 'ui/utils/constants';
+const { LONGHORN_PROVISIONER_KEY } = C.STORAGE;
 
 const BETA_ANNOTATION = 'storageclass.beta.kubernetes.io/is-default-class';
 const DEFAULT_ANNOTATION = 'storageclass.kubernetes.io/is-default-class';
@@ -20,7 +22,7 @@ registerProvisioner('azure-file',      'kubernetes.io/azure-file',      true, tr
 registerProvisioner('portworx-volume', 'kubernetes.io/portworx-volume', true, false);
 registerProvisioner('scaleio',         'kubernetes.io/scaleio',         true, false);
 registerProvisioner('storageos',       'kubernetes.io/storageos',       true, false);
-registerProvisioner('longhorn',        'driver.longhorn.io',            true, true);
+registerProvisioner('longhorn',        LONGHORN_PROVISIONER_KEY,        true, true);
 registerProvisioner('local-storage',   'kubernetes.io/no-provisioner',  true, false);
 
 export function registerProvisioner(name, provisioner, component, supported) {
