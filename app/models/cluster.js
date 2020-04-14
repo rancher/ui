@@ -203,6 +203,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return intl.t('clusterNew.aliyunkcs.shortLabel');
     case 'huaweiEngineConfig':
       return intl.t('clusterNew.huaweicce.shortLabel');
+    case 'okeEngineConfig':
+      return intl.t('clusterNew.oracleoke.shortLabel');
     case 'k3sconfig':
       return intl.t('clusterNew.k3simport.shortLabel');
     case 'rancherKubernetesEngineConfig':
