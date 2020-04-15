@@ -6,6 +6,7 @@ import layout from './template';
 import { getSources } from 'ui/models/volume';
 import { parseSi } from 'shared/utils/parse-unit';
 import C from 'ui/utils/constants';
+import { isEmpty } from '@ember/utils';
 
 export default Component.extend(ViewNewEdit, {
   intl:         service(),
@@ -104,15 +105,24 @@ export default Component.extend(ViewNewEdit, {
   willSave() {
     const vol = get(this, 'primaryResource');
     const entry = getSources('persistent').findBy('name', get(this, 'sourceName'));
+    const intl = get(this, 'intl');
+    const errors = [];
 
     if ( !entry ) {
-      const errors = [];
-      const intl = get(this, 'intl');
-
       errors.push(intl.t('validation.required', { key: intl.t('cruPersistentVolume.source.label') }));
       set(this, 'errors', errors);
 
       return false;
+    }
+
+    if (vol.csi && vol.csi.driver === C.STORAGE.LONGHORN_PROVISIONER_KEY) {
+      if (isEmpty(vol.csi.volumeHandle)) {
+        errors.push(intl.t('validation.required', { key: intl.t('cruPersistentVolumeClaim.volumeHandleRequired.label') }));
+
+        set(this, 'errors', errors);
+
+        return false;
+      }
     }
 
     vol.clearSourcesExcept(entry.value);
@@ -122,10 +132,8 @@ export default Component.extend(ViewNewEdit, {
     if ( capacity ) {
       set(vol, 'capacity', { storage: `${ capacity  }Gi`, });
     } else {
-      const errors = [];
-      const intl = get(this, 'intl');
-
       errors.push(intl.t('validation.required', { key: intl.t('cruPersistentVolumeClaim.capacity.label') }));
+
       set(this, 'errors', errors);
 
       return false;
