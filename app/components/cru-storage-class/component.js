@@ -7,18 +7,19 @@ import { getProvisioners } from 'ui/models/storageclass';
 import ChildHook from 'shared/mixins/child-hook';
 import C from 'ui/utils/constants';
 
-const WAIT_FOR_FIRST_CONSUMER = 'WaitForFirstConsumer';
-const IMMEDIATE = 'Immediate';
-const LOCAL_STORAGE = 'kubernetes.io/no-provisioner';
+const WAIT_FOR_FIRST_CONSUMER  = 'WaitForFirstConsumer';
+const IMMEDIATE                = 'Immediate';
+const LOCAL_STORAGE            = 'kubernetes.io/no-provisioner';
+const { LONGHORN_PROVISIONER_KEY } = C.STORAGE;
 
 export default Component.extend(ViewNewEdit, ChildHook, {
-  intl:        service(),
-  features:     service(),
+  intl:     service(),
+  features: service(),
 
   layout,
-  model: null,
-
-  titleKey: 'cruStorageClass.title',
+  model:                  null,
+  longhornProvisionerKey: LONGHORN_PROVISIONER_KEY,
+  titleKey:               'cruStorageClass.title',
 
   didReceiveAttrs() {
     set(this, 'wasRecycle', get(this, 'primaryResource.reclaimPolicy') === 'Recycle');
@@ -39,6 +40,12 @@ export default Component.extend(ViewNewEdit, ChildHook, {
 
     if ( this.isNew ) {
       set(this, 'primaryResource.volumeBindingMode', provisioner === LOCAL_STORAGE ? WAIT_FOR_FIRST_CONSUMER : IMMEDIATE);
+    }
+
+    if (provisioner === this.longhornProvisionerKey) {
+      set(this, 'primaryResource.allowVolumeExpansion', true);
+    } else {
+      set(this, 'primaryResource.allowVolumeExpansion', false);
     }
   }),
 
