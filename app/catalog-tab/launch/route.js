@@ -115,8 +115,7 @@ export default Route.extend({
             }
           }
 
-          // check for app with same name if so dedupe
-          if (match) {
+          if (match && match.name !== C.STORAGE.LONGHORN_CATALOG_ITEM_DEFAULT_NAME) {
             newAppName = this.dedupeName(existingNamespace.displayName);
           } else {
             newAppName = existingNamespace.displayName;
