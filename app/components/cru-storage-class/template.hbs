@@ -54,11 +54,16 @@
       <label class="acc-label">
         {{t "cruStorageClass.provisioner.label"}}
       </label>
-      {{searchable-select
-        allowCustom=true
-        content=supportedProvisionerChoices
-        value=primaryResource.provisioner
+      {{#input-or-display
+         editable=isNew
+         value=primaryResource.provisioner
       }}
+        {{searchable-select
+          allowCustom=true
+          content=supportedProvisionerChoices
+          value=primaryResource.provisioner
+        }}
+      {{/input-or-display}}
     </div>
   </div>
 {{/if}}
@@ -86,6 +91,7 @@
       parameters=primaryResource.parameters
       editing=notView
       registerHook=(action "registerHook")
+      mode=mode
     }}
   {{/accordion-list-item}}
 
@@ -100,7 +106,7 @@
         <label class="acc-label">
           {{t "cruStorageClass.reclaimPolicy.label"}}
         </label>
-        {{#if isView}}
+        {{#if (or isView isEdit)}}
           <div>
             {{t (concat "cruStorageClass.reclaimPolicy." primaryResource.reclaimPolicy)}}
           </div>
@@ -182,7 +188,7 @@
         <label class="acc-label">
           {{t "cruStorageClass.volumeBindingMode.label"}}
         </label>
-        {{#if isView}}
+        {{#if (or isView isEdit)}}
           <div>
             {{primaryResource.volumeBindingMode}}
           </div>
