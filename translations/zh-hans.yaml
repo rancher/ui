@@ -1494,6 +1494,9 @@ clusterDashboard:
   etcd: Etcd
   scheduler: Scheduler
   controllerManager: Controller Manager
+  etcdUnavailable: Etcd 不适用
+  schedulerUnavailable: Scheduler 不适用
+  controllerManagerUnavailable: Controller Manager 不适用
   alert:
     node: "警告: 节点{node}未激活"
     component: "警告: 组件{component}不健康"
@@ -1905,6 +1908,8 @@ cruPersistentVolumeClaim:
   secretRequired:
     name: 密文名称
     namespace: 密文命名空间
+  volumeHandleRequired:
+    label: Volume Handle
 
 cruVolumeClaimTemplate:
   title:
@@ -4104,6 +4109,7 @@ clusterNew:
       =1{#台新主机注册成功}
       other{#台新主机注册成功}
       }
+    clusterTempalteMissing: 启用了Cluster Template Enforcement，您无法访问编辑此集群所需的模板。请与管理员联系。
     done: 完成
     info:
       text: 编辑主机选项将更新主机注册命令
@@ -5351,7 +5357,7 @@ cruVirtualService:
   gateways:
     label: 网关
     add: 添加网关
-    placeholder: '例如: mygateway'
+    placeholder: '选择或输入网关'
     prompt: 选择网关...
   http:
     routes:
