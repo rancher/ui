@@ -165,9 +165,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   }),
 
   canUpgrade: computed('actionLinks.{upgrade}', 'catalogTemplate', function() {
-    const {
-      externalIdInfo: { version: currentAppVersion }
-    }                   = this;
+    const { externalIdInfo: { version: currentAppVersion } }                   = this;
     let a               = get(this, 'actionLinks') || {};
     const vKeys         = Object.keys(get(this, 'catalogTemplate.versionLinks'));
     const latestVersion = vKeys[vKeys.length - 1];
