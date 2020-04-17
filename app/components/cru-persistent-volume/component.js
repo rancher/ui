@@ -28,12 +28,21 @@ export default Component.extend(ViewNewEdit, {
   },
 
   didReceiveAttrs() {
+    const { primaryResource } = this;
+    const { sourceName = '' } = primaryResource;
+
     if ( get(this, 'isNew') ) {
       set(this, 'capacity', 10);
     } else {
-      set(this, 'sourceName', get(this, 'primaryResource.sourceName'));
+      const source = get(primaryResource, sourceName);
 
-      const capacity = get(this, 'primaryResource.capacity.storage');
+      if (sourceName === 'csi' && source.driver && source.driver === 'driver.longhorn.io') {
+        set(this, 'sourceName', 'csi-volume-longhorn')
+      } else {
+        set(this, 'sourceName', sourceName);
+      }
+
+      const capacity = get(primaryResource, 'capacity.storage');
 
       if ( capacity ) {
         const bytes = parseSi(capacity);
