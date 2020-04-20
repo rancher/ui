@@ -19,9 +19,22 @@
 {{outlet "overlay"}}
 {{outlet "error"}}
 
-<div id="application" class="container no-inline-space">
+<SettingsOverridableBanner
+  id="setting-ui-header-banner"
+  @show={{settings.showHeaderBanner}}
+  @model={{settings.bannerContent}}
+/>
+<div
+  id="application"
+  class="container no-inline-space {{if settings.showHeaderBanner 'with-ui-header-banner' ''}} {{if settings.showFooterBanner 'with-ui-footer-banner' ''}}"
+>
   {{outlet}}
 </div>
+<SettingsOverridableBanner
+  id="setting-ui-footer-banner"
+  @show={{settings.showFooterBanner}}
+  @model={{settings.bannerContent}}
+/>
 
 {{component tooltip tooltipTemplate=tooltipTemplate class="container-tooltip" id="tooltip-base" role="tooltip" aria-hidden="false"}}
 {{modal-root}}
