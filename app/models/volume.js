@@ -76,7 +76,7 @@ var Volume = Resource.extend({
 
   type: 'volume',
 
-  configName: computed('sources.@each.{value}', function() {
+  configName: computed('sources.@each.{value}', 'state', function() {
     const keys = get(this, 'sources').map((x) => x.value);
 
     for ( let key, i = 0 ; i < keys.length ; i++ ) {
