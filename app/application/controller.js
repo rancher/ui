@@ -36,5 +36,4 @@ export default Controller.extend({
   currentRouteNameChanged: observer('router.currentRouteName', function() {
     this.set('app.currentRouteName', this.get('router.currentRouteName'));
   }),
-
 });
