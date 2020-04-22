@@ -5,7 +5,7 @@ import { download } from 'shared/utils/util';
 import C from 'ui/utils/constants';
 import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from '@ember/service';
-import { reference } from '@rancher/ember-api-store/utils/denormalize';
+import { hasMany, reference } from '@rancher/ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 import Grafana from 'shared/mixins/grafana';
 import { next } from '@ember/runloop';
@@ -24,6 +24,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
   clusterStore: service(),
   intl:         service(),
 
+  nodes:        hasMany('clusterId', 'node', 'clusterId'),
   type:         'node',
   containerD:   CONTAINERD,
   isContainerD: false,
@@ -98,6 +99,12 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     if ( name ) {
       if ( name.match(/[a-z]/i) ) {
         name = name.replace(/\..*$/, '');
+
+        const nodesWithSamePrefix = (this.nodes || []).filter((node) => (node.nodeName || '').startsWith(`${ name }.`));
+
+        if ( nodesWithSamePrefix.length > 1 ) {
+          name = this.nodeName.slice(this.nodeName.lastIndexOf('.') + 1, this.nodeName.length)
+        }
       }
 
       return name;
