@@ -1,0 +1,378 @@
+{{#accordion-list showExpandAll=false as |al expandFn|}}
+
+
+  {{!-- Only allow edits to tenancy, compartment, and region configuration for new cluster --}}
+  {{#accordion-list-item title=(t "clusterNew.oracleoke.access.title")
+                         detail=(t "clusterNew.oracleoke.access.detail")
+                         expandAll=expandAll
+                         expand=(action expandFn)
+                         expandOnInit=true
+  }}
+
+    <div class="row">
+      <div class="col span-6 mb-0">
+        <label class="acc-label">{{t 'clusterNew.oracleoke.tenancyOCID.label'}}{{field-required}}</label>
+        {{#input-or-display editable=isNew value=config.tenancyId}}
+          {{input type="text" name="tenancy" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.tenancyOCID.placeholder') value=config.tenancyId}}
+        {{/input-or-display}}
+      </div>
+
+
+      <div class="col span-6 mb-0">
+        <label class="acc-label">{{t 'clusterNew.oracleoke.compartmentOCID.label'}}{{field-required}}</label>
+        {{#input-or-display editable=isNew value=config.compartmentId}}
+          {{input type="text" name="compartment" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.compartmentOCID.placeholder') value=config.compartmentId}}
+        {{/input-or-display}}
+      </div>
+
+      <div class="col span-6">
+        <label class="acc-label">{{t 'clusterNew.oracleoke.region.label'}}{{field-required}}</label>
+        {{#input-or-display editable=isNew value=selectedRegion}}
+          {{searchable-select class="form-control"
+                              content=regionChoices
+                              value=config.region
+          }}
+        {{/input-or-display}}
+      </div>
+
+    </div>
+
+    {{!-- Allow edits to user details for both new and existing cluster --}}
+    <div class="row">
+
+      <div class="col span-6">
+        <label class="acc-label">{{t 'clusterNew.oracleoke.userOcid.label'}}{{field-required}}</label>
+        {{#input-or-display editable=(or isNew editing) value=config.userOcid}}
+          {{input type="text" name="username" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.userOcid.placeholder') value=config.userOcid}}
+        {{/input-or-display}}
+      </div>
+
+      <div class="col span-6">
+        <label class="acc-label">{{t 'clusterNew.oracleoke.userFingerprint.label'}}{{field-required}}</label>
+        {{#input-or-display editable=(or isNew editing) value=config.fingerprint}}
+          {{input type="text" name="fingerprint" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.userFingerprint.placeholder') value=config.fingerprint}}
+        {{/input-or-display}}
+      </div>
+
+      <div class="col span-6">
+        <label class="acc-label">{{t 'clusterNew.oracleoke.secretKeyPassphrase.label'}}</label>
+        {{#input-or-display editable=(or isNew editing) value=config.privateKeyPassphrase}}
+          {{input type="password" name="password" classNames="form-control" concealValue=true placeholder=(t 'clusterNew.oracleoke.secretKeyPassphrase.placeholder') value=config.privateKeyPassphrase}}
+        {{/input-or-display}}
+      </div>
+
+    </div>
+    <div class="row">
+
+      <div class="col span-6">
+        <label class="acc-label pt-5">{{t "clusterNew.oracleoke.secretKey.label"}}{{field-required}}</label>
+      </div>
+      {{input-text-file
+        classNames="box"
+        value=config.privateKeyContents
+        multiple=False
+        canChangeName=false
+        accept="text/plain,.pem,.pkey,.key"
+        minHeight=40
+        placeholder="clusterNew.oracleoke.secretKey.placeholder"
+        shouldChangeName=false
+        concealValue=true
+      }}
+
+    </div>
+  {{/accordion-list-item}}
+
+  {{!-- authenticate to OCI --}}
+  {{#if (eq step 1)}}
+    {{save-cancel editing=false
+                  save="authenticateOCI"
+                  cancel=close
+                  saveDisabled=canAuthenticate
+                  createLabel="clusterNew.oracleoke.access.next"
+                  savingLabel="clusterNew.oracleoke.access.loading"
+    }}
+  {{/if}}
+
+  {{#if (and (gte step 2) editing)}}
+    {{!-- edit cluster --}}
+    {{#accordion-list-item title=(t "clusterNew.oracleoke.cluster.title")
+                           detail=(t "clusterNew.oracleoke.cluster.detail")
+                           showExpand=false
+                           expandOnInit=true
+                           expandAll=al.expandAll
+                           expand=(action expandFn)
+    }}
+      <div class="row">
+
+        <div class="col span-4">
+          <label class="acc-label">{{t 'clusterNew.oracleoke.version.label'}}</label>
+          {{#input-or-display editable=(or (eq mode "new") eq mode "editing") value=selectedk8sVersion}}
+            {{new-select class="form-control"
+                         content=k8sUpgradeVersionChoices
+                         value=config.kubernetesVersion
+            }}
+          {{/input-or-display}}
+        </div>
+
+
+        <div class="col span-4">
+          <label class="acc-label">{{t 'clusterNew.oracleoke.quantityPerSubnet.label'}}</label>
+          {{#input-or-display editable=(or (eq mode "new") eq mode "editing") value=config.quantityPerSubnet}}
+            {{input-integer min=1 max=maxNodeCount value=config.quantityPerSubnet classNames="form-control" placeholder=(t 'clusterNew.oracleoke.quantityPerSubnet.placeholder')}}
+            <p class="help-block">
+              {{t 'clusterNew.oracleoke.quantityPerSubnet.help'}}
+            </p>
+          {{/input-or-display}}
+        </div>
+
+      </div>
+
+    {{/accordion-list-item}}
+
+    {{!-- exit point for update/upgrade --}}
+    {{save-cancel editing=(eq mode 'edit')
+                  save="upgradeCluster"
+                  cancel=close
+    }}
+    {{#if refresh}}
+
+    {{/if}}
+
+  {{else}}
+    {{!-- new cluster --}}
+    {{#if (gte step 2)}}
+      {{#accordion-list-item title=(t "clusterNew.oracleoke.cluster.title")
+                             detail=(t "clusterNew.oracleoke.cluster.detail")
+                             showExpand=false
+                             expandOnInit=true
+                             expandAll=al.expandAll
+                             expand=(action expandFn)
+      }}
+
+        <div class="row">
+          <div class="col span-6 mb-0">
+            <label class="acc-label">{{t 'clusterNew.oracleoke.version.label'}}</label>
+            {{#input-or-display editable=(and (eq step 2) isNew) value=selectedk8sVersion}}
+              {{new-select class="form-control"
+                           content=k8sVersionChoices
+                           value=config.kubernetesVersion
+              }}
+            {{/input-or-display}}
+          </div>
+
+          <div class="col span-6 mb-0">
+            <label class="acc-label">{{t 'clusterNew.oracleoke.quantityPerSubnet.label'}}</label>
+            {{#input-or-display editable=(and (eq step 2) isNew) value=config.quantityPerSubnet}}
+              {{input-integer min=1 max=maxNodeCount value=config.quantityPerSubnet classNames="form-control" placeholder=(t 'clusterNew.oracleoke.quantityPerSubnet.placeholder')}}
+              <p class="help-block">
+                {{t 'clusterNew.oracleoke.quantityPerSubnet.help'}}
+              </p>
+            {{/input-or-display}}
+          </div>
+
+        </div>
+      {{/accordion-list-item}}
+      {{#if (eq step 2)}}
+        {{save-cancel editing=(eq mode 'edit')
+                      save="loadNodeConfig"
+                      cancel=close
+                      createLabel="clusterNew.oracleoke.cluster.next"
+                      savingLabel="clusterNew.oracleoke.cluster.loading"
+        }}
+      {{/if}}
+    {{/if}}
+    {{#if (gte step 3)}}
+      {{#accordion-list-item title=(t "clusterNew.oracleoke.vcn.title")
+                             detail=(t "clusterNew.oracleoke.vcn.detail")
+                             showExpand=false
+                             expandOnInit=true
+                             expandAll=al.expandAll
+                             expand=(action expandFn)
+      }}
+
+
+        <div class="row">
+
+          <div class="col span-6">
+            {{#input-or-display
+              editable=(not-eq mode "view")
+              value=(if vcnCreationMode (t "generic.enabled") (t "generic.disabled"))
+            }}
+              <div class="radio">
+                <label>
+                  {{radio-button
+                    selection=vcnCreationMode
+                    value="Quick"
+                    disabled=(if multipleRegistries true false)
+                  }}
+                  {{t 'clusterNew.oracleoke.subnetAccessOptions.quick'}}
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  {{radio-button
+                    selection=vcnCreationMode
+                    value="Existing"
+                    disabled=(if multipleRegistries true false)
+                  }}
+                  {{t 'clusterNew.oracleoke.subnetAccessOptions.existing'}}
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  {{radio-button
+                    selection=vcnCreationMode
+                    value="Custom"
+                    disabled=(if multipleRegistries true false)
+                  }}
+                  {{t 'clusterNew.oracleoke.subnetAccessOptions.custom'}}
+                </label>
+              </div>
+
+              {{#if (eq vcnCreationMode "Custom")}}
+                <div class="row">
+                  <div class="col span-6">
+                    <label class="acc-label">{{t 'clusterNew.oracleoke.subnet.label'}}{{field-required}}</label>
+                    {{#input-or-display editable=(and (eq step 3) isNew) value=selectedSubnetAccess}}
+                      {{searchable-select class="form-control"
+                                          content=subnetAccessChoices
+                                          value=config.subnetAccess
+                      }}
+                    {{/input-or-display}}
+                  </div>
+
+                  <div class="col span-6">
+                    <label class="acc-label">{{t 'clusterNew.oracleoke.cidr.label'}}</label>
+                    {{#input-or-display editable=(and (eq step 3) isNew) value=config.vcnCidr}}
+                      {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.cidr.placeholder') value=config.vcnCidr}}
+                    {{/input-or-display}}
+                  </div>
+                </div>
+              {{/if}}
+
+              {{#if (eq vcnCreationMode "Existing")}}
+                <div class="row">
+                  <div class="col span-6">
+                    <label class="acc-label">{{t 'clusterNew.oracleoke.existingVCNDetails.compartmentOCID'}}</label>
+                    {{#input-or-display editable=(and (eq step 3) isNew) value=config.vcnCompartmentId}}
+                      {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.existingVCNDetails.compartmentOCIDPlaceholder') value=config.vcnCompartmentId}}
+                      <p class="help-block">{{t "clusterNew.oracleoke.existingVCNDetails.compartmentOCIDHelp" }}</p>
+                    {{/input-or-display}}
+                  </div>
+
+                  <div class="col span-6">
+                    <label class="acc-label">{{t 'clusterNew.oracleoke.existingVCNDetails.vcnName'}}{{field-required}}</label>
+                    {{#input-or-display editable=(and (eq step 3) isNew) value=config.vcnName}}
+                      {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.existingVCNDetails.vcnNamePlaceholder') value=config.vcnName}}
+                    {{/input-or-display}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col span-6">
+                    <label class="acc-label">{{t 'clusterNew.oracleoke.existingVCNDetails.lbSubnetName1'}}{{field-required}}</label>
+                    {{#input-or-display editable=(and (eq step 3) isNew) value=config.loadBalancerSubnetName1}}
+                      {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.existingVCNDetails.lbSubnetName1Placeholder') value=config.loadBalancerSubnetName1}}
+                    {{/input-or-display}}
+                  </div>
+
+                  <div class="col span-6">
+                    <label class="acc-label">{{t 'clusterNew.oracleoke.existingVCNDetails.lbSubnetName2'}}</label>
+                    {{#input-or-display editable=(and (eq step 3) isNew) value=config.loadBalancerSubnetName2}}
+                      {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.existingVCNDetails.lbSubnetName2Placeholder') value=config.loadBalancerSubnetName2}}
+                    {{/input-or-display}}
+                  </div>
+
+                </div>
+              {{/if}}
+            {{/input-or-display}}
+          </div>
+
+        </div>
+
+      {{/accordion-list-item}}
+      {{#if (eq step 3)}}
+        {{save-cancel editing=(eq mode 'edit')
+                      save="loadInstanceConfig"
+                      cancel=close
+                      saveDisabled=canSaveVCN
+                      createLabel="clusterNew.oracleoke.node.next"
+                      savingLabel="clusterNew.oracleoke.node.loading"
+        }}
+      {{/if}}
+    {{/if}}
+    {{#if (gte step 4)}}
+      {{#accordion-list-item title=(t "clusterNew.oracleoke.instance.title")
+                             detail=(t "clusterNew.oracleoke.instance.detail")
+                             showExpand=false
+                             expandOnInit=true
+                             expandAll=al.expandAll
+                             expand=(action expandFn)
+      }}
+        <div class="row">
+
+
+          <div class="row">
+            <div class="col span-6">
+              <label class="acc-label">{{t 'clusterNew.oracleoke.nodeShape.label'}}{{field-required}}</label>
+              {{#input-or-display editable=(and (eq step 4) isNew) value=selectednodeShape}}
+                {{searchable-select class="form-control"
+                                    content=nodeShapeChoices
+                                    value=config.nodeShape
+                }}
+              {{/input-or-display}}
+            </div>
+
+            <div class="col span-6">
+              <label class="acc-label">{{t 'clusterNew.oracleoke.os.label'}}</label>
+              {{#input-or-display editable=isNew value=selectedImage}}
+                {{searchable-select class="form-control"
+                                    content=imageChoices
+                                    value=config.nodeImage
+                }}
+              {{/input-or-display}}
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col span-4">
+              <label class="acc-label pt-5">{{t "clusterNew.oracleoke.nodeSSHKey.label"}}</label>
+            </div>
+            {{input-text-file
+              classNames="box"
+              value=config.nodePublicKeyContents
+              multiple=False
+              canChangeName=false
+              accept="text/plain,.pem,.pub,.key"
+              minHeight=40
+              placeholder="clusterNew.oracleoke.nodeSSHKey.placeholder"
+              shouldChangeName=false
+              concealValue=false
+            }}
+
+          </div>
+
+
+
+        </div>
+
+      {{/accordion-list-item}}
+      {{#if (eq step 4)}}
+        {{save-cancel editing=(eq mode 'edit')
+                      saveDisabled=canCreateCluster
+                      save="save"
+                      cancel=close
+        }}
+      {{/if}}
+    {{/if}}
+  {{/if}}
+
+
+  {{top-errors errors=errors}}
+  {{top-errors errors=otherErrors}}
+  {{top-errors errors=clusterErrors}}
+
+
+{{/accordion-list}}
+
