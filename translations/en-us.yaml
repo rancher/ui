@@ -7632,6 +7632,23 @@ modalAddCloudKey:
         Paste in a Personal Access Token from the Linode
         <a href="https://cloud.linode.com/profile/tokens" target="_blank" rel="nofollow noreferrer noopener">API Tokens</a> screen
     authAccountButton: 'Next: Configure Instance'
+  oci:
+    userOcid:
+      label: User OCID
+      placeholder: The OCID of a user
+    userFingerprint:
+      label: User fingerprint
+      placeholder: The fingerprint corresponding to the specified user's private API Key
+    secretKey:
+      label: User Private Key
+      placeholder: The private API key contents for the specified OCI user, in PEM format
+    secretKeyPassphrase:
+      label: User Private Key Passphrase
+      placeholder: The passphrase (if any) that protects private key file the specified OCI user
+    tenancyOcid:
+      label: Tenancy OCID
+      placeholder: The OCID of the tenancy in the user account exists
+
   vmwarevsphere:
     password:
       label: Password
@@ -8200,6 +8217,7 @@ nodeDriver:
     googlegke: Google GKE
     huaweicce: Huawei CCE
     linode: Linode
+    oci: Oracle Cloud Infrastructure
     openstack: OpenStack
     otc: Open Telekom Cloud
     packet: Packet
@@ -8835,6 +8853,53 @@ nodeDriver:
       sshPasswordInvalidCharacter: SSH password contains invalid characters.
       sshPasswordFormatError: "SSH password must contain at least three out of four kinds of following characters: uppercase letter, lowercase letters, numbers, and special characters."
       nameNotValidForApp: The name is invalid according to the {appName} hostname rule.
+  oci:
+    placement:
+      title: Placement
+      detail: Select placement for compute instance(s) created by this template.
+    access:
+      title: Account Access
+      detail: User Credentials will be used to launch OCI Instances.
+    network:
+      title: Virtual Cloud Network Details
+      detail: Configure the VCN for compute instances created by this template.
+    instance:
+      title: Instance Details
+      detail: Configure and customize the compute instance(s) that will be created.
+    image:
+      label: Image
+      placeholder: 'Oracle-Linux-7.7-2020.02.21-0'
+    faultDomainCount:
+      label: Fault Domain
+      placeholder: e.g. 3
+      helpText: Each availability domain contains three fault domains.
+    shape:
+      label: Shape
+    nodeCompartment:
+      label: OCID of compartment where compute instance(s) will be created
+      placeholder: 'ocid1.compartment.oc1....'
+    vcnCompartment:
+      label: OCID of compartment where VCN and subnet reside (if different than above)
+      placeholder: 'ocid1.compartment.oc1....'
+    vcn:
+      label: OCID of VCN where compute instance will be launched
+      placeholder: 'ocid1.vcn.oc1....'
+    subnet:
+      label: OCID of subnet (accessible to Rancher) that compute instance(s) will use
+      placeholder: 'ocid1.subnet.oc1....'
+      helpText: If subnet is AD-specific, it must match the AD of the node(s) created by this template.
+    usePrivateIp:
+      label: Use private IP address to connect to compute instances(s)
+    availabilityDomain:
+      label: Availability Domain
+      placeholder: availability-domain-name
+      helpText: Must match availability domain of subnet if using AD-specific subnets.
+    openPort:
+      label: Open Port
+      placeholder: 'Comma-separated, e.g. 80,443'
+    region:
+      label: Region
+
   zstack:
     access:
       title: 1. Account Access
