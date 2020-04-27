@@ -165,12 +165,9 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   }),
 
   canUpgrade: computed('actionLinks.{upgrade}', 'catalogTemplate', function() {
-    const { externalIdInfo: { version: currentAppVersion } }                   = this;
-    let a               = get(this, 'actionLinks') || {};
-    const vKeys         = Object.keys(get(this, 'catalogTemplate.versionLinks'));
-    const latestVersion = vKeys[vKeys.length - 1];
+    let a = get(this, 'actionLinks') || {};
 
-    return currentAppVersion !== latestVersion && !!a.upgrade && !isEmpty(this.catalogTemplate);
+    return !!a.upgrade && !isEmpty(this.catalogTemplate);
   }),
 
   canClone: computed('catalogTemplate', function() {
