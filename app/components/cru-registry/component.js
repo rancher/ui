@@ -7,6 +7,8 @@ import  { PRESETS_BY_NAME } from  'ui/models/dockercredential';
 import { inject as service } from '@ember/service'
 import { isEmpty } from '@ember/utils';
 
+const TEMP_NAMESPACE_ID = '__TEMP__';
+
 export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   globalStore:  service(),
   clusterStore: service(),
@@ -82,15 +84,14 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   hostname:  window.location.host,
 
   willSave() {
-    let pr = get(this, 'primaryResource');
+    const {
+      namespace: { id: nsId },
+      primaryResource: pr,
+    } = this;
 
-    // Namespace is required, but doesn't exist yet... so lie to the validator
-    let nsId = get(pr, 'namespaceId');
+    set(pr, 'namespaceId', nsId ? nsId : TEMP_NAMESPACE_ID);
 
-    set(pr, 'namespaceId', '__TEMP__');
     let ok = this.validate();
-
-    set(pr, 'namespaceId', nsId);
 
     return ok;
   },
@@ -111,13 +112,11 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   doSave() {
     let self                       = this;
     let sup                        = self._super;
-    const currentProjectsNamespace = get(this, 'clusterStore').all('namespace').findBy('projectId', get(this, 'scopeService.currentProject.id'));
+    const { primaryResource: { namespaceId } } = this;
 
-    if (isEmpty(currentProjectsNamespace)) {
+    if (isEmpty(namespaceId) || namespaceId === TEMP_NAMESPACE_ID) {
       return this.namespacePromise().then(() => sup.apply(self, arguments));
     } else {
-      set(this, 'namespace', currentProjectsNamespace);
-
       return sup.apply(self, arguments);
     }
   },
