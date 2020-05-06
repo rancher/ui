@@ -8,7 +8,6 @@ import { inject as service } from '@ember/service';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 import Grafana from 'shared/mixins/grafana';
-import { next } from '@ember/runloop';
 
 const UNSCHEDULABLE_KEYS = ['node-role.kubernetes.io/etcd', 'node-role.kubernetes.io/controlplane'];
 const UNSCHEDULABLE_EFFECTS = ['NoExecute', 'NoSchedule'];
@@ -26,7 +25,6 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
 
   type:         'node',
   containerD:   CONTAINERD,
-  isContainerD: false,
 
   grafanaDashboardName: 'Nodes',
   grafanaResourceId:    alias('ipAddress'),
@@ -210,16 +208,8 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
   versionBlurb: computed('info.os.dockerVersion', function() {
     let version = get(this, 'info.os.dockerVersion') || '';
 
-    if ( version.startsWith(CONTAINERD) ) {
+    if ( this.isContainerD ) {
       version = version.substr(CONTAINERD.length);
-
-      if (!this.isContainerD) {
-        next(() => set(this, 'isContainerD', true));
-      }
-    } else {
-      if (this.isContainerD) {
-        next(() => set(this, 'isContainerD', false));
-      }
     }
 
     const idx = version.indexOf('+');
@@ -229,6 +219,16 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     }
 
     return version;
+  }),
+
+  isContainerD: computed('info.os.dockerVersion', function() {
+    let version = get(this, 'info.os.dockerVersion') || '';
+
+    if ( version.startsWith(CONTAINERD) ) {
+      return true;
+    } else {
+      return false;
+    }
   }),
 
   osInfo: computed('labels', function() {
