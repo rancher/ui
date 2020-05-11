@@ -104,6 +104,9 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
 
         if ( nodesWithSamePrefix.length > 1 ) {
           name = this.nodeName.slice(this.nodeName.lastIndexOf('.') + 1, this.nodeName.length)
+          if ( name.match(/^\d+$/) ) {
+            name = this.nodeName;
+          }
         }
       }
 
