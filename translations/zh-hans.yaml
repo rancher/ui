@@ -89,7 +89,7 @@ generic:
   owner: 所有者
   paste: 粘贴
   pod: pod
-  podRestarts: Pod重启次数
+  podRestarts: Pod 重启次数
   port: 端口
   ports: 端口
   prefix: 前缀
@@ -1370,7 +1370,7 @@ clustersPage:
   provider:
     label: 供应商
   kubernetesVersion:
-    label: Kubernetes版本
+    label: Kubernetes 版本
   rkeTemplate:
     label: RKE 模板
   nodes:
@@ -2440,7 +2440,7 @@ k8sImport:
   actionLabel: 导入
 
 k8sPage:
-  header: Kubernets
+  header: Kubernetes
   dashboard:
     title: 控制面板
     detail: 访问本地Kubernetes仪表盘。
@@ -3057,7 +3057,7 @@ accordionRow:
     error: 错误
     notConfigured: 未配置
     configured: 已配置
-    countConfigured: "{count}条规则已配置"
+    countConfigured: "{count} 条规则已配置"
     standard: 默认
     custom: 自定义
     specific: 具体
@@ -3070,7 +3070,7 @@ advancedSection:
 
 annotationsSection:
   title: 注释
-  detail: 'Key/value元数据'
+  detail: 'Key/value 元数据'
   key: 键
   value: 值
   noData: 没有注释
@@ -3095,7 +3095,7 @@ billingInfo:
   header: 账单信息
   addNew: 添加支付方式
   card: "{brand}: ...{last}"
-  noSub: 您尚无可用的付款方式
+  noSub: 您当前没有可用的付款方式
   table:
     title:
       cardType: "信用卡类型: {brand}"
@@ -3971,7 +3971,113 @@ clusterNew:
       rbac: RBAC
       authenticating_proxy: 认证代理
     eipShareType:
-      label: 共享Eip类型
+      label: EIP Share Type
+  oracleoke:
+    label: Oracle Container Engine long
+    shortLabel: Oracle OKE
+    access:
+      next: "下一步: 验证和配置集群"
+      loading: 从Oracle云基础设施加载值
+      title: 选择用于验证和配置Oracle容器引擎的区域和API密钥。
+      detail: 选择用于验证和配置Oracle容器引擎的区域和API密钥。
+    region:
+      label: 区域
+    tenancyOCID:
+      label: Tenancy OCID
+      placeholder: The OCID of the tenancy in which to create resources
+      required: Tenancy OCID is required
+    compartmentOCID:
+      label: Compartment OCID
+      placeholder: The OCID of the compartment in which to create the resources
+      required: Compartment OCID is required
+    userOcid:
+      label: User OCID
+      placeholder: The OCID of a user who has access to the specified tenancy/compartment
+      required: Tenancy OCID is required
+    userFingerprint:
+      label: 用户指纹
+      placeholder: 与指定用户的私有API密钥对应的指纹
+      required: 用户私钥指纹必需设置
+    secretKey:
+      label: 用户私钥
+      placeholder: 指定OCI用户的私有API密钥内容(PEM格式)
+      provided: Provided
+      required: 需要用户私有API密钥
+    secretKeyPassphrase:
+      label: 用户私钥密码
+      placeholder: The passphrase (if any) that protects private key file the specified OCI user
+      provided: Provided
+    cluster:
+      title: 集群配置
+      detail: 为集群选择Kubernetes版本和每个可用域的节点数。
+      next: "下一步: 配置虚拟云网络"
+      loading: 从Oracle云基础设施加载VCNs
+    vcn:
+      title: 虚拟云网络
+      detail: 配置将用于Kubernetes集群的虚拟云网络。
+      label: 虚拟云网络
+      required: VCN is required
+    version:
+      label: Kubernetes 版本
+      required: Kubernetes 版本必须设置
+    cidr:
+      label: 虚拟云网络CIDR
+      placeholder: '例如: 172.16.0.0/16'
+      required: 需要虚拟云网络CIDR
+      error: 虚拟云CIDR格式错误
+    existingVCNDetails:
+      compartmentOCID: OCID of the VCN's compartment
+      compartmentOCIDPlaceholder: e.g. ocid1.compartment.oc1..aaaaaaaa...
+      compartmentOCIDHelp: leave blank if it's the cluster compartment
+      vcnName: Name of the pre-existing VCN
+      vcnNamePlaceholder: e.g. my-vcn
+      lbSubnetName1: Name of first pre-existing LB subnet
+      lbSubnetName1Placeholder: e.g. my-lb-sub-1
+      lbSubnetName2: Name of second pre-existing LB subnet (if applicable)
+      lbSubnetName2Placeholder: e.g. my-lb-sub-2
+    quantityPerSubnet:
+      label: Nodes Per AD Count
+      placeholder: e.g. 1
+      required: 每个可用性域都需要节点
+      help: 要在区域的每个可用性域中运行的节点数量
+      error: 节点数不应大于{max}
+    nodeShape:
+      label: Instance Shape'
+      required: Instance Shape is required
+    nodeSSHKey:
+      label: 节点的SSH公钥
+      placeholder: 节点的可选SSH公钥
+    instanceConfig:
+      label: 实例配置(CPU/Memory)
+      gpuLabel: 实例配置(CPU/Memory/GPU Type/GPU Count)
+      required: 需要实例配置
+    subnet:
+      label: 子网访问
+      required: Subnet access is required
+    node:
+      title: 节点类型
+      detail: 选择将用于这个Kubernetes集群的节点类型
+      next: "下一步: 配置节点实例"
+      loading: 从Oracle云基础设施加载配置
+    instance:
+      title: 节点实例配置
+      detail: 配置将用作集群中的节点的实例。
+    os:
+      label: 操作系统
+    storageType:
+      label: 默认的持久卷磁盘类型
+    storageSize:
+      label: 默认的持久卷磁盘大小
+      placeholder: e.g. 10
+      error: 默认的持久卷磁盘大小应该大于0
+    localDisk:
+      label: Local Disk
+      placeholder: size GB
+    subnetAccessOptions:
+      quick: 快速创建
+      custom: 自定义创建
+      existing: 现有的
+
   rke:
     upgradeStrategy:
       maximumWorkersDown:
@@ -4155,7 +4261,7 @@ clusterNew:
       label: 项目网络隔离
     networkMTU:
       label: 容器网卡 MTU
-      help: "自定义容器网卡MTU值。默认网络传输的MTU为1500，对于有些网络驱动(比如canal)，由于使用vxlan后端，会有50bit用于传输vxlan的tag，所以在主机上创建的网桥flannel.1的MTU值是1450。而默认创建的容器网卡MTU值是1500，为了对应网桥flannel.1的MTU值，可通过这个参数来自定义容器网卡的MTU值。"
+      help: "自定义容器网卡MTU值，0 表示使用网络驱动默认配置的MTU值。常规网络通信MTU为1500，对于非标准的网络驱动，可通过这个参数来自定义容器的MTU值。"
       detail: '例如: 1500'
     version:
       label: Kubernetes版本
@@ -5527,6 +5633,7 @@ dangerZone:
     'cluster-template-enforcement': '非管理员只能通过预先批准的集群模板启动集群。'
     'auth-user-session-ttl-minutes': '用户验证会话上的自定义TTL(以分钟为单位)。'
     'rke-metadata-config': '配置RKE元数据刷新参数。'
+    'ui-banners': '分类条幅用于在标题中显示自定义固定条幅, 页脚, 或者两者同时显示。该设置使用包含3个根参数的JSON对象; <code>banner</code>, <code>showHeader</code>, <code>showFooter</code>. <code>banner</code> is an object containing; <code>textColor</code>, <code>background</code>, and <code>text</code>, where <code>textColor</code> and <code>background</code> are any valid CSS color value.'
 
 deleteEksCluster:
   title: "确定删除集群{clusterName}吗?"
@@ -7455,12 +7562,12 @@ loggingPage:
 
   testAction:
     testing: 测试
-    testOk: 设置验证通过。
-    testFailed: 设置验证失败，请检查配置。
+    testOk: 设置验证通过
+    testFailed: 设置验证失败，请检查配置
     test: 测试
     running: 运行中
-    runOk: 试运行成功。
-    dryRun: 试运行。
+    runOk: 试运行成功
+    dryRun: 试运行
 
 machineTemplatesPage:
   title: 添加主机
@@ -7625,7 +7732,24 @@ modalAddCloudKey:
       placeholder: 您的Linode API访问令牌
       help: |
         从Linode粘贴个人访问令牌<a href="https://cloud.linode.com/profile/tokens" target="_blank" rel="nofollow noreferrer noopener">API Tokens</a> screen
-    authAccountButton: '下一步: 配置实例'
+    authAccountButton: '下一步: 实例配置'
+  oci:
+    userOcid:
+      label: User OCID
+      placeholder: The OCID of a user
+    userFingerprint:
+      label: 用户指纹
+      placeholder: 与指定用户的私有API密钥对应的指纹
+    secretKey:
+      label: 用户私钥
+      placeholder: 指定OCI用户的私有API密钥内容(PEM格式)
+    secretKeyPassphrase:
+      label: 用户私钥密码
+      placeholder: 保护指定的OCI用户的私钥文件的密码(如果有的话)
+    tenancyOcid:
+      label: Tenancy OCID
+      placeholder: The OCID of the tenancy in the user account exists
+
   vmwarevsphere:
     password:
       label: 密码
@@ -7955,16 +8079,16 @@ newCatalog:
   startService: 创建后启动服务
   support: "支持:"
   templateVersion: 模板版本
-  titleAdd: "添加{name}应用"
-  titleConfigure: "设置{name}应用"
-  titleUpgrade: "升级{name}应用"
+  titleAdd: '添加应用: {name}'
+  titleConfigure: '设置应用: {name}'
+  titleUpgrade: '升级应用: {name}'
   txt: answers.txt
   unknownType: "未识别的问题类型:"
   upgrade: "升级:"
   url: "项目URL:"
   version:
     prompt: 选择版本...
-    default: '当前默认(当前版本{version})'
+    default: '当前默认(当前版本 {version})'
   error:
     appData: 数据加载错误
 
@@ -8026,12 +8150,12 @@ newMultiClusterApp:
   url: "Project URL:"
   version:
     prompt: 选择版本...
-    default: 当时的默认值 (当前{version})
+    default: 当时的默认值 (当前 {version})
   overrides:
     label: 应答参数
     detail: '在每个集群/项目的基础上覆盖单个应答参数。'
     dropdown:
-      allProjects: "集群{clusterName}中的所有项目。"
+      allProjects: "集群 {clusterName} 中的所有项目。"
       clusterGroup: "集群: {clusterName}"
     add:
       label: 添加应答参数
@@ -8088,13 +8212,13 @@ newContainer:
     service: 部署工作负载
     globalService: 添加全局工作负载
     sidekick: '部署Sidecar'
-    sidekickName: '部署{name}的Sidecar'
+    sidekickName: '部署 {name} 的Sidecar'
   upgrade:
     container: 升级容器
     service: 升级服务
     globalService: 升级全局服务
-    sidekick: 升级Sidecar
-    sidekickName: '升级{name}的Sidecar'
+    sidekick: 升级 Sidecar
+    sidekickName: '升级 {name} 的Sidecar'
   saveUpgrade: 升级
   saveNew: 启动
   windows: Windows
@@ -8104,7 +8228,7 @@ newContainer:
   name:
     placeholder: '例如: Myapp'
   description:
-    placeholder: '例如: 我的应用'
+    placeholder: '例如: Myapp'
   environment:
     label: 环境变量
     from: 引用其他资源
@@ -8118,7 +8242,7 @@ newContainer:
   sidekick:
     header: 升级服务
     title: 选择加载配置的服务来升级
-    detail: '{service}有多个容器，希望升级哪个容器?'
+    detail: '{service} 有多个容器，希望升级哪个容器?'
     primary: 主容器
     sidekick: Sidecars
   containerType:
@@ -8156,7 +8280,7 @@ customDrivers:
 
 clusterDrivers:
   add: 添加集群驱动
-  refresh: 刷新Kubernetes元数据
+  refresh: 刷新 Kubernetes 元数据
   builtIn: 内置
   table:
     noData: 当前集群没有配置任何节点
@@ -8173,6 +8297,7 @@ kontainerDriver:
     rancherKubernetesEngine: Rancher RKE
     tencentkubernetesengine: Tencent TKE
     baiducloudcontainerengine: Baidu CCE
+    oraclecontainerengine: Oracle OKE
 
 
 nodeDriver:
@@ -8196,6 +8321,7 @@ nodeDriver:
     googlegke: Google GKE
     huaweicce: Huawei CCE
     linode: Linode
+    oci: Oracle Cloud 基础设施
     openstack: OpenStack
     otc: Open Telekom Cloud
     packet: Packet
@@ -8208,6 +8334,7 @@ nodeDriver:
     zstack: ZStack
     pinganyunecs: Pinganyun ECS
     baidu: Baidu CCE
+    oracleoke: Oracle OKE
   driverOptions: "{driver}选项"
   templateOptions: "{appName}模板"
   amazoneks:
@@ -8660,6 +8787,7 @@ nodeDriver:
     image:
       label: 镜像
       placeholder: '推荐: UbuntuServer:16.04.0-LTS:latest'
+      helpText: Providing an ARM resource identifier requires using managed disk
     diskSize:
       label: 磁盘大小
       placeholder: '例如: 30'
@@ -8667,6 +8795,7 @@ nodeDriver:
       label: 磁盘类型
       unmanaged: 非托管的磁盘
       managed: 托管的磁盘
+      helpText: "创建{type}可用性集。在创建可用性集之后更改此值可能会导致错误。"
     updateDomainCount:
       label: Update Domain Count
       placeholder: '例如: 5'
@@ -8829,7 +8958,54 @@ nodeDriver:
       sshPasswordLengthNotValid: SSH密码的长度应为8至30之间
       sshPasswordInvalidCharacter: SSH密码包含非法字符
       sshPasswordFormatError: 'SSH密码必须至少包括大写字符，小写字符，数字和特殊字符中的三种'
-      nameNotValidForApp: 根据{appName}主机名规则该名称无效。
+      nameNotValidForApp: 根据{appName}主机名规则，该名称无效。
+  oci:
+    placement:
+      title: Placement
+      detail: 选择此模板创建的计算实例的位置
+    access:
+      title: 帐户访问
+      detail: 用户凭证将用于启动OCI实例
+    network:
+      title: 虚拟云网络详细信息
+      detail: 为这个模板创建的计算实例配置VCN
+    instance:
+      title: 实例详情
+      detail: 配置和定制将要创建的计算实例
+    image:
+      label: 系统镜像
+      placeholder: 'Oracle-Linux-7.7-2020.02.21-0'
+    faultDomainCount:
+      label: 故障域
+      placeholder: e.g. 3
+      helpText: 每个可用性域包含三个故障域
+    shape:
+      label: Shape
+    nodeCompartment:
+      label: OCID of compartment where compute instance(s) will be created
+      placeholder: 'ocid1.compartment.oc1....'
+    vcnCompartment:
+      label: OCID of compartment where VCN and subnet reside (if different than above)
+      placeholder: 'ocid1.compartment.oc1....'
+    vcn:
+      label: 启动计算实例VCN的OCID
+      placeholder: 'ocid1.vcn.oc1....'
+    subnet:
+      label: OCID of subnet (accessible to Rancher) that compute instance(s) will use
+      placeholder: 'ocid1.subnet.oc1....'
+      helpText: If subnet is AD-specific, it must match the AD of the node(s) created by this template.
+    usePrivateIp:
+      label: 使用私有IP地址连接到计算实例
+    availabilityDomain:
+      label: 可用性域
+      placeholder: availability-domain-name
+      helpText: 如果使用特定于ad的子网，则必须匹配子网的可用域。
+    openPort:
+      label: 开放端口
+      placeholder: '逗号分隔, e.g. 80,443'
+    region:
+      label: 区域
+
   zstack:
     access:
       title: 1. 帐户访问
@@ -9489,7 +9665,7 @@ action:
   downloadYaml: 下载YAML
   download: 下载
   drain: 驱散
-  edit: 升级
+  edit: 编辑
   editConfig: 编辑配置
   editService: 编辑服务
   editYaml: '查看/编辑 YAML'
