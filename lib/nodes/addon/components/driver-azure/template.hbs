@@ -204,6 +204,23 @@
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "nodeDriver.azure.nsg.label"}}
+        </label>
+        {{input
+          type="text"
+          value=config.nsg
+          classNames="form-control"
+          placeholder=(t "nodeDriver.azure.nsg.placeholder")
+        }}
+        <p class="help-block">
+          {{t "nodeDriver.azure.nsg.helpText"}}
+        </p>
+      </div>
+    </div>
   {{/accordion-list-item}}
 
   {{#accordion-list-item
@@ -264,6 +281,12 @@
           classNames="form-control"
           placeholder=(t "nodeDriver.azure.openPort.placeholder")
         }}
+        {{#if (gt config.nsg.length 0)}}
+          <p class="help-block">
+            {{t "nodeDriver.azure.nsg.openPorts"}}
+          </p>
+        {{/if}}
+
       </div>
     </div>
 
