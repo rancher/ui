@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import C from 'ui/utils/constants';
 import layout from './template';
+import { isEmpty } from '@ember/utils';
 
 export default Component.extend({
   intl:         service(),
@@ -39,11 +40,22 @@ export default Component.extend({
       this.get('modalService').toggleModal('modal-wechat', { closeWithOutsideClick: true });
     },
   },
+
   showWechat: computed('intl.locale', function() {
     let locale = this.get('intl.locale');
 
     if (locale) {
       return locale[0] === 'zh-hans';
+    }
+
+    return false;
+  }),
+
+  showGithubIssuesLink: computed('settings.emailIssuesLink', function() {
+    const { emailIssuesLink } = this.settings;
+
+    if (isEmpty(emailIssuesLink)) {
+      return true;
     }
 
     return false;
