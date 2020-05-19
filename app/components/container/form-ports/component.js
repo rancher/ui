@@ -1,9 +1,10 @@
 import { next } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-import { get, set, setProperties, observer } from '@ember/object';
+import { computed, get, set, setProperties, observer } from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
 import $ from 'jquery';
+import Semver from 'semver';
 
 const KINDS = ['NodePort', 'HostPort', 'ClusterIP', 'LoadBalancer'];
 
@@ -17,6 +18,8 @@ const protocolOptions = [
     value: 'UDP'
   }
 ];
+
+const MIN_WINDOWS_NO_WARNING = "1.18.1";
 
 export default Component.extend({
   intl:                service(),
@@ -165,6 +168,17 @@ export default Component.extend({
       nodePortTo:          65535,
       nodePortPlaceholder: intl.t('formPorts.nodePort.placeholder')
     });
+  }),
+
+  showWindowsWarning: computed('scope.currentCluster.version.gitVersion', 'scope.currentCluster.isWindows', function() {
+    const { scope: { currentCluster } } = this;
+    const currentVersion = Semver.coerce(currentCluster.version.gitVersion);
+
+    if (currentCluster.isWindows && Semver.gte(currentVersion, MIN_WINDOWS_NO_WARNING)) {
+      return false;
+    }
+
+    return true;
   }),
 
   initPorts() {
