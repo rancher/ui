@@ -84,10 +84,8 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   hostname:  window.location.host,
 
   willSave() {
-    const {
-      namespace: { id: nsId },
-      primaryResource: pr,
-    } = this;
+    const { primaryResource: pr } = this;
+    const nsId = this.namespace && this.namespace.id;
 
     set(pr, 'namespaceId', nsId ? nsId : TEMP_NAMESPACE_ID);
 
