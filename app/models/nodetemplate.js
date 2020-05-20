@@ -44,6 +44,14 @@ export default Resource.extend({
     }
   }),
 
+  cloneForNew() {
+    const copy = this._super();
+
+    delete copy.annotations;
+
+    return copy;
+  },
+
   actions: {
     edit() {
       let driver = get(this, 'driver');
