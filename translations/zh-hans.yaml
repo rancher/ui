@@ -675,15 +675,15 @@ certificatesPage:
     withSan: |
       <a href="https://{cn}" target="_blank" rel="nofollow nefererrer noopener">{cn} <i class="icon icon-sm icon-external-link"></i></a> +
       {sans, plural,
-      =1{1other}
-      other{#others}
+      =1 {1 other}
+      other {# others}
       }
     wildcardSingle: '{cn}'
     wildcardWithSan: |
       {cn} +
       {sans, plural,
-      =1{1other}
-      other{#others}
+      =1 {1 other}
+      other {# others}
       }
   detail:
     header: '证书: {name}'
@@ -889,7 +889,7 @@ metricsAction:
   noData: 没有足够的数据绘制图表
   sections:
     workload: 工作负载监控
-    pod: Pod监控
+    pod: Pod 监控
     container: Container监控
   grafana:
     label: Grafana
@@ -1043,6 +1043,9 @@ cruPersistentVolumeClaim:
   storageClass:
     label: 存储类(Storage Class)
     prompt: 使用默认storage class
+  secretRequired:
+    name: Secret名称
+    namespace: Secret命名空间
 
 cruVolumeClaimTemplate:
   title:
@@ -1371,7 +1374,7 @@ k8sImport:
   actionLabel: 导入
 
 k8sPage:
-  header: Kubernets
+  header: Kubernetes
   dashboard:
     title: 控制面板
     detail: 访问本地Kubernetes仪表盘。
@@ -1713,7 +1716,7 @@ verifyResetPasswordPage:
 waitingPage:
   hosts:
     setup:
-      kubernetes: 设置Kubernetes
+      kubernetes: 设置 Kubernetes
 
 notifierPage:
   notifiers: 通知
@@ -1781,6 +1784,9 @@ notifierPage:
     agentPlaceholder: '例如: 1000003'
     corpPlaceholder: '例如: wwc0cc3d58f9b021b6'
     defaultRecipientPlaceholder: '例如: 2'
+  proxyUrl:
+    label: Proxy URL
+    placeholder: '例如: http://my-proxy/'
 
   webhook:
     url: URL
@@ -1945,7 +1951,7 @@ accordionRow:
     error: 错误
     notConfigured: 未配置
     configured: 已配置
-    countConfigured: "{count}条规则已配置"
+    countConfigured: "{count} 条规则已配置"
     standard: 默认
     custom: 自定义
     specific: 具体
@@ -1983,7 +1989,7 @@ billingInfo:
   header: 账单信息
   addNew: 添加支付方式
   card: "{brand}: ...{last}"
-  noSub: 您尚无可用的付款方式
+  noSub: 您当前没有可用的付款方式
   table:
     title:
       cardType: "信用卡类型: {brand}"
@@ -2017,7 +2023,7 @@ cloudProvider:
     cloudProviderBackoffRetries:
       description: "Backoff retry limit"
     cloudProviderRateLimit:
-      description: "启用速率限制"
+      description: "Enable rate limiting"
     cloudProviderRateLimitBucket:
       description: "Rate limit Bucket Size"
     cloudProviderRateLimitQPS:
@@ -2511,6 +2517,8 @@ clusterNew:
     nodeCount:
       label: 主机数量
       prompt: 选择类型...
+      required: 需要节点计数
+      outsideError: "节点池中指定的节点数超出了指定的自动缩放限制"
     diskSizeGb:
       label: 根磁盘大小
     masterVersion:
@@ -2838,6 +2846,9 @@ clusterNew:
         endpoint:
           label: S3 Region Endpoint
           placeholder: "s3.us-west-2.amazonaws.com"
+        folder:
+          label: S3目录
+          placeholder: '例如: cluster-backup'
         accessKey:
           label: Access Key
           placeholder: Your AWS access key
@@ -2845,6 +2856,9 @@ clusterNew:
           label: Secret Key
           placeholder: Your AWS secret key
           provided: Provided
+        customCa:
+          label: 自定义CA证书
+          placeholder: "粘贴证书和所有中间链证书，以-----BEGIN CERTIFICATE-----开始"
       location:
         label: Etcd备份存储
         s3:
@@ -3382,6 +3396,14 @@ cruPersistentVolume:
     volumeID:
       label: 卷 ID
       placeholder: "例如: vol"
+    secretRef:
+      name:
+        label: Secret Name
+        placeholder: "e.g. abc"
+      namespace:
+        label: Secret Namespace
+        placeholder: "e.g. default"
+      label: Secret Name
   photonPersistentDisk:
     fsType:
       label: 文件系统类型
@@ -4939,13 +4961,13 @@ formJobConfig:
   detail: 配置Job需要的参数。
   times: |
     {count, plural,
-      =1{Time}
-      other{Times}
+      =1 {Time}
+      other {Times}
     }
   seconds: |
     {count, plural,
-      =1{Second}
-      other{Seconds}
+      =1 {Second}
+      other {Seconds}
     }
   completions:
     label: 完成
@@ -5546,6 +5568,7 @@ modalEditPassword:
   mode:
     generate: '使用新的随机生成的密码: '
     manual: '设置特定的密码来使用: '
+  deleteTokens: 删除所有现有的API密钥
 
 modalFeedback:
   header: "欢迎使用{appName}!"
@@ -5628,6 +5651,9 @@ modalRotateCertificates:
   dropdownLabel: 服务
   select:
     all: 选择服务...
+  expiring:
+    until: '{ cert } (expires { expiresIn })'
+    from: '{ cert } (expired { expiresIn })'
 
 modalRollbackService:
   title: '回滚"{instanceName}"'
@@ -5898,7 +5924,7 @@ newContainer:
   name:
     placeholder: '例如: Myapp'
   description:
-    placeholder: '例如: 我的应用'
+    placeholder: '例如: Myapp'
   environment:
     label: 环境变量
     from: 引用其他资源
@@ -5912,7 +5938,7 @@ newContainer:
   sidekick:
     header: 升级服务
     title: 选择加载配置的服务来升级
-    detail: '{service}有多个容器，希望升级哪个容器?'
+    detail: '{service} 有多个容器，希望升级哪个容器?'
     primary: 主容器
     sidekick: Sidecars
   containerType:
@@ -6009,6 +6035,9 @@ nodeDriver:
     kubernetesVersion:
       label: Kubernetes版本
       placeholder: 选择要安装的Kubernetes版本
+    keyPairs:
+      label: SSH Key
+      prompt: 没有选择
     role:
       label: 服务角色
       noneSelected: "Rancher创建角色"
@@ -6923,6 +6952,10 @@ tooltipWarning:
   notConfigured: 未设置访问控制
   dismiss: 取消
 
+tooltipExpire:
+  label: '此集群证书即将到期或已过期。'
+  link: '立即轮换证书'
+
 upgradeBtn:
   version:
     current: '当前版本'
@@ -7138,7 +7171,7 @@ action:
   deactivate: 停用
   downloadYaml: 下载YAML
   drain: 驱散
-  edit: 升级
+  edit: 编辑
   editConfig: 编辑配置
   editService: 编辑服务
   editYaml: '查看/编辑 YAML'
