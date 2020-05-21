@@ -21,6 +21,7 @@ module.exports = function(app, options) {
 
   // WebSocket for Rancher
   httpServer.on('upgrade', (req, socket, head) => {
+    socket.on('error', (err)=> console.error(err));
     if ( req.url.startsWith('/_lr/') ) {
       return;
     }
