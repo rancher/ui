@@ -159,8 +159,14 @@ export default Route.extend({
           const currentVersion = verArr.filter((ver) => ver.version === v);
 
           verArr = verArr.filter((ver) => {
-            if ( lt(ver.version, currentVersion.firstObject.version) ) {
-              return false;
+            try {
+              if ( lt(ver.version, currentVersion.firstObject.version) ) {
+                return false;
+              }
+            } catch (e){
+              console.error(e);
+
+              return true;
             }
 
             return true;
