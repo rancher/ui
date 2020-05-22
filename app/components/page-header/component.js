@@ -134,7 +134,7 @@ export default Component.extend({
     return !!get(this, 'stackSchema.resourceFields.system.update');
   }),
 
-  dashboardLink: computed('pageScope', 'clusterId', function() {
+  dashboardLink: computed('pageScope', 'clusterId', 'cluster.isReady', function() {
     if ( !get(this, 'features').isFeatureEnabled(C.FEATURES.DASHBOARD) ) {
       // Only if Steve/dashboard are deployed
       return;
