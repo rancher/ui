@@ -396,7 +396,7 @@ export default Component.extend(ThrottledResize, {
       return;
     }
 
-    if ( tag === 'A' ) {
+    if ( tag === 'A' && e.type !== 'touchend' ) {
       return;
     }
 
