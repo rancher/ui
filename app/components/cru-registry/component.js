@@ -29,6 +29,7 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
 
     if (get(this, 'model.type') === 'namespacedDockerCredential') {
       set(this, 'scope', 'namespace');
+      set(this, 'namespace', get(this, 'model.namespace'));
     }
     const globalRegistryEnabled = get(this, 'globalStore').all('setting').findBy('id', 'global-registry-enabled') || {};
 
