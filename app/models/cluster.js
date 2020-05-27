@@ -148,7 +148,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const configName = this.configName;
 
     if ( configName ) {
-      return get(this, `${ configName }.region`) || get(this, `${ configName }.location`) || get(this, `${ configName }.zone`);
+      return get(this, `${ configName }.region`) || get(this, `${ configName }.regionId`) || get(this, `${ configName }.location`) || get(this, `${ configName }.zone`) || get(this, `${ configName }.zoneId`);
     }
   }),
 
@@ -165,8 +165,6 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return 'googlegke';
     case 'tencentEngineConfig':
       return 'tencenttke';
-    case 'aliyunEngineConfig':
-      return 'aliyunkcs';
     case 'huaweiEngineConfig':
       return 'huaweicce';
     case 'okeEngineConfig':
@@ -202,7 +200,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     case 'tencentEngineConfig':
       return intl.t('clusterNew.tencenttke.shortLabel');
     case 'aliyunEngineConfig':
-      return intl.t('clusterNew.aliyunkcs.shortLabel');
+      return intl.t('clusterNew.aliyunack.shortLabel');
     case 'huaweiEngineConfig':
       return intl.t('clusterNew.huaweicce.shortLabel');
     case 'okeEngineConfig':
