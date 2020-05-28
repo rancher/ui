@@ -1,58 +1,98 @@
 <div class="row">
-  <div class="col span-11-of-23">
-    <label class="acc-label">
-      {{t "drainNode.mode"}}
-      {{#if clusterTemplateCreate}}
-        <ClusterTemplateOverrideToggle
-          @path="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.deleteLocalData"
-          @configVariable={{selection.deleteLocalData}}
-          @addOverride={{addOverride}}
-          @questions={{questions}}
-        />
-      {{/if}}
-    </label>
-    <CheckOverrideAllowed
-      @paramName="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.deleteLocalData"
-      @applyClusterTemplate={{applyClusterTemplate}}
-      @clusterTemplateRevision={{clusterTemplateRevision}}
-      @questions={{questions}}
-      @value={{mode}}
-    >
-      {{#input-or-display
-          editable=editable
-          value=mode
-      }}
-        <div>
-          <label class="radio mt-0">
-            {{radio-button
-              selection=selection.deleteLocalData
-              value="false"
-              disabled=view
-            }}
-            {{t "drainNode.safe.label"}}
-            <p class="help-block">
-              {{t "drainNode.safe.helpText"}}
-            </p>
-          </label>
-        </div>
-        <div>
-          <label class="radio text-error">
-            {{radio-button
-              selection=selection.deleteLocalData
-              value="true"
-              disabled=view
-            }}
-            {{t "drainNode.aggressive.label"}}
-            <p class="help-block text-error">
-              {{t "drainNode.aggressive.helpText" htmlSafe=true}}
-            </p>
-          </label>
-        </div>
-      {{/input-or-display}}
-    </CheckOverrideAllowed>
+  <div class="col span-6-of-23">
+    <div>
+      <label class="acc-label">
+        {{t "drainNode.deleteLocalData"}}
+        {{#if clusterTemplateCreate}}
+          <ClusterTemplateOverrideToggle
+            @path="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.deleteLocalData"
+            @configVariable={{selection.deleteLocalData}}
+            @addOverride={{addOverride}}
+            @questions={{questions}}
+          />
+        {{/if}}
+      </label>
+      <CheckOverrideAllowed
+        @paramName="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.deleteLocalData"
+        @applyClusterTemplate={{applyClusterTemplate}}
+        @clusterTemplateRevision={{clusterTemplateRevision}}
+        @questions={{questions}}
+        @value={{selection.deleteLocalData}}
+      >
+        {{#input-or-display
+            editable=editable
+            value=selection.deleteLocalData
+        }}
+          <div>
+            <label class="radio mt-0">
+              {{radio-button
+                selection=selection.deleteLocalData
+                value=true
+                disabled=view
+              }}
+              {{t "generic.yes"}}
+            </label>
+            <label class="radio">
+              {{radio-button
+                selection=selection.deleteLocalData
+                value=false
+                disabled=view
+              }}
+              {{t "generic.no"}}
+            </label>
+          </div>
+          
+        {{/input-or-display}}
+      </CheckOverrideAllowed>
+    </div>
+    <div class="mt-10">
+      <label class="acc-label mt-5">
+        {{t "drainNode.force"}}
+        {{#if clusterTemplateCreate}}
+          <ClusterTemplateOverrideToggle
+            @path="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.force"
+            @configVariable={{selection.force}}
+            @addOverride={{addOverride}}
+            @questions={{questions}}
+          />
+        {{/if}}
+      </label>
+      <CheckOverrideAllowed
+        @paramName="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.force"
+        @applyClusterTemplate={{applyClusterTemplate}}
+        @clusterTemplateRevision={{clusterTemplateRevision}}
+        @questions={{questions}}
+        @value={{selection.force}}
+      >
+        {{#input-or-display
+            editable=editable
+            value=selection.force
+        }}
+          <div>
+            <label class="radio mt-0">
+              {{radio-button
+                selection=selection.force
+                value=true
+                disabled=view
+              }}
+              {{t "generic.yes"}}
+            </label>
+            <label class="radio">
+              {{radio-button
+                selection=selection.force
+                value=false
+                disabled=view
+              }}
+              {{t "generic.no"}}
+            </label>
+          </div>
+          
+        {{/input-or-display}}
+      </CheckOverrideAllowed>
+    </div>
   </div>
 
-  <div class="col span-11-of-23 offset-1-of-23">
+  <div class="col span-16-of-23 offset-1-of-23">
     <label class="acc-label">
       {{t "drainNode.gracePeriod.title"}}
       {{#if clusterTemplateCreate}}

@@ -10,7 +10,7 @@ export default Component.extend(ModalBase, {
   growl: service(),
 
   layout,
-  classNames: ['large-modal'],
+  classNames: ['medium-modal'],
 
   selection: {},
 
