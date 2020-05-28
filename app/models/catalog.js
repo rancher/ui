@@ -1,13 +1,15 @@
 import Resource from '@rancher/ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
-import { computed, get } from '@ember/object';
+import { computed, get, set } from '@ember/object';
 import { ucFirst } from 'shared/utils/util';
 import C from 'ui/utils/constants';
+import { isEmpty } from '@ember/utils';
 
 const {
   HELM_VERSION_2:       helmV2,
   HELM_VERSION_3:       helmV3,
   HELM_VERSION_3_SHORT: helmV3Short,
+  HELM_3_LIBRARY_VALUE: helm3LibraryId
 } = C.CATALOG;
 
 const Catalog = Resource.extend({
@@ -70,6 +72,10 @@ const Catalog = Resource.extend({
 
   actions: {
     enable() {
+      if (isEmpty(this.id) && !isEmpty(this.url) && this.url === helm3LibraryId) {
+        set(this, 'helmVersion', helmV3);
+      }
+
       this.save();
     },
 
