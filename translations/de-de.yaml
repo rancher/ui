@@ -137,6 +137,19 @@ generic:
   windows: Windows
   host: Server
   cpu: CPU
+  noData: Keine Daten
+  authorize: Autorisieren und Ihre Repositories abrufen
+  branch: Versionszweig
+  commit: Commit
+  repository: Repository
+  registry: Registry
+  imageName: Bildname
+  logout: Benutzer {user} abmelden
+  pipeline: Pipeline
+  noBranch: Es gibt keinen Zweig in diesem Repository.
+  github: GitHub
+  gitlab: GitLab
+  bitbucket: Bitbucket
   required: '{key} ist erforderlich.'
 realmNames:
   all: Alle
@@ -159,6 +172,7 @@ accountsPage:
         projectName: Projekt
         active: Aktiv
         created: Zugelassen
+        group: Gruppe
       global:
         title: Globale Berechtigungen
         description: Zugriff auf Einstellungen, die die gesamte Installation betreffen
@@ -177,14 +191,17 @@ accountsPage:
   index:
     header: Benutzer
     localLink: Benutzer hinzufügen
+    groupLink: Globale Rolle zuweisen
     table:
       id: Id
       kind: Typ
       username: Lokaler Benutzer
       identity: Identität
+      noData: Es sind keine Benutzer definiert.
       noMatch: Keine Benutzer gefunden, die den Suchkriterien entsprechen
       noName: Kein
   groups:
+    header: Gruppen
     table:
       groupName: Gruppenname
       noData: Es wurden keine Gruppen definiert.
@@ -210,6 +227,17 @@ accountsPage:
       description:
         labelText: Beschreibung
         placeholder: "z.B. Das Konto von Max Muster"
+  editGroup:
+    header: Gruppe bearbeiten
+  newGroup:
+    header: Globale Rollen der Gruppe zuweisen
+    warning: Globale Rollen einer Gruppe zuweisen funktioniert nur mit externen Authentifizierungsanbietern die Gruppen unterstützen. Lokale Authorisierung unterstützt keine Gruppen.
+    errors:
+      group: Eine Gruppe ist erforderlich.
+      role: Eine Rolle ist erforderlich.
+    form:
+      group:
+        labelText: Gruppe zum Hinzufügen auswählen
   modal:
     password: Passwort ändern
 appDetailPage:
@@ -253,11 +281,13 @@ appDetailPage:
     detail: Es wurden Secrets mit dieser Applikation verknüpft
     nodata: Diese Anwendung hat keine Geheimnisse
 alertPage:
+  na: Nicht konfiguriert
   create: Erstellen
   save: Speichern
   cluster: Cluster
   project: Projekt
   newOrEdit:
+    showAdvanced: Erweiterte Optionen anzeigen
     addRecipient: Empfänger hinzufügen
   resourceKinds:
     Node: Knoten
@@ -684,7 +714,7 @@ certificatesPage:
     labelText: Domainname
     single: '<a href="https://{cn}" target="_blank" rel="nofollow noreferrer noopener">{cn} <i class="icon icon-sm icon-external-link"/></a>'
     withSan: |
-
+       
     wildcardSingle: '{cn}'
     wildcardWithSan: |
       {cn} +
@@ -1664,7 +1694,7 @@ stackPage:
     detail: 'Load-Balancer-Container, die von diesem Stack getrennt sind'
     status: |
       {count, plural,
-      =0 {Kein Balancer}
+      =0 {Kein Balancer} 
       =1 {# Balancer}
       other {# Balancer}
       }
@@ -1673,7 +1703,7 @@ stackPage:
     detail: 'Load-Balancer, die von diesem Stack getrennt sind'
     status: |
       {count, plural,
-      =0 {Keine Einträge}
+      =0 {Keine Einträge} 
       =1 {# Eintrag}
       other {# Einträge}
       }
@@ -2280,6 +2310,15 @@ clusterNew:
       included:
         parsedDnsServiceIp: 'Die IP-Adresse des Kubernetes DNS-Dienstes muss im angegebenen Adressbereich des Kubernetes-Dienstes liegen.'
         parsedDockerBridgeCidr: 'Die Adresse der Docker Bridge kann sich nicht mit dem ausgewählten virtuellen Netzwerk oder dem Kubernetes-Service-Adressbereich überschneiden'
+  aliyunkcs:
+    clusters:
+      k8s: Kubernetes
+    rootSize:
+      placeholder: z.B. 120
+    storageSize:
+      placeholder: z.B. 120
+    numOfNodes:
+      placeholder: z.B. 3
   googlegke:
     label: Google Kubernetes Engine
     shortLabel: Google GKE

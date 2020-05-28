@@ -6,6 +6,7 @@ languageContribute: "Помощь для перевода Rancher"
 ##############################
 generic:
   actions: Действия
+  active: Активно
   activate: Активировать
   add: Добавить
   advanced: Расширенный
@@ -17,6 +18,7 @@ generic:
   cancel: Отмена
   closeModal: Закрыть
   cluster: Кластер
+  collapse: Свернуть
   collapseAll: Свернуть все
   comingSoon: Скоро
   command: Команда
@@ -41,12 +43,14 @@ generic:
   enabled: Включено
   entrypoint: Точка входа (entrypoint)
   environment: Окружение
+  expand: Развернуть
   expandAll: Развернуть все
   experimental: "(экспериментально)"
   from: из
   false: 'Неверно'
   generic: 'Общий'
   gigabyte: 'ГБ'
+  group: 'Группа'
   hardware: Оборудование
   healthy: В порядке
   help: Помощь
@@ -78,6 +82,7 @@ generic:
   noRating: Нет рейтинга
   node: Узел
   none: Нету
+  completedOf: "{completed} из {total}"
   owner: Владелец
   paste: Вставить
   pod: pod
@@ -126,6 +131,27 @@ generic:
   readWrite: Чтение и Запись
   writeOnly: Только запись
   full: Полный
+  linux: Linux
+  windows: Windows
+  host: Сервер (Host)
+  istioHostPlaceholder: Выберите или введите хост
+  cpu: ЦП
+  memory: Память
+  noData: Нет данных
+  branch: Ветвь
+  commit: Коммит
+  repository: Репозиторий
+  registry: Реестр
+  imageName: Имя образа
+  loginIn: Войти
+  logout: Выйти пользователю {user}
+  is: это
+  push: Отправить в репозиторий
+  noBranch: В этом репозитории нет ветви
+  github: GitHub
+  gitlab: GitLab
+  bitbucket: Bitbucket
+  required: 'Требуется {key}'
 realmNames:
   all: Все
   usWest: Запад США
@@ -147,6 +173,7 @@ accountsPage:
         projectName: Проект
         active: Активный
         created: Разрешить
+        group: Группа
       global:
         title: Глобальный доступ
         description: Доступ для управления вещами, которые влияют на всю установку
@@ -165,13 +192,23 @@ accountsPage:
   index:
     header: Пользователи
     localLink: Добавить пользователя
+    groupLink: Назначить глобальную роль
     table:
       id: ID
       kind: Тип
       username: Локальное Имя Пользователя
       identity: Личность
+      noData: Пользователи не определены.
       noMatch: Нет пользователей, соответствующих текущему поиску
       noName: Нету
+  groups:
+    header: Группы
+    table:
+      groupName: Имя группы
+      globalRole: Глобальное имя роли
+      noData: Группы не определены.
+      noMatch: Нет групп, соответствующих текущему поиску
+      noName: Отсутствует
   new:
     header: Добавление пользователя
     errors:
@@ -193,6 +230,17 @@ accountsPage:
       description:
         labelText: Описание
         placeholder: "напр. эта учетная запись является для Джона Смита"
+  editGroup:
+    header: Редактировать группу
+  newGroup:
+    header: Назначить глобальные роли для группы
+    warning: Присвоение глобальных ролей группе работает только с внешними поставщиками аутентификации, которые поддерживают группы. Локальная авторизация не поддерживает группы.
+    errors:
+      group: Требуется группа
+      role: Требуется роль
+    form:
+      group:
+        labelText: Выберите группу для добавления
   modal:
     password: Сменить пароль
 appDetailPage:
@@ -235,15 +283,55 @@ appDetailPage:
     title: Секреты
     detail: Секреты, связанные с этим приложением
     nodata: У этого приложения нет секретов
+alertPage:
+  na: Не настроено
+  items: Элементы
+  addSelectorLabel: Добавить селектор
+  create: Создать
+  save: Сохранить
+  cluster: Кластер
+  project: Проект
+  alertGroups: Оповещения
+  newOrEdit:
+    showAdvanced: Показать раширенные параметры
+    initialWait: Начальное ожидание
+    interval: Интервал
+    initialWaitHelpText: Как долго ждать перед отправкой уведомления при срабатывании предупреждения.
+    repeatIntervalHelpText: Повторите интервал отправки уведомления, когда предупреждение активно.
+    whenA: Когда
+    whenAn: Когда
+    happens: Случается
+    sendA: Отправить
+    to: Кому
+    alert: Уведомление
+    is: Это
+    lessThan: меньше, чем
+    and: И
+    critical: Критичный
+    notReady: Не готов
+    notScheduled: Не запланировано
+    enableMonitoring: включить мониторинг
+    for: Для
+  resourceKinds:
+    #backend use capitalized name
+    Pod: Под
+    Node: Узел
+  targetTypes:
+    pod: Под
+    node: Узел
+    deployment: Развертывание
+    workload: Нагрузка
+    event: Событие
+    metric: Метрики
 podSecurityPoliciesPage:
   index:
-    header: Политики безопасности Устручков
+    header: Политики безопасности подов
     description: Применить политики к элементам, созданным пользователем с этой ролью
     table:
       name: Имя
       created: Время создания
       noData: Не определены политики безопасности капсулы
-      noMatch: Политики безопасности стручка не соответствуют текущему поиску
+      noMatch: Политики безопасности пода не соответствуют текущему поиску
   addPodSecurityPolicy: Добавить политику
   editPodSecurityPolicy: Изменить политику
   detail:
@@ -852,7 +940,7 @@ dnsPage:
     cname: Имя хоста
     alias: Псевдоним
     workload: Нагрузка
-    selector: Выборщик
+    selector: Селектор
     clusterIp: Кластер IP
     unknown: Неизвестно
   table:
@@ -958,7 +1046,7 @@ nodesPage:
     cpu: ЦП
     memory: ОЗУ
     disk: Диски
-    pod: Устручки
+    pod: Поды
     version: Версия
     docker: Docker
     instanceState: Состояние контейнеров
@@ -1017,7 +1105,7 @@ hostsPage:
     operatingSystem: Операционная система
     conditions:
       diskSpace: Дисковое пространство
-      diskPressure: Давление диска
+      diskPressure: Нагрузка диска
       memoryPressure: Давление в памяти
       ready: Kubelet
     limits:
@@ -1166,7 +1254,7 @@ servicePage:
       }
     externalHostname: 'Внешнее доменное имя:'
   selector:
-    label: 'Выборщик:'
+    label: 'Селектор:'
   containersTab:
     title: 'Контейнеры'
     detail: 'Контейнеры, которые составляют эту услугу.'
@@ -1207,11 +1295,11 @@ servicePage:
     detail: 'Недавние события оркестровки, которые произошли для этой службы'
   type:
     service: Сервис
-    selectorservice: Выборщик
+    selectorservice: Селектор
     loadbalancerservice: Балансировщик нагрузки
     dnsservice: Алиас
     externalservice-ip: Внешний IP
-    externalservice-host: Внешнее Имя
+    externalservice-host: Внешнее Имя(Домен)
     kubernetesservice: K8s сервис
     composeservice: Составить сервис
     networkdriverservice: Сетевая служба
@@ -1377,9 +1465,9 @@ ldap:
       freeipa: Аутентифицироваться с FreeIPA
   header:
     disabled:
-      label: "Аунтификация через {providerName} не настроена"
+      label: "Аутентификация через {providerName} не настроена"
   accessEnabled:
-    header: Аунтификация
+    header: Аутентификация
     subtext: "Чтобы изменить настройки сервера - отключите контроль доступа чуть ниже и настройте всё по-новой."
     general:
       header: Общие
@@ -1451,7 +1539,7 @@ ldap:
     password:
       labelText: Ваш пароль
     authenticate:
-      pre: Аунтифицировать
+      pre: Аутентифицировать
       post: "Проверяем..."
 servicePartial:
   noContainers:
@@ -2632,7 +2720,7 @@ formSupplementalGroupsPodSecurityPolicy:
       placeholder: напр. 1
 formBasicPodSecurityPolicy:
   title: Основные правила
-  detail: Конфигурировать основные правила безопасности стручка
+  detail: Конфигурировать основные правила безопасности пода
   allowPrivilegeEscalation:
     label: Разрешить эскалацию привилегий
     disable: "Нет"
@@ -2937,7 +3025,7 @@ schedulingRuleRow:
   of: для
   hostLabel: Метка хоста
   containerLabel: контейнер с меткой
-  serviceName: услуга с именем
+  serviceName: сервис с именем
   containerName: контейнер с именем
 siteAccess:
   header: Доступ к сайту
@@ -2957,7 +3045,7 @@ systemInfoSection:
   dockerVersion: Версия Docker
   kernelVersion: Версия ядра
   kubeletVersion: Версия Kubelet
-  kubeProxyVersion: Kube-Прокси Версия
+  kubeProxyVersion: Версия Kube-Прокси
   operatingSystem: Изображение операционной системы
   osType: Операционная система
   noMatch: Никакая системная информация не соответствует текущему поиску
@@ -3000,8 +3088,8 @@ volumeRow:
     readOnly: "(только для чтения)"
 waitKubernetes:
   addHost: 'Добавьте хотя бы один хост'
-  activateHost: 'В ожидании активности хоста'
-  createStack: 'Создание для Kubernetes системных стеков'
+  activateHost: 'Выполняется активация хоста'
+  createStack: 'Создание системных стеков для Kubernetes'
   startServices: 'Запуск сервисов'
   waitApi: 'Ожидание для Kubernetes API'
 ##############################
@@ -3033,7 +3121,7 @@ nav:
     containers: Нагрузки
     dns: Служба Обнаружения
     volumes: Тома
-    deploy: Развернут
+    deploy: Развернуть
     addContainer: Добавить контейнер
     addDns: Добавить запись
     addVolume: Добавить раздел
@@ -3106,6 +3194,7 @@ action:
   garbageCollect: Очистка
   logs: Смотреть логи
   move: Переместить
+  pause: Приостановить управление
   pauseAll: Приостановить Все
   remove: Удалить
   replay: Повторить
