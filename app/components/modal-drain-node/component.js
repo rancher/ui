@@ -16,6 +16,11 @@ export default Component.extend(ModalBase, {
 
   resources: alias('modalService.modalOpts.resources'),
 
+  init() {
+    this._super(...arguments);
+    this.selection = {};
+  },
+
   actions: {
     drain() {
       const nodeDrainInput = { ...get(this, 'selection') };
