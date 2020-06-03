@@ -6,7 +6,6 @@ import { get, set, setProperties } from '@ember/object';
 import { randomStr } from 'shared/utils/util';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
-import { lt } from 'semver';
 
 export default Route.extend({
   modalService: service('modal'),
@@ -157,14 +156,6 @@ export default Route.extend({
         if ( neuApp.id ) {
           const v = get(neuApp, 'externalIdInfo.version');
           const currentVersion = verArr.filter((ver) => ver.version === v);
-
-          verArr = verArr.filter((ver) => {
-            if ( lt(ver.version, currentVersion.firstObject.version) ) {
-              return false;
-            }
-
-            return true;
-          });
 
           if ( currentVersion.length === 0 ) {
             verArr.unshift({
