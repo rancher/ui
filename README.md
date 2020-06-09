@@ -74,7 +74,7 @@ If you want to customize the UI, re-packaging all of Rancher to distribute the U
 - Upload `./dist/static/latest2` so that it's available at https://your-server.com/latest2
   - It must be available over HTTPS.
   - You can rename the "latest2" part with the `-v` flag
-- Change the value of http[s]://your-rancher:8080/v3/settings/ui-index to the same `https://yourserver.com/latest2` URL
+- Change the value of https://your-rancher/v3/settings/ui-index to the same `https://your-server.com/latest2` URL
 
 ### Running Tests
 
