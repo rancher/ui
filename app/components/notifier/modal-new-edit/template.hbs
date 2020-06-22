@@ -428,6 +428,137 @@
       </div>
     </div>
   </div>
+{{else if (eq currentType "dingtalk")}}
+  <div class="row">
+    <div class="col span-12 mt-0 mb-0">
+      <FormNameDescription
+        @name={{model.name}}
+        @nameRequired={{true}}
+        @nameDisabled={{false}}
+        @description={{model.description}}
+        @bothColClass="col span-6 mt-0"
+        @colClass="col span-12 mt-0"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-12">
+      <div class="acc-label text-capitalize">
+        {{t "notifierPage.dingtalk.url"}}{{field-required}}
+      </div>
+      <Input
+        @type="text"
+        @value={{model.dingtalkConfig.url}}
+        @placeholder={{t "notifierPage.dingtalk.urlPlaceholder"}}
+        @classNames="form-control"
+      />
+    </div>
+  </div>
+   <div class="row">
+    <div class="col span-12">
+      <div class="acc-label text-capitalize">
+        {{t "notifierPage.dingtalk.secret"}}
+      </div>
+      <Input
+        @type="text"
+        @value={{model.dingtalkConfig.secret}}
+        @placeholder={{t "notifierPage.dingtalk.secretPlaceholder"}}
+        @classNames="form-control"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-12">
+      <label
+        class="acc-label text-capitalize"
+        for="input-dingtalk-config-proxy-url"
+      >
+        {{t "notifierPage.proxyUrl.label"}}
+      </label>
+      <Input
+        @type="text"
+        @value={{model.dingtalkConfig.proxyUrl}}
+        @id="input-dingtalk-config-proxy-url"
+        @placeholder={{t "notifierPage.proxyUrl.placeholder"}}
+        @classNames="form-control"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "notifierPage.sendResolved.label"}}
+      </label>
+      <div class="checkbox">
+        <label>
+          <Input
+            @type="checkbox"
+            @checked={{model.sendResolved}}
+          />
+          {{t "generic.enable"}}
+        </label>
+      </div>
+    </div>
+  </div>
+{{else if (eq currentType "msteams")}}
+  <div class="row">
+    <div class="col span-12 mt-0 mb-0">
+      <FormNameDescription
+        @name={{model.name}}
+        @nameRequired={{true}}
+        @nameDisabled={{false}}
+        @description={{model.description}}
+        @bothColClass="col span-6 mt-0"
+        @colClass="col span-12 mt-0"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-12">
+      <div class="acc-label text-capitalize">
+        {{t "notifierPage.msteams.url"}}{{field-required}}
+      </div>
+      <Input
+        @type="text"
+        @value={{model.msteamsConfig.url}}
+        @placeholder={{t "notifierPage.msteams.urlPlaceholder"}}
+        @classNames="form-control"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-12">
+      <label
+        class="acc-label text-capitalize"
+        for="input-microsoft-config-proxy-url"
+      >
+        {{t "notifierPage.proxyUrl.label"}}
+      </label>
+       <Input
+          @type="text"
+          @value={{model.msteamsConfig.proxyUrl}}
+          @id="input-msteams-config-proxy-url"
+          @placeholder={{t "notifierPage.proxyUrl.placeholder"}}
+          @classNames="form-control"
+        />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "notifierPage.sendResolved.label"}}
+      </label>
+      <div class="checkbox">
+        <label>
+           <Input
+            @type="checkbox"
+            @checked={{model.sendResolved}}
+           />
+          {{t "generic.enable"}}
+        </label>
+      </div>
+    </div>
+  </div>
 {{/if}}
 
 {{#if (eq currentType "slack")}}

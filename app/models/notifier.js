@@ -21,12 +21,14 @@ export default Resource.extend({
     return `${ get(this, 'displayName') } (${ upperCaseType })`
   }),
 
-  notifierTableLabel: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', 'wechatConfig', function(){
+  notifierTableLabel: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', 'wechatConfig', 'dingtalkConfig', 'msteamsConfig', function(){
     const sc = get(this, 'slackConfig');
     const pc = get(this, 'pagerdutyConfig');
     const ec = get(this, 'smtpConfig');
     const wc = get(this, 'webhookConfig');
     const wcc = get(this, 'wechatConfig');
+    const dtc = get(this, 'dingtalkConfig');
+    const msc = get(this, 'msteamsConfig');
 
     if ( sc ) {
       return C.NOTIFIER_TABLE_LABEL.SLACK;
@@ -43,16 +45,24 @@ export default Resource.extend({
     if ( wcc ) {
       return C.NOTIFIER_TABLE_LABEL.WECHAT;
     }
+    if ( dtc ) {
+      return C.NOTIFIER_TABLE_LABEL.DINGTALK;
+    }
+    if ( msc ) {
+      return C.NOTIFIER_TABLE_LABEL.MICROSOFTTEAMS;
+    }
 
     return C.NOTIFIER_TABLE_LABEL.DEFAULT;
   }),
 
-  notifierType: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', 'wechatConfig', function(){
+  notifierType: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', 'wechatConfig', 'dingtalkConfig', 'msteamsConfig', function(){
     const sc = get(this, 'slackConfig');
     const pc = get(this, 'pagerdutyConfig');
     const ec = get(this, 'smtpConfig');
     const wc = get(this, 'webhookConfig');
     const wcc = get(this, 'wechatConfig');
+    const dtc = get(this, 'dingtalkConfig');
+    const msc = get(this, 'msteamsConfig');
 
     if ( sc ) {
       return 'slack';
@@ -68,6 +78,12 @@ export default Resource.extend({
     }
     if ( wcc ) {
       return 'wechat';
+    }
+    if ( dtc ) {
+      return 'dingtalk';
+    }
+    if ( msc ) {
+      return 'msteams';
     }
 
     return null;
