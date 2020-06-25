@@ -1,0 +1,116 @@
+{{#accordion-list-item
+  title=(t "formRunAsGroupPodSecurityPolicy.title")
+  detail=(t "formRunAsGroupPodSecurityPolicy.detail")
+  status=status
+  statusClass=statusClass
+  expandAll=expandAll
+  expand=(action expandFn)
+}}
+  <div class="row">
+    {{#if (and readOnly (eq model.runAsGroup.rule "RunAsAny"))}}
+      {{t "formRunAsGroupPodSecurityPolicy.rule.runAsAny"}}
+    {{else if (and readOnly (eq model.runAsGroup.rule "MayRunAs"))}}
+      {{t "formRunAsGroupPodSecurityPolicy.rule.mayRunAs"}}
+    {{else if (and readOnly (eq model.runAsGroup.rule "MustRunAs"))}}
+      {{t "formRunAsGroupPodSecurityPolicy.rule.mustRunAs"}}
+    {{else}}
+      <div class="radio input">
+        <label>
+          {{radio-button selection=model.runAsGroup.rule value="MustRunAs"}}
+          {{t "formRunAsGroupPodSecurityPolicy.rule.mustRunAs"}}
+        </label>
+      </div>
+      <div class="radio input">
+        <label>
+          {{radio-button
+            selection=model.runAsGroup.rule
+            value="MayRunAs"
+          }}
+          {{t "formRunAsGroupPodSecurityPolicy.rule.mayRunAs"}}
+        </label>
+      </div>
+      <div class="radio input">
+        <label>
+          {{radio-button selection=model.runAsGroup.rule value="RunAsAny"}}
+          {{t "formRunAsGroupPodSecurityPolicy.rule.runAsAny"}}
+        </label>
+      </div>
+    {{/if}}
+  </div>
+  {{#if (or (eq model.runAsGroup.rule "MustRunAs") (eq model.runAsGroup.rule "MayRunAs"))}}
+    <div class="row mt-20">
+      {{#if (or (eq model.runAsGroup.rule "MustRunAs") (eq model.runAsGroup.rule "MayRunAs"))}}
+        <table class="table fixed no-lines no-top-padding mt-10">
+          <tr class="hidden-sm hidden-xs">
+            <th>
+              {{t "formRunAsGroupPodSecurityPolicy.range.min.label"}}
+              {{#unless readOnly}}
+                {{field-required}}
+              {{/unless}}
+            </th>
+            <th width="30"></th>
+            <th>
+              {{t "formRunAsGroupPodSecurityPolicy.range.max.label"}}
+              {{#unless readOnly}}
+                {{field-required}}
+              {{/unless}}
+            </th>
+            <th width="40"></th>
+          </tr>
+          {{#each model.runAsGroup.ranges as |range|}}
+            <tr class="sm-noborder">
+              <td data-title={{t "formRunAsGroupPodSecurityPolicy.range.min.label"}}>
+                {{input
+                  class="form-control input-sm"
+                  type="number"
+                  disabled=readOnly
+                  value=range.min
+                  placeholder=(t "formRunAsGroupPodSecurityPolicy.range.min.placeholder")
+                }}
+              </td>
+              <td class="text-center">
+                <p>
+                  <i class="icon icon-chevron-right"></i>
+                </p>
+              </td>
+              <td data-title={{t "formRunAsGroupPodSecurityPolicy.range.max.label"}}>
+                {{input
+                  class="form-control input-sm"
+                  type="number"
+                  disabled=readOnly
+                  value=range.max
+                  placeholder=(t "formRunAsGroupPodSecurityPolicy.range.max.placeholder")
+                }}
+              </td>
+              <td class="text-right">
+                {{#unless readOnly}}
+                  <button
+                    class="btn bg-primary btn-sm"
+                    {{action "remove" range}}
+                  >
+                    <i class="icon icon-minus"></i>
+                    <span class="sr-only">
+                      {{t "generic.remove"}}
+                    </span>
+                  </button>
+                {{/unless}}
+              </td>
+            </tr>
+          {{/each}}
+        </table>
+      {{/if}}
+      {{#unless readOnly}}
+        <div>
+          <button class="btn bg-link icon-btn" {{action "add"}}>
+            <span class="darken">
+              <i class="icon icon-plus text-small"></i>
+            </span>
+            <span>
+              {{t "formRunAsGroupPodSecurityPolicy.range.addLabel"}}
+            </span>
+          </button>
+        </div>
+      {{/unless}}
+    </div>
+  {{/if}}
+{{/accordion-list-item}}
