@@ -7049,9 +7049,25 @@ formHostPortsPodSecurityPolicy:
       label: Min
       placeholder: e.g. 6000
 
+formRunAsGroupPodSecurityPolicy:
+  title: Run As Group Policy
+  detail: Controls which primary group ID the containers are run with.
+  rule:
+    mustRunAs: MustRunAs - Requires a range to be configured. Uses the first value of the range as the default. Validates against the configured range.
+    mayRunAs: MayRunAs - Does not require that RunAsGroup be specified. However, when RunAsGroup is specified, they have to fall in the defined range.
+    runAsAny: RunAsAny - No default provided. Allows any runAsGroup to be specified.
+  range:
+    addLabel: Add Range
+    max:
+      label: Max
+      placeholder: e.g. 65535
+    min:
+      label: Min
+      placeholder: e.g. 1
+
 formRunAsUserPodSecurityPolicy:
   title: Run As User Policy
-  detail: The user ID
+  detail: Controls which user ID the containers are run with.
   rule:
     mustRunAs: MustRunAs - Requires a range to be configured. Uses the first value of the range as the default. Validates against the configured range.
     mustRunAsNonRoot: MustRunAsNonRoot - Requires that the pod be submitted with a non-zero runAsUser or have the USER directive defined in the image. No default provided.
