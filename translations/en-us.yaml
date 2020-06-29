@@ -1366,6 +1366,7 @@ clustersPage:
   clusterLaunchDisabled: "You have not been granted access to any RKE Templates."
   launch:
     new: Add Cluster
+    import: Import Cluster
   cluster:
     label: Cluster Name
   templateRevision:
@@ -3331,6 +3332,131 @@ clusterNew:
     access:
       title: Account Access
       detail: Choose the region and API Key that will be used to launch Amazon EKS
+      region: Region
+      next: "Next: Configure Cluster"
+    clusterOption:
+      title: Cluster Options
+      detail: Customize the cluster that will be used to launch EKS Instances
+    kubernetesVersion:
+      label: Kubernetes Version
+      placeholder: Select the Kubernetes Version to install
+    secretsEncryption:
+      label: Secrets Encryption
+      disabled: None
+      kms: "KMS Key: Select or Enter KMS Key that will be used to encrypt secrets"
+      kmsHelpLabel: KMS Key ARN
+    tags:
+      label: Tags
+      addActionLabel: Add Tag
+    nodeGroups:
+      title: Managed Node Groups
+      detail: Customize managed node groups.
+      addLabel: Add Node Group
+      noNodes: No Node Groups
+    role:
+      label: Service Role
+      noneSelected: "Rancher created role"
+      help: "You may choose to not select a Service Role and one will be created for you."
+      radio:
+        default: "Standard: Service role is automatically created"
+        custom: "Custom: Choose from your existing service roles"
+      next: "Next: Select VPC & Subnet"
+      loading: "Loading VPCs from Amazon..."
+    vpc:
+      title: VPC & Subnet
+      detail: Choose the VPC for that will be used for EKS Instances
+      next: "Next: Select Subnets"
+      loading: "Loading Subnets from Amazon..."
+      nextRancherDefault: "Next: Select Instance Options"
+      loadingRancherDefault: "Loading Instance options..."
+      noneSelected: "Rancher created VPC and Subnet"
+      radio:
+        default: "Standard: VPC and Subnet are automatically created"
+        custom: "Custom: Choose from your existing VPC and Subnets"
+      access:
+        public:
+          label: Public Access
+        private:
+          label: Private Access
+        endpoints:
+          label: Public Access Endpoints
+          valueLabel: Endpoints
+          addActionLabel: Add Endpoint
+          helpBlock: Optionally limit access to the public endpoint via explicit CIDR blocks. If you limit access to specific CIDR blocks, then it is recommended that you also enable the private access to avoid loosing network communitcation to the cluster.
+    logging:
+      title: Logging
+      detail: "Configure control plane logs to send to Amazon CloudWatch. You are charged the standard CloudWatch Logs data ingestion and storage costs for any logs sent to CloudWatch Logs from your clusters."
+      audit:
+        label: Audit
+        tooltip: "Kubernetes audit logs provide a record of the individual users, administrators, or system components that have affected your cluster."
+      api:
+        label: API
+        tooltip: "Your cluster's API server is the control plane component that exposes the Kubernetes API."
+      scheduler:
+        label: Scheduler
+        tooltip: "The scheduler component manages when and where to run pods in your cluster."
+      controllerManager:
+        label: Controller Manaager
+        tooltip: "The controller manager manages the core control loops that are shipped with Kubernetes."
+      authenticator:
+        label: Authenticator
+        tooltip: "Authenticator logs are unique to Amazon EKS. These logs represent the control plane component that Amazon EKS uses for Kubernetes Role Based Access Control (RBAC) authentication using IAM credentials."
+    subnet:
+      title: Subnet
+      help: 2 subnets required
+      next: "Next: Select Security Group"
+      loading: "Loading Security Groups from Amazon..."
+    associateWorkerNodePublicIp:
+      title: Public IP for Worker Nodes
+      radio:
+        default: Yes
+        off: 'No: Private IPs only'
+    securityGroup:
+      title: Security Groups
+      detail: Choose the security groups that will be applied to EKS Instances
+      choose:  Choose one or more existing groups
+      defaultExisting: "Standard: Use the existing <code>{groupName}</code> group"
+      defaultCreate: "Standard: Automatically create a new security group"
+      next: "Next: Set Instance options"
+      loading: Loading Instance options...
+    ami:
+      label: Custom AMI Override
+      help: "You may override the default AMI based on your region"
+    max:
+      label: Maximum ASG Size
+    min:
+      label: Minimum ASG Size
+    desired:
+      label: Desired ASG Size
+    userData:
+      label: User Data
+      help: Pass user-data to the nodes to perform automated configuration tasks
+      placeholder: Paste in the script
+    nodeVolumeSize:
+      label: Node Volume Size
+      placeholder: e.g. 20
+    accessKey:
+      label: Access Key
+      placeholder: Your AWS access key
+    secretKey:
+      label: Secret Key
+      placeholder: Your AWS secret key
+      provided: Provided
+    sessionToken:
+      label: "Session Token  <em class='text-muted'>Optional</em>"
+      placeholder: Your AWS session token
+      provided: Provided
+    region:
+      label: Region
+    import:
+      clusterSelect:
+        title: Choose Cluster
+        detail: Choose an EKS cluster to import
+        select:
+          label: Cluster To Import
+        input:
+          label: Cluster Name To Import
+        createLabel: Import Cluster
   tencenttke:
     label: Tencent Kubernetes Engine
     shortLabel: Tencent TKE
@@ -4291,9 +4417,22 @@ clusterNew:
   import:
     label: Import an existing cluster
     shortLabel: Imported
-    helpBlock: "Import an existing Kubernetes cluster. For <a id='k3s-info-external-link' href='https://k3s.io/' target='_blank' rel='nofollow noreferrer'>K3S backed clusters</a>, {appName} can manage some aspects of the cluster configuration, such as version upgrades. For standard Kubernetes clusters, the provider will manage provisioning and configuration."
+    helpBlock: "Import an existing Kubernetes cluster."
     command:
       instructionsAdminRole: "<b>Note:</b> If you want to import a Google Kubernetes Engine (GKE) cluster (or any cluster that does not supply you with a kubectl configuration file with the ClusterRole <b>cluster-admin</b> bound to it), you need to bind the ClusterRole <b>cluster-admin</b> using the command below.<br/><br/>Replace <b>[USER_ACCOUNT]</b> with your Google account address (you can retrieve this using <b>gcloud config get-value account</b>). If you are not importing a Google Kubernetes Engine cluster, replace <b>[USER_ACCOUNT]</b> with the executing user configured in your kubectl configuration file."
+      instructions: "Run the kubectl command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {appName}:"
+      instructionsInsecure: "If you get an error about 'certificate signed by unknown authority' because your {appName} installation is running with an untrusted/self-signed SSL certificate, run the command below instead to bypass the certificate check:"
+    select:
+      other:
+        title: Other
+        helpBlock: "For <a id='k3s-info-external-link' href='https://k3s.io/' target='_blank' rel='nofollow noreferrer'>K3S backed clusters</a>, {appName} can manage some aspects of the cluster configuration, such as version upgrades. For standard Kubernetes clusters, the provider will manage provisioning and configuration."
+      eks:
+        title: Amazon EKS
+  importEks:
+    label: Import an existing Amazon EKS cluster
+    shortLabel: Imported
+    helpBlock: "Import an existing Amazon EKS Kubernetes cluster."
+    command:
       instructions: "Run the kubectl command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {appName}:"
       instructionsInsecure: "If you get an error about 'certificate signed by unknown authority' because your {appName} installation is running with an untrusted/self-signed SSL certificate, run the command below instead to bypass the certificate check:"
 
@@ -7225,6 +7364,34 @@ inputPassword:
 inputTextFile:
   tooltip: Read from a file
 
+nodeGroupRow:
+  name:
+    label: Node Group Name
+  instance:
+    label: Instance Type
+  gpu:
+    label: GPU Enabled Instance
+  max:
+    label: Maximum ASG Size
+  min:
+    label: Minimum ASG Size
+  desired:
+    label: Desired ASG Size
+  nodeVolumeSize:
+    label: Node Volume Size
+    placeholder: e.g. 20
+  ssh:
+    label: SSH Key
+  labels:
+    label: Labels
+    addLabel: Add Label
+  tags:
+    label: Tags
+    addLabel: Add Tag
+  remove:
+    label: Remove Node Group
+
+
 uploadFile:
   label: Read from File
 
@@ -8284,22 +8451,28 @@ nodeDriver:
   cloudCredentialError: A cloud credential is required
   nameError: A name is required
   displayName:
-    aliyunecs: Aliyun ECS
     aliyun: Alibaba ACK
+    aliyunecs: Aliyun ECS
     amazonec2: Amazon EC2
     amazoneks: Amazon EKS
+    amazoneksv2: Amazon EKS
     azure: Azure
     azureaks: Azure AKS
+    baidu: Baidu CCE
     cloudca: Cloud.ca
     digitalocean: DigitalOcean
     exoscale: Exoscale
     googlegke: Google GKE
     huaweicce: Huawei CCE
+    import: Other
+    importeks: Amazon EKS
     linode: Linode
     oci: Oracle Cloud Infrastructure
     openstack: OpenStack
+    oracleoke: Oracle OKE
     otc: Open Telekom Cloud
     packet: Packet
+    pinganyunecs: Pinganyun ECS
     rackspace: RackSpace
     rancherkubernetesengine: RKE
     softlayer: SoftLayer
@@ -8307,9 +8480,6 @@ nodeDriver:
     upcloud: UpCloud
     vmwarevsphere: vSphere
     zstack: ZStack
-    pinganyunecs: Pinganyun ECS
-    baidu: Baidu CCE
-    oracleoke: Oracle OKE
   driverOptions: "{driver} Options"
   templateOptions: "{appName} Template"
   amazoneks:

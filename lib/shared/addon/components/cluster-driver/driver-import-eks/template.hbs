@@ -1,0 +1,97 @@
+<AccordionList @showExpandAll={{false}} as |al expandFn|>
+  <AccordionListItem
+    @title={{t "clusterNew.amazoneks.access.title"}}
+    @detail={{t "clusterNew.amazoneks.access.detail"}}
+    @expandAll={{expandAll}}
+    @expand={{action expandFn}}
+    @expandOnInit={{true}}
+  >
+    <div class="row">
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "clusterNew.amazoneks.access.region"}}
+        </label>
+        <select
+          class="form-control"
+          onchange={{action (mut config.region) value="target.value"}}
+        >
+          {{#each regionChoices as |choice|}}
+            <option value={{choice}} selected={{eq config.region choice}}>
+              {{choice}}
+            </option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <FormAuthCloudCredential
+        @cancel={{action "close"}}
+        @cloudCredentialKey="eksConfig.amazonCredentialSecret"
+        @cloudCredentials={{model.cloudCredentials}}
+        @createLabel="clusterNew.amazoneks.access.next"
+        @driverName="amazonec2"
+        @parseAndCollectErrors={{action (mut errors)}}
+        @finishAndSelectCloudCredential={{action
+                                          "finishAndSelectCloudCredential"
+                                        }}
+        @primaryResource={{primaryResource}}
+        @progressStep={{action "fetchEksResources"}}
+        @region={{config.region}}
+        @hideSave={{true}}
+      />
+    </div>
+  </AccordionListItem>
+
+  {{#if (or (and (gte step 2) config.amazonCredentialSecret) (and config.amazonCredentialSecret loadingClusters) )}}
+    <AccordionListItem
+      @title={{t "clusterNew.amazoneks.import.clusterSelect.title"}}
+      @detail={{t "clusterNew.amazoneks.import.clusterSelect.detail"}}
+      @expandAll={{expandAll}}
+      @expand={{action expandFn}}
+      @expandOnInit={{true}}
+    >
+      <div class="row">
+        <div class="col span-6">
+          {{#if loadingClusters}}
+            <section class="horizontal-form">
+              <div class="text-center">
+                <i class="icon icon-spinner icon-spin"></i>
+              </div>
+            </section>
+          {{else}}
+            {{#if loadFailedAllClusters}}
+              <label class="acc-label" for="">
+                {{t "clusterNew.amazoneks.import.clusterSelect.input.label"}}{{field-required}}
+              </label>
+              <Input
+                @type="text"
+                @classNames="form-control"
+                @value={{config.displayName}}
+              />
+            {{else}}
+              <label class="acc-label" for="">
+                {{t "clusterNew.amazoneks.import.clusterSelect.select.label"}}{{field-required}}
+              </label>
+              <SearchableSelect
+                class="form-control"
+                @value={{mut config.displayName}}
+                @content={{allClusters}}
+                @allowCustom={{true}}
+              />
+            {{/if}}
+          {{/if}}
+        </div>
+      </div>
+    </AccordionListItem>
+  {{/if}}
+</AccordionList>
+<TopErrors @errors={{mut allErrors}} />
+{{#if (gte step 2)}}
+  <SaveCancel
+    @createLabel="clusterNew.amazoneks.import.clusterSelect.createLabel"
+    @save={{action "driverSave"}}
+    @saveDisabled={{disableImport}}
+    @editing={{isEdit}}
+    @cancel={{action "close"}}
+  />
+{{/if}}

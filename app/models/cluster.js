@@ -159,6 +159,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
     switch ( get(this, 'configName') ) {
     case 'amazonElasticContainerServiceConfig':
       return 'amazoneks';
+    case 'eksConfig':
+      return 'amazoneksv2';
     case 'azureKubernetesServiceConfig':
       return 'azureaks';
     case 'googleKubernetesEngineConfig':
@@ -192,6 +194,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
     switch ( get(this, 'configName') ) {
     case 'amazonElasticContainerServiceConfig':
+    case 'eksConfig':
       return intl.t('clusterNew.amazoneks.shortLabel');
     case 'azureKubernetesServiceConfig':
       return intl.t('clusterNew.azureaks.shortLabel');
@@ -499,6 +502,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
           ...additionalQueryParams
         }
       };
+
+      if (provider === 'amazoneks' && !isEmpty(get(this, 'eksConfig'))) {
+        set(queryParams, 'queryParams.provider', 'amazoneksv2');
+      }
 
       if (this.clusterTemplateRevisionId) {
         set(queryParams, 'queryParams.clusterTemplateRevision', this.clusterTemplateRevisionId);

@@ -20,6 +20,7 @@ export default Route.extend({
     let modelOut      = {
       originalCluster:            cluster,
       cluster:                    cluster.clone(),
+      cloudCredentials:           globalStore.findAll('cloudcredential'),
       kontainerDrivers:           globalStore.findAll('kontainerDriver'),
       nodeTemplates:              globalStore.findAll('nodeTemplate'),
       nodeDrivers:                globalStore.findAll('nodeDriver'),

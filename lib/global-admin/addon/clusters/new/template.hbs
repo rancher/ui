@@ -5,7 +5,11 @@
     {{else if (eq router.currentRoute.localName "cluster-template")}}
       {{t "clustersPage.select.template.label"}}
     {{else}}
+    {{#if (or (eq provider "import") (eq provider "importeks"))}}
+      {{t "clustersPage.launch.import"}} - {{driver-name provider}}
+    {{else}}
       {{t "clustersPage.launch.new"}} - {{driver-name provider}}
+      {{/if}}
     {{/if}}
   </h1>
 </section>

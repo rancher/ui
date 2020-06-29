@@ -3,49 +3,40 @@
     <label class="acc-label" for="cloud-credential-selection">
       {{t "formAuthCloudCredential.label"}}
     </label>
-
     <div>
       <select
         id="cloud-credential-selection"
         class="form-control inline-block"
-        onchange={{action (mut primaryResource.cloudCredentialId) value="target.value"}}
+        onchange={{action
+          "setCloudCredential"
+          value="target.value"
+        }}
         disabled={{if showAddCloudCredential true}}
         style="max-width: 80%;"
       >
-
-        {{#unless primaryResource.cloudCredentialId}}
-          <option
-            value=""
-            selected=true
-          >
-            {{t "formAuthCloudCredential.selectCreds.prompt"}}
-          </option>
-        {{/unless}}
-
+        <option value="" selected="true">
+          {{t "formAuthCloudCredential.selectCreds.prompt"}}
+        </option>
         {{#each cloudCredentials as |choice|}}
           <option
             value={{choice.id}}
-            selected={{eq primaryResource.cloudCredentialId choice.id}}
+            selected={{eq (get primaryResource cloudCredentialKey) choice.id}}
           >
             {{choice.displayName}}
           </option>
         {{/each}}
       </select>
-
       <button
-        {{action "addCloudCredential"}}
         class="btn btn-sm bg-default inline-block"
         style="margin-top: -5px;"
         disabled={{if showAddCloudCredential true}}
+        {{action "addCloudCredential"}}
       >
         {{t "formAuthCloudCredential.add"}}
       </button>
-
     </div>
   </div>
 </div>
-
-
 {{#if showAddCloudCredential}}
   <div class="row">
     {{cru-cloud-credential
@@ -61,7 +52,7 @@
 {{else}}
   {{#unless hideSave}}
     {{save-cancel
-      saveDisabled=(unless primaryResource.cloudCredentialId true)
+      saveDisabled=(unless (get primaryResource cloudCredentialKey) true)
       save=progressStep
       cancel=cancel
       createLabel=createLabel

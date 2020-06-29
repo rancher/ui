@@ -1,0 +1,150 @@
+<div class="box">
+  <div class="row">
+    <div class="pull-right">
+      <button
+        class="btn bg-transparent text-small vertical-middle"
+        type="button"
+        {{action removeNodeGroup model}}
+      >
+        {{t "nodeGroupRow.remove.label"}}
+      </button>
+    </div>
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "nodeGroupRow.name.label"}}
+      </label>
+      <Input
+        @type="text"
+        @value={{mut model.nodegroupName}}
+        @classNames="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "nodeGroupRow.instance.label"}}
+      </label>
+      <NewSelect
+        class="form-control"
+        @value={{mut model.instanceType}}
+        @content={{ instanceTypes }}
+        @optionValuePath="name"
+        @optionLabelPath="name"
+        @optionGroupPath="group"
+      />
+    </div>
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "nodeGroupRow.nodeVolumeSize.label"}}
+      </label>
+      <div class="input-group">
+        <InputInteger
+          @min={{0}}
+          @value={{mut model.diskSize}}
+          @classNames="form-control"
+          @placeholder={{t "nodeGroupRow.nodeVolumeSize.placeholder"}}
+        />
+        <span class="input-group-addon bg-default">
+          {{t "generic.gigabyte"}}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "nodeGroupRow.desired.label"}}
+      </label>
+      <InputNumber
+        @value={{mut model.desiredSize}}
+        @min={{1}}
+        @classNames="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "nodeGroupRow.max.label"}}
+      </label>
+      <InputNumber
+        @value={{mut model.maxSize}}
+        @min={{1}}
+        @classNames="form-control"
+      />
+    </div>
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "nodeGroupRow.min.label"}}
+      </label>
+      <InputNumber
+        @value={{mut model.minSize}}
+        @min={{1}}
+        @classNames="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "nodeGroupRow.ssh.label"}}
+      </label>
+      {{#if keyPairs}}
+        {{searchable-select
+          classNames="form-control"
+          value=model.ec2SshKey
+          content=keyPairs
+          optionValuePath="KeyName"
+          optionLabelPath="KeyName"
+          prompt=(t "nodeDriver.amazoneks.keyPairs.prompt")
+        }}
+      {{else}}
+        <Input
+          @type="text"
+          @value={{mut model.ec2SshKey}}
+          @classNames="form-control"
+        />
+      {{/if}}
+    </div>
+    <div class="col span-6">
+      <div class="checkbox form-control-static">
+        <label class="acc-label pt-30">
+          <Input
+            @type="checkbox"
+            @checked={{mut model.gpu}}
+            @classNames="form-control"
+          />
+          {{t "nodeGroupRow.gpu.label"}}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "nodeGroupRow.labels.label"}}
+      </label>
+      <FormKeyValue
+        @initialMap={{model.labels}}
+        @changed={{action "setTags"}}
+        @addActionLabel="nodeGroupRow.labels.addLabel"
+      />
+    </div>
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "nodeGroupRow.tags.label"}}
+      </label>
+      <FormKeyValue
+        @initialMap={{model.tags}}
+        @changed={{action "setTags"}}
+        @addActionLabel="nodeGroupRow.tags.addLabel"
+      />
+    </div>
+  </div>
+</div>

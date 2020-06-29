@@ -1,6 +1,7 @@
-
 <label class="acc-label block">
-  {{t valueLabel}}
+  {{#if valueLabelEnabled}}
+    {{t valueLabel}}
+  {{/if}}
   {{#if (and editing required)}}
     {{field-required}}
   {{/if}}
@@ -49,7 +50,7 @@
   <button
     class={{addButtonClass}}
     {{action "add"}}
-    disabled={{cannotAdd}}
+    disabled={{not addButtonEnabled}}
   >
     <span class="darken">
       <i class="icon icon-plus text-small"/>
