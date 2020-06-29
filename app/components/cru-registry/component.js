@@ -85,11 +85,21 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
 
   willSave() {
     const { primaryResource: pr } = this;
-    const nsId = this.namespace && this.namespace.id;
+    let tempSet = false;
 
-    set(pr, 'namespaceId', nsId ? nsId : TEMP_NAMESPACE_ID);
+    if (isEmpty(get(pr, 'namespaceId'))) {
+      // Namespace is required, but doesn't exist yet... so lie to the validator
+      set(pr, 'namespaceId', TEMP_NAMESPACE_ID);
+
+      tempSet = true;
+    }
 
     let ok = this.validate();
+
+    if (tempSet) {
+      // unset temp so that namespacePromise can takeover from here
+      set(pr, 'namespaceId', null);
+    }
 
     return ok;
   },
@@ -108,15 +118,10 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   },
 
   doSave() {
-    let self                       = this;
-    let sup                        = self._super;
-    const { primaryResource: { namespaceId } } = this;
+    let self = this;
+    let sup  = self._super;
 
-    if (isEmpty(namespaceId) || namespaceId === TEMP_NAMESPACE_ID) {
-      return this.namespacePromise().then(() => sup.apply(self, arguments));
-    } else {
-      return sup.apply(self, arguments);
-    }
+    return this.namespacePromise().then(() => sup.apply(self, arguments));
   },
 
   doneSaving() {
