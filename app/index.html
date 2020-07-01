@@ -16,7 +16,27 @@
   <body>
     {{content-for 'body'}}
     <script src="{{content-for 'baseAssets'}}assets/vendor.js"></script>
-    <script src="{{content-for 'baseAssets'}}assets/ui.js"></script>
     {{content-for 'body-footer'}}
+    <section id="ie-not-supported" style="display: none; text-align: center; font-family: Prompt, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, sans-serif;">
+      <br><br>
+      <br><br>
+      <h3>Sorry, IE and Edge are not supported.</h3>
+    </section>
+
+    <script>
+      function manageBrowserSupport() {
+        var agent = window.navigator.userAgent.toLowerCase();
+
+        if ( agent.indexOf('msie ') >= 0 || agent.indexOf('trident/') >= 0 || agent.indexOf('edge/') >= 0 ) {
+          document.getElementById('ie-not-supported').style.display = 'block';
+        } else {
+          var uiScript = document.createElement('script');
+          uiScript.src = "{{content-for 'baseAssets'}}assets/ui.js";
+
+          document.body.appendChild(uiScript);
+        }
+      }
+      manageBrowserSupport();
+    </script>
   </body>
 </html>
