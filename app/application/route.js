@@ -24,15 +24,6 @@ export default Route.extend({
   beforeModel() {
     this.updateWindowTitle();
 
-    let agent = window.navigator.userAgent.toLowerCase();
-
-    // Show the we don't support internet explorer or edge browsers (only edge html based browsers the mobile and chromium based browsers should be okay).
-    if ( agent.indexOf('msie ') >= 0 || agent.indexOf('trident/') >= 0 || agent.indexOf('edge/') >= 0) {
-      this.replaceWith('ie');
-
-      return;
-    }
-
     return (async() => {
       if (!window.Prettycron) {
         window.Prettycron = await import('prettycron');
