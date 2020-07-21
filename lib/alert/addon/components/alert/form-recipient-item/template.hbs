@@ -21,13 +21,16 @@
   </div>
 
   <div class="col mt-0 span-9-of-24">
-    {{input
-        classNames="form-control"
-        placeholder=recipientPlaceholder
-        value=model.recipient
-        showSearch=showSearch
-    }}
-    <p class="help-block text-info text-small">{{t 'alertPage.newOrEdit.recipient.helpText'}}</p>
+    {{#unless (or (eq model.notifierType "dingtalk") (eq model.notifierType "msteams"))}}
+      <Input
+        @type="text"
+        @value={{model.recipient}}
+        @placeholder={{recipientPlaceholder}}
+        @classNames="form-control"
+        @showSearch={{showSearch}}
+      />
+      <p class="help-block text-info text-small">{{t 'alertPage.newOrEdit.recipient.helpText'}}</p>
+    {{/unless}}
   </div>
 
   <div class="col mt-0 span-1-of-24" style="padding-top:2px;">
