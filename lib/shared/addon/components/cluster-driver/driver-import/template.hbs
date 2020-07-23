@@ -1,56 +1,22 @@
-{{#if (and (eq step 1) isK3sCluster)}}
+{{#if (and (eq step 1) (or isK3sCluster isRke2Cluster))}}
   <AccordionList @showExpandAll={{false}} as |al expandFn|>
     <AccordionListItem
-      @title={{t "k3sClusterInfo.title"}}
-      @detail={{t "k3sClusterInfo.detail"}}
+      @title={{t "managedImportClusterInfo.title" provider=cluster.displayProvider}}
+      @detail={{t "managedImportClusterInfo.detail" provider=cluster.displayProvider}}
       @expandAll={{al.expandAll}}
       @everExpanded={{true}}
       @expandOnInit={{true}}
       @expanded={{true}}
       @expand={{action expandFn}}
     >
-      <K3sClusterInfo
+      <ManagedImportClusterInfo
+        @configField={{configField}}
         @cluster={{model.cluster}}
         @originalCluster={{model.originalCluster}}
         @editing={{isEdit}}
+        @errors={{errors}}
       />
     </AccordionListItem>
-
-    <!-- not removing because when we can edit the config this section will come back -->
-    <!-- <AccordionListItem
-         @title={{t "k3sClusterInfo.nodeInfo.title"}}
-         @detail={{t "k3sClusterInfo.nodeInfo.detail"}}
-         @expandAll={{al.expandAll}}
-         @everExpanded={{true}}
-         @expandOnInit={{true}}
-         @expanded={{true}}
-         @expand={{action expandFn}}
-         >
-         <div class="row">
-         <div class="col span-6">
-         <label class="acc-label" for="master-node-select">
-         {{t "k3sClusterInfo.nodeInfo.label"}}
-         </label>
-         {{new-select
-                       id="master-node-select"
-                       classNames="form-control"
-                       optionValuePath="id"
-                       optionLabelPath="displayName"
-                       value=nodeInfoId
-                       content=nodesOptions
-                       action=(action "setActiveNodeForInfo")
-                       prompt="k3sClusterInfo.nodeInfo.selectPrompt"
-                       localizedPrompt=true
-                       }}
-         </div>
-         {{#if nodeForInfo}}
-         <div class="col span-12">
-         <K3sNodeArgs @node={{nodeForInfo}} />
-         <K3sNodeEnvVar @node={{nodeForInfo}} />
-         </div>
-         {{/if}}
-         </div>
-         </AccordionListItem> -->
   </AccordionList>
 
   <TopErrors @errors={{errors}} />

@@ -119,7 +119,7 @@
 
       <FormMembers
         @creator={{model.me}}
-        @editing={{and notView (not isK3sCluster)}}
+        @editing={{and notView (not (or isK3sCluster isRke2Cluster))}}
         @expanded={{expanded}}
         @isNew={{newCluster}}
         @memberConfig={{memberConfig}}
@@ -139,7 +139,7 @@
       expandFn=expandFn
       initialLabels=model.cluster.labels
       model=model.cluster
-      editing=(and notView (not isK3sCluster))
+      editing=(and notView (not (or isK3sCluster isRke2Cluster)))
     }}
   {{/accordion-list}}
 {{/if}}
