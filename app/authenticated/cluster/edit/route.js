@@ -9,7 +9,7 @@ import { scheduleOnce } from '@ember/runloop';
 export default Route.extend({
   access:                 service(),
   globalStore:            service(),
-  k3s:                    service(),
+  releaseVersions:        service(),
   clusterTemplateService: service('clusterTemplates'),
   roleTemplateService:    service('roleTemplate'),
 
@@ -20,6 +20,7 @@ export default Route.extend({
     let modelOut      = {
       originalCluster:            cluster,
       cluster:                    cluster.clone(),
+      cloudCredentials:           globalStore.findAll('cloudcredential'),
       kontainerDrivers:           globalStore.findAll('kontainerDriver'),
       nodeTemplates:              globalStore.findAll('nodeTemplate'),
       nodeDrivers:                globalStore.findAll('nodeDriver'),
@@ -30,8 +31,8 @@ export default Route.extend({
       me:                         get(this, 'access.principal'),
     };
 
-    if (cluster.driver === 'k3s') {
-      modelOut['k3sVersions'] = this.k3s.getAllVersions();
+    if (cluster.driver === 'k3s' || cluster.driver === 'rke2') {
+      this.releaseVersions.getAllVersions(cluster.driver);
     }
 
     if (!isEmpty(cluster.clusterTemplateRevisionId)) {

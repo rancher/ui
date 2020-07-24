@@ -1,15 +1,17 @@
 <div class="row">
   <div class="col span-6">
-    <label class="acc-label">Kubernetes Version</label>
+    <label class="acc-label">
+      {{t "managedImportClusterInfo.kubernetesVersion"}}
+    </label>
     <div class="form-control">
       {{#input-or-display
         editable=(and editing (gt allVersions.length 1))
-        value=k3sConfig.kubernetesVersion
+        value=config.kubernetesVersion
       }}
         {{searchable-select
           classNames="form-control"
           content=allVersions
-          value=k3sConfig.kubernetesVersion
+          value=config.kubernetesVersion
           readOnly=(not editing)
         }}
       {{/input-or-display}}
@@ -23,10 +25,10 @@
         id="drain-master-nodes"
         class="form-control"
         type="checkbox"
-        checked=k3sConfig.k3supgradeStrategy.drainServerNodes
+        checked=upgradeStrategy.drainServerNodes
       }}
       <label for="drain-master-nodes">
-        {{t "k3sClusterInfo.drainServerNodes"}}
+        {{t "managedImportClusterInfo.drainServerNodes"}}
       </label>
     </div>
   </div>
@@ -36,11 +38,11 @@
         id="drain-worker-nodes"
         class="form-control"
         type="checkbox"
-        checked=k3sConfig.k3supgradeStrategy.drainWorkerNodes
+        checked=upgradeStrategy.drainWorkerNodes
         disabled=(not editing)
       }}
       <label for="drain-worker-nodes">
-        {{t "k3sClusterInfo.drainWorkerNodes"}}
+        {{t "managedImportClusterInfo.drainWorkerNodes"}}
       </label>
     </div>
   </div>
@@ -48,38 +50,38 @@
 <div class="row">
   <div class="col span-6">
     <label class="acc-label" for="node-server-concurrency">
-      {{t "k3sClusterInfo.serverConcurrency"}}
+      {{t "managedImportClusterInfo.serverConcurrency"}}
     </label>
     <div class="form-control">
       {{#input-or-display
          editable=editing
-         value=k3sConfig.k3supgradeStrategy.serverConcurrency
+         value=serverConcurrency
       }}
         {{input
           id="node-server-concurrency"
           class="form-control"
           type="number"
           min=1
-          value=k3sConfig.k3supgradeStrategy.serverConcurrency
+          value=serverConcurrency
         }}
       {{/input-or-display}}
     </div>
   </div>
   <div class="col span-6">
     <label class="acc-label" for="node-worker-concurrency">
-      {{t "k3sClusterInfo.workerConcurrency"}}
+      {{t "managedImportClusterInfo.workerConcurrency"}}
     </label>
     <div class="form-control">
       {{#input-or-display
          editable=editing
-         value=k3sConfig.k3supgradeStrategy.workerConcurrency
+         value=workerConcurrency
       }}
         {{input
           id="node-worker-concurrency"
           class="form-control"
           type="number"
           min=1
-          value=k3sConfig.k3supgradeStrategy.workerConcurrency
+          value=workerConcurrency
         }}
       {{/input-or-display}}
     </div>

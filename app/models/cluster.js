@@ -159,6 +159,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
     switch ( get(this, 'configName') ) {
     case 'amazonElasticContainerServiceConfig':
       return 'amazoneks';
+    case 'eksConfig':
+      return 'amazoneksv2';
     case 'azureKubernetesServiceConfig':
       return 'azureaks';
     case 'googleKubernetesEngineConfig':
@@ -169,6 +171,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return 'huaweicce';
     case 'okeEngineConfig':
       return 'oracleoke';
+    case 'rke2Config':
+      return 'rke2';
     case 'rancherKubernetesEngineConfig':
       if ( !pools.length ) {
         return 'custom';
@@ -189,9 +193,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const intl = get(this, 'intl');
     const pools = get(this, 'nodePools');
     const firstPool = (pools || []).objectAt(0);
+    const configName = get(this, 'configName');
 
-    switch ( get(this, 'configName') ) {
+    switch ( configName ) {
     case 'amazonElasticContainerServiceConfig':
+    case 'eksConfig':
       return intl.t('clusterNew.amazoneks.shortLabel');
     case 'azureKubernetesServiceConfig':
       return intl.t('clusterNew.azureaks.shortLabel');
@@ -205,14 +211,17 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return intl.t('clusterNew.huaweicce.shortLabel');
     case 'okeEngineConfig':
       return intl.t('clusterNew.oracleoke.shortLabel');
-    case 'k3sconfig':
+    case 'k3sConfig':
       return intl.t('clusterNew.k3simport.shortLabel');
+    case 'rke2Config':
     case 'rancherKubernetesEngineConfig':
+      var shortLabel = configName === 'rancherKubernetesEngineConfig' ? 'clusterNew.rke.shortLabel' : 'clusterNew.rke2.shortLabel';
+
       if ( !!pools ) {
         if ( firstPool ) {
-          return get(firstPool, 'displayProvider') ? get(firstPool, 'displayProvider') : intl.t('clusterNew.rke.shortLabel');
+          return get(firstPool, 'displayProvider') ? get(firstPool, 'displayProvider') : intl.t(shortLabel);
         } else {
-          return intl.t('clusterNew.rke.shortLabel');
+          return intl.t(shortLabel);
         }
       } else {
         return intl.t('clusterNew.custom.shortLabel');
@@ -499,6 +508,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
           ...additionalQueryParams
         }
       };
+
+      if (provider === 'amazoneks' && !isEmpty(get(this, 'eksConfig'))) {
+        set(queryParams, 'queryParams.provider', 'amazoneksv2');
+      }
 
       if (this.clusterTemplateRevisionId) {
         set(queryParams, 'queryParams.clusterTemplateRevision', this.clusterTemplateRevisionId);
