@@ -1367,6 +1367,7 @@ clustersPage:
   launch:
     new: Add Cluster
     import: Import Cluster
+    register: Register Cluster
   cluster:
     label: Cluster Name
   templateRevision:
@@ -3451,12 +3452,12 @@ clusterNew:
     import:
       clusterSelect:
         title: Choose Cluster
-        detail: Choose an EKS cluster to import
+        detail: Choose an EKS cluster to register
         select:
-          label: Cluster To Import
+          label: Cluster To register
         input:
-          label: Cluster Name To Import
-        createLabel: Import Cluster
+          label: Cluster Name To register
+        createLabel: Register Cluster
   tencenttke:
     label: Tencent Kubernetes Engine
     shortLabel: Tencent TKE
@@ -4413,31 +4414,36 @@ clusterNew:
       title: Authorized Endpoint
       detail: "Enabling the authorized cluster endpoint allows direct communication with the cluster, bypassing the API proxy. Authorized endpoints can be retrieved by generating a kubeconfig for the cluster."
       label: Authorized Cluster Endpoint
+  register:
+    title: Bring an existing Kubernetes cluster
+    label: Register
+    shortLabel: Registered
+    helpBlock: Register an existing Rancher, <a href='https://k3s.io/' target='_blank' rel='nofollow noreferrer'>K3s</a> or EKS cluster.
   custom:
+    title: Create a new Kubernetes cluster
+    subtitle: With RKE and existing nodes
     label: From existing nodes (Custom)
     shortLabel: Custom
     helpBlock: Create a new Kubernetes cluster using RKE, out of existing bare-metal servers or virtual machines.
   import:
     label: Import an existing cluster
     shortLabel: Imported
-    helpBlock: "Import an existing Kubernetes cluster."
+    helpBlock: Import an existing CNCF certified Kubernetes cluster. Kubernetes configuration and infrastructure management is managed outside of Rancher.
     command:
       instructionsAdminRole: "<b>Note:</b> If you want to import a Google Kubernetes Engine (GKE) cluster (or any cluster that does not supply you with a kubectl configuration file with the ClusterRole <b>cluster-admin</b> bound to it), you need to bind the ClusterRole <b>cluster-admin</b> using the command below.<br/><br/>Replace <b>[USER_ACCOUNT]</b> with your Google account address (you can retrieve this using <b>gcloud config get-value account</b>). If you are not importing a Google Kubernetes Engine cluster, replace <b>[USER_ACCOUNT]</b> with the executing user configured in your kubectl configuration file."
       instructions: "Run the kubectl command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {appName}:"
       instructionsInsecure: "If you get an error about 'certificate signed by unknown authority' because your {appName} installation is running with an untrusted/self-signed SSL certificate, run the command below instead to bypass the certificate check:"
     select:
       other:
-        title: Other
-        helpBlock: "For <a id='k3s-info-external-link' href='https://k3s.io/' target='_blank' rel='nofollow noreferrer'>K3S backed clusters</a>, {appName} can manage some aspects of the cluster configuration, such as version upgrades. For standard Kubernetes clusters, the provider will manage provisioning and configuration."
+        title: Rancher or K3s
+        helpBlock: "Register existing Rancher or <a id='k3s-info-external-link' href='https://k3s.io/' target='_blank' rel='nofollow noreferrer'>K3s</a> backed cluster."
       eks:
         title: Amazon EKS
+        helpBlock: "Register an existing Amazon EKS cluster."
   importEks:
-    label: Import an existing Amazon EKS cluster
-    shortLabel: Imported
-    helpBlock: "Import an existing Amazon EKS Kubernetes cluster."
-    command:
-      instructions: "Run the kubectl command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {appName}:"
-      instructionsInsecure: "If you get an error about 'certificate signed by unknown authority' because your {appName} installation is running with an untrusted/self-signed SSL certificate, run the command below instead to bypass the certificate check:"
+    label: Register an existing Amazon EKS cluster
+    shortLabel: Registered
+    helpBlock: "Register an existing Amazon EKS Kubernetes cluster."
 
 clusterTemplateNew:
   members:
