@@ -1,4 +1,7 @@
 <div class="launch-cluster">
+  <h2>
+    {{t "clusterNew.register.title"}}
+  </h2>
   <div class="row mb-20">
     {{#if disabledAddCluster}}
       <BannerMessage
@@ -10,22 +13,22 @@
     <div class="row-same-height row-full-height">
       <a
         class="col span-6 cluster-driver-box span-height full-height"
-        href="{{href-to "global-admin.clusters.new.launch" "custom"}}"
+        href="{{href-to "global-admin.clusters.new.launch" "import" (query-params register=true)}}"
         disabled={{disabledAddCluster}}
       >
         <div class="machine-driver custom-driver"></div>
         <div class="driver-content">
           <h3>
-            {{t "clusterNew.custom.label"}}
+            {{t "clusterNew.register.label"}}
           </h3>
           <p class="help-block">
-            {{t "clusterNew.custom.helpBlock"}}
+            {{t "clusterNew.register.helpBlock" htmlSafe=true}}
           </p>
         </div>
       </a>
       <a
         class="col span-6 cluster-driver-box span-height full-height"
-        href="{{href-to "global-admin.clusters.new.launch" "import"}}"
+        href="{{href-to "global-admin.clusters.new.launch" "import" (query-params importProvider='other')}}"
         disabled={{disabledAddCluster}}
       >
         <div class="machine-driver import-driver"></div>
@@ -39,6 +42,33 @@
               appName=settings.appName
               htmlSafe=true
             }}
+          </p>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    <h2>
+      {{t "clusterNew.custom.title"}}
+    </h2>
+    <div class="col span-12 mt-0">
+      <div>
+        <label class="acc-label">
+          {{t "clusterNew.custom.subtitle"}}
+        </label>
+      </div>
+      <a
+        class="col span-6 cluster-driver-box span-height full-height"
+        href="{{href-to "global-admin.clusters.new.launch" "custom"}}"
+        disabled={{disabledAddCluster}}
+      >
+        <div class="machine-driver custom-driver"></div>
+        <div class="driver-content">
+          <h3>
+            {{t "clusterNew.custom.label"}}
+          </h3>
+          <p class="help-block">
+            {{t "clusterNew.custom.helpBlock"}}
           </p>
         </div>
       </a>
