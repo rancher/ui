@@ -115,7 +115,7 @@ module.exports = function(defaults) {
   app.import('vendor/icons/style.css');
 
   app.import('node_modules/ember-source/dist/ember-template-compiler.js');
-  app.import('vendor/aws-sdk-eks-ec2-iam-2.348.0.min.js');
+  app.import('vendor/aws-sdk-eks-ec2-iam-kms-2.705.0.min.js');
   app.import('vendor/ember-shortcuts.js');
   app.import('vendor/aliyun-sdk.js');
   app.import('vendor/cce-sdk.js');
