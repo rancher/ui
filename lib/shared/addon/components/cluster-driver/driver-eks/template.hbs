@@ -259,12 +259,13 @@
             </label>
             <FormValueArray
               @initialValues={{config.publicAccessSources}}
-              @changed={{mut config.publicAccessSources}}
+              @changed={{action (mut config.publicAccessSources)}}
               @editing={{gte step 3}}
               @addButtonEnabled={{config.publicAccess}}
               @valueLabelEnabled={{false}}
               @valueLabel="clusterNew.amazoneks.vpc.access.endpoints.valueLabel"
               @addActionLabel="clusterNew.amazoneks.vpc.access.endpoints.addActionLabel"
+              @addInitialEmptyRow={{true}}
             />
           </div>
         </div>
