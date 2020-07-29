@@ -259,12 +259,13 @@
             </label>
             <FormValueArray
               @initialValues={{config.publicAccessSources}}
-              @changed={{mut config.publicAccessSources}}
+              @changed={{action (mut config.publicAccessSources)}}
               @editing={{gte step 3}}
               @addButtonEnabled={{config.publicAccess}}
               @valueLabelEnabled={{false}}
               @valueLabel="clusterNew.amazoneks.vpc.access.endpoints.valueLabel"
               @addActionLabel="clusterNew.amazoneks.vpc.access.endpoints.addActionLabel"
+              @addInitialEmptyRow={{true}}
             />
           </div>
         </div>
@@ -339,7 +340,7 @@
       />
     {{/if}}
   {{/if}}
-  {{#if (and (gte step 4) (eq vpcSubnetMode "custom"))}}
+  {{#if (and (gte step 4) (or (eq vpcSubnetMode "custom") (eq mode "edit")))}}
     <AccordionListItem
       @title={{t "clusterNew.amazoneks.securityGroup.title"}}
       @detail={{t "clusterNew.amazoneks.securityGroup.detail"}}
@@ -349,7 +350,7 @@
       @expand={{action expandFn}}
     >
       <div class="row">
-        {{#if (eq step 4)}}
+        {{#if (and (eq step 4) (not-eq mode "edit"))}}
           <select
             class="form-control existing-security-groups"
             multiple="true"
@@ -367,7 +368,7 @@
               </option>
             {{/each}}
           </select>
-        {{else if config.securityGroups}}
+        {{else if (or config.securityGroups primaryResource.eksStatus.securityGroups)}}
           {{#each config.securityGroups as |sg|}}
             <div>
               {{sg}}
