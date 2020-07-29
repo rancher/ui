@@ -22,7 +22,7 @@
               </option>
             {{/each}}
           </select>
-          {{else}}
+        {{else}}
           <div>
             {{config.region}}
           </div>
@@ -38,8 +38,8 @@
           @driverName="amazonec2"
           @parseAndCollectErrors={{action "errorHandler"}}
           @finishAndSelectCloudCredential={{action
-                                            "finishAndSelectCloudCredential"
-                                          }}
+            "finishAndSelectCloudCredential"
+          }}
           @primaryResource={{primaryResource}}
           @progressStep={{action "startAwsConfiguration"}}
           @region={{config.region}}
@@ -59,7 +59,6 @@
       {{/if}}
     </div>
   </AccordionListItem>
-
   {{#if (gte step 2)}}
     <AccordionListItem
       @title={{t "clusterNew.amazoneks.clusterOption.title"}}
@@ -166,7 +165,7 @@
                 <NewSelect
                   class="form-control"
                   @value={{mut config.kmsKey}}
-                  @content={{ kmsKeys }}
+                  @content={{kmsKeys}}
                   @useContentForDefaultValue={{true}}
                   @optionValuePath="KeyArn"
                   @optionLabelPath="KeyArn"
@@ -305,14 +304,21 @@
                     {{#each group.subnets as |choice|}}
                       <option
                         value={{choice.subnetId}}
-                        selected={{array-includes config.subnets choice.subnetId}}
+                        selected={{array-includes config.subnets choice.subnetId
+                        }}
                       >
-                        {{choice.subnetName}} ({{choice.subnetId}})
+                        {{choice.subnetName}}
+                        (
+                        {{choice.subnetId}}
+                        )
                       </option>
                     {{/each}}
                   </optgroup>
                 {{/each}}
               </select>
+              <p class="help-block mt-5">
+                {{t "clusterNew.amazoneks.subnet.help"}}
+              </p>
             {{/unless}}
           {{else}}
             <div class="col span-6">
@@ -332,7 +338,7 @@
     {{#if (eq step 3)}}
       <SaveCancel
         @editing={{eq mode "edit"}}
-        @saveDisabled={{lte config.subnets.length 0}}
+        @saveDisabled={{and (eq vpcSubnetMode "custom") (lte selectedSubnets.length 1)}}
         @save={{action "setSubnets"}}
         @cancel={{close}}
         @createLabel="clusterNew.amazoneks.subnet.next"
@@ -368,7 +374,8 @@
               </option>
             {{/each}}
           </select>
-        {{else if (or config.securityGroups primaryResource.eksStatus.securityGroups)}}
+        {{else if
+          (or config.securityGroups primaryResource.eksStatus.securityGroups)}}
           {{#each config.securityGroups as |sg|}}
             <div>
               {{sg}}
