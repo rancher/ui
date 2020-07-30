@@ -329,6 +329,10 @@
                 <div>
                   {{sub}}
                 </div>
+              {{else}}
+                <div>
+                  {{t "clusterNew.amazoneks.subnet.noneSelected"}}
+                </div>
               {{/each}}
             </div>
           {{/if}}
@@ -338,7 +342,10 @@
     {{#if (eq step 3)}}
       <SaveCancel
         @editing={{eq mode "edit"}}
-        @saveDisabled={{and (eq vpcSubnetMode "custom") (lte selectedSubnets.length 1)}}
+        @saveDisabled={{and
+          (eq vpcSubnetMode "custom")
+          (lte selectedSubnets.length 1)
+        }}
         @save={{action "setSubnets"}}
         @cancel={{close}}
         @createLabel="clusterNew.amazoneks.subnet.next"
@@ -374,9 +381,8 @@
               </option>
             {{/each}}
           </select>
-        {{else if
-          (or config.securityGroups primaryResource.eksStatus.securityGroups)}}
-          {{#each config.securityGroups as |sg|}}
+        {{else}}
+          {{#each primaryResource.eksStatus.securityGroups as |sg|}}
             <div>
               {{sg}}
             </div>
