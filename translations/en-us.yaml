@@ -8404,84 +8404,95 @@ nodeDriver:
       label: Region
   amazonec2:
     access:
-      title: 1. Account Access
       detail: Choose the region and API Key that will be used to launch EC2 Instances
-      next: "Next: Authenticate & configure nodes"
+      help: Paste in your AWS key pair here. We'll use this key to create your new Instances.
       loading: Loading Availability Zone and VPC info from EC2...
-      help: "Paste in your AWS key pair here. We'll use this key to create your new Instances."
-    zone:
-      title: 2. Zone and Network
-      detail: Select the Availability Zone and VPC/Subnet for Instances
-      next: "Next: Select a Security Group"
-      loading: Loading security group info from EC2...
+      next: 'Next: Authenticate & configure nodes'
+      title: 1. Account Access
     accessKey:
       label: Access Key
       placeholder: Your AWS access key
-    secretKey:
-      label: Secret Key
-      placeholder: Your AWS secret key
-      provided: Provided
-    region:
-      label: Region
-    availabilityZone: Availability Zone
-    subnet: VPC/Subnet
-    noSubnet: There are no subnets to choose from
-    securityGroup:
-      title: 3. Security Groups
-      detail: Choose the security groups that will be applied to Instances
-      choose:  Choose one or more existing groups
-      defaultExisting: "Standard: Use the existing <code>{groupName}</code> group"
-      defaultCreate: "Standard: Automatically create a <code>{groupName}</code> group"
-      next: "Next: Set Instance options"
-      loading: Loading Instance options...
-    tags:
-      addActionLabel: Add AWS Tag
-      valueLabel: Tags
-      placeholder: e.g. dev
-    instance:
-      title: 4. Instance
-      detail: Customize the EC2 Instance that will be created.
-    portHelp:
-      link: Learn more
-      text: about the ports that will be opened.
-    needs:
-      label: "For {appName} to work correctly your security group will need to allow traffic:"
-      item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
-      item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
-      item3: These rules will <b>not</b> be added automatically.
-    instanceType:
-      label: Instance Type
-    rootSize:
-      label: Root Disk Size
-      unit: GB
-    encryptEbsVolume:
-      label: Encryption
-      radioLabel: Encrypt EBS Volume
-    volumeType:
-      label: Amazon EBS volume type
-    useEbsOptimizedInstance:
-      label: Optimized Instance
-      radioLabel: Create EBS optimized instance
     ami:
       label: AMI
       placeholder: An Ubuntu AMI
       rancherList: RancherOS AMI List
-    sshUser:
-      label: SSH User
-      placeholder: e.g. ubuntu
+    availabilityZone: Availability Zone
+    encryptEbsVolume:
+      label: Encryption
+      radioLabel: Encrypt EBS Volume
     iam:
       label: IAM Instance Profile Name
       placeholder: my-k8s-profile
-    privateIp:
-      label: Private IP
+    instance:
+      detail: Customize the EC2 Instance that will be created.
+      title: 4. Instance
+    instanceType:
+      label: Instance Type
+    metadata:
+      httpEndpoint:
+        label: HTTP Endpoint
+        enabled: Enabled
+        disabled: Disabled
+        protip: Enables or disables the HTTP metadata endpoint on your instances
+      httpTokens:
+        label: HTTP Tokens
+        required: Required
+        optional: Optional
+        protip: Use HTTP Tokens for Instance Metadata Requests
+    needs:
+      item1: 'From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>'
+      item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+      item3: These rules will <b>not</b> be added automatically.
+      label: 'For {appName} to work correctly your security group will need to allow traffic:'
+    noSubnet: There are no subnets to choose from
     onlyPrivate:
       label: Use only private IP address
+    portHelp:
+      link: Learn more
+      text: about the ports that will be opened.
+    privateIp:
+      label: Private IP
+    region:
+      label: Region
     requestSpotInstance:
-      label: Spot Instance
       enable: Request spot instance
+      label: Spot Instance
+    rootSize:
+      label: Root Disk Size
+      unit: GB
+    secretKey:
+      label: Secret Key
+      placeholder: Your AWS secret key
+      provided: Provided
+    securityGroup:
+      choose: Choose one or more existing groups
+      defaultCreate: 'Standard: Automatically create a <code>{groupName}</code> group'
+      defaultExisting: 'Standard: Use the existing <code>{groupName}</code> group'
+      detail: Choose the security groups that will be applied to Instances
+      loading: Loading Instance options...
+      next: 'Next: Set Instance options'
+      title: 3. Security Groups
     spotPrice:
       label: Spot Price
       unit: $
+    sshUser:
+      label: SSH User
+      placeholder: e.g. ubuntu
+    subnet: VPC/Subnet
+    tags:
+      addActionLabel: Add AWS Tag
+      placeholder: e.g. dev
+      valueLabel: Tags
+    useEbsOptimizedInstance:
+      label: Optimized Instance
+      radioLabel: Create EBS optimized instance
+    volumeType:
+      label: Amazon EBS volume type
+    zone:
+      detail: Select the Availability Zone and VPC/Subnet for Instances
+      loading: Loading security group info from EC2...
+      next: 'Next: Select a Security Group'
+      title: 2. Zone and Network
   digitalocean:
     droplet:
       title: Droplet Options
