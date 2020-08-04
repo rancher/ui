@@ -1,16 +1,15 @@
-{{#accordion-list showExpandAll=false as | al expandFn |}}
+{{#accordion-list showExpandAll=false as |al expandFn|}}
   <div class="over-hr">
     <span>
       {{driverOptionsTitle}}
     </span>
   </div>
-
   {{#accordion-list-item
-     title=(t "nodeDriver.amazonec2.access.title")
-     detail=(t "nodeDriver.amazonec2.access.detail")
-     expandAll=expandAll
-     expand=(action expandFn)
-     expandOnInit=true
+    title=(t "nodeDriver.amazonec2.access.title")
+    detail=(t "nodeDriver.amazonec2.access.detail")
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
   }}
     {{#unless hideRegionSelection}}
       <div class="row">
@@ -25,16 +24,15 @@
               onchange={{action (mut config.region) value="target.value"}}
             >
               {{#each regionChoices as |choice|}}
-                <option
-                  value={{choice}}
-                  selected={{eq config.region choice}}
-                >
+                <option value={{choice}} selected={{eq config.region choice}}>
                   {{choice}}
                 </option>
               {{/each}}
             </select>
           {{else}}
-            <div>{{config.region}}</div>
+            <div>
+              {{config.region}}
+            </div>
           {{/if}}
         </div>
       </div>
@@ -59,9 +57,10 @@
           <label class="acc-label">
             {{t "nodeDriver.amazonec2.accessKey.label"}}
           </label>
-          <div>{{config.accessKey}}</div>
+          <div>
+            {{config.accessKey}}
+          </div>
         </div>
-
         <div class="col span-4">
           <label class="acc-label">
             {{t "nodeDriver.amazonec2.secretKey.label"}}
@@ -80,14 +79,13 @@
       </div>
     {{/if}}
   {{/accordion-list-item}}
-
   <div class="{{unless (gte step 2) "hide"}}">
     {{#accordion-list-item
-       title=(t "nodeDriver.amazonec2.zone.title")
-       detail=(t "nodeDriver.amazonec2.zone.detail")
-       expandAll=expandAll
-       expand=(action expandFn)
-       expandOnInit=true
+      title=(t "nodeDriver.amazonec2.zone.title")
+      detail=(t "nodeDriver.amazonec2.zone.detail")
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=true
     }}
       {{#if (eq step 2)}}
         <div class="row">
@@ -100,16 +98,12 @@
             onchange={{action (mut selectedZone) value="target.value"}}
           >
             {{#each zoneChoices as |choice|}}
-              <option
-                value={{choice}}
-                selected={{eq selectedZone choice}}
-              >
+              <option value={{choice}} selected={{eq selectedZone choice}}>
                 {{choice}}
               </option>
             {{/each}}
           </select>
         </div>
-
         <div class="row">
           <label class="acc-label pt-20">
             {{t "nodeDriver.amazonec2.subnet"}}
@@ -120,10 +114,7 @@
                 <hr class="mt-20 mb-20" />
                 <div class="radio">
                   <label class="acc-label pb-0">
-                    {{radio-button
-                      selection=selectedSubnet
-                      value=choice.value
-                    }}
+                    {{radio-button selection=selectedSubnet value=choice.value}}
                     {{choice.label}}
                     {{#each choice.tags as |tag|}}
                       <span class="tag-xs bg-info mr-5">
@@ -133,13 +124,10 @@
                     {{/each}}
                   </label>
                 </div>
-            {{else}}
+              {{else}}
                 <div class="radio">
                   <label class="ml-20">
-                    {{radio-button
-                      selection=selectedSubnet
-                      value=choice.value
-                    }}
+                    {{radio-button selection=selectedSubnet value=choice.value}}
                     <i
                       class="icon icon-level-down text-muted"
                       style="transform: scaleX(-1) rotate(90deg);"
@@ -165,7 +153,8 @@
             <label class="acc-label">
               {{t "nodeDriver.amazonec2.availabilityZone"}}
             </label>
-            {{config.region}}{{config.zone}}
+            {{config.region}}
+            {{config.zone}}
           </div>
           <div class="span-6">
             <label class="acc-label pt-20">
@@ -180,7 +169,6 @@
         </div>
       {{/if}}
     {{/accordion-list-item}}
-
     {{#if (eq step 2)}}
       {{top-errors errors=errors}}
       {{save-cancel
@@ -191,23 +179,19 @@
       }}
     {{/if}}
   </div>
-
   <div class="{{unless (gte step 3) "hide"}}">
     {{#accordion-list-item
-       title=(t "nodeDriver.amazonec2.securityGroup.title")
-       detail=(t "nodeDriver.amazonec2.securityGroup.detail")
-       expandAll=expandAll
-       expand=(action expandFn)
-       expandOnInit=true
+      title=(t "nodeDriver.amazonec2.securityGroup.title")
+      detail=(t "nodeDriver.amazonec2.securityGroup.detail")
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=true
     }}
       <div class="row">
         {{#if (eq step 3)}}
           <div class="radio pt-10">
             <label>
-              {{radio-button
-                selection=whichSecurityGroup
-                value="default"
-              }}
+              {{radio-button selection=whichSecurityGroup value="default"}}
               {{t
                 "nodeDriver.amazonec2.securityGroup.defaultCreate"
                 groupName=defaultSecurityGroupName
@@ -215,26 +199,23 @@
               }}
             </label>
           </div>
-
           {{#if (and settings.isRancher (not isCustomSecurityGroup))}}
             <p class="text-info ml-20">
-              <a href="{{settings.docsBase}}/installation/references/" target="_blank">
+              <a
+                href="{{settings.docsBase}}/installation/references/"
+                target="_blank"
+              >
                 {{t "nodeDriver.amazonec2.portHelp.link"}}
               </a>
               {{t "nodeDriver.amazonec2.portHelp.text"}}
             </p>
           {{/if}}
-
           <div class="radio pt-10">
             <label>
-              {{radio-button
-                selection=whichSecurityGroup
-                value="custom"
-              }}
+              {{radio-button selection=whichSecurityGroup value="custom"}}
               {{t "nodeDriver.amazonec2.securityGroup.choose"}}
             </label>
           </div>
-
           {{#if isCustomSecurityGroup}}
             <select
               class="form-control existing-security-groups"
@@ -246,7 +227,10 @@
                   value={{choice.name}}
                   selected={{array-includes selectedSecurityGroup choice.name}}
                 >
-                  {{choice.name}} ({{choice.id}})
+                  {{choice.name}}
+                  (
+                  {{choice.id}}
+                  )
                 </option>
               {{/each}}
             </select>
@@ -256,7 +240,9 @@
             {{#if (is-array config.securityGroup)}}
               <div class="comma-seperated-list">
                 {{#each config.securityGroup as |group|}}
-                  <span>{{group}}</span>
+                  <span>
+                    {{group}}
+                  </span>
                 {{/each}}
               </div>
             {{else}}
@@ -266,7 +252,6 @@
         {{/if}}
       </div>
     {{/accordion-list-item}}
-
     {{#if (eq step 3)}}
       {{top-errors errors=errors}}
       {{save-cancel
@@ -277,14 +262,13 @@
       }}
     {{/if}}
   </div>
-
   <div class="{{unless (gte step 4) "hide"}}">
     {{#accordion-list-item
-       title=(t "nodeDriver.amazonec2.instance.title")
-       detail=(t "nodeDriver.amazonec2.instance.detail")
-       expandAll=expandAll
-       expand=(action expandFn)
-       expandOnInit=true
+      title=(t "nodeDriver.amazonec2.instance.title")
+      detail=(t "nodeDriver.amazonec2.instance.detail")
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=true
     }}
       <div class="row">
         <div class="col span-6">
@@ -301,7 +285,6 @@
             optionGroupPath="group"
           }}
         </div>
-
         <div class="col span-6">
           <label class="acc-label">
             {{t "nodeDriver.amazonec2.requestSpotInstance.label"}}
@@ -312,13 +295,12 @@
                 id="amazonec2-requestspotinstance"
                 type="checkbox"
                 checked=config.requestSpotInstance
-              }}&nbsp;
+              }}
               {{t "nodeDriver.amazonec2.requestSpotInstance.enable"}}
             </label>
           </div>
         </div>
       </div>
-
       {{#if config.requestSpotInstance}}
         <div class="row">
           <div class="col span-6">
@@ -340,7 +322,6 @@
           </div>
         </div>
       {{/if}}
-
       <div class="row">
         <div class="col span-6">
           <label class="acc-label" for="amazonec2-rootsize">
@@ -359,7 +340,6 @@
             </span>
           </div>
         </div>
-
         <div class="col span-6">
           <div class="checkbox">
             <label class="acc-label">
@@ -371,14 +351,71 @@
                   id="amazonec2-encrypt-ebs-vol"
                   type="checkbox"
                   checked=config.encryptEbsVolume
-                }}&nbsp;
+                }}
                 {{t "nodeDriver.amazonec2.encryptEbsVolume.radioLabel"}}
               </label>
             </div>
           </div>
         </div>
       </div>
-
+      <div class="row">
+        <div class="col span-6">
+          <div>
+            <label class="acc-label">
+              {{t "nodeDriver.amazonec2.metadata.httpEndpoint.label"}}
+            </label>
+          </div>
+          <div class="radio mb-0">
+            <label class="mr-5">
+              {{radio-button
+                selection=config.httpEndpoint
+                value="enabled"
+                name="http-endpoint"
+              }}
+              {{t "nodeDriver.amazonec2.metadata.httpEndpoint.enabled"}}
+            </label>
+            <label>
+              {{radio-button
+                selection=config.httpEndpoint
+                value="disabled"
+                name="http-endpoint"
+              }}
+              {{t "nodeDriver.amazonec2.metadata.httpEndpoint.disabled"}}
+            </label>
+            <div class="protip mt-5">
+              {{t "nodeDriver.amazonec2.metadata.httpEndpoint.protip"}}
+            </div>
+          </div>
+        </div>
+        <div class="col span-6">
+          <div>
+            <label class="acc-label">
+              {{t "nodeDriver.amazonec2.metadata.httpTokens.label"}}
+            </label>
+          </div>
+          <div class="radio mb-0">
+            <label class="mr-5">
+              {{radio-button
+                selection=config.httpTokens
+                value="required"
+                name="http-tokens"
+              }}
+              {{t "nodeDriver.amazonec2.metadata.httpTokens.required"}}
+            </label>
+            <label>
+              {{radio-button
+                selection=config.httpTokens
+                value="optional"
+                name="http-tokens"
+              }}
+              {{t "nodeDriver.amazonec2.metadata.httpTokens.optional"}}
+            </label>
+            <div class="protip mt-5">
+              {{t "nodeDriver.amazonec2.metadata.httpTokens.protip"}}
+            </div>
+          </div>
+        </div>
+      </div>
       {{#if config.encryptEbsVolume}}
         <div class="col span-6 offset-6">
           <label class="acc-label">
@@ -394,7 +431,7 @@
             <NewSelect
               class="form-control"
               @value={{mut config.kmsKey}}
-              @content={{ allKmsKeys }}
+              @content={{allKmsKeys}}
               @useContentForDefaultValue={{true}}
               @optionValuePath="KeyArn"
               @optionLabelPath="KeyArn"
@@ -402,8 +439,6 @@
           {{/if}}
         </div>
       {{/if}}
-
-
       <!-- not sure if we are going to show these yet but we can -->
       {{#unless true}}
         <div class="row">
@@ -419,7 +454,6 @@
               value=config.volumeType
             }}
           </div>
-
           <div class="col span-6">
             <div class="checkbox">
               <label class="acc-label">
@@ -431,15 +465,15 @@
                     id="amazonec2-use-opt-instance"
                     type="checkbox"
                     checked=config.useEbsOptimizedInstance
-                  }}&nbsp;
-                  {{t "nodeDriver.amazonec2.useEbsOptimizedInstance.radioLabel"}}
+                  }}
+                  {{t "nodeDriver.amazonec2.useEbsOptimizedInstance.radioLabel"
+                  }}
                 </label>
               </div>
             </div>
           </div>
         </div>
       {{/unless}}
-
       <div class="row">
         <div class="col span-6">
           <label class="acc-label" for="amazonec2-ami">
@@ -464,7 +498,6 @@
             </p>
           {{/if}}
         </div>
-
         <div class="col span-6">
           <label class="acc-label" for="amazonec2-iam">
             {{t "nodeDriver.amazonec2.iam.label"}}
@@ -478,7 +511,6 @@
           }}
         </div>
       </div>
-
       <div class="row">
         <div class="col span-6">
           <label class="acc-label" for="amazonec2-sshUser">
@@ -492,7 +524,6 @@
             value=config.sshUser
           }}
         </div>
-
         <div class="col span-6">
           <label class="acc-label">
             {{t "nodeDriver.amazonec2.privateIp.label"}}
@@ -503,13 +534,12 @@
                 id="amazonec2-privateip"
                 type="checkbox"
                 checked=config.privateAddressOnly
-              }}&nbsp;
+              }}
               {{t "nodeDriver.amazonec2.onlyPrivate.label"}}
             </label>
           </div>
         </div>
       </div>
-
       <div class="row">
         <div class="col span-12">
           {{form-key-value
@@ -520,41 +550,21 @@
         </div>
       </div>
     {{/accordion-list-item}}
-
     <div class="over-hr">
       <span>
         {{templateOptionsTitle}}
       </span>
     </div>
-
-    {{form-name-description
-      model=model
-      nameRequired=true
-      rowClass="row mb-10"
-    }}
-
+    {{form-name-description model=model nameRequired=true rowClass="row mb-10"}}
     {{form-user-labels
       initialLabels=labelResource.labels
       setLabels=(action "setLabels")
       expand=(action expandFn)
     }}
-
-    {{form-node-taints
-      model=model
-      expand=(action expandFn)
-    }}
-
-    {{form-engine-opts
-      machine=model
-      showEngineUrl=showEngineUrl
-    }}
-
+    {{form-node-taints model=model expand=(action expandFn)}}
+    {{form-engine-opts machine=model showEngineUrl=showEngineUrl}}
     {{top-errors errors=errors}}
-
-    {{save-cancel
-      save=(action "save")
-      cancel=(action "cancel")
-      editing=editing
+    {{save-cancel save=(action "save") cancel=(action "cancel") editing=editing
     }}
   </div>
 {{/accordion-list}}
