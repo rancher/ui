@@ -45,6 +45,7 @@ const App = Application.extend({
           'intl',
           'linode',
           'modal',
+          'packet',
           'resource-actions',
           'router',
           'scope',

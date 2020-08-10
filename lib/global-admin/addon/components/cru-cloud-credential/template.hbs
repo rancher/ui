@@ -244,6 +244,24 @@
         </div>
       </div>
 
+    {{else if (eq cloudCredentialType "packet")}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label" for="packet-token">
+            {{t "modalAddCloudKey.packet.token.label"}}{{field-required}}
+          </label>
+          {{input
+            type="password"
+            value=config.token
+            classNames="form-control"
+            placeholder=(t "modalAddCloudKey.packet.token.placeholder")
+            id="packet-token"
+          }}
+          <p class="text-info">
+            {{t "modalAddCloudKey.packet.token.help" htmlSafe=true}}
+          </p>
+        </div>
+      </div>
     {{else if (eq cloudCredentialType "vmware")}}
       <div class="row">
         <div class="col span-6">
