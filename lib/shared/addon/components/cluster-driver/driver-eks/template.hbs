@@ -382,11 +382,19 @@
             {{/each}}
           </select>
         {{else}}
-          {{#each primaryResource.eksStatus.securityGroups as |sg|}}
-            <div>
-              {{sg}}
-            </div>
-          {{/each}}
+          {{#if (eq mode "new")}}
+            {{#each config.securityGroups as |sg|}}
+              <div>
+                {{sg}}
+              </div>
+            {{/each}}
+          {{else}}
+            {{#each primaryResource.eksStatus.securityGroups as |sg|}}
+              <div>
+                {{sg}}
+              </div>
+            {{/each}}
+          {{/if}}
         {{/if}}
       </div>
     </AccordionListItem>
