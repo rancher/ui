@@ -358,6 +358,31 @@
           </div>
         </div>
       </div>
+      {{#if config.encryptEbsVolume}}
+        <div class="row">
+          <div class="col span-6 offset-6">
+            <label class="acc-label">
+              {{t "clusterNew.amazoneks.secretsEncryption.kmsHelpLabel"}}
+            </label>
+            {{#if loadFailedKmsKeys}}
+              <Input
+                @type="text"
+                value={{mut config.kmsKey}}
+                @classNames="form-control"
+              />
+            {{else}}
+              <NewSelect
+                class="form-control"
+                @value={{mut config.kmsKey}}
+                @content={{allKmsKeys}}
+                @useContentForDefaultValue={{true}}
+                @optionValuePath="KeyArn"
+                @optionLabelPath="KeyArn"
+              />
+            {{/if}}
+          </div>
+        </div>
+      {{/if}}
       <div class="row">
         <div class="col span-6">
           <div>
@@ -416,29 +441,6 @@
           </div>
         </div>
       </div>
-      {{#if config.encryptEbsVolume}}
-        <div class="col span-6 offset-6">
-          <label class="acc-label">
-            {{t "clusterNew.amazoneks.secretsEncryption.kmsHelpLabel"}}
-          </label>
-          {{#if loadFailedKmsKeys}}
-            <Input
-              @type="text"
-              value={{mut config.kmsKey}}
-              @classNames="form-control"
-            />
-          {{else}}
-            <NewSelect
-              class="form-control"
-              @value={{mut config.kmsKey}}
-              @content={{allKmsKeys}}
-              @useContentForDefaultValue={{true}}
-              @optionValuePath="KeyArn"
-              @optionLabelPath="KeyArn"
-            />
-          {{/if}}
-        </div>
-      {{/if}}
       <!-- not sure if we are going to show these yet but we can -->
       {{#unless true}}
         <div class="row">
