@@ -87,7 +87,7 @@ generic:
   owner: 所有者
   paste: 粘贴
   pod: pod
-  podRestarts: Pod 重启次数
+  podRestarts: Pod 中容器重启次数
   port: 端口
   ports: 端口
   prefix: 前缀
@@ -96,7 +96,7 @@ generic:
   persistentVolumeClaim: PVC
   random: 随机
   remove: 移除
-  restarts: Pod 重启次数
+  restarts: Pod 中容器重启次数
   role: 角色
   save: 保存
   saved: 已保存
@@ -306,7 +306,7 @@ alertPage:
     notRunning: 未运行
     notScheduled: 未调度
     restarted: 重启
-    restartedTimes: 次在最近的
+    restartedTimes: 最后重启时间
     minutes: 分钟
     available: 可用
     createOne: 创建一条
@@ -925,7 +925,6 @@ authPage:
       authError: 'Azure 访问未认证授权'
       popupError: '请关闭窗口，然后再次点击认证按钮进行认证'
   localAuth:
-    warning: "当启用外部身份验证时，{appName} 将外部主体与当前用户的本地身份相关联。关联的主体将接收所有全局权限，以及当前用户的项目和集群角色绑定。"
     header:
       enabled: '本地验证已启用'
       disabled: '本地验证未配置'
@@ -1876,6 +1875,7 @@ cruVolume:
     title: 源配置
     detail: 配置选定存储源的选项
     prompt: 选择存储源...
+
 destinationRulePage:
   noMatch: 没有与当前搜索匹配的目标规则
   noData: 没有定义目标规则。
@@ -2311,6 +2311,7 @@ hostsPage:
           mounts: 挂载
         body:
           noData: 主机未使用任何数据卷
+
 istio:
   refreshGraph: 刷新视图
   noData: 没有足够的数据来绘制图表
@@ -2402,6 +2403,7 @@ machinePage:
 notFoundPage:
   header: "当前页面不存在！"
   linkTo: 回到首页
+
 projectIstioPage:
   info:
     notEnabled: 'Istio 尚未启用。访问<a href="/c/{clusterId}/istio/cluster-setting">这里</a>启用它。'
@@ -4138,6 +4140,7 @@ cruClusterTemplate:
     label: '编辑集群模板'
   selectRevision:
     label: '选择默认修订'
+
 cruDestinationRule:
   title:
     new: 添加目标规则
@@ -6107,13 +6110,6 @@ formKeyValue:
     label: 值
     placeholder: 值
   protip: 'ProTip: Paste lines of key=value pairs into any key field for easy bulk entry.'
-  binary:
-    byte: |
-      {length, plural,
-      =1 {# byte}
-      other {# bytes}
-      }
-
 
 formImage:
   label: Docker 镜像
@@ -6651,7 +6647,6 @@ formUpgrade:
       label: 进度截止时间
       detail: 将部署标记为停滞状态之前需要等待多久时间才能看到进度。
 
-
 formValueArray:
   addActionLabel: 添加值
   valueLabel: 值
@@ -6665,9 +6660,6 @@ formVersions:
   downgrade: "(不能降级)"
   notallowed: "(模板不允许)"
   unsupported: "(不支持)"
-  eks:
-    label: "(minor version >1 not allowed by EKS)"
-    helpBlock: "Because Amazon EKS runs a highly available control plane, you can update only one minor version at a time."
   helpBlock:
     label: 升级 Kubernetes 版本时，请查看<a href="https://groups.google.com/forum/#!forum/kubernetes-announce" target="_blank" rel="nofollow noreferrer noopener">Kubernetes release notes</a>了解功能变化。
 
@@ -6686,10 +6678,10 @@ formVolumeRow:
   mode:
     label: 卷类型
     newVolume: 临时卷
-    existingVolume: 已有的卷
-    newPvc: PVC
-    existingPvc: PVC
-    existingVct: PVC 模板
+    existingVolume: 现有的卷
+    newPvc: 新的 PVC
+    existingPvc: 现有的 PVC
+    existingVct: 现有的 PVC 模板
     bindMount: 主机映射卷
     tmpfs: Tmpfs
     secret: 密文卷
@@ -6797,7 +6789,7 @@ formRunAsGroupPodSecurityPolicy:
   detail: 控制与容器一起运行的用户组 ID。
   rule:
     mustRunAs: MustRunAs - 需要配置一个范围。使用范围的第一个值作为默认值。根据配置的范围进行验证。
-    mayRunAs: MayRunAs - 不需要指定 RunAsGroup。但是，当指定 RunAsGroup 时，它们必须位于定义的范围内。
+    mustRunAsNonRoot: MustRunAsNonRoot - Requires that the pod be submitted with a non-zero runAsUser or have the USER directive defined in the image. No default provided.
     runAsAny: RunAsAny - 没有提供默认值，允许指定任意 runAsGroup。
   range:
     addLabel: 添加范围
@@ -6807,22 +6799,6 @@ formRunAsGroupPodSecurityPolicy:
     min:
       label: 最小
       placeholder: e.g. 1
-
-formRunAsUserPodSecurityPolicy:
-  title: 作为用户策略运行
-  detail: 控制容器运行时使用的用户 ID。
-  rule:
-    mustRunAs: MustRunAs - 需要配置范围，使用范围的第一个值作为默认值。根据配置的范围进行验证。
-    mustRunAsNonRoot: MustRunAsNonRoot - 要求使用非零 runAsUser 启动 Pod，或者在镜像中配置 USER 指令，不提供默认值。
-    runAsAny: RunAsAny - 无默认值，允许任何 runAsUser 来指定。
-  range:
-    addLabel: 添加范围
-    max:
-      label: 最大值
-      placeholder: '例如: 6'
-    min:
-      label: 最小值
-      placeholder: '例如: 1'
 
 formSeLinuxodSecurityPolicy:
   title: SELinux 策略
@@ -9536,42 +9512,42 @@ rkeConfigComment:
     "  # 当前仅支持 nginx 的 ingress"
     "  # 设置`provider: none`禁用 ingress 控制器"
     "  # 通过 node_selector 可以指定在某些节点上运行 ingress 控制器，例如: "
-    "     provider: nginx"
-    "     node_selector:"
-    "       app: ingress"
+    "   provider: nginx"
+    "   node_selector:"
+    "     app: ingress"
   network: |
     ""
     "  # 如果您在 AWS 上使用 calico"
     ""
-    "     network:"
-    "       plugin: calico"
-    "       calico_network_provider:"
-    "         cloud_provider: aws"
+    "   network:"
+    "     plugin: calico"
+    "     calico_network_provider:"
+    "       cloud_provider: aws"
     ""
     "  # 指定 flannel 网络接口"
     ""
-    "     network:"
-    "       plugin: flannel"
-    "       flannel_network_provider:"
-    "         iface: eth1"
+    "   network:"
+    "     plugin: flannel"
+    "     flannel_network_provider:"
+    "     iface: eth1"
     ""
     "  # 指定 canal 网络插件的 flannel 网络接口"
     ""
-    "     network:"
-    "       plugin: canal"
-    "       canal_network_provider:"
-    "         iface: eth1"
+    "   network:"
+    "     plugin: canal"
+    "     canal_network_provider:"
+    "       iface: eth1"
   services: |
     ""
     " # 自定义服务参数，仅适用于 Linux 环境"
-    "     services:"
-    "       kube-api:"
-    "         service_cluster_ip_range: 10.43.0.0/16"
+    "   services:"
+    "     kube-api:"
+    "       service_cluster_ip_range: 10.43.0.0/16"
     "         extra_args: "
     "           watch-cache: true   "
-    "       kube-controller:"
-    "         cluster_cidr: 10.42.0.0/16"
-    "         service_cluster_ip_range: 10.43.0.0/16"
+    "     kube-controller:"
+    "       cluster_cidr: 10.42.0.0/16"
+    "       service_cluster_ip_range: 10.43.0.0/16"
     "         extra_args:     "
     "           # 修改每个节点子网大小(cidr 掩码长度)，默认为 24，可用 IP 为 254 个；23，可用 IP 为 510 个；22，可用 IP 为 1022 个；"
     "           node-cidr-mask-size: 24  "
@@ -9583,9 +9559,9 @@ rkeConfigComment:
     "           node-startup-grace-period: '30s' "
     "           # 再持续失联一段时间，kubernetes 开始迁移失联节点的 Pod，默认 5m0s。"
     "           pod-eviction-timeout: '1m'   "
-    "       kubelet:"
-    "         cluster_domain: cluster.local"
-    "         cluster_dns_server: 10.43.0.10"
+    "     kubelet:"
+    "       cluster_domain: cluster.local"
+    "       cluster_dns_server: 10.43.0.10"
     "         # 扩展变量 "
     "         extra_args:"
     "           # 与 apiserver 会话时的并发数，默认是 10 "
