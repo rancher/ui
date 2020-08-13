@@ -89,7 +89,7 @@ generic:
   owner: 所有者
   paste: 粘贴
   pod: pod
-  podRestarts: Pod 重启次数
+  podRestarts: Pod 中容器重启次数
   port: 端口
   ports: 端口
   prefix: 前缀
@@ -98,7 +98,7 @@ generic:
   persistentVolumeClaim: PVC
   random: 随机
   remove: 移除
-  restarts: Pod 重启次数
+  restarts: Pod 中容器重启次数
   role: 角色
   save: 保存
   saved: 已保存
@@ -332,7 +332,7 @@ alertPage:
     notRunning: 未运行
     notScheduled: 未调度
     restarted: 重启
-    restartedTimes: 次在最近的
+    restartedTimes: 最后重启时间
     minutes: 分钟
     available: 可用
     createOne: 创建一条
@@ -1181,7 +1181,7 @@ clusterIstioPage:
       cpu: 请确保至少有一个节点将节点选择器与 {cpu} milli cpu 匹配，以启用 {component} 工作负载。
       memory: 请确保至少有一个节点将节点选择器与 {memory} MiB 内存匹配，以启用 {component} 工作负载。
       all: 请确保至少有一个节点与 {cpu} milli cpu 和 {memory} MiB 内存匹配，以启用 {component} 工作负载。
-      unsupported: '不支持值为“true”、“false”或 number 的节点选择器'
+      unsupported: '不支持值为 true、false 或 number 的节点选择器'
   telemetryAndPolicy: Telemetry And Policy
   existingClaim:
     label: 'Existing Claim for {component}'
@@ -1970,6 +1970,7 @@ cruVolume:
     title: 源配置
     detail: 配置选定存储源的选项
     prompt: 选择存储源...
+
 destinationRulePage:
   noMatch: 没有与当前搜索匹配的目标规则
   noData: 没有定义目标规则。
@@ -2448,28 +2449,28 @@ k8sPage:
     button: 打开仪表盘
   shell:
     title: 命令行
-    detail: 在浏览器中执行 Kubernetes 的<code>kubectl</code>命令行。
+    detail: 在浏览器中执行 Kubernetes 的 <code>kubectl</code> 命令行。
     button: 执行 kubectl 命令行
   configFile:
     title: 配置文件
-    detail: 生成在本机可以使用的<code>kubectl</code>配置文件。
+    detail: 生成在本机可以使用的 <code>kubectl</code> 配置文件。
     button: Kubeconfig 文件
     generating: 生成中...
     usage:
       helpText: |
-        将配置保存到<code>~/.kube/config</code>
+        将配置保存到 <code>~/.kube/config</code>
       downloadText: |
         然后下载<a href="https://www.cnrancher.com/docs/rancher/v2.x/cn/install-prepare/download/kubernetes/" target="_blank"><code>kubectl</code></a>(如有需要)安装并运行。
 
 loginPage:
   greeting: "您好！<br>欢迎使用 {appName}"
-  insecure: "{appName} 仅支持<code>https://</code>连接，您必须:<br><br>使用服务器内置的 TLS 支持<br><br>，或者在容器前面提供自己的 TLS 终止服务。"
+  insecure: "{appName} 仅支持 <code>https://</code>连接，您必须:<br><br>使用服务器内置的 TLS 支持<br><br>，或者在容器前面提供自己的 TLS 终止服务。"
   githubMessage: "{appName} 使用 GitHub 管理账号和团队。点击以下按钮以登录，我们将仅使用基本的 GitHub 账号信息。"
   shibbolethMessage: "{appName} 使用 Shibboleth 管理账号。点击以下按钮以登录到设置的 Shibboleth IDP。"
   shibbolethError:
     401: "未授权"
     500: "内部服务器错误"
-    generic: "尝试登录时发生错误({errorCode})，请重试"
+    generic: "尝试登录时发生错误 ({errorCode})，请重试"
   error:
     authFailedCreds: "登录失败: 检查凭据，或者帐户可能无权登录"
     authFailed: "登录失败: 帐户可能无权登录"
@@ -2486,7 +2487,7 @@ loginPage:
 machinePage:
   header: 主机驱动
   inactive: 未激活
-  subtext: "另外<code>Docker-machine</code>驱动可在此加载并在添加主机界面使用。"
+  subtext: "另外 <code>Docker-machine</code> 驱动可在此加载并在添加主机界面使用。"
   add: 添加主机驱动
   builtin: 内置
   url: 位置
@@ -2500,8 +2501,8 @@ notFoundPage:
 
 projectIstioPage:
   info:
-    notEnabled: 'Istio 尚未启用。访问<a href="/c/{clusterId}/istio/cluster-setting">这里</a>启用它。'
-    notOwner: "Istio 尚未启用。请与集群管理员联系。"
+    notEnabled: 'Istio 尚未启用。访问 <a href="/c/{clusterId}/istio/cluster-setting">这里</a>启用它。'
+    notOwner: "Istio 尚未启用，请与集群管理员联系。"
     noPermission: "您没有配置 Istio 的权限。"
 
 registriesPage:
@@ -3328,6 +3329,11 @@ clusterNew:
     access:
       title: 账户访问
       detail: 选择将用于启动 Amazon EKS 的区域和 API 密钥
+    secretsEncryption:
+      label: Secrets Encryption
+      disabled: None
+      kms: "KMS Key: Select or Enter KMS Key that will be used to encrypt secrets"
+      kmsHelpLabel: KMS Key ARN
   tencenttke:
     label: 腾讯云 Kubernetes 服务
     shortLabel: Tencent TKE
@@ -4317,6 +4323,7 @@ cruClusterTemplate:
     label: '编辑集群模板'
   selectRevision:
     label: '选择默认修订'
+
 cruDestinationRule:
   title:
     new: 添加目标规则
@@ -5278,7 +5285,7 @@ cruStorageClass:
     adminSecretNamespace:
       label: 管理密文所在命名空间
       placeholder: "例如: kube-system"
-    adminSecret:
+    adminSecretName:
       label: 管理密文
       placeholder: "例如: secret"
     pool:
@@ -6915,7 +6922,6 @@ formUpgrade:
       label: 进度截止时间
       detail: 将部署标记为停滞状态之前需要等待多久时间才能看到进度。
 
-
 formValueArray:
   addActionLabel: 添加值
   valueLabel: 值
@@ -7853,7 +7859,7 @@ drainNode:
   titleOne: '驱散节点: "{name}"'
   titleMultiple: '驱散 {count} 个节点'
   action: 驱散
-  mode: 模式
+  deleteLocalData: 删除本地数据
   force: 强制
   safe:
     label: 安全
@@ -7933,12 +7939,12 @@ modalRollbackApp:
     prompt: 选择版本...
   difference:
     label: 差异
+
 modalSaveRkeTemplate:
   title: "通过 {clusterName} 创建 RKE 模板"
   subtitle: 从当前集群配置创建一个新的 RKE 集群模板和初始修订。这将修改当前集群，设置集群以使用新创建的集群模板和修订
   name: 集群模板名称
   revName: 集群模板修订名称
-
 modalShell:
   title: "命令行: "
 
@@ -8396,84 +8402,95 @@ nodeDriver:
       label: 区域
   amazonec2:
     access:
-      title: 1. 帐户访问
       detail: 选择将用于启动 EC2 实例的区域和 API 密钥
-      next: '下一步: 认证 & 设置节点'
-      loading: 从 EC2 加载可用区和 VPC 信息...
-      help: '在此粘贴 AWS 密钥对，我们将用秘钥创建新的实例'
-    zone:
-      title: 2. 区域和网络
-      detail: '为实例选择可用区和 VPC/子网'
-      next: '下一步: 选择安全组'
-      loading: 从 EC2 加载安全组信息...
+      help: 在这里粘贴您的 AWS 密钥对。我们将使用此密钥创建新实例。
+      loading: 从EC2加载可用性区域和 VPC 信息…
+      next: "下一步:对节点进行身份验证和配置"
+      title: 1. 帐户访问
     accessKey:
-      label: 访问密钥
-      placeholder: AWS access key
-    secretKey:
-      label: 加密秘钥
-      placeholder: AWS secret key
-      provided: 已提供
-    region:
-      label: 区域
-    availabilityZone: 可用区域
-    subnet: 'VPC/Subnet'
-    noSubnet: 当前没有子网可选择
-    securityGroup:
-      title: 3. 安全组
-      detail: 选择安全组将应用到实例
-      choose: 选择一个或多个现有的组
-      defaultExisting: '标准: 使用现有的<code>{groupName}</code>安全组。'
-      defaultCreate: '标准: 自动创建<code>{groupName}</code>安全组。'
-      next: '下一步: 设置实例选项'
-      loading: 正在加载实例选项...
-    tags:
-      addActionLabel: 添加 AWS 标签
-      valueLabel: 标签
-      placeholder: '例如: dev'
-    instance:
-      title: 4. 实例
-      detail: 自定义将要创建的 EC2 实例。
-    portHelp:
-      link: 了解更多
-      text: 将要开放端口的详细信息
-    needs:
-      label: "为了使 {appName} 正常使用，安全组需要配置允许以下流量通过: "
-      item1: '从 {appName} 服务器到主机的<code>TCP</code>端口<code>22</code><span class="text-muted">(SSH 连接用于安装 docker)。'
-      item2: '主机之间需要开放<code>UDP</code>端口<code>500</code>和<code>4500</code><span class="text-muted">(ipsec 网络)</span></li>。'
-      item3: 这些规则<b>不会</b>自动添加。
-    instanceType:
-      label: 实例类型
-    rootSize:
-      label: 根磁盘大小
-      unit: GB
+      label: Access Key
+      placeholder: Your AWS access key
+    ami:
+      label: AMI
+      placeholder: An Ubuntu AMI
+      rancherList: RancherOS AMI List
+    availabilityZone: 可用性区域
     encryptEbsVolume:
       label: Encryption
       radioLabel: Encrypt EBS Volume
-    volumeType:
-      label: Amazon EBS 卷类型
-    useEbsOptimizedInstance:
-      label: 优化实例
-      radioLabel: 创建 EBS 优化实例
-    ami:
-      label: AMI
-      placeholder: Ubuntu AMI
-      rancherList: RancherOS AMI 列表
-    sshUser:
-      label: SSH 用户
-      placeholder: '例如: ubuntu'
     iam:
-      label: IAM 配置文件
+      label: 实例配置文件名称
       placeholder: my-k8s-profile
+    instance:
+      detail: 自定义将要创建的 EC2 实例。
+      title: 4. 实例
+    instanceType:
+      label: 实例类型
+    metadata:
+      httpEndpoint:
+        label: HTTP Endpoint
+        enabled: Enabled
+        disabled: Disabled
+        protip: Enables or disables the HTTP metadata endpoint on your instances
+      httpTokens:
+        label: HTTP Tokens
+        required: Required
+        optional: Optional
+        protip: Use HTTP Tokens for Instance Metadata Requests
+    needs:
+      item1: 'From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>'
+      item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+      item3: These rules will <b>not</b> be added automatically.
+      label: 'For {appName} to work correctly your security group will need to allow traffic:'
+    noSubnet: There are no subnets to choose from
+    onlyPrivate:
+      label: 只使用私有I P 地址
+    portHelp:
+      link: 了解更多
+      text: 关于需要开放的端口。
     privateIp:
       label: 私有 IP
-    onlyPrivate:
-      label: 仅使用私有 IP 地址
+    region:
+      label: 区域
     requestSpotInstance:
-      label: 竞价实例
-      enable: 请求竞价实例
+      enable: Request spot instance
+      label: Spot 实例
+    rootSize:
+      label: root 磁盘大小
+      unit: GB
+    secretKey:
+      label: Secret Key
+      placeholder: Your AWS secret key
+      provided: Provided
+    securityGroup:
+      choose: 选择一个或多个现有组
+      defaultCreate: '标准: 自动创建 <code>{groupName}</code> 组'
+      defaultExisting: '标准: 使用现有的 <code>{groupName}</code> 组'
+      detail: 选择将应用于实例的安全组
+      loading: 加载实例的选项……
+      next: '下一步: 设置实例选项'
+      title: 3. 安全组
     spotPrice:
-      label: 竞价价格
-      unit: '$'
+      label: Spot Price
+      unit: $
+    sshUser:
+      label: SSH User
+      placeholder: e.g. ubuntu
+    subnet: 'VPC/子网'
+    tags:
+      addActionLabel: Add AWS Tag
+      placeholder: e.g. dev
+      valueLabel: Tags
+    useEbsOptimizedInstance:
+      label: 优化实例
+      radioLabel: 创建 EBS优化的实例
+    volumeType:
+      label: Amazon EBS 卷类型
+    zone:
+      detail: 为实例选择可用性区域和 VPC/子网
+      loading: 从 EC2 加载安全组信息…
+      next: "下一步: 选择安全组"
+      title: 2. 区域和网络
   digitalocean:
     droplet:
       title: Droplet 选项
