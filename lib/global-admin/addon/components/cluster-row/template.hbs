@@ -11,18 +11,22 @@
     {{#link-to-external "authenticated.cluster" model.id}}
       {{model.displayName}}
     {{/link-to-external}}
-
-    {{#if (and model.displayWarnings.length (not-eq model.state "waiting") (not-eq model.state "provisioning"))}}
+    {{#if
+      (and
+        model.displayWarnings.length
+        (not-eq model.state "waiting")
+        (not-eq model.state "provisioning")
+      )
+    }}
       {{#tooltip-element
-         type="tooltip-basic"
-         tooltipTemplate='tooltip-multi-lines'
-         model=model.displayWarnings
-         inlineBlock=true
+        type="tooltip-basic"
+        tooltipTemplate="tooltip-multi-lines"
+        model=model.displayWarnings
+        inlineBlock=true
       }}
-        <i class="icon icon-alert text-error" />
+        <i class="icon icon-alert text-error"></i>
       {{/tooltip-element}}
     {{/if}}
-
     {{#if model.certsExpiring}}
       {{#tooltip-element
         type="tooltip-expiring"
@@ -31,18 +35,34 @@
         aria-describedby="tooltip-base"
         tooltipFor="tooltipCertExpire"
       }}
-        <i class="icon icon-alert text-warning" />
+        <i class="icon icon-alert text-warning"></i>
       {{/tooltip-element}}
     {{/if}}
-
+    {{#if model.nodeGroupVersionUpdate}}
+      {{#tooltip-element
+        type="tooltip-node-group-update"
+        model=model
+        tooltipTemplate="tooltip-static"
+        aria-describedby="tooltip-base"
+        tooltipFor="tooltipNodeGroupVersionUpdate"
+      }}
+        <i class="icon icon-alert text-warning"></i>
+      {{/tooltip-element}}
+    {{/if}}
     {{cluster-template-revision-upgrade-notification cluster=model}}
   </td>
   <td data-title="{{dt.provider}}">
     {{#if model.version.gitVersion}}
-      <small>{{model.displayProvider}}</small>
-      <p class="text-small text-muted m-0">{{model.version.gitVersion}}</p>
+      <small>
+        {{model.displayProvider}}
+      </small>
+      <p class="text-small text-muted m-0">
+        {{model.version.gitVersion}}
+      </p>
     {{else}}
-      <small>{{model.displayProvider}}</small>
+      <small>
+        {{model.displayProvider}}
+      </small>
     {{/if}}
   </td>
   {{#if (eq model.state "inactive")}}
@@ -53,7 +73,9 @@
     <td data-title="{{dt.nodes}}">
       {{#link-to-external "authenticated.cluster.nodes" model.id}}
         {{#if (gt (get subMatches model.id) 0)}}
-          <b>{{model.machines.length}}</b>
+          <b>
+            {{model.machines.length}}
+          </b>
         {{else}}
           {{model.machines.length}}
         {{/if}}
@@ -61,19 +83,26 @@
     </td>
     <td data-title="{{dt.cpu}}">
       {{#if model.cpuUsage}}
-        <small>{{model.cpuUsage}}</small>
-        <p class="text-small text-muted m-0">{{model.cpuPercent}}</p>
+        <small>
+          {{model.cpuUsage}}
+        </small>
+        <p class="text-small text-muted m-0">
+          {{model.cpuPercent}}
+        </p>
       {{else}}
         <span class="text-muted">
           {{t "generic.na"}}
         </span>
       {{/if}}
     </td>
-
     <td data-title="{{dt.memory}}">
       {{#if model.memoryUsage}}
-        <small>{{model.memoryUsage}}</small>
-        <p class="text-small text-muted m-0">{{model.memoryPercent}}</p>
+        <small>
+          {{model.memoryUsage}}
+        </small>
+        <p class="text-small text-muted m-0">
+          {{model.memoryPercent}}
+        </p>
       {{else}}
         <span class="text-muted">
           {{t "generic.na"}}
@@ -81,11 +110,10 @@
       {{/if}}
     </td>
   {{/if}}
-  <td data-title="{{dt.actions}} "class="actions">
+  <td data-title="{{dt.actions}}" class="actions">
     {{action-menu model=model}}
   </td>
 </tr>
-
 {{#if model.showTransitioningMessage}}
   {{error-sub-row fullColspan=fullColspan model=model}}
 {{/if}}

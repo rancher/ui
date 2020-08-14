@@ -270,6 +270,18 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return out;
   }),
 
+  nodeGroupVersionUpdate: computed('appliedSpec.eksConfig.kubernetesVersion', 'appliedSpec.eksConfig.nodeGroups.@each.{version}', function() {
+    if (isEmpty(get(this, 'appliedSpec.eksConfig.nodeGroups'))) {
+      return false;
+    }
+
+    const kubernetesVersion = get(this, 'appliedSpec.eksConfig.kubernetesVersion');
+    const nodeGroupVersions = (get(this, 'appliedSpec.eksConfig.nodeGroups') || []).getEach('version');
+
+    return nodeGroupVersions.any((ngv) => ngv !== kubernetesVersion);
+  }),
+
+
   certsExpiring: computed('certificatesExpiration', function() {
     let { certificatesExpiration = {}, expiringCerts } = this;
 
