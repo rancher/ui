@@ -91,42 +91,85 @@
         <label class="acc-label">
           {{t "editApiKey.ttl.label"}}
         </label>
-        <div class="radio">
-          <label>
-            {{radio-button
-              selection=expire
-              value="never"
-            }}&nbsp;
-            {{t "editApiKey.ttl.never"}}
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            {{radio-button
-              selection=expire
-              value="day"
-            }}&nbsp;
-            {{t "editApiKey.ttl.day"}}
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            {{radio-button
-              selection=expire
-              value="month"
-            }}&nbsp;
-            {{t "editApiKey.ttl.month"}}
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            {{radio-button
-              selection=expire
-              value="year"
-            }}&nbsp;
-            {{t "editApiKey.ttl.year"}}
-          </label>
-        </div>
+        {{#if showSimpleExpire}}
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=expire
+                value="never"
+              }}&nbsp;
+              {{t "editApiKey.ttl.never"}}
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=expire
+                value="day"
+              }}&nbsp;
+              {{t "editApiKey.ttl.day"}}
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=expire
+                value="month"
+              }}&nbsp;
+              {{t "editApiKey.ttl.month"}}
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=expire
+                value="year"
+              }}&nbsp;
+              {{t "editApiKey.ttl.year"}}
+            </label>
+          </div>
+        {{else}}
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=complexExpire
+                value="max"
+              }}&nbsp;
+              {{t "editApiKey.ttl.max.label" time=friendlyMaxTTL}}
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=complexExpire
+                value="custom"
+              }}&nbsp;
+              {{t "editApiKey.ttl.custom"}} - {{ttlCustomMin}}
+              {{input-number
+                disabled=(eq complexExpire "max")
+                min=0
+                max=ttlCustomMax
+                classNames="form-control inline-block initial-width"
+                value=customTTL
+              }}
+              <select
+                disabled={{eq complexExpire "max"}}
+                style="width: 100px"
+                class="form-control inline-block"
+                onchange={{action (mut ttlUnit) value="target.value"}}
+              >
+                {{#each ttlUnitOptions as |ttlUnitOption|}}
+                  <option
+                    value="{{ttlUnitOption}}"
+                    selected={{eq ttlUnit ttlUnitOption}}
+                  >
+                    {{ttlUnitOption}}
+                  </option>
+                {{/each}}
+              </select>
+            </label>
+          </div>
+        {{/if}}
       </div>
       <div class="col span-6">
         <label class="acc-label">
