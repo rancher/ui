@@ -152,7 +152,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     }
   }),
 
-  provider: computed('configName', 'nodePools.@each.{driver,nodeTemplateId}', 'driver', function() {
+  clusterProvider: computed('configName', 'nodePools.@each.{driver,nodeTemplateId}', 'driver', function() {
     const pools = get(this, 'nodePools') || [];
     const firstPool = pools.objectAt(0);
 
@@ -425,15 +425,15 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return out;
   }),
 
-  displayWarnings: computed('unhealthyNodes.[]', 'provider', 'inactiveNodes.[]', 'unhealthyComponents.[]', function() {
+  displayWarnings: computed('unhealthyNodes.[]', 'clusterProvider', 'inactiveNodes.[]', 'unhealthyComponents.[]', function() {
     const intl = get(this, 'intl');
     const out = [];
     const unhealthyComponents = get(this, 'unhealthyComponents') || [];
     const inactiveNodes = get(this, 'inactiveNodes') || [];
     const unhealthyNodes = get(this, 'unhealthyNodes') || [];
-    const provider = get(this, 'provider');
+    const clusterProvider = get(this, 'clusterProvider');
 
-    const grayOut = C.GRAY_OUT_SCHEDULER_STATUS_PROVIDERS.indexOf(provider) > -1;
+    const grayOut = C.GRAY_OUT_SCHEDULER_STATUS_PROVIDERS.indexOf(clusterProvider) > -1;
 
     unhealthyComponents.forEach((component) => {
       if ( grayOut && (get(component, 'name') === 'scheduler' || get(component, 'name') === 'controller-manager') ) {
@@ -501,7 +501,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     },
 
     edit(additionalQueryParams = {}) {
-      let provider = get(this, 'provider') || get(this, 'driver');
+      let provider = get(this, 'clusterProvider') || get(this, 'driver');
       let queryParams = {
         queryParams: {
           provider,

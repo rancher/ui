@@ -96,7 +96,7 @@ export default Route.extend({
     // load the css/js url here, if the url loads fail we should error the driver out
     // show the driver in the ui, greyed out, and possibly add error text "can not load comonent from url [put url here]"
     let { kontainerDrivers } = model;
-    let externalDrivers      = kontainerDrivers.filter( (d) => d.uiUrl !== '' && d.state === 'active' && d.name.includes(model.cluster.provider));
+    let externalDrivers      = kontainerDrivers.filter( (d) => d.uiUrl !== '' && d.state === 'active' && d.name.includes(model.cluster.clusterProvider));
     let promises             = {};
 
     externalDrivers.forEach( (d) => {
