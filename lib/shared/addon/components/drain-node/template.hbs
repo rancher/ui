@@ -1,0 +1,211 @@
+<div class="row">
+  <div class="col span-6-of-23">
+    <div>
+      <label class="acc-label">
+        {{t "drainNode.deleteLocalData"}}
+        {{#if clusterTemplateCreate}}
+          <ClusterTemplateOverrideToggle
+            @path="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.deleteLocalData"
+            @configVariable={{selection.deleteLocalData}}
+            @addOverride={{addOverride}}
+            @questions={{questions}}
+          />
+        {{/if}}
+      </label>
+      <CheckOverrideAllowed
+        @paramName="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.deleteLocalData"
+        @applyClusterTemplate={{applyClusterTemplate}}
+        @clusterTemplateRevision={{clusterTemplateRevision}}
+        @questions={{questions}}
+        @value={{selection.deleteLocalData}}
+      >
+        {{#input-or-display
+            editable=editable
+            value=selection.deleteLocalData
+        }}
+          <div>
+            <label class="radio mt-0">
+              {{radio-button
+                selection=selection.deleteLocalData
+                value=true
+                disabled=view
+              }}
+              {{t "generic.yes"}}
+            </label>
+            <label class="radio">
+              {{radio-button
+                selection=selection.deleteLocalData
+                value=false
+                disabled=view
+              }}
+              {{t "generic.no"}}
+            </label>
+          </div>
+          
+        {{/input-or-display}}
+      </CheckOverrideAllowed>
+    </div>
+    <div class="mt-10">
+      <label class="acc-label mt-5">
+        {{t "drainNode.force"}}
+        {{#if clusterTemplateCreate}}
+          <ClusterTemplateOverrideToggle
+            @path="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.force"
+            @configVariable={{selection.force}}
+            @addOverride={{addOverride}}
+            @questions={{questions}}
+          />
+        {{/if}}
+      </label>
+      <CheckOverrideAllowed
+        @paramName="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.force"
+        @applyClusterTemplate={{applyClusterTemplate}}
+        @clusterTemplateRevision={{clusterTemplateRevision}}
+        @questions={{questions}}
+        @value={{selection.force}}
+      >
+        {{#input-or-display
+            editable=editable
+            value=selection.force
+        }}
+          <div>
+            <label class="radio mt-0">
+              {{radio-button
+                selection=selection.force
+                value=true
+                disabled=view
+              }}
+              {{t "generic.yes"}}
+            </label>
+            <label class="radio">
+              {{radio-button
+                selection=selection.force
+                value=false
+                disabled=view
+              }}
+              {{t "generic.no"}}
+            </label>
+          </div>
+          
+        {{/input-or-display}}
+      </CheckOverrideAllowed>
+    </div>
+  </div>
+
+  <div class="col span-16-of-23 offset-1-of-23">
+    <label class="acc-label">
+      {{t "drainNode.gracePeriod.title"}}
+      {{#if clusterTemplateCreate}}
+        <ClusterTemplateOverrideToggle
+          @path="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.usePodGracePeriod"
+          @configVariable={{selection.maxUnavailableWorker}}
+          @addOverride={{addOverride}}
+          @questions={{questions}}
+        />
+      {{/if}}
+    </label>
+    <CheckOverrideAllowed
+      @paramName="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.usePodGracePeriod"
+      @applyClusterTemplate={{applyClusterTemplate}}
+      @clusterTemplateRevision={{clusterTemplateRevision}}
+      @questions={{questions}}
+      @value={{gracePeriodForPods}}
+    >
+      {{#input-or-display
+          editable=editable
+          value=gracePeriodForPods
+      }}
+        <div>
+          <label class="radio mt-0">
+            {{radio-button
+              selection=usePodGracePeriod
+              value=true
+              disabled=view
+            }}
+            {{t "drainNode.gracePeriod.default"}}
+          </label>
+        </div>
+        <div>
+          <label class="radio">
+            {{radio-button
+              selection=usePodGracePeriod
+              value=false
+              disabled=view
+            }}
+            {{t "drainNode.gracePeriod.custom"}}
+          </label>
+        </div>
+        <div class="input-group">
+          {{input-integer
+            value=proxyGracePeriod
+            disabled=(or usePodGracePeriod view)
+            min=1
+            classNames="form-control"
+            placeholder=(t "drainNode.gracePeriod.placeholder")
+          }}
+          <span class="input-group-addon bg-default">
+            {{t "generic.seconds"}}
+          </span>
+        </div>
+      {{/input-or-display}}
+    </CheckOverrideAllowed>
+
+    <label class="acc-label mt-10">
+      {{t "drainNode.timeout.title"}}
+      {{#if clusterTemplateCreate}}
+        <ClusterTemplateOverrideToggle
+          @path="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.unlimitedTimeout"
+          @configVariable={{selection.unlimitedTimeout}}
+          @addOverride={{addOverride}}
+          @questions={{questions}}
+        />
+      {{/if}}
+    </label>
+    <CheckOverrideAllowed
+      @paramName="rancherKubernetesEngineConfig.upgradeStrategy.nodeDrainInput.unlimitedTimeout"
+      @applyClusterTemplate={{applyClusterTemplate}}
+      @clusterTemplateRevision={{clusterTemplateRevision}}
+      @questions={{questions}}
+      @value={{timeout}}
+    >
+      {{#input-or-display
+          editable=editable
+          value=timeout
+      }}
+        <div>
+          <label class="radio mt-0">
+            {{radio-button
+              selection=unlimitedTimeout
+              value=true
+              disabled=view
+            }}
+            {{t "drainNode.timeout.default"}}
+          </label>
+        </div>
+        <div>
+          <label class="radio">
+            {{radio-button
+              selection=unlimitedTimeout
+              value=false
+              disabled=view
+            }}
+            {{t "drainNode.timeout.custom"}}
+          </label>
+        </div>
+        <div class="input-group">
+          {{input-integer
+            min=1
+            max=10800
+            disabled=(or unlimitedTimeout view)
+            value=proxyTimeout
+            classNames="form-control"
+            placeholder=(t "drainNode.timeout.placeholder")
+          }}
+          <span class="input-group-addon bg-default">
+            {{t "generic.seconds"}}
+          </span>
+        </div>
+      {{/input-or-display}}
+    </CheckOverrideAllowed>
+  </div>
+</div>

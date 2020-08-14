@@ -12,6 +12,7 @@ import { isEmpty } from '@ember/utils';
 import moment from 'moment';
 const TRUE = 'True';
 const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
+const SCHEDULE_CLUSTER_SCAN_QUESTION_KEY = 'scheduledClusterScan.enabled';
 
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
@@ -26,6 +27,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
   nodePools:                   hasMany('id', 'nodePool', 'clusterId'),
   nodes:                       hasMany('id', 'node', 'clusterId'),
   projects:                    hasMany('id', 'project', 'clusterId'),
+  clusterScans:                hasMany('id', 'clusterScan', 'clusterId'),
   expiringCerts:               null,
   grafanaDashboardName:        'Cluster',
   isMonitoringReady:           false,
@@ -36,6 +38,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
   isAKS:                       equal('driver', 'azureKubernetesService'),
   isGKE:                       equal('driver', 'googleKubernetesEngine'),
+
+  runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
 
   conditionsDidChange:        on('init', observer('enableClusterMonitoring', 'conditions.@each.status', function() {
     if ( !get(this, 'enableClusterMonitoring') ) {
@@ -92,6 +96,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return hasSessionToken;
   }),
 
+  canRotateCerts: computed('actionLinks.rotateCertificates', function() {
+    return !!this.actionLinks.rotateCertificates;
+  }),
+
   canBulkRemove: computed('action.remove', function() { // eslint-disable-line
     return get(this, 'hasSessionToken') ? false : true;
   }),
@@ -115,7 +123,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!actionLinks.saveAsTemplate;
   }),
 
-  configName: computed(function() {
+  configName: computed('driver', 'state', function() {
     const keys = this.allKeys().filter((x) => x.endsWith('Config'));
 
     for ( let key, i = 0 ; i < keys.length ; i++ ) {
@@ -136,23 +144,35 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return get(this, 'configName') === 'rancherKubernetesEngineConfig';
   }),
 
-  provider: computed('configName', 'nodePools.@each.{driver,nodeTemplateId}', 'driver', function() {
+  displayLocation: computed('configName', function() {
+    const configName = this.configName;
+
+    if ( configName ) {
+      return get(this, `${ configName }.region`) || get(this, `${ configName }.regionId`) || get(this, `${ configName }.location`) || get(this, `${ configName }.zone`) || get(this, `${ configName }.zoneId`);
+    }
+  }),
+
+  clusterProvider: computed('configName', 'nodePools.@each.{driver,nodeTemplateId}', 'driver', function() {
     const pools = get(this, 'nodePools') || [];
     const firstPool = pools.objectAt(0);
 
     switch ( get(this, 'configName') ) {
     case 'amazonElasticContainerServiceConfig':
       return 'amazoneks';
+    case 'eksConfig':
+      return 'amazoneksv2';
     case 'azureKubernetesServiceConfig':
       return 'azureaks';
     case 'googleKubernetesEngineConfig':
       return 'googlegke';
     case 'tencentEngineConfig':
       return 'tencenttke';
-    case 'aliyunEngineConfig':
-      return 'aliyunkcs';
     case 'huaweiEngineConfig':
       return 'huaweicce';
+    case 'okeEngineConfig':
+      return 'oracleoke';
+    case 'rke2Config':
+      return 'rke2';
     case 'rancherKubernetesEngineConfig':
       if ( !pools.length ) {
         return 'custom';
@@ -173,9 +193,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const intl = get(this, 'intl');
     const pools = get(this, 'nodePools');
     const firstPool = (pools || []).objectAt(0);
+    const configName = get(this, 'configName');
 
-    switch ( get(this, 'configName') ) {
+    switch ( configName ) {
     case 'amazonElasticContainerServiceConfig':
+    case 'eksConfig':
       return intl.t('clusterNew.amazoneks.shortLabel');
     case 'azureKubernetesServiceConfig':
       return intl.t('clusterNew.azureaks.shortLabel');
@@ -184,15 +206,22 @@ export default Resource.extend(Grafana, ResourceUsage, {
     case 'tencentEngineConfig':
       return intl.t('clusterNew.tencenttke.shortLabel');
     case 'aliyunEngineConfig':
-      return intl.t('clusterNew.aliyunkcs.shortLabel');
+      return intl.t('clusterNew.aliyunack.shortLabel');
     case 'huaweiEngineConfig':
       return intl.t('clusterNew.huaweicce.shortLabel');
+    case 'okeEngineConfig':
+      return intl.t('clusterNew.oracleoke.shortLabel');
+    case 'k3sConfig':
+      return intl.t('clusterNew.k3simport.shortLabel');
+    case 'rke2Config':
     case 'rancherKubernetesEngineConfig':
+      var shortLabel = configName === 'rancherKubernetesEngineConfig' ? 'clusterNew.rke.shortLabel' : 'clusterNew.rke2.shortLabel';
+
       if ( !!pools ) {
         if ( firstPool ) {
-          return get(firstPool, 'displayProvider') ? get(firstPool, 'displayProvider') : intl.t('clusterNew.rke.shortLabel');
+          return get(firstPool, 'displayProvider') ? get(firstPool, 'displayProvider') : intl.t(shortLabel);
         } else {
-          return intl.t('clusterNew.rke.shortLabel');
+          return intl.t(shortLabel);
         }
       } else {
         return intl.t('clusterNew.custom.shortLabel');
@@ -301,6 +330,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
         action:    'saveAsTemplate',
         enabled:   this.canSaveAsTemplate,
       },
+      {
+        label:     'action.runCISScan',
+        icon:      'icon icon-play',
+        action:    'runCISScan',
+        enabled:   !this.isClusterScanDisabled,
+      },
     ];
   }),
 
@@ -314,9 +349,42 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!get(this, 'windowsPreferedCluster');
   }),
 
+  isClusterScanDown: computed('systemProject', 'state', 'actionLinks.runSecurityScan', 'isWindows', function() {
+    return !get(this, 'systemProject')
+      || get(this, 'state') !== 'active'
+      || !get(this, 'actionLinks.runSecurityScan')
+      || get(this, 'isWindows');
+  }),
+
+  isAddClusterScanScheduleDisabled: computed('isClusterScanDown', 'scheduledClusterScan.enabled', 'clusterTemplateRevision', 'clusterTemplateRevision.questions.@each', function() {
+    if (get(this, 'clusterTemplateRevision') === null) {
+      return get(this, 'isClusterScanDown');
+    }
+
+    if (get(this, 'isClusterScanDown')) {
+      return true;
+    }
+
+    if (get(this, 'scheduledClusterScan.enabled')) {
+      return false;
+    }
+
+    return !get(this, 'clusterTemplateRevision.questions')
+      || get(this, 'clusterTemplateRevision.questions').every((question) => question.variable !== SCHEDULE_CLUSTER_SCAN_QUESTION_KEY)
+  }),
+
+  isClusterScanDisabled: computed('runningClusterScans.length', 'isClusterScanDown', function() {
+    return (get(this, 'runningClusterScans.length') > 0)
+      || get(this, 'isClusterScanDown');
+  }),
+
   unhealthyComponents: computed('componentStatuses.@each.conditions', function() {
     return (get(this, 'componentStatuses') || [])
       .filter((s) => !(s.conditions || []).any((c) => c.status === 'True'));
+  }),
+
+  masterNodes: computed('nodes.@each.{state,labels}', function() {
+    return (this.nodes || []).filter((node) => node.labels && node.labels[C.NODES.MASTER_NODE]);
   }),
 
   inactiveNodes: computed('nodes.@each.state', function() {
@@ -357,15 +425,15 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return out;
   }),
 
-  displayWarnings: computed('unhealthyNodes.[]', 'provider', 'inactiveNodes.[]', 'unhealthyComponents.[]', function() {
+  displayWarnings: computed('unhealthyNodes.[]', 'clusterProvider', 'inactiveNodes.[]', 'unhealthyComponents.[]', function() {
     const intl = get(this, 'intl');
     const out = [];
     const unhealthyComponents = get(this, 'unhealthyComponents') || [];
     const inactiveNodes = get(this, 'inactiveNodes') || [];
     const unhealthyNodes = get(this, 'unhealthyNodes') || [];
-    const provider = get(this, 'provider');
+    const clusterProvider = get(this, 'clusterProvider');
 
-    const grayOut = C.GRAY_OUT_SCHEDULER_STATUS_PROVIDERS.indexOf(provider) > -1;
+    const grayOut = C.GRAY_OUT_SCHEDULER_STATUS_PROVIDERS.indexOf(clusterProvider) > -1;
 
     unhealthyComponents.forEach((component) => {
       if ( grayOut && (get(component, 'name') === 'scheduler' || get(component, 'name') === 'controller-manager') ) {
@@ -411,8 +479,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
         .catch((err) => this.growl.fromError(err));
     },
 
-    restoreFromEtcdBackup() {
-      get(this, 'modalService').toggleModal('modal-restore-backup', { cluster: this, });
+    restoreFromEtcdBackup(options) {
+      get(this, 'modalService').toggleModal('modal-restore-backup', {
+        cluster:   this,
+        selection: (options || {}).selection
+      });
     },
 
     promptDelete() {
@@ -429,9 +500,18 @@ export default Resource.extend(Grafana, ResourceUsage, {
       }
     },
 
-    edit() {
-      let provider = get(this, 'provider') || get(this, 'driver');
-      let queryParams = { queryParams: { provider } };
+    edit(additionalQueryParams = {}) {
+      let provider = get(this, 'clusterProvider') || get(this, 'driver');
+      let queryParams = {
+        queryParams: {
+          provider,
+          ...additionalQueryParams
+        }
+      };
+
+      if (provider === 'amazoneks' && !isEmpty(get(this, 'eksConfig'))) {
+        set(queryParams, 'queryParams.provider', 'amazoneksv2');
+      }
 
       if (this.clusterTemplateRevisionId) {
         set(queryParams, 'queryParams.clusterTemplateRevision', this.clusterTemplateRevisionId);
@@ -458,6 +538,14 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
     saveAsTemplate() {
       this.modalService.toggleModal('modal-save-rke-template', { cluster: this });
+    },
+
+    runCISScan(options) {
+      this.get('modalService').toggleModal('run-scan-modal', {
+        closeWithOutsideClick: true,
+        cluster:               this,
+        onRun:                 (options || {}).onRun
+      });
     },
 
     rotateCertificates() {

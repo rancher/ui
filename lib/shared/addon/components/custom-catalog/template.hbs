@@ -10,7 +10,7 @@
      as |sortable kind row dt|
 }}
   {{#if (eq kind "row")}}
-    <tr class="main-row {{if (not row.id) 'text-muted'}}">
+    <tr class="main-row {{if (not row.id) "text-muted"}}">
       <td class="row-check" valign="middle" style="padding-top: 2px;">
         {{check-box nodeId=row.id}}
       </td>
@@ -19,15 +19,18 @@
       </td>
       <td data-title="{{dt.scope}}" class="state">
         {{#if row.clusterId}}
-          {{t 'catalogSettings.currentCluster'}}
+          {{t "catalogSettings.currentCluster"}}
         {{else if row.projectId}}
-          {{t 'catalogSettings.currentProject'}}
+          {{t "catalogSettings.currentProject"}}
         {{else}}
-          {{t 'catalogSettings.globalCatalog'}}
+          {{t "catalogSettings.globalCatalog"}}
         {{/if}}
       </td>
       <td data-title="{{dt.name}}">
         {{row.name}}
+        {{#if row.isHelm3}}
+          <img class="helm-version-3 vertical-middle" src="{{app.baseAssets}}assets/images/logos/helm-v3.svg" />
+        {{/if}}
       </td>
       <td data-title="{{dt.url}}">
         {{row.url}}
@@ -43,8 +46,8 @@
       {{error-sub-row fullColspan=sortable.fullColspan model=row}}
     {{/if}}
   {{else if (eq kind "nomatch")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'catalogSettings.more.noMatch'}}</td></tr>
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "catalogSettings.more.noMatch"}}</td></tr>
   {{else if (eq kind "norows")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'catalogSettings.more.noData'}}</td></tr>
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "catalogSettings.more.noData"}}</td></tr>
   {{/if}}
 {{/sortable-table}}

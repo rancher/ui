@@ -2,26 +2,28 @@ import Resource from '@rancher/ember-api-store/models/resource';
 import { get, set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { all } from 'rsvp';
+import C from 'ui/utils/constants';
+const { LONGHORN_PROVISIONER_KEY } = C.STORAGE;
 
 const BETA_ANNOTATION = 'storageclass.beta.kubernetes.io/is-default-class';
 const DEFAULT_ANNOTATION = 'storageclass.kubernetes.io/is-default-class';
 
 const PROVISIONERS = [];
 
-registerProvisioner('aws-ebs',        'kubernetes.io/aws-ebs',         true, true);
-registerProvisioner('gce-pd',         'kubernetes.io/gce-pd',          true, true);
-registerProvisioner('glusterfs',      'kubernetes.io/glusterfs',       true, false);
-registerProvisioner('cinder',         'kubernetes.io/cinder',          true, false);
-registerProvisioner('vsphere-volume', 'kubernetes.io/vsphere-volume',  true, true);
-registerProvisioner('rbd',            'kubernetes.io/rbd',             true, false);
-registerProvisioner('quobyte',        'kubernetes.io/quobyte',         true, false);
-registerProvisioner('azure-disk',     'kubernetes.io/azure-disk',      true, true);
-registerProvisioner('azure-file',     'kubernetes.io/azure-file',      true, true);
+registerProvisioner('aws-ebs',         'kubernetes.io/aws-ebs',         true, true);
+registerProvisioner('gce-pd',          'kubernetes.io/gce-pd',          true, true);
+registerProvisioner('glusterfs',       'kubernetes.io/glusterfs',       true, false);
+registerProvisioner('cinder',          'kubernetes.io/cinder',          true, false);
+registerProvisioner('vsphere-volume',  'kubernetes.io/vsphere-volume',  true, true);
+registerProvisioner('rbd',             'kubernetes.io/rbd',             true, false);
+registerProvisioner('quobyte',         'kubernetes.io/quobyte',         true, false);
+registerProvisioner('azure-disk',      'kubernetes.io/azure-disk',      true, true);
+registerProvisioner('azure-file',      'kubernetes.io/azure-file',      true, true);
 registerProvisioner('portworx-volume', 'kubernetes.io/portworx-volume', true, false);
-registerProvisioner('scaleio',        'kubernetes.io/scaleio',         true, false);
-registerProvisioner('storageos',      'kubernetes.io/storageos',       true, false);
-registerProvisioner('longhorn',      'rancher.io/longhorn',       true, true);
-registerProvisioner('local-storage',  'kubernetes.io/no-provisioner',  true, false);
+registerProvisioner('scaleio',         'kubernetes.io/scaleio',         true, false);
+registerProvisioner('storageos',       'kubernetes.io/storageos',       true, false);
+registerProvisioner('longhorn',        LONGHORN_PROVISIONER_KEY,        true, true);
+registerProvisioner('local-storage',   'kubernetes.io/no-provisioner',  true, false);
 
 export function registerProvisioner(name, provisioner, component, supported) {
   if ( component === true ) {

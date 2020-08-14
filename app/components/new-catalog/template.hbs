@@ -17,6 +17,9 @@
           {{templateResource.displayName}}
         {{/link-to}}
       {{/if}}
+      {{#if templateResource.catalogRef.isHelm3}}
+        <img class="helm-version-3 vertical-middle" src="{{app.baseAssets}}assets/images/logos/helm-v3.svg" />
+      {{/if}}
     </h1>
   </section>
 {{/if}}
@@ -94,7 +97,7 @@
           model=catalogApp
           nameRequired=false
           descriptionShow=false
-          nameDisabled=editing
+          nameDisabled=(or editing isLonghorn)
           bothColClass="col span-12"
           colClass="col span-12"
         }}

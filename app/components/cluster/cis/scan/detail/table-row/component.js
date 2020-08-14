@@ -19,7 +19,7 @@ export default Component.extend({
     return get(this, 'model.skipList').indexOf(get(this, 'model.id')) !== -1;
   }),
   showSkipButton: computed('model.state', 'isInSkipList', function() {
-    return get(this, 'model.state') !== 'Pass' && !get(this, 'isInSkipList');
+    return get(this, 'model.state') !== 'Pass' && get(this, 'model.state') !== 'N/A' && !get(this, 'isInSkipList');
   }),
   showUnskipButton: computed('model.state', 'isInSkipList', function() {
     return get(this, 'model.state') !== 'Pass' && get(this, 'isInSkipList');
@@ -38,6 +38,8 @@ export default Component.extend({
       return 'bg-success';
     case 'Skipped':
       return 'bg-warning'
+    case 'N/A':
+      return 'bg-warning';
     default:
       return 'bg-error';
     }

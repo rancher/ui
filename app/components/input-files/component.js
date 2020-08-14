@@ -43,7 +43,7 @@ export default Component.extend({
     },
 
     upload() {
-      $('.input-files')[0].click();
+      $(this.element).find('.input-files').click();
     },
 
     remove(file) {

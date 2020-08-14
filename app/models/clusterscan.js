@@ -4,8 +4,12 @@ import moment from 'moment';
 import { downloadFile } from 'shared/utils/download-files';
 import ObjectsToCsv from 'objects-to-csv';
 import { extractUniqueStrings } from '../utils/util';
+import { toTitle } from 'shared/utils/util';
+import { inject as service } from '@ember/service';
 
 const ClusterScan = Resource.extend({
+  intl:        service(),
+
   type:          'clusterScan',
   report:        'null',
   reportPromise: null,
@@ -13,8 +17,9 @@ const ClusterScan = Resource.extend({
   passed:        computed.alias('summary.passed'),
   skipped:       computed.alias('summary.skipped'),
   failed:        computed.alias('summary.failed'),
+  notApplicable: computed.alias('summary.notApplicable'),
 
-  isRunning: computed.equal('state', 'activating'),
+  isRunning: computed.equal('state', 'running'),
 
   loader: observer('store', 'state', function() {
     this.loadReport();
@@ -57,16 +62,17 @@ const ClusterScan = Resource.extend({
 
   resultsForCsv: computed('referencedResults', 'report', function() {
     return get(this, 'referencedResults').map((result) => {
+      const intl = get(this, 'intl');
       const nodesAndStateForTest = this.getNodesAndStateForTestResult(result);
-      const version = `Version: ${ get(this, 'report.version') }`;
+      const profile = intl.t('cis.scan.report.headers.profile', { profile: get(this, 'profile') });
 
       return {
-        [version]:    '',
+        [profile]:                                        '',
         ...result,
-        nodes:        nodesAndStateForTest.nodes.join(','),
-        passed_nodes: nodesAndStateForTest.passedNodes.join(','),
-        failed_nodes: nodesAndStateForTest.failedNodes.join(','),
-        node_type:    result.node_type.join(',')
+        [intl.t('cis.scan.report.headers.nodes')]:        nodesAndStateForTest.nodes.join(','),
+        [intl.t('cis.scan.report.headers.passed_nodes')]: nodesAndStateForTest.passedNodes.join(','),
+        [intl.t('cis.scan.report.headers.failed_nodes')]: nodesAndStateForTest.failedNodes.join(','),
+        [intl.t('cis.scan.report.headers.node_type')]:    result.node_type.join(',')
       };
     })
   }),
@@ -83,8 +89,16 @@ const ClusterScan = Resource.extend({
       total:             report.total,
       passed:            report.pass,
       skipped:           report.skip,
-      failed:            report.fail
+      failed:            report.fail,
+      notApplicable:     report.notApplicable,
     };
+  }),
+
+  profile: computed('report.version', 'scanConfig.cisScanConfig.profile', function() {
+    const version = (get(this, 'report.version') || '').toUpperCase();
+    const profile = (get(this, 'scanConfig.cisScanConfig.profile') || '');
+
+    return version && profile ? toTitle(`${ version } ${ profile }`) : '';
   }),
 
   createdDate: computed('status.conditions.@each.[status,type]', function() {
@@ -121,15 +135,15 @@ const ClusterScan = Resource.extend({
   },
 
   getNodesAndStateForTestResult(testResult) {
+    const nodeNames = this.getNodeNamesFromNodeType(testResult.node_type);
+
     if (testResult.state === 'skip') {
       return {
-        nodes:       [],
+        nodes:       nodeNames,
         passedNodes: [],
         failedNodes: []
       }
     }
-
-    const nodeNames = this.getNodeNamesFromNodeType(testResult.node_type);
 
     if (testResult.state === 'pass') {
       return {
@@ -144,6 +158,14 @@ const ClusterScan = Resource.extend({
         nodes:       nodeNames,
         passedNodes: [],
         failedNodes: nodeNames
+      }
+    }
+
+    if (testResult.state === 'notApplicable') {
+      return {
+        nodes:       nodeNames,
+        passedNodes: [],
+        failedNodes: []
       }
     }
 

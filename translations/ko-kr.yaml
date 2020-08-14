@@ -6,6 +6,7 @@ languageContribute: "Rancher 번역을 도와주세요"
 ##############################
 generic:
   actions: 동작
+  active: 활성화
   activate: 활성화
   add: 추가
   advanced: 고급
@@ -17,6 +18,7 @@ generic:
   cancel: 취소
   closeModal: 닫기
   cluster: 클러스터
+  collapse: 닫기
   collapseAll: 모두 접기
   comingSoon: 출시 예정
   command: 명령어
@@ -41,12 +43,14 @@ generic:
   enabled: 활성화됨
   entrypoint: Entrypoint
   environment: 환경
-  expandAll: 모두 확장
+  expand: 보이기
+  expandAll: 모두 확장 
   experimental: "(실험)"
   from: 출처
   false: '거짓'
   generic: '일반'
   gigabyte: 'GB'
+  group: '그룹'
   hardware: 하드웨어
   healthy: 정상
   help: 도움말
@@ -80,6 +84,7 @@ generic:
   noRating: No Rating
   node: 노드
   none: 없음
+  completedOf: "{completed} 중 {total}"
   owner: 소유자
   paste: 붙여넣기
   pod: pod
@@ -128,6 +133,29 @@ generic:
   readWrite: 읽기 쓰기
   writeOnly: 쓰기 전용
   full: 전체
+  linux: 리눅스
+  windows: 윈도우즈
+  host: 호스트
+  istioHostPlaceholder: 호스트를 선택하거나 입력하십시오
+  cpu: CPU
+  memory: 메모리
+  noData: 데이터 없음
+  authorize: 리포지토리 승인 및 가져 오기
+  branch: 브랜치
+  commit: 커밋
+  repository: 저장소
+  registry: 레지스트리
+  imageName: 이미지 이름
+  loginIn: 로그인
+  logout: '{user}  로그 아웃'
+  pipeline: 파이프라인
+  is: 은/는
+  push: 리포지토리로 푸시
+  noBranch: 이 저장소에는 분기가 없습니다.
+  github: 깃허브
+  gitlab: GitLab
+  bitbucket: Bitbucket
+  required: '은 필수항목 입니다.'
 realmNames:
   all: 전체
   usWest: 미국 서부
@@ -149,6 +177,7 @@ accountsPage:
         projectName: 프로젝트
         active: 활성
         created: 부여 됨
+        group: 그룹
       global:
         title: 전역 권한
         description: 전체 설치에 영향을 미치는 항목 관리에 대한 액세스
@@ -167,12 +196,22 @@ accountsPage:
   index:
     header: 사용자
     localLink: 사용자 추가
+    groupLink: 글로벌 역할 할당
     table:
       id: ID
       kind: 종류
       username: 로컬 사용자 이름
       identity: 신원
+      noData: 정의된 사용자가 없습니다.
       noMatch: 현재 검색어와 일치하는 사용자가 없습니다.
+      noName: 없음
+  groups:
+    header: 그룹
+    table:
+      groupName: 그룹 이름
+      globalRole: 글로벌 역할 이름
+      noData: 정의된 그룹이 없습니다.
+      noMatch: 현재 검색과 일치하는 그룹이 없습니다
       noName: 없음
   new:
     header: 사용자 추가
@@ -195,6 +234,17 @@ accountsPage:
       description:
         labelText: 설명
         placeholder: "예: 이 계정은 Johon Smith 입니다."
+  editGroup:
+    header: 그룹 편집
+  newGroup:
+    header: 그룹에 글로벌 역할 할당
+    warning: 그룹에 글로벌 역할을 할당하면 그룹을 지원하는 외부 인증 제공자와 동작할 수만 있습니다. 로컬 권한 부여는 그룹을 지원하지 않습니다.
+    errors:
+      group: 그룹이 필요합니다.
+      role: 역할이 필요합니다.
+    form:
+      group:
+        labelText: 추가할 그룹을 선택하세요
   modal:
     password: 비밀번호 변경하기
 appDetailPage:
@@ -237,6 +287,65 @@ appDetailPage:
     title: 시크릿
     detail: 이 애플리케이션에 연관된 시크릿
     nodata: 이 애플리케이션에는 시크릿이 없습니다.
+alertPage:
+  na: 구성되지 않음
+  items: 항목
+  addSelectorLabel: 선택기 추가
+  create: 생성
+  save: 저장
+  cluster: 클러스터
+  project: 프로젝트
+  alertGroups: 알림
+  newOrEdit:
+    showAdvanced: 고급 옵션 표시
+    initialWait: 초기 대기
+    interval: 간격
+    initialWaitHelpText: 경고가 발생될 때 알림을 보내기 전에 대기하는 시간입니다.
+    repeatIntervalHelpText: 경고가 활성화되었을 때 알림을 보내는 반복 간격입니다.
+    whenA: 일 때
+    whenAn: 일 때
+    happens: 발생하다
+    sendA: 보낸다
+    to: 에게
+    alert: 경고
+    is: 가
+    lessThan: 미만
+    and: 그리고
+    critical: 심각한
+    addRecipient: 받는 사람 추가
+    info: 정보
+    normal: 일반
+    warning: 경고
+    notReady: 준비 안 됨
+    unhealthy: 상태에 문제있는
+    cpuUsage: CPU 예약 초과
+    memUsage: 메모리 예약 초과
+    podPlaceholder: 포드를 선택하십시오
+    notRunning: 실행 중이 아님
+    notScheduled: 스케줄되지 않음
+    restarted: 재시작됨
+    restartedTimes: 마지막 이내 횟수
+    minutes: 분
+    available: 사용 가능
+    createOne: 하나를 만들다
+  targetTypes:
+    node: 노드
+    deployment: 배포
+    event: 이벤트
+    systemService: 시스템 서비스
+  index:
+    addAlertGroup: 경고 그룹 추가
+    addAlert: 경고 규칙 추가
+    noAlerts: 경고 규칙이 정의되어 있지 않습니다.
+    table:
+      noMatch: 현재 검색과 일치하는 경고가 없습니다.
+      noData: 정의된 경고가 없습니다
+      displayCondition:
+        notReady: 준비되지 않음
+  comparison:
+    less-than: 보다 작음
+    greater-or-equal: 크거나 같음
+    less-or-equal: 작거나 같음
 podSecurityPoliciesPage:
   index:
     header: Pod 보안 정책
@@ -268,11 +377,13 @@ rolesPage:
     project: 프로젝트
   index:
     localLink: 역할 추가
+    warning: "사용자가 처음 로그인할 때 의도하지 않은 결과를 초래할 수 있는 기본 역할이 존재하지 않습니다. 역할 중 하나를 새 사용자 기본값으로 설정하세요."
     table:
       builtin: 빌트인
       created: 생성 시간
       enabled: 활성화됨
       name: 이름
+      noData: 정해진 역할이 없습니다.
       noMatch: 현재 검색과 일치하는 역할이 없음
       subjectKind: 종류
       template: 템플릿
@@ -358,6 +469,18 @@ apiPage:
       never: 하지 않음
     noData: 정의된 API 키가 없습니다
 authPage:
+  form:
+    enterpriseHost:
+      placeholder: '예 : example.com'
+  gitlab:
+    auth: '표준 GitLab의 경우, <a href="https://gitlab.com/profile/applications" target="_blank" rel="nofollow noreferrer">여기를 클릭하세요</a> 새창에서 응용 프로그램 설정 화면으로 이동합니다.'
+    ul:
+      li3:
+        text: '"응용 프로그램 저장"을 클릭하세요. '
+  bitbucketcloud:
+    form:
+      clientId:
+        labelText: 키
   saml:
     accessEnabled:
       header: 인증

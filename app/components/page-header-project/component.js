@@ -85,6 +85,7 @@ export default Component.extend(ThrottledResize, {
 
           menu.on('click', this.boundClickMenu);
           menu.on('click', 'LI', this.boundClickItem);
+          menu.on('touchend', '.projects LI', this.boundClickItem);
 
           clusters.on('focus', 'LI', this.boundEnterCluster);
           clusters.on('mouseenter', 'LI', this.boundEnterCluster);
@@ -136,6 +137,7 @@ export default Component.extend(ThrottledResize, {
       $(document).off('mousemove', this.boundMouseMove);
       $('.project-menu').off('click', this.boundClickMenu);
       $('.project-menu').off('click', 'LI', this.boundClickItem);
+      $('.project-menu').off('touchend', '.projects LI', this.boundClickItem);
       $('.clusters').off('mouseenter', 'LI', this.boundEnterCluster);
       $('.clusters, .projects').off('mouseenter', this.boundEnterScrollers);
       $('.clusters, .projects').off('mouseleave', this.boundLeaveScrollers);
@@ -394,7 +396,7 @@ export default Component.extend(ThrottledResize, {
       return;
     }
 
-    if ( tag === 'A' ) {
+    if ( tag === 'A' && e.type !== 'touchend' ) {
       return;
     }
 

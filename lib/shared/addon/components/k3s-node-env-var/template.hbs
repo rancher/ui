@@ -1,0 +1,42 @@
+<label class="acc-label">
+  {{t "k3sNodeEnvVarSection.title"}}
+</label>
+<p class="help-block">
+  {{t "k3sNodeEnvVarSection.detail"}}
+</p>
+{{#sortable-table
+   classNames="grid fixed mb-0 sortable-table"
+   bulkActions=false
+   rowActions=false
+   paging=false
+   search=true
+   sortBy=sortBy
+   stickyHeader=false
+   descending=descending
+   headers=headers
+   body=node.k3sNodeEnvVar
+   as |sortable kind label|
+}}
+  {{#if (eq kind "row")}}
+    <tr>
+      <td data-title="{{t "k3sNodeEnvVarSection.key"}}:" class="force-wrap pt-5 pb-5">
+        {{label.key}}
+      </td>
+      <td data-title="{{t "k3sNodeEnvVarSection.value"}}:" class="force-wrap pt-5 pb-5">
+        {{pretty-json value=label.value}}
+      </td>
+    </tr>
+  {{else if (eq kind "norows")}}
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+        {{t "k3sNodeEnvVarSection.noData"}}
+      </td>
+    </tr>
+  {{else if (eq kind "nomatch")}}
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+        {{t "k3sNodeEnvVarSection.noMatch"}}
+      </td>
+    </tr>
+  {{/if}}
+{{/sortable-table}}

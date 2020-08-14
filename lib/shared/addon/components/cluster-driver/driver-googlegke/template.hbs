@@ -136,15 +136,11 @@
           <label class="acc-label">
             {{t "clusterNew.googlegke.masterVersion.label"}}
           </label>
-          {{form-versions
-            cluster=cluster
-            editing=editing
-            initialVersion=config.masterVersion
+          {{new-select
+            classNames="form-control"
+            content=versionChoices
             value=config.masterVersion
-            versions=versionChoices
-            showNotAllowed=false
           }}
-
           {{#if (and editing (not-eq initialMasterVersion config.masterVersion))}}
             {{banner-message
               icon="icon-alert"
@@ -577,7 +573,7 @@
                   valuePlaceholder="clusterNew.googlegke.masterAuthorizedNetworkCidrBlocks.placeholder"
                   addActionLabel="clusterNew.googlegke.masterAuthorizedNetworkCidrBlocks.addActionLabel"
                   changed=(action "updateNameservers")
-                  cannotAdd=(gt config.masterAuthorizedNetworkCidrBlocks.length 10)
+                  addButtonEnabled=(lt config.masterAuthorizedNetworkCidrBlocks.length 10)
                 }}
               </div>
             {{/if}}

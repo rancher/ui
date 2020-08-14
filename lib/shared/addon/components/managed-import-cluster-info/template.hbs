@@ -1,0 +1,89 @@
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label">
+      {{t "managedImportClusterInfo.kubernetesVersion"}}
+    </label>
+    <div class="form-control">
+      {{#input-or-display
+        editable=(and editing (gt allVersions.length 1))
+        value=config.kubernetesVersion
+      }}
+        {{searchable-select
+          classNames="form-control"
+          content=allVersions
+          value=config.kubernetesVersion
+          readOnly=(not editing)
+        }}
+      {{/input-or-display}}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col span-6">
+    <div class="form-control checkbox">
+      {{input
+        id="drain-master-nodes"
+        class="form-control"
+        type="checkbox"
+        checked=upgradeStrategy.drainServerNodes
+      }}
+      <label for="drain-master-nodes">
+        {{t "managedImportClusterInfo.drainServerNodes"}}
+      </label>
+    </div>
+  </div>
+  <div class="col span-6">
+    <div class="form-control checkbox">
+      {{input
+        id="drain-worker-nodes"
+        class="form-control"
+        type="checkbox"
+        checked=upgradeStrategy.drainWorkerNodes
+        disabled=(not editing)
+      }}
+      <label for="drain-worker-nodes">
+        {{t "managedImportClusterInfo.drainWorkerNodes"}}
+      </label>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label" for="node-server-concurrency">
+      {{t "managedImportClusterInfo.serverConcurrency"}}
+    </label>
+    <div class="form-control">
+      {{#input-or-display
+         editable=editing
+         value=serverConcurrency
+      }}
+        {{input
+          id="node-server-concurrency"
+          class="form-control"
+          type="number"
+          min=1
+          value=serverConcurrency
+        }}
+      {{/input-or-display}}
+    </div>
+  </div>
+  <div class="col span-6">
+    <label class="acc-label" for="node-worker-concurrency">
+      {{t "managedImportClusterInfo.workerConcurrency"}}
+    </label>
+    <div class="form-control">
+      {{#input-or-display
+         editable=editing
+         value=workerConcurrency
+      }}
+        {{input
+          id="node-worker-concurrency"
+          class="form-control"
+          type="number"
+          min=1
+          value=workerConcurrency
+        }}
+      {{/input-or-display}}
+    </div>
+  </div>
+</div>

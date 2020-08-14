@@ -5,7 +5,7 @@ import { download } from 'shared/utils/util';
 import C from 'ui/utils/constants';
 import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from '@ember/service';
-import { reference } from '@rancher/ember-api-store/utils/denormalize';
+import { hasMany, reference } from '@rancher/ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 import Grafana from 'shared/mixins/grafana';
 import { next } from '@ember/runloop';
@@ -24,6 +24,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
   clusterStore: service(),
   intl:         service(),
 
+  nodes:        hasMany('clusterId', 'node', 'clusterId'),
   type:         'node',
   containerD:   CONTAINERD,
   isContainerD: false,
@@ -98,6 +99,15 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     if ( name ) {
       if ( name.match(/[a-z]/i) ) {
         name = name.replace(/\..*$/, '');
+
+        const nodesWithSamePrefix = (this.nodes || []).filter((node) => (node.nodeName || '').startsWith(`${ name }.`));
+
+        if ( nodesWithSamePrefix.length > 1 ) {
+          name = this.nodeName.slice(this.nodeName.lastIndexOf('.') + 1, this.nodeName.length)
+          if ( name.match(/^\d+$/) ) {
+            name = this.nodeName;
+          }
+        }
       }
 
       return name;
@@ -158,12 +168,43 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     return taints.some((taint) => UNSCHEDULABLE_KEYS.includes(taint.key) && UNSCHEDULABLE_EFFECTS.includes(taint.effect));
   }),
 
+  isK3sNode: computed('labels', function() {
+    const labels = get(this, 'labels') || {};
+
+    return Object.prototype.hasOwnProperty.call(labels, C.LABEL.NODE_INSTANCE_TYPE);
+  }),
+
+  k3sNodeArgs: computed('annotations', function() {
+    const { annotations } = this;
+    const nodeArgs        = annotations[C.LABEL.K3S_NODE_ARGS] ? JSON.parse(annotations[C.LABEL.K3S_NODE_ARGS]) : [];
+
+    return nodeArgs.join(' ');
+  }),
+
+  k3sNodeEnvVar: computed('annotations', function() {
+    const { annotations } = this;
+    const nodeEnv         = annotations[C.LABEL.K3S_NODE_ENV] ? JSON.parse(annotations[C.LABEL.K3S_NODE_ENV]) : {};
+    const nodeEnvArr      = [];
+
+    Object.keys(nodeEnv).forEach((envKey) => {
+      const out = {
+        key:   envKey,
+        value: nodeEnv[envKey]
+      };
+
+      nodeEnvArr.push(out)
+    })
+
+    return nodeEnvArr;
+  }),
+
   osBlurb: computed('info.os.operatingSystem', function() {
     var out = get(this, 'info.os.operatingSystem') || '';
 
     out = out.replace(/\s+\(.*?\)/, ''); // Remove details in parens
     out = out.replace(/;.*$/, ''); // Or after semicolons
-    out = out.replace('Red Hat Enterprise Linux Server', 'RHEL'); // That's kinda long
+    // RHEL 7 uses 'Red Hat Enterprise Linux Server', RHEL 8 uses 'Red Hat Enterprise Linux'
+    out = out.replace(/(Red Hat Enterprise Linux(\sServer|))/, 'RHEL'); // That's kinda long
 
     return out;
   }),

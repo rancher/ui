@@ -157,6 +157,7 @@ generic:
   gitlab: GitLab
   bitbucket: Bitbucket
   required: '{key} is required.'
+  run: Run
 
 realmNames:
   all: All
@@ -306,6 +307,8 @@ alertPage:
     initialWait: Initial Wait
     interval: Interval
     initialWaitHelpText: How long to wait before sending a notification when an alert is triggered.
+    failed: Has Failure
+    run: Completed Scan
     repeatIntervalHelpText: Repeat interval of sending a notification when an alert is active.
     whenA: When A
     whenAn: When An
@@ -385,6 +388,7 @@ alertPage:
     nodeSelector: Node Selector
     workloadSelector: Workload Selector
     metric: Metric
+    cisScan: CIS Scan
     undefined: None
   index:
     addAlertGroup: Add Alert Group
@@ -398,6 +402,7 @@ alertPage:
       target: Target
       recipients: Notifiers
       displayCondition:
+        failure: Failure
         notScheduled: Not Scheduled
         notRunning: Not Running
         available: '{percent}% available'
@@ -461,6 +466,7 @@ rolesPage:
       created: Created Time
       enabled: Enabled
       name: Name
+      id: Id
       noData: There are no roles defined.
       noMatch: No roles match the current search
       subjectKind: Kind
@@ -513,6 +519,7 @@ rolesPage:
         watch: Watch
         labelText: Allow
         resource: Resource
+        nonResourceUrl: Non-Resource URLs (path only)
         addAction: Add Resource
         apiGroups: API Groups
       otherRole:
@@ -689,13 +696,14 @@ authPage:
         labelText: Groups Field
         display: "Groups Field:"
       testAuth:
-        header: '2. Test and enable authentication'
+        header: '{step}. Test and enable authentication'
         subtext: 'Check that your application is configured correctly by testing authentication with it:'
     providerName:
       ping: Ping
       adfs: AD FS
       keycloak: Keycloak
       okta: Okta
+      shibboleth: Shibboleth
     authError: 'Access was not authorized'
     popupError: 'Please disable your pop-up blocker and click "Authenticate" again.'
   ping:
@@ -717,38 +725,18 @@ authPage:
 
 
   shibboleth:
-    enabled:
-      authenticated:
-        header:
-          text: Authentication
-      disableAccess:
-        header: "Danger Zone&trade;"
-        warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
-        confirmDisable: "Are you sure?  Click again to disable access control"
-        disable: Disable access control
-      groupsField: 'Groups:'
-      displayName: 'Display Name:'
-      userName: 'Username:'
-      userId: 'User ID:'
-    disabled:
-      header: '1. Configure Shibboleth Account'
-      label: "{providerName} is not configured"
-      name:
-        labelText: Display Name Field
-      username:
-        labelText: User Name Field
-      uid:
-        labelText: UID Field
-      groups:
-        labelText: Groups Field
-      testAuth:
-        header: '2. Test and enable authentication'
-        subtext: 'Check that your application is configured correctly by testing authentication with it:'
-        buttonText:
-          pre: Authenticate with IDP
-          post: Waiting to hear back from IDP
+    buttonText:
+      pre: 'Authenticate with Shibboleth'
+      post: Waiting to hear back from IDP
+      edit: 'Test Config with Shibboleth'
     providerName:
       shibboleth: Shibboleth
+    openLdap:
+      header: 2. OpenLDAP Search Configuration
+      detail: Add your OpenLDAP configuration below to configure search capabilities.
+      help: "<span class='text-italic'>Note: Required Fields in this section are only required if you are configuring OpenLDAP Search with Shibboleth authorization.</span>"
+    advanced:
+      hr: Additional Configuration Parameters
   root:
     header: Access Control
   github:
@@ -951,6 +939,7 @@ authPage:
       authError: 'Azure access was not authorized'
       popupError: 'Please disable your pop-up blocker and click "Authenticate" again.'
   localAuth:
+    warning: "When enabling external authentication, {appName} will associate the external principal with the current user's local identity.  The associated principal will receive all global permissions, as well as the project and cluster roles bindings of the current user."
     header:
       enabled: 'Local Authentication is enabled'
       disabled: 'Local Authentication is not configured'
@@ -1039,20 +1028,50 @@ catalogPage:
 
 cis:
   scan:
+    report:
+      headers:
+        profile: "Profile: {profile}"
+        id: id
+        description: description
+        remediation: remediation
+        state: state
+        node_type: node_type
+        nodes: nodes
+        passed_nodes: passed_nodes
+        failed_nodes: failed_nodes
+
+    modal:
+      chooseAProfile: Choose a profile
+      title: Run CIS Scan
+      testsWontRun: These tests won't run due to the selected profile
+      notApplicableTests: Not Applicable Tests ({count})
+      userSkippedTestsWontRun: In addition, the following tests have been configured to be skipped as part of the scan
+      skippedTests: Skipped Tests ({count})
+      profileDocs: To find out more about profiles visit our docs <a href="https://rancher.com/docs/rancher/v2.x/en/security/security-scan/#profiles" target="_blank" rel="nofollow noopener noreferrer">here</a>.
+      testDocs: To find out why these tests won't run visit our docs <a href="https://rancher.com/docs/rancher/v2.x/en/security/security-scan/#skipped-and-not-applicable-tests" target="_blank" rel="nofollow noopener noreferrer">here</a>.
+      tableHeaders:
+        id: Test Id
+        explanation: Explanation
+    growl:
+      success: Running CIS scan on '{clusterName}'
     header: CIS Scans
     rkeOnly: CIS Scans are only available to RKE Clusters
     actions:
       delete: Delete
       download: Download
       runScan: Run Scan
+      addAlert: Add Alert
+      addSchedule: Add Schedule
       search:
           placeholder: Search
     table:
       state: State
       name: Name
+      profile: Profile
       passed: Passed
       skipped: Skipped
       failed: Failed
+      notApplicable: Not Applicable
       date: Date
       empty: There are no scans
     detail:
@@ -1074,7 +1093,6 @@ cis:
         unskip: Unskip
         nodesTable:
           title: Nodes
-          notAvailable: Node is not part of the cluster
           row:
             remediation: "Remediation: {remediation}"
 
@@ -1348,6 +1366,8 @@ clustersPage:
   clusterLaunchDisabled: "You have not been granted access to any RKE Templates."
   launch:
     new: Add Cluster
+    import: Import Cluster
+    register: Register Cluster
   cluster:
     label: Cluster Name
   templateRevision:
@@ -1479,6 +1499,9 @@ clusterDashboard:
   etcd: Etcd
   scheduler: Scheduler
   controllerManager: Controller Manager
+  etcdUnavailable: Etcd Not Applicable
+  schedulerUnavailable: Scheduler Not Applicable
+  controllerManagerUnavailable: Controller Manager Not Applicable
   alert:
     node: "Alert: Node {node} is not active."
     component: "Alert: Component {component} is unhealthy."
@@ -1488,6 +1511,13 @@ clusterDashboard:
       memoryPressure: "Alert: Node {node} has memory pressure."
   liveTitle: "{used} of {total} Used"
   reserved: Reserved
+  k3sInfo:
+    title: K3S Information
+    detail: Node system information for K3S imported clusters.
+    nodeArgs:
+      title: K3S Node Arguments
+      detail: Read only list of the K3s startup arguments for this node.
+      noArgs: No node arguments
 
 
 ingressResponse:
@@ -1883,6 +1913,8 @@ cruPersistentVolumeClaim:
   secretRequired:
     name: Secret Name
     namespace: Secret Namespace
+  volumeHandleRequired:
+    label: Volume Handle
 
 cruVolumeClaimTemplate:
   title:
@@ -2808,6 +2840,8 @@ notifierPage:
     pagerduty: PagerDuty
     webhook: Webhook
     wechat: WeChat
+    dingtalk: DingTalk
+    msteams: Microsoft Teams
   slack:
     url: URL
     urlPlaceholder: e.g. https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
@@ -2862,6 +2896,14 @@ notifierPage:
     agentPlaceholder: e.g. 1000003
     corpPlaceholder: e.g. wwc0cc3d58f9b021b6
     defaultRecipientPlaceholder: e.g. 2
+  dingtalk:
+    url: Webhook URL
+    urlPlaceholder: Your webhook URL
+    secret: Secret
+    secretPlaceholder: Only for webhook with sign enabled
+  msteams:
+    url: Webhook URL
+    urlPlaceholder: Your webhook URL
   proxyUrl:
     label: Proxy URL
     placeholder: e.g. http://my-proxy/
@@ -3126,7 +3168,7 @@ cloudProvider:
     aadClientSecret:
       description: "The ClientSecret for an AAD application with RBAC access to talk to Azure RM APIs"
     cloud:
-      description: "The cloud environment identifier. See here for valid entries. See here for valid entries"
+      description: "The cloud environment identifier. See <a href='https://github.com/kubernetes-sigs/cloud-provider-azure/blob/master/docs/cloud-provider-config.md' target='_blank' rel='nofollow noopener noreferrer'>cloud provider config docs</a> for valid entries"
     location:
       description: "The location of the resource group that the cluster is deployed in"
     primaryAvailabilitySetName:
@@ -3220,6 +3262,8 @@ catalogSettings:
       label: Password
       required: '"Password" is required'
       placeholder: Your password
+    helmVersion:
+      label: Helm Version
   errors:
     nameInExists: 'You cannot enable {key} as there is a custom catalog already with name {key}.'
 
@@ -3289,6 +3333,134 @@ clusterNew:
     access:
       title: Account Access
       detail: Choose the region and API Key that will be used to launch Amazon EKS
+      region: Region
+      next: "Next: Configure Cluster"
+    clusterOption:
+      title: Cluster Options
+      detail: Customize the cluster that will be used to launch EKS Instances
+    kubernetesVersion:
+      label: Kubernetes Version
+      placeholder: Select the Kubernetes Version to install
+    secretsEncryption:
+      label: Secrets Encryption
+      disabled: None
+      kms: "KMS Key: Select or Enter KMS Key that will be used to encrypt secrets"
+      kmsHelpLabel: KMS Key ARN
+    tags:
+      label: Tags
+      addActionLabel: Add Tag
+    nodeGroups:
+      title: Managed Node Groups
+      detail: Customize managed node groups.
+      addLabel: Add Node Group
+      noNodes: No Node Groups
+    role:
+      label: Service Role
+      noneSelected: "Rancher created role"
+      help: "You may choose to not select a Service Role and one will be created for you."
+      radio:
+        default: "Standard: Service role is automatically created"
+        custom: "Custom: Choose from your existing service roles"
+      next: "Next: Configure Network"
+      loading: "Loading network options from Amazon..."
+    vpc:
+      title: Networking
+      detail: Choose the network and access options that will be used for EKS Instances
+      next: "Next: Select Subnets"
+      loading: "Loading Subnets from Amazon..."
+      nextRancherDefault: "Next: Select Instance Options"
+      loadingRancherDefault: "Loading Instance options..."
+      noneSelected: "Rancher created VPC and Subnet"
+      radio:
+        default: "Standard: VPC and Subnet are automatically created"
+        custom: "Custom: Choose from your existing VPC and Subnets"
+      access:
+        title: API Server Endpoint Access
+        help: 'Configuring Public/Priavte API access is an advanced use case. Users are encouraged to read the EKS cluster endpoint access control <a href="https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html" target="_blank"  rel="nofollow noopener noreferrer">documentation</a>.'
+        public:
+          label: Public Access
+        private:
+          label: Private Access
+        endpoints:
+          label: Public Access Endpoints
+          valueLabel: Endpoints
+          addActionLabel: Add Endpoint
+          helpBlock: Optionally limit access to the public endpoint via explicit CIDR blocks. If you limit access to specific CIDR blocks, then it is recommended that you also enable the private access to avoid loosing network communitcation to the cluster.
+    logging:
+      title: Logging
+      detail: "Configure control plane logs to send to Amazon CloudWatch. You are charged the standard CloudWatch Logs data ingestion and storage costs for any logs sent to CloudWatch Logs from your clusters."
+      audit:
+        label: Audit
+        tooltip: "Kubernetes audit logs provide a record of the individual users, administrators, or system components that have affected your cluster."
+      api:
+        label: API
+        tooltip: "Your cluster's API server is the control plane component that exposes the Kubernetes API."
+      scheduler:
+        label: Scheduler
+        tooltip: "The scheduler component manages when and where to run pods in your cluster."
+      controllerManager:
+        label: Controller Manager
+        tooltip: "The controller manager manages the core control loops that are shipped with Kubernetes."
+      authenticator:
+        label: Authenticator
+        tooltip: "Authenticator logs are unique to Amazon EKS. These logs represent the control plane component that Amazon EKS uses for Kubernetes Role Based Access Control (RBAC) authentication using IAM credentials."
+    subnet:
+      title: Subnet
+      help: EKS requires at least 2 subnets. Subnets should span at least 2 availability zones.
+      next: "Next: Select Security Group"
+      loading: "Loading Security Groups from Amazon..."
+      noneSelected: "Rancher created VPC, Subnet, and Security Group"
+    associateWorkerNodePublicIp:
+      title: Public IP for Worker Nodes
+      radio:
+        default: Yes
+        off: 'No: Private IPs only'
+    securityGroup:
+      title: Security Groups
+      detail: Choose the security groups that will be applied to EKS Instances
+      choose:  Choose one or more existing groups
+      defaultExisting: "Standard: Use the existing <code>{groupName}</code> group"
+      defaultCreate: "Standard: Automatically create a new security group"
+      next: "Next: Set Instance options"
+      loading: Loading Instance options...
+    ami:
+      label: Custom AMI Override
+      help: "You may override the default AMI based on your region"
+    max:
+      label: Maximum ASG Size
+    min:
+      label: Minimum ASG Size
+    desired:
+      label: Desired ASG Size
+    userData:
+      label: User Data
+      help: Pass user-data to the nodes to perform automated configuration tasks
+      placeholder: Paste in the script
+    nodeVolumeSize:
+      label: Node Volume Size
+      placeholder: e.g. 20
+    accessKey:
+      label: Access Key
+      placeholder: Your AWS access key
+    secretKey:
+      label: Secret Key
+      placeholder: Your AWS secret key
+      provided: Provided
+    sessionToken:
+      label: "Session Token  <em class='text-muted'>Optional</em>"
+      placeholder: Your AWS session token
+      provided: Provided
+    region:
+      label: Region
+    import:
+      clusterSelect:
+        title: Choose Cluster
+        detail: Choose an EKS cluster to register
+        select:
+          label: Cluster To register
+        input:
+          label: Cluster Name To register
+        createLabel: Register Cluster
   tencenttke:
     label: Tencent Kubernetes Engine
     shortLabel: Tencent TKE
@@ -3530,75 +3702,8 @@ clusterNew:
         parsedServiceCidr: 'Kubernetes service address range must fall within the selected Virtual Network range.'
         parsedDnsServiceIp: 'Kubernetes DNS service IP address must fall within the entered Kubernetes service address range.'
         parsedDockerBridgeCidr: 'Docker bridge address can not overlap with the selected Virtual Network or the Kubernetes service address range'
-
-  aliyunkcs:
-    label: Aliyun Kubernetes Container Service
+  aliyunack:
     shortLabel: Alibaba ACK
-    access:
-      next: "Next: Configure Cluster"
-      loading: "Loading Zones from Alibaba ACK"
-      title: Account Access
-      detail: Choose the region and API Key that will be used to launch Alibaba Kubernetes Service
-    cluster:
-      title: Cluster Configuration
-      detail: Choose the Zone and Kubernetes version that will be used to launch Alibaba Kubernetes Service
-      next: "Next: Configure Master Nodes"
-      loading: "Loading Availability Zones from Alibaba"
-    clusters:
-      k8s: Kubernetes
-      managed: Managed Kubernetes
-      label: Cluster Type
-    master:
-      title: Master Nodes
-      detail: Configure the master nodes that will be used to launch Alibaba Kubernetes Service
-      next: "Next: Configure Worker Nodes"
-      loading: "Loading Key Pairs from Alibaba"
-    worker:
-      title: Worker Nodes
-      detail: Configure the worker nodes that will be used to launch Alibaba Kubernetes Service
-    disk:
-      efficiency: Ultra Disk
-      ssd: SSD Disk
-    rootSize:
-      label: Root Disk Size
-      placeholder: e.g. 120
-    rootType:
-      label: Root Disk Type
-    storageType:
-      label: Data Disk Type
-    storageSize:
-      label: Data Disk Size
-      placeholder: e.g. 120
-    masterNum:
-      label: Master Nodes Count
-      help: The count of master nodes will be launched in this Kubernetes cluster
-    numOfNodes:
-      label: Worker Nodes Count
-      placeholder: e.g. 3
-      required: Worker Nodes Count is required
-      help: The count of worker nodes will be launched in this Kubernetes cluster
-    keyPair:
-      label: Key Pair
-      required: Key Pair is required
-    regionId:
-      label: Region
-    accessKeyId:
-      label: Access Key
-      placeholder: Your Aliyun access key
-      required: Access Key is required
-    accessKeySecret:
-      label: Secret Key
-      placeholder: Your Aliyun secret key
-      provided: Provided
-      required: Secret Key is required
-    version:
-      label: Kubernetes Version
-    zoneId:
-      label: Availability Zone
-      required: Availability Zone is required
-    instanceType:
-      label: Instance Type
-      required: Instance Type is required
   googlegke:
     label: Google Kubernetes Engine
     shortLabel: Google GKE
@@ -3800,6 +3905,15 @@ clusterNew:
         placeholder: Value
       required: 'Taint "key" and "value" are required.'
     tablesOnly: Tables Only
+  rke2:
+    label: Rancher RKE2
+    shortLabel: RKE2
+  k3simport:
+    label: Rancher K3S
+    shortLabel: K3S
+    errors:
+      concurrency:
+        negative: Only non-negative and non-zero concurrency values are valid.
   huaweicce:
     label: Huawei Cloud Container Engine
     shortLabel: Huawei CCE
@@ -3938,7 +4052,125 @@ clusterNew:
       authenticating_proxy: Authenticating Proxy
     eipShareType:
       label: EIP Share Type
+  oracleoke:
+    label: Oracle Container Engine long
+    shortLabel: Oracle OKE
+    access:
+      next: "Next: Authenticate & Configure Cluster"
+      loading: Loading values from Oracle Cloud Infrastructure
+      title: Choose the region and API Key that will be used to authenticate and configure Oracle Container Engine.
+      detail: Choose the region and API Key that will be used to authenticate and configure Oracle Container Engine.
+    region:
+      label: Region
+    tenancyOCID:
+      label: Tenancy OCID
+      placeholder: The OCID of the tenancy in which to create resources
+      required: Tenancy OCID is required
+    compartmentOCID:
+      label: Compartment OCID
+      placeholder: The OCID of the compartment in which to create the resources
+      required: Compartment OCID is required
+    userOcid:
+      label: User OCID
+      placeholder: The OCID of a user who has access to the specified tenancy/compartment
+      required: Tenancy OCID is required
+    userFingerprint:
+      label: User fingerprint
+      placeholder: The fingerprint corresponding to the specified user's private API Key
+      required: User private key fingerprint is required
+    secretKey:
+      label: User Private Key
+      placeholder: The private API key contents for the specified OCI user, in PEM format
+      provided: Provided
+      required: User Private API Key is required
+    secretKeyPassphrase:
+      label: User Private Key Passphrase
+      placeholder: The passphrase (if any) that protects private key file the specified OCI user
+      provided: Provided
+    cluster:
+      title: Cluster Configuration
+      detail: Choose the Kubernetes version and the number of nodes per availability-domain for the cluster.
+      next: "Next: Configure Virtual Cloud Network"
+      loading: Loading VCNs from Oracle Cloud Infrastructure
+    vcn:
+      title: Virtual Cloud Network
+      detail: Configure the virtual cloud network that will be used for your Kubernetes cluster.
+      label: Virtual Cloud Network
+      required: VCN is required
+    version:
+      label: Kubernetes Version
+      required: Kubernetes Version is required
+    cidr:
+      label: Virtual Cloud Network CIDR
+      placeholder: e.g. 172.16.0.0/16
+      required: Virtual Cloud Network CIDR is required
+      error: Virtual Cloud CIDR format error
+    existingVCNDetails:
+      compartmentOCID: OCID of the VCN's compartment
+      compartmentOCIDPlaceholder: e.g. ocid1.compartment.oc1..aaaaaaaa...
+      compartmentOCIDHelp: leave blank if it's the cluster compartment
+      vcnName: Name of the pre-existing VCN
+      vcnNamePlaceholder: e.g. my-vcn
+      lbSubnetName1: Name of first pre-existing LB subnet
+      lbSubnetName1Placeholder: e.g. my-lb-sub-1
+      lbSubnetName2: Name of second pre-existing LB subnet (if applicable)
+      lbSubnetName2Placeholder: e.g. my-lb-sub-2
+    quantityPerSubnet:
+      label: Nodes Per AD Count
+      placeholder: e.g. 1
+      required: Nodes per availability-domain is required
+      help: The quantity of nodes nodes to run in each availability domain in the region
+      error: The count of nodes should not be greater than {max}
+    nodeShape:
+      label: Instance Shape'
+      required: Instance Shape is required
+    nodeSSHKey:
+      label: SSH public key for nodes
+      placeholder: Optional SSH public key for the nodes
+    instanceConfig:
+      label: Instance Configuration(CPU/Memory)
+      gpuLabel: Instance Configuration(CPU/Memory/GPU Type/GPU Count)
+      required: Instance Configuration is required
+    subnet:
+      label: Subnet Access
+      required: Subnet access is required
+    node:
+      title: Node Type
+      detail: Choose the node type that will be used for this Kubernetes cluster
+      next: "Next: Configure Node Instances"
+      loading: Loading configuration from Oracle Cloud Infrastructure
+    instance:
+      title: Node Instance Configuration
+      detail: Configure the instance that will be used as nodes in the cluster.
+    os:
+      label: Operating System
+    storageType:
+      label: Default Persistent Volume Disk Type
+    storageSize:
+      label: Default Persistent Volume Disk Size
+      placeholder: e.g. 10
+      error: Default Persistent Volume Disk Size should be greater than 0
+    localDisk:
+      label: Local Disk
+      placeholder: size GB
+    subnetAccessOptions:
+      quick: Quick Create
+      custom: Custom Create
+      existing: Existing
+
   rke:
+    upgradeStrategy:
+      maximumWorkersDown:
+        view:
+          count: "{value}"
+          percentage: "{value}%"
+        label: Maximum Worker Nodes Unavailable
+        placeholder: e.g. 6
+        mode:
+          percentage: Percentage
+          count: Count
+      drainNodes:
+        label: Drain nodes
     clustersSelectTemplate:
       label: "Use an existing RKE Template and revision"
       select:
@@ -3949,6 +4181,18 @@ clusterNew:
         prompt: Select a RKE Template revision
         default: '{name} - Default (Created {ago})'
         other: '{name} (Created {ago})'
+    cisScan:
+      scheduled:
+        enabled:
+          label: Scheduled CIS Scan Enabled
+        interval:
+          label: Scheduled CIS Scan Interval (cron)
+          placeholder: e.g. 0 0 * * *
+        retention:
+          label: Scheduled CIS Scan Report Retention
+        profile:
+          label: Scheduled CIS Scan Profile
+
     etcd:
       enabled:
         label: Recurring etcd Snapshot Enabled
@@ -4051,6 +4295,7 @@ clusterNew:
         =1 {# new node has registered}
         other {# new nodes have registered}
       }
+    clusterTempalteMissing: Cluster Template Enforcement is enabled, and you do not have access to the template required to edit this cluster. Please speak to your admin.
     done: Done
     info:
       text: Editing node options will update the command you will run on your existing machines
@@ -4172,18 +4417,36 @@ clusterNew:
       title: Authorized Endpoint
       detail: "Enabling the authorized cluster endpoint allows direct communication with the cluster, bypassing the API proxy. Authorized endpoints can be retrieved by generating a kubeconfig for the cluster."
       label: Authorized Cluster Endpoint
+  register:
+    title: Bring an existing Kubernetes cluster
+    label: Register
+    shortLabel: Registered
+    helpBlock: Register an existing Rancher, <a href='https://k3s.io/' target='_blank' rel='nofollow noreferrer'>K3s</a> or EKS cluster.
   custom:
+    title: Create a new Kubernetes cluster
+    subtitle: With RKE and existing nodes
     label: From existing nodes (Custom)
     shortLabel: Custom
     helpBlock: Create a new Kubernetes cluster using RKE, out of existing bare-metal servers or virtual machines.
   import:
     label: Import an existing cluster
     shortLabel: Imported
-    helpBlock: Import an existing Kubernetes cluster.  The provider that created it will continue to manage the provisioning and configuration of the cluster.
+    helpBlock: Import an existing CNCF certified Kubernetes cluster. Kubernetes configuration and infrastructure management is managed outside of Rancher.
     command:
       instructionsAdminRole: "<b>Note:</b> If you want to import a Google Kubernetes Engine (GKE) cluster (or any cluster that does not supply you with a kubectl configuration file with the ClusterRole <b>cluster-admin</b> bound to it), you need to bind the ClusterRole <b>cluster-admin</b> using the command below.<br/><br/>Replace <b>[USER_ACCOUNT]</b> with your Google account address (you can retrieve this using <b>gcloud config get-value account</b>). If you are not importing a Google Kubernetes Engine cluster, replace <b>[USER_ACCOUNT]</b> with the executing user configured in your kubectl configuration file."
       instructions: "Run the kubectl command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {appName}:"
       instructionsInsecure: "If you get an error about 'certificate signed by unknown authority' because your {appName} installation is running with an untrusted/self-signed SSL certificate, run the command below instead to bypass the certificate check:"
+    select:
+      other:
+        title: Rancher or K3s
+        helpBlock: "Register existing Rancher or <a id='k3s-info-external-link' href='https://k3s.io/' target='_blank' rel='nofollow noreferrer'>K3s</a> backed cluster."
+      eks:
+        title: Amazon EKS
+        helpBlock: "Register an existing Amazon EKS cluster."
+  importEks:
+    label: Register an existing Amazon EKS cluster
+    shortLabel: Registered
+    helpBlock: "Register an existing Amazon EKS Kubernetes cluster."
 
 clusterTemplateNew:
   members:
@@ -5463,12 +5726,14 @@ dangerZone:
     'system-default-registry': 'Private registry to be used for all system Docker images.'
     'ui-index': 'HTML index location for the UI.'
     'ui-pl': 'Private-Label company name.'
+    'ui-issues': "Use a url address to send new 'File an Issue' reports instead of sending users to the Github issues page."
     'telemetry-opt': 'Telemetry reporting opt-in.'
     'auth-user-info-max-age-seconds': 'The maximum age of a users auth tokens before an auth provider group membership sync will be performed.'
     'auth-user-info-resync-cron': 'Default cron schedule for resyncing auth provider group memberships.'
     'cluster-template-enforcement': 'Non-admins will be restricted to launching clusters via preapproved RKE Templates only.'
     'auth-user-session-ttl-minutes': 'Custom TTL (in minutes) on a user auth session.'
     'rke-metadata-config': 'Configure RKE metadata refresh parameters.'
+    'ui-banners': 'Classification banner is used to display a custom fixed banner in the header, footer, or both. The setting takes JSON object containing 3 root parameters; <code>banner</code>, <code>showHeader</code>, <code>showFooter</code>. <code>banner</code> is an object containing; <code>textColor</code>, <code>background</code>, and <code>text</code>, where <code>textColor</code> and <code>background</code> are any valid CSS color value.'
 
 deleteEksCluster:
   title: "Delete {clusterName}?"
@@ -5693,16 +5958,17 @@ stacksPage:
     instanceStateWithIcon: States
 
 featureFlags:
-  warningHeader: "Feature flags allow rancher to gate certain features behind flags. You should enable these features with caution and they should be considered beta functionality which could possibly cause problems for your system."
+  warningHeader: "Feature flags allow {appName} to gate certain features behind flags. You should enable these features with caution, and they should be considered beta functionality, which could cause problems for your system. Additionally, some features (non-dynamic) require a restart of the {appName} server to be enabled. Changing non-dynamic features will restart {appName} pods, which will result in a short outage."
   features:
    istioVirtualServiceUi: "Enabling this feature exposes additional UI pages for Istio."
    unsupportedStorageDrivers: "Enabling this feature exposes unsupported storage driver options for persistent volumes and storage classes."
   table:
-    state: State
-    name: Name
     description: Description
+    name: Name
     noData: There are no features
     noMatch: No features match the current search
+    restart: Restart
+    state: State
 
 formatIp:
   noIp: None
@@ -6260,6 +6526,13 @@ formKeyValue:
     label: Value
     placeholder: Value
   protip: 'ProTip: Paste lines of key=value pairs into any key field for easy bulk entry.'
+  binary:
+    byte: |
+      {length, plural,
+      =1 {# byte}
+      other {# bytes}
+      }
+
 
 formImage:
   label: Docker Image
@@ -6810,6 +7083,9 @@ formVersions:
   downgrade: "(can't downgrade)"
   notallowed: "(not allowed by template)"
   unsupported: "(unsupported)"
+  eks:
+    label: "(minor version >1 not allowed by EKS)"
+    helpBlock: "Because Amazon EKS runs a highly available control plane, you can update only one minor version at a time."
   helpBlock:
     label: When upgrading Kubernetes versions, please review the <a href="https://groups.google.com/forum/#!forum/kubernetes-announce" target="_blank" rel="nofollow noreferrer noopener">Kubernetes release notes</a> for any breaking changes.
 
@@ -6934,9 +7210,25 @@ formHostPortsPodSecurityPolicy:
       label: Min
       placeholder: e.g. 6000
 
+formRunAsGroupPodSecurityPolicy:
+  title: Run As Group Policy
+  detail: Controls which primary group ID the containers are run with.
+  rule:
+    mustRunAs: MustRunAs - Requires a range to be configured. Uses the first value of the range as the default. Validates against the configured range.
+    mayRunAs: MayRunAs - Does not require that RunAsGroup be specified. However, when RunAsGroup is specified, they have to fall in the defined range.
+    runAsAny: RunAsAny - No default provided. Allows any runAsGroup to be specified.
+  range:
+    addLabel: Add Range
+    max:
+      label: Max
+      placeholder: e.g. 65535
+    min:
+      label: Min
+      placeholder: e.g. 1
+
 formRunAsUserPodSecurityPolicy:
   title: Run As User Policy
-  detail: The user ID
+  detail: Controls which user ID the containers are run with.
   rule:
     mustRunAs: MustRunAs - Requires a range to be configured. Uses the first value of the range as the default. Validates against the configured range.
     mustRunAsNonRoot: MustRunAsNonRoot - Requires that the pod be submitted with a non-zero runAsUser or have the USER directive defined in the image. No default provided.
@@ -7084,6 +7376,34 @@ inputPassword:
 inputTextFile:
   tooltip: Read from a file
 
+nodeGroupRow:
+  name:
+    label: Node Group Name
+  instance:
+    label: Instance Type
+  gpu:
+    label: GPU Enabled Instance
+  max:
+    label: Maximum ASG Size
+  min:
+    label: Minimum ASG Size
+  desired:
+    label: Desired ASG Size
+  nodeVolumeSize:
+    label: Node Volume Size
+    placeholder: e.g. 20
+  ssh:
+    label: SSH Key
+  labels:
+    label: Labels
+    addLabel: Add Label
+  tags:
+    label: Tags
+    addLabel: Add Tag
+  remove:
+    label: Remove Node Group
+
+
 uploadFile:
   label: Read from File
 
@@ -7097,6 +7417,25 @@ containersSection:
   noData: No Containers
   noMatch: No Containers match the current search
   initContainer: Init Container
+
+managedImportClusterInfo:
+  title: "{provider} Options"
+  detail: "Customize the {provider} cluster options"
+  kubernetesVersion: Kubernetes Version
+  workerConcurrency: Worker Concurrency
+  serverConcurrency: Control Plane Concurrency
+  drainServerNodes: Drain Control Plane Nodes
+  drainWorkerNodes: Drain Worker Nodes
+  error:
+    int: Concurrency values must be integer values
+
+k3sNodeEnvVarSection:
+  title: K3S Node Environment Variables
+  detail: Read only list of the K3s startup environment variables for this node.
+  key: Key
+  value: Value
+  noData: No environment variables
+  noMatch: No environment variables match the current search
 
 labelsSection:
   kind: Kind
@@ -7134,6 +7473,8 @@ loginSaml:
     buttonText: "Log In with Okta"
   keycloak:
     buttonText: "Log In with Keycloak"
+  shibboleth:
+    buttonText: Log In with Shibboleth
 
 loginUserPass:
   local: Use a Local User
@@ -7544,6 +7885,23 @@ modalAddCloudKey:
         Paste in a Personal Access Token from the Linode
         <a href="https://cloud.linode.com/profile/tokens" target="_blank" rel="nofollow noreferrer noopener">API Tokens</a> screen
     authAccountButton: 'Next: Configure Instance'
+  oci:
+    userOcid:
+      label: User OCID
+      placeholder: The OCID of a user
+    userFingerprint:
+      label: User fingerprint
+      placeholder: The fingerprint corresponding to the specified user's private API Key
+    secretKey:
+      label: User Private Key
+      placeholder: The private API key contents for the specified OCI user, in PEM format
+    secretKeyPassphrase:
+      label: User Private Key Passphrase
+      placeholder: The passphrase (if any) that protects private key file the specified OCI user
+    tenancyOcid:
+      label: Tenancy OCID
+      placeholder: The OCID of the tenancy in the user account exists
+
   vmwarevsphere:
     password:
       label: Password
@@ -7672,11 +8030,12 @@ modalProcessError:
   stackTrace: "Stack Trace:"
   close: Close
 
-modalDrainNode:
+drainNode:
   titleOne: 'Drain "{name}"'
   titleMultiple: 'Drain {count} Nodes'
   action: Drain
-  mode: Mode
+  deleteLocalData: Delete Local Data
+  force: Force
   safe:
     label: Safe
     helpText: If a node has standalone pods or ephemeral data it will be cordoned but not drained.
@@ -7688,11 +8047,15 @@ modalDrainNode:
     default: Honor the default from each pod
     placeholder: e.g. 30
     custom: "Ignore the defaults and give each pod:"
+    view:
+      custom: "Ignore the defaults and give each pod {seconds} seconds"
   timeout:
     title: "Drain timeout"
     default: Keep trying forever
     placeholder: e.g. 60
     custom: "Give up after:"
+    view:
+      custom: Give up after {seconds} seconds
 
 modalRevertSettings:
   title: "Revert {setting} to default value?"
@@ -7704,8 +8067,16 @@ modalRestoreBackup:
   backups: Available Snapshots
   error: A snapshot is required
   fetching: Fetching new snapshots
+  restoreButton: Restore
   select:
     all: Select an available snapshot
+  type:
+    label: Restoration Type
+    etcd: etcd
+    k8sVersion: "etcd and Kubernetes Version"
+    versionUnknown: 'Unknown'
+    etcdAndK8sVersion: "etcd, Kubernetes Version and cluster config"
+    k8sVersionUnknown: We cannot restore the kubernetes version for this snapshot because the version is unknown.
 
 modalRotateCertificates:
   title: Rotate Cluster Certificates
@@ -7734,6 +8105,7 @@ modalRollbackService:
 
 modalRollbackApp:
   title: 'Rollback "{appName}"'
+  protip: 'The "Rollback" action will create a new revision with the same configuration as the selected revision.'
   action: Rollback
   current:
     label: Current Revision
@@ -7844,8 +8216,8 @@ newCatalog:
   noConfig: This template has no configuration options
   official: Officially Certified
   preview: Preview
-  forceUpgrade: Delete and recreate resources if needed during the upgrade
-  forceRollback: Delete and recreate resources if needed during the rollback
+  forceUpgrade: Delete and recreate resources if needed during the upgrade (uses helm --force)
+  forceRollback: Delete and recreate resources if needed during the rollback (uses helm --force)
   templateFiles: Template Files
   requiredNamespace: Required Namespace
   seeMore: More information...
@@ -8076,6 +8448,7 @@ kontainerDriver:
     rancherKubernetesEngine: Rancher RKE
     tencentkubernetesengine: Tencent TKE
     baiducloudcontainerengine: Baidu CCE
+    oraclecontainerengine: Oracle OKE
 
 
 nodeDriver:
@@ -8087,21 +8460,28 @@ nodeDriver:
   cloudCredentialError: A cloud credential is required
   nameError: A name is required
   displayName:
+    aliyun: Alibaba ACK
     aliyunecs: Aliyun ECS
-    aliyunkcs: Alibaba ACK
     amazonec2: Amazon EC2
     amazoneks: Amazon EKS
+    amazoneksv2: Amazon EKS
     azure: Azure
     azureaks: Azure AKS
+    baidu: Baidu CCE
     cloudca: Cloud.ca
     digitalocean: DigitalOcean
     exoscale: Exoscale
     googlegke: Google GKE
     huaweicce: Huawei CCE
+    import: Other
+    importeks: Amazon EKS
     linode: Linode
+    oci: Oracle Cloud Infrastructure
     openstack: OpenStack
+    oracleoke: Oracle OKE
     otc: Open Telekom Cloud
     packet: Packet
+    pinganyunecs: Pinganyun ECS
     rackspace: RackSpace
     rancherkubernetesengine: RKE
     softlayer: SoftLayer
@@ -8109,8 +8489,6 @@ nodeDriver:
     upcloud: UpCloud
     vmwarevsphere: vSphere
     zstack: ZStack
-    pinganyunecs: Pinganyun ECS
-    baidu: Baidu CCE
   driverOptions: "{driver} Options"
   templateOptions: "{appName} Template"
   amazoneks:
@@ -8200,76 +8578,95 @@ nodeDriver:
       label: Region
   amazonec2:
     access:
-      title: 1. Account Access
       detail: Choose the region and API Key that will be used to launch EC2 Instances
-      next: "Next: Authenticate & configure nodes"
+      help: Paste in your AWS key pair here. We'll use this key to create your new Instances.
       loading: Loading Availability Zone and VPC info from EC2...
-      help: "Paste in your AWS key pair here. We'll use this key to create your new Instances."
-    zone:
-      title: 2. Zone and Network
-      detail: Select the Availability Zone and VPC/Subnet for Instances
-      next: "Next: Select a Security Group"
-      loading: Loading security group info from EC2...
+      next: 'Next: Authenticate & configure nodes'
+      title: 1. Account Access
     accessKey:
       label: Access Key
       placeholder: Your AWS access key
-    secretKey:
-      label: Secret Key
-      placeholder: Your AWS secret key
-      provided: Provided
-    region:
-      label: Region
-    availabilityZone: Availability Zone
-    subnet: VPC/Subnet
-    noSubnet: There are no subnets to choose from
-    securityGroup:
-      title: 3. Security Groups
-      detail: Choose the security groups that will be applied to Instances
-      choose:  Choose one or more existing groups
-      defaultExisting: "Standard: Use the existing <code>{groupName}</code> group"
-      defaultCreate: "Standard: Automatically create a <code>{groupName}</code> group"
-      next: "Next: Set Instance options"
-      loading: Loading Instance options...
-    tags:
-      addActionLabel: Add AWS Tag
-      valueLabel: Tags
-      placeholder: e.g. dev
-    instance:
-      title: 4. Instance
-      detail: Customize the EC2 Instance that will be created.
-    portHelp:
-      link: Learn more
-      text: about the ports that will be opened.
-    needs:
-      label: "For {appName} to work correctly your security group will need to allow traffic:"
-      item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
-      item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
-      item3: These rules will <b>not</b> be added automatically.
-    instanceType:
-      label: Instance Type
-    rootSize:
-      label: Root Disk Size
-      unit: GB
     ami:
       label: AMI
       placeholder: An Ubuntu AMI
       rancherList: RancherOS AMI List
-    sshUser:
-      label: SSH User
-      placeholder: e.g. ubuntu
+    availabilityZone: Availability Zone
+    encryptEbsVolume:
+      label: Encryption
+      radioLabel: Encrypt EBS Volume
     iam:
       label: IAM Instance Profile Name
       placeholder: my-k8s-profile
-    privateIp:
-      label: Private IP
+    instance:
+      detail: Customize the EC2 Instance that will be created.
+      title: 4. Instance
+    instanceType:
+      label: Instance Type
+    metadata:
+      httpEndpoint:
+        label: HTTP Endpoint
+        enabled: Enabled
+        disabled: Disabled
+        protip: Enables or disables the HTTP metadata endpoint on your instances
+      httpTokens:
+        label: HTTP Tokens
+        required: Required
+        optional: Optional
+        protip: Use HTTP Tokens for Instance Metadata Requests
+    needs:
+      item1: 'From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>'
+      item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+      item3: These rules will <b>not</b> be added automatically.
+      label: 'For {appName} to work correctly your security group will need to allow traffic:'
+    noSubnet: There are no subnets to choose from
     onlyPrivate:
       label: Use only private IP address
+    portHelp:
+      link: Learn more
+      text: about the ports that will be opened.
+    privateIp:
+      label: Private IP
+    region:
+      label: Region
     requestSpotInstance:
-      label: Spot Instance
       enable: Request spot instance
+      label: Spot Instance
+    rootSize:
+      label: Root Disk Size
+      unit: GB
+    secretKey:
+      label: Secret Key
+      placeholder: Your AWS secret key
+      provided: Provided
+    securityGroup:
+      choose: Choose one or more existing groups
+      defaultCreate: 'Standard: Automatically create a <code>{groupName}</code> group'
+      defaultExisting: 'Standard: Use the existing <code>{groupName}</code> group'
+      detail: Choose the security groups that will be applied to Instances
+      loading: Loading Instance options...
+      next: 'Next: Set Instance options'
+      title: 3. Security Groups
     spotPrice:
       label: Spot Price
       unit: $
+    sshUser:
+      label: SSH User
+      placeholder: e.g. ubuntu
+    subnet: VPC/Subnet
+    tags:
+      addActionLabel: Add AWS Tag
+      placeholder: e.g. dev
+      valueLabel: Tags
+    useEbsOptimizedInstance:
+      label: Optimized Instance
+      radioLabel: Create EBS optimized instance
+    volumeType:
+      label: Amazon EBS volume type
+    zone:
+      detail: Select the Availability Zone and VPC/Subnet for Instances
+      loading: Loading security group info from EC2...
+      next: 'Next: Select a Security Group'
+      title: 2. Zone and Network
   digitalocean:
     droplet:
       title: Droplet Options
@@ -8556,6 +8953,7 @@ nodeDriver:
     image:
       label: Image
       placeholder: 'canonical:UbuntuServer:18.04-LTS:latest'
+      helpText: Providing an ARM resource identifier requires using managed disk
     diskSize:
       label: Disk Size
       placeholder: e.g. 30
@@ -8563,6 +8961,7 @@ nodeDriver:
       label: Disk Type
       unmanaged: Unmanaged Disk
       managed: Managed Disk
+      helpText: "Creates a {type} availability set. Changing this value after the availability set has been created may cause errors."
     updateDomainCount:
       label: Update Domain Count
       placeholder: e.g. 5
@@ -8600,7 +8999,7 @@ nodeDriver:
       label: Subnet Prefix
       placeholder: 128.42.0.0/21
     availabilitySet:
-      label: Availability Set
+      label: "Availability Set ({type})"
       placeholder: availability-set-name
     openPort:
       label: Open Port
@@ -8622,6 +9021,11 @@ nodeDriver:
       placeholder: Your Client Secret
     region:
       label: Region
+    nsg:
+      label: Network Security Group
+      placeholder: "e.g. AllowVnetOutBound"
+      helpText: When using a Rancher managed or providing an existing NSG, all nodes using this template will use the supplied NSG. If no NSG is provided, a new NSG will be created for each node.
+      openPorts: When using an existing NSG, Open Ports are ignored.
   aliyunecs:
     accountSection:
       label: 1. Account Access
@@ -8636,7 +9040,7 @@ nodeDriver:
       placeholder: Your Aliyun Account Access Key Secret
       provided: Provided
     apiEndpoint:
-      label: API Endpoint (Optional)
+      label: Private Aliyun API Server Endpoint
       placeholder: Private Aliyun API Server Endpoint
     instanceOptionsSection:
       label: Instance
@@ -8656,6 +9060,10 @@ nodeDriver:
     aliyunSLB:
       label: Aliyun SLB ID
       placeholder: Aliyun SLB ID
+    internetChargeType:
+      label: EIP Charge Type
+      payByBandwidth: Pay By Bandwidth
+      payByTraffic: Pay By Traffic
     storageSection:
       label: Storage
       detail: Configure the storage for the instances that will be created by this template.
@@ -8722,6 +9130,53 @@ nodeDriver:
       sshPasswordInvalidCharacter: SSH password contains invalid characters.
       sshPasswordFormatError: "SSH password must contain at least three out of four kinds of following characters: uppercase letter, lowercase letters, numbers, and special characters."
       nameNotValidForApp: The name is invalid according to the {appName} hostname rule.
+  oci:
+    placement:
+      title: Placement
+      detail: Select placement for compute instance(s) created by this template.
+    access:
+      title: Account Access
+      detail: User Credentials will be used to launch OCI Instances.
+    network:
+      title: Virtual Cloud Network Details
+      detail: Configure the VCN for compute instances created by this template.
+    instance:
+      title: Instance Details
+      detail: Configure and customize the compute instance(s) that will be created.
+    image:
+      label: Image
+      placeholder: 'Oracle-Linux-7.7-2020.02.21-0'
+    faultDomainCount:
+      label: Fault Domain
+      placeholder: e.g. 3
+      helpText: Each availability domain contains three fault domains.
+    shape:
+      label: Shape
+    nodeCompartment:
+      label: OCID of compartment where compute instance(s) will be created
+      placeholder: 'ocid1.compartment.oc1....'
+    vcnCompartment:
+      label: OCID of compartment where VCN and subnet reside (if different than above)
+      placeholder: 'ocid1.compartment.oc1....'
+    vcn:
+      label: OCID of VCN where compute instance will be launched
+      placeholder: 'ocid1.vcn.oc1....'
+    subnet:
+      label: OCID of subnet (accessible to Rancher) that compute instance(s) will use
+      placeholder: 'ocid1.subnet.oc1....'
+      helpText: If subnet is AD-specific, it must match the AD of the node(s) created by this template.
+    usePrivateIp:
+      label: Use private IP address to connect to compute instances(s)
+    availabilityDomain:
+      label: Availability Domain
+      placeholder: availability-domain-name
+      helpText: Must match availability domain of subnet if using AD-specific subnets.
+    openPort:
+      label: Open Port
+      placeholder: 'Comma-separated, e.g. 80,443'
+    region:
+      label: Region
+
   zstack:
     access:
       title: 1. Account Access
@@ -9110,6 +9565,7 @@ systemInfoSection:
   noData: No Data
   arch: Architecture
   dockerVersion: Docker Version
+  containerDVersion: Containerd Version
   kernelVersion: Kernel Version
   kubeletVersion: Kubelet Version
   kubeProxyVersion: Kube Proxy Version
@@ -9127,6 +9583,10 @@ telemetryOpt:
   learnMore:
     label: Learn More
   label: Allow collection of anonymous statistics
+  eula:
+    prefix: I agree to the
+    link: Terms and Conditions
+    suffix: 'for using {appName}.'
 
 tooltipLink:
   list: List
@@ -9351,6 +9811,8 @@ nav:
   project:
     none: Grouped Projects/Namespaces
     namespaces: Namespaces
+  dashboard:
+    try: Try Dashboard
 
 
 ##############################
@@ -9412,6 +9874,7 @@ action:
   rotate: Rotate Certificates
   rerun: Rerun
   run: Run
+  runCISScan: Run CIS Scan
   saveAsTemplate: Save As RKE Template
   setDefault: Set as Login Environment
   setDefaultRevision:
@@ -9605,7 +10068,7 @@ volumeSource:
     title: Fibre Channel
   flex-volume:
     title: Flex Volume
-  flex-volume-longhorn:
+  csi-volume-longhorn:
     title: Longhorn
   flocker:
     title: Flocker

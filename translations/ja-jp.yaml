@@ -6,6 +6,7 @@ languageContribute: "Rancher の翻訳にご協力ください"
 ##############################
 generic:
   actions: アクション
+  active: アクティブ
   activate: アクティベート
   add: 追加
   advanced: 詳細
@@ -46,6 +47,7 @@ generic:
   false: 'いいえ'
   generic: '一般'
   gigabyte: 'GB'
+  group: 'グループ'
   hardware: ハードウェア
   healthy: ヘルス
   help: ヘルプ
@@ -122,9 +124,27 @@ generic:
   value: 値
   version: バージョン
   yes: "はい"
+  isRequired: が必要です
   readOnly: 読み取り専用
   readWrite: 読み書き
   writeOnly: 書き込み専用
+  linux: Linux
+  windows: Windows
+  host: ホスト
+  cpu: CPU
+  memory: メモリ
+  noData: データがありません
+  branch: ブランチ
+  commit: コミット
+  repository: リポジトリ
+  registry: レジストリ
+  imageName: イメージ名
+  pipeline: パイプライン
+  noBranch: このリポジトリにブランチはありません。
+  github: GitHub
+  gitlab: GitLab
+  bitbucket: Bitbucket
+  required: '{key} が必要です.'
 realmNames:
   all: 全て
   usWest: US 西部
@@ -146,6 +166,7 @@ accountsPage:
         projectName: プロジェクト
         active: アクティブ
         created: 付与日
+        group: グループ
       global:
         title: グローバル権限
         description: インストール全体に影響を与えるものを管理するためのアクセス権
@@ -164,6 +185,7 @@ accountsPage:
   index:
     header: ユーザー
     localLink: ユーザーを追加
+    groupLink: グローバルロールの割り当て
     table:
       id: ID
       kind: 種類
@@ -171,6 +193,14 @@ accountsPage:
       identity: ID
       noMatch: 検索条件に一致するユーザーはいません
       noName: None
+  groups:
+    header: グループ
+    table:
+      groupName: グループ名
+      globalRole: グローバルロール名
+      noData: 定義されているグループがありません．
+      noMatch: 検索条件に一致するグループがありません
+      noName: なし
   new:
     header: ユーザーを追加
     errors:
@@ -192,6 +222,16 @@ accountsPage:
       description:
         labelText: 詳細情報
         placeholder: "例: このアカウントは、ジョン ・ スミス用"
+  editGroup:
+    header: グループの編集
+  newGroup:
+    header: グループにグローバルロールを割り当てる
+    errors:
+      group: グループが必要です。
+      role: ロールが必要です。
+    form:
+      group:
+        labelText: 追加するグループを選択
   modal:
     password: パスワードを変更
 appDetailPage:
@@ -233,6 +273,66 @@ appDetailPage:
     title: シークレット
     detail: このアプリケーションに割り当てられているシークレットです
     nodata: このアプリケーションにシークレットは作成されていません
+alertPage:
+  na: 未設定
+  items: アイテム
+  addSelectorLabel: セレクターを追加
+  create: 作成
+  save: 保存
+  cluster: クラスター
+  project: プロジェクト
+  alertGroups: アラート
+  newOrEdit:
+    showAdvanced: 詳細オプションを表示
+    interval: 間隔
+    to: に
+    alert: アラート
+    nodePlaceholder: ノードを選択
+    expression:
+      noData: メトリックグラフデータはありません。
+      error: メトリックグラフデータを取得できません。
+    removeAlert: このアラートを削除
+    alertRule: アラートルール
+    enableMonitoring: モニタリングを有効化
+  resourceKinds:
+    #backend use capitalized name
+    Pod: ポッド
+    Node: ノード
+    Deployment: デプロイメント
+    DaemonSet: デーモンセット
+    StatefulSet: ステートフルセット
+  targetTypes:
+    pod: ポッド
+    node: ノード
+    deployment: デプロイメント
+    daemonset: デーモンセット
+    statefulset: ステートフルセット
+    workload: ワークロード
+    event: イベント
+    systemService: システムサービス
+    nodeSelector: ノードセレクター
+    workloadSelector: ワークロードセレクター
+    metric: メトリック
+    undefined: なし
+  index:
+    addAlertGroup: アラートグループの追加
+    addAlert: アラートルールを追加
+    noAlerts: まだアラートルールは定義されていません.
+    table:
+      noMatch: 検索条件に一致するアラートはありません.
+      noData: まだアラートルールは定義されていません
+      noGroup: アラートグループなし
+      condition: 条件
+      target: ターゲット
+      recipients: 通知
+      displayCondition:
+        notScheduled: 未スケジュール
+        notRunning: 未実行
+  new:
+    addHeader: アラートグループの追加
+    editHeader: アラートグループの編集
+    addRuleHeader: アラートルールを追加
+    editRuleHeader: アラートルールを編集
 podSecurityPoliciesPage:
   index:
     header: ポッドセキュリティポリシー
@@ -334,6 +434,84 @@ apiPage:
       never: 失効しない
     noData: まだ API キーは定義されていません
 authPage:
+  setting:
+    cacerts:
+      show: cacertsを編集
+      saveActionLabel: cacertsを保存
+  header: パイプライン設定
+  setup: "1. {type} アプリケーションをセットアップする"
+  authenticated:
+    header:
+      text: リポジトリ認証情報
+      enterpriseHostName: "ホスト:"
+      clientId:
+        text: "クライアント ID:"
+      key:
+        text: "キー:"
+  testAuth:
+    header: '3. テストのうえ認証を有効化する'
+    subtext: '認証テストを行うことであなたのアプリケーションが正常に設定されたことを確認します:'
+    buttonText:
+      preVariable: 認証
+      post: 認証中
+  form:
+    headerVariable: '2.認証に {SCM} を使用してパイプラインを構成します'
+    isEnterprise:
+      labelText: https接続を使う
+    enterprise:
+      labelText: 'プライベートの {type} エンタープライズを使う'
+    enterpriseHost:
+      labelText: エンタープライズホスト
+      placeholder: '例: example.com'
+  gitlab:
+    auth: '通常の GitLab の場合、新規ウィンドウでアプリケーション設定を行うために <a href="https://gitlab.com/profile/applications" target="_blank" rel="nofollow noreferrer">こちらをクリック</a> してください。'
+    enterpriseAuth: "GitLab エンタープライズの場合、あなたのアカウントでログインし Settings、Applications の順にクリックしてください。"
+    ul:
+      li2:
+        text: 'フォーム記入:'
+        ul:
+          li1: '<b>名前:</b> <span class="text-muted">自由記載, e.g. My {appName}</span>'
+          li2: リダイレクトURI
+      li3:
+        text: '"アプリケーションを保存" をクリック '
+    form:
+      subtextVariable: '新しく作成したアプリケーションの右上からアプリケーション ID と秘密キーをコピー&ペーストします。'
+      clientId:
+        labelText: アプリケーション ID
+      clientSecret:
+        labelText: シークレット
+  bitbucketcloud:
+    target:
+      header: '1.使用するBitbucketタイプを選択します'
+      bitbucketserver: 'プライベートBitbucket Serverセットアップを使用する'
+      bitbucketcloud: 'パブリックBitbucket Cloudを使用する'
+    setup: '2. Bitbucket Cloudアプリケーションをセットアップする'
+    auth: '通常の Bitbucket Cloud の場合、新規ウィンドウでユーザー設定を行うために <a href="https://bitbucket.org/account" target="_blank" rel="nofollow noreferrer">こちらをクリック</a> してください。'
+    ul:
+      li2:
+        ul:
+          li1: '<b>名前:</b> <span class="text-muted">自由記載, e.g. My {appName}</span>'
+          li2: コールバックURL
+    form:
+      clientId:
+        labelText: キー
+      clientSecret:
+        labelText: シークレット
+  bitbucketserver:
+    copy: アイコンをクリックしてコピーします
+    target:
+      header: '1.使用するBitbucketタイプを選択します'
+      bitbucketserver: 'プライベートBitbucket Serverセットアップを使用する'
+      bitbucketcloud: 'パブリックBitbucket Cloudを使用する'
+    setup: '2. Bitbucket サーバーアプリケーションをセットアップする'
+    ul:
+      li2:
+        text: '新しいアプリケーションリンクを作成:'
+        ul:
+          li2: '<b>アプリケーション名:</b> <span class="text-muted">自由記載, e.g. My {appName}</span>'
+    form:
+      hostname:
+        placeholder: '例: example.com'
   saml:
     accessEnabled:
       header: 認証
@@ -479,6 +657,24 @@ authPage:
         pre: GitHubアカウントで認証
         post: GitHub からの返答を待っています
       popupError: 'ポップアップブロッカーを停止して、もう一度 "認証" をクリックしてください。'
+  googleoauth:
+    notAuthenticated:
+      form:
+        adminEmail:
+          labelText: 管理者のメールアドレス
+        hostname:
+          labelText: ドメイン
+    testAuth:
+      buttonText:
+        pre: Google で認証
+        post: Googleからの返答を待っています
+      popupError: 'ポップアップブロッカーを停止して、もう一度 "認証" をクリックしてください。'
+    stepOne:
+      header: 'ステップ１：'
+    stepTwo:
+      header: 'ステップ２：'
+    stepThree:
+      header: 'ステップ３：'
   azuread:
     header:
       disabled:
@@ -602,11 +798,48 @@ catalogPage:
       launch: 詳細を見る
       notCompatible: 互換性がありません
       alreadyDeployed: 既にデプロイ済みです
+cis:
+  scan:
+    actions:
+      delete: 削除
+      download: ダウンロード
+      search:
+        placeholder: 検索
+    table:
+      date: 日付
 cloudCredentialsPage:
   rightButtons:
     nodeTemplates: ノードテンプレートの管理
 clusterCatalogPage:
   header: カタログ
+clusterIstioPage:
+  header: Istio
+  disable: 無効
+  enableActionLabel: 有効
+  version: Istioバージョン
+  links:
+    kiali:
+      label: Kiali UI
+    jaeger:
+      label: Jaeger UI
+    grafana:
+      label: Grafana UI
+    prometheus:
+      label: Prometheus UI
+  config:
+    header:
+      grafana: Grafana
+      pilot: パイロット
+      prometheus: Prometheus
+    loadBalancerIP:
+      label: ロードバランサー IP
+      placeholder: '例: 192.0.0.1'
+    prometheusRetention:
+      placeholder: '例: 6時間'
+  nodeSelector:
+    addSelectorLabel: セレクターを追加
+  enableMonitoring:
+    label: モニタリングを有効化
 certificatesPage:
   cn: ドメイン名
   expiresDate: 有効期限
@@ -732,12 +965,19 @@ projectsPage:
 clustersPage:
   header: クラスター
   newCluster: クラスターを追加
+  newTemplate: テンプレートを追加
   newClusterName: "クラスターを追加: {name}"
   editClusterName: "クラスターを編集: {name}"
+  launch:
+    new: クラスターを追加
   cluster:
     label: クラスター名
   provider:
     label: プロバイダー
+  kubernetesVersion:
+    label: Kubernetes のバージョン
+  rkeTemplate:
+    label: RKEテンプレート
   nodes:
     label: ノード数
   cpu:
@@ -748,6 +988,14 @@ clustersPage:
     label: ポッド
   storage:
     label: ディスク
+clusterRibbonNav:
+  title: 最近のクラスター
+clusterTemplatesPage:
+  index:
+    header: ノードテンプレート
+    newTemplate: テンプレートを追加
+  new:
+    header: RKEテンプレートを追加
 ingressPage:
   header: 'イングレス: {name}'
   table:
@@ -800,6 +1048,23 @@ containersPage:
 clusterDashboard:
   notActive: このクラスターは現在 <b>{state}</b> 状態です
   notReady: このクラスターは現在 <b>{state}</b> 状態です; API が準備されるまでこのページでの直接の操作はできません。
+  title: ダッシュボード
+  cpu: CPU
+  memory: メモリ
+  pods: ポッド
+  value: 値
+  node: ノード
+  etcd: Etcd
+  scheduler: スケジューラー
+  controllerManager: コントローラーマネージャー
+  reserved: スペア1
+monitoringPage:
+  config:
+    nodeexporter:
+      cpuLimit:
+        placeholder: '例: 200'
+      memoryLimit:
+        placeholder: '例: 200'
 metricsAction:
   sections:
     workload: ワークロードメトリクス
@@ -822,6 +1087,10 @@ metricsAction:
     7d: 7日
     30d: 30日
 metrics:
+  cluster-cpu-usage: CPU使用率
+  cluster-disk-io: ディスク I/O
+  cluster-fs-usage-percent: ディスク使用率
+  cluster-memory-usage: メモリ使用率
   container-cpu-usage: CPU使用率
   container-disk-io: ディスク I/O
   container-memory-usage-bytes-sum: メモリ使用率
@@ -1013,9 +1282,13 @@ cruVolume:
 globalRegistryPage:
   enableActionLabel: 有効
   config:
+    databaseRequestCpu:
+      placeholder: '例: 1000'
     databaseLimitCpu:
       placeholder: '例: 1000'
     databaseRequestMemory:
+      placeholder: '例: 1000'
+    databaseLimitMemory:
       placeholder: '例: 1000'
     redisRequestCpu:
       placeholder: '例: 1000'
@@ -1045,6 +1318,8 @@ globalRegistryPage:
         label: S3アクセスキー
       secretkey:
         label: S3秘密キー
+      regionendpoint:
+        placeholder: '例: s3.us-west-2.amazonaws.com'
     database:
       external:
         host:
@@ -1055,6 +1330,8 @@ globalRegistryPage:
           placeholder: '例: user'
         password:
           placeholder: '例: password'
+        coreDatabase:
+          placeholder: 例：レジストリ
 globalDnsPage:
   entriesPage:
     table:
@@ -1595,7 +1872,7 @@ notifierPage:
   pagerduty:
     serviceKeyPlaceholder: あなたの pagerduty サービスキー
     helpText: |
-      Pagerduty 用 <a href="https://support.pagerduty.com/docs/webhooks">incoming WebHooks の作成</a> を参照してください
+      Pagerduty 用 <a href="https://www.pagerduty.com/docs/guides/prometheus-integration-guide">integration keyの作成</a> を参照してください
   wechat:
     agentPlaceholder: '例: 1000003'
     corpPlaceholder: '例: wwc0cc3d58f9b021b6'
@@ -1877,8 +2154,54 @@ clusterNew:
       title: アカウントアクセス
       detail: Amazon EKS の起動に使用するリージョンと API キーを選択してください
   tencenttke:
+    access:
+      next: "次へ: クラスタの設定"
+    cluster:
+      title: クラスタ設定
+    node:
+      title: インスタンスタイプ
+    subnet:
+      label: サブネット
+    os:
+      label: オペレーティングシステム
+    disk:
+      LOCAL_SSD: ローカル SSD
+    rootSize:
+      label: ルートディスクのサイズ
+      placeholder: '例: 25'
+    rootType:
+      label: ルートディスクタイプ
+    storageType:
+      label: データディスクタイプ
+    storageSize:
+      label: データディスクサイズ
+      placeholder: '例: 10'
+    bandwidth:
+      label: バンド幅
+      placeholder: '例: 10'
+    nodeCount:
+      label: ノード数
+      placeholder: '例: 3'
+      required: ノード数が必要です
+    region:
+      label: リージョン
+    secretId:
+      label: シークレットID
+      required: シークレットIDは必須です
+    secretKey:
+      provided: 取得済み
+      required: シークレットキーは必須です
+    securityGroup:
+      label: セキュリティグループ
+      required: セキュリティグループが必要です
+    vpc:
+      label: VPC
+      required: VPC は必須です。
     version:
       label: Kubernetes バージョン
+    cidr:
+      label: コンテナネットワークCIDR
+      placeholder: '例: 172.16.0.0/16'
   azureaks:
     label: Azure Container Service
     shortLabel: Azure AKS
@@ -1905,6 +2228,7 @@ clusterNew:
       prompt: サイズを選択してください...
     diskSizeGb:
       label: OSディスクサイズ
+      placeholder: '例: 100'
     dns:
       placeholder: "例: example"
     ssh:
@@ -1995,32 +2319,6 @@ clusterNew:
     tags:
       label: タグ
       addActionLabel: タグを追加する
-  aliyunkcs:
-    access:
-      title: アカウントアクセス
-    clusters:
-      k8s: Kubernetes
-    storageSize:
-      placeholder: '例: 120'
-    masterNum:
-      label: マスターノード数
-    numOfNodes:
-      placeholder: '例: 3'
-    regionId:
-      label: リージョン
-    accessKeyId:
-      label: アクセスキー
-      required: アクセスキーは必須です
-    accessKeySecret:
-      label: 秘密キー
-      provided: 入力済み
-      required: シークレットキーは必須です
-    version:
-      label: Kubernetes バージョン
-    zoneId:
-      label: アベイラビリティゾーン
-    instanceType:
-      label: インスタンスタイプ
   googlegke:
     label: Google Kubernetes Engine
     shortLabel: Google GKE
@@ -2038,12 +2336,17 @@ clusterNew:
     project:
       label: プロジェクト
       placeholder: '例: my-project'
+    locationType:
+      region: 地域
+    region:
+      label: リージョン
     machineType:
       label: マシンタイプ
       prompt: タイプを選択してください...
     nodeCount:
       label: ノード数
       prompt: タイプを選択してください...
+      required: ノード数が必要です
     diskSizeGb:
       label: ルートディスクサイズ
     masterVersion:
@@ -2064,39 +2367,162 @@ clusterNew:
       label: Http ロードバランサー
     enableHorizontalPodAutoscaling:
       label: 水平ポッドオートスケーリング
+    enablePrivateNodes:
+      label: プライベートクラスター
+    masterIpv4CidrBlock:
+      placeholder: '例: 10.42.0.0/28'
+    useIpAliases:
+      label: IPエイリアス
+    ipPolicySubnetworkName:
+      label: サブネットワーク名
+      placeholder: サブネットワーク名
+    ipPolicyCreateSubnetwork:
+      label: サブネットワークを作成
+      autoLabel: サブネットワークの自動作成
+    ipPolicyClusterIpv4CidrBlock:
+      label: ポッドのアドレス範囲
+      placeholder: '例: 10.96.0.0/11'
+    masterAuthorizedNetworkCidrBlocks:
+      addActionLabel: CIDRブロックを追加
     ipPolicyServicesIpv4CidrBlock:
       placeholder: '例: 10.94.0.0/18'
+    header:
+      iPAllocationPolicy: IP割り当てポリシー
+      privateCluster: プライベートクラスター
+    locations:
+      label: 追加のゾーン
     imageType:
+      label: イメージタイプ
       UBUNTU: Ubuntu
+      COS: コンテナ最適化OS
     network:
       label: ネットワーク
+    subNetwork:
+      label: ノードサブネット
+    nodeLabels:
+      label: ノードラベル
+      addAction: ラベルを追加
+    clusterLabels:
+      label: クラスターラベル
+    diskType:
+      label: ルートディスクタイプ
+      pd-standard: 標準永続ディスク
+      pd-ssd: SSD永続ディスク
+    preemptible:
+      label: プリエンプティブノード(ベータ)
+    enableAutoUpgrade:
+      label: 自動アップグレード
+    enableAutoRepair:
+      label: 自動修復
+    serviceAccount:
+      label: サービスアカウント
+    oauthScopes:
+      default: デフォルトのアクセスを許可
     userInfo:
       label: ユーザー情報
+    computeEngine:
+      label: Compute Engine
     storage:
       label: ストレージ
+    bigQuery:
+      label: BigQuery
+    cloudSQL:
+      label: Cloud SQL
+    cloudDatastore:
+      label: Cloud Datastore
+    stackdriverLoggingAPI:
+      label: Stackdriver Logging API
+    stackdriverMonitoringAPI:
+      label: Stackdriver Monitoring API
+    cloudPub:
+      label: Cloud Pub / Sub
     taints:
       effect:
         label: 効果
+      key:
+        label: キー
+        placeholder: キー
+      value:
+        label: 値
+        placeholder: 値
   huaweicce:
+    name:
+      label: クラスター名
+      required: クラスター名が必要です。
     secretKey:
       label: 秘密キー
     region:
       label: リージョン
+    checkAccount: "次へ: クラスタの設定"
+    clusterOption:
+      title: クラスターオプション
+    clusterType:
+      label: クラスタータイプ
+    vpcId:
+      label: VPC名
+    subnetId:
+      label: サブネット名
+      none: このVPCにはサブネットがありません
+    nodeOption:
+      title: ノード
+    dataVolumeType:
+      label: データボリュームタイプ
+    dataVolumeSize:
+      label: データボリュームサイズ
+    description:
+      label: 詳細情報
+    eipBandwidthSize:
+      label: Eip帯域幅
     availableZone:
       label: ゾーン
+    billingMode:
+      label: 課金モード
+      payPerUse: 従量制
+      yearly: 年次/月次
     containerNetworkCidr:
+      label: コンテナネットワークCIDR
       placeholder: '例: 172.16.0.0/16'
+    containerNetworkMode:
+      label: コンテナネットワークモード
+      none: 設定なし
+    rootVolumeType:
+      label: ルートボリュームタイプ
+    rootVolumeSize:
+      label: データボリュームサイズ
     nodeCount:
       label: ノード数
+    nodeFlavor:
+      label: ノードフレーバー
+    ssh:
+      label: SSHキー名
+    eip:
+      label: Eip
     eipSelection:
       none: 無効
+      new: Eipを作成
+      exist: 既存のEipを選択
+    eipIds:
+      label: Eip
+      none: 利用可能なEipはありません。
+    eipType:
+      label: Eipタイプ
     clusterLabels:
+      label: クラスターラベル
       none: ラベルなし
+    nodeLabels:
+      label: ノードラベル
+    clusterEipId:
+      prompt: Eipを選択してください...
+    externalServerEnabled:
+      label: 外部サーバー
     highAvailability:
       label: 高可用性
     authenticatingProxyCa:
       label: 証明書
+    bmsIsAutoRenew:
+      label: 自動更新
     loginMode:
+      label: ログインモード
       password: パスワード
       keyPair: キーペア
     password:
@@ -2105,12 +2531,27 @@ clusterNew:
     userName:
       label: ユーザ名
     authentiactionMode:
+      label: 認証モード
       rbac: RBAC
+      authenticating_proxy: 認証プロキシ
+    eipShareType:
+      label: EIP共有タイプ
   rke:
+    clustersSelectTemplate:
+      label: "既存のRKEテンプレートとリビジョンを使用する"
+      select:
+        label: RKEテンプレート
+        prompt: RKEテンプレートを選択
+    clustersSelectTemplateRevision:
+      select:
+        prompt: RKEテンプレートリビジョンを選択します
     etcd:
+      enabled:
+        label: 定期的なetcdスナップショットが有効
       backupConfig:
         region:
           label: S3リージョン
+          placeholder: "例: us-west-2"
         accessKey:
           label: S3アクセスキー
         secretKey:
@@ -2167,10 +2608,16 @@ clusterNew:
       label: ポート範囲を追加
       placeholder: '例: 30000-32767'
     network:
+      title: ネットワー キング
       label: ネットワークプロバイダー
       flannel: Flannel
+      flannelCustom: Flannel
       calico: Calico
       canal: Canal
+      weave: Weave
+      flannelBackends:
+        label: Flannel バックエンド
+        vxlan: VXLAN (Overlay)
       options:
         flannel:
           iface:
@@ -2245,6 +2692,8 @@ clusterNew:
       windows: Windows
     windowsSupport:
       disabled: ネットワークプロバイダーの {plugin} はサポートされていません
+    advanced:
+      detail: 拡張クラスタオプションをカスタマイズ
   custom:
     shortLabel: カスタム
   import:
@@ -2252,6 +2701,25 @@ clusterNew:
     command:
       instructions: "{appName} にインポートするには以下の kubectl コマンドを既存の Kubernetes 1.8.x クラスター上で実行してください:"
       instructionsInsecure: "'certificate signed by unknown authority' のようなエラーが発生した場合はあなたの {appName} が公式の CA から署名された SSL 証明書を利用していないことが原因です。証明書チェック>を回避するには以下のコマンドを実行してください。:"
+clusterTemplateQuestions:
+  table:
+    answer: 'デフォルト値'
+    type: 'タイプ'
+    required: '必須'
+    noData: 'オーバーライドしない'
+  schemaLabels:
+    dockerRootDir: 'Dockerルートディレクトリ'
+    enableClusterMonitoring: 'クラスターモニタリングを有効にする'
+    enableNetworkPolicy: 'ネットワークポリシーを有効にする'
+    caCerts: 'CA証明書'
+    fqdn: 'FQDN:'
+    addonJobTimeout: 'アドオンジョブのタイムアウト'
+    addons: 'アドオン'
+    addonsInclude: 'アドオンが含まれています'
+    authentication: '認証'
+    authorization: '認可'
+    cloudProvider: 'クラウドプロバイダー'
+    dns: 'DNS設定'
 conditionSections:
   title: コンディションはありません
   detail: '{resourceType} の現在のコンディションです'
@@ -2272,6 +2740,8 @@ resourceEventList:
   noData: イベントはありません
   noMatch: 検索条件に一致するイベントはありません
 confirmDelete:
+  resourceType:
+    cluster: 'クラスター'
   environmentNote: 'ノート: このプロジェクト内にある {appName} により作られた名前空間を含むの全てのリソースは完全に削除されます'
   clusterNote: '注意: クラウドプロバイダーにより作成されたボリューム、ロードバランサー、ネットワークなどの関連リソースは自動的には削除されません。'
   protip: 'ProTip: この確認画面を飛ばす場合は削除ボタンのクリック時に {key} キーを長押ししてください。'
@@ -2318,6 +2788,7 @@ cruRegistry:
     quay: Quay.io
     custom: カスタム
     placeholder: '例: registry.example.com'
+    artifactory: Artifactory
   multiple: 複数
   auth:
     label: 認証トークン
@@ -2974,11 +3445,20 @@ dangerZone:
     'ui-index': 'UI 向けの HTML index ファイルの場所です'
     'ui-pl': 'プライベートブランド用の会社名です'
 deleteEksCluster:
+  deleteCluster: クラスターを削除
+  deletingCluster: クラスターを削除しています
   accessKey:
     label: アクセスキー
     placeholder: あなたの AWS アクセスキー
   secretKey:
     label: 秘密キー
+  sessionToken:
+    placeholder: AWSセッショントークン
+    provided: 入力済み
+  error:
+    accessKey: アクセスキーは必須です。
+    secretKey: シークレットキーは必須です。
+    sessionToken: セッショントークンは必須です。
 editAccount:
   title: アカウントを編集
   form:
@@ -3434,6 +3914,12 @@ formGlobalRoles:
       label: 一般ユーザー
       detail: 一般ユーザーは、新しいクラスターを作成しアクセスが許可されているクラスターおよびプロジェクトを管理できます
   role:
+    clusters-create:
+      label: 新しいクラスタの作成
+    clustertemplates-create:
+      label: 新しいRKEクラスターテンプレートを作成する
+    clusters-manage:
+      label: 全てのクラスタの管理
     base:
       label: ログインアクセス
 formMembers:
@@ -4397,6 +4883,8 @@ modalConfirmRemovePayment:
   header: '支払いの削除の確認'
   title: '本当に削除してもよろしいですか?'
   card: 'カードは {card} で失効します'
+modalDeleteGroupRoleBinding:
+  createLabel: 削除
 modalEditDriver:
   url:
     label: ダウンロード URL
@@ -4470,6 +4958,8 @@ modalDrainNode:
 modalRevertSettings:
   current: 現在の値
   default: デフォルト値
+modalRotateCertificates:
+  title: クラスター証明書のローテーション
 modalRollbackService:
   title: '"{instanceName}" をロールバック'
   titleWithSidekicks: '"{instanceName}" と {count, plural, =1 {# サイドカー} other {# サイドカー}} をロールバック'
@@ -4491,6 +4981,10 @@ modalRollbackApp:
     prompt: リボジョンを選択してください...
   difference:
     label: 差分
+modalSaveRkeTemplate:
+  title: "{clusterName} からRKEテンプレートを作成"
+  name: クラスタテンプレート名
+  revName: クラスターテンプレートリビジョン名
 modalShell:
   title: "シェル: "
 modalShortcuts:
@@ -4602,10 +5096,28 @@ newMultiClusterApp:
   maintainer: "メンテナー:"
   newNamespace: 新しい名前空間
   customizeNamespace: "このアプリケーションは <code>{namespaceId}</code> 名前空間内で起動します"
+  appInfo: 詳細な説明
+  appInfoDetail: アプリケーション情報とユーザーガイド
+  noConfig: このテンプレートには設定オプションがありません
+  official: 公式に認証済み
+  preview: プレビュー
   templateFiles: テンプレートファイル
+  seeMore: より詳細な情報...
+  saveConfigure: 設定
+  saveNew: 起動
+  saveUpgrade: アップグレード
+  selectVersionAdd: デプロイするテンプレートのバージョンを選択してください
+  selectVersionConfigure: 設定するテンプレートのバージョンを選択してください
+  selectVersionUpgrade: アップグレードするテンプレートのバージョンを選択してください
+  startService: 作成後にサービスを起動
+  support: "サポート:"
   targets:
+    add: ターゲットを追加
+    prompt: ターゲットのプロジェクトを追加
+    target: ターゲット
     cluster: クラスター
     project: プロジェクト
+    noData: ターゲットがありません
   targetDivider:
     label: ターゲット
   upgradeDivider:
@@ -4617,6 +5129,7 @@ newMultiClusterApp:
   titleConfigure: "{name} アプリケーションを設定"
   titleUpgrade: "{name} アプリケーションをアップグレード"
   txt: answers.txt
+  unknownType: "有効でないパラメータータイプ:"
   upgrade: "アップグレード:"
   url: "プロジェクト URL:"
   version:
@@ -4627,15 +5140,40 @@ newMultiClusterApp:
       label: 上書き権限設定を追加
     table:
       scope: スコープ
+      question: 質問
+      answer: 回答
+      noData: まだオーバーライドはありません
+    scopeOverride:
+      placeholder: スコープを選択
+    questionOverride:
+      placeholder: 質問を選択
+    answerOverride:
+      placeholder: 質問が必要です
   roles:
+    label: 利用可能なロール
+    additionalRoles: 既存のロール
     table:
+      role: ロール
       name: 名前
+      builtIn: ビルトイン
       external: 外部
       noData: まだロールはありません
+      noMatch: 検索条件に一致するロールがありません
+      prompt: "ロールを選択..."
   members:
     title: メンバー
     table:
       name: ユーザー名
+      type: メンバーのタイプ
+      accessType: アクセスタイプ
+      noData: メンバーはいません
+      prompt: 値を選択してください...
+  upgradeApp:
+    title: アップグレードストラテジー
+    disabled: すべてのアプリを同時にアップグレードする
+    enabled: ローリングアップデート (バッチ)
+    batch: バッチサイズ
+    interval: 間隔
 newContainer:
   add:
     container: ポッドをデプロイ
@@ -4682,6 +5220,7 @@ newSecret:
     label: シークレットの値
   addActionLabel: シークレットの値を追加
 clusterDrivers:
+  refresh: Kubernetesメタデータを更新
   builtIn: ビルトイン
   table:
     noData: このクラスターではまだノードは定義されていません
@@ -5613,6 +6152,8 @@ nav:
     label: スコープ
     clusters: クラスター
     projects: プロジェクト
+    projectsNoData: クラスターを選択してください
+    projectNotReady: 'クラスターの準備ができていません'
     search: "検索..."
   cluster:
     dashboard: クラスター
@@ -5666,8 +6207,12 @@ nav:
     members: メンバー
   admin:
     tab: グローバル
+    clusters:
+      tab: クラスター
+      rkeTemplate: RKEテンプレート
     machines: ノード
     catalogs: カタログ
+    multiClusterApps: Apps
     security:
       tab: セキュリティ
       roles: ロール
@@ -5686,6 +6231,8 @@ nav:
     link: "アカウント設定"
   nodeTemplates:
     link: "ノードテンプレート"
+  clusterTemplates:
+    link: RKEテンプレート
   api:
     link: "API & キー"
   settings:
@@ -5900,7 +6447,7 @@ volumeSource:
     title: ファイバチャネル
   flex-volume:
     title: Flex Volume
-  flex-volume-longhorn:
+  csi-volume-longhorn:
     title: Longhorn
   flocker:
     title: Flocker
@@ -5955,3 +6502,6 @@ yamlPage:
 units:
   percent: '%'
   cpu: ミリ CPUs
+windowsCluster:
+  istio: IstioはWindowsクラスターではサポートされていません。
+  pipelines: パイプラインは、Windowsクラスターではサポートされていません。

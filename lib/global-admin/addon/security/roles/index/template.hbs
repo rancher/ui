@@ -13,7 +13,7 @@
   <div class="right-buttons">
     {{#link-to
        "security.roles.new"
-       (query-params context=context)
+       (query-params context=context id=null)
        classNames="btn btn-sm bg-primary right-divider-btn"
        disabled=(rbac-prevents resource="globalrole" scope="global" permission="create")
     }}
@@ -57,6 +57,9 @@
           {{#link-to "security.roles.detail" row.id (query-params type=context)}}
             {{row.name}}
           {{/link-to}}
+        </td>
+        <td data-title="{{t "rolesPage.index.table.id"}}:" class="clip">
+            {{row.id}}
         </td>
         <td data-title="{{t "rolesPage.index.table.builtin"}}:" >
           {{#if row.builtin}}

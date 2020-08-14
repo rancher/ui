@@ -22,6 +22,7 @@ export default Component.extend({
   // Injections
   intl:             service(),
   scope:            service(),
+  features:         service(),
   settings:         service(),
   access:           service(),
   prefs:            service(),
@@ -101,6 +102,14 @@ export default Component.extend({
     });
   },
 
+  actions: {
+    clickDashboard() {
+      // Regular click on the link will have Ember try to resolve /dashboard/c/<id>
+      // to an Ember route and show the error page.  That's bad.
+      window.location.href = get(this, 'dashboardLink');
+    },
+  },
+
   shouldUpdateNavTree: observer(
     'pageScope',
     'clusterId',
@@ -123,6 +132,35 @@ export default Component.extend({
   // Hackery: You're an owner if you can write to the 'system' field of a stack
   isOwner: computed('stackSchema.resourceFields.system.update', function() {
     return !!get(this, 'stackSchema.resourceFields.system.update');
+  }),
+
+  dashboardLink: computed('pageScope', 'clusterId', 'cluster.isReady', function() {
+    if ( !get(this, 'features').isFeatureEnabled(C.FEATURES.DASHBOARD) ) {
+      // Only if Steve/dashboard are deployed
+      return;
+    }
+
+    if ( get(this, 'pageScope') === 'global' || !this.clusterId ) {
+      // Only inside a cluster
+      return;
+    }
+
+    const cluster = get(this, 'cluster');
+
+    if ( !cluster || !cluster.isReady ) {
+      // Only in ready/active clusters
+      return;
+    }
+
+    let link;
+
+    if ( get(this, 'app.environment') === 'development' ) {
+      link = `https://localhost:8005/c/${ escape(this.clusterId) }`;
+    } else {
+      link = `/dashboard/c/${ escape(this.clusterId) }`;
+    }
+
+    return link;
   }),
 
   updateNavTree() {
@@ -222,4 +260,5 @@ export default Component.extend({
     default:
     }
   },
+
 });

@@ -2,7 +2,7 @@ import C from 'ui/utils/constants';
 import Resource from '@rancher/ember-api-store/models/resource';
 import { alias } from '@ember/object/computed';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
-import { get, computed } from '@ember/object';
+import { get, computed, set } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { strPad } from 'ui/utils/util';
 import { formatSi } from 'shared/utils/parse-unit';
@@ -180,7 +180,13 @@ var Pod = Resource.extend(Grafana, DisplayImage, {
     },
 
     logs() {
-      get(this, 'modalService').toggleModal('modal-container-logs', { model: this,  });
+      const dataToModal = { model: this };
+
+      if (this.containers && this.containers.firstObject) {
+        set(dataToModal, 'containerName', this.containers.firstObject.name);
+      }
+
+      get(this, 'modalService').toggleModal('modal-container-logs', dataToModal);
     },
 
     popoutLogs() {

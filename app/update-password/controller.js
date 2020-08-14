@@ -9,7 +9,8 @@ export default Controller.extend({
   access:   service(),
   settings: service(),
 
-  showCurrent: null,
+  showCurrent:  null,
+  agreedToEula: false,
 
   firstLogin: alias('access.firstLogin'),
 
@@ -31,6 +32,7 @@ export default Controller.extend({
         const value = get(this, 'model.optIn') ? 'in' : 'out';
 
         get(this, 'settings').set(C.SETTING.TELEMETRY, value);
+        get(this, 'settings').set(C.SETTING.EULA_AGREED, (new Date()).toISOString());
       }
 
       get(this, 'access').set('firstLogin', false);

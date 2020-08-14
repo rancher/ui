@@ -10,28 +10,20 @@ export default Component.extend(ModalBase, {
   growl: service(),
 
   layout,
-  classNames: ['large-modal'],
+  classNames: ['medium-modal'],
 
-  aggressive:         false,
-  usePodGracePeriod:  true,
-  gracePeriod:        30,
-  unlimitedTimeout:   false,
-  timeout:            60,
+  selection: {},
 
   resources: alias('modalService.modalOpts.resources'),
 
+  init() {
+    this._super(...arguments);
+    this.selection = {};
+  },
+
   actions: {
     drain() {
-      const aggressive = get(this, 'aggressive');
-
-      const opts = {
-        deleteLocalData:  aggressive,
-        force:            aggressive,
-        ignoreDaemonSets: true,
-        gracePeriod:      get(this, 'usePodGracePeriod') ? -1 : get(this, 'gracePeriod'),
-        timeout:          get(this, 'unlimitedTimeout')  ?  0 : get(this, 'timeout'),
-      };
-
+      const nodeDrainInput = { ...get(this, 'selection') };
       const resources = get(this, 'resources').slice();
 
       eachLimit(resources, 5, (resource, cb) => {
@@ -39,7 +31,7 @@ export default Component.extend(ModalBase, {
           return cb();
         }
 
-        resource.doAction('drain', opts).finally(cb);
+        resource.doAction('drain', nodeDrainInput).finally(cb);
       });
 
       this.send('cancel');

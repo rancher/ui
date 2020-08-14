@@ -1,6 +1,6 @@
 {{#if cluster.certsExpiring}}
   {{#banner-message color="bg-warning"}}
-    <p>{{t "tooltipExpire.label"}} <a href="#" {{action "rotate"}}>{{t "tooltipExpire.link"}}</a></p>
+    <p>{{t "tooltipExpire.label"}} {{#if cluster.canRotateCerts}}<a href="#" {{action "rotate"}}>{{t "tooltipExpire.link"}}</a>{{/if}}</p>
   {{/banner-message}}
 {{/if}}
 {{#if showDashboard}}
@@ -35,21 +35,34 @@
   {{nodes-live nodes=nodes}}
 
   <div class="row mt-0">
-    {{k8s-component-status
-      label="clusterDashboard.etcd"
-      showUrl=scope.currentCluster.isRKE
-      healthy=etcdHealthy
-      url=grafana.etcdUrl
-    }}
-
-    {{#if hideManagerAndSchedulerStatus}}
-      <div class="col span-3 mt-0">
+    {{#if hideEtcdStatus}}
+      <div class="col mt-0 span-3">
         {{#banner-message
            icon="icon-alert"
            color="bg-disabled mt-0"
         }}
           <p class="text-left">
-            {{t "clusterDashboard.controllerManager"}}
+            {{t "clusterDashboard.etcdUnavailable"}}
+          </p>
+        {{/banner-message}}
+      </div>
+    {{else}}
+      {{k8s-component-status
+        label="clusterDashboard.etcd"
+        showUrl=scope.currentCluster.isRKE
+        healthy=etcdHealthy
+        url=grafana.etcdUrl
+      }}
+    {{/if }}
+
+    {{#if hideManagerAndSchedulerStatus}}
+      <div class="col mt-0 span-3">
+        {{#banner-message
+           icon="icon-alert"
+           color="bg-disabled mt-0"
+        }}
+          <p class="text-left">
+            {{t "clusterDashboard.controllerManagerUnavailable"}}
           </p>
         {{/banner-message}}
       </div>
@@ -62,13 +75,13 @@
     {{/if}}
 
     {{#if hideManagerAndSchedulerStatus}}
-      <div class="col span-3 mt-0">
+      <div class="col mt-0 span-3">
         {{#banner-message
            icon="icon-alert"
            color="bg-disabled mt-0"
         }}
           <p class="text-left">
-            {{t "clusterDashboard.scheduler"}}
+            {{t "clusterDashboard.schedulerUnavailable"}}
           </p>
         {{/banner-message}}
       </div>

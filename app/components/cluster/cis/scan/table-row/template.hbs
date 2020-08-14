@@ -2,11 +2,22 @@
     <td valign="middle" class="row-check" style="padding-top: 2px;">{{check-box nodeId=model.id}}</td>
     <td class="state"><BadgeState @model={{model}} /></td>
     <td><a href="{{href-to "authenticated.cluster.cis/scan/detail" model.clusterId model.id }}">{{model.name}}</a></td>
-    <td>{{#if model.total}}{{t "generic.completedOf" completed=model.passed total=model.total}}{{/if}}</td>
-    <td>{{#if model.total}}{{t "generic.completedOf" completed=model.skipped total=model.total}}{{/if}}</td>
-    <td>{{#if model.total}}{{t "generic.completedOf" completed=model.failed total=model.total}}{{/if}}</td>
+    <td>{{model.profile}}</td>
+    <td>{{#if model.total}}{{model.passed}}{{/if}}</td>
+    <td>{{#if model.total}}{{model.skipped}}{{/if}}</td>
+    <td>{{#if model.total}}{{model.failed}}{{/if}}</td>
+    <td>{{#if model.total}}{{model.notApplicable}}{{/if}}</td>
     <td>{{model.createdDate}}</td>
     <td class="actions">
         {{action-menu model=model}}
   </td>
 </tr>
+{{#if (eq "error" model.state)}}
+  <tr class="sub-row no-top auto-height">
+    <td></td>
+    <td class="pb-5" colspan="8">
+      <small class="{{model.stateColor}}">{{errorMessage}}</small>
+    </td>
+    <td></td>
+  </tr>
+{{/if}}

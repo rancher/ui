@@ -107,14 +107,14 @@
           <label class="acc-label">
             {{t "nodeDriver.amazoneks.kubernetesVersion.label"}}
           </label>
-          {{form-versions
-            cluster=cluster
-            editing=(eq mode "edit")
+          {{new-select
+            classNames="form-control"
+            content=versionChoices
             value=config.kubernetesVersion
-            versions=kubernetesVersionContent
-            initialVersion=initialVersion
-            showNotAllowed=false
           }}
+          {{#if editing}}
+            <p class="help-block">{{t "formVersions.eks.helpBlock"}}</p>
+          {{/if}}
         </div>
         <div class="col span-6">
           <label class="acc-label">
@@ -224,35 +224,35 @@
             {{t "nodeDriver.amazoneks.vpc.title"}}
           </label>
           {{#if (or (eq step 3) (eq step 4))}}
-              <div class="radio">
-                <label>
-                  {{radio-button
-                    selection=vpcSubnetMode
-                    value="default"
-                    disabled=(or editing (eq config.associateWorkerNodePublicIp false))
-                  }}
-                  {{t "nodeDriver.amazoneks.vpc.radio.default"}}
-                </label>
-              </div>
-              <div class="radio">
-                <label>
-                  {{radio-button
-                    selection=vpcSubnetMode
-                    value="custom"
-                    disabled=(or editing (eq config.associateWorkerNodePublicIp false))
-                  }}
-                  {{t "nodeDriver.amazoneks.vpc.radio.custom"}}
-                </label>
-              </div>
-              {{#unless (eq vpcSubnetMode "default")}}
-                <NewSelect
-                  class="form-control"
-                  @value={{config.virtualNetwork}}
-                  @content={{filteredVpcs}}
-                  @optionValuePath="id"
-                  @optionLabelPath="label"
-                />
-              {{/unless}}
+            <div class="radio">
+              <label>
+                {{radio-button
+                  selection=vpcSubnetMode
+                  value="default"
+                  disabled=(or editing (eq config.associateWorkerNodePublicIp false))
+                }}
+                {{t "nodeDriver.amazoneks.vpc.radio.default"}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                {{radio-button
+                  selection=vpcSubnetMode
+                  value="custom"
+                  disabled=(or editing (eq config.associateWorkerNodePublicIp false))
+                }}
+                {{t "nodeDriver.amazoneks.vpc.radio.custom"}}
+              </label>
+            </div>
+            {{#unless (eq vpcSubnetMode "default")}}
+              <NewSelect
+                class="form-control"
+                @value={{config.virtualNetwork}}
+                @content={{filteredVpcs}}
+                @optionValuePath="id"
+                @optionLabelPath="label"
+              />
+            {{/unless}}
           {{else}}
             {{#if (eq vpcSubnetMode "default")}}
               <div>
@@ -386,11 +386,10 @@
           <label class="acc-label">
             {{t "nodeDriver.amazonec2.instanceType.label"}}
           </label>
-          {{#if editing}}
-            <div>
-              {{config.instanceType}}
-            </div>
-          {{else}}
+          {{#input-or-display
+             editable=(eq mode "new")
+             value=config.instanceType
+          }}
             {{new-select
               classNames="form-control"
               value=config.instanceType
@@ -399,22 +398,21 @@
               optionLabelPath="name"
               optionGroupPath="group"
             }}
-          {{/if}}
+          {{/input-or-display}}
         </div>
         <div class="col span-6">
           <label class="acc-label">
             {{t "nodeDriver.amazoneks.ami.label"}}
           </label>
-          {{#if editing}}
-            <div>
-              {{config.ami}}
-            </div>
-          {{else}}
+          {{#input-or-display
+             editable=(eq mode "new")
+             value=config.ami
+          }}
             {{input type="text" value=config.ami}}
-            <p class="help-block">
-              {{t "nodeDriver.amazoneks.ami.help"}}
-            </p>
-          {{/if}}
+          {{/input-or-display}}
+          <p class="help-block">
+            {{t "nodeDriver.amazoneks.ami.help"}}
+          </p>
         </div>
 
       </div>
@@ -423,23 +421,21 @@
           <label class="acc-label">
             {{t "nodeDriver.amazoneks.desired.label"}}
           </label>
-          {{#if editing}}
-            <div>
-              {{config.desiredNodes}}
-            </div>
-          {{else}}
+          {{#input-or-display
+             editable=(eq mode "new")
+             value=config.desiredNodes
+          }}
             {{input-number value=config.desiredNodes min=1}}
-          {{/if}}
+          {{/input-or-display}}
         </div>
         <div class="col span-6">
           <label class="acc-label">
             {{t "nodeDriver.amazoneks.nodeVolumeSize.label"}}
           </label>
-          {{#if editing}}
-            <div>
-              {{config.nodeVolumeSize}}
-            </div>
-          {{else}}
+          {{#input-or-display
+             editable=(eq mode "new")
+             value=config.nodeVolumeSize
+          }}
             <div class="input-group">
               {{input-integer
                 min=0
@@ -451,58 +447,68 @@
                 {{t "generic.gigabyte"}}
               </span>
             </div>
-          {{/if}}
+          {{/input-or-display}}
         </div>
       </div>
       <div class="row">
-    <div class="row-same-height row-full-height">
-      <div class="col span-6 col span-height col full-height col-top mb-20">
-        <div class="no-padding-margin full-height">
-          <label class="acc-label" for="aws-eks-key-piar">
-            {{t "nodeDriver.amazoneks.keyPairs.label"}}
-            <span class="inline-block">
-              {{#tooltip-element
-                 type="tooltip-basic"
-                 model=(t "nodeDriver.amazoneks.keyPairs.tooltip" htmlSafe=true)
-                 tooltipTemplate="tooltip-static"
-                 aria-describedby="tooltip-base"
-                 tooltipFor="tooltipPoolCreateAfter"
-                 placement="top"
-                 tagName="div"
+        <div class="row-same-height row-full-height">
+          <div class="col span-6 col span-height col full-height col-top mb-20">
+            <div class="no-padding-margin full-height">
+              <label class="acc-label" for="aws-eks-key-piar">
+                {{t "nodeDriver.amazoneks.keyPairs.label"}}
+                <span class="inline-block">
+                  {{#tooltip-element
+                     type="tooltip-basic"
+                     model=(t "nodeDriver.amazoneks.keyPairs.tooltip" htmlSafe=true)
+                     tooltipTemplate="tooltip-static"
+                     aria-describedby="tooltip-base"
+                     tooltipFor="tooltipPoolCreateAfter"
+                     placement="top"
+                     tagName="div"
+                  }}
+                    <i class="icon icon-help icon-blue"></i>
+                  {{/tooltip-element}}
+                </span>
+              </label>
+              {{#input-or-display
+                 editable=(eq mode "new")
+                 value=config.keyPairName
               }}
-                <i class="icon icon-help icon-blue"></i>
-              {{/tooltip-element}}
-            </span>
-          </label>
-          {{searchable-select
-            id="aws-eks-key-piar"
-            classNames="form-control"
-            value=config.keyPairName
-            content=filteredKeyPairs
-            optionValuePath="KeyName"
-            optionLabelPath="KeyName"
-            prompt=(t "nodeDriver.amazoneks.keyPairs.prompt")
-          }}
-        </div>
-      </div>
-      <div class="col span-6 col span-height col full-height col-top mb-20">
-        <div class="no-padding-margin full-height">
-          <label class="acc-label" for="ebs-encryption">
-            {{t "nodeDriver.amazoneks.encryptEbs.label"}}
-          </label>
-          <div>
-            {{input
-              id="ebs-encryption"
-              type="checkbox"
-              checked=config.ebsEncryption
-            }}
+                {{searchable-select
+                  id="aws-eks-key-piar"
+                  classNames="form-control"
+                  value=config.keyPairName
+                  content=filteredKeyPairs
+                  optionValuePath="KeyName"
+                  optionLabelPath="KeyName"
+                  prompt=(t "nodeDriver.amazoneks.keyPairs.prompt")
+                }}
+              {{/input-or-display}}
+            </div>
           </div>
-          <p class="help-block">
-            {{t "nodeDriver.amazoneks.encryptEbs.detail"}}
-          </p>
+          <div class="col span-6 col span-height col full-height col-top mb-20">
+            <div class="no-padding-margin full-height">
+              <label class="acc-label" for="ebs-encryption">
+                {{t "nodeDriver.amazoneks.encryptEbs.label"}}
+              </label>
+              <div>
+                {{#input-or-display
+                   editable=(eq mode "new")
+                   value=config.ebsEncryption
+                }}
+                  {{input
+                    id="ebs-encryption"
+                    type="checkbox"
+                    checked=config.ebsEncryption
+                  }}
+                {{/input-or-display}}
+              </div>
+              <p class="help-block">
+                {{t "nodeDriver.amazoneks.encryptEbs.detail"}}
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
       </div>
       <div class="row">
         <div class="col span-12">
@@ -516,6 +522,7 @@
             minHeight=200
             placeholder="nodeDriver.amazoneks.userData.placeholder"
             value=config.userData
+            disabled=(not-eq mode "new")
           }}
           <p class="help-block">
             {{t "nodeDriver.amazoneks.userData.help"}}

@@ -53,6 +53,7 @@
   &.azure { @include azure; }
   &.digitalocean { @include digitalocean; }
   &.exoscale { @include exoscale; }
+  &.oci { @include oci; }
   &.openstack { @include openstack; }
   &.packet { @include packet; }
   &.rackspace { @include rackspace; }
@@ -64,11 +65,12 @@
   &.import { @include import; }
   &.aliyunecs { @include aliyunecs; }
   &.amazoneks { @include amazoneks; }
+  &.amazoneksv2 { @include amazoneks; }
   &.azureaks { @include azureaks; }
   &.googlegke { @include googlegke; }
   &.tencenttke { @include tencenttke; }
-  &.aliyunkcs { @include aliyunkcs; }
   &.huaweicce { @include huaweicce; }
+  &.oracleoke { @include oracleoke; }
   &.otc { @include otc; }
   &.route53 { @include route53; }
   &.cloudflare { @include cloudflare; }
@@ -81,6 +83,7 @@
     padding: 15px 0px;
     max-height: 130px;
     text-decoration: none;
+    position: relative;
 
     &.small {
       max-height: 100px;
@@ -96,6 +99,22 @@
     &:hover {
       outline: 4px solid $link-color;
       border-color: $link-color;
+    }
+
+    &.active:after {
+      content: $icon-check;
+      top: -15px;
+      right: -15px;
+      font-family: 'rancher-icons';
+      font-size: 18px;
+      position: absolute;
+      background-color: $info;
+      height: 29px;
+      width: 29px;
+      line-height: 29px;
+      border-radius: 50%;
+      color: white;
+      padding-left: 5px;
     }
   }
   .machine-driver {

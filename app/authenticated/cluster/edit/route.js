@@ -4,19 +4,23 @@ import Route from '@ember/routing/route';
 import { hash, hashSettled/* , all */ } from 'rsvp';
 import { loadScript, loadStylesheet, proxifyUrl } from 'shared/utils/load-script';
 import { isEmpty } from '@ember/utils';
+import { scheduleOnce } from '@ember/runloop';
 
 export default Route.extend({
   access:                 service(),
   globalStore:            service(),
+  releaseVersions:        service(),
   clusterTemplateService: service('clusterTemplates'),
   roleTemplateService:    service('roleTemplate'),
 
   model() {
     const globalStore = this.get('globalStore');
     const cluster     = this.modelFor('authenticated.cluster');
+
     let modelOut      = {
       originalCluster:            cluster,
       cluster:                    cluster.clone(),
+      cloudCredentials:           globalStore.findAll('cloudcredential'),
       kontainerDrivers:           globalStore.findAll('kontainerDriver'),
       nodeTemplates:              globalStore.findAll('nodeTemplate'),
       nodeDrivers:                globalStore.findAll('nodeDriver'),
@@ -26,6 +30,10 @@ export default Route.extend({
       clusterRoleTemplateBinding: globalStore.findAll('clusterRoleTemplateBinding'),
       me:                         get(this, 'access.principal'),
     };
+
+    if (cluster.driver === 'k3s' || cluster.driver === 'rke2') {
+      this.releaseVersions.getAllVersions(cluster.driver);
+    }
 
     if (!isEmpty(cluster.clusterTemplateRevisionId)) {
       setProperties(modelOut, {
@@ -88,7 +96,7 @@ export default Route.extend({
     // load the css/js url here, if the url loads fail we should error the driver out
     // show the driver in the ui, greyed out, and possibly add error text "can not load comonent from url [put url here]"
     let { kontainerDrivers } = model;
-    let externalDrivers      = kontainerDrivers.filter( (d) => d.uiUrl !== '' && d.state === 'active' && d.name.includes(model.cluster.provider));
+    let externalDrivers      = kontainerDrivers.filter( (d) => d.uiUrl !== '' && d.state === 'active' && d.name.includes(model.cluster.clusterProvider));
     let promises             = {};
 
     externalDrivers.forEach( (d) => {
@@ -134,6 +142,20 @@ export default Route.extend({
     if (isExiting) {
       controller.set('errors', null);
       controller.set('provider', null);
+    }
+  },
+
+  activate() {
+    this._super(...arguments);
+
+    scheduleOnce('afterRender', this, function() {
+      set(this, 'controller.model.activated', true);
+    });
+  },
+
+  actions: {
+    willTransition() {
+      set(this, 'controller.scrollTo', null);
     }
   },
 

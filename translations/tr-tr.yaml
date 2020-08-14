@@ -6,6 +6,7 @@ languageContribute: "Rancher çevirilerine yardım et"
 ##############################
 generic:
   actions: Aksiyonlar
+  active: Etkin
   activate: Etkinleştir
   add: Ekle
   advanced: Gelişmiş
@@ -17,6 +18,7 @@ generic:
   cancel: İptal
   closeModal: Kapat
   cluster: Küme
+  collapse: Daralt
   collapseAll: Tümünü Daralt
   comingSoon: Çok Yakında
   command: Komut
@@ -41,12 +43,14 @@ generic:
   enabled: Etkinleştirilmiş
   entrypoint: Giriş noktası
   environment: Ortam
+  expand: Genişlet
   expandAll: Tümünü Genişlet
   experimental: "(deneysel)"
   from: gelen
   false: 'Yanlış'
   generic: 'Genel'
   gigabyte: 'GB'
+  group: 'Grup'
   hardware: Donanım
   healthy: Sağlıklı
   help: Yardım
@@ -128,6 +132,28 @@ generic:
   readWrite: Okuma/Yazma
   writeOnly: Sadece Yazma
   full: Dolu
+  linux: Linux
+  windows: Windows
+  host: Sunucu
+  istioHostPlaceholder: Bir sunucu seçin veya girin
+  cpu: İşlemci
+  memory: Bellek
+  noData: Veri Yok
+  authorize: Yetkilendirin ve Depolarınızı Alın
+  branch: Branch
+  commit: Commit
+  repository: Depo
+  registry: Kayıt Kütüğü
+  imageName: İmaj Adı
+  loginIn: Giriş yap
+  logout: '{user} Kullanıcı Oturumunu Kapat'
+  pipeline: Boru hattı
+  push: Depoya Aktar
+  noBranch: Bu repository'de branch bulunamadı.
+  github: GitHub
+  gitlab: GitLab
+  bitbucket: Bitbucket
+  required: '{key} gereklidir.'
 realmNames:
   all: Tümü
   usWest: ABD Batı
@@ -149,6 +175,7 @@ accountsPage:
         projectName: Proje
         active: Aktif
         created: İzinli
+        group: Grup
       global:
         title: Global İzinler
         description: Tüm kurulumu etkileyen şeyleri yönetme erişimi
@@ -167,13 +194,23 @@ accountsPage:
   index:
     header: Kullanıcılar
     localLink: Kullanıcı Ekle
+    groupLink: Global Rol Ata
     table:
       id: Kimlik
       kind: Tür
       username: Yerel kullanıcı adı
       identity: Kimlik
+      noData: Tanımlanmış kullanıcı yok.
       noMatch: Mevcut aramayla eşleşen kullanıcı yok
       noName: Hiçbiri
+  groups:
+    header: Gruplar
+    table:
+      groupName: Grup Adı
+      globalRole: Global Rol Adı
+      noData: Tanımlanmış grup yok.
+      noMatch: Geçerli aramayla eşleşen grup yok
+      noName: Boş
   new:
     header: Kullanıcı Ekle
     errors:
@@ -195,6 +232,10 @@ accountsPage:
       description:
         labelText: Açıklama
         placeholder: "örn. Bu hesap John Smith içindir"
+  editGroup:
+    header: Grubu Düzenle
+  newGroup:
+    header: Gruba Global Roller Ata
   modal:
     password: Parolayı değiştir
 appDetailPage:
@@ -237,6 +278,27 @@ appDetailPage:
     title: Gizli Bilgiler
     detail: Bu uygulama ile ilişkili gizli bilgiler
     nodata: Bu uygulama gizli bilgilere sahip değil
+alertPage:
+  items: Öğeler
+  create: Oluştur
+  save: Kaydet
+  project: Proje
+  newOrEdit:
+    showAdvanced: Gelişmiş Seçenekleri Göster
+    interval: Zaman aralığı
+    happens: olursa
+    sendA: Gönder
+    to: Alıcı
+    lessThan: daha az
+    and: ve
+    critical: Kritik
+    addRecipient: Alıcı Ekle
+    info: Açıklama
+    normal: Normal
+    notRunning: Çalışmıyor
+    restarted: Yeniden Başlatıldı
+    minutes: Dakika
+    createOne: bir tane oluştur
 podSecurityPoliciesPage:
   index:
     header: Pod Güvenlik Politikaları
@@ -1660,50 +1722,6 @@ clusterNew:
         parsedServiceCidr: 'Kubernetes servis adres aralığı seçili Sanal Ağ aralığı içinde olmalıdır.'
         parsedDnsServiceIp: 'Kubernetes DNS servisi IP adresi, girilen Kubernetes servis adres aralığı içinde olmalıdır.'
         parsedDockerBridgeCidr: 'Docker köprü adresi, seçilen Sanal Ağ veya Kubernetes servis adres aralığı ile çakışamaz'
-  aliyunkcs:
-    label: Aliyun Kubernetes Container Servisi
-    shortLabel: Alibaba ACK
-    access:
-      next: "Sonraki: Cluster Yapılandırma"
-      loading: "Alibaba ACK dan Bölgeler Yükleniyor"
-      title: Hesap Erişimi
-      detail: Alibaba Kubernetes Service'i başlatmak için kullanılacak bölgeyi ve API Anahtarını seçin
-    cluster:
-      title: Cluster yapılandırması
-      detail: Alibaba Kubernetes Service'i başlatmak için kullanılacak Bölgeyi ve Kubernetes Sürümünü seçin
-      next: "Sonraki: Master Node'ları Yapılandırma"
-      loading: "Alibaba'dan Kullanılabilirlik Bölgeleri Yükleniyor"
-    clusters:
-      k8s: Kubernetes
-      managed: Yönetilen Kubernete'ler
-      label: Cluster Türü
-    master:
-      title: Master Node'lar
-      detail: Alibaba Kubernetes Service'i başlatmak için master node'ları yapılandırın
-      next: "Sonraki: Worker Node'ları Yapılandırma"
-      loading: "Anahtar çiftleri Alibaba'dan Yükleniyor"
-    worker:
-      title: Worker Node'lar
-      detail: Alibaba Kubernetes Service'i başlatmak için worker node'ları yapılandırın
-    disk:
-      efficiency: Ultra Disk
-      ssd: SSD Disk
-    rootSize:
-      label: Ana Disk Boyutu
-      placeholder: örn. 120
-    rootType:
-      label: Ana Disk Türü
-    storageType:
-      label: Veri Diski Türü
-    storageSize:
-      label: Veri Diski Boyutu
-      placeholder: örn. 120
-    masterNum:
-      label: Master Node Sayısı
-      help: Bu Kubernetes cluster'ında başlatılacak olan master node sayısı
-    numOfNodes:
-      label: Worker Node Sayısı
-      placeholder: örn. 3
   googlegke:
     maxNodeCount:
       label: Maksimum Node Sayısı

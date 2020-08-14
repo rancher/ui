@@ -1,3 +1,57 @@
+{{#if (and (eq provider "import") router.currentRoute.queryParams.register)}}
+  <div class="launch-cluster">
+    <div class="row mb-20">
+      <div class="row-same-height row-full-height">
+        <a
+          class="col span-4 offset-2 cluster-driver-box span-height full-height {{if (eq router.currentRoute.queryParams.importProvider 'other') 'active' ''}}"
+          href="{{href-to
+                  "global-admin.clusters.new.launch"
+                  "import"
+                  (query-params importProvider="other")
+                }}"
+          disabled={{disabledAddCluster}}
+        >
+          <div class="machine-driver import-driver"></div>
+          <div class="driver-content">
+            <h3>
+              {{t "clusterNew.import.select.other.title"}}
+            </h3>
+            <p class="help-block">
+              {{t
+                "clusterNew.import.select.other.helpBlock"
+                appName=settings.appName
+                htmlSafe=true
+              }}
+            </p>
+          </div>
+        </a>
+        <a
+          class="col span-4 cluster-driver-box span-height full-height {{if (eq router.currentRoute.queryParams.importProvider 'eks') 'active' ''}}"
+          href="{{href-to
+                  "global-admin.clusters.new.launch"
+                  "import"
+                  (query-params importProvider="eks")
+                }}"
+          disabled={{disabledAddCluster}}
+        >
+          <div class="machine-driver amazoneksv2"></div>
+          <div class="driver-content">
+            <h3>
+              {{t "clusterNew.import.select.eks.title"}}
+            </h3>
+            <p class="help-block">
+              {{t
+                "clusterNew.importEks.helpBlock"
+                appName=settings.appName
+                htmlSafe=true
+              }}
+            </p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+{{/if}}
 {{#if (eq step 1)}}
   <form onsubmit={{action "clickNext"}}>
     {{form-name-description
@@ -65,7 +119,7 @@
 
       <FormMembers
         @creator={{model.me}}
-        @editing={{notView}}
+        @editing={{and notView (not (or isK3sCluster isRke2Cluster))}}
         @expanded={{expanded}}
         @isNew={{newCluster}}
         @memberConfig={{memberConfig}}
@@ -85,37 +139,41 @@
       expandFn=expandFn
       initialLabels=model.cluster.labels
       model=model.cluster
+      editing=(and notView (not (or isK3sCluster isRke2Cluster)))
     }}
   {{/accordion-list}}
 {{/if}}
 
-{{#unless routeLoading}}
-  {{#if driverInfo}}
-    {{component driverInfo.driverComponent
-      applyClusterTemplate=applyClusterTemplate
-      clusterTemplateQuestions=model.clusterTemplateRevision.questions
-      clusterTemplateRevisionId=clusterTemplateRevisionId
-      clusterErrors=errors
-      mode=mode
-      model=model
-      nodePoolErrors=nodePoolErrors
-      nodeWhich=driverInfo.nodeWhich
-      originalCluster=originalCluster
-      otherErrors=memberErrors
-      isEditCluster=isEdit
-      save=(action "save")
-      close=(action "close")
-      registerHook=(action "registerHook")
-      updateFromYaml=(action "updateFromYaml")
-    }}
-  {{/if}}
-{{/unless}}
+{{#if showDriverComponent}}
+  {{component driverInfo.driverComponent
+    applyClusterTemplate=applyClusterTemplate
+    clusterTemplateQuestions=model.clusterTemplateRevision.questions
+    clusterTemplateRevisionId=clusterTemplateRevisionId
+    clusterErrors=errors
+    mode=mode
+    model=model
+    nodePoolErrors=nodePoolErrors
+    nodeWhich=driverInfo.nodeWhich
+    originalCluster=originalCluster
+    otherErrors=memberErrors
+    isEditCluster=isEdit
+    save=(action "save")
+    close=(action "close")
+    registerHook=(action "registerHook")
+    updateFromYaml=(action "updateFromYaml")
+  }}
+{{/if}}
 
 {{#if (and isEdit (not provider))}}
   {{top-errors errors=errors}}
   {{save-cancel
     editing=isEdit
     save=(action "save" )
+    cancel=(action "close")
+  }}
+{{else if (not showDriverComponent)}}
+  {{save-cancel
+    saveDisabled=true
     cancel=(action "close")
   }}
 {{/if}}

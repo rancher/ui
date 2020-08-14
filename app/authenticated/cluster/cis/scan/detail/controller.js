@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { computed, get } from '@ember/object';
+import { computed, get, set } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default Controller.extend({
@@ -9,6 +9,7 @@ export default Controller.extend({
   growl:              service(),
   intl:               service(),
   securityScanConfig: service(),
+  cisHelpers:         service(),
 
   tableHeaders: [
     {
@@ -17,7 +18,7 @@ export default Controller.extend({
     },
     {
       name:           'state',
-      sort:           ['state', 'sortableId'],
+      sort:           ['sortableState', 'sortableId'],
       translationKey: 'cis.scan.detail.table.state',
       width:          100,
     },
@@ -31,23 +32,15 @@ export default Controller.extend({
       name:           'description',
       sort:           ['description', 'sortableId'],
       translationKey: 'cis.scan.detail.table.description',
-    },
-    {
-      name:           'buttons',
-      width:          120,
     }
   ],
-  sortBy: 'id',
+  sortBy: 'state',
 
   runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
 
   actions: {
     async runScan() {
-      await get(this, 'scope.currentCluster').doAction('runSecurityScan', {
-        failuresOnly: false,
-        skip:         null
-      });
-      get(this, 'router').replaceWith('authenticated.cluster.cis/scan');
+      get(this, 'scope.currentCluster').send('runCISScan', { onRun: () => get(this, 'router').replaceWith('authenticated.cluster.cis/scan') });
     },
     download() {
       get(this, 'model.scan').send('download');
@@ -58,12 +51,11 @@ export default Controller.extend({
         resources:        [get(this, 'model.scan')],
         onDeleteFinished: () => get(this, 'router').replaceWith('authenticated.cluster.cis/scan')
       });
+    },
+    clearSearchText() {
+      set(this, 'searchText', '');
     }
   },
-
-  disableRunScanButton: computed('runningClusterScans', 'scope.currentCluster.systemProject', function() {
-    return get(this, 'runningClusterScans.length') > 0 || !get(this, 'scope.currentCluster.systemProject');
-  }),
 
   tests: computed('model.scan.report', 'securityScanConfig.skipList', function() {
     const results = get(this, 'model.scan.report.results');
@@ -91,8 +83,9 @@ export default Controller.extend({
 
       return {
         state,
+        sortableState:     this.getSortableState(state),
         id:                test.id,
-        sortableId:        this.createSortableId(test.id),
+        sortableId:        this.cisHelpers.createSortableId(test.id),
         description:       test.description,
         remediation:       state === 'Fail' ? test.remediation : null,
         nodes,
@@ -110,25 +103,6 @@ export default Controller.extend({
   clusterScans: computed('model.clusterScans.@each', function() {
     return get(this, 'model.clusterScans').filterBy('clusterId', get(this, 'scope.currentCluster.id'));
   }),
-
-  /**
-   * Converts an id that looks like 1.1.9 into 000010000100009. This
-   * allows us to appropriately compare the ids as if they are versions
-   * instead of just doing a naive string comparison.
-   * @param {*} id
-   */
-  createSortableId(id) {
-    const columnWidth = 5;
-    const splitId = id.split('.');
-
-    return splitId
-      .map((column) => {
-        const columnPaddingWidth = Math.max(columnWidth - column.length, 0)
-
-        return '0'.repeat(columnPaddingWidth) + column;
-      })
-      .join('');
-  },
 
   toggleSkip(testId) {
     this.securityScanConfig.validateSecurityScanConfig();
@@ -156,9 +130,27 @@ export default Controller.extend({
       return 'Pass';
     case 'skip':
       return 'Skipped';
+    case 'notApplicable':
+      return 'N/A';
     default:
       return 'Fail';
     }
+  },
+
+  getSortableState(state) {
+    if (state === 'Fail') {
+      return 0;
+    }
+
+    if (state === 'Skipped') {
+      return 1;
+    }
+
+    if (state === 'Pass') {
+      return 2;
+    }
+
+    return 3;
   },
 
   /**
@@ -179,6 +171,10 @@ export default Controller.extend({
 
     if (check.state === 'skip') {
       return 'Skipped';
+    }
+
+    if (check.state === 'notApplicable') {
+      return 'N/A';
     }
 
     return checkNodes.includes(nodeName)

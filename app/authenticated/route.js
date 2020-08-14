@@ -117,6 +117,7 @@ export default Route.extend(Preload, {
             this.preload('globalRoleBinding', 'globalStore', { url: 'globalRoleBinding' }),
             this.preload('user', 'globalStore', { url: 'user' }),
             this.preload('features', 'globalStore', { url: 'features' }),
+            this.preload('clusterScan', 'globalStore'),
 
             globalStore.findAll('principal').then((principals) => {
               const me = principals.filter((p) => p.me === true);

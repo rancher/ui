@@ -3,20 +3,26 @@
     <h1 class="vertical-middle">
       {{t "nav.admin.security.authentication"}}
     </h1>
+    {{#if (eq access.provider "local")}}
+      <BannerMessage
+        @color="bg-warning"
+        @icon="icon-alert"
+        @message={{t "authPage.localAuth.warning" appName=settings.appName}}
+      />
+    {{/if}}
   </div>
 </section>
-
 <section class="mb-20">
   <div class="row nav nav-boxes checked-active">
     {{#each filteredDrivers as |driver|}}
-      {{#if driver.available }}
+      {{#if driver.available}}
         {{#link-to
-           (unbound driver.route)
-           alt=driver.label
-           classNames="col span-2 nav-box-item driver"
-           href=false
+          (unbound driver.route)
+          alt=driver.label
+          classNames="col span-2 nav-box-item driver"
+          href=false
         }}
-          {{#if driver.providerType }}
+          {{#if driver.providerType}}
             <span class="badge bg-info driver-badge">
               {{driver.providerType}}
             </span>
@@ -30,5 +36,4 @@
     {{/each}}
   </div>
 </section>
-
 {{outlet}}

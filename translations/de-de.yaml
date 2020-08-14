@@ -6,6 +6,7 @@ languageContribute: "Helfen Sie bei der Übersetzung von Rancher"
 ##############################
 generic:
   actions: Aktionen
+  active: Aktiv
   activate: Aktivieren
   add: Hinzufügen
   advanced: Erweiterte Einstellungen
@@ -17,6 +18,7 @@ generic:
   cancel: Abbrechen
   closeModal: Schließen
   cluster: Cluster
+  collapse: Einklappen
   collapseAll: Alles schliessen
   comingSoon: In Kürze verfügbar
   command: Befehl
@@ -41,12 +43,14 @@ generic:
   enabled: Aktiviert
   entrypoint: Einstiegspunkt
   environment: Umgebung
+  expand: Aufklappen
   expandAll: Alles öffnen
   experimental: "(experimentell)"
   from: von
   false: 'Falsch'
   generic: 'Allgemein'
   gigabyte: 'GB'
+  group: 'Gruppe'
   hardware: Hardware
   healthy: Bereit
   help: Hilfe
@@ -80,6 +84,7 @@ generic:
   noRating: Keine Bewertung
   node: Knoten
   none: Kein
+  completedOf: "{completed} von {total}"
   owner: Besitzer
   paste: Einfügen
   pod: pod
@@ -128,6 +133,24 @@ generic:
   readWrite: Schreib-/Lesezugriff
   writeOnly: Nur Schreiben
   full: Voll
+  linux: Linux
+  windows: Windows
+  host: Server
+  cpu: CPU
+  noData: Keine Daten
+  authorize: Autorisieren und Ihre Repositories abrufen
+  branch: Versionszweig
+  commit: Commit
+  repository: Repository
+  registry: Registry
+  imageName: Bildname
+  logout: Benutzer {user} abmelden
+  pipeline: Pipeline
+  noBranch: Es gibt keinen Zweig in diesem Repository.
+  github: GitHub
+  gitlab: GitLab
+  bitbucket: Bitbucket
+  required: '{key} ist erforderlich.'
 realmNames:
   all: Alle
   usWest: US Westküste
@@ -149,6 +172,7 @@ accountsPage:
         projectName: Projekt
         active: Aktiv
         created: Zugelassen
+        group: Gruppe
       global:
         title: Globale Berechtigungen
         description: Zugriff auf Einstellungen, die die gesamte Installation betreffen
@@ -167,13 +191,21 @@ accountsPage:
   index:
     header: Benutzer
     localLink: Benutzer hinzufügen
+    groupLink: Globale Rolle zuweisen
     table:
       id: Id
       kind: Typ
       username: Lokaler Benutzer
       identity: Identität
+      noData: Es sind keine Benutzer definiert.
       noMatch: Keine Benutzer gefunden, die den Suchkriterien entsprechen
       noName: Kein
+  groups:
+    header: Gruppen
+    table:
+      groupName: Gruppenname
+      noData: Es wurden keine Gruppen definiert.
+      noMatch: Keine Gruppen zur aktuellen Suche gefunden
   new:
     header: Benutzer hinzufügen
     errors:
@@ -195,6 +227,17 @@ accountsPage:
       description:
         labelText: Beschreibung
         placeholder: "z.B. Das Konto von Max Muster"
+  editGroup:
+    header: Gruppe bearbeiten
+  newGroup:
+    header: Globale Rollen der Gruppe zuweisen
+    warning: Globale Rollen einer Gruppe zuweisen funktioniert nur mit externen Authentifizierungsanbietern die Gruppen unterstützen. Lokale Authorisierung unterstützt keine Gruppen.
+    errors:
+      group: Eine Gruppe ist erforderlich.
+      role: Eine Rolle ist erforderlich.
+    form:
+      group:
+        labelText: Gruppe zum Hinzufügen auswählen
   modal:
     password: Passwort ändern
 appDetailPage:
@@ -237,6 +280,17 @@ appDetailPage:
     title: Geheimnisse
     detail: Es wurden Secrets mit dieser Applikation verknüpft
     nodata: Diese Anwendung hat keine Geheimnisse
+alertPage:
+  na: Nicht konfiguriert
+  create: Erstellen
+  save: Speichern
+  cluster: Cluster
+  project: Projekt
+  newOrEdit:
+    showAdvanced: Erweiterte Optionen anzeigen
+    addRecipient: Empfänger hinzufügen
+  resourceKinds:
+    Node: Knoten
 podSecurityPoliciesPage:
   index:
     header: Pod-Sicherheitsrichtlinien
@@ -660,7 +714,7 @@ certificatesPage:
     labelText: Domainname
     single: '<a href="https://{cn}" target="_blank" rel="nofollow noreferrer noopener">{cn} <i class="icon icon-sm icon-external-link"/></a>'
     withSan: |
-
+       
     wildcardSingle: '{cn}'
     wildcardWithSan: |
       {cn} +
@@ -1640,7 +1694,7 @@ stackPage:
     detail: 'Load-Balancer-Container, die von diesem Stack getrennt sind'
     status: |
       {count, plural,
-      =0 {Kein Balancer}
+      =0 {Kein Balancer} 
       =1 {# Balancer}
       other {# Balancer}
       }
@@ -1649,7 +1703,7 @@ stackPage:
     detail: 'Load-Balancer, die von diesem Stack getrennt sind'
     status: |
       {count, plural,
-      =0 {Keine Einträge}
+      =0 {Keine Einträge} 
       =1 {# Eintrag}
       other {# Einträge}
       }
@@ -3674,7 +3728,7 @@ volumeSource:
     title: Ceph-Dateisystem
   fc:
     title: Fibre Channel
-  flex-volume-longhorn:
+  csi-volume-longhorn:
     title: Longhorn
   flocker:
     title: Flocker

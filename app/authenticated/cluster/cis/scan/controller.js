@@ -7,6 +7,7 @@ export default Controller.extend({
   scope:              service(),
   modalService:       service('modal'),
   securityScanConfig: service(),
+  router:             service(),
 
   tableHeaders: [
     {
@@ -21,47 +22,60 @@ export default Controller.extend({
       translationKey: 'cis.scan.table.name',
     },
     {
+      name:           'profile',
+      sort:           ['profile', 'id'],
+      translationKey: 'cis.scan.table.profile',
+      width:          200
+    },
+    {
       name:           'passed',
       sort:           ['passed', 'id'],
       translationKey: 'cis.scan.table.passed',
-      width:          150,
+      width:          80,
     },
     {
       name:           'skipped',
       sort:           ['skipped', 'id'],
       translationKey: 'cis.scan.table.skipped',
-      width:          150,
+      width:          90,
     },
     {
-      name:           'expires',
+      name:           'failed',
       sort:           ['failed', 'id'],
       translationKey: 'cis.scan.table.failed',
+      width:          80,
+    },
+    {
+      name:           'notapplicable',
+      sort:           ['notApplicable', 'id'],
+      translationKey: 'cis.scan.table.notApplicable',
       width:          150,
     },
     {
       name:           'date',
-      sort:           ['date', 'id'],
+      sort:           ['createdTS', 'id'],
       searchField:    false,
       translationKey: 'cis.scan.table.date',
-      width:          250,
+      width:          220
     }
   ],
+  sortBy:     'date',
+  descending: true,
 
   runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
 
   isRKE:   computed.alias('scope.currentCluster.isRKE'),
   actions: {
     runScan() {
-      get(this, 'scope.currentCluster').doAction('runSecurityScan', {
-        failuresOnly: false,
-        skip:         null
-      });
+      get(this, 'scope.currentCluster').send('runCISScan');
+    },
+    setSchedule() {
+      get(this, 'scope.currentCluster').send('edit', { scrollTo: 'security-scan' });
+    },
+    setAlert() {
+      get(this, 'router').transitionTo('authenticated.cluster.alert.new', { queryParams: { for: 'security-scan' } });
     }
   },
-  disableRunScanButton: computed('runningClusterScans', 'scope.currentCluster.systemProject', function() {
-    return get(this, 'runningClusterScans.length') > 0 || !get(this, 'scope.currentCluster.systemProject');
-  }),
-
   bulkActionHandler: computed(function() {
     return {
       download: async(scans) => {

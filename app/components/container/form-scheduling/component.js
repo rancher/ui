@@ -84,7 +84,7 @@ export default Component.extend({
     const list = get(this, '_allNodes').filter((node) => !get(node, 'isUnschedulable'))
       .filterBy('clusterId', get(this, 'scope.currentCluster.id'))
       .map((host) => {
-        let hostLabel = get(host, 'hostname');
+        let hostLabel = get(host, 'displayName');
 
         if ( get(host, 'state') !== 'active' ) {
           hostLabel += ` (${  get(host, 'state')  })`;

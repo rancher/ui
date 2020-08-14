@@ -5,7 +5,7 @@
 
 <section class="p-20 pt-0">
   <div class="row">
-    <div class="col span-6">
+    <div class="col span-7">
       <label
         class="acc-label"
         for="available-backups"
@@ -21,18 +21,16 @@
           class="form-control"
           onchange={{action (mut backupId) value="target.value"}}
         >
-          {{#unless (eq backupId value)}}
-            <option
-              value=""
-              selected=true
-            >
-              {{t "modalRestoreBackup.select.all"}}
-            </option>
-          {{/unless}}
+          <option
+            value=""
+            selected={{eq backupId ""}}
+          >
+            {{t "modalRestoreBackup.select.all"}}
+          </option>
           {{#each availableBackups as |backup|}}
             <option
               value={{backup.id}}
-              selected={{eq backup.id value}}
+              selected={{eq backup.id backupId}}
               disabled={{eq backup.state "activating"}}
             >
               {{backup.label}}
@@ -41,10 +39,40 @@
         </select>
       {{/if}}
     </div>
+    {{#if (not loadingBackups)}}
+      <div class="col span-5">
+        <label
+          class="acc-label"
+          for="available-backups"
+        >
+          {{t "modalRestoreBackup.type.label"}}
+        </label>
+        <div class="radio {{if restorationTypeDisabled "text-muted"}}">
+          {{radio-button selection=restoreRkeConfig value="etcd" disabled=restorationTypeDisabled}} 
+          {{t "modalRestoreBackup.type.etcd"}}
+        </div>
+        <div class="radio {{if k8sVersionRadioDisabled "text-muted"}}">
+          {{radio-button selection=restoreRkeConfig value="kubernetesVersion" disabled=k8sVersionRadioDisabled}} 
+          {{t "modalRestoreBackup.type.k8sVersion"}}
+        </div>
+        <div class="radio {{if k8sVersionRadioDisabled "text-muted"}}">
+          {{radio-button selection=restoreRkeConfig value="all" disabled=k8sVersionRadioDisabled}} 
+          {{t "modalRestoreBackup.type.etcdAndK8sVersion"}}
+        </div>
+        {{#if k8sVersionDisabled}}
+          {{banner-message
+            color="bg-secondary mb-0 mt-10"
+            message=(t "modalRestoreBackup.type.k8sVersionUnknown")
+          }}
+        {{/if}}
+      </div>
+    {{/if}}
   </div>
 </section>
 
 {{save-cancel
+  editLabel="modalRestoreBackup.restoreButton"
+  savingLabel="modalRestoreBackup.restoreButton"
   editing=true
   save=(action "restore")
   saveDisabled=(not backupId)

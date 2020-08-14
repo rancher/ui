@@ -1,0 +1,88 @@
+<div class="row mb-20">
+  <div class="col span-6">
+    <label class="acc-label">
+      {{t "cruPersistentVolume.flexVolume.driver.label"}}
+    </label>
+    <InputOrDisplay
+      @editable={{false}}
+      @value={{config.driver}}
+    >
+      <Input
+        @id="input-config-driver"
+        @type="text"
+        @value={{config.driver}}
+        @classNames="form-control"
+        @placeholder={{t "cruPersistentVolume.flexVolume.driver.placeholder"}}
+      />
+    </InputOrDisplay>
+  </div>
+
+  <div class="col span-6">
+    <FormKeyValue
+      @initialMap={{config.volumeAttributes}}
+      @editing={{editing}}
+      @header={{t "cruPersistentVolume.flexVolume.options.label"}}
+      @addActionLabel="cruPersistentVolume.flexVolume.options.addActionLabel"
+      @changed={{action (mut config.volumeAttributes)}}
+    />
+  </div>
+</div>
+
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label">
+      {{t "cruPersistentVolume.flexVolume.fsType.label"}}
+    </label>
+    <InputOrDisplay
+      @editable={{editing}}
+      @value={{config.fsType}}
+    >
+      <Input
+        @type="text"
+        @value={{config.fsType}}
+        @classNames="form-control"
+        @placeholder={{t "cruPersistentVolume.flexVolume.fsType.placeholder"}}
+      />
+    </InputOrDisplay>
+  </div>
+
+  <div class="col span-6">
+    <label class="acc-label">
+      {{t "cruPersistentVolume.flexVolume.readOnly.label"}}
+    </label>
+    {{#if editing}}
+      <div class="text-muted">
+        <label>
+          {{radio-button selection=config.readOnly value=true}} {{t "generic.yes"}}
+        </label>
+        <label>
+          {{radio-button selection=config.readOnly value=false}} {{t "generic.no"}}
+        </label>
+      </div>
+    {{else}}
+      <div class="text-muted">
+        {{config.readOnly}}
+      </div>
+    {{/if}}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col span-6">
+    <label class="acc-label" for="input-volume-handle">
+      {{t "cruPersistentVolume.csi.volumeHandle.label"}}{{field-required editing=editing}}
+    </label>
+    <InputOrDisplay
+      @editable={{editing}}
+      @value={{config.volumeHandle}}
+    >
+      <Input
+        @id="input-volume-handle"
+        @type="text"
+        @value={{config.volumeHandle}}
+        @classNames="form-control"
+        @placeholder={{t "cruPersistentVolume.csi.volumeHandle.placeholder"}}
+      />
+    </InputOrDisplay>
+  </div>
+</div>

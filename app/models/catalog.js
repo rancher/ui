@@ -1,12 +1,30 @@
 import Resource from '@rancher/ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
-import { computed, get } from '@ember/object';
+import { computed, get, set } from '@ember/object';
 import { ucFirst } from 'shared/utils/util';
 import C from 'ui/utils/constants';
+import { isEmpty } from '@ember/utils';
+
+const {
+  HELM_VERSION_2:       helmV2,
+  HELM_VERSION_3:       helmV3,
+  HELM_VERSION_3_SHORT: helmV3Short,
+  HELM_3_LIBRARY_VALUE: helm3LibraryId
+} = C.CATALOG;
 
 const Catalog = Resource.extend({
   modalService: service('modal'),
   level:        'global',
+
+  isHelm3: computed('helmVersion', function() {
+    const { helmVersion = helmV2 } = this;
+
+    if (helmVersion === helmV3 || helmVersion === helmV3Short) {
+      return true;
+    }
+
+    return false;
+  }),
 
   displayKind: computed('kind', function() {
     return ucFirst(get(this, 'kind'));
@@ -21,7 +39,14 @@ const Catalog = Resource.extend({
   canClone: computed('actions.clone', function() {
     const name         = get(this, 'name');
     const catalogNames = get(C, 'CATALOG');
-    const builtIn      = [get(catalogNames, 'LIBRARY_KEY'), get(catalogNames, 'ALIBABA_APP_HUB_KEY'), get(catalogNames, 'HELM_STABLE_KEY'), get(catalogNames, 'HELM_INCUBATOR_KEY')];
+    const builtIn      = [
+      get(catalogNames, 'ALIBABA_APP_HUB_KEY'),
+      get(catalogNames, 'HELM_3_LIBRARY_KEY'),
+      get(catalogNames, 'HELM_INCUBATOR_KEY'),
+      get(catalogNames, 'HELM_STABLE_KEY'),
+      get(catalogNames, 'LIBRARY_KEY'),
+      get(catalogNames, 'SYSTEM_LIBRARY_KEY'),
+    ];
 
     return !builtIn.includes(name);
   }),
@@ -47,6 +72,10 @@ const Catalog = Resource.extend({
 
   actions: {
     enable() {
+      if (isEmpty(this.id) && !isEmpty(this.url) && this.url === helm3LibraryId) {
+        set(this, 'helmVersion', helmV3);
+      }
+
       this.save();
     },
 

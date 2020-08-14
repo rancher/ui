@@ -7,6 +7,8 @@ import  { PRESETS_BY_NAME } from  'ui/models/dockercredential';
 import { inject as service } from '@ember/service'
 import { isEmpty } from '@ember/utils';
 
+const TEMP_NAMESPACE_ID = '__TEMP__';
+
 export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   globalStore:  service(),
   clusterStore: service(),
@@ -27,6 +29,7 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
 
     if (get(this, 'model.type') === 'namespacedDockerCredential') {
       set(this, 'scope', 'namespace');
+      set(this, 'namespace', get(this, 'model.namespace'));
     }
     const globalRegistryEnabled = get(this, 'globalStore').all('setting').findBy('id', 'global-registry-enabled') || {};
 
@@ -82,15 +85,22 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   hostname:  window.location.host,
 
   willSave() {
-    let pr = get(this, 'primaryResource');
+    const { primaryResource: pr } = this;
+    let tempSet = false;
 
-    // Namespace is required, but doesn't exist yet... so lie to the validator
-    let nsId = get(pr, 'namespaceId');
+    if (isEmpty(get(pr, 'namespaceId'))) {
+      // Namespace is required, but doesn't exist yet... so lie to the validator
+      set(pr, 'namespaceId', TEMP_NAMESPACE_ID);
 
-    set(pr, 'namespaceId', '__TEMP__');
+      tempSet = true;
+    }
+
     let ok = this.validate();
 
-    set(pr, 'namespaceId', nsId);
+    if (tempSet) {
+      // unset temp so that namespacePromise can takeover from here
+      set(pr, 'namespaceId', null);
+    }
 
     return ok;
   },
@@ -109,17 +119,10 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   },
 
   doSave() {
-    let self                       = this;
-    let sup                        = self._super;
-    const currentProjectsNamespace = get(this, 'clusterStore').all('namespace').findBy('projectId', get(this, 'scopeService.currentProject.id'));
+    let self = this;
+    let sup  = self._super;
 
-    if (isEmpty(currentProjectsNamespace)) {
-      return this.namespacePromise().then(() => sup.apply(self, arguments));
-    } else {
-      set(this, 'namespace', currentProjectsNamespace);
-
-      return sup.apply(self, arguments);
-    }
+    return this.namespacePromise().then(() => sup.apply(self, arguments));
   },
 
   doneSaving() {

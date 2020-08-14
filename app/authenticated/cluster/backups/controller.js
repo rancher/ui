@@ -33,9 +33,15 @@ export default Controller.extend({
     },
   ],
 
+  actions: {
+    snapshotNow() {
+      get(this, 'scope.currentCluster').doAction('backupEtcd');
+    },
+  },
   rows:    computed('model.[]', function() {
     let { currentClusterId } = this;
 
     return get(this, 'model').filterBy('clusterId', currentClusterId);
   }),
+
 });

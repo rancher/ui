@@ -6,6 +6,7 @@ languageContribute: "Ajude a traduzir o Rancher"
 ##############################
 generic:
   actions: Ações
+  active: Ativo
   activate: Ativar
   add: Adicionar
   advanced: Avançado
@@ -17,6 +18,7 @@ generic:
   cancel: Cancelar
   closeModal: Fechar
   cluster: Cluster
+  collapse: Recolher
   collapseAll: Recolher tudo
   comingSoon: Em breve
   command: Comando
@@ -41,12 +43,14 @@ generic:
   enabled: Ativado
   entrypoint: Ponto de entrada
   environment: Ambiente
+  expand: Expandir
   expandAll: Expandir tudo
   experimental: "(experimental)"
   from: de
   false: 'Falso'
   generic: 'Genérico'
   gigabyte: 'GB'
+  group: 'Agrupar'
   hardware: Hardware
   healthy: Sem erros
   help: Ajuda
@@ -80,6 +84,7 @@ generic:
   noRating: Sem avaliação
   node: Nó
   none: Nenhum
+  completedOf: "{completed} de {total}"
   owner: Proprietário
   paste: Colar
   pod: pods
@@ -128,6 +133,29 @@ generic:
   readWrite: Leitura Escrita
   writeOnly: Somente Escrita
   full: Completo
+  linux: Linux
+  windows: Windows
+  host: Servidor Hospedeiro
+  istioHostPlaceholder: Selecione ou insira um Servidor Hospedeiro
+  cpu: CPU
+  memory: Memória
+  noData: Sem dados
+  authorize: Autorizar & Buscar Seus Repositórios
+  branch: Ramificação
+  commit: Commit
+  repository: Repositório
+  registry: Registro Docker
+  imageName: Nome da Imagem
+  loginIn: Autenticando
+  logout: Desconectar {user}
+  pipeline: Pipeline
+  is: é
+  push: Enviar para o Repositório
+  noBranch: Não há ramificação neste repositório.
+  github: GitHub
+  gitlab: GitLab
+  bitbucket: Bitbucket
+  required: '{key} é obrigatório.'
 realmNames:
   all: Todos
   usWest: Oeste dos EUA
@@ -149,6 +177,7 @@ accountsPage:
         projectName: Projeto
         active: Ativo
         created: Concedido
+        group: Grupo
       global:
         title: Permissões globais
         description: Acesso para gerenciar as coisas que afetam toda a instalação
@@ -167,13 +196,23 @@ accountsPage:
   index:
     header: Usuários
     localLink: Adicionar Usuário
+    groupLink: Atribuir Função Global
     table:
       id: Identificador
       kind: Tipo
       username: Nome de usuário local
       identity: Identidade
+      noData: Não existem usuários.
       noMatch: Nenhum usuário corresponde à pesquisa atual
       noName: Nenhum
+  groups:
+    header: Grupos
+    table:
+      groupName: Nome do Grupo
+      globalRole: Nome da Função Global
+      noData: Não há grupos definidos.
+      noMatch: Nenhum grupo corresponde à pesquisa atual
+      noName: Nada
   new:
     header: Adicionar Usuário
     errors:
@@ -195,6 +234,17 @@ accountsPage:
       description:
         labelText: Descrição
         placeholder: "p.ex. Esta conta é para João da Silva"
+  editGroup:
+    header: Editar Grupo
+  newGroup:
+    header: Atribuir funções globais ao grupo
+    warning: A atribuição de funções globais a um grupo funciona apenas com provedores de autenticação externos que suportam grupos. A autorização local não suporta grupos.
+    errors:
+      group: Grupo é obrigatório.
+      role: Função é obrigatória.
+    form:
+      group:
+        labelText: Selecione um Grupo para Adicionar
   modal:
     password: Alterar Senha
 appDetailPage:
@@ -237,6 +287,136 @@ appDetailPage:
     title: Segredos
     detail: Segredos associados a este aplicativo
     nodata: Esta aplicação não tem segredos
+alertPage:
+  na: Não Configurado
+  items: Itens
+  addSelectorLabel: Adicionar Seletor
+  create: Criar
+  save: Save
+  cluster: Cluster
+  project: Projeto
+  alertGroups: Alertas
+  newOrEdit:
+    showAdvanced: Mostrar opções avançadas
+    initialWait: Espera inicial
+    interval: Intervalo
+    initialWaitHelpText: Quanto tempo esperar antes de enviar uma notificação quando um alerta é acionado.
+    repeatIntervalHelpText: Repetir o intervalo de envio de uma notificação quando um alerta está ativo.
+    whenA: Quando um
+    whenAn: Quando um
+    happens: Acontece
+    sendA: Enviar um
+    to: Para
+    alert: Alerta
+    is: É
+    lessThan: menor que
+    and: E
+    critical: Crítico
+    addRecipient: Adicionar Destinatário
+    info: Info
+    normal: Normal
+    warning: Aviso
+    notReady: Não está pronto
+    unhealthy: Instável
+    cpuUsage: Reserva de CPU acima
+    memUsage: Reserva de memória acima
+    podPlaceholder: Escolha um Pod
+    notRunning: Parado
+    notScheduled: Não agendado
+    restarted: Reiniciado
+    restartedTimes: vezes nos últimos
+    minutes: Minutos
+    available: disponível
+    createOne: criar um
+    noNotifierHelpText: Você não possui nenhum notificador configurado. Vá aqui para
+    workloadTypePlaceholder: Escolha um tipo de carga de trabalho
+    resourcePlaceholder: Escolha um recurso
+    notifierPlaceholder: Escolha um Notificador
+    nodePlaceholder: Escolha um Nó
+    systemServicePlaceholder: Escolha um Serviço de Sistema
+    nodeRequired: Nó necessário
+    nodeSelectorRequired: Seletor de nó necessário
+    recipient:
+      helpText: O valor definido no Notificador é usado por padrão. Você pode substituir isso por outro valor.
+    expression:
+      label: Expressão
+      noData: Nenhum dado gráfico métrico.
+      error: Falha ao buscar dados do gráfico métrico.
+      placeholder: Expressão de entrada
+    removeAlert: Remover este alerta
+    alertRule: Regra De Alerta
+    groupWaitSeconds:
+      label: Tempo de espera do grupo
+      helpText: Quanto tempo esperar para armazenar em buffer alertas do mesmo grupo antes de enviar inicialmente.
+    groupIntervalSeconds:
+      label: Tempo do intervalo do grupo
+      helpText: Quanto tempo esperar antes de enviar um alerta que foi adicionado a um grupo que já contém alertas acionados.
+    repeatIntervalSeconds:
+      label: Intervalo de Repetição
+      helpText: Quanto tempo esperar antes de reenviar um determinado alerta que já foi enviado.
+    monitoringDisabled: Expressões estão desativadas, Vá e
+    enableMonitoring: ativar monitoramento
+    for: Para
+    moreTarget: Mais tipos de alvos...
+    inherited:
+      label: Grupo Herdado
+      enabled: Ativado - Herdando as opções avançadas do grupo
+  resourceKinds:
+    #backend use capitalized name
+    Pod: Pod
+    Node: Nó
+    Deployment: Implantação
+    DaemonSet: DaemonSet
+    StatefulSet: StatefulSet
+  targetTypes:
+    pod: Pod
+    node: Nó
+    deployment: Implantação
+    daemonset: DaemonSet
+    statefulset: StatefulSet
+    workload: Carga de trabalho
+    event: Evento
+    systemService: Serviço do Sistema
+    nodeSelector: Seletor de Nó
+    workloadSelector: Seletor de Carga de Trabalho
+    metric: Métrica
+    undefined: Nada
+  index:
+    addAlertGroup: Adicionar Grupo de Alerta
+    addAlert: Adicionar Regra de Alerta
+    noAlerts: Não há regras de alerta definidas.
+    table:
+      noMatch: Nenhum alerta de corresponder a pesquisa atual.
+      noData: Não há alertas definidos
+      noGroup: Nenhum grupo de alerta
+      condition: Condições
+      target: Alvo
+      recipients: Notificadores
+      displayCondition:
+        notScheduled: Não agendado
+        notRunning: Parado
+        available: '{percent}% disponível'
+        restarted: Reiniciou {times} vezes nos últimos {interval} minutos
+        notready: Trabalhando
+        unhealthy: Instável
+        happens: Acontece
+        notReady: Trabalhando
+        cpuUsage: 'Uso de CPU acima de {percent}%'
+        memUsage: 'Uso de MEM acima de {percent}%'
+        expression: Expressão
+  new:
+    addHeader: Adicionar Grupo de Alerta
+    editHeader: Editar Grupo de Alerta
+    addRuleHeader: Adicionar Regra de Alerta
+    editRuleHeader: Editar Regra De Alerta
+  comparison:
+    equal: Igual
+    not-equal: Diferente
+    greater-than: Maior que
+    less-than: Menor que
+    greater-or-equal: Maior ou Igual
+    less-or-equal: Menor Ou Igual
+    has-value: Não Nulo
 podSecurityPoliciesPage:
   index:
     header: Políticas de Segurança Pod
@@ -268,11 +448,13 @@ rolesPage:
     project: Projetos
   index:
     localLink: Adicionar Função
+    warning: "Não existe uma função padrão que possa ter consequências indesejadas quando um usuário efetuar login pela primeira vez. Defina uma das funções como o novo usuário padrão."
     table:
       builtin: Interno
       created: Horário de Criação
       enabled: Ativado
       name: Nome
+      noData: Não há papéis definidos.
       noMatch: Nenhuma regra corresponde a pesquisa atual
       subjectKind: Tipo
       template: Modelo
@@ -358,6 +540,111 @@ apiPage:
       never: Nunca
     noData: Não há chaves de API definidas
 authPage:
+  setting:
+    executor:
+      label: O número máximo de executores de pipeline
+      scale: Escala
+    cacerts:
+      label: Configurar a CA personalizada para dar suporte ao clone do serviço git autoassinado
+      show: Editar cacerts
+      saveActionLabel: Salvar cacerts
+    limit:
+      label: Configurar o limite e a reserva de recursos para executores
+      saveActionLabel: Atualizar limite e reserva
+  header: Configuração de Pipeline
+  setup: "1. Configure um aplicativo {type}"
+  authenticated:
+    header:
+      text: Informações de autenticação de repositório
+      enterpriseHostName: "Servidor:"
+      clientId:
+        text: "ID do cliente:"
+      key:
+        text: "Chave:"
+  testAuth:
+    header: '3. Testar e ativar a autenticação'
+    subtext: 'Verifique se sua aplicação está configurada corretamente testando autenticação com:'
+    buttonText:
+      preVariable: Autenticar
+      post: Autenticando
+  form:
+    headerVariable: '2. Configure o pipeline para usar seu {SCM} para autenticação'
+    isEnterprise:
+      labelText: Use uma conexão https
+    enterprise:
+      labelText: Use uma instalação corporativa {type} privada
+    enterpriseHost:
+      labelText: Dominio da empresa
+      placeholder: 'ex. exemplo.com'
+  gitlab:
+    auth: 'Para GitLab padrão, <a href="https://gitlab.com/profile/applications" target="_blank" rel="nofollow noreferrer">clique aqui</a> para ir as configurações de aplicações em uma nova janela.'
+    enterpriseAuth: "Para GitLab Enterprise, faça login na sua conta. Clique em Settings e, em seguida, Aplicações."
+    ul:
+      li2:
+        text: 'Preencha o formulário:'
+        ul:
+          li1: '<b>Nome:</b> <span class="text-muted">O que você desejar, ex: Minha pipeline</span>'
+          li2: URI de redirecionamento
+      li3:
+        text: 'Clique em "Salvar aplicação" '
+    form:
+      subtextVariable: 'Copie e cole o ID e o segredo do aplicativo do seu aplicativo recém-criado.'
+      clientId:
+        labelText: ID da aplicação
+      clientSecret:
+        labelText: Segredo
+  bitbucketcloud:
+    target:
+      header: '1. Escolha o tipo de Bitbucket que você deseja usar'
+      bitbucketserver: 'Use a configuração privada do servidor Bitbucket'
+      bitbucketcloud: 'Usar nuvem pública de Bitbucket'
+    setup: '2. Configure uma aplicação Bitbucket Cloud'
+    auth: 'Para Bitbucket Cloud, <a href="https://bitbucket.org/account" target="_blank" rel="nofollow noreferrer">clique aqui</a> para abrir configurações de usuário em outra janela.'
+    ul:
+      li2:
+        text: 'Clique em "OAuth", clique em "Adicionar consumidor" e preencha o formulário:'
+        ul:
+          li1: '<b>Nome:</b> <span class="text-muted">O que você desejar, ex: Meu Pipeline</span>'
+          li2: URL de retorno
+          li3: '<b>Selecione Permissões</b> <b>Conta leitura</b>, <b>Pull Request Escrita</b>, <b>Projetos Leitura</b> e <b>Webhooks Leitura e Escrita</b>'
+      li3:
+        text: 'Clique em "Salvar" '
+    form:
+      headerVariable: '3. Configure o pipeline para usar sua Bitbucket Cloud para autenticação'
+      subtextVariable: 'Copie e cole a Chave e o Segredo do seu consumidor recém-criado.'
+      clientId:
+        labelText: Chave
+      clientSecret:
+        labelText: Segredo
+  bitbucketserver:
+    warning: 'Os webhooks do servidor Bitbucket precisam fazer a verificação SSL, verifique se o certificado do servidor {appName} é confiável pelo servidor bitbucket. Mais informações podem ser encontradas <a href="https://rancher.com/docs/rancher/v2.x/en/tools/pipelines/configurations/#1-configuring-version-control-providers" target="_blank" rel="nofollow noopener noreferrer">aqui</a>.'
+    copy: Clique no ícone para copiá-lo
+    target:
+      header: '1. Escolha o tipo de Bitbucket que você deseja usar'
+      bitbucketserver: 'Usar configuração de um servidor Bitbucket privado'
+      bitbucketcloud: 'Usar nuvem pública de Bitbucket'
+    setup: '2. Configurar uma aplicação do servidor do Bitbucket'
+    auth: 'Para o servidor Bitbucket, faça login na sua conta. Clique em Administração e depois em Links de aplicativos.'
+    ul:
+      li2:
+        text: 'Crie um novo link de aplicativo:'
+        ul:
+          li1: '<b>Link:</b>'
+          li2: '<b>Nome da aplicação:</b> <span class="text-muted">O que você desejar, ex: Minha aplicação</span>'
+          li3: '<b>Selecione Criar link de entrada</b>'
+          li4: '<b>Clique em "Continuar"</b>'
+          li5: 'Chave do Consumidor:'
+          li6: '<b>Nome do consumidor:</b> <span class="text-muted">O que você desejar, ex: pipeline</span>'
+          li7: 'Chave Pública:'
+          li8: '<b>Clique em "Continuar"</b>'
+    form:
+      headerVariable: '3. Configure o pipeline para usar seu servidor Bitbucket para autenticação'
+      hostname:
+        labelText: Host do servidor Bitbucket
+        placeholder: 'ex: exemplo.com'
+        required: O host do servidor Bitbucket é obrigatório.
+      tls:
+        labelText: Usar uma conexão HTTPS segura
   saml:
     accessEnabled:
       header: Autenticação
@@ -454,6 +741,24 @@ authPage:
   root:
     header: Access Control
   github:
+    auth: 'Para GitHub padrão, <a href="https://github.com/settings/developers" target="_blank" rel="nofollow noreferrer">clique aqui</a> para ir as configurações numa nova janela.'
+    enterpriseAuth: "Para GitHub Enterprise, faça login na sua conta. Clique em Settings e, em seguida, Developer settings."
+    ul:
+      li2:
+        text: 'Clique em "Registrar nova aplicação" e preencha o formulário:'
+        ul:
+          li1: '<b>Nome da aplicação:</b> <span class="text-muted">O que você desejar, ex: Minha aplicação</span>'
+          li2: URL da Página incial
+          li3: '<b>Descrição da aplicação:</b> <span class="text-muted">O que você desejar, opcional</span>'
+          li4: URL de retorno de chamada de autorização
+      li3:
+        text: 'Clique em "Registrar Aplicação" '
+    form:
+      subtextVariable: 'Copie e cole o ID do cliente e o Segredo da sua aplicação recém-criada.'
+      clientId:
+        labelText: ID do Cliente
+      clientSecret:
+        labelText: Segredo do cliente
     standard: GitHub
     enterprise: GitHub Enterprise
     header:
@@ -475,6 +780,7 @@ authPage:
       header: "1. Configurar um aplicativo GitHub"
       ul:
         li1:
+          text: 'Para o GitHub padrão, <a href="https://github.com/settings/developers" target="_blank" rel="nofollow noopener noreferrer">clique aqui</a> para acessar as configurações de aplicações em uma nova janela.'
           ul:
             li1: "Para Github Enterprise, faça login na sua conta.  Clique em Settings e, em seguida, Applications.."
         li2:
@@ -482,6 +788,7 @@ authPage:
           ul:
             li1: '<b>Application name:</b> <span class="text-muted">Qualquer coisa que você goste, p.ex. my {appName}</span>'
             li2: 'URL da Página inicial'
+            li3: '<b>              Descrição da aplicação:</b> <span class="text-muted">O que você desejar, opcional</span>'
             li4: 'URL de retorno de chamada de autorização'
         li3:
           text: 'Clique em "Register Application"'
@@ -507,6 +814,26 @@ authPage:
         post: Esperando para ouvir de volta do GitHub
       authError: 'O acesso ao Github não foi autorizado'
       popupError: 'Por favor, desabilite seu bloqueador de pop-up e clique em "Autenticar" novamente.'
+  googleoauth:
+    header:
+      disabled:
+        label: 'O Google não está configurado. Para instruções mais detalhadas sobre como configurar a autenticação, visite os <a href="https://rancher.com/docs/rancher/v2.x/en/admin-settings/authentication/google/" target="_blank" rel="nofollow noopener noreferrer">documentação</a>'
+    authenticated:
+      header:
+        text: Autenticação
+        adminEmail:
+          text: "E-mail do administrador: "
+      disableAccess:
+        header: "Zona de perigo&trade;"
+        warning: '<b class="text-danger">Cuidado:</b> Desativar o controle de acesso dará controle total sobre {appName} a qualquer pessoa que possa acessar esta página ou a API.'
+        confirmDisable: "Você tem certeza? Clique novamente para desativar o controle de acesso"
+        disable: Desativar acesso Google
+    notAuthenticated:
+      ul:
+        li1:
+          helpertext: 'Nota: A URL do Rancher deve estar no formato FQDN.'
+          ul:
+            li1: 'Faça login na sua conta. Navegue para "APIs e serviços" e selecione "Tela de consentimento do OAuth".'
   azuread:
     header:
       disabled:
@@ -637,6 +964,28 @@ catalogPage:
       launch: Ver Detalhes
       notCompatible: Não compatível
       alreadyDeployed: Já implantado
+cis:
+  scan:
+    detail:
+      error:
+        parseConfig: Ocorreu um problema ao checar sintaxe do security-scan-cfg no config map.
+      actions:
+        delete: Excluir
+        download: Baixar
+        runScan: Executar varredura
+        search:
+          placeholder: Procurar
+      table:
+        state: Estado
+        number: Número
+        description: Descrição
+        empty: Não há testes
+        skip: Pular
+        unskip: Desfazer pular
+        nodesTable:
+          title: Nós
+          row:
+            remediation: "Correção: {remediation}"
 cloudCredentialsPage:
   header: Credenciais de nuvem
   rightButtons:
@@ -644,9 +993,66 @@ cloudCredentialsPage:
     nodeTemplates: Gerenciar modelos de nós
   index:
     table:
+      noData: Não há credenciais de nuvem definidas.
       noMatch: Nenhuma credencial de nuvem corresponde à pesquisa atual
+  numberNodeTemplates: "# Modelos de nós"
 clusterCatalogPage:
   header: Catálogos
+clusterIstioPage:
+  header: Istio
+  enabled: "Istio está ativado. A fim de aproveitar Istio, você precisará habilitar a auto injeção do sidecar do Istio para cada namespace. Se você ativá-lo em um namespace existente, quaisquer cargas de trabalho existentes precisarão ser re-implantadas para ativar a auto injeção do sidecar."
+  disabled: "O Istio ainda não está ativado. Por favor, clique no botão Ativar para ativá-lo."
+  notReady: Instalando o Istio no projeto de sistema do cluster atual...
+  confirmDisable: "Você tem certeza? Clique novamente para desativar o Istio"
+  monitoringNotDeployed: "O monitoramento ainda está sendo implantado. Aguarde o monitoramento concluir a implantação antes de ativar o Istio para garantir que haja recursos suficientes no cluster."
+  disable: Desativar
+  enableActionLabel: Habilitar
+  version: Versão do Istio
+  customAnswers:
+    title: Respostas personalizadas
+    detail: Configure respostas personalizadas.
+  links:
+    kiali:
+      label: Kiali UI
+    jaeger:
+      label: UI do Jaeger
+    grafana:
+      label: UI do Grafana
+    prometheus:
+      label: UI do Prometheus
+  config:
+    header:
+      grafana: Grafana
+      gateway: Gateway do Ingress
+      pilot: Piloto
+      prometheus: Prometheus
+      mixer: Mixer
+      tracing: Rastreamento
+    tracingEnabled:
+      label: Ativar rastreamento
+    grafanaEnabled:
+      label: Ativar Grafana
+    grafanaPersistenceEnabled:
+      label: Ativar armazenamento persistente para Grafana
+    mtlsEnabled:
+      label: Serviço para serviço TLS mútuo
+    gatewayEnabled:
+      label: Ativar Gateway de Ingress
+    gatewayType:
+      label: Tipo de serviço do Gateway de Ingress
+    http2Port:
+      label: Porta HTTP2
+    httpsPort:
+      label: Porta HTTPS
+    loadBalancerIP:
+      label: IP do balanceador de carga
+      placeholder: 'ex: 192.0.0.1'
+    prometheusRetention:
+      label: Retenção para Prometheus
+      placeholder: 'ex: 6h'
+    traceSampling:
+      label: Porcentagem de amostragem de rastreamento
+      placeholder: 'ex: 1'
 certificatesPage:
   cn: Nome do domínio
   expiresDate: Expira
@@ -799,6 +1205,15 @@ clustersPage:
     label: Pods
   storage:
     label: Disco
+clusterTemplatesPage:
+  headers:
+    created: Criado
+  newRevision:
+    header: Nova revisão do modelo RKE
+  select:
+    label: Clone da revisão do modelo RKE
+  table:
+    name: Nome da Revisão
 ingressPage:
   header: 'Ingress: {name}'
   gkeIngressWarning: 'Pode levar alguns minutos para o Kubernetes Engine alocar um endereço IP externo e preparar o balanceador de carga. Enquanto isso, você pode receber erros como HTTP 404 e HTTP 500 até que o balanceador de carga esteja pronto para atender ao tráfego.'
@@ -846,6 +1261,7 @@ containersPage:
     sparkPrefixMemory: "Memória: "
     sparkPrefixNetwork: "Rede: "
     sparkPrefixStorage: "Armazenamento: "
+    noData: Não há cargas de trabalho implantadas.
     noMatch: Nenhum recipiente corresponde à pesquisa atual.
   welcome:
     container: Começar imediatamente
@@ -857,6 +1273,61 @@ clusterDashboard:
   notActive: Este cluster está atualmente em <b>{state}</b>.
   notReady: Este cluster está atualmente <b>{state}</b>; áreas que interagem diretamente com ele não estarão disponíveis até que a API esteja pronta.
   used: Usado
+  title: Painel
+  sections:
+    cluster: Métricas de Cluster
+    etcd: Métricas do Etcd
+    k8s: Métricas de componentes Kubernetes
+    rancher: '{appName} Métricas de log'
+    node: Métricas de nó
+  noRancherComponents: '{appName} log não está ativado neste cluster ou não há dados suficientes para o gráfico.'
+  cpu: CPU
+  memory: Memória
+  pods: Pods
+  value: Valor
+  more: Mais
+  clusterNotReady: Informações gráficas do cluster atualmente não disponíveis
+  subtitle:
+    reserved: "{used} de {total} Reservado"
+    used: "{used} de {total} Usado"
+  enableMonitoring: Ative o Monitoramento para ver métricas ao vivo
+  upgradeAvailable: "Monitoramento {version} Atualização disponível"
+  monitoringNotReady: API de monitoramento não está pronta
+  node: Nós
+  etcd: Etcd
+  scheduler: Agendador
+  controllerManager: Controller Manager
+  alert:
+    node: "Alerta: o nó {node} não está ativo."
+    component: "Alerta: Componente {component} não está saudável."
+    nodeCondition:
+      outOfDisk: "Alerta: o nó {node} está sem disco."
+      diskPressure: "Alerta: o nó {node} tem pressão no disco."
+      memoryPressure: "Alerta: o nó {node} tem pressão de memória."
+  liveTitle: "{used} de {total} Usado"
+  reserved: Reservado
+ingressResponse:
+  host: Host
+  path: Caminho
+  responseTime: Tempo de resposta
+  noData: Sem dados
+  noMatch: Nenhum registro corresponde à pesquisa atual
+  detail: Top 10 tempos de resposta para Ingress upstream
+  title: Tempo de resposta para Ingress upstream
+etcd:
+  hasLeader:
+    label: Etcd tem um líder
+  leaderChange:
+    label: Número de alterações de líder
+  failedProposals:
+    label: Número de propostas com falha
+monitoringPage:
+  update: Atualizar configuração
+  version: Versão de monitoramento
+  upgrade: Atualizar o monitoramento para a versão mais recente {version}
+  upgradeAvailable: "({version} Atualização Disponível)"
+  confirmDisable: "Você tem certeza? Clique novamente para desativar o monitoramento."
+  disable: Desativar
 metricsAction:
   description: Expandir para ver métricas ao vivo
   noData: Dados insuficientes para gráfico
@@ -2248,17 +2719,6 @@ clusterNew:
     tags:
       label: Tags
       addActionLabel: Adicionar etiqueta
-  aliyunkcs:
-    clusters:
-      k8s: Kubernetes
-    storageSize:
-      placeholder: ex. 120
-    keyPair:
-      label: Par de Chaves
-    regionId:
-      label: Região
-    instanceType:
-      label: Tipo Instância
   googlegke:
     checkingServiceAccount: Autenticando...
     zone:

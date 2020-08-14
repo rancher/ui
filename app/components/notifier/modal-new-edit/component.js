@@ -39,6 +39,18 @@ const TYPES = [
     css:      'wechat',
     disabled: false,
   },
+  {
+    type:     'dingtalk',
+    label:    'notifierPage.notifierTypes.dingtalk',
+    css:      'dingtalk',
+    disabled: false,
+  },
+  {
+    type:     'msteams',
+    label:    'notifierPage.notifierTypes.msteams',
+    css:      'msteams',
+    disabled: false,
+  },
 ];
 
 const RECIPIENT_TYPES = [
@@ -102,8 +114,6 @@ export default Component.extend(ModalBase, NewOrEdit, {
       }
       const ok = this.validate();
 
-      this.willSave()
-
       if (!ok) {
         return resolve();
       }
@@ -133,7 +143,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
             testOk:  false,
             tested:  true,
             testing: false,
-            errors:  [xhr.body.message || xhr.body.code],
+            errors:  [get(xhr, 'body.message') || get(xhr, 'body.code')],
           });
           setTimeout(() => {
             this.setProperties({ tested: false, });
@@ -213,20 +223,5 @@ export default Component.extend(ModalBase, NewOrEdit, {
     set(this, 'errors', errors);
 
     return get(this, 'errors.length') === 0;
-  },
-
-  willSave() {
-    const notifierType = get(this, 'model.notifierType')
-
-    if (notifierType !== 'email') {
-      const targetConfig = get(this, `model.${ notifierType }Config`)
-
-      if (!get(targetConfig, 'proxyUrl')) {
-        delete targetConfig.proxyUrl
-      }
-      set(this, `model.${ notifierType }Config`, targetConfig)
-    }
-
-    return this._super(...arguments);
   },
 });

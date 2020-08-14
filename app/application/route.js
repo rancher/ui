@@ -24,19 +24,16 @@ export default Route.extend({
   beforeModel() {
     this.updateWindowTitle();
 
-    let agent = window.navigator.userAgent.toLowerCase();
+    return (async() => {
+      if (!window.Prettycron) {
+        window.Prettycron = await import('prettycron');
+      }
 
-    // Show the we don't support internet explorer or edge browsers (only edge html based browsers the mobile and chromium based browsers should be okay).
-    if ( agent.indexOf('msie ') >= 0 || agent.indexOf('trident/') >= 0 || agent.indexOf('edge/') >= 0) {
-      this.replaceWith('ie');
-
-      return;
-    }
-
-    // Find out if auth is enabled
-    return get(this, 'access').detect().finally(() => {
-      return get(this, 'language').initLanguage();
-    });
+      // Find out if auth is enabled
+      return get(this, 'access').detect().finally(() => {
+        return get(this, 'language').initLanguage();
+      });
+    })();
   },
 
   model(params, transition) {
@@ -142,6 +139,8 @@ export default Route.extend({
       let access = get(this, 'access');
 
       access.clearToken().finally(() => {
+        let url =  `${ window.location.origin }/login`;
+
         get(this, 'tab-session').clear();
         set(this, `session.${ C.SESSION.CONTAINER_ROUTE }`, undefined);
         set(this, `session.${ C.SESSION.ISTIO_ROUTE }`, undefined);
@@ -156,13 +155,11 @@ export default Route.extend({
           get(this, 'modal').toggleModal();
         }
 
-        let params = { queryParams: {} };
-
         if ( errorMsg ) {
-          params.queryParams.errorMsg = errorMsg;
+          url = `${ url }?errorMsg=${ errorMsg }`;
         }
 
-        this.transitionTo('login', params);
+        window.location.replace(url);
       });
     },
 

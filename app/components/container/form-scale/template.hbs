@@ -1,122 +1,169 @@
 {{#if editing}}
   <div>
-    <label class="pb-5 acc-label">{{t 'formScale.label'}}</label>
+    <label class="pb-5 acc-label">
+      {{t "formScale.label"}}
+    </label>
     {{#if canAdvanced}}
       <div class="pull-right text-small">
-        <a role="button" class="btn bg-transparent p-0" {{action "showAdvanced"}}>{{t 'formScale.showAdvanced'}}</a>
+        <a
+          role="button"
+          class="btn bg-transparent p-0"
+          {{action "showAdvanced"}}
+        >
+          {{t "formScale.showAdvanced"}}
+        </a>
       </div>
     {{/if}}
   </div>
 {{/if}}
-
 {{#if (and advancedShown canChangeScaleMode)}}
   <div class="radio">
     <label>
       {{radio-button selection=scaleMode value="deployment"}}
       <i class="icon icon-lg icon-service"></i>
-      {{t 'formScale.scaleMode.deploymentPrefix' scale=asInteger}}
+      {{t "formScale.scaleMode.deploymentPrefix" scale=asInteger}}
       {{#if (eq scaleMode "deployment")}}
-        {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
+        {{input-integer
+          safeStyle="width: 60px; padding: 0 2px; display: inline-block"
+          value=userInput
+          min=min
+          max=max
+          nullable=true
+        }}
       {{else}}
         {{asInteger}}
       {{/if}}
-      {{t 'formScale.scaleMode.scaleSuffix' scale=asInteger}}
+      {{t "formScale.scaleMode.scaleSuffix" scale=asInteger}}
     </label>
   </div>
   <div class="radio">
     <label>
       {{radio-button selection=scaleMode value="daemonSet"}}
       <i class="icon icon-lg icon-globe"></i>
-      {{t 'formScale.scaleMode.daemonSet'}}
+      {{t "formScale.scaleMode.daemonSet"}}
     </label>
   </div>
   <div class="radio">
     <label>
       {{radio-button selection=scaleMode value="statefulSet"}}
       <i class="icon icon-lg icon-database"></i>
-      {{t 'formScale.scaleMode.statefulSetPrefix' scale=asInteger}}
+      {{t "formScale.scaleMode.statefulSetPrefix" scale=asInteger}}
       {{#if (eq scaleMode "statefulSet")}}
-        {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
+        {{input-integer
+          safeStyle="width: 60px; padding: 0 2px; display: inline-block"
+          value=userInput
+          min=min
+          max=max
+          nullable=true
+        }}
       {{else}}
         {{asInteger}}
       {{/if}}
-      {{t 'formScale.scaleMode.scaleSuffix' scale=asInteger}}
+      {{t "formScale.scaleMode.scaleSuffix" scale=asInteger}}
     </label>
   </div>
   <div class="radio">
     <label>
       {{radio-button selection=scaleMode value="cronJob"}}
       <i class="icon icon-lg icon-history"></i>
-      {{t 'formScale.scaleMode.cronJob'}}
-      {{~#if (eq scaleMode "cronJob")~}}
-        : {{input safeStyle="width: 150px; padding: 0 2px; display: inline-block;" value=workload.cronJobConfig.schedule}}
-      {{~/if~}}
+      {{t "formScale.scaleMode.cronJob"}}
+      {{#if (eq scaleMode "cronJob")}}
+        :
+        {{input
+          safeStyle="width: 150px; padding: 0 2px; display: inline-block;"
+          value=workload.cronJobConfig.schedule
+        }}
+      {{/if}}
     </label>
     {{#if (eq scaleMode "cronJob")}}
-      <p class="text-small text-muted" style="margin: 0 0 0 45px;">{{pretty-cron workload.cronJobConfig.schedule 'toString'}}</p>
+      <p class="text-small text-muted" style="margin: 0 0 0 45px;">
+        {{pretty-cron workload.cronJobConfig.schedule "toString"}}
+      </p>
     {{/if}}
   </div>
   <div class="radio">
     <label>
       {{radio-button selection=scaleMode value="job"}}
       <i class="icon icon-lg icon-file"></i>
-      {{t 'formScale.scaleMode.job'}}
+      {{t "formScale.scaleMode.job"}}
     </label>
   </div>
 {{else}}
   <div class="form-control-static">
     {{#if (eq scaleMode "deployment")}}
       <i class="icon icon-lg icon-service"></i>
-      {{t 'formScale.scaleMode.deploymentPrefix' scale=asInteger}}
+      {{t "formScale.scaleMode.deploymentPrefix" scale=asInteger}}
       {{#if editing}}
-        {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
+        {{input-integer
+          safeStyle="width: 60px; padding: 0 2px; display: inline-block"
+          value=userInput
+          min=min
+          max=max
+          nullable=true
+        }}
       {{else}}
         {{asInteger}}
       {{/if}}
-      {{t 'formScale.scaleMode.scaleSuffix' scale=asInteger}}
+      {{t "formScale.scaleMode.scaleSuffix" scale=asInteger}}
     {{else if (eq scaleMode "statefulSet")}}
       <i class="icon icon-lg icon-database"></i>
-      {{t 'formScale.scaleMode.statefulSetPrefix' scale=asInteger}}
+      {{t "formScale.scaleMode.statefulSetPrefix" scale=asInteger}}
       {{#if editing}}
-        {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
+        {{input-integer
+          safeStyle="width: 60px; padding: 0 2px; display: inline-block"
+          value=userInput
+          min=min
+          max=max
+        }}
       {{else}}
         {{asInteger}}
       {{/if}}
-      {{t 'formScale.scaleMode.scaleSuffix' scale=asInteger}}
+      {{t "formScale.scaleMode.scaleSuffix" scale=asInteger}}
     {{else if (eq scaleMode "replicaSet")}}
       <i class="icon icon-lg icon-service"></i>
-      {{t 'formScale.scaleMode.replicaSetPrefix' scale=asInteger}}
+      {{t "formScale.scaleMode.replicaSetPrefix" scale=asInteger}}
       {{#if editing}}
-        {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
+        {{input-integer
+          safeStyle="width: 60px; padding: 0 2px; display: inline-block"
+          value=userInput
+          min=min
+          max=max
+        }}
       {{else}}
         {{asInteger}}
       {{/if}}
-      {{t 'formScale.scaleMode.scaleSuffix' scale=asInteger}}
+      {{t "formScale.scaleMode.scaleSuffix" scale=asInteger}}
     {{else if (eq scaleMode "replicationController")}}
       <i class="icon icon-lg icon-service"></i>
-      {{t 'formScale.scaleMode.replicationControllerPrefix' scale=asInteger}}
+      {{t "formScale.scaleMode.replicationControllerPrefix" scale=asInteger}}
       {{#if editing}}
-        {{input-integer safeStyle="width: 60px; padding: 0 2px; display: inline-block" value=userInput min=min max=max}}
+        {{input-integer
+          safeStyle="width: 60px; padding: 0 2px; display: inline-block"
+          value=userInput
+          min=min
+          max=max
+        }}
       {{else}}
         {{asInteger}}
       {{/if}}
-      {{t 'formScale.scaleMode.scaleSuffix' scale=asInteger}}
+      {{t "formScale.scaleMode.scaleSuffix" scale=asInteger}}
     {{else if (eq scaleMode "daemonSet")}}
       <i class="icon icon-lg icon-globe"></i>
-      {{t 'formScale.scaleMode.daemonSet'}}
+      {{t "formScale.scaleMode.daemonSet"}}
     {{else if (eq scaleMode "job")}}
-      <i class="icon icon-lg icon-file"></i>
-      {{t 'formScale.scaleMode.job'}}
+      <i class="icon icon-lg icon-file"></i>{{t "formScale.scaleMode.job"}}
     {{else if (eq scaleMode "cronJob")}}
       <i class="icon icon-lg icon-history"></i>
-      {{t 'formScale.scaleMode.cronJob'}}
+      {{t "formScale.scaleMode.cronJob"}}
       <div class="mt-10 ml-50 mr-50">
         {{#if editing}}
           {{input value=workload.cronJobConfig.schedule}}
         {{else}}
           {{workload.cronJobConfig.schedule}}
         {{/if}}
-        <p class="text-small text-muted">{{pretty-cron workload.cronJobConfig.schedule 'toString'}}</p>
+        <p class="text-small text-muted">
+          {{pretty-cron workload.cronJobConfig.schedule "toString"}}
+        </p>
       </div>
     {{else}}
       {{scaleMode}}?

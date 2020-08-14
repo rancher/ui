@@ -924,6 +924,253 @@
               </CheckOverrideAllowed>
             </div>
           </div>
+
+          <div class="row" id="security-scan">
+            <div class="col span-3">
+              <label class="acc-label">
+                {{t "clusterNew.rke.cisScan.scheduled.enabled.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="scheduledClusterScan.enabled"
+                    @configVariable={{config.services.etcd.backupConfig.enabled}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
+              </label>
+              <CheckOverrideAllowed
+                @paramName="scheduledClusterScan.enabled"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                {{#input-or-display
+                   editable=notView
+                   value=scheduledClusterScan.enabled
+                }}
+                  <div>
+                    <label class="text-muted">
+                      {{radio-button
+                        selection=scheduledClusterScan.enabled
+                        value=true
+                        disabled=isScheduledClusterScanDisabled
+                      }}
+                      {{t "generic.yes"}}
+                    </label>
+                    <label class="text-muted">
+                      {{radio-button
+                        selection=scheduledClusterScan.enabled
+                        value=false
+                        disabled=isScheduledClusterScanDisabled
+                      }}
+                      {{t "generic.no"}}
+                    </label>
+                  </div>
+                {{/input-or-display}}
+              </CheckOverrideAllowed>
+            </div>
+
+            <div class="col span-3">
+              <label class="acc-label">
+                {{t "clusterNew.rke.cisScan.scheduled.profile.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="cisProfile"
+                    @configVariable={{cisProfile}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
+              </label>
+              <CheckOverrideAllowed
+                @paramName="cisProfile"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+                @value={{cisProfileDisplay}}
+              >
+                {{#input-or-display
+                   tagName="div"
+                   editable=notView
+                   value=cisProfileDisplay
+                }}
+                  {{new-select
+                    id="cis-scan-profile"
+                    classNames="form-control"
+                    content=cisScanProfileOptions
+                    value=cisProfile
+                    disabled=(not scheduledClusterScan.enabled)
+                  }}
+                {{/input-or-display}}
+              </CheckOverrideAllowed>
+            </div>
+
+            <div class="col span-3">
+              <label class="acc-label">
+                {{t "clusterNew.rke.cisScan.scheduled.interval.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="scheduledClusterScan.scheduleConfig.cronSchedule"
+                    @configVariable={{scheduledClusterScan.scheduleConfig.cronSchedule}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
+              </label>
+              <CheckOverrideAllowed
+                @paramName="scheduledClusterScan.scheduleConfig.cronSchedule"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+                @value={{scheduledClusterScan.scheduleConfig.cronSchedule}}
+              >
+                {{#if notView}}
+                  {{input
+                    type="text"
+                    value=scheduledClusterScan.scheduleConfig.cronSchedule
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.cisScan.scheduled.interval.placeholder")
+                    disabled=(not scheduledClusterScan.enabled)
+                  }}
+                {{else}}
+                  <div>{{scheduledClusterScan.scheduleConfig.cronSchedule}}</div>
+                {{/if}}
+                <div class="text-small text-muted">{{pretty-cron scheduledClusterScan.scheduleConfig.cronSchedule "toString"}}</div>
+
+              </CheckOverrideAllowed>
+            </div>
+
+            <div class="col span-3">
+              <label class="acc-label">
+                {{t "clusterNew.rke.cisScan.scheduled.retention.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="scheduledClusterScan.scheduleConfig.retention"
+                    @configVariable={{scheduledClusterScan.scheduleConfig.retention}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
+              </label>
+              <CheckOverrideAllowed
+                @paramName="scheduledClusterScan.scheduleConfig.retention"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+                @value={{scheduledClusterScan.scheduleConfig.retention}}
+              >
+                {{#input-or-display
+                   tagName="div"
+                   editable=notView
+                   classNames="input-group"
+                   value=scheduledClusterScan.scheduleConfig.retention
+                }}
+                  <span class="input-group-addon bg-default">{{t "clusterNew.rke.etcd.backupConfig.retention.prefix"}}</span>
+                  {{input-integer
+                    value=scheduledClusterScan.scheduleConfig.retention
+                    classNames="form-control"
+                    placeholder=(t "clusterNew.rke.etcd.backupConfig.retention.placeholder")
+                    disabled=(not scheduledClusterScan.enabled)
+                  }}
+                {{/input-or-display}}
+              </CheckOverrideAllowed>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label class="acc-label">
+                {{t "clusterNew.rke.upgradeStrategy.maximumWorkersDown.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="upgradeStrategy.maxUnavailableWorker"
+                    @configVariable={{upgradeStrategy.maxUnavailableWorker}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
+              </label>
+              <CheckOverrideAllowed
+                @paramName="upgradeStrategy.maxUnavailableWorker"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+                @value={{maxUnavailable}}
+              >
+                {{#input-or-display
+                    editable=notView
+                    value=maxUnavailable
+                }}
+                  <div class="input-group">
+                    {{input-integer
+                      value=upgradeStrategy.maxUnavailableWorker
+                      classNames="form-control"
+                      placeholder=(t "clusterNew.rke.upgradeStrategy.maximumWorkersDown.placeholder")
+                    }}
+                    <span class="input-group-input-addon bg-default">
+                      {{new-select
+                        classNames="form-control"
+                        optionValuePath="id"
+                        optionLabelPath="name"
+                        content=maxUnavailableNodesOptions
+                        value=upgradeStrategy.maxUnavailableUnit
+                        localizedPrompt=true
+                      }}
+                    </span>
+                  </div>
+                {{/input-or-display}}
+              </CheckOverrideAllowed>
+            </div>
+
+          </div>
+          <div class="row">
+            <label class="acc-label">
+              {{t "clusterNew.rke.upgradeStrategy.drainNodes.label"}}
+              {{#if clusterTemplateCreate}}
+                <ClusterTemplateOverrideToggle
+                  @path="rancherKubernetesEngineConfig.upgradeStrategy.drain"
+                  @configVariable={{upgradeStrategy.drain}}
+                  @addOverride={{action "addOverride"}}
+                  @questions={{model.clusterTemplateRevision.questions}}
+                />
+              {{/if}}
+            </label>
+            <CheckOverrideAllowed
+              @paramName="rancherKubernetesEngineConfig.upgradeStrategy.drain"
+              @applyClusterTemplate={{applyClusterTemplate}}
+              @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+              @questions={{model.clusterTemplateRevision.questions}}
+              @value={{upgradeStrategy.drain}}
+            >
+              {{#input-or-display
+                  editable=notView
+                  value=upgradeStrategy.drain
+              }}
+                <div class="text-muted">
+                  <label>
+                    {{radio-button
+                      selection=upgradeStrategy.drain
+                      value="true"
+                    }}
+                    {{t "generic.yes"}}
+
+                  </label>
+                  <label>
+                    {{radio-button
+                      selection=upgradeStrategy.drain
+                      value="false"
+                    }}
+                    {{t "generic.no"}}
+                  </label>
+                </div>
+              {{/input-or-display}}
+            </CheckOverrideAllowed>
+          </div>
+          {{#if (eq upgradeStrategy.drain "true")}}
+            <div class="row">
+              {{drain-node selection=upgradeStrategy.nodeDrainInput clusterTemplateCreate=clusterTemplateCreate editable=notView applyClusterTemplate=applyClusterTemplate clusterTemplateRevision=model.clusterTemplateRevision.clusterConfig questions=model.clusterTemplateRevision.questions addOverride=(action "addOverride")}}
+            </div>
+          {{/if}}
         {{/accordion-list-item}}
 
         {{#accordion-list-item
@@ -1237,23 +1484,37 @@
       {{/accordion-list}}
     {{/if}}
   {{/if}}
+{{/if}}
 
-  {{top-errors errors=allErrors}}
+{{top-errors errors=allErrors}}
 
-  {{#if (or (and notView (eq step 1)) (and isEdit (eq step 2)))}}
+{{#if (or (and notView (eq step 1)) (and isEdit (eq step 2)))}}
+  {{#if (and clusterTemplatesEnforced (not clusterTemplateRevisionId) )}}
+    <section class="mt-20 mb-20">
+      <BannerMessage
+        @color="bg-warning m-0"
+        @message={{t "clusterNew.rke.clusterTempalteMissing"}}
+      />
+    </section>
+    <div class="footer-actions">
+      <button {{action "close"}} class="btn bg-primary">
+        {{t "generic.cancel"}}
+      </button>
+    </div>
+  {{else}}
     {{save-cancel
       createLabel=(or overrideCreateLabel (if isCustom "saveCancel.next" "saveCancel.create"))
       editing=isEdit
       save=(action "driverSave")
       cancel=(action "close")
     }}
-  {{else}}
-    <div class="footer-actions">
-      <button {{action "close"}} class="btn bg-primary">
-        {{t "clusterNew.rke.done"}}
-      </button>
-    </div>
   {{/if}}
+{{else}}
+  <div class="footer-actions">
+    <button {{action "close"}} class="btn bg-primary">
+      {{t "clusterNew.rke.done"}}
+    </button>
+  </div>
 {{/if}}
 
 <input

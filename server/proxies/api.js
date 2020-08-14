@@ -21,35 +21,18 @@ module.exports = function(app, options) {
 
   // WebSocket for Rancher
   httpServer.on('upgrade', (req, socket, head) => {
+    socket.on('error', (err)=> console.error(err));
     if ( req.url.startsWith('/_lr/') ) {
       return;
     }
 
     let targetHost = config.apiServer.replace(/^https?:\/\//, '');
     let host = req.headers['host'];
-    let port;
 
-    if ( socket.ssl ) {
-      req.headers['x-forwarded-proto'] = 'https';
-      port = 443;
-    } else {
-      req.headers['x-forwarded-proto'] = 'http';
-      port = 80;
-    }
-
-    if ( host ) {
-      idx = host.lastIndexOf(':');
-      if ( ( host.startsWith('[') && host.includes(']:') || !host.startsWith('[') ) && idx > 0 ){
-        port = host.substr(idx+1);
-        host = host.substr(0, host.lastIndexOf(':'));
-      }
-    }
-
-    req.headers['x-forwarded-host'] = host;
-    req.headers['x-forwarded-port'] = port;
-    req.headers['host'] = targetHost;
-    req.headers['origin'] = config.apiServer;
-    req.socket.servername = targetHost;
+    req.headers['x-api-host'] = host;
+    req.headers['host']       = targetHost;
+    req.headers['origin']     = config.apiServer;
+    req.socket.servername     = targetHost;
 
     proxyLog('WS', req);
 
@@ -61,20 +44,22 @@ module.exports = function(app, options) {
   });
 
   let map = {
-    'Project':   config.projectEndpoint.replace(config.projectToken, ''),
-    'Cluster':   config.clusterEndpoint.replace(config.clusterToken, ''),
-    'Global':    config.apiEndpoint,
-    'Public':    config.publicApiEndpoint,
-    'Magic':     config.magicEndpoint,
-    'Telemetry': config.telemetryEndpoint,
+    'Project':      config.projectEndpoint.replace(config.projectToken, ''),
+    'Cluster':      config.clusterEndpoint.replace(config.clusterToken, ''),
+    'Global':       config.apiEndpoint,
+    'Public':       config.publicApiEndpoint,
+    'Magic':        config.magicEndpoint,
+    'Telemetry':    config.telemetryEndpoint,
 
-    'K8s':       '/k8s',
-    'Meta':      '/meta',
-    'Swagger':   '/swaggerapi',
-    'Version':   '/version',
-    'Apiui':     '/api-ui',
-    'Samlauth':  '/v1-saml',
-    'Drivers':   '/assets/rancher-ui-driver-*',
+    'K8s':          '/k8s',
+    'Meta':         '/meta',
+    'Swagger':      '/swaggerapi',
+    'Version':      '/version',
+    'Apiui':        '/api-ui',
+    'Samlauth':     '/v1-saml',
+    'Drivers':      '/assets/rancher-ui-driver-*',
+    'K3Versions':   '/v1-k3s-release/release',
+    'Rke2Versions': '/v1-rke2-release/release',
   }
 
   app.use('/', function(req, res, next) {
@@ -96,11 +81,8 @@ module.exports = function(app, options) {
       }
 
       // include root path in proxied request
-      req.url = req.originalUrl;
-      req.headers['X-Forwarded-Proto'] = req.protocol;
-
-      // don't include the original host header
-      req.headers['X-Forwarded-Host'] = req.headers['host'];
+      req.url                   = req.originalUrl;
+      req.headers['X-Api-Host'] = req.headers['host'];
       delete req.headers['host'];
 
       proxyLog(label, req);

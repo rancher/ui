@@ -19,6 +19,8 @@ steps:
   when:
     event:
     - pull_request
+    exclude:
+    - tag
 
 - name: build
   pull: default
@@ -35,6 +37,7 @@ steps:
     event:
       exclude:
       - pull_request
+      - tag
 
 - name: upload
   pull: default
@@ -53,7 +56,7 @@ steps:
     event:
       exclude:
       - pull_request
-
+      - tag
 volumes:
 - name: docker
   host:
