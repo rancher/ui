@@ -3,6 +3,11 @@
     <p>{{t "tooltipExpire.label"}} {{#if cluster.canRotateCerts}}<a href="#" {{action "rotate"}}>{{t "tooltipExpire.link"}}</a>{{/if}}</p>
   {{/banner-message}}
 {{/if}}
+{{#if cluster.nodeGroupVersionUpdate}}
+  {{#banner-message color="bg-warning"}}
+    <p>{{t "tooltipNodeGroupUpdate.label"}} <a href="#" {{action "edit"}}>{{t "tooltipNodeGroupUpdate.link"}}</a></p>
+  {{/banner-message}}
+{{/if}}
 {{#if showDashboard}}
   {{cluster-basic-info cluster=cluster}}
 

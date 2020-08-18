@@ -1,26 +1,40 @@
 <div class="box">
   <div class="row">
-    <div class="pull-right">
-      <button
-        class="btn bg-transparent text-small vertical-middle"
-        type="button"
-        {{action removeNodeGroup model}}
-      >
-        {{t "nodeGroupRow.remove.label"}}
-      </button>
+    <div class="row">
+      <div class="pull-right">
+        <button
+          class="btn bg-transparent text-small vertical-middle"
+          type="button"
+          {{action removeNodeGroup model}}
+        >
+          {{t "nodeGroupRow.remove.label"}}
+        </button>
+      </div>
     </div>
-    <div class="col span-6">
-      <label class="acc-label">
-        {{t "nodeGroupRow.name.label"}}
-      </label>
-      <Input
-        @type="text"
-        @value={{mut model.nodegroupName}}
-        @classNames="form-control"
-      />
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "nodeGroupRow.name.label"}}
+        </label>
+        <Input
+          @type="text"
+          @value={{mut model.nodegroupName}}
+          @classNames="form-control"
+        />
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "nodeGroupRow.version.label"}}
+        </label>
+          {{new-select
+            disabled=shouldDisableVersionSelect
+            classNames="form-control"
+            content=versions
+            value=model.version
+          }}
+      </div>
     </div>
   </div>
-
   <div class="row">
     <div class="col span-6">
       <label class="acc-label">
@@ -29,7 +43,7 @@
       <NewSelect
         class="form-control"
         @value={{mut model.instanceType}}
-        @content={{ instanceTypes }}
+        @content={{instanceTypes}}
         @optionValuePath="name"
         @optionLabelPath="name"
         @optionGroupPath="group"
@@ -52,7 +66,6 @@
       </div>
     </div>
   </div>
-
   <div class="row">
     <div class="col span-6">
       <label class="acc-label">
@@ -65,7 +78,6 @@
       />
     </div>
   </div>
-
   <div class="row">
     <div class="col span-6">
       <label class="acc-label">
@@ -88,7 +100,6 @@
       />
     </div>
   </div>
-
   <div class="row">
     <div class="col span-6">
       <label class="acc-label">
@@ -124,7 +135,6 @@
       </div>
     </div>
   </div>
-
   <div class="row">
     <div class="col span-6">
       <label class="acc-label">
