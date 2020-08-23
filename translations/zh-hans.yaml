@@ -6515,7 +6515,7 @@ formNamespace:
     default: 默认命名空间
   toggle:
     simple: 自定义
-    reuse: 使用现有的名称空间
+    reuse: 使用现有的命名空间
     create: 创建新的命名空间
   reuse:
     prompt: 选择命名空间...
@@ -6530,7 +6530,7 @@ formUserData:
   isVmPlaceholder: "例如: 虚拟机的配置信息"
 formLabelsAnnotations:
   title: '标签/注释'
-  detail: '用于调度决策的键值对。后端重写请配置注释: 键: nginx.ingress.kubernetes.io/rewrite-target，值: /。'
+  detail: '用于调度决策的键值对。后端重写请配置注释: 键: nginx.ingress.kubernetes.io/rewrite-target，值: /'
 formRelatedWorkloads:
   title: 相关的工作负载
   detail: 正在使用它的工作负载
@@ -6614,7 +6614,7 @@ formJobConfig:
     detail: 要保留的未完成 JOB 的数量。
   activeDeadlineSeconds:
     label: 停止延迟时间
-    detail: 在系统尝试终止 Job 之前，job 可能处于活动状态的持续时间。
+    detail: 在系统尝试终止 Job 之前，Job 可能处于活动状态的持续时间。
   suspend:
     label: 暂停
 
@@ -6661,7 +6661,7 @@ formVersions:
   notallowed: "(模板不允许)"
   unsupported: "(不支持)"
   helpBlock:
-    label: 升级 Kubernetes 版本时，请查看<a href="https://groups.google.com/forum/#!forum/kubernetes-announce" target="_blank" rel="nofollow noreferrer noopener">Kubernetes release notes</a>了解功能变化。
+    label: 升级 Kubernetes 版本时，请查看 <a href="https://groups.google.com/forum/#!forum/kubernetes-announce" target="_blank" rel="nofollow noreferrer noopener">Kubernetes release notes</a> 了解功能变化。
 
 formIstioHost:
   prompt: 选择节点...
@@ -6674,7 +6674,7 @@ formVolumeRow:
   volumeClaimTemplateName:
     label: PVC 模板名
     placeholder: '例如: vol1'
-    vctWarning: 由于 Kubernetes 中的一个<a href="https://github.com/kubernetes/kubernetes/issues/69041" target="_blank" rel="nofollow noreferrer noopener">BUG</a>，使用 PVC 模板启动的有状态工作负载将不可编辑。请注意，在启动新工作负载之前存在此限制。
+    vctWarning: 由于 Kubernetes 中的一个 <a href="https://github.com/kubernetes/kubernetes/issues/69041" target="_blank" rel="nofollow noreferrer noopener">BUG</a>，使用 PVC 模板启动的有状态工作负载将不可编辑。请注意，在启动新工作负载之前存在此限制。
   mode:
     label: 卷类型
     newVolume: 临时卷
@@ -6784,12 +6784,12 @@ formHostPortsPodSecurityPolicy:
       label: 最小值
       placeholder: '例如: 6000'
 
-formRunAsGroupPodSecurityPolicy:
-  title: 作为组策略运行
-  detail: 控制与容器一起运行的用户组 ID。
+formRunAsUserPodSecurityPolicy:
+  title: 作为用户策略运行
+  detail: 用户 ID
   rule:
     mustRunAs: MustRunAs - 需要配置一个范围。使用范围的第一个值作为默认值。根据配置的范围进行验证。
-    mustRunAsNonRoot: MustRunAsNonRoot - Requires that the pod be submitted with a non-zero runAsUser or have the USER directive defined in the image. No default provided.
+    mustRunAsNonRoot: MustRunAsNonRoot - 没有提供默认值。要求用非零的 runAsUser 创建 Pod，或者在镜像中定义 USER 指令。
     runAsAny: RunAsAny - 没有提供默认值，允许指定任意 runAsGroup。
   range:
     addLabel: 添加范围
@@ -6802,7 +6802,7 @@ formRunAsGroupPodSecurityPolicy:
 
 formSeLinuxodSecurityPolicy:
   title: SELinux 策略
-  detail: 容器的 SELinux 上下文
+  detail: 容器 SELinux 上下文
   rule:
     mustRunAs: MustRunAs - 使用 seLinuxOptions 作为默认值，根据 seLinuxOptions 进行验证。
     runAsAny: RunAsAny - 允许指定任何 seLinuxOptions 设置。
@@ -6852,7 +6852,7 @@ formBasicPodSecurityPolicy:
     disable: "否"
   hostPID:
     label: 主机 PID
-    enable: "是: 主机 PID 名称空间"
+    enable: "是: 主机 PID 命名空间"
     disable: "否"
   privileged:
     label: 特权
@@ -6886,13 +6886,13 @@ hostSettings:
       labelText: "其他地址:"
       placeholder: '例如: http://example.com:8080'
   helpText:
-    static1: "不要包含<code>/v1</code>或任何其他路径，但如果您设置了"
-    static2: "在 {appName} 前面，请确保使用<code>https://</code>."
+    static1: "不要包含 <code>/v1</code> 或任何其他路径，但如果您设置了"
+    static2: "在 {appName} 前面，请确保使用 <code>https://</code>."
     isRancher: '<a href="{docsBase}/installing-rancher/installing-server/basic-ssl-config/" target="_blank">SSL 终止</a>'
     sslTerm: SSL 终止
   notPublic:
     alert: |
-      确定要创建的所有主机都能够连接<code>{activeValue}</code>？<br/> 当前地址似乎是私有 IP 或内部网络。
+      确定要创建的所有主机都能够连接 <code>{activeValue}</code>？<br/> 当前地址似乎是私有 IP 或内部网络。
   badTld:
     alert: |
       '<code>.local</code> 顶级域名根据 RFC6762 被保留为用于多播 DNS。不推荐使用 .local 域名作为注册 URL，该设置可能导致 DNS 解析问题。请选择其他的主机名或者 IP 地址。'
@@ -7021,8 +7021,8 @@ loggingPage:
   clusterHeader: 集群日志收集
   projectHeader: 项目日志收集
   helpText:
-    cluster: 我们将使用 fluentd 从每个容器收集<b>stdout/stderr</b>日志，以及在每个主机上<code>/var/log/containers/</code>路径下的日志文件，日志将被发送到被选择的目标服务。
-    clusterTarget: 当前日志收集目标是<code class="text-capitalize">{clusterTargetType}</code>。如果项目日志收集启用，日志将被发送到集群目标和项目目标。
+    cluster: 我们将使用 fluentd 从每个容器收集 <b>stdout/stderr</b> 日志，以及在每个主机上 <code>/var/log/containers/</code> 路径下的日志文件，日志将被发送到被选择的目标服务。
+    clusterTarget: 当前日志收集目标是 <code class="text-capitalize">{clusterTargetType}</code>。如果项目日志收集启用，日志将被发送到集群目标和项目目标。
     noClusterTarget: 日志收集默认禁用
   tags:
     keyPlaceholder: '例如: foo'
@@ -7058,7 +7058,7 @@ loggingPage:
   elasticsearch:
     header: Elasticsearch 配置
     endpointHelpText: 输入云端 Elacticsearch 地址，或者私有部署的 Elacticsearch 地址。
-    endpointProtocolError: 访问地址应该以"http://"或者"https://"开头。
+    endpointProtocolError: 访问地址应该以 "http://" 或者 "https://" 开头。
     endpointHostError: 请输入主机名或域名。
     xpack:
       header: X-Pack 安全
@@ -7084,7 +7084,7 @@ loggingPage:
       required: 必须配置访问地址。
   splunk:
     header: Splunk HTTP 事件收集配置
-    helpText: '您可以<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank">点击这里</a>找到如何配置 Splunk HEC(HTTP 事件收集器)的说明。'
+    helpText: '您可以 <a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector" target="_blank"> 点击这里</a>找到如何配置 Splunk HEC(HTTP 事件收集器)的说明。'
     token: Token
     tokenPlaceholder: Your Token
     tokenHelpText: 'Token 是允许日志收集程序和 HTTP 客户端连接到 HEC 的验证信息，<a href="http://docs.splunk.com/Documentation/Splunk/7.0.0/Data/UsetheHTTPEventCollector#Configure_HTTP_Event_Collector_on_Splunk_Enterprise" target="_blank">了解详情</a>。'
@@ -7586,11 +7586,13 @@ modalRollbackApp:
     prompt: 选择版本...
   difference:
     label: 差异
+
 modalSaveRkeTemplate:
   title: "通过 {clusterName} 创建 RKE 模板"
   subtitle: 从当前集群配置创建一个新的 RKE 集群模板和初始修订。这将修改当前集群，设置集群以使用新创建的集群模板和修订
   name: 集群模板名称
   revName: 集群模板修订名称
+
 
 modalShell:
   title: "命令行: "
@@ -7675,10 +7677,10 @@ newCatalog:
   maintainedBy: 由社区成员维护
   maintainer: "维护者:"
   newNamespace: 新的命名空间
-  customizeNamespace: "此应用程序将被部署到<code>{namespaceId}</code>命名空间。"
+  customizeNamespace: "此应用程序将被部署到 <code>{namespaceId}</code> 命名空间。"
   newAppDetail: 选择应用程序版本和对应的命名空间。
   appInfo: 详细描述
-  appInfoDetail: 应用程序信息和用户 guid
+  appInfoDetail: 应用程序信息和用户 guide
   noConfig: 该模板没有配置选项
   official: 官方认证
   preview: 预览
@@ -7726,8 +7728,8 @@ newMultiClusterApp:
   maintainedBy: 由社区成员维护
   maintainer: "维护人员:"
   newNamespace: 新的命名空间
-  customizeNamespace: "此应用程序将部署到<code>{namespaceId}</code>命名空间中。"
-  newAppDetail: 为应用程序选择应用程序版本和名称空间。
+  customizeNamespace: "此应用程序将部署到 <code>{namespaceId}</code> 命名空间中。"
+  newAppDetail: 为应用程序选择应用程序版本和命名空间。
   appInfo: 详细描述
   appInfoDetail: 应用程序信息和用户指南。
   noConfig: 此模板没有配置选项。
@@ -8464,11 +8466,6 @@ nodeDriver:
       placeholder: 客户端秘钥
     region:
       label: 区域
-    nsg:
-      label: 网络安全组
-      placeholder: "e.g. AllowVnetOutBound"
-      helpText: 当使用一个由 Rancher 管理的或提供一个现有的 NSG 时，使用此模板的所有节点将使用提供的 NSG。如果没有提供 NSG，将为每个节点创建一个新的 NSG。
-      openPorts: 当使用一个现有的 NSG 时，打开的端口被忽略。
   aliyunecs:
     accountSection:
       label: 1. 访问令牌
@@ -9121,8 +9118,8 @@ nav:
     none: 列表视图
     node: 按主机分组
     workload: 按负载量分组
-    namespace: 按名称空间分组
-    namespaceWorkload: '按名称空间/工作负载分组'
+    namespace: 按命名空间分组
+    namespaceWorkload: '按命名空间/工作负载分组'
   hosts:
     tab: 主机
     addHost: 添加主机
@@ -9901,7 +9898,7 @@ fromSecret:
 
 pipelineNotification:
   header: 通知
-  when: 当编译状态为
+  when: 当构建状态为
   condition:
     success:
       label: 成功
