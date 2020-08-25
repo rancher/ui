@@ -1375,7 +1375,7 @@ clustersPage:
   rkeTemplate:
     label: RKE 模板
   nodes:
-    label: 主机数
+    label: 节点数
   cpu:
     label: 处理器
   memory:
@@ -5584,6 +5584,7 @@ dangerZone:
     'auth-user-info-resync-cron': '用于重新同步身份验证提供者组成员关系的默认 cron 调度。'
     'cluster-template-enforcement': '非管理员只能通过预先批准的集群模板启动集群。'
     'auth-user-session-ttl-minutes': '用户验证会话上的自定义 TTL(以分钟为单位)。'
+    'auth-token-max-ttl-minutes': '自定义认证 token 最大 TTL 分钟数 。'
     'rke-metadata-config': '配置 RKE 元数据刷新参数。'
     'ui-banners': '分类条幅用于在标题中显示自定义固定条幅, 页脚, 或者两者同时显示。该设置使用包含 3 个根参数的 JSON 对象; <code>banner</code>, <code>showHeader</code>, <code>showFooter</code>. <code>banner</code> is an object containing; <code>textColor</code>, <code>background</code>, and <code>text</code>, where <code>textColor</code> and <code>background</code> are any valid CSS color value.'
 
@@ -5660,14 +5661,22 @@ editApiKey:
   token: Bearer Token
   scope: 作用范围
   scopeSelect:
-    prompt: 不指定作用范围(作用于所有集群)
+    prompt: 不指定作用范围(默认作用于所有集群)
     helpText: '集群范围的令牌可用于直接与<a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/options/#authorized-cluster-endpoint" target="_blank" rel="nofollow noreferrer"授权集群端点</a>配置的集群 API 交互。'
   ttl:
-    label: 自动失效时间
+    label: 自动过期时间
     never: 永不过期
     day: 从现在开始，有效期 1 天
     month: 从现在开始，有效期 1 个月
     year: 从现在开始，有效期 1 年
+    max: 
+      label: "{time} - 最大允许"
+      unit:
+        minutes: "{count, plural, =1 {# Minute} other {# Minutes}}"
+        days: "{count, plural, =1 {# Day} other {# Days}}"
+        years: "{count, plural, =1 {# Year} other {# Years}}"
+        
+    custom: 自定义
   description:
     placeholder: "可选: 例如: 此密钥由应用服务器使用，用于容器部署。"
   saveWarning1: 请保存上面的信息！这些信息仅显示一次。
@@ -5680,7 +5689,7 @@ editCertificate:
     placeholder: '例如: Mydomain.com'
   description:
     placeholder: '例如: Mydomain.com 的 EV 证书。'
-  noteKeyWriteOnly: '注意: Private Key 部分为只写(write only)因而显示为空白。更新证书时您需要重新上传 Private Key，即便 Private Key 未发生变化。'
+  noteKeyWriteOnly: '注意: Private Key 部分为只写 (write only) 因而显示为空白。更新证书时您需要重新上传 Private Key，即便 Private Key 未发生变化。'
 
 editCluster:
   title:
@@ -6790,7 +6799,7 @@ formNamespace:
     default: 默认命名空间
   toggle:
     simple: 自定义
-    reuse: 使用现有的名称空间
+    reuse: 使用现有的命名空间
     create: 创建新的命名空间
   reuse:
     prompt: 选择命名空间...
@@ -7146,7 +7155,7 @@ formBasicPodSecurityPolicy:
     disable: "否"
   hostPID:
     label: 主机 PID
-    enable: "是: 主机 PID 名称空间"
+    enable: "是: 主机 PID 命名空间"
     disable: "否"
   privileged:
     label: 特权
@@ -7868,10 +7877,10 @@ drainNode:
     label: 强制
     helpText: "<b>永久删除</b> <ul class=m-0><li>独立 Pods 和它们的数据</li><li>配置了 Empty Dir 卷的 Pods 和它们的数据</li></ul>"
   gracePeriod:
-    title: 'Pod 终止延时时间: '
-    default: 使用每个 Pod 中设置的默认延时时间
+    title: 'Pod 延时终止时间: '
+    default: 使用每个 Pod 设置的默认延时终止时间
     placeholder: '例如: 30'
-    custom: "自定义延时时间: "
+    custom: "自定义延时终止时间: "
     view:
       custom: "忽略默认值并给每个 pod 设置 {seconds} 秒"
   timeout:
@@ -7917,8 +7926,8 @@ modalRotateCertificates:
     from: '{ cert } (expired { expiresIn })'
 
 modalRollbackService:
-  title: '回滚"{instanceName}"'
-  titleWithSidekicks: '回滚"{instanceName}"&{count, plural,=1{#个 sidecar} other {#个 sidecars}}'
+  title: '回滚 "{instanceName}"'
+  titleWithSidekicks: '回滚 "{instanceName}"&{count, plural,=1{#个 sidecar} other {#个 sidecars}}'
   action: 回滚
   current:
     label: 当前版本
@@ -8036,7 +8045,7 @@ newCatalog:
   maintainedBy: 由社区成员维护
   maintainer: "维护者:"
   newNamespace: 新的命名空间
-  customizeNamespace: "此应用程序将被部署到<code>{namespaceId}</code>命名空间。"
+  customizeNamespace: "此应用程序将被部署到 <code>{namespaceId}</code> 命名空间。"
   newAppDetail: 选择应用程序版本和对应的命名空间。
   appInfo: 详细描述
   appInfoDetail: 应用程序信息和用户 guid
@@ -8088,7 +8097,7 @@ newMultiClusterApp:
   maintainer: "维护人员:"
   newNamespace: 新的命名空间
   customizeNamespace: "此应用程序将部署到<code>{namespaceId}</code>命名空间中。"
-  newAppDetail: 为应用程序选择应用程序版本和名称空间。
+  newAppDetail: 为应用程序选择应用程序版本和命名空间。
   appInfo: 详细描述
   appInfoDetail: 应用程序信息和用户指南。
   noConfig: 此模板没有配置选项。
@@ -8775,7 +8784,7 @@ nodeDriver:
       placeholder: Azure 订阅证书
     image:
       label: 镜像
-      placeholder: '推荐: UbuntuServer:16.04.0-LTS:latest'
+      placeholder: '推荐:UbuntuServer:18.04-LTS:latest'
       helpText: Providing an ARM resource identifier requires using managed disk
     diskSize:
       label: 磁盘大小
@@ -8935,7 +8944,7 @@ nodeDriver:
       label: 安全组
       placeholder: 安全组
       prompt: 选择安全组...
-      defaultCreate: "自动创建<code>{groupName}</code>安全组。"
+      defaultCreate: "自动创建 <code>{groupName}</code> 安全组。"
     sshPassword:
       label: SSH 密码
       placeholder: '创建实例后 SSH 远程登录密码(非必填)'
@@ -9025,7 +9034,7 @@ nodeDriver:
     cluster:
       label: 集群
     network:
-      defaultCreate: "标准: 自动创建<code>{groupName}</code>安全组。"
+      defaultCreate: "标准: 自动创建 <code>{groupName}</code> 安全组。"
       choose: 连接到现有网络
       label: 网络
     portHelp:
@@ -9359,7 +9368,7 @@ schedulingRuleRow:
 
 serverUrl:
   header:
-    label: Rancher Server URL
+    label: "{appName} Server URL"
     detail: "{appName} 安装使用的地址，集群中的所有节点都需要能够访问此地址"
   button:
     save: 保存 URL
@@ -9389,9 +9398,9 @@ systemInfoSection:
   noData: 没有数据
   arch: 系统架构
   dockerVersion: Docker 版本
-  kernelVersion: 内核版本
+  kernelVersion: Kernel 版本
   kubeletVersion: Kubelet 版本
-  kubeProxyVersion: Kube 代理版本
+  kubeProxyVersion: Kube-Proxy 版本
   operatingSystem: 操作系统映像
   osType: 系统类型
   noMatch: 没有与当前搜索匹配的系统信息。
@@ -9494,7 +9503,7 @@ searchableSelect:
 ##############################
 containerChoices:
   hostGroup: "主机: {name}"
-  hostGroupWithState: "主机: {name}{state}"
+  hostGroupWithState: "主机: {name} ({state})"
   unknownHost: "主机: ???"
   containerOption: "{name}"
 
@@ -9517,8 +9526,8 @@ nav:
     clustersNoData: 没有集群。
     projectsNoData: 选择集群来查看项目。
     projectNoData: 当前集群没有项目。
-    clustersNoMatch: '没有与"{searchInput}"匹配的集群。'
-    projectsNoMatch: '没有与"{searchInput}"匹配的项目。'
+    clustersNoMatch: '没有与 "{searchInput}" 匹配的集群。'
+    projectsNoMatch: '没有与 "{searchInput}" 匹配的项目。'
     projectNotReady: '集群未就绪。'
     projectInCluster: '在集群 {cluster} 中的项目。'
     search: '搜索...'
@@ -9553,8 +9562,8 @@ nav:
     none: 列表视图
     node: 按主机分组
     workload: 按负载量分组
-    namespace: 按名称空间分组
-    namespaceWorkload: '按名称空间/工作负载分组'
+    namespace: 按命名空间分组
+    namespaceWorkload: '按命名空间/工作负载分组'
   hosts:
     tab: 主机
     addHost: 添加主机
@@ -9703,7 +9712,7 @@ action:
   setDefaultRevision:
     success:
       title: 成功
-      message: '已在 {ctName} 的默认修订中设置了 {name}。'
+      message: '在 {ctName} 的默认版本中设置了 {name}.'
   setting: 设置
   start: 启动
   startAll: 全部开始
@@ -9902,7 +9911,7 @@ volumeSource:
   host-path:
     title: HostPath
     path:
-      label: 主机路径
+      label : 主机路径
       placeholder: '例如: /data'
     kind:
       label: 主机路径类型检查
