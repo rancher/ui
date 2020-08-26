@@ -68,6 +68,19 @@
             </option>
           {{/each}}
         </select>
+      {{else if (eq model.kind "enum-map")}}
+        <select class="form-control" onchange={{action (mut value) value="target.value"}}>
+          {{#unless (get model.options value)}}
+            <option value="" selected=true>
+              {{t "modalEditSetting.value.prompt"}}
+            </option>
+          {{/unless}}
+          {{#each-in model.options as |choice label|}}
+            <option value="{{choice}}" selected={{eq choice value}}>
+              {{label}}
+            </option>
+          {{/each-in}}
+        </select>
       {{else if (eq model.kind "url")}}
         {{settings/server-url
           serverUrlSetting=model.obj

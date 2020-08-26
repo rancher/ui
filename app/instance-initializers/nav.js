@@ -292,6 +292,27 @@ const rootNav = [
         resource:                 [],
         ctx:                      [getClusterId],
       },
+      { divider: true },
+      {
+        id:                       'cluster-tools-backup',
+        localizedLabel:           'nav.tools.backup',
+        dashboardLink:            '/backup',
+      },
+      {
+        id:                       'cluster-tools-fleet',
+        localizedLabel:           'nav.tools.fleet',
+        dashboardLink:            '/fleet',
+      },
+      {
+        id:                       'cluster-tools-gatekeeper',
+        localizedLabel:           'nav.tools.gatekeeper',
+        dashboardLink:            '/gatekeeper',
+      },
+      {
+        id:                       'cluster-tools-rio',
+        localizedLabel:           'nav.tools.rio',
+        dashboardLink:            '/rio',
+      },
     ],
   },
 

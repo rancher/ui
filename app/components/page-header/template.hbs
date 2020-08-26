@@ -62,6 +62,13 @@
                 {{/if}}
               {{else if subitem.divider}}
                 <li class="divider"></li>
+              {{else if subitem.dashboardLink}}
+                <li>
+                  <a href={{ concat dashboardLink subitem.dashboardLink }}>
+                    {{t subitem.localizedLabel default=subitem.label}}
+                    <i class="icon icon-external-link" />
+                  </a>
+                </li>
               {{else}}
                 {{! Just a label }}
                 <li class="dropdown-header">

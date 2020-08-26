@@ -1,4 +1,5 @@
 import { alias } from '@ember/object/computed';
+import { observer } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import C from 'ui/utils/constants';
@@ -26,13 +27,7 @@ export default Component.extend({
     this.set('selectedCount', `${ this.get('perPage') }`);
   },
 
-  actions: {
-    save(cb) {
-      this.set(`prefs.${ C.PREFS.TABLE_COUNT }`, parseInt(this.get('selectedCount'), 10));
-      cb(true);
-      if (this.done) {
-        this.done();
-      }
-    }
-  }
+  countChanged: observer('selectedCount', function() {
+    this.set(`prefs.${ C.PREFS.TABLE_COUNT }`, parseInt(this.get('selectedCount'), 10));
+  }),
 });

@@ -6,6 +6,7 @@ import { inject as service } from '@ember/service';
 import { scheduleOnce, later, cancel } from '@ember/runloop';
 import { resolve, all as PromiseAll } from 'rsvp';
 import { get, set } from '@ember/object';
+import { compare, isDevBuild } from 'shared/utils/parse-version';
 
 const CHECK_AUTH_TIMER = 60 * 10 * 1000;
 
@@ -151,18 +152,26 @@ export default Route.extend(Preload, {
     }
 
     if ( get(this, 'settings.isRancher') ) {
-      let form = get(this, `settings.${ C.SETTING.FEEDBACK_FORM }`);
+      const telemetry = get(this, `settings.${ C.SETTING.TELEMETRY }`);
+      const form = get(this, `settings.${ C.SETTING.FEEDBACK_FORM }`);
+      const seenWhatsNew = get(this, `prefs.${ C.PREFS.SEEN_WHATS_NEW }`);
+      const version = get(this, 'settings.rancherVersion');
+      const isDev = isDevBuild(version);
 
-      // Show the telemetry opt-in
-      let opt = get(this, `settings.${ C.SETTING.TELEMETRY }`);
-
-      if ( get(this, 'access.admin') && (!opt || opt === 'prompt') ) {
+      if ( get(this, 'access.admin') && (!telemetry || telemetry === 'prompt') ) {
+        // Show the telemetry opt-in if not set
         scheduleOnce('afterRender', this, function() {
           get(this, 'modalService').toggleModal('modal-telemetry');
         });
       } else if ( form && !get(this, `prefs.${ C.PREFS.FEEDBACK }`) ) {
+        // Try.rancher feedback
         scheduleOnce('afterRender', this, function() {
           get(this, 'modalService').toggleModal('modal-feedback');
+        });
+      } else if ( !isDev && (!seenWhatsNew || compare(seenWhatsNew, C.WHATS_NEW_VERSION) < 0) ) {
+        // What's new
+        scheduleOnce('afterRender', this, function() {
+          get(this, 'modalService').toggleModal('modal-whats-new');
         });
       }
     }
