@@ -53,7 +53,9 @@
                 </div>
               {{else}}
                 <pre class="bg-setting m-0">
-                {{~#if row.obj.value~}}
+                {{~#if (and (eq row.kind "enum-map") (get row.options row.obj.value)) ~}}
+                  {{~ get row.options row.obj.value ~}}
+                {{~else if row.obj.value~}}
                   {{~row.obj.value~}}
                 {{~else~}}
                   <span class="text-muted">&lt;none&gt;</span>

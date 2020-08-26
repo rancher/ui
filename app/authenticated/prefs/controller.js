@@ -8,11 +8,6 @@ export default Controller.extend({
   newPassword: null,
 
   actions: {
-    done() {
-      window.history.back();
-      // this.send('goToPrevious');
-    },
-
     editPassword() {
       get(this, 'modal').toggleModal('modal-edit-password', { user: get(this, 'model.account') });
     },
