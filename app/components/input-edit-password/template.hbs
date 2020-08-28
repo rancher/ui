@@ -11,87 +11,88 @@
       <label>{{input type="checkbox" checked=deleteTokens}} {{t 'modalEditPassword.deleteTokens'}}</label>
     {{/if}}
 
-    {{#if showCurrent}}
-      <div class="row mb-20">
-        <div class="col span-12">
-          <label class="acc-label">
-            {{t "modalEditPassword.current"}}{{field-required}}
-          </label>
-          {{input
-            type="password"
-            value=currentPassword
-            autocomplete="current-password"
-            classNames="form-control start"
-          }}
-        </div>
-      </div>
-    {{/if}}
-
     <div class="row">
-      <label>
-        {{radio-button
-          selection=generate
-          value=true
-        }}
-        {{t "modalEditPassword.mode.generate"}}
-      </label>
-    </div>
-    {{#liquid-if generate class="row mt-10"}}
-      <div class="col span-12">
-        <div class="input-group" style="width: 220px;">
-          <code class="form-control text-center">
-            {{password}}
-          </code>
-          <span class="input-group-addon bg-primary" {{action "regenerate"}}>
-            <i class="icon icon-refresh"/>
-          </span>
-        </div>
-        <div class="mt-20 mb-20">
-          {{copy-to-clipboard
-            color="bg-primary"
-            clipboardText=password
-            buttonText="copyToClipboard.tooltip"
+      <div class="col span-6">
+        <label>
+          {{radio-button
+            selection=generate
+            value=false
           }}
-        </div>
-      </div>
-    {{/liquid-if}}
+          {{t "modalEditPassword.mode.manual"}}
+        </label>
 
-    <div class="row">
-      <label>
-        {{radio-button
-          selection=generate
-          value=false
-        }}
-        {{t "modalEditPassword.mode.manual"}}
-      </label>
+        <label>
+          {{radio-button
+            selection=generate
+            value=true
+          }}
+          {{t "modalEditPassword.mode.generate"}}
+        </label>
+      </div>
+      <div class="col span-6 mt-0">
+        {{#if showCurrent}}
+          <div>
+            <label class="acc-label">
+              {{t "modalEditPassword.current"}}{{field-required}}
+            </label>
+            {{input
+              type="password"
+              value=currentPassword
+              autocomplete="current-password"
+              classNames="form-control start"
+            }}
+          </div>
+        {{/if}}
+
+        {{#liquid-if generate class="row mt-10"}}
+          <div class="col span-12">
+            <div class="input-group" style="width: 220px;">
+              <code class="form-control text-center">
+                {{password}}
+              </code>
+              <span class="input-group-addon bg-primary" {{action "regenerate"}}>
+                <i class="icon icon-refresh"/>
+              </span>
+            </div>
+            <div class="mt-20 mb-20">
+              {{copy-to-clipboard
+                color="bg-primary"
+                clipboardText=password
+                buttonText="copyToClipboard.tooltip"
+              }}
+            </div>
+          </div>
+        {{/liquid-if}}
+
+        {{#liquid-if (not generate) class="row mb-20"}}
+          <div class="row pr-5 pl-5">
+            <div class="col span-12">
+              <label class="acc-label">
+                {{t "modalEditPassword.new"}}
+              </label>
+              {{input
+                type="password"
+                value=password
+                classNames="form-control start"
+              }}
+            </div>
+          </div>
+          <div class="row pr-5 pl-5">
+            <div class="col span-12">
+              <label class="acc-label">
+                {{t "modalEditPassword.confirm"}}
+              </label>
+              {{input
+                type="password"
+                value=confirm
+                classNames="form-control"
+                focusOut=(action "blurredConfirm")
+              }}
+            </div>
+          </div>
+        {{/liquid-if}}
+      </div>
     </div>
-    {{#liquid-if (not generate) class="row mb-20"}}
-      <div class="row pr-5 pl-5">
-        <div class="col span-12">
-          <label class="acc-label">
-            {{t "modalEditPassword.new"}}
-          </label>
-          {{input
-            type="password"
-            value=password
-            classNames="form-control start"
-          }}
-        </div>
-      </div>
-      <div class="row pr-5 pl-5">
-        <div class="col span-12">
-          <label class="acc-label">
-            {{t "modalEditPassword.confirm"}}
-          </label>
-          {{input
-            type="password"
-            value=confirm
-            classNames="form-control"
-            focusOut=(action "blurredConfirm")
-          }}
-        </div>
-      </div>
-    {{/liquid-if}}
   </div>
 
   {{yield}}

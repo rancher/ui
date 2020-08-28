@@ -5,18 +5,28 @@ import { alias } from '@ember/object/computed';
 import C from 'ui/utils/constants';
 
 export default Controller.extend({
-  router:   service(),
-  access:   service(),
-  settings: service(),
+  router:      service(),
+  access:      service(),
+  settings:    service(),
+  globalStore: service(),
+  prefs:       service(),
 
   showCurrent:  null,
   agreedToEula: false,
+  landing:      null,
 
   firstLogin: alias('access.firstLogin'),
 
   init() {
     this._super(...arguments);
     set(this, 'showCurrent', !get(this, 'access.userCode.password'));
+    set(this, 'landing', get(this, `setting.${ C.SETTING.UI_DEFAULT_LANDING }`));
+  },
+
+  actions: {
+    setView(which) {
+      set(this, 'landing', which);
+    },
   },
 
   currentPassword: computed('', function() {
@@ -24,7 +34,7 @@ export default Controller.extend({
   }),
 
   complete(success) {
-    let backTo = get(this, 'session').get(C.SESSION.BACK_TO)
+    const landing = get(this, 'landing');
     let router = get(this, 'router');
 
     if (success) {
@@ -33,18 +43,26 @@ export default Controller.extend({
 
         get(this, 'settings').set(C.SETTING.TELEMETRY, value);
         get(this, 'settings').set(C.SETTING.EULA_AGREED, (new Date()).toISOString());
+        get(this, 'settings').set(C.SETTING.UI_DEFAULT_LANDING, landing);
+        get(this, 'prefs').set(C.PREFS.LANDING, landing);
       }
 
       get(this, 'access').set('firstLogin', false);
       get(this, 'access').set('userCode', null);
 
-      if ( backTo && backTo !== window.location.origin) {
-        // console.log('Going back to', backTo);
-        window.location.href = backTo;
-      } else {
-        // console.log('Replacing Authenticated');
-        router.replaceWith('authenticated');
+      if ( landing === 'vue' ) {
+        let link = '/dashboard';
+
+        if ( get(this, 'app.environment') === 'development' ) {
+          link = 'https://localhost:8005/';
+        }
+
+        window.location.href = link;
+
+        return;
       }
+
+      router.replaceWith('authenticated');
     }
   },
 });
