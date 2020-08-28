@@ -1,4 +1,4 @@
-import { computed } from '@ember/object';
+import { get, computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
@@ -35,10 +35,25 @@ export default Component.extend({
     showAbout() {
       this.get('modalService').toggleModal('modal-about', { closeWithOutsideClick: true });
     },
+
     showWechat() {
       this.get('modalService').toggleModal('modal-wechat', { closeWithOutsideClick: true });
     },
   },
+
+  displayVersion: computed('settings.rancherVersion', function() {
+    const fullVersion = get(this, 'settings.rancherVersion') || get(this, 'intl').t('pageFooter.notARelease');
+    let displayVersion = fullVersion;
+
+    const match = fullVersion.match(/^(.*)-([0-9a-f]{40})-(.*)$/);
+
+    if ( match ) {
+      displayVersion = match[2].substr(0, 7);
+    }
+
+    return displayVersion;
+  }),
+
   showWechat: computed('intl.locale', function() {
     let locale = this.get('intl.locale');
 
