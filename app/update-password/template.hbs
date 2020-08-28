@@ -1,27 +1,44 @@
 <div class="login">
   <div class="header">
     {{#if firstLogin}}
-
       <h1>{{t 'modalEditPassword.firstLogin.title' appName=settings.appName}}</h1>
-      <p class="help-text">{{t 'modalEditPassword.firstLogin.help' appName=settings.appName htmlSafe=true}}</p>
     {{else}}
-
       <h1>{{t 'modalEditPassword.edit.title' appName=settings.appName}}</h1>
-      <p class="help-text">{{t 'modalEditPassword.edit.help' appName=settings.appName htmlSafe=true}}</p>
-
     {{/if}}
   </div>
+  {{#if firstLogin}}
+    <h3 class="mt-20 text-left">{{t 'modalEditPassword.firstLogin.help' htmlSafe=true}}</h3>
+  {{/if}}
   {{#input-edit-password
       complete=(action (action complete))
       user=model.user
       showCurrent=showCurrent
-      forceSaveDisabled=(and firstLogin (not agreedToEula))
+      forceSaveDisabled=(and firstLogin (or (not agreedToEula) (not landing)))
       currentPassword=currentPassword
       editButton=(if firstLogin 'modalEditPassword.firstLogin.actionButton' 'modalEditPassword.actionButton')
       cancelDisabled=true
   }}
     {{#if firstLogin}}
-      <div>
+      <hr/>
+      <h3 class="mt-20 text-left">{{t 'modalEditPassword.firstLogin.setView'}}</h3>
+      <div class="image-radio-container mt-20">
+        <div class="image-radio">
+          <button class="{{if (eq landing 'ember') 'checked' ''}}" type="button" {{action "setView" "ember" }}>
+            <img src="{{app.baseAssets}}assets/images/cluster-multi.svg"/>
+          </button>
+          <p class="text-muted text-small">{{t "landingPage.emberLong" }}</p>
+        </div>
+
+        <div class="image-radio">
+          <button class="{{if (eq landing 'vue') 'checked' ''}}" type="button" {{action "setView" "vue" }}>
+            <img src="{{app.baseAssets}}assets/images/cluster-single.svg"/>
+          </button>
+          <p class="text-muted text-small">{{t "landingPage.vueLong" }}</p>
+        </div>
+      </div>
+
+      <hr/>
+      <div class="mt-20">
         <label class="text-small">{{input type="checkbox" checked=model.optIn}} {{t 'telemetryOpt.label'}}</label> <a href="{{settings.docsBase}}/faq/telemetry" class="text-small" target="_blank" rel="noopener nofollow">{{t 'telemetryOpt.learnMore.label'}}</a>
       </div>
       <div>

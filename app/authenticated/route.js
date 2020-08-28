@@ -94,7 +94,6 @@ export default Route.extend(Preload, {
           this.loadClusters(),
           this.loadProjects(),
           this.loadPreferences(),
-        // this.loadPublicSettings(),
         ];
 
         const globalStore = get(this, 'globalStore');
