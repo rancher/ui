@@ -103,10 +103,10 @@ export default Component.extend({
   },
 
   actions: {
-    clickDashboard() {
+    clickDashboard(more) {
       // Regular click on the link will have Ember try to resolve /dashboard/c/<id>
       // to an Ember route and show the error page.  That's bad.
-      window.location.href = get(this, 'dashboardLink');
+      window.location.href = get(this, 'dashboardLink') + more;
     },
   },
 
@@ -152,15 +152,7 @@ export default Component.extend({
       return;
     }
 
-    let link;
-
-    if ( get(this, 'app.environment') === 'development' ) {
-      link = `https://localhost:8005/c/${ escape(this.clusterId) }`;
-    } else {
-      link = `/dashboard/c/${ escape(this.clusterId) }`;
-    }
-
-    return link;
+    return get(this, 'scope.dashboardLink');
   }),
 
   updateNavTree() {

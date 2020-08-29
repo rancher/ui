@@ -37,6 +37,8 @@ Router.map(function() {
   this.route('update-critical-settings', { path: '/update-setting' });
 
   this.route('authenticated', { path: '/' }, function() {
+    this.route('dashboard', { path: '/dashboard/*path' });
+
     this.mount('nodes', {
       path:           '/n',
       resetNamespace: true

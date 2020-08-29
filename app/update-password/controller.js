@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { set, get, computed } from '@ember/object';
-import { alias } from '@ember/object/computed';
 import C from 'ui/utils/constants';
 
 export default Controller.extend({
@@ -11,11 +10,11 @@ export default Controller.extend({
   globalStore: service(),
   prefs:       service(),
 
+  queryParams: ['first'],
+
   showCurrent:  null,
   agreedToEula: false,
   landing:      null,
-
-  firstLogin: alias('access.firstLogin'),
 
   init() {
     this._super(...arguments);
@@ -28,6 +27,14 @@ export default Controller.extend({
       set(this, 'landing', which);
     },
   },
+
+  firstLogin: computed('first', 'access.firstLogin', function() {
+    if ( get(this, 'first') !== undefined ) {
+      return true;
+    }
+
+    return get(this, 'access.firstLogin');
+  }),
 
   currentPassword: computed('', function() {
     return get(this, 'access.userCode.password') || null;
