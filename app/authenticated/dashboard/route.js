@@ -5,11 +5,8 @@ import { get } from '@ember/object';
 export default Route.extend({
   scope: service(),
 
-  redirect() {
-    const to = get(this, 'scope.dashboardLink') + window.location.pathname.substr(1);
-
-    // eslint-disable-next-line no-debugger
-    debugger;
+  redirect(model) {
+    const to = get(this, 'scope.dashboardBase') + model.path;
 
     window.location.href = to;
   }
