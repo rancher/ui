@@ -10,38 +10,28 @@
         @message={{t "clustersPage.clusterLaunchDisabled"}}
       />
     {{/if}}
-    <div class="row-same-height row-full-height">
+    <div class="row-same-height">
       <a
-        class="col span-6 cluster-driver-box span-height full-height"
-        href="{{href-to "global-admin.clusters.new.launch" "import" (query-params register=true importProvider='other')}}"
+        class="col span-2 cluster-driver-box small span-height"
+        href="{{href-to "global-admin.clusters.new.launch" "import" (query-params importProvider='eks')}}"
         disabled={{disabledAddCluster}}
       >
-        <div class="machine-driver custom-driver"></div>
+        <div class="machine-driver amazoneks"></div>
         <div class="driver-content">
-          <h3>
-            {{t "clusterNew.register.label"}}
-          </h3>
-          <p class="help-block">
-            {{t "clusterNew.register.helpBlock" htmlSafe=true}}
+          <p class="driver-name">
+            {{t "clusterNew.amazoneks.shortLabel"}}
           </p>
         </div>
       </a>
       <a
-        class="col span-6 cluster-driver-box span-height full-height"
+        class="col span-2 cluster-driver-box small span-height"
         href="{{href-to "global-admin.clusters.new.launch" "import" (query-params importProvider='other')}}"
         disabled={{disabledAddCluster}}
       >
         <div class="machine-driver import-driver"></div>
         <div class="driver-content">
-          <h3>
+          <p class="driver-name">
             {{t "clusterNew.import.label"}}
-          </h3>
-          <p class="help-block">
-            {{t
-              "clusterNew.import.helpBlock"
-              appName=settings.appName
-              htmlSafe=true
-            }}
           </p>
         </div>
       </a>
@@ -58,17 +48,14 @@
         </label>
       </div>
       <a
-        class="col span-6 cluster-driver-box span-height full-height"
+        class="col span-2 cluster-driver-box small span-height full-height"
         href="{{href-to "global-admin.clusters.new.launch" "custom"}}"
         disabled={{disabledAddCluster}}
       >
         <div class="machine-driver custom-driver"></div>
         <div class="driver-content">
-          <h3>
+          <p class="driver-name">
             {{t "clusterNew.custom.label"}}
-          </h3>
-          <p class="help-block">
-            {{t "clusterNew.custom.helpBlock"}}
           </p>
         </div>
       </a>
