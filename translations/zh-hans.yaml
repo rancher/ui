@@ -460,7 +460,7 @@ rolesPage:
     project: 项目
   index:
     localLink: 添加角色
-    warning: "不存在在用户首次登录时可能产生意外后果的默认角色。请将其中一个角色设置为新用户默认值。"
+    warning: "对于第三方登录认证的用户，需要配置一个角色作为新用户首次登录时默认的角色。当前环境未指定新用户默认值，请将其中一个角色设置为新用户默认值。"
     table:
       builtin: 内置
       created: 创建时间
@@ -944,7 +944,7 @@ authPage:
     subtext:
       enabled:
         text: '{appName} 已设置本地账户访问'
-        alwaysOn: '本地身份验证将始终启用，您可以在本地认证基础之上添加其他认证方案'
+        alwaysOn: '本地身份验证将始终启用，您可以在本地认证基础之上添加其他认证方案。'
         linkText: 管理账号
       disabled: '{appName} 能够被设置为仅允许 {appName} 本地数据库中配置的用户访问。当前系统未进行设置，因此任何可以访问此页面(或 API)的用户都具有系统的完全控制权限。'
     accessEnabled:
@@ -1049,7 +1049,7 @@ cis:
       testDocs: 要了解为什么这些测试不能运行，请访问我们的<a href="https://rancher.com/docs/" target="_blank" rel="nofollow noopener noreferrer">文档 </a>。
       tableHeaders:
         id: Test Id
-        explanation: Explanation
+        explanation: 解释
     growl:
       success: 在 '{clusterName}' 上运行 CIS 扫描
     header: CIS 扫描
@@ -1088,11 +1088,11 @@ cis:
         description: 描述
         empty: 当前没有测试
         skip: 跳过
-        unskip: Unskip
+        unskip: 不跳过
         nodesTable:
           title: 节点
           row:
-            remediation: "Remediation: {remediation}"
+            remediation: "修复: {remediation}"
 
 cloudCredentialsPage:
   header: 云凭证
@@ -1630,12 +1630,12 @@ monitoringPage:
     disableIstioFirst: '在禁用集群监控之前，需要先禁用 Istio。'
 
 metricsAction:
-  description: 实时查看工作负载监控数据。
+  description: 展开以查看实时监控数据
   noData: 没有足够的数据绘制图表
   sections:
     workload: 工作负载监控
     pod: Pod 监控
-    container: Container 监控
+    container: 容器监控
   grafana:
     label: Grafana
   summary:
@@ -1691,9 +1691,9 @@ metrics:
   istio-global-request-volume-top10: Request Volume by Service
   istio-global-request-volume: Project Request Volume
   istio-global-success-rate: 项目成功率
-  istio-request-duration-p99-top10: P99 Request Latency by Service
-  istio-request-duration-p90-top10: P90 Request Latency by Service
   istio-request-duration-p50-top10: P50 Request Latency by Service
+  istio-request-duration-p90-top10: P90 Request Latency by Service
+  istio-request-duration-p99-top10: P99 Request Latency by Service
   node-cpu-load: 节点负载
   node-cpu-usage: CPU 使用率
   node-disk-io: 磁盘 I/O
@@ -1817,7 +1817,7 @@ editDns:
   externalIPs:
     addActionLabel: 添加外部 IP
     placeholder: '例如: 80.11.12.10'
-    value: 外部 IP
+    value: 外部 IPs
   loadBalancerIP:
     label: Load Balancer IP
     placeholder: '例如: 78.11.24.19'
@@ -1985,7 +1985,7 @@ globalRegistryPage:
   header: 全局镜像库
   enabled: 镜像库已启用。点击<a href="{url}/registry" target="_blank" rel="nofollow noopener noreferrer">这里</a>在新页面中打开 Harbor UI。
   disabled: 镜像库尚未启用。
-  notReady: 在 LOCAL 集群的系统项目中安装镜像库…
+  notReady: 在 local 集群的系统项目中安装镜像库…
   confirmDisable: '再次单击将禁用全局镜像库'
   disable: 禁用镜像库
   enableActionLabel: 启用
@@ -2032,7 +2032,7 @@ globalRegistryPage:
     source:
       pvc: 使用现有的 PVC
     storageClass:
-      emptyError: '在 LOCAL 集群中至少需要一个默认存储类'
+      emptyError: '在 local 集群中至少需要一个默认存储类'
       sizeRequired: '"{component} 持久卷大小需要设置'
     databaseRequestCpu:
       label: Database CPU 预留
@@ -3090,9 +3090,9 @@ annotationsSection:
 
 authorizedEndpoint:
   enabled:
-    label: '此地址必须是能够访问 k8s api-server 的域名或者 IP。在 Rancher Server 不可用时，可使用包含此地址的 kubecfg 文件，通过命令 "kubectl --context" 直接访问 k8s 集群。'
+    label: '此地址必须是能够访问 k8s api-server 的域名或者 IP。在 Rancher Server 不可用时，可使用包含此地址的 kubecfg 文件，通过命令 kubectl --context 直接访问 k8s 集群。'
   fqdn:
-    label: FQDN(域名和后面的 CA 证书可不用填写。 )
+    label: FQDN（此域名和右侧的 CA 证书可不用填写）
 
 taintsSection:
   title: Taints
@@ -3581,19 +3581,19 @@ clusterNew:
     label: Google Kubernetes 引擎
     shortLabel: Google GKE
     checkServiceAccount: '下一步: 配置主机'
-    checkingServiceAccount: 认证
+    checkingServiceAccount: 认证中...
     credential:
       label: 服务账号
       placeholder: 服务帐号私钥 JSON 文件
       configured: 为 {project} 项目配置
       helpText: |
-        "创建拥有 JSON 私钥的<a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a>，并在此处提供 JSON。有关创建服务帐户的更多信息，请参阅<a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud 文档</a> 。需要四个 IAM 角色: Compute Viewer (<code>roles/compute.viewer</code>)，(Project) Viewer (<code>roles/viewer</code>)，Kubernetes Engine Admin (<code>roles/container.admin</code>)和 Service Account User (<code>roles/iam.serviceAccountUser</code>)，更多关于角色的信息可在<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">此处</a>找到。<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">"
+        创建拥有 JSON 私钥的 <a href="https://console.cloud.google.com/projectselector/iam-admin/serviceaccounts" target="_blank" rel="nofollow noopener noreferrer">Service Account</a>，并在此处提供 JSON。有关创建服务帐户的更多信息，请参考 <a href="https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances" target="_blank" rel="nofollow noopener noreferrer">Google Cloud 文档</a>。需要四个 IAM 角色: Compute Viewer (<code>roles/compute.viewer</code>)，(Project) Viewer (<code>roles/viewer</code>)，Kubernetes Engine Admin (<code>roles/container.admin</code>) 和 Service Account User (<code>roles/iam.serviceAccountUser</code>)，更多关于角色的信息可在<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">此处</a>找到。<a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="nofollow noopener noreferrer">
     zone:
       label: 区域
       prompt: 选择区域...
     project:
       label: 项目
-      placeholder: '例如: My-project'
+      placeholder: e.g. my-project
     locationType:
       label: 位置类型
       zone: Zonal
@@ -3727,7 +3727,7 @@ clusterNew:
     oauthScopes:
       label: 访问权限范围
       default: 允许默认访问权限
-      full: 允许所有 Cloud API 的全面访问权限
+      full: 允许所有 Cloud APIs 的全面访问权限
       custom: 针对每个 API 设置访问权限
     userInfo:
       label: 用户信息
@@ -4038,17 +4038,17 @@ clusterNew:
         placeholder: '例如: 6'
         mode:
           percentage: 百分比
-          count: 台数
+          count: 台
       drainNodes:
         label: 节点驱逐（升级节点之前，是否先驱散节点 Pod）
     clustersSelectTemplate:
-      label: "使用现有的集群模板和修订"
+      label: "使用现有的 RKE 模板和修订版本"
       select:
         label: 集群模板
-        prompt: 选择集群模板
+        prompt: 选择 RKE 集群模板
     clustersSelectTemplateRevision:
       select:
-        prompt: 选择一个集群模板修订
+        prompt: 选择 RKE 集群模板修订
         default: '{name} - Default (Created {ago})'
         other: '{name} (Created {ago})'
     cisScan:
@@ -4101,10 +4101,10 @@ clusterNew:
         label: Etcd 备份存储
         s3:
           label: s3
-          help: 'Etcd 将在本地生成备份，随后将备份拷贝到 s3 存储。'
+          help: 'Etcd 备份工具将在本地 /opt/rke/etcd-snapshots/ 目录生成备份文件，随后将备份拷贝到 s3 存储。'
         local:
           label: local
-          help: Etcd 备份只保存在本地，不执行外部存储
+          help: 'Etcd 备份文件只保存在本地 /opt/rke/etcd-snapshots/ 目录，不发送到外部存储。'
       heartbeat:
         label: Etcd 心跳间隔时间
         placeholder: 心跳间隔时间
@@ -4112,13 +4112,13 @@ clusterNew:
         label: Etcd 选举超时时间
         placeholder: 选举超时时间
       snapshot:
-        label: Etcd 快照轮换
+        label: Etcd 备份轮换
       retention:
-        label: Etcd 快照有效期
+        label: Etcd 备份有效期
         placeholder: "12h"
         help: "可用的时间单位: h, m, s"
       creation:
-        label: 快照创建周期
+        label: 备份创建周期
         placeholder: "6h"
       error: "快照 {type} 周期错误: 必须指定一个时间值和时间单位(s、m、h)，当前输入 {entry}"
     nodeName:
@@ -4231,7 +4231,7 @@ clusterNew:
       enabled: 允许不受支持的版本
       disabled: 需要支持的版本
     podSecurityPolicy:
-      label: Pod 安全策略(需先在全局下创建 Pod 策略)
+      label: Pod 安全策略 (需先在全局下创建 Pod 策略)
     role:
       pageheader: 添加主机命令
       sectionheader: 主机选项
@@ -4745,8 +4745,8 @@ cruPersistentVolume:
       placeholder: "例如: secret"
     secretRef:
       name:
-        label: 名称
-        placeholder: "例如: lab"
+        label: 密文名
+        placeholder: "e.g. abc"
       namespace:
         label: 命名空间
         placeholder: "例如: default"
@@ -4854,7 +4854,7 @@ cruPersistentVolume:
   flocker:
     datasetName:
       label: 数据集名称
-      placeholder: "例如: database"
+      placeholder: "e.g. dataset"
     datasetUUID:
       label: 数据集 UUID
       placeholder: "例如: uuid"
@@ -5253,7 +5253,7 @@ cruStorageClass:
   quobyte:
     quobyteAPIServer:
       label: Quobyte API 服务器
-      placeholder: '例如: https://138.68.74.142:7860'
+      placeholder: "e.g. http://138.68.74.142:7860"
     registry:
       label: 镜像库
       placeholder: "例如: 138.68.74.142"
@@ -5277,7 +5277,7 @@ cruStorageClass:
       placeholder: "例如: DEFAULT"
   rbd:
     monitors:
-      label: "Ceph-Monitor 地址"
+      label: Monitors
       placeholder: "例如: 10.16.153.105:6789"
     adminId:
       label: "管理员账号(ID)"
@@ -5312,7 +5312,7 @@ cruStorageClass:
   glusterfs:
     resturl:
       label: REST URL
-      placeholder: '例如: https://127.0.0.1:8081'
+      placeholder: "e.g. http://127.0.0.1:8081"
     restuser:
       label: REST 用户
       placeholder: "例如: admin"
@@ -5562,31 +5562,31 @@ validationsList:
 
 dangerZone:
   header: 高级设置
-  subtext: "通常情况下用户不需要修改以下设置。请谨慎操作，不正确的值可能导致 {appName} 无法正常运行。修改默认设置后将以<b>粗体</b>显示配置名。"
+  subtext: "通常情况下用户不需要修改以下设置。请谨慎操作，不正确的值可能导致 {appName} 无法正常运行。修改默认设置后将以 <b>粗体</b> 显示配置名。"
   showLabel: 我已确认修改高级设置可能导致 {appName} 出问题。
   show: 显示
   hide: 隐藏
   description:
     'cacerts': '验证 ssl 证书所需的 CA 证书，此 CA 证书仅适用于自签名 SSL 证书。若 SSL 证书是权威 CA 机构所颁发，则要求删除此 CA 证书。'
     'cluster-defaults': '在创建新集群时覆盖 RKE 默认值。'
-    'engine-install-url': '默认的 Docker 引擎安装 URL(用于大多数 Machine Drivers)。'
-    'engine-iso-url': '默认 OS 安装 URL(用于 Machine vSphere Drivers)。'
+    'engine-install-url': '默认的 Docker 引擎安装 URL (用于大多数 Machine Drivers)。'
+    'engine-iso-url': '默认 OS 安装 URL (用于 Machine vSphere Drivers)。'
     'engine-newest-version': '当前 Rancher Server 支持的最新 Docker 版本，不支持的版本或比此 Docker 版本新的将被标记为未测试。'
     'engine-supported-range': '当前 Rancher Server 支持的 Docker 版本范围，不满足此范围的 Docker 版本将在 UI 中标记为不受支持。'
-    'ingress-ip-domain': '用于自动生成 Ingress 主机名的通配域名。<入口名>.<命名空间名>.<入口控制器的 IP 地址>将被添加到域名中。'
+    'ingress-ip-domain': '用于自动生成 Ingress 主机名的通配域名。<code><入口名>.<命名空间名>.<入口控制器的 IP 地址> </code>将被添加到域名中。'
     'server-url': '默认的 {appName} Server 访问地址，必须是 HTTPS。集群中的所有主机都必须能够访问此地址。'
     'system-default-registry': '用于 RKE 部署系统服务时镜像的拉取，其他服务拉取镜像不生效。'
     'ui-index': 'UI HTML 索引位置。'
     'ui-pl': '企业名称专用标签'
-    'ui-issues': "使用一个 url 地址发送新的“File an Issue”报告，而不是将用户跳转到 Github Issue 页面。"
+    'ui-issues': "使用一个 url 地址发送新的 “File an Issue” 报告，而不是跳转到 Github Issue 页面。"
     'telemetry-opt': '遥感报告设置。'
     'auth-user-info-max-age-seconds': '在执行身份验证提供者组成员同步之前，用户身份验证令牌的最大有效期。'
     'auth-user-info-resync-cron': '用于重新同步身份验证提供者组成员关系的默认 cron 调度。'
     'cluster-template-enforcement': '非管理员只能通过预先批准的集群模板启动集群。'
-    'auth-user-session-ttl-minutes': '用户验证会话上的自定义 TTL(以分钟为单位)。'
+    'auth-user-session-ttl-minutes': '用户验证会话上的自定义 TTL (以分钟为单位)。'
     'auth-token-max-ttl-minutes': '自定义认证 token 最大 TTL 分钟数 。'
     'rke-metadata-config': '配置 RKE 元数据刷新参数。'
-    'ui-banners': '分类条幅用于在标题中显示自定义固定条幅, 页脚, 或者两者同时显示。该设置使用包含 3 个根参数的 JSON 对象; <code>banner</code>, <code>showHeader</code>, <code>showFooter</code>. <code>banner</code> is an object containing; <code>textColor</code>, <code>background</code>, and <code>text</code>, where <code>textColor</code> and <code>background</code> are any valid CSS color value.'
+    'ui-banners': '分类横幅用于在页眉、页脚或同时在页眉、页脚显示自定义固定的横幅。该设置使用包含 3 个根参数的 JSON 对象: <code>banner、showHeader、showFooter</code>。banner 对象包含: <code>textColor、background、text</code>。 其中 <code>textColor 和 background</code> 是任意有效的 CSS 颜色值。'
 
 deleteEksCluster:
   title: "确定删除集群 {clusterName} 吗?"
@@ -5819,7 +5819,7 @@ stacksPage:
     instanceStateWithIcon: 状态
 
 featureFlags:
-  warningHeader: '您应该谨慎地启用这些功能，它们应该被视为可能会给您的系统带来问题的 beta 功能'
+  warningHeader: '您应该谨慎地启用这些功能，它们应该被视为可能会给您的系统带来问题的 beta 功能。此外，一些功能 (非动态) 需要重新启动 Rancher 服务才能启用。'
   features:
    istioVirtualServiceUi: "启用此功能将为 Istio 公开额外的 UI 页面"
    unsupportedStorageDrivers: "启用此功能将为持久卷和存储类公开不受支持的存储驱动程序选项。"
@@ -5828,7 +5828,7 @@ featureFlags:
     name: 名称
     noData: There are no features
     noMatch: 没有与当前搜索匹配的功能
-    restart: 重启
+    restart: 需要重启？
     state: 状态
 
 formatIp:
@@ -5987,13 +5987,13 @@ formBalancerRules:
     placeholder: '例如: foo=bar'
 
 formCommand:
-  title: 命令
+  title: '入口/命令'
   detail: 配置容器启动时将运行的可执行文件。
   command:
-    label: 命令(CMD)
+    label: 命令 (CMD)
     placeholder: '例如: /usr/sbin/httpd -f httpd.conf'
   entryPoint:
-    label: 入口(Entrypoint)
+    label: 入口 (Entrypoint)
     placeholder: '例如: /bin/sh'
   environment:
     label: 环境标签
@@ -6005,14 +6005,14 @@ formCommand:
     placeholder: '例如: 501'
   console:
     label: 控制台
-    both: '交互&amp;TTY 终端<span class="text-muted">(-i -t)</span>'
-    interactive: '交互<span class="text-muted">(-i)</span>'
-    terminal: 'TTY 终端<span class="text-muted">(-t)</span>'
+    both: '交互 &amp; TTY 终端<span class="text-muted"> (-i -t)</span>'
+    interactive: '交互<span class="text-muted"> (-i)</span>'
+    terminal: 'TTY 终端<span class="text-muted"> (-t)</span>'
     none: 无
   autoRestart:
     label: 自动重启
     no: 从不
-    onFailure: '失败时<span class="text-muted">(非 0 退出代码)</span>总是'
+    onFailure: '失败时<span class="text-muted"> (非 0 退出代码)</span>总是'
     onFailureCondPrefix: 失败时，最多
     onFailureCondSuffix: |
       {limit, plural,
@@ -6022,7 +6022,7 @@ formCommand:
     always: 总是
   terminationGracePeriodSeconds:
     label: 停止超时
-    helpText: 容器将在强制终止之前自行停止。
+    helpText: 容器有这么长的时间处理数据并自己停止，超过这个时间将被强制停止。
   fsgid:
     label: 文件系统组
     placeholder: '例如: 501'
@@ -6904,32 +6904,32 @@ formJobConfig:
 
 formUpgrade:
   title: '缩放/升级策略'
-  detail: 配置升级过程中替换 Pod 的策略。
+  detail: 服务升级过程中新旧 Pods 更新替换策略。
   strategy:
     label: 升级策略
     orderedReady: 严格按顺序更新并等待准备就绪。
-    parallel: 启动所有新 Pod 和停止所有旧 Pod 并行执行。
-    onDelete: 仅当手动删除旧 Pod 时才启动升级新 Pod。
-    recreate: 删除所有 Pod，然后重新开始。
+    parallel: 启动所有新 Pods 和停止所有旧 Pods 并行执行。
+    onDelete: 仅当手动删除旧 Pods 时才启动升级新 Pods。
+    recreate: 删除所有 Pods，然后重新开始。
     rollingUpdate: 滚动更新
-    startFirst: '滚动: 先启动新 Pod，再停止旧 Pod。'
-    stopFirst: '滚动: 先停止旧 Pod，再启动新 Pod。'
+    startFirst: '滚动: 先启动新 Pods，再停止旧 Pods。'
+    stopFirst: '滚动: 先停止旧 Pods，再启动新 Pods。'
     custom: 自定义
     batchSize:
       label: 批量大小
       detail: Pod 将批量启动或停止
     maxSurge:
       label: 最大浪涌
-      detail: 在任何给定时间内允许超出所需规模的最大 Pod 数量。
+      detail: 可理解为更新的并发数，默认为 1，即每次更新一个 Pod。
     maxUnavailable:
       label: 最大不可用
-      detail: 在任意给定时间最大不可用的 Pod 数量。
+      detail: 在任何给定时间内不可用的最大 Pods 数量。
     minReadySeconds:
-      label: 最短准备时间
-      detail: 在 Pod 被视为可用之前，Pod 中的容器需至少运行多长时间。
+      label: 最小准备时间
+      detail: 在 Pod 被视为可用之前，Pods 中的容器需至少运行多长时间。
     progressDeadlineSeconds:
       label: 进度截止时间
-      detail: 将部署标记为停滞状态之前需要等待多久时间才能看到进度。
+      detail: 一旦超过了部署进度的最后期限，Kubernetes 将会更新进度的状态和原因。
 
 formValueArray:
   addActionLabel: 添加值
@@ -7877,15 +7877,15 @@ drainNode:
     label: 强制
     helpText: "<b>永久删除</b> <ul class=m-0><li>独立 Pods 和它们的数据</li><li>配置了 Empty Dir 卷的 Pods 和它们的数据</li></ul>"
   gracePeriod:
-    title: 'Pod 延时终止时间: '
-    default: 使用每个 Pod 设置的默认延时终止时间
+    title: 'Pods 延时终止时间: '
+    default: 使用每个 Pods 设置的默认延时终止时间
     placeholder: '例如: 30'
-    custom: "自定义延时终止时间: "
+    custom: "自定义延时终止时间 "
     view:
       custom: "忽略默认值并给每个 pod 设置 {seconds} 秒"
   timeout:
     title: "驱散超时时间: "
-    default: 一直不断重试
+    default: 一直重试
     placeholder: '例如: 60'
     custom: "自定义超时时间: "
     view:
