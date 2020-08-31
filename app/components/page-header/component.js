@@ -102,14 +102,6 @@ export default Component.extend({
     });
   },
 
-  actions: {
-    clickDashboard(more) {
-      // Regular click on the link will have Ember try to resolve /dashboard/c/<id>
-      // to an Ember route and show the error page.  That's bad.
-      window.location.href = get(this, 'dashboardLink') + more;
-    },
-  },
-
   shouldUpdateNavTree: observer(
     'pageScope',
     'clusterId',
