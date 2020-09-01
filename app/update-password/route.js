@@ -14,13 +14,7 @@ export default Route.extend({
 
     if ( get(this, 'access.firstLogin') ) {
       promises.push(get(this, 'globalStore').find('preference'));
-
-      promises.push(get(this, 'settings').load([
-        C.SETTING.VERSION_RANCHER,
-        C.SETTING.TELEMETRY,
-        C.SETTING.EULA_AGREED,
-        C.SETTING.UI_DEFAULT_LANDING
-      ]));
+      promises.push(get(this, 'settings').loadAll());
     }
 
     return Promise.all(promises).then(() => {
