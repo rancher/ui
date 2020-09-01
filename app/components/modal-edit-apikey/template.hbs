@@ -128,6 +128,37 @@
               {{t "editApiKey.ttl.year"}}
             </label>
           </div>
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=expire
+                value="custom"
+              }}&nbsp;
+              {{t "editApiKey.ttl.custom"}} - {{ttlCustomMin}}
+              {{input-number
+                disabled=(not (eq expire "custom"))
+                min=0
+                max=ttlCustomMax
+                classNames="form-control inline-block initial-width"
+                value=customTTL
+              }}
+              <select
+                disabled={{not (eq expire "custom")}}
+                style="width: 100px"
+                class="form-control inline-block"
+                onchange={{action (mut ttlUnit) value="target.value"}}
+              >
+                {{#each ttlUnitOptions as |ttlUnitOption|}}
+                  <option
+                    value="{{ttlUnitOption}}"
+                    selected={{eq ttlUnit ttlUnitOption}}
+                  >
+                    {{ttlUnitOption}}
+                  </option>
+                {{/each}}
+              </select>
+            </label>
+          </div>
         {{else}}
           <div class="radio">
             <label>
