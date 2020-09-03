@@ -364,21 +364,18 @@
             <label class="acc-label">
               {{t "clusterNew.amazoneks.secretsEncryption.kmsHelpLabel"}}
             </label>
+            {{searchable-select
+              classNames="form-control"
+              optionValuePath="KeyArn"
+              optionLabelPath="KeyArn"
+              content=allKmsKeys
+              value=(mut config.kmsKey)
+              allowCustom=true
+            }}
             {{#if loadFailedKmsKeys}}
-              <Input
-                @type="text"
-                value={{mut config.kmsKey}}
-                @classNames="form-control"
-              />
-            {{else}}
-              <NewSelect
-                class="form-control"
-                @value={{mut config.kmsKey}}
-                @content={{allKmsKeys}}
-                @useContentForDefaultValue={{true}}
-                @optionValuePath="KeyArn"
-                @optionLabelPath="KeyArn"
-              />
+              <p class="help-block text-warning">
+                {{t "clusterNew.amazoneks.secretsEncryption.failure"}}
+              </p>
             {{/if}}
           </div>
         </div>
