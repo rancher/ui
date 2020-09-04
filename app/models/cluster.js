@@ -675,7 +675,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return this._super(...arguments);
     }
 
-    // this is NOT a generic object diff. It tries to be as generic as possible but it does interface with specific Ids that generic objs may not have
+    // this is NOT a generic object diff.
+    // It tries to be as generic as possible but it does make certain assumptions regarding nulls and emtpy arrays/objects
+    // if LHS (upstream) is null and RHS (eks config) is empty we do not count this as a change
+    // additionally null values on the RHS will be ignored as null cant be sent in this case
     function diff(lhs, rhs) {
       const delta = {};
       const rhsKeys = Object.keys(rhs);
