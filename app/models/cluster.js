@@ -8,8 +8,12 @@ import Grafana from 'shared/mixins/grafana';
 import { equal, alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
 import C from 'ui/utils/constants';
-import { isEmpty } from '@ember/utils';
+import { isEmpty, isEqual } from '@ember/utils';
 import moment from 'moment';
+import jsondiffpatch from 'jsondiffpatch';
+import { isArray } from '@ember/array';
+
+
 const TRUE = 'True';
 const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
 const SCHEDULE_CLUSTER_SCAN_QUESTION_KEY = 'scheduledClusterScan.enabled';
@@ -652,6 +656,141 @@ export default Resource.extend(Grafana, ResourceUsage, {
     }
 
     return true;
+  },
+
+  save(opt) {
+    if (get(this, 'driver') === 'EKS' && !isEmpty(this.id)) {
+      const options = ({
+        ...opt,
+        data: {}
+      });
+
+      const config = jsondiffpatch.clone(get(this, 'eksConfig'));
+      const upstreamSpec = jsondiffpatch.clone(get(this, 'eksStatus.upstreamSpec'));
+
+      set(options, 'data', diff(upstreamSpec, config));
+
+      return this._super(options);
+    } else {
+      return this._super(...arguments);
+    }
+
+    // this is NOT a generic object diff. It tries to be as generic as possible but it does interface with specific Ids that generic objs may not have
+    function diff(lhs, rhs) {
+      const delta = {};
+      const rhsKeys = Object.keys(rhs);
+
+      rhsKeys.forEach((k) => {
+        if (k === 'type') {
+          return;
+        }
+
+        const lhsMatch = get(lhs, k);
+        const rhsMatch = get(rhs, k);
+
+        try {
+          if (isEqual(JSON.stringify(lhsMatch), JSON.stringify(rhsMatch))) {
+            return;
+          }
+        } catch (e){}
+
+        if (isEmpty(lhsMatch) || isEmptyObject(lhsMatch)) {
+          if (isEmpty(rhsMatch) || isEmptyObject(rhsMatch)) {
+            if (lhsMatch !== null && (isArray(rhsMatch) || isObject(rhsMatch))) {
+              // Empty Arrays and Empty Maps must be sent as such unless the upstream value is null, then the empty array or obj is just a init value from ember
+              set(delta, k, rhsMatch);
+            }
+
+            return;
+          } else {
+            // lhs is empty, rhs is not, just set
+            set(delta, k, rhsMatch);
+          }
+        } else {
+          if (rhsMatch !== null) {
+            // entry in og obj
+            if (isArray(lhsMatch)) {
+              if (isArray(rhsMatch)) {
+                if (rhsMatch.every((m) => isObject(m))) {
+                  // You have more diffing to do
+                  rhsMatch.forEach((match) => {
+                    // our most likely candiate for a match is node group name, but lets check the others just incase.
+                    const matchId = get(match, 'nodegroupName') || get(match, 'name') || get(match, 'id') || false;
+
+                    if (matchId) {
+                      let lmatchIdx;
+
+                      // we have soime kind of identifier to find a match in the upstream, so we can diff and insert to new array
+                      const lMatch = lhsMatch.find((l, idx) => {
+                        const lmatchId = get(l, 'nodegroupName') || get(l, 'name') || get(l, 'id');
+
+                        if (lmatchId === matchId) {
+                          lmatchIdx = idx;
+
+                          return l;
+                        }
+                      });
+
+                      if (lMatch) {
+                        // we have a match in the upstream, meaning we've probably made updates to the object itself
+                        const diffedMatch = diff(lMatch, match);
+
+                        if (!isArray(get(delta, k))) {
+                          set(delta, k, [diffedMatch]);
+                        } else {
+                          // diff and push into new array
+                          delta[k].insertAt(lmatchIdx, diffedMatch);
+                        }
+                      } else {
+                        // no match in upstream, new entry
+                        if (!isArray(get(delta, k))) {
+                          set(delta, k, [match]);
+                        } else {
+                          delta[k].pushObject(match);
+                        }
+                      }
+                    } else {
+                      // no match id, all we can do is dumb add
+                      if (!isArray(get(delta, k))) {
+                        set(delta, k, [match]);
+                      } else {
+                        delta[k].pushObject(match);
+                      }
+                    }
+                  })
+                } else {
+                  set(delta, k, rhsMatch);
+                }
+              } else {
+                set(delta, k, rhsMatch);
+              }
+            } else if (isObject(lhsMatch)) {
+              if (!isEmpty(rhsMatch) && !isEmptyObject(rhsMatch)) {
+                if ((Object.keys(lhsMatch) || []).length > 0) {
+                  // You have more diffing to do
+                  set(delta, k, diff(lhsMatch, rhsMatch));
+                } else if (isEmptyObject(lhsMatch)) {
+                  // we had a map now we have an empty map
+                  set(delta, k, {});
+                }
+              }
+            } else { // lhsMatch not an array or object
+              set(delta, k, rhsMatch);
+            }
+          }
+        }
+      });
+
+      function isObject(obj) {
+        return obj !== null && obj.constructor.name === 'Object';
+      }
+
+      function isEmptyObject(obj) {
+        return isObject(obj) && Object.keys(obj).length === 0;
+      }
+
+      return delta;
+    }
   },
 
 });
