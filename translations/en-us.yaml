@@ -5740,6 +5740,7 @@ dangerZone:
     'auth-user-info-resync-cron': 'Default cron schedule for resyncing auth provider group memberships.'
     'cluster-template-enforcement': 'Non-admins will be restricted to launching clusters via preapproved RKE Templates only.'
     'auth-user-session-ttl-minutes': 'Custom TTL (in minutes) on a user auth session.'
+    'auth-token-max-ttl-minutes': 'Custom max TTL (in minutes) on an auth token.'
     'rke-metadata-config': 'Configure RKE metadata refresh parameters.'
     'ui-banners': 'Classification banner is used to display a custom fixed banner in the header, footer, or both. The setting takes JSON object containing 3 root parameters; <code>banner</code>, <code>showHeader</code>, <code>showFooter</code>. <code>banner</code> is an object containing; <code>textColor</code>, <code>background</code>, and <code>text</code>, where <code>textColor</code> and <code>background</code> are any valid CSS color value.'
 
@@ -5824,6 +5825,15 @@ editApiKey:
     day: A day from now
     month: A month from now
     year: A year from now
+    max: 
+      label: "{time} - Maximum allowed"
+      unit:
+        minutes: "{count, plural, =1 {# Minute} other {# Minutes}}"
+        hours: "{count, plural, =1 {# Hour} other {# Hours}}" 
+        days: "{count, plural, =1 {# Day} other {# Days}}"
+        years: "{count, plural, =1 {# Year} other {# Years}}"
+        
+    custom: Custom
   description:
     placeholder: "Optional: e.g. This key is used by the app servers to deploy containers"
   saveWarning1: Save the info above!  This is the only time you'll be able to see it.

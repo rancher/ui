@@ -9,10 +9,15 @@ import {
 } from '@ember/object';
 import moment from 'moment';
 import $ from 'jquery';
+import C from 'ui/utils/constants';
+
+const ttlUnits = ['minutes', 'hours', 'days', 'years'];
 
 export default Component.extend(ModalBase, NewOrEdit, {
   endpointService: service('endpoint'),
+  intl:            service(),
   scope:           service(),
+  settings:        service(),
 
   layout,
   classNames:      ['large-modal', 'alert'],
@@ -20,10 +25,15 @@ export default Component.extend(ModalBase, NewOrEdit, {
   clone:           null,
   justCreated:     false,
   expire:          'never',
+  complexExpire:   'max',
+  ttlUnit:         'minutes',
+  customTTL:       '0',
 
-  originalModel:   alias('modalService.modalOpts'),
-  displayEndpoint: alias('endpointService.api.display.current'),
-  linkEndpoint:    alias('endpointService.api.auth.current'),
+  ttlUnits,
+  originalModel:    alias('modalService.modalOpts'),
+  displayEndpoint:  alias('endpointService.api.display.current'),
+  linkEndpoint:     alias('endpointService.api.auth.current'),
+  showSimpleExpire: computed.not('authTokenHasMaxTTL'),
 
   didReceiveAttrs() {
     setProperties(this, {
@@ -33,6 +43,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
     });
 
     this.expireChanged();
+    this.complexExpireChanged();
   },
 
   didInsertElement() {
@@ -41,15 +52,72 @@ export default Component.extend(ModalBase, NewOrEdit, {
     }, 250);
   },
 
-  expireChanged: observer('expire', function() {
-    const now  = moment();
-    let expire = now.clone();
+  expireChanged: observer('expire', 'customTTLDuration', function() {
+    if (!get(this, 'showSimpleExpire')) {
+      return;
+    }
+    const expire = get(this, 'expire');
+    const isCustom = expire === 'custom';
+    const duration = isCustom ? get(this, 'customTTLDuration') : moment.duration(1, expire);
 
-    if ( get(this, 'expire') ) {
-      expire = expire.add(1, get(this, 'expire'));
+    set(this, 'model.ttl', duration.asMilliseconds());
+  }),
+
+  complexExpireChanged: observer('complexExpire', 'maxTTLDuration', 'customTTLDuration', function() {
+    if (get(this, 'showSimpleExpire')) {
+      return;
     }
 
-    set(this, 'model.ttl', expire.diff(now));
+    const complexExpire = get(this, 'complexExpire');
+    const maxTTLDuration = get(this, 'maxTTLDuration');
+    const customTTLDuration = get(this, 'customTTLDuration');
+    const duration = complexExpire === 'max' ? maxTTLDuration : customTTLDuration;
+
+    console.log(complexExpire, maxTTLDuration, customTTLDuration, duration.asMilliseconds());
+
+    set(this, 'model.ttl', duration.asMilliseconds());
+  }),
+
+  ttlUnitChanged: observer('ttlUnit', function() {
+    set(this, 'customTTL', 0);
+  }),
+
+  customTTLDuration: computed('customTTL', 'ttlUnit', function() {
+    const customTTL = Number.parseFloat(get(this, 'customTTL'));
+    const ttlUnit = get(this, 'ttlUnit');
+
+    return moment.duration(customTTL, ttlUnit);
+  }),
+
+  authTokenMaxTTL: computed(`settings.${ C.SETTING.AUTH_TOKEN_MAX_TTL_MINUTES }`, function() {
+    const maxTTL = get(this, `settings.${ C.SETTING.AUTH_TOKEN_MAX_TTL_MINUTES }`) || '0';
+
+    return Number.parseFloat(maxTTL);
+  }),
+
+  authTokenHasMaxTTL: computed('authTokenMaxTTL', function() {
+    return get(this, 'authTokenMaxTTL') > 0;
+  }),
+
+  maxTTLDuration: computed('authTokenMaxTTL', function() {
+    const maxTTLInMinutes = get(this, 'authTokenMaxTTL');
+
+    return moment.duration(maxTTLInMinutes, 'minutes');
+  }),
+
+  maxTTLBestUnit: computed('maxTTLDuration', function() {
+    const duration = get(this, 'maxTTLDuration');
+
+    return this.getBestTimeUnit(duration);
+  }),
+
+  friendlyMaxTTL: computed('maxTTLDuration', 'maxTTLBestUnit', function() {
+    const intl = get(this, 'intl');
+    const duration = get(this, 'maxTTLDuration');
+    const unit = get(this, 'maxTTLBestUnit');
+    const count = roundDown(duration.as(unit), 2);
+
+    return intl.t(`editApiKey.ttl.max.unit.${ unit }`, { count });
   }),
 
   editing: computed('clone.id', function() {
@@ -73,6 +141,25 @@ export default Component.extend(ModalBase, NewOrEdit, {
     return null;
   }),
 
+  ttlCustomMax: computed('authTokenHasMaxTTL', 'ttlUnit', 'maxTTLDuration', function() {
+    if (!get(this, 'authTokenHasMaxTTL')) {
+      return;
+    }
+
+    const unit = get(this, 'ttlUnit');
+    const duration = get(this, 'maxTTLDuration');
+
+    return roundDown(duration.as(unit), 2);
+  }),
+
+
+  ttlUnitOptions: computed('maxTTLBestUnit', function() {
+    const unit = get(this, 'maxTTLBestUnit');
+    const indexOfUnit = ttlUnits.indexOf(unit);
+
+    return ttlUnits.slice(0, indexOfUnit + 1);
+  }),
+
   allClusters: computed('scope.allClusters.@each.{id}', function() {
     const allClusters = get(this, 'scope.allClusters');
 
@@ -84,6 +171,12 @@ export default Component.extend(ModalBase, NewOrEdit, {
     }).sortBy('displayName');
   }),
 
+  getBestTimeUnit(duration) {
+    const reversed = [...ttlUnits].reverse();
+    const unit = reversed.find(((unit) => duration.as(unit) >= 1));
+
+    return unit || reversed[0];
+  },
 
   doneSaving(neu) {
     if ( get(this, 'editing') ) {
@@ -94,6 +187,11 @@ export default Component.extend(ModalBase, NewOrEdit, {
         clone:       neu.clone()
       });
     }
-  },
-
+  }
 });
+
+function roundDown(value, digits) {
+  const factor = 10 * digits;
+
+  return Math.floor(value * factor) / factor;
+}
