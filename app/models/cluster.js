@@ -705,7 +705,6 @@ export default Resource.extend(Grafana, ResourceUsage, {
       const nodeGroupConfigSpec = get(this, 'globalStore').getById('schema', 'nodegroup');
 
       if (isEmpty(this.id)) {
-
         replaceNullWithEmptyDefaults(get(this, 'eksConfig'), get(eksClusterConfigSpec, 'resourceFields'));
 
         if (!isEmpty(get(this, 'eksConfig.nodeGroups'))) {
@@ -798,9 +797,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
       } catch (e){}
 
       if (k === 'nodeGroups') {
-        if (!isEmpty(lhsMatch)) {
+        if (!isEmpty(rhsMatch)) {
           // node groups need ALL data so short circut and send it all
-          set(delta, k, lhsMatch);
+          set(delta, k, rhsMatch);
         } else {
           // all node groups were deleted
           set(delta, k, []);
