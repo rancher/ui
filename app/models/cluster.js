@@ -12,7 +12,7 @@ import { isEmpty, isEqual } from '@ember/utils';
 import moment from 'moment';
 import jsondiffpatch from 'jsondiffpatch';
 import { isArray } from '@ember/array';
-
+import { reject } from 'rsvp';
 
 const TRUE = 'True';
 const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
@@ -659,18 +659,53 @@ export default Resource.extend(Grafana, ResourceUsage, {
   },
 
   save(opt) {
-    if (get(this, 'driver') === 'EKS' && !isEmpty(this.id)) {
+    if (get(this, 'driver') === 'EKS' || !this.isEmptyObject(get(this, 'eksConfig'))) {
       const options = ({
         ...opt,
         data: {}
       });
 
       const config = jsondiffpatch.clone(get(this, 'eksConfig'));
-      const upstreamSpec = jsondiffpatch.clone(get(this, 'eksStatus.upstreamSpec'));
 
-      set(options, 'data', diff(upstreamSpec, config));
+      if (isEmpty(this.id)) {
+        const eksClusterConfigSpec = get(this, 'globalStore').getById('schema', 'eksclusterconfigspec');
+        const resourceFields = get(eksClusterConfigSpec, 'resourceFields');
 
-      return this._super(options);
+        Object.keys(config).forEach((ck) => {
+          const configValue = get(config, ck);
+
+          if (configValue === null || typeof configValue === 'undefined') {
+            const resourceField = resourceFields[ck];
+
+            if (resourceField.type === 'string') {
+              set(config, ck, '');
+            } else if (resourceField.type.includes('array')) {
+              set(config, ck, []);
+            } else if (resourceField.type.includes('map')) {
+              set(config, ck, {});
+            } else if (resourceField.type.includes('boolean')) {
+              if (resourceField.default) {
+                set(config, ck, resourceField.default);
+              } else {
+                // we shouldn't get here, there are not that many fields in EKS and I've set the defaults for bools that are there
+                // but if we do hit this branch my some magic case imo a bool isn't something we can default cause its unknown...just dont do anything.
+              }
+            }
+          }
+        })
+
+        return this._super(...arguments);
+      } else {
+        const upstreamSpec = jsondiffpatch.clone(get(this, 'eksStatus.upstreamSpec'));
+
+        if (isEmpty(upstreamSpec)) {
+          return reject(this.intl('clusterNew.amazoneks.errors.clusterSpec'));
+        }
+
+        set(options, 'data', diff(upstreamSpec, config));
+
+        return this._super(options);
+      }
     } else {
       return this._super(...arguments);
     }
@@ -697,9 +732,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
           }
         } catch (e){}
 
-        if (isEmpty(lhsMatch) || isEmptyObject(lhsMatch)) {
-          if (isEmpty(rhsMatch) || isEmptyObject(rhsMatch)) {
-            if (lhsMatch !== null && (isArray(rhsMatch) || isObject(rhsMatch))) {
+        if (isEmpty(lhsMatch) || this.isEmptyObject(lhsMatch)) {
+          if (isEmpty(rhsMatch) || this.isEmptyObject(rhsMatch)) {
+            if (lhsMatch !== null && (isArray(rhsMatch) || this.isObject(rhsMatch))) {
               // Empty Arrays and Empty Maps must be sent as such unless the upstream value is null, then the empty array or obj is just a init value from ember
               set(delta, k, rhsMatch);
             }
@@ -714,7 +749,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
             // entry in og obj
             if (isArray(lhsMatch)) {
               if (isArray(rhsMatch)) {
-                if (rhsMatch.every((m) => isObject(m))) {
+                if (rhsMatch.every((m) => this.isObject(m))) {
                   // You have more diffing to do
                   rhsMatch.forEach((match) => {
                     // our most likely candiate for a match is node group name, but lets check the others just incase.
@@ -767,12 +802,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
               } else {
                 set(delta, k, rhsMatch);
               }
-            } else if (isObject(lhsMatch)) {
-              if (!isEmpty(rhsMatch) && !isEmptyObject(rhsMatch)) {
+            } else if (this.isObject(lhsMatch)) {
+              if (!isEmpty(rhsMatch) && !this.isEmptyObject(rhsMatch)) {
                 if ((Object.keys(lhsMatch) || []).length > 0) {
                   // You have more diffing to do
                   set(delta, k, diff(lhsMatch, rhsMatch));
-                } else if (isEmptyObject(lhsMatch)) {
+                } else if (this.isEmptyObject(lhsMatch)) {
                   // we had a map now we have an empty map
                   set(delta, k, {});
                 }
@@ -784,16 +819,16 @@ export default Resource.extend(Grafana, ResourceUsage, {
         }
       });
 
-      function isObject(obj) {
-        return obj !== null && obj.constructor.name === 'Object';
-      }
-
-      function isEmptyObject(obj) {
-        return isObject(obj) && Object.keys(obj).length === 0;
-      }
-
       return delta;
     }
   },
+
+  isObject(obj) {
+    return obj !== null && obj.constructor.name === 'Object';
+  },
+
+  isEmptyObject(obj) {
+    return this.isObject(obj) && Object.keys(obj).length === 0;
+  }
 
 });
