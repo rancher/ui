@@ -693,7 +693,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
   },
 
   save(opt) {
-    if (get(this, 'driver') === 'EKS' || !this.isEmptyObject(get(this, 'eksConfig'))) {
+    const eksConfig = get(this, 'eksConfig');
+
+    if (get(this, 'driver') === 'EKS' || (this.isObject(eksConfig) && !this.isEmptyObject(eksConfig))) {
       const options = ({
         ...opt,
         data: {
@@ -897,8 +899,15 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
     return delta;
   },
+
   isObject(obj) {
-    return obj !== null && obj.constructor.name === 'Object';
+    if ( !obj || !obj.constructor || !obj.constructor.name ) {
+      return false;
+    }
+
+    const name = obj.constructor.name;
+
+    return name === 'Object' || name === 'Class';
   },
 
   isEmptyObject(obj) {
