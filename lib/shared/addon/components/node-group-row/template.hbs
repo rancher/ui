@@ -16,11 +16,16 @@
         <label class="acc-label">
           {{t "nodeGroupRow.name.label"}}
         </label>
-        <Input
-          @type="text"
-          @value={{mut model.nodegroupName}}
-          @classNames="form-control"
-        />
+        {{#input-or-display
+          editable=nameIsEditable
+          value=model.nodegroupName
+        }}
+          <Input
+            @type="text"
+            @value={{mut model.nodegroupName}}
+            @classNames="form-control"
+          />
+        {{/input-or-display}}
       </div>
       <div class="col span-6">
         <label class="acc-label">

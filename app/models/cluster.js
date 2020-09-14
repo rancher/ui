@@ -8,11 +8,49 @@ import Grafana from 'shared/mixins/grafana';
 import { equal, alias } from '@ember/object/computed';
 import { resolve } from 'rsvp';
 import C from 'ui/utils/constants';
-import { isEmpty } from '@ember/utils';
+import { isEmpty, isEqual } from '@ember/utils';
 import moment from 'moment';
+import jsondiffpatch from 'jsondiffpatch';
+import { isArray } from '@ember/array';
+import { reject } from 'rsvp';
+
 const TRUE = 'True';
 const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
 const SCHEDULE_CLUSTER_SCAN_QUESTION_KEY = 'scheduledClusterScan.enabled';
+
+export const DEFAULT_NODE_GROUP_CONFIG = {
+  desiredSize:   2,
+  diskSize:      20,
+  ec2SshKey:     '',
+  gpu:           false,
+  instanceType:  't3.medium',
+  maxSize:       2,
+  minSize:       2,
+  nodegroupName: '',
+  subnets:       [],
+  type:          'nodeGroup',
+};
+
+export const DEFAULT_EKS_CONFIG = {
+  amazonCredentialSecret: '',
+  displayName:            '',
+  imported:               false,
+  kmsKey:                 '',
+  kubernetesVersion:      '',
+  loggingTypes:           [],
+  nodeGroups:             [],
+  privateAccess:          false,
+  publicAccess:           true,
+  publicAccessSources:    [],
+  region:                 'us-west-2',
+  secretsEncryption:      false,
+  securityGroups:         [],
+  serviceRole:            '',
+  subnets:                [],
+  tags:                   {},
+  type:                   'eksclusterconfigspec',
+};
+
 
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
@@ -653,5 +691,218 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
     return true;
   },
+
+  save(opt) {
+    if (get(this, 'driver') === 'EKS' || !this.isEmptyObject(get(this, 'eksConfig'))) {
+      const options = ({
+        ...opt,
+        data: {
+          name:      this.name,
+          eksConfig: {},
+        }
+      });
+      const eksClusterConfigSpec = get(this, 'globalStore').getById('schema', 'eksclusterconfigspec');
+      const nodeGroupConfigSpec = get(this, 'globalStore').getById('schema', 'nodegroup');
+
+      if (isEmpty(this.id)) {
+        replaceNullWithEmptyDefaults(get(this, 'eksConfig'), get(eksClusterConfigSpec, 'resourceFields'));
+
+        if (!isEmpty(get(this, 'eksConfig.nodeGroups'))) {
+          get(this, 'eksConfig.nodeGroups').forEach((ng) => {
+            replaceNullWithEmptyDefaults(ng, get(nodeGroupConfigSpec, 'resourceFields'));
+          });
+        }
+
+
+        return this._super(...arguments);
+      } else {
+        const config = jsondiffpatch.clone(get(this, 'eksConfig'));
+        const upstreamSpec = jsondiffpatch.clone(get(this, 'eksStatus.upstreamSpec'));
+
+        if (isEmpty(upstreamSpec)) {
+          return reject(this.intl('clusterNew.amazoneks.errors.clusterSpec'));
+        }
+
+        set(options, 'data.eksConfig', this.diffEksUpstream(upstreamSpec, config));
+
+        if (!isEmpty(get(options, 'data.eksConfig.nodeGroups'))) {
+          get(options, 'data.eksConfig.nodeGroups').forEach((ng) => {
+            replaceNullWithEmptyDefaults(ng, get(nodeGroupConfigSpec, 'resourceFields'));
+          });
+        }
+
+        if (get(options, 'qp._replace')) {
+          delete options.qp['_replace'];
+        }
+
+        return this._super(options);
+      }
+    } else {
+      return this._super(...arguments);
+    }
+
+    function replaceNullWithEmptyDefaults(config, resourceFields) {
+      Object.keys(config).forEach((ck) => {
+        const configValue = get(config, ck);
+
+        if (configValue === null || typeof configValue === 'undefined') {
+          const resourceField = resourceFields[ck];
+
+          if (resourceField.type === 'string') {
+            set(config, ck, '');
+          } else if (resourceField.type.includes('array')) {
+            set(config, ck, []);
+          } else if (resourceField.type.includes('map')) {
+            set(config, ck, {});
+          } else if (resourceField.type.includes('boolean')) {
+            if (resourceField.default) {
+              set(config, ck, resourceField.default);
+            } else {
+              if ( !isEmpty(get(DEFAULT_EKS_CONFIG, ck)) || !isEmpty(get(DEFAULT_NODE_GROUP_CONFIG, ck)) ) {
+                let match = isEmpty(get(DEFAULT_EKS_CONFIG, ck)) ? get(DEFAULT_NODE_GROUP_CONFIG, ck) : get(DEFAULT_EKS_CONFIG, ck);
+
+                set(config, ck, match);
+              }
+              // we shouldn't get here, there are not that many fields in EKS and I've set the defaults for bools that are there
+              // but if we do hit this branch my some magic case imo a bool isn't something we can default cause its unknown...just dont do anything.
+            }
+          }
+        }
+      });
+
+      return config;
+    }
+  },
+
+  diffEksUpstream(lhs, rhs) {
+    // this is NOT a generic object diff.
+    // It tries to be as generic as possible but it does make certain assumptions regarding nulls and emtpy arrays/objects
+    // if LHS (upstream) is null and RHS (eks config) is empty we do not count this as a change
+    // additionally null values on the RHS will be ignored as null cant be sent in this case
+    const delta = {};
+    const rhsKeys = Object.keys(rhs);
+
+    rhsKeys.forEach((k) => {
+      if (k === 'type') {
+        return;
+      }
+
+      const lhsMatch = get(lhs, k);
+      const rhsMatch = get(rhs, k);
+
+      try {
+        if (isEqual(JSON.stringify(lhsMatch), JSON.stringify(rhsMatch))) {
+          return;
+        }
+      } catch (e){}
+
+      if (k === 'nodeGroups') {
+        if (!isEmpty(rhsMatch)) {
+          // node groups need ALL data so short circut and send it all
+          set(delta, k, rhsMatch);
+        } else {
+          // all node groups were deleted
+          set(delta, k, []);
+        }
+
+        return;
+      }
+
+      if (isEmpty(lhsMatch) || this.isEmptyObject(lhsMatch)) {
+        if (isEmpty(rhsMatch) || this.isEmptyObject(rhsMatch)) {
+          if (lhsMatch !== null && (isArray(rhsMatch) || this.isObject(rhsMatch))) {
+            // Empty Arrays and Empty Maps must be sent as such unless the upstream value is null, then the empty array or obj is just a init value from ember
+            set(delta, k, rhsMatch);
+          }
+
+          return;
+        } else {
+          // lhs is empty, rhs is not, just set
+          set(delta, k, rhsMatch);
+        }
+      } else {
+        if (rhsMatch !== null) {
+          // entry in og obj
+          if (isArray(lhsMatch)) {
+            if (isArray(rhsMatch)) {
+              if (rhsMatch.every((m) => this.isObject(m))) {
+                // You have more diffing to do
+                rhsMatch.forEach((match) => {
+                  // our most likely candiate for a match is node group name, but lets check the others just incase.
+                  const matchId = get(match, 'name') || get(match, 'id') || false;
+
+                  if (matchId) {
+                    let lmatchIdx;
+
+                    // we have soime kind of identifier to find a match in the upstream, so we can diff and insert to new array
+                    const lMatch = lhsMatch.find((l, idx) => {
+                      const lmatchId = get(l, 'name') || get(l, 'id');
+
+                      if (lmatchId === matchId) {
+                        lmatchIdx = idx;
+
+                        return l;
+                      }
+                    });
+
+                    if (lMatch) {
+                      // we have a match in the upstream, meaning we've probably made updates to the object itself
+                      const diffedMatch = this.diffEksUpstream(lMatch, match);
+
+                      if (!isArray(get(delta, k))) {
+                        set(delta, k, [diffedMatch]);
+                      } else {
+                        // diff and push into new array
+                        delta[k].insertAt(lmatchIdx, diffedMatch);
+                      }
+                    } else {
+                      // no match in upstream, new entry
+                      if (!isArray(get(delta, k))) {
+                        set(delta, k, [match]);
+                      } else {
+                        delta[k].pushObject(match);
+                      }
+                    }
+                  } else {
+                    // no match id, all we can do is dumb add
+                    if (!isArray(get(delta, k))) {
+                      set(delta, k, [match]);
+                    } else {
+                      delta[k].pushObject(match);
+                    }
+                  }
+                })
+              } else {
+                set(delta, k, rhsMatch);
+              }
+            } else {
+              set(delta, k, rhsMatch);
+            }
+          } else if (this.isObject(lhsMatch)) {
+            if (!isEmpty(rhsMatch) && !this.isEmptyObject(rhsMatch)) {
+              if ((Object.keys(lhsMatch) || []).length > 0) {
+                // You have more diffing to do
+                set(delta, k, this.diffEksUpstream(lhsMatch, rhsMatch));
+              } else if (this.isEmptyObject(lhsMatch)) {
+                // we had a map now we have an empty map
+                set(delta, k, {});
+              }
+            }
+          } else { // lhsMatch not an array or object
+            set(delta, k, rhsMatch);
+          }
+        }
+      }
+    });
+
+    return delta;
+  },
+  isObject(obj) {
+    return obj !== null && obj.constructor.name === 'Object';
+  },
+
+  isEmptyObject(obj) {
+    return this.isObject(obj) && Object.keys(obj).length === 0;
+  }
 
 });
