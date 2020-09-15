@@ -87,7 +87,7 @@ generic:
   owner: 所有者
   paste: 粘贴
   pod: pod
-  podRestarts: Pod 中容器重启次数
+  podRestarts: 容器重启次数
   port: 端口
   ports: 端口
   prefix: 前缀
@@ -96,7 +96,7 @@ generic:
   persistentVolumeClaim: PVC
   random: 随机
   remove: 移除
-  restarts: Pod 中容器重启次数
+  restarts: 容器重启次数
   role: 角色
   save: 保存
   saved: 已保存
@@ -2560,8 +2560,8 @@ servicePage:
     storagedriverservice: 存储服务
   sidekick:
     tabHeader: Sidecars
-    header: 工作负载与 Sidecar
-    helpBlock: 选择主容器或其中一个 sidecar 容器
+    header: 工作负载与 Sidecars
+    helpBlock: 选择主容器或其中一个 sidecars 容器
 
 signupPage:
   header: '注册 {appName}'
@@ -2687,7 +2687,7 @@ userPreferencesPage:
     header: 主题
     light: 明亮
     auto: 自动
-    autoDetail: 自动设置会在晚 6 点到早 6 点间自动切换主题到黑色
+    autoDetail: 选择自动设置，将会在晚 6 点到次日早 6 点间自动切换到黑色主题。
     dark: 黑色
   generalInfo:
     header: 账号
@@ -3200,7 +3200,7 @@ clusterNew:
     label: 供应商
     detail: 选择集群主机的来源
   nodes:
-    title: 主机
+    title: 主机选项
     detail: 自定义将要创建的主机
   customize:
     title: 集群选项
@@ -3208,15 +3208,15 @@ clusterNew:
     title: Kubernetes 选项
     detail: 自定义集群功能
   security:
-    title: 安全
-    detail: 自定义 GKE 服务账号和访问权限
+    title: 安全选项
+    detail: 自定义服务帐户和访问范围
   psp:
     label: 默认的 Pod 安全策略
     prompt: 选择 Pod 安全策略...
     none: 没有配置策略
     required: 启用时需要设置默认 Pod 安全策略
   amazoneks:
-    label: AWS 基于 Kubernetes 的弹性容器服务
+    label: 为 Kubernetes 提供的 Amazon 弹性容器服务
     shortLabel: Amazon EKS
     ingressWarning: '注意: 目前 Amazon EKS 不会在启动新的集群时创建传入控制器。如果需要此功能，则必须在集群创建后手动创建一个传入控制器。'
     access:
@@ -3228,7 +3228,7 @@ clusterNew:
     access:
       next: '下一步: 配置集群'
       loading: '从腾讯云获取 VPC 信息'
-      title: 账户认证
+      title: 帐户访问
       detail: 选择腾讯云 Kubernetes 服务所使用的区域
     cluster:
       title: 集群配置
@@ -3236,12 +3236,12 @@ clusterNew:
       next: '下一步: 选择主机类型'
       loading: '从腾讯云获取可用区信息'
     node:
-      title: 主机类型
+      title: 实例类型
       detail: 选择腾讯云 Kubernetes 服务中使用的主机类型
       next: '下一步: 配置节点'
       loading: '从腾讯云获取节点配置信息'
     instance:
-      title: 节点配置
+      title: 实例配置
       detail: 配置腾讯云 Kubernetes 服务中的节点
     subnet:
       label: 子网
@@ -3888,28 +3888,28 @@ clusterNew:
         legacy: "当前集群配置了废弃的 ectd 快照设置。新的设置将创建时间和保留持续时间替换为更简单的创建时间(以小时和保留计数为单位)。系统已自动迁移了您的创建周期，保留计数已配置为默认的 6 个备份(当前保留时间:{duration})，如果您不介意这个设置，那不需要进一步的操作，您也可以在高级设置中更改此设置。"
         retention:
           label: 备份副本
-          placeholder: "12"
+          placeholder: "e.g. 12"
           prefix: 份数
         interval:
           label: 备份周期
-          placeholder: "6"
+          placeholder: "e.g. 6"
         bucketName:
           label: S3 Bucket Name
-          placeholder: "backups"
+          placeholder: "e.g. backups"
         region:
           label: S3 Region
-          placeholder: "us-west-2"
+          placeholder: "e.g. us-west-2"
         endpoint:
           label: S3 Region Endpoint
-          placeholder: "例如: s3.us-west-2.amazonaws.com"
+          placeholder: "e.g. s3.us-west-2.amazonaws.com"
         folder:
           label: S3 Folder
-          placeholder: "例如: cluster-backup"
+          placeholder: "e.g. cluster-backup"
         accessKey:
-          label: Access Key
+          label: S3 Access Key
           placeholder: Your AWS access key
         secretKey:
-          label: Secret Key
+          label: S3 Secret Key
           placeholder: Your AWS secret key
           provided: Provided
         customCa:
@@ -3953,7 +3953,7 @@ clusterNew:
       private:
         label: 内网地址
         placeholder: '例如: 1.2.3.4'
-    label: '{appName}Kubernetes 引擎'
+    label: '{appName} Kubernetes 引擎'
     shortLabel: 自定义
     customize:
       label: 集群选项
@@ -4069,7 +4069,7 @@ clusterNew:
       ipRange: 服务集群 IP 范围
       podSecurityPolicy: Pod 安全策略
     kubeController:
-      label: Kube 控制器
+      label: Kube Controller
       cidr: 集群 CIDR
       ipRange: 服务集群 IP 范围
     kubelet:
@@ -4095,7 +4095,7 @@ clusterNew:
       windows: Windows
     windowsSupport:
       label: Windows 支持
-      help: 适用于 Kubernetes 1.14 与 Flannel 网络提供商。
+      help: 适用于 Kubernetes 1.15 与 Flannel 网络提供商。
       disabled: 不支持 {plugin} 网络提供商。
     advanced:
       label: 高级集群选项
@@ -4358,7 +4358,7 @@ resourceEventList:
 
 confirmDelete:
   titleWithoutResourceType: '您确定要删除吗？'
-  titleWithResourceType: '您确定要删除<b>{resourceType}</b>吗？'
+  titleWithResourceType: '您确定要删除 <b>{resourceType}</b> 吗？'
   resourceType:
     namespace: '命名空间'
     project: '项目'
@@ -4375,7 +4375,7 @@ confirmDelete:
   systemChartNote: '您正在删除一个系统应用程序。如果删除该应用程序，可能会导致集群出现问题。'
   forceDelete:
     label: 强制删除
-    warning: '强制删除 Pod 并不等待确认 Pod 中的进程是否终止，这可能导致这些进程一直运行，直到节点检测到并完成优雅的删除。如果您的进程使用共享存储或与远程 API 通信，并且依赖于 pod 的名称来标识自己，那么强制删除这些 pod 可能导致多个进程使用相同的标识运行在不同的机器上，这可能导致数据损坏或不一致。只有在确定 Pod 已终止，或者应用程序可以同时运行同一 pod 的多个副本时，才强制删除 pod。此外，如果强制删除 Pod，调度器可能会在节点释放这些资源之前在这些节点上运行新的 Pod，并导致这些 Pod 立即被驱逐。'
+    warning: '重要: 强制删除 Pod 并不等待确认 Pods 中的进程是否终止，这可能导致这些进程一直运行，直到节点检测到并完成优雅的删除。如果您的进程使用共享存储或与远程 API 通信，并且依赖于 pod 的名称来标识自己，那么强制删除这些 pod 可能导致多个进程使用相同的标识运行在不同的机器上，这可能导致数据损坏或不一致。只有在确定 Pod 已终止，或者应用程序可以同时运行同一 pod 的多个副本时，才强制删除 pod。此外，如果强制删除 Pod，调度器可能会在节点释放这些资源之前在这些节点上运行新的 Pod，并导致这些 Pod 立即被驱逐。'
 
 containerLogs:
   download: 下载日志
@@ -4599,7 +4599,7 @@ cruPersistentVolume:
     readOnly:
       label: 只读
     targetWWNs:
-      label: 目标的 WWNs
+      label: 目标 WWNs
       addActionLabel: 添加
     wwids:
       label: Wwids
@@ -4628,10 +4628,10 @@ cruPersistentVolume:
       placeholder: "例如: uuid"
   glusterfs:
     endpoints:
-      label: 终端
-      placeholder: "例如: glusterfs-cluster"
+      label: Endpoints
+      placeholder: "e.g. glusterfs-cluster"
     path:
-      label: 路径
+      label: Path
       placeholder: "例如: kube_vol"
     readOnly:
       label: 只读
@@ -5157,9 +5157,9 @@ cruGateway:
   servers:
     label: Servers
     add: 添加 Server
-    error: 请输入至少一个 server
+    error: 请输入至少一个 Server
     noServers: 没有 Servers
-    removeServerLabel: 移除 server
+    removeServerLabel: 移除 Server
 
 cruVirtualService:
   title:
@@ -5802,10 +5802,10 @@ formDisks:
     label: 磁盘大小
     rootDisk: 由系统镜像决定
   readIops:
-    label: 读取 IOPS
+    label: 读取 Iops
     placeholder: '例如: 1000'
   writeIops:
-    label: 写入 IOPS
+    label: 写入 Iops
     placeholder: '例如: 1000'
   driver:
     label: 驱动
@@ -6051,12 +6051,12 @@ formHealthCheck:
     placeholder: '例如: /health'
   httpHeaders:
     label: 其他的 HTTP Headers
-    addActionLabel: 添加 Headers
-    keyLabel: Http 头字段
+    addActionLabel: 添加 Header
+    keyLabel: Header 名称
     keyPlaceholder: '例如: 用户代理'
     valuePlaceholder: '例如: 健康检查'
   host:
-    label: 主机 Headers
+    label: 主机 Header
     placeholder: '例如: example.com'
   port:
     label: 容器端口
@@ -6263,7 +6263,7 @@ formPorts:
   dnsName:
     label: DNS 记录
     placeholder: '例如: example'
-  noPorts: 当前 Pod 没有映射端口
+  noPorts: 此容器没有端口映射。
   error:
     privateRequired: 每条映射规则必须设置容器端口。
     publicRequired: 如果指定了主机 IP，则需要源端口。
@@ -6276,7 +6276,7 @@ formPorts:
   showAdvanced: 显示端口命名选项
 
 formScale:
-  label: 类型
+  label: 工作负载类型
   showAdvanced: 更多选项
   scaleMode:
     deploymentPrefix: "Deployment: 部署无状态应用"
@@ -6327,7 +6327,7 @@ formScheduling:
   toleration:
     title: 调度容忍
     add: 添加调度容忍
-    workloadTitle: "{workload}Pod 的容忍"
+    workloadTitle: "{workload} Pod 的容忍"
   scaling:
     minMaxDetail: 如果设置，用户将无法通过界面或 API 请求使容器数量低于最小数量或超过最大数量。
     incrementDetail: 如果设置，容器数量必须是它的倍数。
@@ -6344,8 +6344,8 @@ formScheduling:
     label: 优先级显示名称
     placeholder: '例如: 高'
   scheduler:
-    label: 调度名称
-    placeholder: '例如: MyScheduler'
+    label: 调度
+    placeholder: e.g. myScheduler
   nodeSelector:
     requireAll: "必须 "
     requireAny: "最好"
@@ -6474,7 +6474,7 @@ formSecurity:
   isolation:
     label: 隔离
     default: 默认(容器)
-    hyperv: HyperV(虚拟机)
+    hyperv: HyperV (虚拟机)
 
 formSslTermination:
   title: SSL/TLS 证书
@@ -6537,7 +6537,7 @@ formRelatedWorkloads:
   nodata: 没有相关的工作负载
 formNodeTaints:
   title: 污点（Taints）
-  detail: 污点标记的节点不接受未配置容忍（tolerate）的 Pod 调度。
+  detail: 污点标记的节点不接受未配置容忍（tolerate）的 Pods 调度。
   addAction: 添加污点（Taint）
   protip: 必须是唯一的键值对
   key:
@@ -9697,8 +9697,8 @@ newPipelineStep:
         label: 密文
         missingKey: 所选的密文没有 {key} 字段.
       auth:
-        http: '密文中的<code>USERNAME</code>和<code>PASSWORD</code>将被作为用户名和密码。'
-        ssh: '密文中的<code>DEPLOY_KEY</code>将被作为 Deploy Key'
+        http: '密文中的 <code>USERNAME</code> 和 <code>PASSWORD</code> 将被作为用户名和密码。'
+        ssh: '密文中的 <code>DEPLOY_KEY</code> 将被作为 Deploy Key'
       stepName: 发布应用模版
       targets:
         label: 协议
@@ -9707,7 +9707,7 @@ newPipelineStep:
       path:
         label: Chart 目录
         placeholder: '例如: ./charts/wordpress/latest'
-        helpText: '代码库中<code style="padding: 2px 5px;">Chart.yaml</code>所在的目录'
+        helpText: '代码库中 <code style="padding: 2px 5px;">Chart.yaml</code> 所在的目录'
       catalogTemplate:
         label: 应用模版名称
         placeholder: '例如: wordpress'
