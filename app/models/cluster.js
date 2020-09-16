@@ -693,9 +693,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
   },
 
   save(opt) {
-    const eksConfig = get(this, 'eksConfig');
-
-    if (get(this, 'driver') === 'EKS' || (this.isObject(eksConfig) && !this.isEmptyObject(eksConfig))) {
+    if (get(this, 'driver') === 'EKS' || (this.isObject(get(this, 'eksConfig')) && !this.isEmptyObject(get(this, 'eksConfig')))) {
       const options = ({
         ...opt,
         data: {
