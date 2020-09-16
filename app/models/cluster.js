@@ -898,14 +898,15 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return delta;
   },
 
+  /**
+   * True if obj is a plain object, an instantiated function/class
+   * @param {anything} obj
+   */
   isObject(obj) {
-    if ( !obj || !obj.constructor || !obj.constructor.name ) {
-      return false;
-    }
-
-    const name = obj.constructor.name;
-
-    return name === 'Object' || name === 'Class';
+    return obj                   // Eliminates null/undefined
+      && obj instanceof Object   // Eliminates primitives
+      && typeof obj === 'object' // Eliminates class definitions/functions
+      && !Array.isArray(obj);    // Eliminates arrays
   },
 
   isEmptyObject(obj) {
