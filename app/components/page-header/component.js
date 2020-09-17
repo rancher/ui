@@ -40,12 +40,12 @@ export default Component.extend({
   stacks:           null,
 
   // This computed property generates the active list of choices to display
-  navTree:       null,
-  clusterId:        alias('scope.currentCluster.id'),
-  cluster:          alias('scope.currentCluster'),
-  projectId:        alias('scope.currentProject.id'),
-  project:          alias('scope.currentProject'),
-  accessEnabled:    alias('access.enabled'),
+  navTree:           null,
+  clusterId:         alias('scope.currentCluster.id'),
+  cluster:           alias('scope.currentCluster'),
+  projectId:         alias('scope.currentProject.id'),
+  project:           alias('scope.currentProject'),
+  accessEnabled:     alias('access.enabled'),
 
   init() {
     this._super(...arguments);
@@ -126,12 +126,11 @@ export default Component.extend({
     return !!get(this, 'stackSchema.resourceFields.system.update');
   }),
 
-  dashboardLink: computed('pageScope', 'clusterId', 'cluster.isReady', function() {
-    if ( !get(this, 'features').isFeatureEnabled(C.FEATURES.DASHBOARD) ) {
-      // Only if Steve/dashboard are deployed
-      return;
-    }
+  dashboardBaseLink: computed('scope.dashboardBase', function() {
+    return get(this, 'scope.dashboardBase').replace(/\/+$/, '');
+  }),
 
+  dashboardLink: computed('pageScope', 'clusterId', 'cluster.isReady', function() {
     if ( get(this, 'pageScope') === 'global' || !this.clusterId ) {
       // Only inside a cluster
       return;

@@ -299,11 +299,6 @@ const rootNav = [
         dashboardLink:            '/backup',
       },
       {
-        id:                       'cluster-tools-fleet',
-        localizedLabel:           'nav.tools.fleet',
-        dashboardLink:            '/fleet',
-      },
-      {
         id:                       'cluster-tools-gatekeeper',
         localizedLabel:           'nav.tools.gatekeeper',
         dashboardLink:            '/gatekeeper',
@@ -436,6 +431,12 @@ const rootNav = [
         route:          'global-admin.cluster-templates',
         resource:       ['clustertemplate'],
         resourceScope:  'global',
+      },
+      { divider: true },
+      {
+        id:                'tools-fleet',
+        localizedLabel:    'nav.tools.fleet',
+        dashboardBaseLink:  '/c/local/fleet',
       },
     ],
   },
