@@ -796,7 +796,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         }
       } catch (e){}
 
-      if (k === 'nodeGroups') {
+      if (k === 'nodeGroups' || k === 'tags') {
         if (!isEmpty(rhsMatch)) {
           // node groups need ALL data so short circut and send it all
           set(delta, k, rhsMatch);
