@@ -19,21 +19,23 @@
       cancelDisabled=true
   }}
     {{#if firstLogin}}
-      <hr/>
-      <h3 class="mt-20 text-left">{{t 'modalEditPassword.firstLogin.setView'}}</h3>
-      <div class="image-radio-container mt-20">
-        <div class="image-radio">
-          <button class="{{if (eq landing 'ember') 'checked' ''}}" type="button" {{action "setView" "ember" }}>
-            <img src="{{app.baseAssets}}assets/images/cluster-multi.svg"/>
-          </button>
-          <p class="text-muted text-small">{{t "landingPage.emberLong" }}</p>
-        </div>
+      <div class="hide">
+        <hr/>
+        <h3 class="mt-20 text-left">{{t 'modalEditPassword.firstLogin.setView'}}</h3>
+        <div class="image-radio-container mt-20">
+          <div class="image-radio">
+            <button class="{{if (eq landing 'ember') 'checked' ''}}" type="button" {{action "setView" "ember" }}>
+              <img src="{{app.baseAssets}}assets/images/cluster-multi.svg"/>
+            </button>
+            <p class="text-muted text-small">{{t "landingPage.emberLong" }}</p>
+          </div>
 
-        <div class="image-radio">
-          <button class="{{if (eq landing 'vue') 'checked' ''}}" type="button" {{action "setView" "vue" }}>
-            <img src="{{app.baseAssets}}assets/images/cluster-single.svg"/>
-          </button>
-          <p class="text-muted text-small">{{t "landingPage.vueLong" }}</p>
+          <div class="image-radio">
+            <button class="{{if (eq landing 'vue') 'checked' ''}}" type="button" {{action "setView" "vue" }}>
+              <img src="{{app.baseAssets}}assets/images/cluster-single.svg"/>
+            </button>
+            <p class="text-muted text-small">{{t "landingPage.vueLong" }}</p>
+          </div>
         </div>
       </div>
 
@@ -42,7 +44,7 @@
         <label class="text-small">{{input type="checkbox" checked=model.optIn}} {{t 'telemetryOpt.label'}}</label> <a href="{{settings.docsBase}}/faq/telemetry" class="text-small" target="_blank" rel="noopener nofollow">{{t 'telemetryOpt.learnMore.label'}}</a>
       </div>
       <div>
-        <label class="text-small">{{input type="checkbox" checked=agreedToEula}} {{t 'telemetryOpt.eula.prefix' appName=settings.appName}} <a href="{{settings.eulaLink}}" target="_blank" rel="noopener nofollow">{{t 'telemetryOpt.eula.link' appName=settings.appName}}</a> {{t 'telemetryOpt.eula.suffix' appName=settings.appName}}</label>
+        <label class="text-small">{{input type="checkbox" checked=agreedToEula}} {{t 'telemetryOpt.eula.prefix' appName=settings.appName}} <a href="{{settings.eulaLink}}" target="_blank" rel="noopener nofollow">{{t 'telemetryOpt.eula.link' appName=settings.appName}}</a> {{t 'telemetryOpt.eula.suffix' appName=settings.appName}}{{field-required}}</label>
       </div>
     {{/if}}
   {{/input-edit-password}}
