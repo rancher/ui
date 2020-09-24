@@ -10,7 +10,7 @@ export default Component.extend(ModalBase, {
   settings:   service(),
   prefs:      service(),
   layout,
-  classNames: ['modal-container', 'span-6', 'offset-3', 'modal-whats-new', 'alert'],
+  classNames: ['modal-container', 'span-8', 'offset-2', 'modal-whats-new', 'alert'],
 
   actions: {
     cancel() {
