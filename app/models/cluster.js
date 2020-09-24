@@ -12,7 +12,6 @@ import { isEmpty, isEqual } from '@ember/utils';
 import moment from 'moment';
 import jsondiffpatch from 'jsondiffpatch';
 import { isArray } from '@ember/array';
-import { reject } from 'rsvp';
 
 const TRUE = 'True';
 const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';

@@ -31,12 +31,28 @@
         <label class="acc-label">
           {{t "nodeGroupRow.version.label"}}
         </label>
-          {{new-select
-            disabled=shouldDisableVersionSelect
-            classNames="form-control"
-            content=versions
-            value=model.version
-          }}
+        {{#if upgradeAvailable}}
+          <div class="checkbox form-control-static">
+            <label class="acc-label">
+              <Input
+                @type="checkbox"
+                @checked={{mut upgradeVersion}}
+                @classNames="form-control"
+              />
+              {{t "nodeGroupRow.version.upgrade" version=clusterConfig.kubernetesVersion }}
+            </label>
+          </div>
+        {{else}}
+          <div>
+            {{ model.version }}
+            {{#if showNodeUpgradePreventionReason}}
+              <div class="help-block">
+                {{t "nodeGroupRow.version.warning"}}
+
+              </div>
+            {{/if}}
+          </div>
+        {{/if}}
       </div>
     </div>
   </div>
