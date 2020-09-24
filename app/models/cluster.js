@@ -825,7 +825,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
           // entry in og obj
           if (isArray(lhsMatch)) {
             if (isArray(rhsMatch)) {
-              if (rhsMatch.every((m) => this.isObject(m))) {
+              if (!isEmpty(rhsMatch) && rhsMatch.every((m) => this.isObject(m))) {
                 // You have more diffing to do
                 rhsMatch.forEach((match) => {
                   // our most likely candiate for a match is node group name, but lets check the others just incase.
