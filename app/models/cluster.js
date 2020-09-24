@@ -720,7 +720,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         const upstreamSpec = jsondiffpatch.clone(get(this, 'eksStatus.upstreamSpec'));
 
         if (isEmpty(upstreamSpec)) {
-          return reject(this.intl.t('clusterNew.amazoneks.errors.clusterSpec'));
+          return this._super(...arguments);
         }
 
         set(options, 'data.eksConfig', this.diffEksUpstream(upstreamSpec, config));
