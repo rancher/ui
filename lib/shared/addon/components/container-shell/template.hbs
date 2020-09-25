@@ -15,11 +15,13 @@
   {{else}}
      {{containerName}}
   {{/if}}
-  <div class="console-status text-muted pull-right">
-    {{t (concat 'containerShell.status.' status) error=error}}
-    {{#if statusCode}}
-      {{t 'containerShell.status.code' code=statusCode}}
-    {{/if}}
+  <div class="console-status pull-right">
+    <span class="text-warning">
+      {{t (concat 'containerShell.status.' status) error=error}}
+      {{#if statusCode}}
+        {{t 'containerShell.status.code' code=statusCode}}
+      {{/if}}
+    </span>
   </div>
 </h2>
 {{#if showProtip}}
