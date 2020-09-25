@@ -692,6 +692,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
   },
 
   save(opt) {
+    const { globalStore, eksConfig } = this;
+
     if (get(this, 'driver') === 'EKS' || (this.isObject(get(this, 'eksConfig')) && !this.isEmptyObject(get(this, 'eksConfig')))) {
       const options = ({
         ...opt,
@@ -700,18 +702,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
           eksConfig: {},
         }
       });
-      const eksClusterConfigSpec = get(this, 'globalStore').getById('schema', 'eksclusterconfigspec');
-      const nodeGroupConfigSpec = get(this, 'globalStore').getById('schema', 'nodegroup');
+      const eksClusterConfigSpec = globalStore.getById('schema', 'eksclusterconfigspec');
+      const nodeGroupConfigSpec = globalStore.getById('schema', 'nodegroup');
 
       if (isEmpty(this.id)) {
-        replaceNullWithEmptyDefaults(get(this, 'eksConfig'), get(eksClusterConfigSpec, 'resourceFields'));
-
-        if (!isEmpty(get(this, 'eksConfig.nodeGroups'))) {
-          get(this, 'eksConfig.nodeGroups').forEach((ng) => {
-            replaceNullWithEmptyDefaults(ng, get(nodeGroupConfigSpec, 'resourceFields'));
-          });
-        }
-
+        sanitizeConfigs(eksClusterConfigSpec, nodeGroupConfigSpec);
 
         return this._super(...arguments);
       } else {
@@ -719,6 +714,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
         const upstreamSpec = jsondiffpatch.clone(get(this, 'eksStatus.upstreamSpec'));
 
         if (isEmpty(upstreamSpec)) {
+          sanitizeConfigs(eksClusterConfigSpec, nodeGroupConfigSpec);
+
           return this._super(...arguments);
         }
 
@@ -738,6 +735,16 @@ export default Resource.extend(Grafana, ResourceUsage, {
       }
     } else {
       return this._super(...arguments);
+    }
+
+    function sanitizeConfigs(eksClusterConfigSpec, nodeGroupConfigSpec) {
+      replaceNullWithEmptyDefaults(eksConfig, get(eksClusterConfigSpec, 'resourceFields'));
+
+      if (!isEmpty(get(eksConfig, 'nodeGroups'))) {
+        get(eksConfig, 'nodeGroups').forEach((ng) => {
+          replaceNullWithEmptyDefaults(ng, get(nodeGroupConfigSpec, 'resourceFields'));
+        });
+      }
     }
 
     function replaceNullWithEmptyDefaults(config, resourceFields) {
