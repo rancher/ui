@@ -73,15 +73,24 @@
           <label class="acc-label">
             {{t "clusterNew.amazoneks.kubernetesVersion.label"}}
           </label>
-          {{new-select
-            classNames="form-control"
-            content=versionChoices
-            value=config.kubernetesVersion
-          }}
-          {{#if editing}}
+          {{#if disableVersionSelect}}
+          <div>
+            {{config.kubernetesVersion}}
             <p class="help-block">
-              {{t "formVersions.eks.helpBlock"}}
+              {{t "clusterNew.amazoneks.kubernetesVersion.warning"}}
             </p>
+          </div>
+          {{else}}
+            {{new-select
+              classNames="form-control"
+              content=versionChoices
+              value=config.kubernetesVersion
+            }}
+            {{#if editing}}
+              <p class="help-block">
+                {{t "formVersions.eks.helpBlock"}}
+              </p>
+            {{/if}}
           {{/if}}
         </div>
         <div class="col span-6">
