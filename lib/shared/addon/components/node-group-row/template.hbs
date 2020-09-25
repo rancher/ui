@@ -16,10 +16,7 @@
         <label class="acc-label">
           {{t "nodeGroupRow.name.label"}}
         </label>
-        {{#input-or-display
-          editable=nameIsEditable
-          value=model.nodegroupName
-        }}
+        {{#input-or-display editable=nameIsEditable value=model.nodegroupName}}
           <Input
             @type="text"
             @value={{mut model.nodegroupName}}
@@ -31,12 +28,30 @@
         <label class="acc-label">
           {{t "nodeGroupRow.version.label"}}
         </label>
-          {{new-select
-            disabled=shouldDisableVersionSelect
-            classNames="form-control"
-            content=versions
-            value=model.version
-          }}
+        {{#if upgradeAvailable}}
+          <div class="checkbox form-control-static">
+            <label class="acc-label">
+              <Input
+                @type="checkbox"
+                @checked={{mut upgradeVersion}}
+                @classNames="form-control"
+              />
+              {{t
+                "nodeGroupRow.version.upgrade"
+                version=clusterConfig.kubernetesVersion
+              }}
+            </label>
+          </div>
+        {{else}}
+          <div>
+            {{model.version}}
+            {{#if showNodeUpgradePreventionReason}}
+              <div class="help-block">
+                {{t "nodeGroupRow.version.warning"}}
+              </div>
+            {{/if}}
+          </div>
+        {{/if}}
       </div>
     </div>
   </div>
@@ -45,30 +60,37 @@
       <label class="acc-label">
         {{t "nodeGroupRow.instance.label"}}
       </label>
-      <NewSelect
-        class="form-control"
-        @value={{mut model.instanceType}}
-        @content={{instanceTypes}}
-        @optionValuePath="name"
-        @optionLabelPath="name"
-        @optionGroupPath="group"
-      />
+      {{#input-or-display editable=creating value=model.instanceType}}
+        <NewSelect
+          class="form-control"
+          @value={{mut model.instanceType}}
+          @content={{instanceTypes}}
+          @optionValuePath="name"
+          @optionLabelPath="name"
+          @optionGroupPath="group"
+        />
+      {{/input-or-display}}
     </div>
     <div class="col span-6">
       <label class="acc-label">
         {{t "nodeGroupRow.nodeVolumeSize.label"}}
       </label>
-      <div class="input-group">
-        <InputInteger
-          @min={{0}}
-          @value={{mut model.diskSize}}
-          @classNames="form-control"
-          @placeholder={{t "nodeGroupRow.nodeVolumeSize.placeholder"}}
-        />
-        <span class="input-group-addon bg-default">
-          {{t "generic.gigabyte"}}
-        </span>
-      </div>
+      {{#input-or-display
+        editable=creating
+        value=(concat model.diskSize (t "generic.gigabyte"))
+      }}
+        <div class="input-group">
+          <InputInteger
+            @min={{0}}
+            @value={{mut model.diskSize}}
+            @classNames="form-control"
+            @placeholder={{t "nodeGroupRow.nodeVolumeSize.placeholder"}}
+          />
+          <span class="input-group-addon bg-default">
+            {{t "generic.gigabyte"}}
+          </span>
+        </div>
+      {{/input-or-display}}
     </div>
   </div>
   <div class="row">
@@ -110,32 +132,46 @@
       <label class="acc-label">
         {{t "nodeGroupRow.ssh.label"}}
       </label>
-      {{#if keyPairs}}
-        {{searchable-select
-          classNames="form-control"
-          value=model.ec2SshKey
-          content=keyPairs
-          optionValuePath="KeyName"
-          optionLabelPath="KeyName"
-          prompt=(t "nodeDriver.amazoneks.keyPairs.prompt")
-        }}
-      {{else}}
-        <Input
-          @type="text"
-          @value={{mut model.ec2SshKey}}
-          @classNames="form-control"
-        />
-      {{/if}}
+      {{#input-or-display editable=creating value=model.ec2SshKey}}
+        {{#if keyPairs}}
+          {{searchable-select
+            classNames="form-control"
+            value=model.ec2SshKey
+            content=keyPairs
+            optionValuePath="KeyName"
+            optionLabelPath="KeyName"
+            prompt=(t "nodeDriver.amazoneks.keyPairs.prompt")
+          }}
+        {{else}}
+          <Input
+            @type="text"
+            @value={{mut model.ec2SshKey}}
+            @classNames="form-control"
+          />
+        {{/if}}
+      {{/input-or-display}}
     </div>
     <div class="col span-6">
       <div class="checkbox form-control-static">
-        <label class="acc-label pt-30">
-          <Input
-            @type="checkbox"
-            @checked={{mut model.gpu}}
-            @classNames="form-control"
-          />
-          {{t "nodeGroupRow.gpu.label"}}
+        <label class="acc-label">
+          {{#if creating}}
+            <Input
+              class="mt-30"
+              @type="checkbox"
+              @checked={{mut model.gpu}}
+              @classNames="form-control"
+            />
+            {{t "nodeGroupRow.gpu.label"}}
+          {{else}}
+            {{t "nodeGroupRow.gpu.label"}}
+            <div>
+              {{#if model.gpu}}
+                {{t "generic.yes"}}
+              {{else}}
+                {{t "generic.no"}}
+              {{/if}}
+            </div>
+          {{/if}}
         </label>
       </div>
     </div>

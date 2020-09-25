@@ -12,7 +12,6 @@ import { isEmpty, isEqual } from '@ember/utils';
 import moment from 'moment';
 import jsondiffpatch from 'jsondiffpatch';
 import { isArray } from '@ember/array';
-import { reject } from 'rsvp';
 
 const TRUE = 'True';
 const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
@@ -720,7 +719,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         const upstreamSpec = jsondiffpatch.clone(get(this, 'eksStatus.upstreamSpec'));
 
         if (isEmpty(upstreamSpec)) {
-          return reject(this.intl.t('clusterNew.amazoneks.errors.clusterSpec'));
+          return this._super(...arguments);
         }
 
         set(options, 'data.eksConfig', this.diffEksUpstream(upstreamSpec, config));
@@ -825,7 +824,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
           // entry in og obj
           if (isArray(lhsMatch)) {
             if (isArray(rhsMatch)) {
-              if (rhsMatch.every((m) => this.isObject(m))) {
+              if (!isEmpty(rhsMatch) && rhsMatch.every((m) => this.isObject(m))) {
                 // You have more diffing to do
                 rhsMatch.forEach((match) => {
                   // our most likely candiate for a match is node group name, but lets check the others just incase.
