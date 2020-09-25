@@ -307,13 +307,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return out;
   }),
 
-  nodeGroupVersionUpdate: computed('appliedSpec.eksConfig.kubernetesVersion', 'appliedSpec.eksConfig.nodeGroups.@each.{version}', function() {
-    if (isEmpty(get(this, 'appliedSpec.eksConfig.nodeGroups'))) {
+  nodeGroupVersionUpdate: computed('eksStatus.upstreamSpec.kubernetesVersion', 'eksStatus.upstreamSpec.nodeGroups.@each.{version}', function() {
+    if (isEmpty(get(this, 'eksStatus.upstreamSpec.nodeGroups'))) {
       return false;
     }
 
-    const kubernetesVersion = get(this, 'appliedSpec.eksConfig.kubernetesVersion');
-    const nodeGroupVersions = (get(this, 'appliedSpec.eksConfig.nodeGroups') || []).getEach('version');
+    const kubernetesVersion = get(this, 'eksStatus.upstreamSpec.kubernetesVersion');
+    const nodeGroupVersions = (get(this, 'eksStatus.upstreamSpec.nodeGroups') || []).getEach('version');
 
     return nodeGroupVersions.any((ngv) => ngv !== kubernetesVersion);
   }),
