@@ -1,62 +1,41 @@
 <div class="welcome-copy">
-  <h1>What's New</h1>
+  <h1>What's New in 2.5</h1>
 
-  <ul>
-    <li>
-      <p><strong>Cluster Explorer</strong>: In Rancher 2.5, we are introducing the new Cluster Explorer dashboard to provide a deeper look into clusters under management. With this new dashboard, you can:</p>
+  <ul class="list-unstyled">
+    <li class="mb-10">
+      <b>Cluster Explorer:</b> New dashboard to provide a deeper look into clusters under management.
       <ul>
-        <li>Manage all Kubernetes cluster resources including custom resources from the Kubernetes operator ecosystem.</li>
-        <li>Deploy Helm charts from new App catalog.</li>
-        <li>View and edit Helm3 CLI releases from the new Apps UI.</li>
-        <li>Manage Istio, Monitoring, Logging, and other tooling through custom UX.</li>
-        <li>Administratively limit visible resources based on user RBAC settings.</li>
-        <li>View logs and interact with kubectl shell in a new IDE like viewer.</li>
+        <li>Manage all Kubernetes cluster resources including custom resources from the Kubernetes operator ecosystem</li>
+        <li>Deploy and manage Helm charts from our new Apps &amp; Marketplace</li>
+        <li>View logs and interact with kubectl shell in a new IDE-like viewer</li>
+      </ul>
+    </li>
+    <li class="mb-10"><b>Monitoring and Alerting powered by Prometheus:</b> Allows management of custom Grafana dashboards and provide customization to AlertManager</li>
+    <li class="mb-10"><b>Logging powered by Banzai Cloud:</b> Customize FluentBit and Fluentd configurations and ship logs to a remote data store</li>
+    <li class="mb-10"><b>CIS Scans powered by kube-bench:</b> Extended support to perform CIS scans tailored for EKS and GKE platforms and perform a generic scan on any Kubernetes distribution</li>
+    <li class="mb-10"><b>Istio 1.7+:</b> Allows users to deploy multiple ingress and egress gateways</li>
+    <li class="mb-10">
+      <b>GitOps at Scale powered by Fleet:</b> Fleet is a built-in deployment tool for delivering applications and configurations from a Git source repository across multiple clusters.
+      <ul>
+        <li>Deploy any Kubernetes resource defined by manifests, kustomize, or Helm</li>
+        <li>Scale deployments to any number of clusters using a staged checkout and pull-based update model</li>
+        <li>Organize clusters into groups for easier management</li>
+        <li>Map Git source repositories to cluster group targets</li>
+      </ul>
+    </li>
+    <li class="mb-10">
+      <b>Enhanced EKS Lifecycle Management:</b>
+      <ul>
+        <li>Provisioning has been enhanced to support managed node groups, private access, and control plane logging</li>
+        <li>Registering existing EKS clusters allow management of upgrades and configuration</li>
       </ul>
     </li>
     <li>
-      <p><strong>GitOps at Scale</strong>: Rancher GitOps is a built-in deployment tool for delivering applications and configurations from a Git source repository across multiple clusters. Rancher GitOps is able to scale to a large number of
-      clusters under management using a staged checkout and pull-based update model. The staged checkout allows the GitOps control plane to gradually roll deployments out to clusters instead of all at once. Using a pull-based update model,
-      administrators don't need to configure network access to every remote cluster. The pull-based model also allows registered cluster agents to operate disconnected from the control plane for a period and automatically check-in when reconnected
-      to the network. Administrators can organize clusters into groups for easier management within Rancher GitOps. Git source repositories are mapped to cluster group targets by admins, without needing the end-user to access the control plane
-      configuration. Application owners&nbsp;and admins can deploy any Kubernetes resource defined by manifests, kustomize, or Helm.</p>
-    </li>
-    <li>
-      <p><strong>Enhanced EKS Lifecycle Management</strong>: EKS provisioning has been enhanced to support managed node groups, private access, and control plane logging. Users can now register existing EKS clusters provisioned with other tools
-      like eksctl into Rancher to allow the management of upgrades and configuration going forward. Support has been added for multiple managed node groups with heterogeneous configurations to enable GPU and non-GPU workloads in the same cluster.
-      The EKS cluster configuration in Rancher now uses cloud credentials decoupling the AWS key management from the cluster configuration.</p>
-    </li>
-    <li>
-      <p><strong>Rancher Server Backups</strong>: Previously admins relied on etcd backups of the Rancher management cluster for DR and rollback scenarios. The new backup and recovery process no longer requires access to the etcd database. Now
-      admins can perform ad-hoc or scheduled backups of the Rancher application directly from the Rancher dashboard. The application data is compressed and stored on a Kubernetes volume or in an s3 object-store. Restoring the data can now be
-      performed on any Kubernetes cluster.</p>
-    </li>
-    <li>
-      <p><strong>Monitoring v2</strong>: Users can now define how to monitor, alert, and visualize application health as part of the deployment configuration. The new monitoring system can be configured with GitOps based workflows using the
-      Prometheus Operator custom resources. Alertmanager can be configured to use all built-in notification integrations. Alert templates can be customized to tailor notifications the on-call team receives. Users can deploy their own Grafana
-      dashboards into the built-in Grafana instance.</p>
-    </li>
-    <li>
-      <p><strong>Logging v2</strong>: New cluster-level logging pipelines that incorporate lighter weight FluentBit and Fluentd to ship logs to a remote data store. The pipeline functionality is orchestrated Kubernetes objects enabling
-      configuration through GitOps based workflows. Users will have the ability to customize both the FluentBit and Fluentd configurations.</p>
-    </li>
-    <li>
-      <p><strong>Expanded CIS Scans</strong>: Rancher CIS scanning now runs on EKS and GKE platforms in addition to RKE clusters. The scanning tool also includes a new standard CIS-1.5 profile untailored for a specific K8s distribution. The
-      benchmark versions have been updated to CIS 1.5, EKS-1.0, and GKE-1.0.</p>
-    </li>
-    <li>
-      <p><strong>Istio 1.7</strong>: The Istio project has made a lot of changes to the installation process over the last several releases. The new Rancher Istio integration now deploys the latest Istio Operator allowing for users to deploy
-      multiple ingress and egress gateways. Users can also manage the Istio custom resources in a customized UX in the new dashboard.</p>
-    </li>
-    <li>
-      <p><strong>RKE-Gov</strong>: A new Kubernetes distribution that supports FIPS encryption, SELinux, and container-d. The RKE-Gov distribution has out-of-the-box CIS compliance. Management of etcd backups and restores are built into the
-      distribution.</p>
-    </li>
-    <li>
-      <p><strong>CentOS/RHEL 8 Support</strong>: Admins can use RKE-Gov or K3s Kubernetes clusters installed on RHEL and CentOS 8 systems. RKE support will come in a later update and use Docker CE.</p>
-    </li>
-    <li>
-      <p><strong>Catalog Service v2 Service Account Mode</strong>: Service account mode enables users with read-only access to a cluster to deploy applications from a catalog. This feature supports use cases where a centralized IT/Operations team
-      provides certified applications for end-users to consume without needing full access to a cluster.</p>
+      <b>Rancher Server Backups:</b>
+      <ul>
+        <li>Back up Rancher server without access to the etcd database</li>
+        <li>Restore data into any Kubernetes cluster</li>
+      </ul>
     </li>
   </ul>
 

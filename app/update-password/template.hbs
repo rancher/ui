@@ -19,24 +19,24 @@
       cancelDisabled=true
   }}
     {{#if firstLogin}}
-      <div class="hide">
-        <hr/>
-        <h3 class="mt-20 text-left">{{t 'modalEditPassword.firstLogin.setView'}}</h3>
-        <div class="image-radio-container mt-20">
-          <div class="image-radio">
-            <button class="{{if (eq landing 'ember') 'checked' ''}}" type="button" {{action "setView" "ember" }}>
-              <img src="{{app.baseAssets}}assets/images/cluster-multi.svg"/>
-            </button>
-            <p class="text-muted text-small">{{t "landingPage.emberLong" }}</p>
-          </div>
+      <hr/>
+      <h3 class="mt-20 text-left">{{t 'modalEditPassword.firstLogin.setView'}}{{field-required}}</h3>
+      <div class="image-radio-container mt-20">
+        <label class="image-radio" {{action "setView" "ember" }}>
+          <button class="mb-5 {{if (eq landing 'ember') 'checked' ''}}" type="button">
+            <img src="{{app.baseAssets}}assets/images/cluster-multi.svg"/>
+          </button>
+          {{radio-button selection=landing value="ember"}}
+          {{t "landingPage.emberLong" }}
+        </label>
 
-          <div class="image-radio">
-            <button class="{{if (eq landing 'vue') 'checked' ''}}" type="button" {{action "setView" "vue" }}>
-              <img src="{{app.baseAssets}}assets/images/cluster-single.svg"/>
-            </button>
-            <p class="text-muted text-small">{{t "landingPage.vueLong" }}</p>
-          </div>
-        </div>
+        <label class="image-radio" {{action "setView" "vue" }}>
+          <button class="mb-5 {{if (eq landing 'vue') 'checked' ''}}" type="button">
+            <img src="{{app.baseAssets}}assets/images/cluster-single.svg"/>
+          </button>
+          {{radio-button selection=landing value="vue"}}
+          {{t "landingPage.vueLong" }}
+        </label>
       </div>
 
       <hr/>

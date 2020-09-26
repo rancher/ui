@@ -19,7 +19,7 @@ export default Controller.extend({
   init() {
     this._super(...arguments);
     set(this, 'showCurrent', !get(this, 'access.userCode.password'));
-    // set(this, 'landing', get(this, `setting.${ C.SETTING.UI_DEFAULT_LANDING }`));
+    set(this, 'landing', get(this, `setting.${ C.SETTING.UI_DEFAULT_LANDING }`));
     set(this, 'landing', 'ember');
   },
 
@@ -51,8 +51,8 @@ export default Controller.extend({
 
         get(this, 'settings').set(C.SETTING.TELEMETRY, value);
         get(this, 'settings').set(C.SETTING.EULA_AGREED, (new Date()).toISOString());
-        // get(this, 'settings').set(C.SETTING.UI_DEFAULT_LANDING, landing);
-        // get(this, 'prefs').set(C.PREFS.LANDING, landing);
+        get(this, 'settings').set(C.SETTING.UI_DEFAULT_LANDING, landing);
+        get(this, 'prefs').set(C.PREFS.LANDING, landing);
       }
 
       get(this, 'access').set('firstLogin', false);
