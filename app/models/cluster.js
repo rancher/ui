@@ -316,7 +316,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const kubernetesVersion = get(this, 'eksStatus.upstreamSpec.kubernetesVersion');
     const nodeGroupVersions = (get(this, 'eksStatus.upstreamSpec.nodeGroups') || []).getEach('version');
 
-    return nodeGroupVersions.any((ngv) => Semver.lt(Semver.coerce(kubernetesVersion), Semver.coerce(ngv)));
+    return nodeGroupVersions.any((ngv) => Semver.lt(Semver.coerce(ngv), Semver.coerce(kubernetesVersion)));
   }),
 
 
