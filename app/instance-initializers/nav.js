@@ -297,6 +297,9 @@ const rootNav = [
         id:                       'cluster-tools-backup',
         localizedLabel:           'nav.tools.backup',
         dashboardLink:            '/backup',
+        condition() {
+          return get(this, 'cluster.id') === 'local';
+        }
       },
       {
         id:                       'cluster-tools-gatekeeper',
