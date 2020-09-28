@@ -34,7 +34,7 @@
   </div>
 {{/if}}
 
-{{#if showBanner}}
+{{#if (and showBanner scope.currentCluster.isReady)}}
   {{#banner-message color="bg-info" showClose=true close=(action "closeBanner")}}
     <p>{{t 'banner.dashboard' dashboardLink=scope.dashboardLink docsBase=settings.docsBase htmlSafe=true}}</p>
   {{/banner-message}}

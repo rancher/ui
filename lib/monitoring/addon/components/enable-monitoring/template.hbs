@@ -1,11 +1,13 @@
-{{#if showMonitoringV2Warning}}
-  {{#banner-message color="bg-warning"}}
-    <p>{{t 'banner.monitoringV2Warning' dashboardLink=scope.dashboardLink docsBase=scope.docsBase htmlSafe=true}}</p>
-  {{/banner-message}}
-{{else}}
-  {{#banner-message color="bg-info"}}
-    <p>{{t 'banner.monitoring' dashboardLink=scope.dashboardLink docsBase=scope.docsBase htmlSafe=true}}</p>
-  {{/banner-message}}
+{{#if scope.currentCluster.isReady}}
+  {{#if showMonitoringV2Warning}}
+    {{#banner-message color="bg-warning"}}
+      <p>{{t 'banner.monitoringV2Warning' dashboardLink=scope.dashboardLink docsBase=scope.docsBase htmlSafe=true}}</p>
+    {{/banner-message}}
+  {{else}}
+    {{#banner-message color="bg-info"}}
+      <p>{{t 'banner.monitoring' dashboardLink=scope.dashboardLink docsBase=scope.docsBase htmlSafe=true}}</p>
+    {{/banner-message}}
+  {{/if}}
 {{/if}}
 
 {{#if canSaveMonitor}}
