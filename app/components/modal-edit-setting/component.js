@@ -39,7 +39,15 @@ export default Component.extend(ModalBase, {
     this._super(...arguments);
 
     if (get(this, 'model.kind') === 'json') {
-      set(this, 'formattedValue', JSON.stringify(JSON.parse(get(this, 'model.obj.value')), undefined, 2));
+      let formattedValue = get(this, 'model.obj.value')
+
+      try {
+        formattedValue = JSON.stringify(JSON.parse(formattedValue), undefined, 2)
+      } catch {
+        // catch SyntaxError
+      }
+
+      set(this, 'formattedValue', formattedValue);
     } else {
       set(this, 'value', get(this, 'model.obj.value') || '');
     }
