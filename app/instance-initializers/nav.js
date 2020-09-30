@@ -306,11 +306,11 @@ const rootNav = [
         localizedLabel:           'nav.tools.gatekeeper',
         dashboardLink:            '/gatekeeper',
       },
-      {
-        id:                       'cluster-tools-rio',
-        localizedLabel:           'nav.tools.rio',
-        dashboardLink:            '/rio',
-      },
+      // {
+      //   id:                       'cluster-tools-rio',
+      //   localizedLabel:           'nav.tools.rio',
+      //   dashboardLink:            '/rio',
+      // },
     ],
   },
 
