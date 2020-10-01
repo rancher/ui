@@ -65,7 +65,7 @@
               {{else if subitem.dashboardBaseLink}}
                 {{#if dashboardBaseLink}}
                   <li>
-                    <a 
+                    <a
                       href={{ concat dashboardBaseLink subitem.dashboardBaseLink }}
                     >
                       {{t subitem.localizedLabel default=subitem.label}}
@@ -76,7 +76,7 @@
               {{else if subitem.dashboardLink}}
                 {{#if dashboardLink}}
                   <li>
-                    <a 
+                    <a
                       href={{ concat dashboardLink subitem.dashboardLink }}
                     >
                       {{t subitem.localizedLabel default=subitem.label}}
@@ -115,8 +115,29 @@
           </li>
         {{/if}}
 
+      {{else if item.dashboardBaseLink}}
+        {{#if dashboardBaseLink}}
+          <li>
+            <a
+              href={{ concat dashboardBaseLink item.dashboardBaseLink }}
+            >
+              {{t item.localizedLabel default=item.label}}
+              <i class="icon icon-external-link" />
+            </a>
+          </li>
+        {{/if}}
+      {{else if item.dashboardLink}}
+        {{#if dashboardLink}}
+          <li>
+            <a
+              href={{ concat dashboardLink item.dashboardLink }}
+            >
+              {{t item.localizedLabel default=item.label}}
+              <i class="icon icon-external-link" />
+            </a>
+          </li>
+        {{/if}}
       {{else}}
-
         {{! Just a label }}
         <li class="dropdown-header">
           {{t item.localizedLabel default=item.label}}
