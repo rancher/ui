@@ -332,12 +332,6 @@ const rootNav = [
     resourceScope:  'global',
   },
   {
-    id:                'tools-fleet',
-    localizedLabel:    'nav.tools.fleet',
-    dashboardBaseLink: '/c/local/fleet',
-    scope:             'global',
-  },
-  {
     scope:          'global',
     id:             'global-settings',
     localizedLabel: 'nav.settings.tab',
@@ -440,6 +434,12 @@ const rootNav = [
         route:          'global-admin.cluster-templates',
         resource:       ['clustertemplate'],
         resourceScope:  'global',
+      },
+      { divider: true },
+      {
+        id:                'tools-fleet',
+        localizedLabel:    'nav.tools.fleet',
+        dashboardBaseLink:  '/c/local/fleet',
       },
     ],
   },
