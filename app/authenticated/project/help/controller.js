@@ -24,17 +24,25 @@ export default Controller.extend({
     }
   }),
 
-  latestAnnouncement: computed('model.announcements', function() {
+  latestAnnouncement: computed('forumsLink', 'model.announcements.topics', function() {
+    let out = {
+      title:   '',
+      link:    '',
+      created: '',
+    };
+
     if (this.get('model.announcements.topics')) {
       let sorted = this.get('model.announcements.topics').sortBy('id');
       var announcement = sorted[sorted.length - 1];
 
-      return {
+      out = {
         title:   announcement.title,
         link:    `${ this.get('forumsLink') }/t/${ announcement.slug }`,
         created: announcement.created_at
       };
     }
+
+    return out;
   }),
 
   forumsLink:  C.EXT_REFERENCES.FORUM,

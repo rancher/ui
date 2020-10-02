@@ -35,10 +35,7 @@ export default Component.extend({
       initial = lastContainer;
     }
 
-    scheduleOnce('afterRender', () => {
-      this.send('setInput', initial);
-      this.userInputDidChange();
-    });
+    scheduleOnce('afterRender', this, 'setupComponent', initial);
   },
 
   actions: {
@@ -91,5 +88,10 @@ export default Component.extend({
 
     set(this, 'errors', errors);
   },
+
+  setupComponent(initial) {
+    this.send('setInput', initial);
+    this.userInputDidChange();
+  }
 
 });

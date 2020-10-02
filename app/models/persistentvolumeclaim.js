@@ -13,7 +13,7 @@ var PersistentVolumeClaim = Resource.extend({
   persistentVolume: reference('volumeId', 'persistentVolume', 'clusterStore'),
   namespace:        reference('namespaceId', 'namespace', 'clusterStore'),
 
-  workloads: computed('namespace.workloads.@each.volumes', function() {
+  workloads: computed('id', 'namespace.workloads.@each.volumes', function() {
     return (get(this, 'namespace.workloads') || []).filter((workload) => (get(workload, 'volumes') || []).find((volume) => get(volume, 'persistentVolumeClaim.persistentVolumeClaimId') === get(this, 'id')));
   }),
 
@@ -23,6 +23,8 @@ var PersistentVolumeClaim = Resource.extend({
     if ( str ) {
       return parseSi(str, 1024);
     }
+
+    return;
   }),
 
   displaySize: computed('sizeBytes', function() {
@@ -31,6 +33,8 @@ var PersistentVolumeClaim = Resource.extend({
     if ( bytes ) {
       return formatSi(bytes, 1024, 'iB', 'B');
     }
+
+    return;
   }),
 });
 

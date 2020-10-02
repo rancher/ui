@@ -34,9 +34,11 @@ const Catalog = Resource.extend({
     if ( !get(this, 'id') ) {
       return 'disabled';
     }
+
+    return '';
   }),
 
-  canClone: computed('actions.clone', function() {
+  canClone: computed('actions.clone', 'name', function() {
     const name         = get(this, 'name');
     const catalogNames = get(C, 'CATALOG');
     const builtIn      = [
@@ -51,7 +53,7 @@ const Catalog = Resource.extend({
     return !builtIn.includes(name);
   }),
 
-  availableActions: computed('actionLinks.{refresh}', function() {
+  availableActions: computed('actionLinks.refresh', 'id', function() {
     let a = get(this, 'actionLinks') || {};
 
     return [

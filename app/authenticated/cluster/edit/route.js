@@ -148,9 +148,7 @@ export default Route.extend({
   activate() {
     this._super(...arguments);
 
-    scheduleOnce('afterRender', this, function() {
-      set(this, 'controller.model.activated', true);
-    });
+    scheduleOnce('afterRender', this, 'activateModel');
   },
 
   actions: {
@@ -162,5 +160,9 @@ export default Route.extend({
   queryParams: {
     provider:                { refreshModel: true },
     clusterTemplateRevision: { refreshModel: true }
+  },
+
+  activateModel() {
+    set(this, 'controller.model.activated', true);
   },
 });

@@ -37,7 +37,7 @@ export default Controller.extend({
     return get(this, 'access.firstLogin');
   }),
 
-  currentPassword: computed('', function() {
+  currentPassword: computed('', 'access.userCode.password', 'firstLogin', function() {
     return get(this, 'access.userCode.password') || (this.firstLogin ? 'admin' : null);
   }),
 

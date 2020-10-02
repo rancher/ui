@@ -29,7 +29,7 @@ export default Route.extend({
     set(controller, 'containerName', model.containerName);
 
     if (controller.get('kubernetes')) {
-      defineProperty(controller, 'command', computed('model.pod.labels', function() {
+      defineProperty(controller, 'command', computed('cookies', 'model.pod.labels', function() {
         var labels = get(this, 'model.pod.labels') || {};
 
         if ( `${ labels[C.LABEL.K8S_TOKEN] }` === 'true' ) {

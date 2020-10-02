@@ -17,33 +17,8 @@ export default Component.extend(ModalBase, {
 
   init() {
     this._super(...arguments);
-    let self = this;
 
-    let opt = JSON.parse(this.get(`settings.${ C.SETTING.FEEDBACK_FORM }`) || '{}');
-
-    scheduleOnce('afterRender', this, () => {
-      loadScript('//js.hsforms.net/forms/v2.js').then(() => {
-        window['hbspt'].forms.create({
-          css:         '',
-          portalId:    opt.portalId, // '468859',
-          formId:      opt.formId, // 'bfca2d1d-ed50-4ed7-a582-3f0440f236ca',
-          target:      '#feedback-form',
-          errorClass:  'form-control',
-          onFormReady() {
-            self.styleForm();
-            $('INPUT[name=rancher_account_id]')[0].value = self.get('access.principal.id');// eslint-disable-line
-            $('INPUT[name=github_username]')[0].value = self.get('access.identity.login');// eslint-disable-line
-            self.set('loading', false);
-          },
-          onFormSubmit() {
-            self.styleForm();
-            later(() =>  {
-              self.send('sent');
-            }, 1000);
-          },
-        });
-      });
-    });
+    scheduleOnce('afterRender', this, 'setupForm', JSON.parse(this.get(`settings.${ C.SETTING.FEEDBACK_FORM }`) || '{}'));
   },
 
   actions: {
@@ -78,6 +53,32 @@ export default Component.extend(ModalBase, {
 
     form.find('SELECT').on('change', () => {
       self.styleForm();
+    });
+  },
+
+  setupForm(opt) {
+    const self = this;
+
+    loadScript('//js.hsforms.net/forms/v2.js').then(() => {
+      window['hbspt'].forms.create({
+        css:         '',
+        portalId:    opt.portalId, // '468859',
+        formId:      opt.formId, // 'bfca2d1d-ed50-4ed7-a582-3f0440f236ca',
+        target:      '#feedback-form',
+        errorClass:  'form-control',
+        onFormReady() {
+          self.styleForm();
+          $('INPUT[name=rancher_account_id]')[0].value = self.get('access.principal.id');// eslint-disable-line
+          $('INPUT[name=github_username]')[0].value = self.get('access.identity.login');// eslint-disable-line
+          self.set('loading', false);
+        },
+        onFormSubmit() {
+          self.styleForm();
+          later(() =>  {
+            self.send('sent');
+          }, 1000);
+        },
+      });
     });
   },
 

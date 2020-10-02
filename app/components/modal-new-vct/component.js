@@ -6,9 +6,9 @@ import layout from './template';
 
 export default Component.extend(ModalBase, {
   layout,
-  classNames:      ['large-modal'],
+  classNames: ['large-modal'],
 
-  editing:         true,
+  editing: true,
 
   callback:        alias('modalService.modalOpts.callback'),
   namespace:       alias('modalService.modalOpts.namespace'),

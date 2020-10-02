@@ -1,7 +1,7 @@
 <section class="header clearfix">
   <h1 class="pull-left">{{t "nodesPage.header"}}</h1>
   <div class="right-buttons">
-    <button class="btn bg-primary btn-sm ml-10" {{action "editCluster"}}>
+    <button class="btn bg-primary btn-sm ml-10" type="button" {{action "editCluster"}}>
       <span>{{t "nodesPage.editCluster"}}</span>
     </button>
   </div>
@@ -47,13 +47,11 @@
           {{#if capabilities.nodePoolsCanScale}}
             <p class="m-0">
               <button
-                class="btn btn-xs bg-primary"
-                {{action "scaleDownPool" node.ref.id}}
-                disabled={{lte node.ref.quantity 1}}
+                class="btn btn-xs bg-primary" disabled={{lte node.ref.quantity 1}} type="button" {{action "scaleDownPool" node.ref.id}}
               >
                 <i class="icon icon-minus icon-fw"/>
               </button>
-              <button style="margin-left: -5px;" class="btn btn-xs bg-primary" {{action "scaleUpPool" node.ref.id}}>
+              <button style="margin-left: -5px;" class="btn btn-xs bg-primary" type="button" {{action "scaleUpPool" node.ref.id}}>
                 <i class="icon icon-plus icon-fw"/>
               </button>
             </p>

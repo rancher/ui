@@ -12,7 +12,7 @@ export default Controller.extend({
   router:            service(),
 
   // GitHub auth params
-  queryParams:       ['isPopup', 'fromAuthProvider'],
+  queryParams: ['isPopup', 'fromAuthProvider'],
 
   error:             null,
   error_description: null,

@@ -5,11 +5,11 @@ import { reference } from '@rancher/ember-api-store/utils/denormalize';
 export default Resource.extend({
   project: reference('projectId'),
 
-  projectName: computed('project', function() {
+  projectName: computed('project.displayName', function() {
     return get(this, 'project.displayName');
   }),
 
-  clusterName: computed('project.cluster', function() {
+  clusterName: computed('project.cluster.displayName', function() {
     return get(this, 'project.cluster.displayName');
   }),
 

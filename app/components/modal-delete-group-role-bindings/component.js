@@ -11,7 +11,7 @@ export default Component.extend(ModalBase, {
   growl:          service(),
 
   layout,
-  classNames:     ['medium-modal'],
+  classNames: ['medium-modal'],
 
   mappedGroupRoleBindingNamesIds: alias('modalService.modalOpts.model.mappedGroupRoleBindingNamesIds'),
 

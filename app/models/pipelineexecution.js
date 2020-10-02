@@ -84,7 +84,7 @@ let PipelineExecution = Resource.extend({
     return url;
   }),
 
-  commitUrl: computed('commit', function() {
+  commitUrl: computed('commit', 'displayRepositoryUrl', 'pipeline.displayName', 'pipeline.sourceCodeCredential.sourceCodeType', function() {
     let url = get(this, 'displayRepositoryUrl');
     const sourceCodeType = get(this, 'pipeline.sourceCodeCredential.sourceCodeType');
     const name = get(this, 'pipeline.displayName');
@@ -103,7 +103,7 @@ let PipelineExecution = Resource.extend({
     }
   }),
 
-  branchUrl: computed('branch', function() {
+  branchUrl: computed('branch', 'displayRepositoryUrl', 'pipeline.displayName', 'pipeline.sourceCodeCredential.sourceCodeType', function() {
     let url = get(this, 'displayRepositoryUrl');
     const sourceCodeType = get(this, 'pipeline.sourceCodeCredential.sourceCodeType');
     const name = get(this, 'pipeline.displayName');
@@ -131,6 +131,8 @@ let PipelineExecution = Resource.extend({
 
       return duration < 0 ? null : duration;
     }
+
+    return null;
   }),
 
   bitbucketRootUrl(repoType) {

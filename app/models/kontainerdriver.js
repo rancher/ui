@@ -29,7 +29,7 @@ var KontainerDriver = Resource.extend({
     ];
   }),
 
-  displayName: computed('name', 'intl.locale', function() {
+  displayName: computed('id', 'intl.locale', 'name', function() {
     const intl = get(this, 'intl');
     const name = get(this, 'name');
     const keyByName = `kontainerDriver.displayName.${ name }`;
@@ -51,7 +51,7 @@ var KontainerDriver = Resource.extend({
   }),
 
 
-  hasUi: computed('hasBuiltinUi', function() {
+  hasUi: computed('hasBuiltinUi', 'uiUrl', function() {
     return !!get(this, 'uiUrl');
   }),
 

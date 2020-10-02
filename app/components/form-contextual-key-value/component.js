@@ -54,14 +54,14 @@ export default Component.extend({
       return value;
     }
   }),
-  canAddMore: computed('filteredKeyContent', function() {
+  canAddMore: computed('filteredKeyContent.length', 'keyValuePairs.length', function() {
     return get(this, 'filteredKeyContent.length') > 1
             || get(this, 'filteredKeyContent.length') > 0 && get(this, 'keyValuePairs.length') === 0;
   }),
   lastIndex: computed('keyValuePairs.[]', function() {
     return get(this, 'keyValuePairs.length') - 1;
   }),
-  filteredKeyContent: computed('asyncKeyContent.value', 'keyValuePairs.@each', 'keyValuePairs.[]', 'keyValuePairs', function() {
+  filteredKeyContent: computed('asyncKeyContent.value', 'keyContentFilter', 'keyValuePairs.[]', function() {
     if (!get(this, 'keyContentFilter')) {
       return get(this, 'asyncKeyContent.value') || [];
     }

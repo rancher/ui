@@ -94,7 +94,7 @@ export default Controller.extend({
       }
     };
   }),
-  clusterScans: computed('model.clusterScans.@each', function() {
+  clusterScans: computed('model.clusterScans.[]', 'scope.currentCluster.id', function() {
     return get(this, 'model.clusterScans').filterBy('clusterId', get(this, 'scope.currentCluster.id'));
   }),
 });

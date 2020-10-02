@@ -1,51 +1,64 @@
 {{#hover-dropdown
-   horizontalPosition="left"
-   verticalPosition="below"
-   renderInPlace=true
-   onOpen=(action "onOpen")
-   onClose=(action "onClose")
-   as |dd|
+  horizontalPosition="left"
+  verticalPosition="below"
+  renderInPlace=true
+  onOpen=(action "onOpen")
+  onClose=(action "onClose") as |dd|
 }}
-
-  {{#dd.trigger
-     ariaLabel=(t "nav.projectDropdown.label")
-  }}
-    <a role="button" aria-haspopup="true" class="{{if twoLine "two-line "}}text-white nav-link">
+  <dd.Trigger aria-label={{t "nav.projectDropdown.label"}}>
+    <a
+      role="button"
+      aria-haspopup="true"
+      class="{{if twoLine "two-line "}}text-white nav-link"
+    >
       {{#if (eq pageScope "project")}}
         <div class="clip">
-          <span>{{project.cluster.displayName}}</span>
+          <span>
+            {{project.cluster.displayName}}
+          </span>
         </div>
         <div class="pl-15 clip text-muted">
-          <span>{{project.displayName}}</span>
+          <span>
+            {{project.displayName}}
+          </span>
         </div>
       {{else if (eq pageScope "cluster")}}
         <div class="clip">
-          <span>{{cluster.displayName}}</span>
+          <span>
+            {{cluster.displayName}}
+          </span>
         </div>
       {{else if (eq pageScope "global")}}
         <div class="clip">
-          <span>{{t "nav.admin.tab"}}</span>
+          <span>
+            {{t "nav.admin.tab"}}
+          </span>
         </div>
       {{else}}
         <div class="clip">
-          <span>{{pageScope}}</span>
+          <span>
+            {{pageScope}}
+          </span>
         </div>
       {{/if}}
-
-      <span class="sr-only">{{t "nav.srToggleDropdown"}}</span>
+      <span class="sr-only">
+        {{t "nav.srToggleDropdown"}}
+      </span>
       <i class="icon icon-chevron-down chevron"></i>
     </a>
-
-  {{/dd.trigger}}
-
-  {{#dd.content
-     class="project-menu"
-     style=menuStyle
-  }}
+  </dd.Trigger>
+  <dd.Content class="project-menu" style={{menuStyle}}>
     <div class="global">
       <ul class="list-unstyled">
-        <li class="item clip {{if (eq pageScope "global") "active selected" "inactive"}}">
-          <a href="{{href-to "global-admin"}}" class="{{if (eq pageScope "global") "active selected" "inactive"}}">
+        <li
+          class="item clip
+            {{if (eq pageScope "global") "active selected" "inactive"}}"
+          {{action dd.actions.close}}
+        >
+          <a
+            href="{{href-to "global-admin"}}"
+            class="{{if (eq pageScope "global") "active selected" "inactive"}}"
+          >
             {{t "nav.admin.tab"}}
           </a>
         </li>
@@ -58,44 +71,50 @@
         value=searchInput
       }}
     </div>
-
     <div class="clusters">
       <label class="acc-label">
         {{t "nav.projectDropdown.clusters"}}
       </label>
-
-      <ul class="list-unstyled {{if (eq hoverEntry null) "no-hover-entry"}}" style="{{columnStyle}}">
+      <ul
+        class="list-unstyled {{if (eq hoverEntry null) "no-hover-entry"}}"
+        style="{{columnStyle}}"
+      >
         {{#if searchInput}}
           {{#each clusterSearchResults as |entry|}}
-            <li data-cluster-id="{{entry.cluster.id}}" class="item clip cluster">
-              {{#link-to
-                 "authenticated.cluster"
-                 entry.cluster.id
-                 class="top"
-              }}
+            <li
+              data-cluster-id="{{entry.cluster.id}}"
+              class="item clip cluster"
+              {{action dd.actions.close}}
+            >
+              {{#link-to "authenticated.cluster" entry.cluster.id class="top"}}
                 {{entry.searchMatch}}
               {{/link-to}}
-              <p class="state">{{entry.cluster.displayState}}</p>
+              <p class="state">
+                {{entry.cluster.displayState}}
+              </p>
             </li>
           {{else}}
             <li class="text-muted p-10">
-              {{t "nav.projectDropdown.clustersNoMatch" searchInput=searchInput}}
+              {{t "nav.projectDropdown.clustersNoMatch" searchInput=searchInput
+              }}
             </li>
           {{/each}}
         {{else}}
           {{#each byCluster as |entry|}}
             <li
               data-cluster-id={{entry.cluster.id}}
-              class="item clip cluster {{if entry.active "active" "inactive"}} {{if (eq hoverEntry entry) "hover"}}"
+              class="item clip cluster
+                {{if entry.active "active" "inactive"}}
+
+                {{if (eq hoverEntry entry) "hover"}}"
+              {{action dd.actions.close}}
             >
-              {{#link-to
-                 "authenticated.cluster"
-                 entry.cluster.id
-                 class="top"
-              }}
+              {{#link-to "authenticated.cluster" entry.cluster.id class="top"}}
                 {{entry.cluster.displayName}}
               {{/link-to}}
-              <p class="state">{{entry.cluster.displayState}}</p>
+              <p class="state">
+                {{entry.cluster.displayState}}
+              </p>
             </li>
           {{else}}
             <li class="text-muted p-10">
@@ -105,52 +124,57 @@
         {{/if}}
       </ul>
     </div>
-
     <div class="projects">
-      {{#if (or searchInput (not clusterEntry)) }}
+      {{#if (or searchInput (not clusterEntry))}}
         <label class="acc-label">
           {{t "nav.projectDropdown.projects"}}
         </label>
       {{else}}
         <label class="acc-label">
-          {{t "nav.projectDropdown.projectsIn" cluster=clusterEntry.cluster.displayName}}
+          {{t
+            "nav.projectDropdown.projectsIn"
+            cluster=clusterEntry.cluster.displayName
+          }}
         </label>
       {{/if}}
-
       <ul class="list-unstyled" style="{{columnStyle}}">
         {{#if searchInput}}
           {{#each projectSearchResults as |entry|}}
-            <li class="item clip project {{unless entry.project.isReady "not-ready"}}">
-              {{#link-to
-                 "authenticated.project"
-                 entry.project.id
-                 class="top"
-              }}
+            <li
+              class="item clip project
+                {{unless entry.project.isReady "not-ready"}}"
+              {{action dd.actions.close}}
+            >
+              {{#link-to "authenticated.project" entry.project.id class="top"}}
                 {{entry.searchMatch}}
               {{/link-to}}
               <p class="state">
-                {{t "nav.projectDropdown.projectInCluster" cluster=entry.cluster.displayName}}
-                {{~#unless entry.project.isReady~}}
-                , {{t "nav.projectDropdown.projectNotReady"}}
+                {{t
+                  "nav.projectDropdown.projectInCluster"
+                  cluster=entry.cluster.displayName
+                }}
+                {{#unless entry.project.isReady}}
+                  ,{{t "nav.projectDropdown.projectNotReady"}}
                 {{/unless}}
               </p>
             </li>
           {{else}}
             <li class="text-muted p-10">
-              {{t "nav.projectDropdown.projectsNoMatch" searchInput=searchInput}}
+              {{t "nav.projectDropdown.projectsNoMatch" searchInput=searchInput
+              }}
             </li>
           {{/each}}
         {{else if clusterEntry}}
           {{#each clusterEntry.projects as |project|}}
             <li
               data-project-id={{project.id}}
-              class="item clip project {{unless project.isReady "not-ready"}} {{if project.active "active" "inactive"}}"
+              class="item clip project
+                {{unless project.isReady "not-ready"}}
+
+                {{if project.active "active" "inactive"}}"
+              {{action dd.actions.close}}
             >
-              {{#link-to
-                 "authenticated.project"
-                 project.id
-                 class="top"
-              }}
+              {{#link-to "authenticated.project" project.id class="top"}}
                 {{project.displayName}}
               {{/link-to}}
               <p class="state">
@@ -161,7 +185,7 @@
                 {{/if}}
               </p>
             </li>
-        {{else}}
+          {{else}}
             <li class="text-muted p-10">
               {{t "nav.projectDropdown.projectNoData"}}
             </li>
@@ -173,5 +197,5 @@
         {{/if}}
       </ul>
     </div>
-  {{/dd.content}}
+  </dd.Content>
 {{/hover-dropdown}}

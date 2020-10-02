@@ -18,6 +18,8 @@ export default Volume.extend({
     if ( get(this, 'claimRef.name') ) {
       return `${ get(this, 'claimRef.namespace') }/${ get(this, 'claimRef.name') }`;
     }
+
+    return;
   }),
 
   actions: {

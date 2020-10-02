@@ -16,6 +16,8 @@ export default Controller.extend({
   isPopup:     alias('application.isPopup'),
   pageScope:   alias('scope.currentPageScope'),
 
+  hasHosts: computed.gt('model.hosts.length', 0),
+
   bootstrap: on('init', function() {
     schedule('afterRender', this, () => {
       this.get('application').setProperties({
@@ -30,10 +32,6 @@ export default Controller.extend({
         $('BODY').css('background', bg); // eslint-disable-line
       }
     });
-  }),
-
-  hasHosts: computed('model.hosts.length', function() {
-    return (this.get('model.hosts.length') > 0);
   }),
 
 });

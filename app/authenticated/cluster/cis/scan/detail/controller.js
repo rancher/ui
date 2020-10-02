@@ -57,7 +57,7 @@ export default Controller.extend({
     }
   },
 
-  tests: computed('model.scan.report', 'securityScanConfig.skipList', function() {
+  tests: computed('model.nodes', 'model.scan.report.results', 'securityScanConfig.skipList', function() {
     const results = get(this, 'model.scan.report.results');
 
     if (!results) {
@@ -100,7 +100,7 @@ export default Controller.extend({
 
 
 
-  clusterScans: computed('model.clusterScans.@each', function() {
+  clusterScans: computed('model.clusterScans.[]', 'scope.currentCluster.id', function() {
     return get(this, 'model.clusterScans').filterBy('clusterId', get(this, 'scope.currentCluster.id'));
   }),
 

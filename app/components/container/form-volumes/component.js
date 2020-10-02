@@ -31,7 +31,7 @@ export default Component.extend({
   editing:       true,
   scaleMode:     null,
 
-  volumesArray:  null,
+  volumesArray: null,
 
   nextNum:       1,
   cluster:       alias('scope.currentCluster'),

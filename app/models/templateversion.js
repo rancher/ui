@@ -28,7 +28,7 @@ export default Resource.extend({
     return false;
   }),
 
-  headers: computed('project.current.id', function() {
+  headers: computed('project.current.id', 'scope.currentProject.id', function() {
     return { [C.HEADER.PROJECT_ID]: get(this, 'scope.currentProject.id') };
   }),
 

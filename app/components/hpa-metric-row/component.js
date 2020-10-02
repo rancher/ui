@@ -200,6 +200,8 @@ export default Component.extend({
       return [TARGET_TYPES.VALUE, TARGET_TYPES.AVERAGE_VALUE];
     case OBJECT:
       return [TARGET_TYPES.VALUE, TARGET_TYPES.AVERAGE_VALUE];
+    default:
+      return [];
     }
   }),
 

@@ -4,7 +4,7 @@ import VolumeSource from 'shared/mixins/volume-source';
 
 export default Component.extend(VolumeSource, {
   layout,
-  field:     'azureDisk',
+  field: 'azureDisk',
 
   initValue: {
     readOnly:    false,

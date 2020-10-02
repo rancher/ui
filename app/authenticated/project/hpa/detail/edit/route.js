@@ -4,7 +4,7 @@ import { hash } from 'rsvp';
 import { inject as service } from '@ember/service';
 
 export default Route.extend({
-  clusterStore:  service(),
+  clusterStore: service(),
 
   model() {
     const store = get(this, 'store');

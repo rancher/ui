@@ -7,7 +7,7 @@
 
   {{#if (and allowUpload editing)}}
     <div class="pull-right">
-      <button class="btn btn-sm bg-primary" {{action "upload"}}>{{t "uploadFile.label"}} <span class="icon icon-upload"></span></button>
+      <button class="btn btn-sm bg-primary" type="button" {{action "upload"}}>{{t "uploadFile.label"}} <span class="icon icon-upload"></span></button>
     </div>
   {{/if}}
 </div>
@@ -103,9 +103,7 @@
           <td class="valign-top text-right">
             {{#if (and editing allowRemove)}}
               <button
-                class="btn bg-primary btn-sm"
-                {{action "remove" row}}
-                disabled={{eq row.editable false}}
+                class="btn bg-primary btn-sm" disabled={{eq row.editable false}} type="button" {{action "remove" row}}
               >
                 <i class="icon icon-minus"/>
                 <span class="sr-only">
@@ -134,7 +132,7 @@
     </div>
   {{/if}}
   <div>
-    <button class="btn bg-link icon-btn p-0" {{action "add"}}>
+    <button class="btn bg-link icon-btn p-0" type="button" {{action "add"}}>
       <span class="darken"><i class="icon icon-plus text-small"/></span>
       <span>{{t addActionLabel}}</span>
     </button>

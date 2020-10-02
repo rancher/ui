@@ -29,12 +29,12 @@ var Principal = Resource.extend({
     }
   }),
 
-  isGithub: computed('parsedExternalType', function() {
+  isGithub: computed('parsedExternalType', 'provider', function() {
     // console.log('is github?', get(this, 'provider'));
     return (get(this, 'provider') || '').toLowerCase() === 'github';
   }),
 
-  isGoogleOauth: computed('parsedExternalType', function() {
+  isGoogleOauth: computed('parsedExternalType', 'provider', function() {
     return (get(this, 'provider') || '').toLowerCase() === 'googleoauth';
   }),
 
@@ -52,11 +52,10 @@ var Principal = Resource.extend({
     case C.PROJECT.TYPE_PING_USER:
     case C.PROJECT.TYPE_RANCHER:
     case C.PROJECT.TYPE_SHIBBOLETH_USER:
+    default:
       return C.PROJECT.PERSON;
-
     case C.PROJECT.TYPE_GITHUB_TEAM:
       return C.PROJECT.TEAM;
-
     case C.PROJECT.TYPE_ACTIVE_DIRECTORY_GROUP:
     case C.PROJECT.TYPE_ADFS_GROUP:
     case C.PROJECT.TYPE_AZURE_GROUP:

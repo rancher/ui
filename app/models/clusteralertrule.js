@@ -14,7 +14,7 @@ const clusterAlertRule = Resource.extend(Alert, {
   canClone: true,
   canEdit:  true,
 
-  targetType: computed('systemServiceRule.condition', 'nodeRule.{nodeId,selector}', 'eventRule.resourceKind', 'metricRule.expression', function() {
+  targetType: computed('clusterScanRule.scanRunType', 'eventRule.resourceKind', 'metricRule.expression', 'nodeRule.{nodeId,selector}', 'systemServiceRule.condition', function() {
     if ( get(this, 'systemServiceRule.condition') ) {
       return 'systemService';
     }
@@ -33,13 +33,15 @@ const clusterAlertRule = Resource.extend(Alert, {
     if ( get(this, 'clusterScanRule.scanRunType') ) {
       return 'cisScan';
     }
+
+    return;
   }),
 
   displayTargetType: computed('targetType', function() {
     return get(this, 'intl').t(`alertPage.targetTypes.${ get(this, 'targetType') }`);
   }),
 
-  displayCondition: computed('targetType', 'nodeRule.{condition,cpuThreshold,memThreshold}', 'metricRule.{expression,comparison,thresholdValue}', function() {
+  displayCondition: computed('clusterScanRule', 'metricRule.{comparison,expression,thresholdValue}', 'nodeRule.{condition,cpuThreshold,memThreshold}', 'targetType', function() {
     const t = get(this, 'targetType');
     const intl = get(this, 'intl');
     let out = intl.t('alertPage.na');
@@ -95,6 +97,8 @@ const clusterAlertRule = Resource.extend(Alert, {
         return get(this, 'nodeRule.memThreshold');
       }
     }
+
+    return 0;
   }),
 
   actions: {

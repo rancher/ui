@@ -1,5 +1,5 @@
 import Mixin from '@ember/object/mixin';
-import { get, computed } from '@ember/object';
+import { get, computed, set } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { reads } from '@ember/object/computed';
 
@@ -40,7 +40,8 @@ export default Mixin.create({
       },
     };
 
-    this.constructor.stateMap = stateMap
+    set(this.constructor, 'stateMap', stateMap);
+
     this._super(...arguments);
   },
 
@@ -79,7 +80,7 @@ export default Mixin.create({
     return null;
   }),
 
-  displayRecipient: computed('firstRecipient', 'model.recipients.length', function() {
+  displayRecipient: computed('firstRecipient', 'model.recipients.length', 'recipients.length', function() {
     const len = get(this, 'recipients.length');
     const firstRecipient = get(this, 'firstRecipient');
     const intl = get(this, 'intl');
@@ -136,7 +137,7 @@ export default Mixin.create({
     },
   },
 
-  availableActions: computed('actionLinks.{mute,unmute,activate,deactivate}', 'isAlertRule', function() {
+  availableActions: computed('actionLinks.{activate,deactivate,mute,unmute}', 'alertState', 'isAlertRule', function() {
     const state = this.get('alertState');
     const isAlertRule = get(this, 'isAlertRule');
     let out = [];

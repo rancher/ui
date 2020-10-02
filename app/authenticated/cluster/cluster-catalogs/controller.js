@@ -25,7 +25,7 @@ export default Controller.extend({
     },
   },
 
-  clusterCatalogs: computed('model.clusterCatalogs.@each.{clusterId,state,id}', function() {
+  clusterCatalogs: computed('model.clusterCatalogs.@each.{clusterId,id,state}', 'scope.currentCluster.id', function() {
     return get(this, 'model.clusterCatalogs').filterBy('clusterId', get(this, 'scope.currentCluster.id'));
   }),
 

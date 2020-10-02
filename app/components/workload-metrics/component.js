@@ -8,7 +8,7 @@ export default Component.extend(Metrics, {
 
   filters: { resourceType: 'workload' },
 
-  projectScope:  true,
+  projectScope: true,
 
   init() {
     this._super(...arguments);

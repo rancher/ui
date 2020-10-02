@@ -32,7 +32,7 @@ var Service = Resource.extend(EndpointPorts, {
 
   isIngress: equal('ownerReferences.firstObject.kind', 'Ingress'),
 
-  selectedPods: computed('selector', function() {
+  selectedPods: computed('selector', 'store', function() {
     const rules = get(this, 'selector');
     let keys = Object.keys(rules);
 
@@ -112,7 +112,7 @@ var Service = Resource.extend(EndpointPorts, {
     return get(this, 'intl').t(`dnsPage.type.${  get(this, 'recordType') }`);
   }),
 
-  displayTarget: computed('recordType', 'ipAddresses.[]', 'hostname', 'selector', 'targetDnsRecords.[]', 'targetWorkloads.[]', function() {
+  displayTarget: computed('clusterIp', 'hostname', 'ipAddresses.[]', 'recordType', 'selector', 'targetDnsRecords.[]', 'targetWorkloads.[]', function() {
     const selectors = get(this, 'selector') || {};
     const records = get(this, 'targetDnsRecords') || [];
     const workloads = get(this, 'targetWorkloads') || {};
@@ -168,7 +168,7 @@ var Service = Resource.extend(EndpointPorts, {
     }
   }),
 
-  proxyEndpoints: computed('labels', function(){
+  proxyEndpoints: computed('labels', 'name', 'namespaceId', 'ports', 'scope.currentCluster.id', function(){
     const parts = []
     const labels = get(this, 'labels');
     const location = window.location;

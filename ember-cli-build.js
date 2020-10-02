@@ -111,7 +111,7 @@ module.exports = function(defaults) {
   // along with the exports of each module as its value.
   app.import('node_modules/jgrowl/jquery.jgrowl.css');
   app.import('node_modules/jsondiffpatch/dist/formatters-styles/html.css');
-  app.import('node_modules/xterm/dist/xterm.css');
+  app.import('node_modules/xterm/css/xterm.css');
   app.import('vendor/icons/style.css');
 
   app.import('node_modules/ember-source/dist/ember-template-compiler.js');
