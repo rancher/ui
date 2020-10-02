@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 var GithubConfig = Resource.extend({
   globalStore: service(),
 
-  type:        'githubConfig',
+  type: 'githubConfig',
   /*
   _principals: null,
 

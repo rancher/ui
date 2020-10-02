@@ -11,9 +11,11 @@ export default Resource.extend({
   modalService: service('modal'),
   globalStore:  service(),
 
-  type:         'nodeTemplate',
-  canClone:     true,
-  creator:      reference('creatorId', 'user', 'globalStore'),
+  type:                   'nodeTemplate',
+  canClone:               true,
+  dynamicComputedKeyName: null,
+
+  creator: reference('creatorId', 'user', 'globalStore'),
 
   init() {
     this._super(...arguments);
@@ -128,9 +130,11 @@ export default Resource.extend({
   },
 
   registerDynamicComputedProperty(propertyName, watchedKeys, key) {
-    defineProperty(this, propertyName, computed(...watchedKeys, () => {
-      return this._displayVar(key);
-    }));
+    set(this, 'dynamicComputedKeyName', key);
+    defineProperty(this, propertyName, computed(...watchedKeys, 'dynamicComputedKeyName', this.getDisplayVar));
   },
 
+  getDisplayVar() {
+    return this._displayVar(get(this, 'dynamicComputedKeyName'));
+  }
 });

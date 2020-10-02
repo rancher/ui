@@ -73,7 +73,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
   pspDidChange: observer('podSecurityPolicyTemplateId', function() {
     set(this, 'model.project.podSecurityPolicyTemplateId', get(this, 'podSecurityPolicyTemplateId'));
   }),
-  creator:         computed('primaryResource.creatorId', function() {
+  creator:         computed('editing', 'model.{me,users}', 'primaryResource.creatorId', function() {
     let cid = get(this, 'primaryResource.creatorId');
     let creator = null;
 

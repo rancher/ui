@@ -53,7 +53,7 @@ export default Component.extend({
   scaleMode:        null,
   editing:          true,
 
-  userInput:        null,
+  userInput: null,
 
   canChangeScaleMode: not('isUpgrade'),
 

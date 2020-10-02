@@ -26,39 +26,33 @@
       {{t "generic.na"}}
     </div>
   {{/if}}
-
   {{#if editing}}
-    {{#basic-dropdown
-         horizontalPosition="left"
-         as |dd|}}
-      {{#dd.trigger
-           class="btn bg-link p-0 icon-btn pl-10"
-      }}
+    <BasicDropdown @horizontalPosition="left" as |dd|>
+      <dd.Trigger class="btn bg-link p-0 icon-btn pl-10">
         <span>
           {{t "formVolumes.add.label"}}
         </span>
         <span class="darken">
           <i class="icon icon-chevron-down"></i>
         </span>
-      {{/dd.trigger}}
-
-      {{#dd.content}}
-        <li>
+      </dd.Trigger>
+      <dd.Content>
+        <li {{action dd.actions.close}}>
           <a {{action "addVolume"}}>
             {{t "formVolumes.add.newVolume"}}
           </a>
         </li>
-        <li>
+        <li {{action dd.actions.close}}>
           <a {{action "addNewPvc"}}>
             {{t "formVolumes.add.newPvc"}}
           </a>
         </li>
-        <li>
+        <li {{action dd.actions.close}}>
           <a {{action "addPvc"}}>
             {{t "formVolumes.add.existingPvc"}}
           </a>
         </li>
-        <li>
+        <li {{action dd.actions.close}}>
           <a {{action "addBindMount"}}>
             {{t "formVolumes.add.bindMount"}}
           </a>
@@ -68,37 +62,36 @@
             {{t "formVolumes.add.tmpfs"}}
           </a>
         </li>
-        <li>
+        <li {{action dd.actions.close}}>
           <a {{action "addSecret"}}>
             {{t "formVolumes.add.secret"}}
           </a>
         </li>
-        <li>
+        <li {{action dd.actions.close}}>
           <a {{action "addConfigMap"}}>
             {{t "formVolumes.add.configMap"}}
           </a>
         </li>
-        <li>
+        <li {{action dd.actions.close}}>
           <a {{action "addCertificate"}}>
             {{t "formVolumes.add.certificate"}}
           </a>
         </li>
         {{#if (and loggingEnabled (not isWindows))}}
-          <li>
+          <li {{action dd.actions.close}}>
             <a {{action "addCustomLogPath"}}>
               {{t "formVolumes.add.customLogPath"}}
             </a>
           </li>
         {{/if}}
         {{#if isStatefulSet}}
-          <li>
+          <li {{action dd.actions.close}}>
             <a {{action "addVolumeClaimTemplate"}}>
               {{t "formVolumes.add.vct"}}
             </a>
           </li>
         {{/if}}
-      {{/dd.content}}
-    {{/basic-dropdown}}
+      </dd.Content>
+    </BasicDropdown>
   {{/if}}
-
 {{/accordion-list-item}}

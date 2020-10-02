@@ -51,7 +51,7 @@ export default Controller.extend({
   group:        alias('projectController.group'),
   groupTableBy: alias('projectController.groupTableBy'),
 
-  rows: computed('model.configMaps.[].type', function() {
+  rows: computed('model.configMaps.@each.type', function() {
     return get(this, 'model.configMaps').filterBy('type', 'configMap');
   }),
 });

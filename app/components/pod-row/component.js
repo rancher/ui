@@ -32,7 +32,7 @@ export default Component.extend({
     },
   },
 
-  canExpand:  computed('expandPlaceholder', 'model.containers', function() {
+  canExpand:  computed('expandPlaceholder', 'model.containers.length', function() {
     return get(this, 'expandPlaceholder') && get(this, 'model.containers.length') > 1;
   }),
 

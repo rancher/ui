@@ -6,7 +6,7 @@ import C from 'ui/utils/constants';
 
 export default Component.extend(VolumeSource, {
   layout,
-  field:       'csi',
+  field: 'csi',
 
   init() {
     this._super();

@@ -1,72 +1,107 @@
-<a href="#" class="btn btn-sm bg-transparent" {{action "showAbout"}} aria-label="About Rancher">
-  {{ displayVersion }}
+<a
+  href="#"
+  class="btn btn-sm bg-transparent"
+  aria-label="About Rancher"
+  {{action "showAbout"}}
+>
+  {{displayVersion}}
 </a>
-
 {{#if settings.isRancher}}
   {{#if projectId}}
-    <a href="{{href-to "authenticated.project.help" projectId}}" role="button" class="btn btn-sm bg-transparent">
+    <a
+      href="{{href-to "authenticated.project.help" projectId}}"
+      role="button"
+      class="btn btn-sm bg-transparent"
+    >
       {{t "pageFooter.help"}}
     </a>
   {{/if}}
-  <a role="button" class="btn btn-sm bg-transparent" target="blank" rel="noreferrer noopener" href="{{settings.docsBase}}">
+  <a
+    role="button"
+    class="btn btn-sm bg-transparent"
+    target="blank"
+    rel="noreferrer noopener"
+    href="{{settings.docsBase}}"
+  >
     {{t "pageFooter.help"}}
   </a>
-  <a role="button" class="btn btn-sm bg-transparent" target="blank" rel="noreferrer noopener" href="{{forumBase}}">
+  <a
+    role="button"
+    class="btn btn-sm bg-transparent"
+    target="blank"
+    rel="noreferrer noopener"
+    href="{{forumBase}}"
+  >
     {{t "pageFooter.forums"}}
   </a>
-  <a role="button" class="btn btn-sm bg-transparent" target="blank" rel="noreferrer noopener" href="{{slackBase}}">
+  <a
+    role="button"
+    class="btn btn-sm bg-transparent"
+    target="blank"
+    rel="noreferrer noopener"
+    href="{{slackBase}}"
+  >
     {{t "pageFooter.slack"}}
   </a>
   {{#if showWechat}}
-    <a role="button" class="btn btn-sm bg-transparent" target="blank" rel="noreferrer noopener" href="{{cnforumBase}}">
+    <a
+      role="button"
+      class="btn btn-sm bg-transparent"
+      target="blank"
+      rel="noreferrer noopener"
+      href="{{cnforumBase}}"
+    >
       {{t "pageFooter.cnforums"}}
     </a>
     <a class="btn btn-sm bg-transparent" {{action "showWechat"}}>
       {{t "modalWechat.wechat"}}
     </a>
   {{/if}}
-  <a role="button" class="btn btn-sm bg-transparent" target="blank" rel="noreferrer noopener" href="{{settings.issueUrl}}">
+  <a
+    role="button"
+    class="btn btn-sm bg-transparent"
+    target="blank"
+    rel="noreferrer noopener"
+    href="{{settings.issueUrl}}"
+  >
     {{t "pageFooter.issues"}}
   </a>
 {{/if}}
-
 <div class="pull-right">
   <div class="compose-download inline-block dropup">
     {{#hover-dropdown
-       verticalPosition="above"
-       horizontalPosition="right"
-       renderInPlace=true
-       as |dd|
+      verticalPosition="above"
+      horizontalPosition="right"
+      renderInPlace=true as |dd|
     }}
-      {{#dd.trigger
-         class="hand btn btn-sm bg-transparent"
-      }}
-        <i class="icon icon-download"></i> {{t "pageFooter.download.link"}} <i class="icon icon-chevron-down"></i>
-      {{/dd.trigger}}
-
-      {{#dd.content class="text-right"}}
-        <li>
+      <dd.Trigger class="hand btn btn-sm bg-transparent">
+        <i class="icon icon-download"></i>
+        {{t "pageFooter.download.link"}}
+        <i class="icon icon-chevron-down"></i>
+      </dd.Trigger>
+      <dd.Content class="text-right">
+        <li {{action dd.actions.close}}>
           <a href="{{cli.darwin}}">
-            {{t "pageFooter.download.mac"}} <i class="icon icon-fw icon-apple"></i>
+            {{t "pageFooter.download.mac"}}
+            <i class="icon icon-fw icon-apple"></i>
           </a>
         </li>
-        <li>
+        <li {{action dd.actions.close}}>
           <a href="{{cli.windows}}">
-            {{t "pageFooter.download.windows"}} <i class="icon icon-fw icon-windows"></i>
+            {{t "pageFooter.download.windows"}}
+            <i class="icon icon-fw icon-windows"></i>
           </a>
         </li>
-        <li>
+        <li {{action dd.actions.close}}>
           <a href="{{cli.linux}}">
-            {{t "pageFooter.download.linux"}} <i class="icon icon-fw icon-linux"></i>
+            {{t "pageFooter.download.linux"}}
+            <i class="icon icon-fw icon-linux"></i>
           </a>
         </li>
-      {{/dd.content}}
+      </dd.Content>
     {{/hover-dropdown}}
   </div>
 </div>
 <div class="pull-right">
-  {{language-dropdown
-    dropdownVertPosition="above"
-    classNames="dropup"
-  }}
+  {{language-dropdown dropdownVertPosition="above" classNames="dropup"}}
 </div>

@@ -20,6 +20,6 @@ export function initialize(instance) {
 }
 
 export default {
-  name:       'intl',
+  name: 'intl',
   initialize
 };

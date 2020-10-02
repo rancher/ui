@@ -20,7 +20,7 @@ export default Controller.extend({
   nodes:             null,
   expandedInstances: null,
 
-  namespaces:         alias('scope.currentProject.namespaces'),
+  namespaces: alias('scope.currentProject.namespaces'),
   init() {
     this._super(...arguments);
     this.set('nodes', this.get('store').all('node'));

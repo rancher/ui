@@ -25,7 +25,7 @@ export default Route.extend(Preload, {
   growl:        service(),
   userTheme:    service('user-theme'),
 
-  testTimer:    null,
+  testTimer: null,
 
   shortcuts: {
     // Global
@@ -157,21 +157,16 @@ export default Route.extend(Preload, {
       const version = get(this, 'settings.rancherVersion');
       const isDev = isDevBuild(version);
 
+
       if ( get(this, 'access.admin') && (!telemetry || telemetry === 'prompt') ) {
         // Show the telemetry opt-in if not set
-        scheduleOnce('afterRender', this, function() {
-          get(this, 'modalService').toggleModal('modal-telemetry');
-        });
+        scheduleOnce('afterRender', this.modalService, 'toggleModal', 'modal-telemetry');
       } else if ( form && !get(this, `prefs.${ C.PREFS.FEEDBACK }`) ) {
         // Try.rancher feedback
-        scheduleOnce('afterRender', this, function() {
-          get(this, 'modalService').toggleModal('modal-feedback');
-        });
+        scheduleOnce('afterRender', this.modalService, 'toggleModal', 'modal-feedback');
       } else if ( !isDev && (!seenWhatsNew || compare(seenWhatsNew, C.WHATS_NEW_VERSION) < 0) ) {
         // What's new
-        scheduleOnce('afterRender', this, function() {
-          get(this, 'modalService').toggleModal('modal-whats-new');
-        });
+        scheduleOnce('afterRender', this.modalService, 'toggleModal', 'modal-whats-new');
       }
     }
   },

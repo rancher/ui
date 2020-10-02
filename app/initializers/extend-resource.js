@@ -11,7 +11,7 @@ export function initialize(/* application */) {
 }
 
 export default {
-  name:       'extend-resource',
+  name: 'extend-resource',
   initialize
 };
 

@@ -16,7 +16,7 @@ export default Resource.extend({
     return;
   }),
 
-  displayType: computed('principal.{id}', function() {
+  displayType: computed('principal.id', 'principalType', function() {
     let principal = get(this, 'principal');
     let type      = null;
 
@@ -29,7 +29,7 @@ export default Resource.extend({
     return type;
   }),
 
-  displayName: computed('principal.{id}', function() {
+  displayName: computed('groupPrincipalId', 'principal.id', 'userPrincipalId', function() {
     let principal = get(this, 'principal');
     let name      = null;
 

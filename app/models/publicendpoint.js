@@ -49,7 +49,7 @@ var PublicEndpoint = Resource.extend({
   }),
 
   // ip:port
-  endpoint: computed('port', 'addresses', 'allNodes', 'isIngress', 'hostname', function() {
+  endpoint: computed('addresses', 'allNodes', 'hostname', 'isIngress', 'port', 'scope.currentCluster.id', function() {
     const addresses = get(this, 'addresses');
     const allNodes = get(this, 'allNodes');
     const hostname = get(this, 'hostname') || '';
@@ -100,7 +100,7 @@ var PublicEndpoint = Resource.extend({
     return out;
   }),
 
-  linkEndpoint: computed('isTcpish', 'isMaybeSecure', 'displayEndpoint', 'port', 'isIngress', 'path', function() {
+  linkEndpoint: computed('displayEndpoint', 'endpoint', 'isIngress', 'isMaybeSecure', 'isTcpish', 'path', 'port', function() {
     let path = get(this, 'path') || '';
 
     if (get(this, 'isTcpish') && get(this, 'port') > 0 ) {
@@ -118,6 +118,8 @@ var PublicEndpoint = Resource.extend({
 
       return out;
     }
+
+    return;
   }),
 
   isTcpish: computed('protocol', function() {
@@ -136,7 +138,7 @@ var PublicEndpoint = Resource.extend({
     return get(this, 'ingressId') !== '' && get(this, 'ingressId') !== null;
   }),
 
-  isReady: computed('hostname', function(){
+  isReady: computed('hostname', 'isIngress', function(){
     const xip = get(this, `settings.${ C.SETTING.INGRESS_IP_DOMAIN }`);
     const hostname = get(this, 'hostname') || '';
 

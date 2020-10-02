@@ -1,62 +1,72 @@
 <nav class="clearfix responsive-nav" role="navigation" id="js-responsive-nav">
   <a class="nav-logo logo-oss btn bg-transparent">
-    <span class="sr-only">{{settings.appName}}</span>
+    <span class="sr-only">
+      {{settings.appName}}
+    </span>
   </a>
-
   <ul class="nav-main nav-list no-inline-space">
-    {{page-header-project
-      pageScope=pageScope
-    }}
-
+    {{page-header-project pageScope=pageScope}}
     {{#each navTree as |item|}}
       {{#if item.submenu.length}}
         {{! Has a submenu }}
-        {{#hover-dropdown
-           tagName="li"
-           class="nav-item"
-           as |dd|
-        }}
-          {{#dd.trigger}}
-            {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
+        {{#hover-dropdown tagName="li" class="nav-item" as |dd|}}
+          <dd.Trigger>
+            {{#if
+              (or
+                (not item.resource)
+                (rbac-allows resource=item.resource scope=item.resourceScope)
+              )
+            }}
               {{#if item.route}}
                 {{#link-to-as-attrs
-                   ourRoute=item.route
-                   ctx=item.ctx
-                   qp=item.qp
-                   currentWhen=item.currentWhen
-                   activeParent="LI"
-                   role="button"
-                   aria-haspopup="true"
-                   aria-expanded="false"
+                  ourRoute=item.route
+                  ctx=item.ctx
+                  qp=item.qp
+                  currentWhen=item.currentWhen
+                  activeParent="LI"
+                  role="button"
+                  aria-haspopup="true"
+                  aria-expanded="false"
                 }}
                   {{t item.localizedLabel default=item.label}}
-                  <span class="icon icon-chevron-down"/>
+                  <span class="icon icon-chevron-down"></span>
                 {{/link-to-as-attrs}}
               {{else}}
-                <a class="nav-link" role="button" aria-haspopup="true" aria-label={{t item.localizedLabel default=item.label}}>
+                <a
+                  class="nav-link"
+                  role="button"
+                  aria-haspopup="true"
+                  aria-label={{t item.localizedLabel default=item.label}}
+                >
                   {{t item.localizedLabel default=item.label}}
-                  <span class="icon icon-chevron-down"/>
+                  <span class="icon icon-chevron-down"></span>
                 </a>
               {{/if}}
             {{/if}}
-          {{/dd.trigger}}
-
-          {{#dd.content}}
+          </dd.Trigger>
+          <dd.Content>
             {{#each item.submenu as |subitem|}}
               {{#if subitem.route}}
-                {{#if (or (not subitem.resource) (rbac-allows resource=subitem.resource scope=subitem.resourceScope))}}
-                  <li>
+                {{#if
+                  (or
+                    (not subitem.resource)
+                    (rbac-allows
+                      resource=subitem.resource scope=subitem.resourceScope
+                    )
+                  )
+                }}
+                  <li {{action dd.actions.close}}>
                     {{#link-to-as-attrs
-                       ourRoute=subitem.route
-                       ctx=subitem.ctx
-                       qp=subitem.qp
-                       activeParent="LI"
-                       currentWhen=subitem.currentWhen
+                      ourRoute=subitem.route
+                      ctx=subitem.ctx
+                      qp=subitem.qp
+                      activeParent="LI"
+                      currentWhen=subitem.currentWhen
                     }}
                       <span>
                         {{t subitem.localizedLabel default=subitem.label}}
                       </span>
-                      <i class="{{subitem.icon}}"/>
+                      <i class="{{subitem.icon}}"></i>
                     {{/link-to-as-attrs}}
                   </li>
                 {{/if}}
@@ -64,76 +74,79 @@
                 <li class="divider"></li>
               {{else if subitem.dashboardBaseLink}}
                 {{#if dashboardBaseLink}}
-                  <li>
+                  <li {{action dd.actions.close}}>
                     <a
-                      href={{ concat dashboardBaseLink subitem.dashboardBaseLink }}
+                      href={{concat dashboardBaseLink subitem.dashboardBaseLink
+                      }}
                     >
                       {{t subitem.localizedLabel default=subitem.label}}
-                      <i class="icon icon-external-link" />
+                      <i class="icon icon-external-link"></i>
                     </a>
                   </li>
                 {{/if}}
               {{else if subitem.dashboardLink}}
                 {{#if dashboardLink}}
-                  <li>
-                    <a
-                      href={{ concat dashboardLink subitem.dashboardLink }}
-                    >
+                  <li {{action dd.actions.close}}>
+                    <a href={{concat dashboardLink subitem.dashboardLink}}>
                       {{t subitem.localizedLabel default=subitem.label}}
-                      <i class="icon icon-external-link" />
+                      <i class="icon icon-external-link"></i>
                     </a>
                   </li>
                 {{/if}}
               {{else}}
                 {{! Just a label }}
-                <li class="dropdown-header">
+                <li class="dropdown-header" {{action dd.actions.close}}>
                   <span>
                     {{t subitem.localizedLabel default=subitem.label}}
                   </span>
-                  <i class="{{subitem.icon}}"/>
+                  <i class="{{subitem.icon}}"></i>
                 </li>
               {{/if}}
             {{/each}}
-          {{/dd.content}}
+          </dd.Content>
         {{/hover-dropdown}}
-
       {{else if item.route}}
-
-        {{#if (or (not item.resource) (rbac-allows resource=item.resource scope=item.resourceScope))}}
+        {{#if
+          (or
+            (not item.resource)
+            (rbac-allows resource=item.resource scope=item.resourceScope)
+          )
+        }}
           {{! No submenu }}
-          <li class="nav-item {{if (and item.disableIfClusterNotReady (not cluster.isReady)) "pointer-events-none"}}">
+          <li
+            class="nav-item
+              {{if
+                (and item.disableIfClusterNotReady (not cluster.isReady))
+                "pointer-events-none"
+              }}"
+          >
             {{#link-to-as-attrs
-               ourRoute=item.route
-               ctx=item.ctx
-               qp=item.qp
-               activeParent="LI"
-               currentWhen=item.currentWhen
-               class="nav-link"
+              ourRoute=item.route
+              ctx=item.ctx
+              qp=item.qp
+              activeParent="LI"
+              currentWhen=item.currentWhen
+              class="nav-link"
             }}
               {{t item.localizedLabel default=item.label}}
             {{/link-to-as-attrs}}
           </li>
         {{/if}}
-
       {{else if item.dashboardBaseLink}}
         {{#if dashboardBaseLink}}
           <li>
-            <a
-              href={{ concat dashboardBaseLink item.dashboardBaseLink }}
-            >
+            <a href={{concat dashboardBaseLink item.dashboardBaseLink}}>
               {{t item.localizedLabel default=item.label}}
-              <i class="icon icon-external-link" />
+              <i class="icon icon-external-link"></i>
             </a>
           </li>
         {{/if}}
       {{else if item.dashboardLink}}
         {{#if dashboardLink}}
           <li>
-            <a
-              href={{ concat dashboardLink item.dashboardLink }}
-            >
+            <a href={{concat dashboardLink item.dashboardLink}}>
               {{t item.localizedLabel default=item.label}}
-              <i class="icon icon-external-link" />
+              <i class="icon icon-external-link"></i>
             </a>
           </li>
         {{/if}}
@@ -142,35 +155,30 @@
         <li class="dropdown-header">
           {{t item.localizedLabel default=item.label}}
         </li>
-
       {{/if}}
     {{/each}}
   </ul>
-
   {{#if dashboardLink}}
     <div class="try-dashboard bg-secondary">
-      <a href="{{dashboardLink}}" class="btn bg-warning">{{t "nav.dashboard.try"}}</a>
+      <a href="{{dashboardLink}}" class="btn bg-warning">
+        {{t "nav.dashboard.try"}}
+      </a>
     </div>
   {{/if}}
-
   {{#hover-dropdown
-     tagName="ul"
-     class="nav-user list-unstyled"
-     horizontalPosition="right"
-     delay=250
-     as |dd|
+    tagName="ul"
+    class="nav-user list-unstyled"
+    horizontalPosition="right"
+    delay=250 as |dd|
   }}
     <li class="nav-item">
-      {{#dd.trigger
-         class="btn"
-         ariaLabel=(t "nav.user.label" username=session.user)
-      }}
+      <dd.Trigger
+        class="btn"
+        ariaLabel={{t "nav.user.label" username=session.user}}
+      >
         <a role="button" aria-haspopup="true" class="nav-link">
           {{#if accessEnabled}}
-            {{identity-avatar
-              link=false
-              identity=access.principal
-            }}
+            {{identity-avatar link=false identity=access.principal}}
           {{else}}
             <div class="gh-avatar">
               <div class="gh-placeholder">
@@ -183,43 +191,51 @@
           </span>
           <i class="icon icon-chevron-down text-muted"></i>
         </a>
-      {{/dd.trigger}}
+      </dd.Trigger>
     </li>
-
-    {{#dd.content class="text-right"}}
+    <dd.Content class="text-right">
       {{#if accessEnabled}}
-        <li role="presentation" class="user-auth">
+        <li role="presentation" class="user-auth" {{action dd.actions.close}}>
           {{identity-block principal=access.principal}}
         </li>
       {{/if}}
-
       <li role="separator" class="divider"></li>
-      <li>
+      <li {{action dd.actions.close}}>
         {{#link-to "authenticated.apikeys"}}
-          <span>{{t "nav.api.link"}}</span>
+          <span>
+            {{t "nav.api.link"}}
+          </span>
         {{/link-to}}
       </li>
-      <li>
+      <li {{action dd.actions.close}}>
         {{#link-to "global-admin.security.cloud-credentials"}}
-          <span>{{t "nav.admin.security.cloudCredentials"}}</span>
+          <span>
+            {{t "nav.admin.security.cloudCredentials"}}
+          </span>
         {{/link-to}}
       </li>
-      <li>
+      <li {{action dd.actions.close}}>
         {{#link-to "nodes.node-templates"}}
-          <span>{{t "nav.nodeTemplates.link"}}</span>
+          <span>
+            {{t "nav.nodeTemplates.link"}}
+          </span>
         {{/link-to}}
       </li>
-      <li>
+      <li {{action dd.actions.close}}>
         {{#link-to "authenticated.prefs"}}
-          <span>{{t "nav.userPreferences.link"}}</span>
+          <span>
+            {{t "nav.userPreferences.link"}}
+          </span>
         {{/link-to}}
       </li>
       <li role="separator" class="divider"></li>
-      <li>
+      <li {{action dd.actions.close}}>
         {{#link-to "logout" class="user-logout"}}
-          <span>{{t "nav.user.logout"}}</span>
+          <span>
+            {{t "nav.user.logout"}}
+          </span>
         {{/link-to}}
       </li>
-    {{/dd.content}}
+    </dd.Content>
   {{/hover-dropdown}}
 </nav>

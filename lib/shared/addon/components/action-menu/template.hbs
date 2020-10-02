@@ -1,50 +1,45 @@
-{{#basic-dropdown
-     horizontalPosition="right"
-     calculatePosition=(action "calculatePosition" )
-     onOpen=(action 'actionsOpen')
-     onClose=(action 'actionsClosed')
-     as |dd|
-}}
-
-  {{#dd.trigger
-       ariaLabel=(t 'generic.moreActions')
-       class=(concat "btn bg-transparent more-actions " sizeClass)
-       onMouseEnter=(action "preload")
-  }}
+<BasicDropdown
+  @horizontalPosition="right"
+  @calculatePosition={{action "calculatePosition"}}
+  @onOpen={{action "actionsOpen"}}
+  @onClose={{action "actionsClosed"}} as |dd|
+>
+  <dd.Trigger
+    ariaLabel={{t "generic.moreActions"}}
+    class={{concat "btn bg-transparent more-actions " sizeClass}}
+    {{on "onMouseEnter" (action "preload")}}
+  >
     <i class="icon icon-fw icon-vertical-ellipsis"></i>
-  {{/dd.trigger}}
-
-  {{#dd.content class="resource-actions global-actions"}}
-
-    <li class="resource-actions-tabbable"><a tabindex="-1" id="resource-actions-first" aria-label="Select an Action below"></a></li>
-
+  </dd.Trigger>
+  <dd.Content class="resource-actions global-actions">
+    <li class="resource-actions-tabbable">
+      <a
+        tabindex="-1"
+        id="resource-actions-first"
+        aria-label="Select an Action below"
+      ></a>
+    </li>
     {{#each resourceActions.activeActions as |item|}}
-
       {{#if item.divider}}
-
         <li class="divider"></li>
-
       {{else}}
-
-        {{!-- the close action is on the LI in this case because the action menu item is capturing the click action --}}
+        {{! the close action is on the LI in this case because the action menu item is capturing the click action }}
         <li {{action dd.actions.close}}>
           {{action-menu-item
-              label=item.label
-              icon=item.icon
-              action=(action "clickedAction")
-              actionArg=item.action
-              altActionArg=item.altAction
+            label=item.label
+            icon=item.icon
+            action=(action "clickedAction")
+            actionArg=item.action
+            altActionArg=item.altAction
           }}
         </li>
-
       {{/if}}
-
     {{else}}
-
-      <li><a href="#" onclick="return false;" disabled="true">No actions available</a></li>
-
+      <li>
+        <a href="#" onclick="return false;" disabled="true">
+          No actions available
+        </a>
+      </li>
     {{/each}}
-
-  {{/dd.content}}
-
-{{/basic-dropdown}}
+  </dd.Content>
+</BasicDropdown>

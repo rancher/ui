@@ -18,6 +18,6 @@ export function initialize(application) {
 }
 
 export default {
-  name:       'lookup',
+  name: 'lookup',
   initialize,
 };

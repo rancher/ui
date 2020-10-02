@@ -76,11 +76,11 @@ export default Component.extend({
     }
   }),
 
-  selectedChoice: computed('_allNodes.@each.{id,clusterId,name,state}', function() {
+  selectedChoice: computed('_allNodes.@each.{clusterId,id,name,state}', 'hostChoices', 'initialHostId', function() {
     return get(this, 'hostChoices').findBy('id', get(this, 'initialHostId'));
   }),
 
-  hostChoices: computed('_allNodes.@each.{id,clusterId,name,state}', function() {
+  hostChoices: computed('_allNodes.@each.{clusterId,id,name,state}', 'scope.currentCluster.id', function() {
     const list = get(this, '_allNodes').filter((node) => !get(node, 'isUnschedulable'))
       .filterBy('clusterId', get(this, 'scope.currentCluster.id'))
       .map((host) => {

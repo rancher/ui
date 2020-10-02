@@ -5,6 +5,6 @@ export function initialize() {
 }
 
 export default {
-  name:       'viewport',
+  name: 'viewport',
   initialize
 };

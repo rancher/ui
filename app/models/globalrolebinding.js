@@ -19,7 +19,7 @@ export default Resource.extend({
     return false;
   }),
 
-  availableActions: computed('links.{remove}', function() {
+  availableActions: computed('canUpdate', 'links.remove', function() {
     let out = [
       {
         label:   'action.edit',

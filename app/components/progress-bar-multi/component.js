@@ -37,7 +37,7 @@ export default Component.extend({
 
     let valueDep = `values.@each.{${ colorKey },${ labelKey },${ valueKey }}`;
 
-    defineProperty(this, 'pieces', computed('min', 'max', valueDep, () => {
+    defineProperty(this, 'pieces', computed(valueDep, 'max', 'min', 'minPercent', 'values', () => {
       let min = get(this, 'min');
       let max = get(this, 'max');
 
@@ -81,7 +81,7 @@ export default Component.extend({
     }));
 
     valueDep = `tooltipValues.@each.{${ labelKey },${ valueKey }}`;
-    defineProperty(this, 'tooltipContent', computed(valueDep, () => {
+    defineProperty(this, 'tooltipContent', computed(valueDep, 'labelKey', 'tooltipArrayOrString', 'tooltipValues', 'valueKey', () => {
       let labelKey = get(this, 'labelKey');
       let valueKey = get(this, 'valueKey');
 

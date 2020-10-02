@@ -7,9 +7,9 @@ export default Secret.extend({
   clusterStore: service(),
   router:       service(),
 
-  canClone:     true,
+  canClone: true,
 
-  namespace:    reference('namespaceId', 'namespace', 'clusterStore'),
+  namespace: reference('namespaceId', 'namespace', 'clusterStore'),
 
   actions: {
     edit() {

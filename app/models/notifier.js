@@ -11,7 +11,7 @@ export default Resource.extend({
   globalStore:  service(),
   modalService: service('modal'),
 
-  type:         'notifier',
+  type: 'notifier',
 
   displayNameAndType: computed('displayName', 'notifierType', function() {
     const upperCaseType = (get(this, 'notifierType') || '').replace(/^\S/, (s) => {
@@ -21,7 +21,7 @@ export default Resource.extend({
     return `${ get(this, 'displayName') } (${ upperCaseType })`
   }),
 
-  notifierTableLabel: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', 'wechatConfig', 'dingtalkConfig', 'msteamsConfig', function(){
+  notifierTableLabel: computed('dingtalkConfig', 'emailConfig', 'msteamsConfig', 'pagerdutyConfig', 'slackConfig', 'smtpConfig', 'webhookConfig', 'wechatConfig', function(){
     const sc = get(this, 'slackConfig');
     const pc = get(this, 'pagerdutyConfig');
     const ec = get(this, 'smtpConfig');
@@ -55,7 +55,7 @@ export default Resource.extend({
     return C.NOTIFIER_TABLE_LABEL.DEFAULT;
   }),
 
-  notifierType: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', 'wechatConfig', 'dingtalkConfig', 'msteamsConfig', function(){
+  notifierType: computed('dingtalkConfig', 'emailConfig', 'msteamsConfig', 'pagerdutyConfig', 'slackConfig', 'smtpConfig', 'webhookConfig', 'wechatConfig', function(){
     const sc = get(this, 'slackConfig');
     const pc = get(this, 'pagerdutyConfig');
     const ec = get(this, 'smtpConfig');
@@ -89,7 +89,7 @@ export default Resource.extend({
     return null;
   }),
 
-  notifierValue: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', 'wechatConfig', function(){
+  notifierValue: computed('emailConfig', 'pagerdutyConfig', 'slackConfig', 'smtpConfig', 'webhookConfig', 'wechatConfig', function(){
     const sc = get(this, 'slackConfig');
     const pc = get(this, 'pagerdutyConfig');
     const ec = get(this, 'smtpConfig');
@@ -121,7 +121,7 @@ export default Resource.extend({
     return moment(d).fromNow();
   }),
 
-  notifierLabel: computed('slackConfig', 'pagerdutyConfig', 'emailConfig', 'webhookConfig', 'wechartConfig', function(){
+  notifierLabel: computed('emailConfig', 'pagerdutyConfig', 'slackConfig', 'smtpConfig', 'webhookConfig', 'wechartConfig', 'wechatConfig', function(){
     const sc = get(this, 'slackConfig');
     const pc = get(this, 'pagerdutyConfig');
     const ec = get(this, 'smtpConfig');

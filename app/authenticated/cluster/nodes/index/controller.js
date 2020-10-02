@@ -41,7 +41,7 @@ export default Controller.extend({
     return null;
   }),
 
-  rows: computed('model.nodes.@each.clusterId', function() {
+  rows: computed('model.cluster.id', 'model.nodes.@each.clusterId', function() {
     return get(this, 'model.nodes').filterBy('clusterId', get(this, 'model.cluster.id'));
   }),
 });

@@ -9,6 +9,6 @@ export function initialize(instance) {
 }
 
 export default {
-  name:       'theme',
+  name: 'theme',
   initialize
 };

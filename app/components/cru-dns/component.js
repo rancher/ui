@@ -48,7 +48,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   timeoutSeconds: null,
   kindChoices:    null,
 
-  namespace:       alias('model.namespace'),
+  namespace: alias('model.namespace'),
   init() {
     this._super(...arguments);
 
@@ -139,7 +139,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     }
   }),
 
-  showSessionAffinity: computed('isHeadless', 'showMoreOptions', function() {
+  showSessionAffinity: computed('isHeadless', 'kind', 'showMoreOptions', function() {
     return get(this, 'showMoreOptions') && get(this, 'kind') !== HEADLESS;
   }),
 

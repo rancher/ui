@@ -131,7 +131,7 @@ export default Component.extend(NewOrEdit, {
 
   },
 
-  showAdmin: computed('model.roles.@each.id', 'mode', function() {
+  showAdmin: computed('mode', 'model.roles.@each.id', 'type', function() {
     const id = `${ get(this, 'type') }-owner`;
     const role = get(this, 'model.roles').findBy('id', id);
 
@@ -146,7 +146,7 @@ export default Component.extend(NewOrEdit, {
     return false;
   }),
 
-  showStdUser: computed('model.roles.@each.id', 'mode', function() {
+  showStdUser: computed('mode', 'model.roles.@each.id', 'type', function() {
     const id = `${ get(this, 'type') }-member`;
     const role = get(this, 'model.roles').findBy('id', id);
 
@@ -177,7 +177,7 @@ export default Component.extend(NewOrEdit, {
   }),
 
 
-  baseRoles: computed(function() {
+  baseRoles: computed('type', function() {
     return [
       `${ get(this, 'type') }-admin`,
       `${ get(this, 'type') }-owner`,
@@ -186,7 +186,7 @@ export default Component.extend(NewOrEdit, {
     ];
   }),
 
-  userRoles: computed('model.roles.[]', function() {
+  userRoles: computed('model.roles.[]', 'type', function() {
     let roles = get(this, 'model.roles');
     let userDef = roles.filter((role) => !get(role, 'builtin')
         && !get(role, 'external')
@@ -201,7 +201,7 @@ export default Component.extend(NewOrEdit, {
     });
   }),
 
-  custom: computed('model.roles.[]', function() {
+  custom: computed('baseRoles', 'model.roles.[]', 'type', function() {
     // built in
     let roles  = get(this, 'model.roles').filterBy('hidden', false);
     let excludes = get(this, 'baseRoles');
@@ -217,7 +217,7 @@ export default Component.extend(NewOrEdit, {
     });
   }),
 
-  mode: computed('editing',  {
+  mode: computed('editing', 'model.roles', 'type', 'userRoles.{firstObject,length}',  {
     get() {
       let mode = null;
 

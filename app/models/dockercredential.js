@@ -44,13 +44,13 @@ var DockerCredential = Resource.extend({
     });
   }),
 
-  searchAddresses: computed('asArray.[].address', function() {
+  searchAddresses: computed('asArray.@each.address', function() {
     return get(this, 'asArray').map((x) => get(x, 'address'))
       .sort()
       .uniq();
   }),
 
-  searchUsernames: computed('asArray.[].username', function() {
+  searchUsernames: computed('asArray.@each.username', function() {
     return get(this, 'asArray').map((x) => get(x, 'username'))
       .sort()
       .uniq();

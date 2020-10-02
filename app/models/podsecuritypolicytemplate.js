@@ -4,7 +4,7 @@ import Resource from '@rancher/ember-api-store/models/resource';
 export default Resource.extend({
   router: service(),
 
-  type:    'podSecurityPolicyTemplate',
+  type: 'podSecurityPolicyTemplate',
 
   canHaveLabels: true,
 

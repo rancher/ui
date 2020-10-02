@@ -15,7 +15,7 @@ export default Resource.extend({
     return get(this, 'locked') ? 'locked' : 'active';
   }),
 
-  isCustom: computed('roleTemplateId', function() {
+  isCustom: computed('id', 'roleTemplateId', function() {
     return !C.BASIC_ROLE_TEMPLATE_ROLES.includes(get(this, 'id'));
   }),
 

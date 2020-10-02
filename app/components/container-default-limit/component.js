@@ -7,7 +7,7 @@ import layout from './template';
 export default Component.extend({
   layout,
 
-  limit:          null,
+  limit: null,
 
   init() {
     this._super(...arguments);

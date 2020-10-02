@@ -5,7 +5,7 @@ import VolumeSource from 'shared/mixins/volume-source';
 
 export default Component.extend(VolumeSource, {
   layout,
-  field:     'configMap',
+  field: 'configMap',
 
   specific:    false,
   defaultMode: null,

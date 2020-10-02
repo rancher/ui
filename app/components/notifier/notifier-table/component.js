@@ -42,7 +42,7 @@ export default Component.extend({
   headers,
 
   clusterId:         reads('scope.currentCluster.id'),
-  filteredNotifiers: computed('model.@each.{clusterId}', 'clusterId', function() {
+  filteredNotifiers: computed('model.@each.clusterId', 'clusterId', function() {
     const data = this.get('model') || [];
     const clusterId = get(this, 'clusterId')
 

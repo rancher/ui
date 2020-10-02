@@ -76,7 +76,7 @@ var Volume = Resource.extend({
 
   type: 'volume',
 
-  configName: computed('sources.@each.{value}', 'state', function() {
+  configName: computed('sources.@each.value', 'state', function() {
     const keys = get(this, 'sources').map((x) => x.value);
 
     for ( let key, i = 0 ; i < keys.length ; i++ ) {
@@ -95,13 +95,15 @@ var Volume = Resource.extend({
     if ( key ) {
       return get(this, key);
     }
+
+    return;
   }),
 
-  sourceName: computed('configName', function(){
+  sourceName: computed('configName', 'sources', function(){
     const key = get(this, 'configName');
 
     if ( !key ) {
-      return
+      return;
     }
 
     let entry;
@@ -121,9 +123,11 @@ var Volume = Resource.extend({
     if (entry){
       return entry.name;
     }
+
+    return;
   }),
 
-  displaySource: computed('sourceName', 'intl.locale', function() {
+  displaySource: computed('csi.driver', 'intl.locale', 'sourceName', function() {
     const intl       = get(this, 'intl');
     const sourceName = get(this, 'sourceName');
 

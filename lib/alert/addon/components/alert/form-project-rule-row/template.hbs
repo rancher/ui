@@ -3,7 +3,7 @@
     {{#if (and editing (gt alertRules.length 1))}}
       <div class="pull-right">
         {{#if (and (gt alertRules.length 1 ) isCreate)}}
-          <button class="btn bg-transparent text-small vertical-middle" {{action removeRule model}}>
+          <button class="btn bg-transparent text-small vertical-middle" type="button" {{action removeRule model}}>
             {{t "alertPage.newOrEdit.removeAlert"}}
           </button>
         {{/if}}
@@ -109,7 +109,7 @@
               changed=(action (mut model.workloadRule.selector))
             }}
           {{else}}
-            <button {{action "noop"}} style="cursor:not-allowed;" class="btn bg-disabled icon-btn">
+            <button style="cursor:not-allowed;" class="btn bg-disabled icon-btn" type="button" {{action "noop"}}>
               <span class="darken">
                 <i class="icon icon-plus text-small"/>
               </span>
@@ -313,7 +313,7 @@
             {{else}}
               {{t "generic.disabled"}}
             {{/if}}
-            <button class="btn bg-transparent text-small p-0" {{action "showAdvanced"}}>
+            <button class="btn bg-transparent text-small p-0" type="button" {{action "showAdvanced"}}>
               <i class="icon icon-edit"/>
             </button>
           </div>

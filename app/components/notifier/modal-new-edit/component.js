@@ -74,7 +74,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
   intl:           service(),
 
   layout,
-  classNames:     ['generic', 'large-modal'],
+  classNames: ['generic', 'large-modal'],
 
   modelMap:       null,
   errors:         null,
@@ -162,7 +162,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
       return 'generic.save';
     } else if (mode === 'clone') {
       return 'notifierPage.clone';
-    } else if (mode === 'add') {
+    } else {
       return 'generic.add';
     }
   }),

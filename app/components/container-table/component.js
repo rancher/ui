@@ -44,7 +44,7 @@ export default Component.extend({
 
   extraSearchFields: ['displayIp', 'primaryHost.displayName'],
 
-  headers: computed(function() {
+  headers: computed('showNode', 'showStats', function() {
     if ( this.get('showStats') ) {
       return headersWithStats;
     } else if ( this.get('showNode') ) {

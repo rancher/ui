@@ -67,7 +67,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
   selectedFileContetnt:     null,
   editable:              { selectedTemplateUrl: null },
 
-  isGKE:                    alias('scope.currentCluster.isGKE'),
+  isGKE: alias('scope.currentCluster.isGKE'),
 
   primaryResource:          alias('namespaceResource'),
   editing:                  notEmpty('catalogApp.id'),
@@ -77,30 +77,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
     this._super(...arguments);
     set(this, 'selectedTemplateModel', null);
 
-    scheduleOnce('afterRender', () => {
-      if ( get(this, 'selectedTemplateUrl') ) {
-        if (this.catalogTemplate) {
-          this.initTemplateModel(this.catalogTemplate);
-        } else {
-          this.templateChanged();
-        }
-      } else {
-        var def   = get(this, 'templateResource.defaultVersion');
-        var links = get(this, 'versionLinks');
-        var app   = get(this, 'catalogApp');
-
-        if (get(app, 'id') && !get(this, 'upgrade')) {
-          def = get(app, 'externalIdInfo.version');
-        }
-
-        if (links[def]) {
-          set(this, 'selectedTemplateUrl', links[def]);
-        } else {
-          set(this, 'selectedTemplateUrl', null);
-        }
-      }
-      set(this, 'editable.selectedTemplateUrl', get(this, 'selectedTemplateUrl'));
-    });
+    scheduleOnce('afterRender', this, 'setupComponent');
   },
 
   didRender() {
@@ -320,7 +297,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
       }
     });
 
-    template.customAnswers = customAnswers;
+    set(template, 'customAnswers', customAnswers);
   },
 
   validate() {
@@ -445,4 +422,29 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
 
     return !!questions.some((question) => get(question, 'type') === 'password' && !!isNumeric(get(question, 'answer')) && get(question, 'answer') !== '');
   },
+
+  setupComponent() {
+    if ( get(this, 'selectedTemplateUrl') ) {
+      if (this.catalogTemplate) {
+        this.initTemplateModel(this.catalogTemplate);
+      } else {
+        this.templateChanged();
+      }
+    } else {
+      var def   = get(this, 'templateResource.defaultVersion');
+      var links = get(this, 'versionLinks');
+      var app   = get(this, 'catalogApp');
+
+      if (get(app, 'id') && !get(this, 'upgrade')) {
+        def = get(app, 'externalIdInfo.version');
+      }
+
+      if (links[def]) {
+        set(this, 'selectedTemplateUrl', links[def]);
+      } else {
+        set(this, 'selectedTemplateUrl', null);
+      }
+    }
+    set(this, 'editable.selectedTemplateUrl', get(this, 'selectedTemplateUrl'));
+  }
 });

@@ -95,7 +95,7 @@ export default Component.extend(ModalBase, {
     setProperties(this, {
       backupId,
       restoreRkeConfig,
-      errors:   [],
+      errors: [],
     });
   },
 

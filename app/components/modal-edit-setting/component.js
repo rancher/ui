@@ -33,7 +33,7 @@ export default Component.extend(ModalBase, {
   formattedValue:    null,
   removing:          false,
 
-  model:             alias('modalService.modalOpts'),
+  model: alias('modalService.modalOpts'),
 
   init() {
     this._super(...arguments);
