@@ -15,6 +15,8 @@ export default Resource.extend({
     if ( id ) {
       return C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + id;
     }
+
+    return '';
   }),
 
   externalIdInfo: computed('externalId', function() {
@@ -32,6 +34,8 @@ export default Resource.extend({
     if ( tpl ) {
       return tpl.linkFor('icon');
     }
+
+    return '';
   }),
 
   categories: computed('catalogTemplate.categories', function() {

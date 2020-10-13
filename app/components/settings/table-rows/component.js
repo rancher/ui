@@ -21,7 +21,7 @@ export default Component.extend({
   tableCounts:   TABLE_COUNTS,
   selectedCount: null,
 
-  perPage:       alias('prefs.tablePerPage'),
+  perPage: alias('prefs.tablePerPage'),
   init() {
     this._super(...arguments);
     this.set('selectedCount', `${ this.get('perPage') }`);

@@ -59,7 +59,7 @@ const Template = Resource.extend({
     return out;
   }),
 
-  headers: computed('project.current.id', function() {
+  headers: computed('project.current.id', 'projects.current.id', function() {
     return { [C.HEADER.PROJECT_ID]: get(this, 'projects.current.id') };
   }),
 
@@ -96,7 +96,7 @@ const Template = Resource.extend({
     return get(this, 'categoryArray').map((x) => (x || '').underscore().toLowerCase());
   }),
 
-  certifiedType: computed('catalogId', function() {
+  certifiedType: computed('catalogId', 'labels', function() {
     let str = null;
     let labels = get(this, 'labels');
 
@@ -113,7 +113,7 @@ const Template = Resource.extend({
     }
   }),
 
-  certifiedClass: computed('certifiedType', function() {
+  certifiedClass: computed('certifiedType', 'settings.isRancher', function() {
     let type = get(this, 'certifiedType');
 
     if ( type === 'rancher' && get(this, 'settings.isRancher') ) {
@@ -123,7 +123,7 @@ const Template = Resource.extend({
     }
   }),
 
-  certified: computed('certifiedType', 'catalogId', 'labels', 'intl.locale', function() {
+  certified: computed('catalogId', 'certifiedType', 'intl.locale', 'labels', 'settings.isRancher', function() {
     let out = null;
     let labels = get(this, 'labels');
 

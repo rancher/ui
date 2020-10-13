@@ -4,7 +4,7 @@ import { computed } from '@ember/object';
 var Port = Resource.extend({
   _publicIp:       null,
   _publicIpState:  null,
-  displayPublicIp: computed('_publicIpState', '_publicIp', 'publicIpAddressId', 'bindAddress', 'publicPort', function() {
+  displayPublicIp: computed('_publicIp', '_publicIpState', 'bindAddress', 'publicIpAddressId', 'publicPort', 'store', function() {
     var bind = this.get('bindAddress');
 
     if ( bind ) {

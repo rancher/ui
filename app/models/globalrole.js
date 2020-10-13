@@ -20,12 +20,10 @@ export default Resource.extend({
   // because of this the state shows as "Unknown" with bright yellow background
   stateColor:    'text-success',
 
+  canRemove: computed.not('builtin'),
+
   canClone: computed('access.me', 'id', function() {
     return this.access.allows('globalrole', 'create', 'global');
-  }),
-
-  canRemove: computed('id', 'builtin', function() {
-    return !this.builtin;
   }),
 
   isHidden: computed('id', function() {
@@ -70,7 +68,7 @@ export default Resource.extend({
     return `(${ id })`;
   }),
 
-  detail: computed('name', 'intl.locale', function() {
+  detail: computed('id', 'intl.locale', 'name', function() {
     const intl = get(this, 'intl');
     const id = get(this, 'id');
     const key = `formGlobalRoles.role.${ id }.detail`;

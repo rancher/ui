@@ -40,7 +40,7 @@ const projectAlertRule = Resource.extend(Alert, {
     return get(workload, 'displayName')
   }),
 
-  displayCondition: computed('targetType', 'podRule.{condition,restartTimes,restartIntervalSeconds}', 'workloadRule.availablePercentage', function() {
+  displayCondition: computed('metricRule', 'podRule.{condition,restartIntervalSeconds,restartTimes}', 'targetType', 'workloadRule.availablePercentage', function() {
     const t = get(this, 'targetType');
     const intl = get(this, 'intl');
 
@@ -94,6 +94,8 @@ const projectAlertRule = Resource.extend(Alert, {
     if ( get(this, 'metricRule.expression') ) {
       return 'metric'
     }
+
+    return;
   }),
 
   actions: {

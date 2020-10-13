@@ -13,6 +13,6 @@ export function initialize(/* application*/) {
 }
 
 export default {
-  name:       'touch',
+  name: 'touch',
   initialize
 };

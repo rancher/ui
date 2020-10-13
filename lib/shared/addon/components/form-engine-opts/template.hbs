@@ -20,43 +20,47 @@
             placeholder=(t "formEngineOpts.engineInstallUrl.placeholder")
           }}
           <div class="input-group-btn bg-default">
-            {{#basic-dropdown
-                 horizontalPosition="right"
-                 as |dd|}}
-              {{#dd.trigger class="btn bg-default"}}
+            <BasicDropdown @horizontalPosition="right" as |dd|>
+              <dd.Trigger class="btn bg-default">
                 <i class="icon icon-chevron-down"></i>
-              {{/dd.trigger}}
-
-              {{#dd.content}}
+              </dd.Trigger>
+              <dd.Content>
                 {{#each engineUrlChoices as |choice|}}
-                  <li>
-                    <a href="#" {{action "setEngine" choice.value}}>{{choice.label}}</a>
+                  <li {{action dd.actions.close}}>
+                    <a href="#" {{action "setEngine" choice.value}}>
+                      {{choice.label}}
+                    </a>
                   </li>
                 {{/each}}
-              {{/dd.content}}
-
-            {{/basic-dropdown}}
+              </dd.Content>
+            </BasicDropdown>
           </div>
         </div>
       </div>
     </div>
     <hr />
   {{/if}}
-
   <div class="row inline-form">
     <div class="col span-2 col-inline">
-      <label class="acc-label">{{t "formEngineOpts.engineStorageDriver.label"}}</label>
+      <label class="acc-label">
+        {{t "formEngineOpts.engineStorageDriver.label"}}
+      </label>
     </div>
     <div class="col span-10">
-      {{input type="text" value=machine.engineStorageDriver classNames="form-control" placeholder=(t "formEngineOpts.engineStorageDriver.placeholder")}}
+      {{input
+        type="text"
+        value=machine.engineStorageDriver
+        classNames="form-control"
+        placeholder=(t "formEngineOpts.engineStorageDriver.placeholder")
+      }}
     </div>
   </div>
-
-  <hr/>
-
+  <hr />
   <div class="row inline-form">
     <div class="col span-2 col-inline">
-      <label class="acc-label">{{t "formEngineOpts.engineOpts.label"}}</label>
+      <label class="acc-label">
+        {{t "formEngineOpts.engineOpts.label"}}
+      </label>
     </div>
     <div class="col span-10">
       {{form-key-value
@@ -68,12 +72,12 @@
       }}
     </div>
   </div>
-
   <hr />
-
   <div class="row inline-form">
     <div class="col span-2 col-inline">
-      <label class="acc-label">{{t "formEngineOpts.engineLabels.label"}}</label>
+      <label class="acc-label">
+        {{t "formEngineOpts.engineLabels.label"}}
+      </label>
     </div>
     <div class="col span-10">
       {{form-key-value
@@ -84,12 +88,12 @@
       }}
     </div>
   </div>
-
   <hr />
-
   <div class="row inline-form">
     <div class="col span-2 col-inline">
-      <label class="acc-label">{{t "formEngineOpts.engineEnv.label"}}</label>
+      <label class="acc-label">
+        {{t "formEngineOpts.engineEnv.label"}}
+      </label>
     </div>
     <div class="col span-10">
       {{form-key-value
@@ -102,12 +106,12 @@
       }}
     </div>
   </div>
-
   <hr />
-
   <div class="row inline-form">
     <div class="col span-2 col-inline">
-      <label class="acc-label">{{t "formEngineOpts.engineInsecureRegistry.label"}}</label>
+      <label class="acc-label">
+        {{t "formEngineOpts.engineInsecureRegistry.label"}}
+      </label>
     </div>
     <div class="col span-10">
       {{form-value-array
@@ -119,12 +123,12 @@
       }}
     </div>
   </div>
-
   <hr />
-
   <div class="row inline-form">
     <div class="col span-2 col-inline">
-      <label class="acc-label">{{t "formEngineOpts.engineRegistryMirror.label"}}</label>
+      <label class="acc-label">
+        {{t "formEngineOpts.engineRegistryMirror.label"}}
+      </label>
     </div>
     <div class="col span-10">
       {{form-value-array

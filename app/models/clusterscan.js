@@ -8,7 +8,7 @@ import { toTitle } from 'shared/utils/util';
 import { inject as service } from '@ember/service';
 
 const ClusterScan = Resource.extend({
-  intl:        service(),
+  intl: service(),
 
   type:          'clusterScan',
   report:        'null',
@@ -25,7 +25,7 @@ const ClusterScan = Resource.extend({
     this.loadReport();
   }),
 
-  file: computed('report', 'name', function(){
+  file: computed('name', 'report', 'resultsForCsv', function(){
     return {
       name: `${ get(this, 'name') }.csv`,
       file:  get(this, 'resultsForCsv')
@@ -54,13 +54,13 @@ const ClusterScan = Resource.extend({
     ]
   }),
 
-  referencedResults: computed('report', function() {
+  referencedResults: computed('report.results', function() {
     return (get(this, 'report.results') || [])
       .map((result) => result.checks)
       .reduce((agg, check) => [...agg, ...(check || [])], []);
   }),
 
-  resultsForCsv: computed('referencedResults', 'report', function() {
+  resultsForCsv: computed('profile', 'referencedResults', 'report', function() {
     return get(this, 'referencedResults').map((result) => {
       const intl = get(this, 'intl');
       const nodesAndStateForTest = this.getNodesAndStateForTestResult(result);

@@ -79,7 +79,7 @@ export default Component.extend(ModalBase, {
       });
   }),
 
-  current: computed('choices.[]', function() {
+  current: computed('choices.[]', 'choices.firstObject.data', function() {
     return get(this, 'choices.firstObject.data');
   }),
 
@@ -87,7 +87,7 @@ export default Component.extend(ModalBase, {
     return get(this, 'revisions').findBy('name', get(this, 'revisionId'));
   }),
 
-  diff: computed('current', 'selected', function() {
+  diff: computed('current.status', 'selected.status', function() {
     if (get(this, 'current') && get(this, 'selected')) {
       let left = get(this, 'current.status');
       let right = get(this, 'selected.status');
@@ -97,5 +97,7 @@ export default Component.extend(ModalBase, {
 
       return jsondiffpatch.formatters.html.format(delta, left).htmlSafe();
     }
+
+    return null;
   }),
 });

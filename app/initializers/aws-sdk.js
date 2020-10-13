@@ -34,6 +34,6 @@ export function initialize(application) {
 }
 
 export default {
-  name:       'aws-sdk',
+  name: 'aws-sdk',
   initialize
 };

@@ -87,7 +87,7 @@ export default Component.extend({
       });
     } else if ( _strategy === 'custom' ) {
       setProperties(config, {
-        strategy:       'RollingUpdate',
+        strategy: 'RollingUpdate',
         maxSurge,
         maxUnavailable
       });

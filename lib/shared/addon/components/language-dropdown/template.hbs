@@ -4,15 +4,13 @@
    renderInPlace=true
    as |dd|
 }}
-  {{#dd.trigger
-     class="hand btn btn-sm bg-transparent lang-select"
-  }}
+  <dd.Trigger class="hand btn btn-sm bg-transparent lang-select">
     <i class="icon icon-globe"></i> {{selectedLabel}} <i class="icon icon-chevron-down"></i>
-  {{/dd.trigger}}
+  </dd.Trigger>
 
-  {{#dd.content class="text-right lang-select"}}
+  <dd.Content class="text-right lang-select">
     {{#if settings.isRancher}}
-      <li>
+      <li {{action dd.actions.close}}>
         <a
           role="button"
           href="http://translate.rancher.com"
@@ -25,7 +23,7 @@
       <li class="divider"></li>
     {{/if}}
     {{#each-in locales as |lang label|}}
-      <li class="{{if (eq selected lang) "disabled selected"}}">
+      <li class="{{if (eq selected lang) "disabled selected"}}" {{action dd.actions.close}}>
         <a
           role="button"
           href="#"
@@ -35,5 +33,5 @@
         </a>
       </li>
     {{/each-in}}
-  {{/dd.content}}
+  </dd.Content>
 {{/hover-dropdown}}

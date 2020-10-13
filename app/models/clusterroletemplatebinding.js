@@ -6,7 +6,7 @@ import PrincipalReference from 'ui/mixins/principal-reference';
 
 
 export default Resource.extend(PrincipalReference, {
-  type:    'clusterRoleTemplateBinding',
+  type: 'clusterRoleTemplateBinding',
 
   canEdit:      false,
   cluster:      reference('clusterId'),

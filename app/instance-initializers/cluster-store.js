@@ -16,6 +16,6 @@ export function initialize(instance) {
 }
 
 export default {
-  name:       'cluster-store',
+  name: 'cluster-store',
   initialize
 };

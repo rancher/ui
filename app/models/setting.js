@@ -25,7 +25,7 @@ export default Resource.extend({
     return !!get(this, 'links.update') && id !== 'cacerts';
   }),
 
-  availableActions: computed('actionLinks.{update,remove}', function() {
+  availableActions: computed('actionLinks.{remove,update}', 'canRevert', function() {
     return [
       {
         label:     'action.revert',

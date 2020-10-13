@@ -43,5 +43,5 @@ export default Component.extend({
   extraSearchFields: [
     'displayUserLabelStrings',
   ],
-  rows:       alias('model'),
+  rows: alias('model'),
 });

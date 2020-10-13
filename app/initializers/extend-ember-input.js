@@ -19,6 +19,6 @@ export function initialize(/* application */) {
 }
 
 export default {
-  name:       'extend-ember-input',
+  name: 'extend-ember-input',
   initialize
 };

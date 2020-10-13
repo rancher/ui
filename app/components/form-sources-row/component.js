@@ -32,7 +32,7 @@ export default Component.extend({
   selectedSecret: null,
   sources:        SOURCES,
 
-  prefixOrTarget: computed('source.sourceKey', {
+  prefixOrTarget: computed('source.{prefix,source,sourceKey,targetKey}', {
     get() {
       if ( get(this, 'source.source') !== 'field' && (get(this, 'source.sourceKey') === null || get(this, 'source.sourceKey') === undefined) ) {
         return get(this, 'source.prefix');
@@ -49,7 +49,7 @@ export default Component.extend({
     }
   }),
 
-  prefixOrKeys: computed('source.sourceName', 'selectedSecret', 'selectedConfigMap', function() {
+  prefixOrKeys: computed('selectedConfigMap', 'selectedSecret', 'source.{source,sourceName}', 'specificKeyOnly', function() {
     let prefix = {
       id:    null,
       label: 'All'

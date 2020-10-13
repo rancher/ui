@@ -9,6 +9,6 @@ export function initialize( /* application*/ ) {
 }
 
 export default {
-  name:       'polyfill-svg',
+  name: 'polyfill-svg',
   initialize
 };

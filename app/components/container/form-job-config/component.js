@@ -17,7 +17,7 @@ export default Component.extend({
       });
     }
   },
-  jobConfig: computed('scaleMode', function() {
+  jobConfig: computed('scaleMode', 'workload.cronJobConfig.jobConfig', 'workload.jobConfig', function() {
     const scaleMode = get(this, 'scaleMode');
     let config;
 

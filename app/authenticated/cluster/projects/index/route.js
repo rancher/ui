@@ -11,7 +11,7 @@ export default Route.extend({
   clusterStore:  service(),
   scope:        service(),
 
-  shortcuts:       { 'g': 'toggleGrouping', },
+  shortcuts: { 'g': 'toggleGrouping', },
   model() {
     let cluster = this.modelFor('authenticated.cluster');
 

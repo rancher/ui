@@ -6,7 +6,7 @@ import C from 'ui/utils/constants';
 import layout from './template';
 
 export default Component.extend({
-  intl:         service(),
+  intl: service(),
 
   settings:     service(),
   prefs:        service(),

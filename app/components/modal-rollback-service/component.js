@@ -84,7 +84,7 @@ export default Component.extend(ModalBase, {
     },
   },
 
-  choices: computed('revisions.[]', function() {
+  choices: computed('model.workloadAnnotations', 'revisions.[]', function() {
     return (get(this, 'revisions') || [])
       .sortBy('createdTS')
       .reverse()
@@ -102,7 +102,7 @@ export default Component.extend(ModalBase, {
       });
   }),
 
-  current: computed('revisions.@each.workloadAnnotations', function() {
+  current: computed('model.workloadAnnotations', 'revisions.@each.workloadAnnotations', function() {
     const currentRevision = get(this, 'model.workloadAnnotations')[C.LABEL.DEPLOYMENT_REVISION];
 
     return (get(this, 'revisions') || []).find((r) => get(r, 'workloadAnnotations')[C.LABEL.DEPLOYMENT_REVISION] === currentRevision);
@@ -112,7 +112,7 @@ export default Component.extend(ModalBase, {
     return (get(this, 'revisions') || []).findBy('id', get(this, 'revisionId'));
   }),
 
-  diff: computed('current', 'selected', function() {
+  diff: computed('current', 'keys', 'selected', function() {
     if (get(this, 'current') && get(this, 'selected')) {
       let left = sanitize(get(this, 'current'), get(this, 'keys'));
       let right = sanitize(get(this, 'selected'), get(this, 'keys'));
@@ -122,5 +122,7 @@ export default Component.extend(ModalBase, {
 
       return jsondiffpatch.formatters.html.format(delta, left).htmlSafe();
     }
+
+    return null;
   }),
 });

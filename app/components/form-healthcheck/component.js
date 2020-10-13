@@ -24,7 +24,7 @@ export default Component.extend({
   successMustBeOne: false,
   isLiveness:       false,
 
-  editing:          true,
+  editing: true,
 
   checkType:        null,
   command:          null,
@@ -99,9 +99,7 @@ export default Component.extend({
     set(this, 'checkType', type);
     this.validate();
 
-    scheduleOnce('afterRender', () => {
-      this.checkChanged()
-    });
+    scheduleOnce('afterRender', this, 'checkChanged');
   },
 
   checkChanged: observer('path', 'host', 'headers', 'checkType', 'command', function() {

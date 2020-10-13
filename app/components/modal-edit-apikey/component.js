@@ -160,7 +160,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
     return ttlUnits.slice(0, indexOfUnit + 1);
   }),
 
-  allClusters: computed('scope.allClusters.@each.{id}', function() {
+  allClusters: computed('scope.allClusters.@each.id', function() {
     const allClusters = get(this, 'scope.allClusters');
 
     return allClusters.map((c) => {

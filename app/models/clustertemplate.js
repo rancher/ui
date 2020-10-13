@@ -11,11 +11,11 @@ const ClusterTemplate =  Resource.extend({
 
   revisions: hasMany('id', 'clustertemplaterevision', 'clusterTemplateId', 'globalStore', null, 'globalStore'),
 
-  type:      'clustertemplate',
+  type: 'clustertemplate',
 
   canCloneRevision: true,
 
-  availableActions: computed('actionLinks.[]', function() {
+  availableActions: computed('actionLinks.[]', 'canCloneRevision', function() {
     return [
       {
         label:     'action.revision',
@@ -38,7 +38,7 @@ const ClusterTemplate =  Resource.extend({
       : revisions.sortBy('createdTS').get('lastObject');
   }),
 
-  displayDefaultRevisionId: computed('revisionsCount', 'revisions.[]', function() {
+  displayDefaultRevisionId: computed('defaultRevisionId', 'revisions.[]', 'revisionsCount', function() {
     return get(this, 'defaultRevisionId').split(':')[1];
   }),
 

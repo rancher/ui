@@ -15,7 +15,7 @@ export default Resource.extend({
   globalStore:          service(),
   modalService:         service('modal'),
 
-  type:                 'groupGloblaRoleBindings',
+  type: 'groupGloblaRoleBindings',
 
   globalRoleBindingIds: null,
   groupPrincipalId:     null,
@@ -39,7 +39,7 @@ export default Resource.extend({
     return false;
   }),
 
-  availableActions: computed('globalRoleBindingIds', 'groupPrincipalId', function() {
+  availableActions: computed('canUpdate', 'globalRoleBindingIds', 'groupPrincipalId', function() {
     let out = [
       {
         label:   'action.edit',

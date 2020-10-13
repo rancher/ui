@@ -16,6 +16,6 @@ export function initialize(/* application */) {
 }
 
 export default {
-  name:       'extend-jquery',
+  name: 'extend-jquery',
   initialize
 };

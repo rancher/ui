@@ -14,7 +14,7 @@ export default Component.extend(ViewNewEdit, {
   model:      null,
   sourceName: null,
 
-  titleKey:    'cruVolume.title',
+  titleKey: 'cruVolume.title',
 
   didReceiveAttrs() {
     const selectedSource = (get(this, 'sourceChoices') || []).find((source) => !!get(this, `primaryResource.${ get(source, 'value') }`));
@@ -36,7 +36,7 @@ export default Component.extend(ViewNewEdit, {
     },
   },
 
-  headerToken: computed('scope', function() {
+  headerToken: computed('mode', 'scope', function() {
     let k = 'cruPersistentVolumeClaim.define.';
 
     k += get(this, 'mode');
@@ -88,6 +88,8 @@ export default Component.extend(ViewNewEdit, {
         field:     entry.value,
       }
     }
+
+    return null;
   }),
 
   willSave() {

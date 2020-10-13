@@ -10,7 +10,7 @@ export default Resource.extend({
   growl:       service(),
   intl:        service(),
 
-  type:            'clustertemplaterevision',
+  type: 'clustertemplaterevision',
 
   clusterTemplate:  reference('clusterTemplateId', 'clusterTemplate', 'globalStore'),
   canRemove:        alias('canMakeDefault'),
@@ -23,7 +23,7 @@ export default Resource.extend({
     return 'disabled';
   }),
 
-  canMakeDefault: computed('clusterTemplate.defaultRevisionId', function() {
+  canMakeDefault: computed('clusterTemplate.defaultRevisionId', 'id', function() {
     let defaultRevisionId = get(this, 'clusterTemplate.defaultRevisionId') || null;
 
     if (defaultRevisionId) {
@@ -33,7 +33,7 @@ export default Resource.extend({
     return false;
   }),
 
-  availableActions: computed('actionLinks.[]', 'enabled', 'clusterTemplate.defaultRevisionId', function() {
+  availableActions: computed('actionLinks.[]', 'canMakeDefault', 'clusterTemplate.defaultRevisionId', 'enabled', function() {
     const a = get(this, 'actionLinks') || {};
 
     return [

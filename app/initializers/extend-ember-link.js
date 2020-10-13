@@ -52,6 +52,6 @@ export function initialize(/* application */) {
 }
 
 export default {
-  name:       'extend-ember-link',
+  name: 'extend-ember-link',
   initialize
 };

@@ -7,7 +7,7 @@ export default Component.extend({
   scope: service(),
 
   layout,
-  tagName:    '',
+  tagName: '',
 
   badgeState: computed('model.state', function() {
     const state = get(this, 'model.state');

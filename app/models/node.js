@@ -42,7 +42,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     this.defineStateCounts('arrangedInstances', 'instanceStates', 'instanceCountSort');
   },
 
-  availableActions: computed('links.{nodeConfig}', 'actionLinks.{cordon,uncordon,drain}', function() {
+  availableActions: computed('links.nodeConfig', 'actionLinks.{cordon,uncordon,drain}', function() {
     let l = get(this, 'links');
     const a = get(this, 'actionLinks') || {};
 
@@ -88,7 +88,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     return out;
   }),
 
-  displayName: computed('name', 'nodeName', 'requestedHostname', 'id', function() {
+  displayName: computed('id', 'name', 'nodeName.length', 'nodes', 'requestedHostname', function() {
     let name = get(this, 'name');
 
     if ( name ) {
@@ -217,7 +217,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     return 'icon-docker';
   }),
 
-  versionBlurb: computed('info.os.dockerVersion', function() {
+  versionBlurb: computed('info.os.dockerVersion', 'isContainerD', function() {
     let version = get(this, 'info.os.dockerVersion') || '';
 
     if ( version.startsWith(CONTAINERD) ) {
@@ -263,7 +263,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
   }),
 
   // If you use this you must ensure that services and containers are already in the store
-  requireAnyLabelStrings: computed(`labels.${ C.LABEL.REQUIRE_ANY }`, function() {
+  requireAnyLabelStrings: computed(`labels.${ C.LABEL.REQUIRE_ANY }`, 'labels', function() {
     return  ((get(this, 'labels') || {})[C.LABEL.REQUIRE_ANY] || '')
       .split(/\s*,\s*/)
       .filter((x) => x.length > 0 && x !== C.LABEL.SYSTEM_TYPE);

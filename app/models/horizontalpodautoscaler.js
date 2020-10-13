@@ -10,11 +10,16 @@ export default Resource.extend({
   clusterStore:  service(),
   router:        service(),
 
-  canHaveLabels:  true,
+  canHaveLabels: true,
 
   workload:       reference('workloadId'),
   namespace:      reference('namespaceId', 'namespace', 'clusterStore'),
-  displayMetrics: computed('metrics.@each.current.{averageValue,utilization,value}', function() {
+
+  currentMetrics: computed('metrics.@each.current', function() {
+    return (get(this, 'metrics') || []).map((metric) => get(metric, 'current'));
+  }),
+
+  displayMetrics: computed('currentMetrics.@each.{averageValue,utilization,value}', 'metrics', function() {
     return (get(this, 'metrics') || [])
       .map((metric) => {
         const arr = [];
@@ -59,6 +64,8 @@ export default Resource.extend({
     if ( get(items, 'length') > 1 ) {
       return items[1];
     }
+
+    return null;
   }),
 
   actions:      {

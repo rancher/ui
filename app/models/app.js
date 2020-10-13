@@ -21,7 +21,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   globalStore:  service(),
   modalService: service('modal'),
 
-  canEdit:      false,
+  canEdit: false,
 
   namespace:       reference('targetNamespace', 'namespace', 'clusterStore'),
   catalogTemplate: reference('externalIdInfo.templateId', 'template', 'globalStore'),
@@ -51,7 +51,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     }
   }),
 
-  pods: computed('namespace.pods.@each.{workloadId,state}', 'workloads.@each.workloadLabels', function() {
+  pods: computed('name', 'namespace.pods.@each.{state,workloadId}', 'workloads.@each.workloadLabels', function() {
     return (get(this, 'namespace.pods') || []).filter((item) => {
       if ( item.state === 'removed' ) {
         return false;
@@ -75,7 +75,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     });
   }),
 
-  services: computed('namespace.services.@each.labels', function() {
+  services: computed('name', 'namespace.services.@each.labels', function() {
     return (get(this, 'namespace.services') || []).filter((item) => {
       if ( item['labels'] ) {
         return item['labels']['io.cattle.field/appId'] === get(this, 'name');
@@ -83,7 +83,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     });
   }),
 
-  dnsRecords: computed('namespace.services.@each.labels', function() {
+  dnsRecords: computed('name', 'namespace.services.@each.labels', function() {
     return (get(this, 'namespace.services') || []).filter((item) => {
       if ( item['labels'] ) {
         return item['labels']['io.cattle.field/appId'] === get(this, 'name');
@@ -91,7 +91,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     });
   }),
 
-  workloads: computed('namespace.workloads.@each.workloadLabels', function() {
+  workloads: computed('name', 'namespace.workloads.@each.workloadLabels', function() {
     return (get(this, 'namespace.workloads') || []).filter((item) => {
       if ( item['workloadLabels'] ) {
         return item['workloadLabels']['io.cattle.field/appId'] === get(this, 'name');
@@ -99,7 +99,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     });
   }),
 
-  secrets: computed('namespace.secrets', function() {
+  secrets: computed('name', 'namespace.secrets', function() {
     return (get(this, 'namespace.secrets') || []).filter((item) => {
       if ( item['labels'] ) {
         return item['labels']['io.cattle.field/appId'] === get(this, 'name');
@@ -107,7 +107,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     });
   }),
 
-  configMaps: computed('namespace.configMaps', function() {
+  configMaps: computed('name', 'namespace.configMaps', function() {
     return (get(this, 'namespace.configMaps') || []).filter((item) => {
       if ( item['labels'] ) {
         return item['labels']['io.cattle.field/appId'] === get(this, 'name');
@@ -115,7 +115,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     });
   }),
 
-  ingress: computed('namespace.ingress', function() {
+  ingress: computed('name', 'namespace.ingress', function() {
     return (get(this, 'namespace.ingress') || []).filter((item) => {
       if ( item['labels'] ) {
         return item['labels']['io.cattle.field/appId'] === get(this, 'name');
@@ -123,7 +123,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     });
   }),
 
-  volumes: computed('namespace.volumes', function() {
+  volumes: computed('name', 'namespace.volumes', function() {
     return (get(this, 'namespace.volumes') || []).filter((item) => {
       if ( item['labels'] ) {
         return item['labels']['io.cattle.field/appId'] === get(this, 'name');
@@ -164,7 +164,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     return parseHelmExternalId(get(this, 'externalId'));
   }),
 
-  canUpgrade: computed('actionLinks.{upgrade}', 'catalogTemplate', function() {
+  canUpgrade: computed('actionLinks.upgrade', 'catalogTemplate', function() {
     let a = get(this, 'actionLinks') || {};
 
     return !!a.upgrade && !isEmpty(this.catalogTemplate);
@@ -174,11 +174,11 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
     return !isEmpty(this.catalogTemplate);
   }),
 
-  canRollback: computed('catalogTemplate', function() {
+  canRollback: computed('actionLinks', 'catalogTemplate', function() {
     return !isEmpty(this.catalogTemplate) && !!( this.actionLinks || {} ).rollback;
   }),
 
-  availableActions: computed('actionLinks.{rollback,upgrade}', 'catalogTemplate', function() {
+  availableActions: computed('actionLinks.{rollback,upgrade}', 'canRollback', 'canUpgrade', 'catalogTemplate', 'isIstio', function() {
     return [
       {
         label:   'action.upgrade',

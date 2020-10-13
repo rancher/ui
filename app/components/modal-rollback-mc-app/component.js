@@ -66,7 +66,7 @@ export default Component.extend(ModalBase, {
   }),
 
 
-  currentMultiClusterAppRevision: computed('choices.[]', 'revisionId', 'selectedMultiClusterAppRevision', function() {
+  currentMultiClusterAppRevision: computed('choices.[]', 'choices.firstObject.data', 'revisionId', 'selectedMultiClusterAppRevision', function() {
     return get(this, 'choices.firstObject.data');
   }),
 
@@ -82,6 +82,8 @@ export default Component.extend(ModalBase, {
 
       return this.generateAnswersJsonDiff(currentMultiClusterAppRevision, selectedMultiClusterAppRevision);
     }
+
+    return null;
   }),
 
   initModelWithClone() {

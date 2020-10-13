@@ -94,14 +94,14 @@ export default Resource.extend(Grafana, ResourceUsage, {
     }
   })),
 
-  clusterTemplateDisplayName: computed('clusterTemplate.name', 'clusterTemplateId', function() {
+  clusterTemplateDisplayName: computed('clusterTemplate.{displayName,name}', 'clusterTemplateId', function() {
     const displayName = get(this, 'clusterTemplate.displayName');
     const clusterTemplateId = (get(this, 'clusterTemplateId') || '').replace(CLUSTER_TEMPLATE_ID_PREFIX, '');
 
     return displayName || clusterTemplateId;
   }),
 
-  clusterTemplateRevisionDisplayName: computed('clusterTemplateRevision.name', 'clusterTemplateRevisionId', function() {
+  clusterTemplateRevisionDisplayName: computed('clusterTemplateRevision.{displayName,name}', 'clusterTemplateRevisionId', function() {
     const displayName = get(this, 'clusterTemplateRevision.displayName');
     const revisionId = (get(this, 'clusterTemplateRevisionId') || '').replace(CLUSTER_TEMPLATE_ID_PREFIX, '')
 
@@ -188,6 +188,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
     if ( configName ) {
       return get(this, `${ configName }.region`) || get(this, `${ configName }.regionId`) || get(this, `${ configName }.location`) || get(this, `${ configName }.zone`) || get(this, `${ configName }.zoneId`);
     }
+
+    return '';
   }),
 
   clusterProvider: computed('configName', 'nodePools.@each.{driver,nodeTemplateId}', 'driver', function() {
@@ -279,7 +281,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return get(projects, 'firstObject');
   }),
 
-  canSaveMonitor: computed('actionLinks.{editMonitoring,enableMonitoring}', function() {
+  canSaveMonitor: computed('actionLinks.{editMonitoring,enableMonitoring}', 'enableClusterMonitoring', function() {
     const action = get(this, 'enableClusterMonitoring') ?  'editMonitoring' : 'enableMonitoring';
 
     return !!this.hasAction(action)
@@ -308,7 +310,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return out;
   }),
 
-  nodeGroupVersionUpdate: computed('eksStatus.upstreamSpec.kubernetesVersion', 'eksStatus.upstreamSpec.nodeGroups.@each.{version}', function() {
+  nodeGroupVersionUpdate: computed('eksStatus.upstreamSpec.kubernetesVersion', 'eksStatus.upstreamSpec.nodeGroups.@each.version', function() {
     if (isEmpty(get(this, 'eksStatus.upstreamSpec.nodeGroups'))) {
       return false;
     }
@@ -352,7 +354,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return false;
   }),
 
-  availableActions: computed('actionLinks.{rotateCertificates}', 'canSaveAsTemplate', function() {
+  availableActions: computed('actionLinks.rotateCertificates', 'canSaveAsTemplate', 'isClusterScanDisabled', function() {
     const a = get(this, 'actionLinks') || {};
 
     return [
@@ -406,7 +408,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
       || get(this, 'isWindows');
   }),
 
-  isAddClusterScanScheduleDisabled: computed('isClusterScanDown', 'scheduledClusterScan.enabled', 'clusterTemplateRevision', 'clusterTemplateRevision.questions.@each', function() {
+  isAddClusterScanScheduleDisabled: computed('isClusterScanDown', 'scheduledClusterScan.enabled', 'clusterTemplateRevision', 'clusterTemplateRevision.questions.[]', function() {
     if (get(this, 'clusterTemplateRevision') === null) {
       return get(this, 'isClusterScanDown');
     }

@@ -36,11 +36,11 @@ export default Controller.extend({
     }
   },
 
-  clusterCatalogs: computed('model.clusterCatalogs.@each.{clusterId,state,id}', function() {
+  clusterCatalogs: computed('model.clusterCatalogs.@each.{clusterId,id,state}', 'scope.currentCluster.id', function() {
     return get(this, 'model.clusterCatalogs').filterBy('clusterId', get(this, 'scope.currentCluster.id'));
   }),
 
-  projectCatalogs: computed('model.projectCatalogs.@each.{clusterId,state,id}', function() {
+  projectCatalogs: computed('model.projectCatalogs.@each.{clusterId,id,state}', 'scope.currentProject.id', function() {
     return get(this, 'model.projectCatalogs').filterBy('projectId', get(this, 'scope.currentProject.id'));
   }),
 });

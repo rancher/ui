@@ -15,7 +15,7 @@ export default Resource.extend({
     return Object.keys(get(this, 'data') || {}).sort();
   }),
 
-  workloads: computed('allWorkloads.list.@each.volumes', 'allWorkloads.list.@each.containers', function() {
+  workloads: computed('allWorkloads.list.@each.{containers,volumes}', 'name', 'namespaceId', function() {
     return (get(this, 'allWorkloads.list') || []).map((item) => item.obj).filter((workload) => {
       if ( get(this, 'namespaceId') && get(workload, 'namespaceId') !== get(this, 'namespaceId')) {
         return false;

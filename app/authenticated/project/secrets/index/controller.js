@@ -54,7 +54,7 @@ export default Controller.extend({
   group:        alias('projectController.group'),
   groupTableBy: alias('projectController.groupTableBy'),
 
-  rows: computed('model.projectSecrets.[].type', 'model.namespacedSecrets.[].type', function() {
+  rows: computed('model.projectSecrets.@each.type', 'model.namespacedSecrets.@each.type', function() {
     const proj = get(this, 'model.projectSecrets').filterBy('type', 'secret');
     const ns = get(this, 'model.namespacedSecrets').filterBy('type', 'namespacedSecret');
     const out = proj.concat(ns);
