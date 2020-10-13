@@ -51,14 +51,14 @@ export default Controller.extend({
     },
   },
 
-  allNamespace: computed('model.namespaces.[]', function() {
+  allNamespace: computed('model.namespaces.[]', 'scope.currentProject.id', function() {
     let ns = get(this, 'model.namespaces');
     let pId = get(this, 'scope.currentProject.id');
 
     return ns.filter( (n) => get(n, 'projectId') === pId || isEmpty(get(n, 'projectId')));
   }),
 
-  projectNamespaces: computed('model.namespaces', function() {
+  projectNamespaces: computed('model.namespaces', 'scope.currentProject.id', function() {
     return get(this, 'model.namespaces').filter( (ns) => get(ns, 'projectId') === get(this, 'scope.currentProject.id'));
   }),
 

@@ -7,14 +7,14 @@ export default Resource.extend({
   clusterStore:  service(),
   router:        service(),
 
-  type:          'ingress',
+  type: 'ingress',
 
   canClone:      true,
   canHaveLabels: true,
 
-  namespace:     reference('namespaceId', 'namespace', 'clusterStore'),
+  namespace: reference('namespaceId', 'namespace', 'clusterStore'),
 
-  targets: computed('rules.@each.paths', function() {
+  targets: computed('defaultBackend', 'rules.@each.paths', 'store', 'tls', function() {
     const out = [];
     const store = get(this, 'store');
 

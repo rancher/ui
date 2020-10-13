@@ -56,12 +56,14 @@ var Container = Resource.extend(Grafana, DisplayImage, {
     return choices;
   }),
 
-  restarts: computed('pod.status.containerStatuses.@each.restartCount', function() {
+  restarts: computed('name', 'pod.status.containerStatuses.@each.restartCount', function() {
     const state = (get(this, 'pod.status.containerStatuses') || []).findBy('name', get(this, 'name'));
 
     if ( state ) {
       return get(state, 'restartCount');
     }
+
+    return 0;
   }),
 
   hasCpuReservation: computed('resources.requests.cpu', function() {

@@ -12,7 +12,7 @@ const CronJob = Workload.extend({
     return service;
   }),
 
-  availableActions: computed('actionLinks.{activate,deactivate,pause,restart,rollback,garbagecollect}', 'links.{update,remove}', 'podForShell', 'isPaused', 'canEdit', function() {
+  availableActions: computed('actionLinks.{activate,deactivate,garbagecollect,pause,restart,rollback}', 'canEdit', 'cronJobConfig.suspend', 'isPaused', 'links.{remove,update}', 'podForShell', function() {
     const actions = this._super();
     const canEdit = get(this, 'canEdit');
     const suspend = get(this, 'cronJobConfig.suspend');

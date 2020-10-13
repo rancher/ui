@@ -30,7 +30,7 @@ export default Resource.extend({
   catalog:             service(),
   intl:                service(),
   type:                'nodeDriver',
-  catalogTemplateIcon: computed('externalId', function() {
+  catalogTemplateIcon: computed('app.baseAssets', 'externalId', function() {
     let parsedExtId = parseExternalId(get(this, 'externalId')) || null;
 
     if (!parsedExtId) {
@@ -45,7 +45,7 @@ export default Resource.extend({
     }
   }),
 
-  displayName: computed('name', 'intl.locale', function() {
+  displayName: computed('id', 'intl.locale', 'name', function() {
     const intl = get(this, 'intl');
     const name = get(this, 'name');
     const key = `nodeDriver.displayName.${ name }`;
@@ -59,7 +59,7 @@ export default Resource.extend({
     }
   }),
 
-  displayIcon: computed('name', function() {
+  displayIcon: computed('hasBuiltinUi', 'name', function() {
     let name = get(this, 'name');
 
     if ( get(this, 'hasBuiltinUi') ) {
@@ -93,7 +93,7 @@ export default Resource.extend({
     return !get(this, 'builtin') && !get(this, 'externalId');
   }),
 
-  hasUi: computed('hasBuiltinUi', function() {
+  hasUi: computed('hasBuiltinUi', 'uiUrl', function() {
     return get(this, 'hasBuiltinUi') || !!get(this, 'uiUrl');
   }),
 
@@ -111,7 +111,7 @@ export default Resource.extend({
     return get(this, 'state') === 'inactive'
   }),
 
-  availableActions: computed('actionLinks.{activate,deactivate}', function() {
+  availableActions: computed('actionLinks.{activate,deactivate}', 'state', function() {
     let a = get(this, 'actionLinks') || {};
 
     return [

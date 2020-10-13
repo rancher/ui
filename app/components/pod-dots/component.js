@@ -35,7 +35,7 @@ export default Component.extend({
   }),
   // Ignore the setting because these are tiny dots.
 
-  filtered: computed('pods.[]', 'pod', 'searchText', function() {
+  filtered: computed('pod', 'pods.[]', 'searchFields', 'searchText', function() {
     let out = [];
     const pod = this.get('pod');
     const pods = this.get('pods');

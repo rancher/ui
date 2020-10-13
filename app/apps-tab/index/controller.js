@@ -16,7 +16,7 @@ export default Controller.extend({
 
   tags:              alias('projectController.tags'),
   templatesObsvr: observer('model.apps.[]', function() {
-    once(() => this.get('catalog').fetchAppTemplates(get(this, 'model.apps')));
+    once(this, 'fetchCatalogResources');
   }),
 
   filteredApps: computed('model.apps.@each.{type,isFromCatalog,tags,state}', 'tags', 'searchText', function() {
@@ -47,4 +47,9 @@ export default Controller.extend({
 
     return group;
   }),
+
+  fetchCatalogResources() {
+    this.catalog.fetchAppTemplates(get(this, 'model.apps'));
+  },
+
 });

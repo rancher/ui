@@ -38,7 +38,7 @@ export function registerProvisioner(name, provisioner, component, supported) {
 
   PROVISIONERS.push({
     name,
-    value:     provisioner,
+    value: provisioner,
     component,
     supported,
   });

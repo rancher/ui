@@ -36,7 +36,7 @@ export default Resource.extend({
   }),
 
 
-  linkedProjects: computed('projectIds.[]', 'scope.allProjects.@each.{id}', function() {
+  linkedProjects: computed('projectIds.[]', 'scope.allProjects.@each.id', function() {
     const allProjects = get(this, 'scope.allProjects') || [];
     const projectIds  = get(this, 'projectIds') || [];
 

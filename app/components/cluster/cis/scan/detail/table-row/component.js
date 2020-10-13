@@ -15,7 +15,7 @@ export default Component.extend({
       get(this, 'model.toggleSkip')()
     },
   },
-  isInSkipList: computed('model.skipList.@each', function() {
+  isInSkipList: computed('model.id', 'model.skipList.[]', function() {
     return get(this, 'model.skipList').indexOf(get(this, 'model.id')) !== -1;
   }),
   showSkipButton: computed('model.state', 'isInSkipList', function() {

@@ -66,6 +66,8 @@ var Pod = Resource.extend(Grafana, DisplayImage, {
     if ( get(this, 'memoryReservation') ) {
       return formatSi(get(this, 'memoryReservation'), 1024, 'iB', 'B');
     }
+
+    return;
   }),
 
   combinedState: computed('node.state', 'workload.state', 'state', 'healthState', 'healthCheck', function() {
@@ -88,7 +90,7 @@ var Pod = Resource.extend(Grafana, DisplayImage, {
     return ['running', 'migrating', 'restarting'].indexOf(get(this, 'state')) >= 0;
   }),
 
-  displayState: computed('_displayState', 'exitCode', function() {
+  displayState: computed('_displayState', 'exitCode', 'state', function() {
     let out = get(this, '_displayState');
     let code = get(this, 'exitCode');
 
@@ -147,6 +149,8 @@ var Pod = Resource.extend(Grafana, DisplayImage, {
       return match.slice(1).map((octet) => strPad(octet, 3, '0', false))
         .join('.');
     }
+
+    return '';
   }),
 
   isGlobalScale: computed('labels', function() {

@@ -3,7 +3,7 @@ import { computed, get } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default Resource.extend({
-  scope:            service(),
+  scope: service(),
 
   availableActions: computed(() => {
     return [

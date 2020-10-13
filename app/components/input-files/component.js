@@ -16,7 +16,7 @@ export default Component.extend({
   namePlaceholder:   'generic.emptyString',
   valuePlaceholder:  'generic.emptyString',
 
-  ary:              null,
+  ary: null,
 
   init() {
     this._super(...arguments);

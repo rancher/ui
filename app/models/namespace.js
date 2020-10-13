@@ -87,7 +87,7 @@ var Namespace = Resource.extend(StateCounts, {
     // @TODO-2.0 this.defineStateCounts('services', 'serviceStates', 'serviceCountSort');
   },
 
-  availableActions: computed('projectId', 'actionLinks.@each.{move}', 'scope.currentCluster.istioEnabled', 'scope.currentCluster.systemProject', 'autoInjectionEnabled', function() {
+  availableActions: computed('projectId', 'actionLinks.@each.move', 'scope.currentCluster.istioEnabled', 'scope.currentCluster.systemProject', 'autoInjectionEnabled', function() {
     let aa = get(this, 'actionLinks') || {};
 
     let out = [
@@ -162,6 +162,8 @@ var Namespace = Resource.extend(StateCounts, {
     if ( tpl ) {
       return tpl.linkFor('icon');
     }
+
+    return '';
   }),
 
   grouping: computed('externalIdInfo.kind', 'group', 'system', function() {

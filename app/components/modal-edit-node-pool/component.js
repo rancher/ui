@@ -9,7 +9,7 @@ export default Component.extend(ModalBase, {
   classNames:    ['large-modal'],
   model:         null,
 
-  originalModel:      alias('modalService.modalOpts'),
+  originalModel: alias('modalService.modalOpts'),
   init() {
     this._super(...arguments);
 

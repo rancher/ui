@@ -6,7 +6,7 @@ import C from 'shared/utils/constants';
 export default Component.extend({
   layout,
 
-  term:      null,
+  term: null,
 
   ruleArray: null,
   editing:   true,

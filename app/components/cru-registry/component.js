@@ -82,7 +82,7 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
     return this._super(...arguments);
   }),
 
-  hostname:  window.location.host,
+  hostname: window.location.host,
 
   willSave() {
     const { primaryResource: pr } = this;

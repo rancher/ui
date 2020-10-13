@@ -10,28 +10,29 @@
       useLabel=true
       searchOnlyGroups=searchOnlyGroups
     }}
-
     <div class="input-group-btn">
       {{#if showDropdown}}
-        {{#basic-dropdown
-             horizontalPosition="right"
-             as |dd|}}
-          {{#dd.trigger class="btn bg-default"}}
+        <BasicDropdown @horizontalPosition="right" as |dd|>
+          <dd.Trigger class="btn bg-default">
             <i class="icon icon-chevron-down"></i>
-          {{/dd.trigger}}
-
-          {{#dd.content class="principal-search-list"}}
-            <li role="presentation" class="dropdown-header">{{dropdownLabel}}</li>
+          </dd.Trigger>
+          <dd.Content class="principal-search-list">
+            <li
+              role="presentation"
+              class="dropdown-header"
+              {{action dd.actions.close}}
+            >
+              {{dropdownLabel}}
+            </li>
             {{#each dropdownChoices as |item|}}
-              <li>
+              <li {{action dd.actions.close}}>
                 <a {{action "addObject" item}}>
                   {{identity-block principal=item}}
                 </a>
               </li>
             {{/each}}
-          {{/dd.content}}
-
-        {{/basic-dropdown}}
+          </dd.Content>
+        </BasicDropdown>
       {{/if}}
     </div>
   </div>

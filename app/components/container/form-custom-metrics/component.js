@@ -18,7 +18,7 @@ const OPTIONS = [
 ];
 
 export default Component.extend({
-  scope:    service(),
+  scope: service(),
 
   layout,
 

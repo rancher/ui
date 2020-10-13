@@ -16,7 +16,7 @@ export default Route.extend({
   growl:        service(),
   intl:         service(),
 
-  parentRoute:  'catalog-tab',
+  parentRoute: 'catalog-tab',
 
   model(params, transition) {
     const { store, clusterStore } = this;

@@ -4,7 +4,7 @@ import { next } from '@ember/runloop'
 import { inject as service } from '@ember/service';
 
 export default Resource.extend({
-  growl:       service(),
+  growl: service(),
 
   state: computed('expired', function() {
     if ( get(this, 'expired') ) {

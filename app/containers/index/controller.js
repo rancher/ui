@@ -86,8 +86,8 @@ export default Controller.extend({
 
     if (group === 'node') {
       return 'node';
-    } else if (group === 'namespace') {
-      return 'namespace'
     }
+
+    return 'namespace';
   }),
 });

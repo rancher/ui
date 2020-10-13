@@ -1,15 +1,16 @@
 'use strict';
 
 module.exports = {
-  extends: 'recommended',
+  extends: 'recommended', // octane???
 
   rules: {
     'attribute-indentation':      false,
     'block-indentation':          false,
     'deprecated-render-helper':   false,
-    'img-alt-attributes':         false,
+    'require-valid-alt-text':     false,
     'linebreak-style':            false,
     'link-rel-noopener':          false,
+    'link-href-attributes':       false,
     'no-attrs-in-components':     false,
     'no-bare-strings':            false,
     'no-debugger':                false,
@@ -19,6 +20,8 @@ module.exports = {
     'no-input-block':             false,
     'no-input-tagname':           false,
     'no-invalid-interactive':     false,
+    'no-invalid-role':            false,
+    'no-positive-tabindex':       false,
     'no-log':                     false,
     'no-nested-interactive':      false,
     'no-outlet-outside-routes':   false,

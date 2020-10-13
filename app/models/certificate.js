@@ -10,7 +10,7 @@ export default Resource.extend({
 
   state: 'active',
 
-  workloads: computed('allWorkloads.list.@each.volumes', 'allWorkloads.list.@each.containers', function() {
+  workloads: computed('allWorkloads.list.@each.{containers,volumes}', 'name', 'namespaceId', function() {
     return (get(this, 'allWorkloads.list') || []).map((item) => item.obj).filter((workload) => {
       if ( get(this, 'namespaceId') && get(workload, 'namespaceId') !== get(this, 'namespaceId')) {
         return false;

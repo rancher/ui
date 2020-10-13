@@ -10,7 +10,7 @@ const cloudCredential = Resource.extend({
   globalStore:    service(),
   nodeTemplates: hasMany('id', 'nodetemplate', 'cloudCredentialId', 'globalStore'),
 
-  type:     'cloudCredential',
+  type: 'cloudCredential',
 
   canClone: false,
   canEdit:  true,
@@ -21,6 +21,7 @@ const cloudCredential = Resource.extend({
   isLinode:    notEmpty('linodecredentialConfig'),
   isOCI:       notEmpty('ocicredentialConfig'),
   isVMware:    notEmpty('vmwarevspherecredentialConfig'),
+
   displayType: computed('amazonec2credentialConfig', 'azurecredentialConfig', 'digitaloceancredentialConfig', 'linodecredentialConfig', 'ocicredentialConfig', 'vmwarevspherecredentialConfig', function() {
     const {
       isAmazon,
@@ -44,6 +45,8 @@ const cloudCredential = Resource.extend({
     } else if (isVMware) {
       return 'VMware vSphere';
     }
+
+    return '';
   }),
 
   numberOfNodeTemplateAssociations: computed('nodeTemplates.[]', function() {

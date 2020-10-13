@@ -8,7 +8,7 @@ const NodePool = Resource.extend({
   type:          'nodePool',
   quantityTimer: null,
 
-  nodeTemplate:  reference('nodeTemplateId'),
+  nodeTemplate: reference('nodeTemplateId'),
 
   displayProvider: computed('driver', 'nodeTemplate.driver', 'intl.locale', function() {
     const intl = get(this, 'intl');

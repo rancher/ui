@@ -8,7 +8,7 @@ export default Component.extend(Metrics, {
 
   filters: { resourceType: 'container' },
 
-  projectScope:  true,
+  projectScope: true,
 
   init() {
     this._super(...arguments);

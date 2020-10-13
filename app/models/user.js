@@ -58,11 +58,11 @@ export default Resource.extend({
     return get(this, 'globalRoleBindings').findBy('globalRole.isBase', true);
   }),
 
-  isMe: computed('access.principal', function() {
+  isMe: computed('access.principal.id', 'id', function() {
     return get(this, 'access.principal.id') === get(this, 'id');
   }),
 
-  availableActions: computed('enabled', 'access.providers.[]', function() {
+  availableActions: computed('access.providers.[]', 'actionLinks', 'enabled', function() {
     const on         = get(this, 'enabled') !== false;
     const { access } = this;
     const a = get(this, 'actionLinks') || {};

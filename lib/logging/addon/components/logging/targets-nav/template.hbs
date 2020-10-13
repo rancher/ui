@@ -19,10 +19,10 @@
 <section>
   <div class="text-center text-muted">
     {{#if (eq targetTypeName 'none')}}
-      {{#if (not hasCurrentTarget)}}
-        {{t 'loggingPage.targetNav.tips.caseA' pageScope=pageScope}}
-      {{else}}
+      {{#if hasCurrentTarget}}
         {{t 'loggingPage.targetNav.tips.caseB' pageScope=pageScope currentTarget=currentTarget htmlSafe=true}}
+      {{else}}
+        {{t 'loggingPage.targetNav.tips.caseA' pageScope=pageScope}}
       {{/if}}
     {{else if hasCurrentTarget}}
         {{t 'loggingPage.targetNav.tips.caseC' currentTarget=currentTarget htmlSafe=true}}

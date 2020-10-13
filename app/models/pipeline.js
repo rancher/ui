@@ -60,7 +60,7 @@ let Pipeline = Resource.extend({
     return tokens.join('/');
   }),
 
-  availableActions: computed('links.yaml', function() {
+  availableActions: computed('actions', 'links.yaml', 'repositoryUrl', function() {
     let l = get(this, 'links') || {};
     let a = get(this, 'actions') || {};
     const isExample = C.DEMO_REPOSITORIES.findBy('url', get(this, 'repositoryUrl'));

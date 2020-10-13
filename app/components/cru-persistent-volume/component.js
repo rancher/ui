@@ -109,6 +109,8 @@ export default Component.extend(ViewNewEdit, {
     if (entry) {
       return `volume-source/source-${ name }`;
     }
+
+    return null;
   }),
 
   willSave() {

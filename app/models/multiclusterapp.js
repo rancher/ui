@@ -18,7 +18,7 @@ const MultiClusterApp = Resource.extend({
   clusterStore:    service(),
   globalStore:     service(),
 
-  canEdit:         false,
+  canEdit: false,
 
   templateVersion: reference('templateVersionId', 'templateversion', 'globalStore'),
   catalogTemplate: reference('templateId', 'template', 'globalStore'),
@@ -37,11 +37,11 @@ const MultiClusterApp = Resource.extend({
     return parseHelmExternalId(get(this, 'templateVersion.externalId'));
   }),
 
-  templateId: computed('externalIdInfo.{templateId}', function() {
+  templateId: computed('externalIdInfo.templateId', function() {
     return get(this, 'externalIdInfo.templateId');
   }),
 
-  canUpgrade: computed('actionLinks.{upgrade}', 'catalogTemplate', 'templateVersion', function() {
+  canUpgrade: computed('actionLinks.upgrade', 'catalogTemplate', 'links', 'templateVersion', function() {
     const l = get(this, 'links') || {};
 
     return !!l.update && !isEmpty(this.catalogTemplate);
@@ -51,11 +51,11 @@ const MultiClusterApp = Resource.extend({
     return !isEmpty(this.catalogTemplate);
   }),
 
-  canRollback: computed('catalogTemplate', 'templateVersion', function() {
+  canRollback: computed('actionLinks', 'catalogTemplate', 'templateVersion', function() {
     return !isEmpty(this.catalogTemplate) && !!( this.actionLinks || {} ).rollback;
   }),
 
-  availableActions: computed('actionLinks.{rollback}', 'links.{update}', 'canUpgrade', 'canRollback', function() {
+  availableActions: computed('actionLinks.rollback', 'links.update', 'canUpgrade', 'canRollback', function() {
     return [
       {
         label:   'action.upgrade',

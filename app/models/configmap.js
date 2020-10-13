@@ -14,9 +14,9 @@ export default Resource.extend({
   canHaveLabels:  true,
   namespace:     reference('namespaceId', 'namespace', 'clusterStore'),
 
-  firstKey:  alias('keys.firstObject'),
+  firstKey: alias('keys.firstObject'),
 
-  workloads: computed('namespace.workloads.@each.volumes', 'namespace.workloads.@each.containers', function() {
+  workloads: computed('name', 'namespace.workloads.@each.{containers,volumes}', function() {
     return (get(this, 'namespace.workloads') || []).filter((workload) => {
       const volume = (get(workload, 'volumes') || []).find((volume) => get(volume, 'configMap.name') === get(this, 'name'));
       const env = (get(workload, 'containers') || []).find((container) => (get(container, 'environmentFrom') || []).find((env) => get(env, 'source') === 'configMap' && get(env, 'sourceName') === get(this, 'name')));

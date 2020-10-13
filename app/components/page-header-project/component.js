@@ -26,7 +26,7 @@ export default Component.extend(ThrottledResize, {
   router:              service(),
 
   layout,
-  pageScope:           null,
+  pageScope: null,
 
   tagName:             'LI',
   classNames:          ['dropdown', 'nav-item', 'nav-cluster'],
@@ -250,7 +250,7 @@ export default Component.extend(ThrottledResize, {
     return out;
   }),
 
-  projectSearchResults: computed('searchInput', 'byCluster.[]', function() {
+  projectSearchResults: computed('byCluster.[]', 'projectChoices', 'searchInput', function() {
     const needle = get(this, 'searchInput');
     const out = [];
 
