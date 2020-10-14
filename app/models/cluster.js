@@ -711,6 +711,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
       if (isEmpty(this.id)) {
         sanitizeConfigs(eksClusterConfigSpec, nodeGroupConfigSpec);
 
+        if (this.name !== get(this, 'eksConfig.displayName')) {
+          set(this, 'eksConfig.displayName', this.name);
+        }
+
         return this._super(...arguments);
       } else {
         const config = jsondiffpatch.clone(get(this, 'eksConfig'));
