@@ -9,14 +9,15 @@ export default Component.extend(VolumeSource, {
   field: 'csi',
 
   init() {
-    this._super();
-    const { config: { driver, options } } = this;
+    this._super(...arguments);
+
+    const { config: { driver, volumeAttributes } } = this;
 
     if (!driver) {
       set(this, 'config.driver', C.STORAGE.LONGHORN_PROVISIONER_KEY);
     }
 
-    if (!options) {
+    if (!volumeAttributes) {
       set(this, 'config.volumeAttributes', {
         size:                '2Gi',
         numberOfReplicas:    '3',
