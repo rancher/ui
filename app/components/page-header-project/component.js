@@ -128,7 +128,6 @@ export default Component.extend(ThrottledResize, {
       setProperties(this, {
         activeClusterEntry: null,
         clusterEntry:       null,
-        dropdownApi:        null,
         hoverEntry:         null,
         open:               false,
         searchInput:        '',
