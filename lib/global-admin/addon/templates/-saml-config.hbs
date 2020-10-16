@@ -67,6 +67,18 @@
           </div>
         </div>
         <div class="row">
+          {{#if (eq providerName 'keycloak')}}
+            <div class="col span-6">
+              <label class="acc-label pb-5">
+                {{t "authPage.saml.disabled.entityId.labelText" appName=settings.appName}}{{field-required}}
+              </label>
+              {{input
+                type="text"
+                value=authConfig.entityID
+                classNames="form-control"
+              }}
+            </div>
+          {{/if}}
           <div class="col span-6">
             <label class="acc-label pb-5">
               {{t "authPage.saml.disabled.rancherApiHost.labelText" appName=settings.appName}}{{field-required}}
@@ -232,6 +244,11 @@
             <div class="mb-10">
               <b>{{t "authPage.saml.disabled.uid.display"}} </b> <span class="text-muted">{{authConfig.uidField}}</span>
             </div>
+            {{#if (eq providerName 'keycloak')}}
+              <div class="mb-10">
+                <b>{{t "authPage.saml.disabled.entityId.display"}} </b> <span class="text-muted">{{authConfig.entityID}}</span>
+              </div>
+            {{/if}}
             <div class="mb-10">
               <b>{{t "authPage.saml.disabled.rancherApiHost.display" appName=settings.appName}} </b> <span class="text-muted">{{authConfig.rancherApiHost}}</span>
             </div>
