@@ -1,7 +1,7 @@
 {{#accordion-list showExpandAll=false as |al expandFn|}}
 
 
-  {{!-- Only allow edits to tenancy, compartment, and region configuration for new cluster --}}
+{{!-- Only allow edits to tenancy, compartment, and region configuration for new cluster --}}
   {{#accordion-list-item title=(t "clusterNew.oracleoke.access.title")
                          detail=(t "clusterNew.oracleoke.access.detail")
                          expandAll=expandAll
@@ -10,28 +10,22 @@
   }}
 
     <div class="row">
-      <div class="col span-6 mb-0">
-        <label class="acc-label">{{t 'clusterNew.oracleoke.tenancyOCID.label'}}{{field-required}}</label>
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t 'clusterNew.oracleoke.tenancyOCID.label'}}{{field-required}}
+        </label>
         {{#input-or-display editable=isNew value=config.tenancyId}}
           {{input type="text" name="tenancy" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.tenancyOCID.placeholder') value=config.tenancyId}}
         {{/input-or-display}}
       </div>
 
 
-      <div class="col span-6 mb-0">
-        <label class="acc-label">{{t 'clusterNew.oracleoke.compartmentOCID.label'}}{{field-required}}</label>
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t 'clusterNew.oracleoke.compartmentOCID.label'}}{{field-required}}
+        </label>
         {{#input-or-display editable=isNew value=config.compartmentId}}
           {{input type="text" name="compartment" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.compartmentOCID.placeholder') value=config.compartmentId}}
-        {{/input-or-display}}
-      </div>
-
-      <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.oracleoke.region.label'}}{{field-required}}</label>
-        {{#input-or-display editable=isNew value=selectedRegion}}
-          {{searchable-select class="form-control"
-                              content=regionChoices
-                              value=config.region
-          }}
         {{/input-or-display}}
       </div>
 
@@ -41,21 +35,27 @@
     <div class="row">
 
       <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.oracleoke.userOcid.label'}}{{field-required}}</label>
+        <label class="acc-label">
+          {{t 'clusterNew.oracleoke.userOcid.label'}}{{field-required}}
+        </label>
         {{#input-or-display editable=(or isNew editing) value=config.userOcid}}
           {{input type="text" name="username" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.userOcid.placeholder') value=config.userOcid}}
         {{/input-or-display}}
       </div>
 
       <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.oracleoke.userFingerprint.label'}}{{field-required}}</label>
+        <label class="acc-label">
+          {{t 'clusterNew.oracleoke.userFingerprint.label'}}{{field-required}}
+        </label>
         {{#input-or-display editable=(or isNew editing) value=config.fingerprint}}
           {{input type="text" name="fingerprint" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.userFingerprint.placeholder') value=config.fingerprint}}
         {{/input-or-display}}
       </div>
 
       <div class="col span-6">
-        <label class="acc-label">{{t 'clusterNew.oracleoke.secretKeyPassphrase.label'}}</label>
+        <label class="acc-label">
+          {{t 'clusterNew.oracleoke.secretKeyPassphrase.label'}}
+        </label>
         {{#input-or-display editable=(or isNew editing) value=config.privateKeyPassphrase}}
           {{input type="password" name="password" classNames="form-control" concealValue=true placeholder=(t 'clusterNew.oracleoke.secretKeyPassphrase.placeholder') value=config.privateKeyPassphrase}}
         {{/input-or-display}}
@@ -94,7 +94,7 @@
   {{/if}}
 
   {{#if (and (gte step 2) editing)}}
-    {{!-- edit cluster --}}
+  {{!-- edit cluster --}}
     {{#accordion-list-item title=(t "clusterNew.oracleoke.cluster.title")
                            detail=(t "clusterNew.oracleoke.cluster.detail")
                            showExpand=false
@@ -103,20 +103,42 @@
                            expand=(action expandFn)
     }}
       <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t 'clusterNew.oracleoke.region.label'}}{{field-required}}
+          </label>
+          {{#if (eq step 2)}}
+            {{#input-or-display editable=isNew value=config.region}}
+              {{input type="text" name="region" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.region.placeholder') value=config.region}}
+            {{/input-or-display}}
+          {{/if}}
+        </div>
+      </div>
+      <div class="row">
 
         <div class="col span-4">
-          <label class="acc-label">{{t 'clusterNew.oracleoke.version.label'}}</label>
-          {{#input-or-display editable=(or (eq mode "new") eq mode "editing") value=selectedk8sVersion}}
-            {{new-select class="form-control"
-                         content=k8sUpgradeVersionChoices
-                         value=config.kubernetesVersion
-            }}
-          {{/input-or-display}}
+          <label class="acc-label">
+            {{t 'clusterNew.oracleoke.version.label'}}
+          </label>
+          {{#if (eq step 2)}}
+            <select class="form-control" onchange={{action (mut config.kubernetesVersion) value="target.value"}}>
+              <option>  </option>
+              {{#each okeVersions as |choice|}}
+                {{#if (lte config.kubernetesVersion choice)}}
+                  <option value={{choice}} selected={{eq config.kubernetesVersion choice}}>{{choice}}</option>
+                {{/if}}
+              {{/each}}
+            </select>
+          {{else}}
+            <div>{{config.kubernetesVersion}}</div>
+          {{/if}}
         </div>
 
 
         <div class="col span-4">
-          <label class="acc-label">{{t 'clusterNew.oracleoke.quantityPerSubnet.label'}}</label>
+          <label class="acc-label">
+            {{t 'clusterNew.oracleoke.quantityPerSubnet.label'}}
+          </label>
           {{#input-or-display editable=(or (eq mode "new") eq mode "editing") value=config.quantityPerSubnet}}
             {{input-integer min=1 max=maxNodeCount value=config.quantityPerSubnet classNames="form-control" placeholder=(t 'clusterNew.oracleoke.quantityPerSubnet.placeholder')}}
             <p class="help-block">
@@ -139,7 +161,7 @@
     {{/if}}
 
   {{else}}
-    {{!-- new cluster --}}
+  {{!-- new cluster --}}
     {{#if (gte step 2)}}
       {{#accordion-list-item title=(t "clusterNew.oracleoke.cluster.title")
                              detail=(t "clusterNew.oracleoke.cluster.detail")
@@ -148,20 +170,41 @@
                              expandAll=al.expandAll
                              expand=(action expandFn)
       }}
-
         <div class="row">
-          <div class="col span-6 mb-0">
-            <label class="acc-label">{{t 'clusterNew.oracleoke.version.label'}}</label>
-            {{#input-or-display editable=(and (eq step 2) isNew) value=selectedk8sVersion}}
-              {{new-select class="form-control"
-                           content=k8sVersionChoices
-                           value=config.kubernetesVersion
-              }}
-            {{/input-or-display}}
+          <div class="col span-4 mb-0">
+            <label class="acc-label">
+              {{t 'clusterNew.oracleoke.region.label'}}
+            </label>
+            {{#if (eq step 2)}}
+              <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
+                {{#each regions as |choice|}}
+                  <option value={{choice}} selected={{eq config.region choice}}>{{choice}}</option>
+                {{/each}}
+              </select>
+            {{else}}
+              <div>{{config.region}}</div>
+            {{/if}}
+          </div>
+          <div class="col span-4 mb-0">
+            <label class="acc-label">
+              {{t 'clusterNew.oracleoke.version.label'}}
+            </label>
+            {{#if (eq step 2)}}
+              <select class="form-control" onchange={{action (mut config.kubernetesVersion) value="target.value"}}>
+                <option>  </option>
+                {{#each okeVersions as |choice|}}
+                  <option value={{choice}} selected={{eq config.kubernetesVersion choice}}>{{choice}}</option>
+                {{/each}}
+              </select>
+            {{else}}
+              <div>{{config.kubernetesVersion}}</div>
+            {{/if}}
           </div>
 
-          <div class="col span-6 mb-0">
-            <label class="acc-label">{{t 'clusterNew.oracleoke.quantityPerSubnet.label'}}</label>
+          <div class="col span-4 mb-0">
+            <label class="acc-label">
+              {{t 'clusterNew.oracleoke.quantityPerSubnet.label'}}
+            </label>
             {{#input-or-display editable=(and (eq step 2) isNew) value=config.quantityPerSubnet}}
               {{input-integer min=1 max=maxNodeCount value=config.quantityPerSubnet classNames="form-control" placeholder=(t 'clusterNew.oracleoke.quantityPerSubnet.placeholder')}}
               <p class="help-block">
@@ -175,6 +218,7 @@
       {{#if (eq step 2)}}
         {{save-cancel editing=(eq mode 'edit')
                       save="loadNodeConfig"
+                      saveDisabled=canAddK8sVersion
                       cancel=close
                       createLabel="clusterNew.oracleoke.cluster.next"
                       savingLabel="clusterNew.oracleoke.cluster.loading"
@@ -310,26 +354,37 @@
       }}
         <div class="row">
 
-
           <div class="row">
+
             <div class="col span-6">
-              <label class="acc-label">{{t 'clusterNew.oracleoke.nodeShape.label'}}{{field-required}}</label>
-              {{#input-or-display editable=(and (eq step 4) isNew) value=selectednodeShape}}
-                {{searchable-select class="form-control"
-                                    content=nodeShapeChoices
-                                    value=config.nodeShape
-                }}
-              {{/input-or-display}}
+              <label class="acc-label">
+                {{t 'clusterNew.oracleoke.nodeShape.label'}}{{field-required}}
+              </label>
+              {{#if (eq step 4)}}
+                <select class="form-control" onchange={{action (mut config.nodeShape) value="target.value"}}>
+                  {{#each nodeShapes as |choice|}}
+                    <option value={{choice}} selected={{eq config.nodeShape choice}}>{{choice}}</option>
+                  {{/each}}
+                </select>
+              {{else}}
+                <div>{{config.nodeShape}}</div>
+              {{/if}}
             </div>
 
             <div class="col span-6">
-              <label class="acc-label">{{t 'clusterNew.oracleoke.os.label'}}</label>
-              {{#input-or-display editable=isNew value=selectedImage}}
-                {{searchable-select class="form-control"
-                                    content=imageChoices
-                                    value=config.nodeImage
-                }}
-              {{/input-or-display}}
+              <label class="acc-label">
+                {{t 'clusterNew.oracleoke.os.label'}}
+              </label>
+              {{#if (eq step 4)}}
+                <select class="form-control" onchange={{action (mut config.nodeImage) value="target.value"}}>
+                  <option>  </option>
+                  {{#each nodeImages as |choice|}}
+                    <option value={{choice}} selected={{eq config.nodeImage choice}}>{{choice}}</option>
+                  {{/each}}
+                </select>
+              {{else}}
+                <div>{{ config.nodeImage}}</div>
+              {{/if}}
             </div>
 
           </div>
@@ -337,7 +392,9 @@
           <div class="row">
 
             <div class="col span-4">
-              <label class="acc-label pt-5">{{t "clusterNew.oracleoke.nodeSSHKey.label"}}</label>
+              <label class="acc-label pt-5">
+                {{t "clusterNew.oracleoke.nodeSSHKey.label"}}
+              </label>
             </div>
             {{input-text-file
               classNames="box"
@@ -352,8 +409,6 @@
             }}
 
           </div>
-
-
 
         </div>
 
@@ -375,4 +430,3 @@
 
 
 {{/accordion-list}}
-
