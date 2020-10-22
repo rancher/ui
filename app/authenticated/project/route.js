@@ -23,36 +23,45 @@ export default Route.extend(Preload, {
   scope:        service(),
   globalStore:  service(),
   modalService: service('modal'),
+  settings:     service(),
 
   shortcuts: { 'g': 'toggleGrouping', },
   model(params, transition) {
     const isPopup = this.controllerFor('application').get('isPopup');
 
     return get(this, 'globalStore').find('project', params.project_id)
-      .then((project) => get(this, 'scope').startSwitchToProject(project, !isPopup)
-        .then(() => PromiseAll([
-          this.loadSchemas('clusterStore'),
-          this.loadSchemas('store'),
-        ]).then(() => {
-          const out = EmberObject.create({ project });
+      .then((project) => {
+        const hideLocalCluster = get(this.settings, 'shouldHideLocalCluster');
 
-          if ( isPopup ) {
-            return out;
-          } else {
-            return PromiseAll([
-              this.preload('namespace', 'clusterStore'),
-              this.preload('storageClass', 'clusterStore'),
-              this.preload('persistentVolume', 'clusterStore'),
-              this.preload('pod'),
-              this.preload('workload'),
-              this.preload('secret'),
-              this.preload('service'),
-              this.preload('configmap'),
-              this.preload('namespacedSecret'),
-              this.preload('persistentVolumeClaim'),
-            ]).then(() => out)
-          }
-        })))
+        if (hideLocalCluster && get(project, 'clusterId') === 'local') {
+          return this.replaceWith('authenticated');
+        }
+
+        return get(this, 'scope').startSwitchToProject(project, !isPopup)
+          .then(() => PromiseAll([
+            this.loadSchemas('clusterStore'),
+            this.loadSchemas('store'),
+          ]).then(() => {
+            const out = EmberObject.create({ project });
+
+            if ( isPopup ) {
+              return out;
+            } else {
+              return PromiseAll([
+                this.preload('namespace', 'clusterStore'),
+                this.preload('storageClass', 'clusterStore'),
+                this.preload('persistentVolume', 'clusterStore'),
+                this.preload('pod'),
+                this.preload('workload'),
+                this.preload('secret'),
+                this.preload('service'),
+                this.preload('configmap'),
+                this.preload('namespacedSecret'),
+                this.preload('persistentVolumeClaim'),
+              ]).then(() => out)
+            }
+          }))
+      })
       .catch((err) => this.loadingError(err, transition));
   },
 
