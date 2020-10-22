@@ -146,20 +146,20 @@
 </div>
 
 {{#if (eq selectedCloudProvider "azure")}}
-  {{#each-in configAnswers as |key value|}}
+  {{#each mappedConfigAnswers as |answer|}}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label pb-0">{{key}}
-          {{#if (get (get azureDescriptions key) "required")}}
+        <label class="acc-label pb-0">{{answer.key}}
+          {{#if (get (get azureDescriptions answer.key) "required")}}
             {{#if (eq mode "new")}}
               {{field-required}}
-            {{else if (and (eq mode "edit") (or (not-eq key "aadClientSecret") clusterTemplateCreate))}}
+            {{else if (and (eq mode "edit") (or (not-eq answer.key "aadClientSecret") clusterTemplateCreate))}}
               {{field-required}}
             {{/if}}
           {{/if}}
           {{#if clusterTemplateCreate}}
             <ClusterTemplateOverrideToggle
-              @path={{concat "rancherKubernetesEngineConfig.cloudProvider.azureCloudProvider." key}}
+              @path={{concat "rancherKubernetesEngineConfig.cloudProvider.azureCloudProvider." answer.key}}
               @configVariable={{configVariable}}
               @addOverride={{addOverride}}
               @questions={{questions}}
@@ -167,33 +167,33 @@
           {{/if}}
         </label>
         <p class="help-block mt-0">
-          {{t (get (get azureDescriptions key) "description") htmlSafe=true}}
+          {{t (get (get azureDescriptions answer.key) "description") htmlSafe=true}}
         </p>
       </div>
       <div class="col span-6">
         <CheckOverrideAllowed
           @applyClusterTemplate={{applyClusterTemplate}}
           @clusterTemplateRevision={{clusterTemplateRevision.clusterConfig}}
-          @paramName={{concat "rancherKubernetesEngineConfig.cloudProvider.azureCloudProvider." key}}
+          @paramName={{concat "rancherKubernetesEngineConfig.cloudProvider.azureCloudProvider." answer.key}}
           @questions={{questions}}
         >
           {{#input-or-display
              editable=(not-eq mode "view")
-             value=(get configAnswers key)
-             obfuscate=(if (eq (get (get azureDescriptions key) "type") "password") true false)
+             value=(get configAnswers answer.key)
+             obfuscate=(if (eq (get (get azureDescriptions answer.key) "type") "password") true false)
           }}
             {{input
               class="form-control input-sm value"
               spellcheck="false"
-              type=(or (get (get azureDescriptions key) "type") "text")
-              value=(mut (get configAnswers key))
+              type=(or (get (get azureDescriptions answer.key) "type") "text")
+              value=answer.value
               placeholder=(t "generic.value")
             }}
           {{/input-or-display}}
         </CheckOverrideAllowed>
       </div>
     </div>
-  {{/each-in}}
+  {{/each}}
 {{/if}}
 
 {{#if (not-eq mode "view")}}
