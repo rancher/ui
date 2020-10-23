@@ -16,11 +16,18 @@ export default Route.extend(Preload, {
   globalStore:  service(),
   clusterStore: service(),
   modalService: service('modal'),
+  settings:     service(),
 
   model(params, transition) {
     return get(this, 'globalStore').find('cluster', params.cluster_id)
-      .then((cluster) => get(this, 'scope').startSwitchToCluster(cluster)
-        .then(() => {
+      .then((cluster) => {
+        const hideLocalCluster = get(this.settings, 'shouldHideLocalCluster');
+
+        if (hideLocalCluster && get(cluster, 'id') === 'local') {
+          return this.replaceWith('authenticated');
+        }
+
+        return get(this, 'scope').startSwitchToCluster(cluster).then(() => {
           if ( get(cluster, 'isReady') ) {
             return this.loadSchemas('clusterStore').then(() => PromiseAll([
               this.preload('clusterScan', 'globalStore'),
@@ -31,15 +38,15 @@ export default Route.extend(Preload, {
           } else {
             return cluster;
           }
-        })
-        .catch((err) => {
-        // @TODO-2.0 right now the API can't return schemas for a not-active cluster
+        }).catch((err) => {
+          // @TODO-2.0 right now the API can't return schemas for a not-active cluster
           if ( err.status === 404 ) {
             return cluster;
           } else {
             return reject(err);
           }
-        }))
+        });
+      })
       .catch((err) => this.loadingError(err, transition));
   },
 

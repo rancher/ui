@@ -24,6 +24,7 @@ export default Component.extend(ThrottledResize, {
   scope:               service(),
   globalStore:         service(),
   router:              service(),
+  settings:            service(),
 
   layout,
   pageScope: null,
@@ -163,12 +164,15 @@ export default Component.extend(ThrottledResize, {
   }),
 
   byCluster: computed('scope.allClusters.@each.id', 'projectChoices.@each.clusterId', 'cluster.id', function() {
+    const hideLocalCluster = get(this.settings, 'shouldHideLocalCluster');
     const currentClusterId = get(this, 'cluster.id');
     const out              = [];
     const navWidth = $('#application nav').width();
 
     get(this, 'scope.allClusters').forEach((cluster) => {
-      getOrAddCluster(cluster);
+      if ((hideLocalCluster && get(cluster, 'id') !== 'local') || !hideLocalCluster) {
+        getOrAddCluster(cluster);
+      }
     });
 
     get(this, 'projectChoices').forEach((project) => {
@@ -179,10 +183,12 @@ export default Component.extend(ThrottledResize, {
         return;
       }
 
-      const entry = getOrAddCluster(cluster);
+      if ((hideLocalCluster && get(cluster, 'id') !== 'local') || !hideLocalCluster) {
+        const entry = getOrAddCluster(cluster);
 
-      entry.projects.push(project);
-      entry.projectWidth = Math.max(entry.projectWidth, width);
+        entry.projects.push(project);
+        entry.projectWidth = Math.max(entry.projectWidth, width);
+      }
     });
 
     out.forEach((entry) => {
