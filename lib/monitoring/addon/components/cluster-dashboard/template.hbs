@@ -129,6 +129,13 @@
   {{/if}}
 {{else}}
   <div class="text-center text-muted">
-    {{t 'clusterDashboard.clusterNotReady'}}
+    {{t "clusterDashboard.clusterNotReady"}}
   </div>
+  {{#if (lte nodes 0)}}
+  <div class="text-center mt-20">
+    <button class="btn bg-primary" type="button" {{action "addHost"}}>
+      {{t "clusterDashboard.clusterHasNoNodes"}}
+    </button>
+  </div>
+  {{/if}}
 {{/if}}

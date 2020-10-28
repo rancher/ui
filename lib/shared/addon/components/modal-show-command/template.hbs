@@ -1,0 +1,29 @@
+<div class="container-header-text">
+  <h3>
+    {{t "modalShowCommand.title"}}
+  </h3>
+</div>
+{{#unless tokenErrors.length}}
+  {{#if loading}}
+    <div class="text-center p-20">
+      <i class="icon icon-spinner icon-spin"></i> {{t "generic.loading"}}
+    </div>
+  {{else if isCustom}}
+    <CustomCommand @loading={{loading}} @token={{token}} />
+  {{else}}
+    <ImportCommand @loading={{loading}} @token={{token}} />
+  {{/if}}
+{{/unless}}
+<TopErrors @errors={{tokenErrors}} />
+{{#if showSuccess}}
+<BannerMessage
+  @color="bg-success"
+  @icon="icon-alert"
+  @message={{t "modalShowCommand.success"}}
+/>
+{{/if}}
+<div class="footer-actions">
+  <button class="btn bg-primary" type="button" {{action "cancel"}}>
+    {{t "generic.closeModal"}}
+  </button>
+</div>
