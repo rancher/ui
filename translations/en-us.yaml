@@ -1487,53 +1487,54 @@ containersPage:
     kubernetesLink: Install Kubernetes
 
 clusterDashboard:
-  systemProject: This is the system project which has all Kubernetes and {appName} system namespaces. Changes made to resources in the system project may harm the cluster.
-  notActive: This cluster is currently <b>{state}</b>.
-  notReady: This cluster is currently <b>{state}</b>; areas that interact directly with it will not be available until the API is ready.
-  used: Used
-  title: Dashboard
+  alert:
+    component: 'Alert: Component {component} is unhealthy.'
+    node: 'Alert: Node {node} is not active.'
+    nodeCondition:
+      diskPressure: 'Alert: Node {node} has disk pressure.'
+      memoryPressure: 'Alert: Node {node} has memory pressure.'
+      outOfDisk: 'Alert: Node {node} is out of disk.'
+  clusterHasNoNodes: Add Host
+  clusterNotReady: Graph information from Cluster currently not available
+  controllerManager: Controller Manager
+  controllerManagerUnavailable: Controller Manager Not Applicable
+  cpu: CPU
+  enableMonitoring: Enable Monitoring to see live metrics
+  etcd: Etcd
+  etcdUnavailable: Etcd Not Applicable
+  k3sInfo:
+    detail: Node system information for K3S imported clusters.
+    nodeArgs:
+      detail: Read only list of the K3s startup arguments for this node.
+      noArgs: No node arguments
+      title: K3S Node Arguments
+    title: K3S Information
+  liveTitle: '{used} of {total} Used'
+  memory: Memory
+  monitoringNotReady: Monitoring API is not ready
+  more: More
+  noRancherComponents: '{appName} Logging is not enabled in this cluster or not enough data for graph.'
+  node: Nodes
+  notActive: 'This cluster is currently <b>{state}</b>.'
+  notReady: 'This cluster is currently <b>{state}</b>; areas that interact directly with it will not be available until the API is ready.'
+  pods: Pods
+  reserved: Reserved
+  scheduler: Scheduler
+  schedulerUnavailable: Scheduler Not Applicable
   sections:
     cluster: Cluster Metrics
     etcd: Etcd Metrics
     k8s: Kubernetes Components Metrics
-    rancher: '{appName} Logging Metrics'
     node: Node Metrics
-  noRancherComponents: '{appName} Logging is not enabled in this cluster or not enough data for graph.'
-  cpu: CPU
-  memory: Memory
-  pods: Pods
-  value: Value
-  more: More
-  clusterNotReady: Graph information from Cluster currently not available
+    rancher: '{appName} Logging Metrics'
   subtitle:
-    reserved: "{used} of {total} Reserved"
-    used: "{used} of {total} Used"
-  enableMonitoring: Enable Monitoring to see live metrics
-  upgradeAvailable: "Monitoring {version} Upgrade Available"
-  monitoringNotReady: Monitoring API is not ready
-  node: Nodes
-  etcd: Etcd
-  scheduler: Scheduler
-  controllerManager: Controller Manager
-  etcdUnavailable: Etcd Not Applicable
-  schedulerUnavailable: Scheduler Not Applicable
-  controllerManagerUnavailable: Controller Manager Not Applicable
-  alert:
-    node: "Alert: Node {node} is not active."
-    component: "Alert: Component {component} is unhealthy."
-    nodeCondition:
-      outOfDisk: "Alert: Node {node} is out of disk."
-      diskPressure: "Alert: Node {node} has disk pressure."
-      memoryPressure: "Alert: Node {node} has memory pressure."
-  liveTitle: "{used} of {total} Used"
-  reserved: Reserved
-  k3sInfo:
-    title: K3S Information
-    detail: Node system information for K3S imported clusters.
-    nodeArgs:
-      title: K3S Node Arguments
-      detail: Read only list of the K3s startup arguments for this node.
-      noArgs: No node arguments
+    reserved: '{used} of {total} Reserved'
+    used: '{used} of {total} Used'
+  systemProject: 'This is the system project which has all Kubernetes and {appName} system namespaces. Changes made to resources in the system project may harm the cluster.'
+  title: Dashboard
+  upgradeAvailable: 'Monitoring {version} Upgrade Available'
+  used: Used
+  value: Value
 
 
 ingressResponse:
@@ -8188,6 +8189,12 @@ modalShortcuts:
   nextTab: Next page tab
   search: Focus the search field
   shortcuts: You are here
+
+modalShowCommand:
+  title: Cluster Registration Command
+  success: Host Registered!
+  errors:
+    token: 'Error fetching Cluster Registration Token - {err}'
 
 modalYaml:
   title:
