@@ -22,7 +22,7 @@
     <label class="pb-5 acc-label">
       {{t "accountsPage.new.form.password.labelText"}}{{field-required}}
     </label>
-    {{schema/input-password value=model.account.password}}
+    {{schema/input-password value=password}}
     <div class="text-info">
       {{validateDescription}}
     </div>
@@ -59,6 +59,7 @@
     @errors={{errors}}
     @mode="new"
     @setGRValidator={{action "setValidateGlobalRoles"}}
+    @setGRError={{action "setGRError"}}
     @setSave={{action "setGlobalRoleSave"}}
     @user={{model.account}}
   />
