@@ -218,10 +218,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
         return 'custom';
       }
 
-
       return firstPool.driver || get(firstPool, 'nodeTemplate.driver') || null;
     default:
-      if (get(this, 'driver') && get(this, 'configName')) {
+      if (get(this, 'driver')) {
         return get(this, 'driver');
       } else {
         return 'import';
@@ -234,6 +233,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const pools = get(this, 'nodePools');
     const firstPool = (pools || []).objectAt(0);
     const configName = get(this, 'configName');
+    const driverName = get(this, 'driver');
 
     switch ( configName ) {
     case 'amazonElasticContainerServiceConfig':
@@ -267,8 +267,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
         return intl.t('clusterNew.custom.shortLabel');
       }
     default:
-      if (get(this, 'driver') && get(this, 'configName')) {
-        return get(this, 'driver').capitalize();
+      if (driverName) {
+        switch (driverName) {
+        case 'rancherd':
+          return intl.t('clusterNew.rancherd.shortLabel');
+        default:
+          return driverName.capitalize();
+        }
       } else {
         return intl.t('clusterNew.import.shortLabel');
       }
