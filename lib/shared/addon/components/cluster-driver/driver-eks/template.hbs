@@ -74,12 +74,12 @@
             {{t "clusterNew.amazoneks.kubernetesVersion.label"}}
           </label>
           {{#if disableVersionSelect}}
-          <div>
-            {{config.kubernetesVersion}}
-            <p class="help-block">
-              {{t "clusterNew.amazoneks.kubernetesVersion.warning"}}
-            </p>
-          </div>
+            <div>
+              {{config.kubernetesVersion}}
+              <p class="help-block">
+                {{t "clusterNew.amazoneks.kubernetesVersion.warning"}}
+              </p>
+            </div>
           {{else}}
             {{new-select
               classNames="form-control"
@@ -236,18 +236,28 @@
           <label class="acc-label">
             {{t "clusterNew.amazoneks.vpc.access.title"}}
             <p class="help-block">
-                {{t "clusterNew.amazoneks.vpc.access.help" htmlSafe=true}}
+              {{t "clusterNew.amazoneks.vpc.access.help" htmlSafe=true}}
             </p>
           </label>
           <div class="col span-12">
             <div class="checkbox">
               <label>
-                <Input
-                  @type="checkbox"
-                  @classNames="form-control"
-                  @checked={{mut config.publicAccess}}
-                />
-                {{t "clusterNew.amazoneks.vpc.access.public.label"}}
+                {{#tooltip-element
+                  type="tooltip-basic"
+                  model=(t "clusterNew.amazoneks.vpc.access.public.tooltip")
+                  tooltipTemplate="tooltip-static"
+                  aria-describedby="tooltip-base"
+                  tooltipFor="tooltip-basic"
+                  placement="top"
+                }}
+                  <Input
+                    @type="checkbox"
+                    @classNames="form-control"
+                    @checked={{mut config.publicAccess}}
+                    disabled="true"
+                  />
+                  {{t "clusterNew.amazoneks.vpc.access.public.label"}}
+                {{/tooltip-element}}
               </label>
             </div>
             <div class="checkbox">
@@ -396,20 +406,18 @@
               </option>
             {{/each}}
           </select>
+        {{else if (eq mode "new")}}
+          {{#each config.securityGroups as |sg|}}
+            <div>
+              {{sg}}
+            </div>
+          {{/each}}
         {{else}}
-          {{#if (eq mode "new")}}
-            {{#each config.securityGroups as |sg|}}
-              <div>
-                {{sg}}
-              </div>
-            {{/each}}
-          {{else}}
-            {{#each primaryResource.eksStatus.securityGroups as |sg|}}
-              <div>
-                {{sg}}
-              </div>
-            {{/each}}
-          {{/if}}
+          {{#each primaryResource.eksStatus.securityGroups as |sg|}}
+            <div>
+              {{sg}}
+            </div>
+          {{/each}}
         {{/if}}
       </div>
     </AccordionListItem>
