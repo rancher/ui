@@ -278,24 +278,26 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="col span-6">
-              <label class="acc-label" for="azureaks-load-balancer-sku">
-                {{t "clusterNew.azureaks.loadBalancerSku.label"}}
-              </label>
-              {{#input-or-display
-                 editable=isNew
-                 value=config.loadBalancerSku
-              }}
-                {{new-select
-                  id="azureaks-load-balancer-sku"
-                  classNames="form-control"
-                  content=lbSkus
+          {{#if (and (get config "loadBalancerSku") (not-eq config.loadBalancerSku "")) }}
+            <div class="row">
+              <div class="col span-6">
+                <label class="acc-label" for="azureaks-load-balancer-sku">
+                  {{t "clusterNew.azureaks.loadBalancerSku.label"}}
+                </label>
+                {{#input-or-display
+                  editable=isNew
                   value=config.loadBalancerSku
                 }}
-              {{/input-or-display}}
+                  {{new-select
+                    id="azureaks-load-balancer-sku"
+                    classNames="form-control"
+                    content=lbSkus
+                    value=config.loadBalancerSku
+                  }}
+                {{/input-or-display}}
+              </div>
             </div>
-          </div>
+          {{/if}}
 
           <div class="row">
             <div class="col span-6">
