@@ -10,32 +10,34 @@
       {{t "confirmDelete.titleWithoutResourceType"}}
     {{/if}}
   </h3>
-  <hr/>
+  <hr />
   {{#if isSystemProject}}
     <div class="mb-20 mt-20">
-      {{#banner-message
-        color="bg-warning m-0"
-      }}
+      {{#banner-message color="bg-warning m-0"}}
         {{t "confirmDelete.systemProjectNote"}}
       {{/banner-message}}
     </div>
   {{/if}}
   {{#if hasSystemProjectNamespace}}
     <div class="mb-20 mt-20">
-      {{#banner-message
-        color="bg-warning m-0"
-      }}
+      {{#banner-message color="bg-warning m-0"}}
         {{t "confirmDelete.systemProjectNamespaceNote"}}
       {{/banner-message}}
     </div>
   {{/if}}
   {{#if isSystemChart}}
     <div class="mb-20 mt-20">
-      {{#banner-message
-        color="bg-warning m-0"
-      }}
+      {{#banner-message color="bg-warning m-0"}}
         {{t "confirmDelete.systemChartNote"}}
       {{/banner-message}}
+    </div>
+  {{/if}}
+  {{#if isRke2NodeEtcd}}
+    <div class="mb-20 mt-20">
+      <BannerMessage
+        @color="bg-warning"
+        @message={{t "confirmDelete.twoNodeEtcd"}}
+      />
     </div>
   {{/if}}
   <div class="display-name">
@@ -47,12 +49,15 @@
       {{/each}}
     {{else}}
       <div>
-        {{t "confirmDelete.largeDeleteText" key=resources.firstObject.displayName othersCount=(sub resources.length 1)}}
+        {{t
+          "confirmDelete.largeDeleteText"
+          key=resources.firstObject.displayName
+          othersCount=(sub resources.length 1)
+        }}
       </div>
     {{/if}}
   </div>
 </div>
-
 {{#if (and isEnvironment (not isSystemProject))}}
   <div class="mb-15">
     {{t "confirmDelete.environmentNote" appName=settings.appName}}
@@ -66,35 +71,35 @@
 {{#if isPod}}
   <div class="checkbox pt-10">
     <label>
-      {{input
-        type="checkbox"
-        checked=forceDelete
-      }}
+      {{input type="checkbox" checked=forceDelete}}
       {{t "confirmDelete.forceDelete.label"}}
     </label>
   </div>
 {{/if}}
-  {{#if forceDelete}}
-    <div class="mb-20 mt-20">
-      {{banner-message
-        icon="icon-alert"
-        color="bg-warning m-0"
-        message=(t "confirmDelete.forceDelete.warning" htmlSafe=true)
-      }}
-    </div>
-  {{/if}}
+{{#if forceDelete}}
+  <div class="mb-20 mt-20">
+    {{banner-message
+      icon="icon-alert"
+      color="bg-warning m-0"
+      message=(t "confirmDelete.forceDelete.warning" htmlSafe=true)
+    }}
+  </div>
+{{/if}}
 {{#if isClusterRoleTemplateBinding}}
   <div class="mb-15">
     {{t "confirmDelete.clusterRoleTemplateBindingNote"}}
   </div>
 {{/if}}
-
-{{#if (and isGlobalRole (gte resources.firstObject.globalRoleAssociatedUserCount 0))}}
+{{#if
+  (and isGlobalRole (gte resources.firstObject.globalRoleAssociatedUserCount 0))
+}}
   <div class="mb-15 text-center">
-    {{t "confirmDelete.globalRoleNote" count=resources.firstObject.globalRoleAssociatedUserCount }}
+    {{t
+      "confirmDelete.globalRoleNote"
+      count=resources.firstObject.globalRoleAssociatedUserCount
+    }}
   </div>
 {{/if}}
-
 <div class="footer-actions">
   <button class="btn bg-error" type="button" {{action "confirm"}}>
     {{t "confirmDelete.confirmAction"}}
@@ -103,7 +108,6 @@
     {{t "confirmDelete.cancelAction"}}
   </button>
 </div>
-
 {{#if showProtip}}
   <div class="protip mt-10">
     {{t "confirmDelete.protip" key=alternateLabel}}
