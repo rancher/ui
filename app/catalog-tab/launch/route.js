@@ -154,20 +154,23 @@ export default Route.extend({
         let catalogTemplateUrlKey = def;
 
         if ( neuApp.id ) {
-          const v = get(neuApp, 'externalIdInfo.version');
-          const currentVersion = verArr.filter((ver) => ver.version === v);
+          const currentAppVersion = get(neuApp, 'externalIdInfo.version');
+          const currentVersion = verArr.filter((ver) => ver.version === currentAppVersion);
 
           if ( currentVersion.length === 0 ) {
             verArr.unshift({
-              link:        get(verArr, 'firstObject.link').substring(0, get(verArr, 'firstObject.link.length') - get(verArr, 'firstObject.version.length')) + v,
-              sortVersion: v,
-              version:     `${ v } (current)`
+              link:        get(verArr, 'firstObject.link').substring(0, get(verArr, 'firstObject.link.length') - get(verArr, 'firstObject.version.length')) + currentAppVersion,
+              sortVersion: currentAppVersion,
+              version:     `${ currentAppVersion } (current)`
             })
           } else {
             currentVersion.forEach((ver) => {
               set(ver, 'version', `${ ver.version } (current)`);
             });
-            catalogTemplateUrlKey = v;
+
+            if (!params.upgrade) {
+              catalogTemplateUrlKey = currentAppVersion;
+            }
           }
         }
 
