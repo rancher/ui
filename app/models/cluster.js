@@ -161,6 +161,19 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!actionLinks.saveAsTemplate;
   }),
 
+  canShowAddHost: computed('nodes.[]', 'clusterProvider', function() {
+    if (this.clusterProvider !== 'custom' && this.clusterProvider !== 'import') {
+      return false;
+    }
+    const nodes = get(this, 'nodes');
+
+    if (isEmpty(nodes)) {
+      return true;
+    }
+
+    return false;
+  }),
+
   configName: computed('driver', 'state', function() {
     const keys = this.allKeys().filter((x) => x.endsWith('Config'));
 
@@ -354,7 +367,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return false;
   }),
 
-  availableActions: computed('actionLinks.rotateCertificates', 'canSaveAsTemplate', 'isClusterScanDisabled', function() {
+  availableActions: computed('actionLinks.rotateCertificates', 'canSaveAsTemplate', 'isClusterScanDisabled', 'canShowAddHost', function() {
     const a = get(this, 'actionLinks') || {};
 
     return [
@@ -381,6 +394,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
         icon:      'icon icon-file',
         action:    'saveAsTemplate',
         enabled:   this.canSaveAsTemplate,
+      },
+      {
+        label:     'clusterDashboard.clusterHasNoNodes',
+        icon:      'icon icon-host',
+        action:    'showCommandModal',
+        enabled:   this.canShowAddHost,
       },
       {
         label:     'action.runCISScan',
@@ -609,6 +628,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
       });
     },
 
+    showCommandModal() {
+      this.modalService.toggleModal('modal-show-command', { cluster: this });
+    },
   },
 
   clearConfigFieldsForClusterTemplate() {
