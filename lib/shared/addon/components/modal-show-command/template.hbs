@@ -6,21 +6,52 @@
 {{#unless tokenErrors.length}}
   {{#if loading}}
     <div class="text-center p-20">
-      <i class="icon icon-spinner icon-spin"></i> {{t "generic.loading"}}
+      <i class="icon icon-spinner icon-spin"></i>
+      {{t "generic.loading"}}
     </div>
   {{else if isCustom}}
-    <CustomCommand @loading={{loading}} @token={{token}} />
+    {{#if cluster.windowsPreferedCluster}}
+      <div class="row ml-40 pl-25 mb-20">
+        <div class="col span-12">
+          <h3>
+            {{t "clusterNew.rke.system.title"}}
+          </h3>
+          <p class="help-block">
+            {{t "clusterNew.rke.system.detail"}}
+          </p>
+        </div>
+        <div class="row">
+          <div class="col span-6 text-center mt-0 mb-0">
+            <div class="radio">
+              <label>
+                {{radio-button selection=isLinux value=true}}
+                {{t "clusterNew.rke.system.linux"}}
+              </label>
+            </div>
+          </div>
+          <div class="col span-6 text-center mt-0 mb-0">
+            <div class="radio">
+              <label>
+                {{radio-button selection=isLinux value=false}}
+                {{t "clusterNew.rke.system.windows"}}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
+    <CustomCommand @loading={{loading}} @token={{token}} @isLinux={{isLinux}} />
   {{else}}
     <ImportCommand @loading={{loading}} @token={{token}} />
   {{/if}}
 {{/unless}}
 <TopErrors @errors={{tokenErrors}} />
 {{#if showSuccess}}
-<BannerMessage
-  @color="bg-success"
-  @icon="icon-alert"
-  @message={{t "modalShowCommand.success"}}
-/>
+  <BannerMessage
+    @color="bg-success"
+    @icon="icon-alert"
+    @message={{t "modalShowCommand.success"}}
+  />
 {{/if}}
 <div class="footer-actions">
   <button class="btn bg-primary" type="button" {{action "cancel"}}>
