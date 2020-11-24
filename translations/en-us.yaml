@@ -1913,7 +1913,8 @@ cruPersistentVolumeClaim:
   define:
     addActionLabel: Define
   capacity:
-    label: Capacity
+    label: Request Storage Capacity
+    help: Req
     unit: GiB
   name:
     placeholder: e.g. myvol
@@ -4817,6 +4818,7 @@ cruPersistentVolume:
   capacity:
     label: Capacity
     unit: GiB
+    protip: "Updating a PVs capacity may not update the size of the underlying PVCs if any are attached. Volume Expansion workflows vary depending on the storage class, PV Provisioner, and if any attached PVCs also have workloads attached. It is highly recommended you visit the <a href='https://rancher.com/docs/rancher/v2.x/en/cluster-admin/volumes-and-storage/' target='_blank' rel='nofollow noreferrer'>the Rancher Storage docs</a> and <a href='https://kubernetes.io/docs/concepts/storage/persistent-volumes/' target='_blank' rel='nofollow noreferrer'>the Kubernetes Persistent Volume docs</a> before changing the capacity of the volume."
   source:
     label: Volume Plugin
     title: Plugin Configuration
@@ -5225,7 +5227,7 @@ cruStorageClass:
     edit: 'Edit Storage Class: {name}'
     view: 'Storage Class: {name}'
   allowVolumeExpansion:
-    label: Allow users to expand volumes
+    label: Allow Volume Expansion
   pv:
     title: Persistent Volumes
     detail: Persistent Volumes provisioned by the current storage class.
@@ -8132,6 +8134,15 @@ modalRestoreBackup:
     etcdAndK8sVersion: "etcd, Kubernetes Version and cluster config"
     k8sVersionUnknown: We cannot restore the kubernetes version for this snapshot because the version is unknown.
 
+modalResizePVC:
+  title: "Resize PVC: {name}?"
+  requestedCapacity:
+    label: Requested Capacity
+    help: "Updating the PVCs capacity may not immediatly be reflected upon save. Volume Expansion workflows vary depending on the storage class, PV Provisioner, and if any workloads are attached to the PVC. It is highly recommended you visit the <a href='https://rancher.com/docs/rancher/v2.x/en/cluster-admin/volumes-and-storage/' target='_blank' rel='nofollow noreferrer'>the Rancher Storage docs</a> and <a href='https://kubernetes.io/docs/concepts/storage/persistent-volumes/' target='_blank' rel='nofollow noreferrer'>the Kubernetes Persistent Volume docs</a> before changing the capacity of the volume."
+  currentValue:
+    label: Current Size
+  protip: Volume expansion and resizing are advanced use cases. It is highly recommended that you read and fully understand the requirements for your storage provider. Additionally you should have a disaster recovery plan in place before proceeding.
+
 modalRotateCertificates:
   title: Rotate Cluster Certificates
   caCerts: Rotate the CA and all service certificates
@@ -9945,6 +9956,7 @@ action:
   rerun: Rerun
   run: Run
   runCISScan: Run CIS Scan
+  resize: Resize
   saveAsTemplate: Save As RKE Template
   setDefault: Set as Login Environment
   setDefaultRevision:
