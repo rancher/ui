@@ -10,10 +10,10 @@
       }}
     </div>
   {{/if}}
-
-  <h1>{{title}}</h1>
+  <h1>
+    {{title}}
+  </h1>
 </section>
-
 {{#if isView}}
   {{#if model.description}}
     {{banner-message
@@ -23,7 +23,9 @@
   {{/if}}
   {{#if model.showTransitioningMessage}}
     <div class="{{model.stateColor}}">
-      <p>{{uc-first model.transitioningMessage}}</p>
+      <p>
+        {{uc-first model.transitioningMessage}}
+      </p>
     </div>
   {{/if}}
 {{else}}
@@ -36,7 +38,6 @@
     editing=editing
   }}
 {{/if}}
-
 {{#if isView}}
   <div class="row banner bg-info basics">
     <div class="vertical-middle">
@@ -49,7 +50,8 @@
       <label class="acc-label vertical-middle p-0">
         {{t "cruPersistentVolume.capacity.label"}}
       </label>
-      {{capacity}} {{t "cruPersistentVolume.capacity.unit"}}
+      {{capacity}}
+      {{t "cruPersistentVolume.capacity.unit"}}
     </div>
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">
@@ -82,12 +84,12 @@
   <div class="row">
     <div class="col span-6">
       <label class="acc-label">
-        {{t "cruPersistentVolume.source.label"}}{{field-required editing=editing}}
+        {{t "cruPersistentVolume.source.label"}}
+        {{#if isNew}}
+          {{field-required editing=editing}}
+        {{/if}}
       </label>
-      {{#input-or-display
-         editable=isNew
-         value=sourceDisplayName
-      }}
+      {{#input-or-display editable=isNew value=sourceDisplayName}}
         {{new-select
           content=supportedSourceChoices
           prompt="cruPersistentVolume.source.prompt"
@@ -99,33 +101,37 @@
     </div>
     <div class="col span-6">
       <label class="acc-label">
-        {{t "cruPersistentVolume.capacity.label"}}{{field-required editing=editing}}
+        {{t "cruPersistentVolume.capacity.label"}}
+        {{#if isNew}}
+          {{field-required editing=editing}}
+        {{/if}}
       </label>
       <div class="input-group">
-        {{input-number
-          classNames="form-control"
-          value=capacity
-        }}
+        {{input-number classNames="form-control" value=capacity}}
         <span class="input-group-addon bg-default">
           {{t "cruPersistentVolume.capacity.unit"}}
         </span>
       </div>
+      {{#if isEdit}}
+        <p class="help-block">
+          {{t "cruPersistentVolume.capacity.protip" htmlSafe="true"}}
+        </p>
+      {{/if}}
     </div>
   </div>
 {{/if}}
-
 <hr class="mb-20" />
-
-{{#accordion-list showExpandAll=false as | al expandFn |}}
+{{#accordion-list showExpandAll=false as |al expandFn|}}
   {{#accordion-list-item
-     title=(t "cruPersistentVolume.source.title")
-     detail=(t "cruPersistentVolume.source.detail")
-     expandAll=expandAll
-     expand=(action expandFn)
-     expandOnInit=true
+    title=(t "cruPersistentVolume.source.title")
+    detail=(t "cruPersistentVolume.source.detail")
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
   }}
     {{#if sourceComponent}}
-      {{component sourceComponent
+      {{component
+        sourceComponent
         volume=model
         sourceStore=clusterStore
         editing=isNew
@@ -136,20 +142,17 @@
       </p>
     {{/if}}
   {{/accordion-list-item}}
-
   {{#accordion-list-item
-     title=(t "cruPersistentVolume.customize.title")
-     detail=(t "cruPersistentVolume.customize.detail")
-     expandAll=expandAll
-     expand=(action expandFn)
-     everExpanded=true
+    title=(t "cruPersistentVolume.customize.title")
+    detail=(t "cruPersistentVolume.customize.detail")
+    expandAll=expandAll
+    expand=(action expandFn)
+    everExpanded=true
+    expandOnInit=isEdit
   }}
     <div class="row">
       <div class="col span-6">
-        {{form-access-modes
-          model=primaryResource
-          mode=mode
-        }}
+        {{form-access-modes model=primaryResource mode=mode}}
       </div>
       <div class="col span-6">
         {{form-value-array
@@ -179,7 +182,12 @@
         {{else}}
           <div>
             {{#if primaryResource.storageClassId}}
-              <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" primaryResource.storageClassId}}">
+              <a
+                href="{{href-to
+                    "authenticated.cluster.storage.classes.detail.index"
+                    primaryResource.storageClassId
+                  }}"
+              >
                 {{primaryResource.storageClass.displayName}}
               </a>
             {{else}}
@@ -202,7 +210,6 @@
       }}
     </div>
   {{/accordion-list-item}}
-
   {{#if isView}}
     {{resource-event-list
       resourceType=(t "generic.persistentVolume")
@@ -211,15 +218,9 @@
       name=model.name
       kind="PersistentVolume"
     }}
-
-    {{annotations-section
-      model=model
-      expandAll=al.expandAll
-      expandFn=expandFn
-    }}
+    {{annotations-section model=model expandAll=al.expandAll expandFn=expandFn}}
   {{/if}}
 {{/accordion-list}}
-
 {{#unless isView}}
   {{top-errors errors=errors}}
   {{save-cancel
