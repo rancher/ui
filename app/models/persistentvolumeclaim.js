@@ -64,9 +64,7 @@ var PersistentVolumeClaim = Resource.extend({
 
   actions: {
     resize() {
-      get(this, 'modalService').toggleModal('modal-resize-pvc', {
-        model:   this,
-      });
+      get(this, 'modalService').toggleModal('modal-resize-pvc', { model: this, });
     }
   },
 
