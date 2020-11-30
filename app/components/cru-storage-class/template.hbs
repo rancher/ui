@@ -142,34 +142,32 @@
           {{/if}}
         {{/if}}
 
-        {{#if (eq primaryResource.provisioner longhornProvisionerKey)}}
-          <label class="acc-label mt-20">
-            {{t "cruStorageClass.allowVolumeExpansion.label"}}
-          </label>
-          {{#if isView}}
-            <div>
-              {{t (if primaryResource.allowVolumeExpansion "generic.yes" "generic.no")}}
-            </div>
-          {{else}}
-            <div class="radio">
-              <label>
-                {{radio-button
-                  selection=primaryResource.allowVolumeExpansion
-                  value=true
-                }}
-                {{t "generic.yes"}}
-              </label>
-            </div>
-            <div class="radio">
-              <label>
-                {{radio-button
-                  selection=primaryResource.allowVolumeExpansion
-                  value=false
-                }}
-                {{t "generic.no"}}
-              </label>
-            </div>
-          {{/if}}
+        <label class="acc-label mt-20">
+          {{t "cruStorageClass.allowVolumeExpansion.label"}}
+        </label>
+        {{#if isView}}
+          <div>
+            {{t (if primaryResource.allowVolumeExpansion "generic.yes" "generic.no")}}
+          </div>
+        {{else}}
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=primaryResource.allowVolumeExpansion
+                value=true
+              }}
+              {{t "generic.enabled"}}
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=primaryResource.allowVolumeExpansion
+                value=false
+              }}
+              {{t "generic.disabled"}}
+            </label>
+          </div>
         {{/if}}
       </div>
       <div class="col span-6">
