@@ -7,15 +7,15 @@
     {{/if}}
   </h1>
 </section>
-
 <section class="pt-10">
   <div class="row nav nav-boxes checked-active">
     {{#each availableProviders as |provider|}}
       <a
-        {{action "switchProvider" provider.name}}
         alt={{provider.name}}
-        class="mb-20 col span-2 nav-box-item driver generic {{if (eq provider.name activeProvider) "active"}}"
+        class="mb-20 col span-2 nav-box-item driver generic
+          {{if (eq provider.name activeProvider) "active"}}"
         href="#"
+        {{action "switchProvider" provider.name}}
       >
         <div class="machine-driver {{provider.name}}"></div>
         <p class="mb-0">
@@ -30,28 +30,39 @@
     {{/each}}
   </div>
 </section>
-
 <hr class="mt-20 mb-20" />
-
 {{#accordion-list as |al expandFn|}}
   {{#accordion-list-item
-     title=(t "globalDnsPage.providersPage.options.title")
-     detail=(t "globalDnsPage.providersPage.options.detail")
-     expandAll=al.expandAll
-     expand=(action expandFn)
-     expandOnInit=true
-     everExpanded=true
-     showExpand=false
+    title=(t "globalDnsPage.providersPage.options.title")
+    detail=(t "globalDnsPage.providersPage.options.detail")
+    expandAll=al.expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+    everExpanded=true
+    showExpand=false
   }}
-    {{partial (concat activeProvider "-dns-provider") }}
+    {{partial (concat activeProvider "-dns-provider")}}
   {{/accordion-list-item}}
 
+  {{#accordion-list-item
+    title=(t "globalDnsPage.providersPage.additionalOptions.title")
+    detail=(t "globalDnsPage.providersPage.additionalOptions.detail")
+    expandAll=al.expandAll
+    expand=(action expandFn)
+  }}
+    {{form-key-value
+      initialMap=additionalOptions
+      editing=true
+      changed=(action (mut additionalOptions))
+      addActionLabel="globalDnsPage.providersPage.additionalOptions.button"
+    }}
+  {{/accordion-list-item}}
 
   {{#accordion-list-item
-     title=(t "globalDnsPage.providersPage.members.title")
-     detail=(t "globalDnsPage.providersPage.members.detail")
-     expandAll=al.expandAll
-     expand=(action expandFn)
+    title=(t "globalDnsPage.providersPage.members.title")
+    detail=(t "globalDnsPage.providersPage.members.detail")
+    expandAll=al.expandAll
+    expand=(action expandFn)
   }}
     {{form-members-global-access
       optionsForAccessType=memberAccessTypes
@@ -61,7 +72,6 @@
       removeMember=(action "removeMember")
     }}
   {{/accordion-list-item}}
-
 {{/accordion-list}}
 
 <section>
