@@ -1,0 +1,22 @@
+<header class="header">
+  <h2>
+    {{t "modalResizePVC.title" name=model.name}}
+  </h2>
+  <p class="protip">
+    {{t "modalResizePVC.requestedCapacity.help" htmlSafe="true"}}
+  </p>
+</header>
+<div class="row">
+  <div class="col span-8">
+    <label class="acc-label">
+      {{t "modalResizePVC.requestedCapacity.label"}}
+    </label>
+    <div class="input-group">
+      {{input-number classNames="form-control" value=storage}}
+      <span class="input-group-addon bg-default">
+        {{t "cruPersistentVolume.capacity.unit"}}
+      </span>
+    </div>
+  </div>
+</div>
+{{save-cancel editing=true save=(action "save") cancel=(action "cancel")}}
