@@ -738,7 +738,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
       if (isEmpty(this.id)) {
         sanitizeConfigs(eksClusterConfigSpec, nodeGroupConfigSpec);
 
-        if (this.name !== get(this, 'eksConfig.displayName')) {
+        if (!get(this, 'eksConfig.imported') && this.name !== get(this, 'eksConfig.displayName')) {
           set(this, 'eksConfig.displayName', this.name);
         }
 
