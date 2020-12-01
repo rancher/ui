@@ -4101,10 +4101,11 @@ clusterNew:
     access:
       next: "Next: Authenticate & Configure Cluster"
       loading: Loading values from Oracle Cloud Infrastructure
-      title: Choose the region and API Key that will be used to authenticate and configure Oracle Container Engine.
+      title: OCI Cloud Credentials
       detail: Choose the region and API Key that will be used to authenticate and configure Oracle Container Engine.
     region:
       label: Region
+      help: The geographic region in which the cluster will run
     tenancyOCID:
       label: Tenancy OCID
       placeholder: The OCID of the tenancy in which to create resources
@@ -4113,9 +4114,10 @@ clusterNew:
       label: Compartment OCID
       placeholder: The OCID of the compartment in which to create the resources
       required: Compartment OCID is required
+      help: The compartment in which the cluster will reside
     userOcid:
       label: User OCID
-      placeholder: The OCID of a user who has access to the specified tenancy/compartment
+      placeholder: The OCID of a user who has access to the specified tenancy
       required: Tenancy OCID is required
     userFingerprint:
       label: User fingerprint
@@ -4128,11 +4130,11 @@ clusterNew:
       required: User Private API Key is required
     secretKeyPassphrase:
       label: User Private Key Passphrase
-      placeholder: The passphrase (if any) that protects private key file the specified OCI user
+      placeholder: The passphrase (if any) that protects private key file of the specified OCI user
       provided: Provided
     cluster:
       title: Cluster Configuration
-      detail: Choose the Kubernetes version and the number of nodes per availability-domain for the cluster.
+      detail: Choose the Kubernetes version, the number of nodes, and the target compartment for the cluster.
       next: "Next: Configure Virtual Cloud Network"
       loading: Loading VCNs from Oracle Cloud Infrastructure
     vcn:
@@ -8058,7 +8060,7 @@ modalAddCloudKey:
   oci:
     userOcid:
       label: User OCID
-      placeholder: The OCID of a user
+      placeholder: The OCID of a user who has access to the specified tenancy
     userFingerprint:
       label: User fingerprint
       placeholder: The fingerprint corresponding to the specified user's private API Key
@@ -8067,10 +8069,14 @@ modalAddCloudKey:
       placeholder: The private API key contents for the specified OCI user, in PEM format
     secretKeyPassphrase:
       label: User Private Key Passphrase
-      placeholder: The passphrase (if any) that protects private key file the specified OCI user
+      placeholder: The passphrase (if any) that protects private key file of the specified OCI user
     tenancyOcid:
       label: Tenancy OCID
-      placeholder: The OCID of the tenancy in the user account exists
+      placeholder: The OCID of the tenancy containing the user
+    authRegion:
+      label: Region
+      help: Any region your tenancy is subscribed to authenticate your credentials.
+
 
   vmwarevsphere:
     password:
