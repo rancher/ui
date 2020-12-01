@@ -19,14 +19,22 @@
         {{/input-or-display}}
       </div>
 
-
       <div class="col span-6">
         <label class="acc-label">
-          {{t 'clusterNew.oracleoke.compartmentOCID.label'}}{{field-required}}
+          {{t 'clusterNew.oracleoke.region.label'}}{{field-required}}
         </label>
-        {{#input-or-display editable=isNew value=config.compartmentId}}
-          {{input type="text" name="compartment" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.compartmentOCID.placeholder') value=config.compartmentId}}
-        {{/input-or-display}}
+        {{#if (and (eq step 1) isNew)}}
+          <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
+            {{#each authRegionChoices as |choice|}}
+              <option value={{choice}} selected={{eq config.region choice}}>{{choice}}</option>
+            {{/each}}
+          </select>
+          <p class="help-block">
+            {{t 'clusterNew.oracleoke.region.help'}}
+          </p>
+        {{else}}
+          <div>{{config.region}}</div>
+        {{/if}}
       </div>
 
     </div>
@@ -51,6 +59,9 @@
           {{input type="text" name="fingerprint" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.userFingerprint.placeholder') value=config.fingerprint}}
         {{/input-or-display}}
       </div>
+
+    </div>
+    <div class="row">
 
       <div class="col span-6">
         <label class="acc-label">
@@ -102,18 +113,6 @@
                            expandAll=al.expandAll
                            expand=(action expandFn)
     }}
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t 'clusterNew.oracleoke.region.label'}}{{field-required}}
-          </label>
-          {{#if (eq step 2)}}
-            {{#input-or-display editable=isNew value=config.region}}
-              {{input type="text" name="region" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.region.placeholder') value=config.region}}
-            {{/input-or-display}}
-          {{/if}}
-        </div>
-      </div>
       <div class="row">
 
         <div class="col span-4">
@@ -173,20 +172,6 @@
         <div class="row">
           <div class="col span-4 mb-0">
             <label class="acc-label">
-              {{t 'clusterNew.oracleoke.region.label'}}
-            </label>
-            {{#if (eq step 2)}}
-              <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
-                {{#each regions as |choice|}}
-                  <option value={{choice}} selected={{eq config.region choice}}>{{choice}}</option>
-                {{/each}}
-              </select>
-            {{else}}
-              <div>{{config.region}}</div>
-            {{/if}}
-          </div>
-          <div class="col span-4 mb-0">
-            <label class="acc-label">
               {{t 'clusterNew.oracleoke.version.label'}}
             </label>
             {{#if (eq step 2)}}
@@ -210,6 +195,17 @@
               <p class="help-block">
                 {{t 'clusterNew.oracleoke.quantityPerSubnet.help'}}
               </p>
+            {{/input-or-display}}
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col span-4">
+            <label class="acc-label">
+              {{t 'clusterNew.oracleoke.compartmentOCID.label'}}{{field-required}}
+            </label>
+            {{#input-or-display editable=(and (eq step 2) isNew) value=config.compartmentId}}
+              {{input type="text" name="compartment" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.compartmentOCID.placeholder') value=config.compartmentId}}
             {{/input-or-display}}
           </div>
 

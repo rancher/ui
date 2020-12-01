@@ -35,14 +35,13 @@
     <div class="row">
 
       <div class="col span-6">
-        <label class="acc-label">{{t 'nodeDriver.oci.region.label'}}{{field-required}}</label>
-        {{#input-or-display value=selectedRegion}}
-          {{searchable-select class="form-control"
-                              content=regionChoices
-                              value=config.region
-                              placeholder=(t "nodeDriver.oci.region.placeholder")
-          }}
-        {{/input-or-display}}
+        <label class="acc-label">{{t "nodeDriver.oci.region.label"}}{{field-required}}</label>
+        <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
+          <option value="" selected={{eq config.region choice}}>Select a region</option>
+          {{#each regionChoices as |choice|}}
+            <option value={{choice}} selected={{eq config.region choice}}>{{choice}}</option>
+          {{/each}}
+        </select>
       </div>
 
       <div class="col span-6">
