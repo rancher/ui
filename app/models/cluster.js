@@ -289,6 +289,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return intl.t('clusterNew.huaweicce.shortLabel');
     case 'okeEngineConfig':
       return intl.t('clusterNew.oracleoke.shortLabel');
+    case 'otccceEngineConfig':
+      return intl.t('clusterNew.otccce.shortLabel');
     case 'k3sConfig':
       return intl.t('clusterNew.k3simport.shortLabel');
     case 'rke2Config':
