@@ -162,7 +162,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
   }),
 
   eksDisplayEksImport: computed('clusterProvider', 'eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', function() {
-    const { clusterProvider, eksConfig = {}, eksStatus = {} } = this;
+    const {
+      clusterProvider, eksConfig = {}, eksStatus = {}
+    } = this;
     const privateAccess = get(eksConfig, 'privateAccess') || get(eksStatus, 'upstreamSpec.privateAccess') || false;
 
     if (clusterProvider === 'amazoneksv2' && privateAccess) {
@@ -173,7 +175,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
   }),
 
   canShowAddHost: computed('nodes.[]', 'clusterProvider', 'eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', function() {
-    const { clusterProvider, eksConfig = {}, eksStatus = {} } = this;
+    const {
+      clusterProvider, eksConfig = {}, eksStatus = {}
+    } = this;
     const privateAccess = get(eksConfig, 'privateAccess') || get(eksStatus, 'upstreamSpec.privateAccess') || false;
     const ignored = ['custom', 'import', 'amazoneksv2'];
 
