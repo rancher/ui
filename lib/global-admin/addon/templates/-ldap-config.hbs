@@ -1,68 +1,114 @@
 <section>
   {{#unless isEnabled}}
     <div class="banner bg-warning">
-      <div class="banner-icon"><span class="icon icon-alert"></span></div>
+      <div class="banner-icon">
+        <span class="icon icon-alert"></span>
+      </div>
       <div class="banner-message">
-        <p>{{t "ldap.header.disabled.label" providerName=(t providerName)}}</p>
+        <p>
+          {{t "ldap.header.disabled.label" providerName=(t providerName)}}
+        </p>
       </div>
     </div>
   {{/unless}}
 </section>
-
-{{#accordion-list showExpandAll=false  as |al expandFn|}}
+{{#accordion-list showExpandAll=false as |al expandFn|}}
   {{#if isEnabled}}
     {{#accordion-list-item
-       classNames="mt-30"
-       detail=(t "ldap.accessConfig.subtext1" providerName=(t providerName) htmlSafe=true)
-       expand=(action expandFn)
-       expandAll=al.expandAll
-       expandOnInit=true
-       expanded=true
-       showExpand=false
-       title=(t "ldap.accessEnabled.header")
+      classNames="mt-30"
+      detail=(t
+        "ldap.accessConfig.subtext1" providerName=(t providerName) htmlSafe=true
+      )
+      expand=(action expandFn)
+      expandAll=al.expandAll
+      expandOnInit=true
+      expanded=true
+      showExpand=false
+      title=(t "ldap.accessEnabled.header")
     }}
       <section class="">
         <div class="clearfix">
           <div class="pull-right">
-            <button class="btn btn-sm bg-primary" type="button" {{action "edit"}}>
+            <button
+              class="btn btn-sm bg-primary"
+              type="button"
+              {{action "edit"}}
+            >
               {{t "generic.edit"}}
             </button>
-            <button class="btn btn-sm right-divider-btn bg-error" type="button" {{action "disable"}}>
+            <button
+              class="btn btn-sm right-divider-btn bg-error"
+              type="button"
+              {{action "disable"}}
+            >
               {{t "ldap.accessEnabled.disable.confirmDisable.pre"}}
             </button>
           </div>
         </div>
-        <hr/>
-        <p class="text-info">{{t "ldap.accessEnabled.subtext"}}</p>
-
+        <hr />
+        <p class="text-info">
+          {{t "ldap.accessEnabled.subtext"}}
+        </p>
         <div class="row">
           <div class="col span-4 force-wrap">
             <h3>
               {{t "ldap.accessEnabled.general.header"}}
             </h3>
             <div>
-              <b>{{t "ldap.accessEnabled.general.server"}} </b> <span class="text-muted">{{authConfig.servers.firstObject}}:{{authConfig.port}}</span>
+              <b>
+                {{t "ldap.accessEnabled.general.server"}}
+              </b>
+              <span class="text-muted">
+                {{authConfig.servers.firstObject}}
+                :
+                {{authConfig.port}}
+              </span>
             </div>
             <div>
-              <b>{{t "ldap.accessEnabled.general.tls"}} </b> <span class="text-muted">{{if authConfig.tls "Yes" "No"}}</span>
+              <b>
+                {{t "ldap.accessEnabled.general.tls"}}
+              </b>
+              <span class="text-muted">
+                {{if authConfig.tls "Yes" "No"}}
+              </span>
             </div>
             {{#if authConfig.serviceAccountUsername}}
               <div>
-                <b>{{t "ldap.accessEnabled.general.serviceAccount"}} </b> <span class="text-muted">{{authConfig.serviceAccountUsername}}</span>
+                <b>
+                  {{t "ldap.accessEnabled.general.serviceAccount"}}
+                </b>
+                <span class="text-muted">
+                  {{authConfig.serviceAccountUsername}}
+                </span>
               </div>
             {{/if}}
             {{#if authConfig.serviceAccountDistinguishedName.labelText}}
               <div>
-                <b>{{t "ldap.accessEnabled.serviceAccountDistinguishedName"}} </b> <span class="text-muted">{{authConfig.serviceAccountDistinguishedName}}</span>
+                <b>
+                  {{t "ldap.accessEnabled.serviceAccountDistinguishedName"}}
+                </b>
+                <span class="text-muted">
+                  {{authConfig.serviceAccountDistinguishedName}}
+                </span>
               </div>
             {{/if}}
             {{#if (eq authConfig.type "activeDirectoryConfig")}}
               <div>
-                <b>{{t "ldap.accessEnabled.general.defaultDomain"}} </b> <span class="text-muted">{{authConfig.defaultLoginDomain}}</span>
+                <b>
+                  {{t "ldap.accessEnabled.general.defaultDomain"}}
+                </b>
+                <span class="text-muted">
+                  {{authConfig.defaultLoginDomain}}
+                </span>
               </div>
             {{/if}}
             <div>
-              <b>{{t "ldap.accessEnabled.connectionTimeout.labelText"}}</b> <span class="text-muted">{{authConfig.connectionTimeout}}</span>
+              <b>
+                {{t "ldap.accessEnabled.connectionTimeout.labelText"}}
+              </b>
+              <span class="text-muted">
+                {{authConfig.connectionTimeout}}
+              </span>
             </div>
           </div>
           <div class="col span-4 force-wrap">
@@ -70,76 +116,145 @@
               {{t "ldap.accessEnabled.users.header"}}
             </h3>
             <div class="force-wrap">
-              <b>{{t "ldap.accessEnabled.general.searchBase"}} </b> <span class="text-muted">{{authConfig.userSearchBase}}</span>
+              <b>
+                {{t "ldap.accessEnabled.general.searchBase"}}
+              </b>
+              <span class="text-muted">
+                {{authConfig.userSearchBase}}
+              </span>
             </div>
             <div>
-              <b>{{t "ldap.accessEnabled.users.objectClass"}} </b> <span class="text-muted">{{authConfig.userObjectClass}}</span>
+              <b>
+                {{t "ldap.accessEnabled.users.objectClass"}}
+              </b>
+              <span class="text-muted">
+                {{authConfig.userObjectClass}}
+              </span>
             </div>
             <div>
-              <b>{{t "ldap.accessEnabled.users.login"}} </b> <span class="text-muted">{{authConfig.userLoginAttribute}}</span>
+              <b>
+                {{t "ldap.accessEnabled.users.login"}}
+              </b>
+              <span class="text-muted">
+                {{authConfig.userLoginAttribute}}
+              </span>
             </div>
             <div>
-              <b>{{t "ldap.accessEnabled.users.name"}} </b> <span class="text-muted">{{authConfig.userNameAttribute}}</span>
+              <b>
+                {{t "ldap.accessEnabled.users.name"}}
+              </b>
+              <span class="text-muted">
+                {{authConfig.userNameAttribute}}
+              </span>
             </div>
             <div>
-              <b>{{t "ldap.accessEnabled.users.search"}} </b> <span class="text-muted">{{authConfig.userSearchAttribute}}</span>
+              <b>
+                {{t "ldap.accessEnabled.users.search"}}
+              </b>
+              <span class="text-muted">
+                {{authConfig.userSearchAttribute}}
+              </span>
             </div>
             {{#if authConfig.userSearchFilter}}
-              <div><b>{{t "ldap.accessEnabled.users.searchFilter"}} </b> <span class="text-muted">{{authConfig.userSearchFilter}}</span></div>
+              <div>
+                <b>
+                  {{t "ldap.accessEnabled.users.searchFilter"}}
+                </b>
+                <span class="text-muted">
+                  {{authConfig.userSearchFilter}}
+                </span>
+              </div>
             {{/if}}
-            <div><b>{{t "ldap.accessEnabled.users.enabled"}} </b> <span class="text-muted">{{authConfig.userEnabledAttribute}}</span></div>
-            <div><b>{{t "ldap.accessEnabled.users.disabledBitMask"}} </b> <span class="text-muted">{{authConfig.userDisabledBitMask}}</span></div>
+            <div>
+              <b>
+                {{t "ldap.accessEnabled.users.enabled"}}
+              </b>
+              <span class="text-muted">
+                {{authConfig.userEnabledAttribute}}
+              </span>
+            </div>
+            <div>
+              <b>
+                {{t "ldap.accessEnabled.users.disabledBitMask"}}
+              </b>
+              <span class="text-muted">
+                {{authConfig.userDisabledBitMask}}
+              </span>
+            </div>
           </div>
           <div class="col span-4 force-wrap">
             <h3>
               {{t "ldap.accessEnabled.group.header"}}
             </h3>
             <div class="force-wrap">
-              <b>{{t "ldap.accessEnabled.general.searchBase"}} </b> <span class="text-muted">{{authConfig.groupSearchBase}}</span>
+              <b>
+                {{t "ldap.accessEnabled.general.searchBase"}}
+              </b>
+              <span class="text-muted">
+                {{authConfig.groupSearchBase}}
+              </span>
             </div>
             <div>
-              <b>{{t "ldap.accessEnabled.group.objectClass"}} </b> <span class="text-muted">{{authConfig.groupObjectClass}}</span>
+              <b>
+                {{t "ldap.accessEnabled.group.objectClass"}}
+              </b>
+              <span class="text-muted">
+                {{authConfig.groupObjectClass}}
+              </span>
             </div>
             <div>
-              <b>{{t "ldap.accessEnabled.group.name"}} </b> <span class="text-muted">{{authConfig.groupNameAttribute}}</span>
+              <b>
+                {{t "ldap.accessEnabled.group.name"}}
+              </b>
+              <span class="text-muted">
+                {{authConfig.groupNameAttribute}}
+              </span>
             </div>
             <div>
-              <b>{{t "ldap.accessEnabled.group.search"}} </b> <span class="text-muted">{{authConfig.groupSearchAttribute}}</span>
+              <b>
+                {{t "ldap.accessEnabled.group.search"}}
+              </b>
+              <span class="text-muted">
+                {{authConfig.groupSearchAttribute}}
+              </span>
             </div>
             {{#if authConfig.groupSearchFilter}}
               <div>
-                <b>{{t "ldap.accessEnabled.group.searchFilter"}} </b> <span class="text-muted">{{authConfig.groupSearchFilter}}</span>
+                <b>
+                  {{t "ldap.accessEnabled.group.searchFilter"}}
+                </b>
+                <span class="text-muted">
+                  {{authConfig.groupSearchFilter}}
+                </span>
               </div>
             {{/if}}
           </div>
         </div>
       </section>
     {{/accordion-list-item}}
-
   {{/if}}
-
   {{#if (or (not isEnabled) editing)}}
     {{#accordion-list-item
-       classNames="mt-30"
-       detail=(t "ldap.accessConfig.subtext1" providerName=(t providerName) htmlSafe=true)
-       expand=(action expandFn)
-       expandAll=al.expandAll
-       expandOnInit=true
-       expanded=true
-       showExpand=false
-       title=(t "ldap.accessConfig.header" providerName=(t providerName))
+      classNames="mt-30"
+      detail=(t
+        "ldap.accessConfig.subtext1" providerName=(t providerName) htmlSafe=true
+      )
+      expand=(action expandFn)
+      expandAll=al.expandAll
+      expandOnInit=true
+      expanded=true
+      showExpand=false
+      title=(t "ldap.accessConfig.header" providerName=(t providerName))
     }}
       <section class="">
         <div class="row">
           <div class="col span-6 mb-0">
             <div class="inline-form">
               <label class="acc-label pb-5">
-                {{t "model.openldapconfig.server.label"}}{{field-required}}
+                {{t "model.openldapconfig.server.label"}}
+                {{field-required}}
               </label>
-              {{input
-                value=configServers
-                classNames="form-control"
-              }}
+              {{input value=configServers classNames="form-control"}}
             </div>
           </div>
           <div class="col span-6 mb-0">
@@ -155,14 +270,19 @@
               }}
               <span class="input-group-addon bg-default">
                 <label>
-                  {{t "ldap.accessConfig.port.checkbox"}} {{input type="checkbox" checked=authConfig.tls}}
+                  {{t "ldap.accessConfig.port.checkbox"}}
+                  {{input
+                    type="checkbox"
+                    checked=authConfig.tls
+                    disabled=authConfig.starttls
+                  }}
                 </label>
               </span>
             </div>
           </div>
         </div>
         {{#if authConfig.tls}}
-          <hr/>
+          <hr />
           <div class="row pt-10">
             <div class="col span-12 input-group mt-0">
               {{input-text-file
@@ -174,14 +294,17 @@
                 placeholder="ldap.customizeSchema.cert.placeholder"
                 shouldChangeName=false
               }}
-              <p class="help-block">{{t "ldap.customizeSchema.cert.helpText"}}</p>
+              <p class="help-block">
+                {{t "ldap.customizeSchema.cert.helpText"}}
+              </p>
             </div>
           </div>
         {{/if}}
         <div class="row">
           <div class="col span-6 mb-0">
             <label class="acc-label pb-5">
-              {{t "ldap.accessConfig.connectionTimeout.labelText"}}{{field-required}}
+              {{t "ldap.accessConfig.connectionTimeout.labelText"}}
+              {{field-required}}
             </label>
             <div class="input-group">
               {{input-integer
@@ -196,8 +319,23 @@
               </span>
             </div>
           </div>
+          <div class="col span-6 mb-0 pt-25">
+            <div class="radio">
+              <label class="acc-label">
+                {{input
+                  type="checkbox"
+                  checked=authConfig.starttls
+                  disabled=authConfig.tls
+                }}
+                {{t "ldap.accessConfig.starttls.label"}}
+              </label>
+            </div>
+            <span class="help-block">
+              {{t "ldap.accessConfig.starttls.helpText"}}
+            </span>
+          </div>
         </div>
-        <hr class="mt-30 mb-30"/>
+        <hr class="mt-30 mb-30" />
         <p class="text-info mb-0">
           {{t "ldap.accessConfig.subtext2" appName=settings.appName}}
         </p>
@@ -206,7 +344,8 @@
             <div class="col span-6">
               <div class="inline-form">
                 <label class="acc-label pb-5">
-                  {{t "model.openldapconfig.serviceAccountUsername.label"}}{{field-required}}
+                  {{t "model.openldapconfig.serviceAccountUsername.label"}}
+                  {{field-required}}
                 </label>
                 {{input
                   value=authConfig.serviceAccountUsername
@@ -218,7 +357,10 @@
             <div class="col span-6">
               <div class="inline-form">
                 <label class="acc-label pb-5">
-                  {{t "ldap.accessConfig.serviceAccountDistinguishedName.labelText"}}{{field-required}}
+                  {{t
+                    "ldap.accessConfig.serviceAccountDistinguishedName.labelText"
+                  }}
+                  {{field-required}}
                 </label>
                 {{input
                   value=authConfig.serviceAccountDistinguishedName
@@ -230,7 +372,8 @@
           <div class="col span-6">
             <div class="inline-form">
               <label class="acc-label pb-5">
-                {{t "model.openldapconfig.serviceAccountPassword.label"}}{{field-required}}
+                {{t "model.openldapconfig.serviceAccountPassword.label"}}
+                {{field-required}}
               </label>
               {{input
                 type="password"
@@ -259,12 +402,12 @@
             </div>
           </div>
         {{/if}}
-
         <div class="row">
           <div class="col span-6">
             <div class="inline-form">
               <label class="acc-label pb-5">
-                {{t "ldap.customizeSchema.users.searchBase.labelText"}}{{field-required}}
+                {{t "ldap.customizeSchema.users.searchBase.labelText"}}
+                {{field-required}}
               </label>
               {{input
                 value=authConfig.userSearchBase
@@ -294,24 +437,23 @@
         </div>
       </section>
     {{/accordion-list-item}}
-
     {{#accordion-list-item
-       title=(t "ldap.customizeSchema.header")
-       detail=(t "ldap.customizeSchema.helpText")
-       expandAll=al.expandAll
-       expand=(action expandFn)
+      title=(t "ldap.customizeSchema.header")
+      detail=(t "ldap.customizeSchema.helpText")
+      expandAll=al.expandAll
+      expand=(action expandFn)
     }}
       <section class="">
         <div class="row">
           <div class="col span-6">
-            <h3>{{t "ldap.customizeSchema.users.header"}}</h3>
+            <h3>
+              {{t "ldap.customizeSchema.users.header"}}
+            </h3>
             <div class="pb-20">
               <label class="acc-label pb-5">
                 {{t "ldap.customizeSchema.users.objectClass.labelText"}}
               </label>
-              {{input
-                value=authConfig.userObjectClass
-                classNames="form-control"
+              {{input value=authConfig.userObjectClass classNames="form-control"
               }}
             </div>
             <div class="pb-20">
@@ -408,7 +550,9 @@
               {{input
                 value=authConfig.groupMemberUserAttribute
                 classNames="form-control"
-                placeholder=(t "ldap.customizeSchema.groups.groupMemberUser.placeholder")
+                placeholder=(t
+                  "ldap.customizeSchema.groups.groupMemberUser.placeholder"
+                )
               }}
             </div>
             <div class="pb-20">
@@ -445,7 +589,9 @@
               {{input
                 value=authConfig.groupDNAttribute
                 classNames="form-control"
-                placeholder=(t "ldap.customizeSchema.groups.groupDN.placeholder")
+                placeholder=(t
+                  "ldap.customizeSchema.groups.groupDN.placeholder"
+                )
               }}
             </div>
             {{#if (not-eq authConfig.id "freeipa")}}
@@ -459,7 +605,9 @@
                       selection=authConfig.nestedGroupMembershipEnabled
                       value=false
                     }}
-                    {{t "ldap.customizeSchema.groups.nestedGroup.disabled.labelText"}}
+                    {{t
+                      "ldap.customizeSchema.groups.nestedGroup.disabled.labelText"
+                    }}
                   </label>
                 </div>
                 <div class="radio">
@@ -468,9 +616,13 @@
                       selection=authConfig.nestedGroupMembershipEnabled
                       value=true
                     }}
-                    {{t "ldap.customizeSchema.groups.nestedGroup.enabled.labelText"}}
+                    {{t
+                      "ldap.customizeSchema.groups.nestedGroup.enabled.labelText"
+                    }}
                     <p class="help-block">
-                      {{t "ldap.customizeSchema.groups.nestedGroup.enabled.helpText"}}
+                      {{t
+                        "ldap.customizeSchema.groups.nestedGroup.enabled.helpText"
+                      }}
                     </p>
                   </label>
                 </div>
@@ -480,39 +632,33 @@
         </div>
       </section>
     {{/accordion-list-item}}
-
     {{#accordion-list-item
-       detail=(t "ldap.testAuth.helpText" providerName=(t providerName))
-       expand=(action expandFn)
-       expandAll=al.expandAll
-       expandOnInit=true
-       expanded=true
-       showExpand=false
-       title=(t "ldap.testAuth.header")
+      detail=(t "ldap.testAuth.helpText" providerName=(t providerName))
+      expand=(action expandFn)
+      expandAll=al.expandAll
+      expandOnInit=true
+      expanded=true
+      showExpand=false
+      title=(t "ldap.testAuth.header")
     }}
       <section class="">
         <div class="row">
           <div class="col span-6">
             <div class="inline-form">
               <label class="acc-label pb-5">
-                {{t "ldap.testAuth.userName.labelText"}}{{field-required}}
+                {{t "ldap.testAuth.userName.labelText"}}
+                {{field-required}}
               </label>
-              {{input
-                value=username
-                classNames="form-control"
-              }}
+              {{input value=username classNames="form-control"}}
             </div>
           </div>
           <div class="col span-6">
             <div class="inline-form">
               <label class="acc-label pb-5">
-                {{t "ldap.testAuth.password.labelText"}}{{field-required}}
+                {{t "ldap.testAuth.password.labelText"}}
+                {{field-required}}
               </label>
-              {{input
-                type="password"
-                value=password
-                classNames="form-control"
-              }}
+              {{input type="password" value=password classNames="form-control"}}
             </div>
           </div>
         </div>
@@ -534,17 +680,16 @@
       </section>
     {{/accordion-list-item}}
   {{/if}}
-
   {{#if isEnabled}}
     {{#accordion-list-item
-       classNames="mt-30"
-       detail=(t "siteAccess.helpText" appName=settings.appName htmlSafe=true)
-       expand=(action expandFn)
-       expandAll=al.expandAll
-       expandOnInit=true
-       expanded=true
-       showExpand=false
-       title=(t "siteAccess.header")
+      classNames="mt-30"
+      detail=(t "siteAccess.helpText" appName=settings.appName htmlSafe=true)
+      expand=(action expandFn)
+      expandAll=al.expandAll
+      expandOnInit=true
+      expanded=true
+      showExpand=false
+      title=(t "siteAccess.header")
     }}
       {{site-access
         model=authConfig
