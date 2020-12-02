@@ -1,580 +1,594 @@
 <AccordionList @showExpandAll="false" as |al expandFn|>
-  <AccordionListItem
-    @title={{t "clusterNew.amazoneks.access.title"}}
-    @detail={{t "clusterNew.amazoneks.access.detail"}}
-    @expandAll={{expandAll}}
-    @expand={{action expandFn}}
-    @expandOnInit={{true}}
-  >
-    <div class="row">
-      <div class="col span-3">
-        <label class="acc-label">
-          {{t "clusterNew.amazoneks.access.region"}}
-        </label>
-        {{#if (and (eq step 1) isNew)}}
-          <select
-            class="form-control"
-            onchange={{action (mut config.region) value="target.value"}}
-          >
-            {{#each regionChoices as |choice|}}
-              <option value={{choice}} selected={{eq config.region choice}}>
-                {{choice}}
-              </option>
-            {{/each}}
-          </select>
-        {{else}}
-          <div>
-            {{config.region}}
-          </div>
-        {{/if}}
-      </div>
-      {{#if (eq step 1)}}
-        <FormAuthCloudCredential
-          @cloudCredentialKey="eksConfig.amazonCredentialSecret"
-          @mode={{mode}}
-          @cancel={{action "close"}}
-          @cloudCredentials={{cloudCredentials}}
-          @createLabel="clusterNew.amazoneks.access.next"
-          @driverName="amazonec2"
-          @parseAndCollectErrors={{action "errorHandler"}}
-          @finishAndSelectCloudCredential={{action
-            "finishAndSelectCloudCredential"
-          }}
-          @primaryResource={{primaryResource}}
-          @progressStep={{action "startAwsConfiguration"}}
-          @region={{config.region}}
-        />
-      {{else}}
-        <div class="row">
-          <div class="col span-4">
-            <label class="acc-label">
-              <!-- {{t "clusterNew.amazoneks.access.region"}} -->
-              Cloud Credential
-            </label>
-            <div>
-              {{selectedCloudCredential.displayName}}
-            </div>
-          </div>
-        </div>
-      {{/if}}
-    </div>
-  </AccordionListItem>
-  {{#if (gte step 2)}}
+  {{#unless (eq step 5)}}
     <AccordionListItem
-      @title={{t "clusterNew.amazoneks.clusterOption.title"}}
-      @detail={{t "clusterNew.amazoneks.clusterOption.detail"}}
+      @title={{t "clusterNew.amazoneks.access.title"}}
+      @detail={{t "clusterNew.amazoneks.access.detail"}}
       @expandAll={{expandAll}}
       @expand={{action expandFn}}
       @expandOnInit={{true}}
-      @showExpand={{false}}
     >
-      <div class="row mb-20">
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "clusterNew.amazoneks.kubernetesVersion.label"}}
-          </label>
-          {{#if disableVersionSelect}}
-            <div>
-              {{config.kubernetesVersion}}
-              <p class="help-block">
-                {{t "clusterNew.amazoneks.kubernetesVersion.warning"}}
-              </p>
-            </div>
-          {{else}}
-            {{new-select
-              classNames="form-control"
-              content=versionChoices
-              value=config.kubernetesVersion
-            }}
-            {{#if editing}}
-              <p class="help-block">
-                {{t "formVersions.eks.helpBlock"}}
-              </p>
-            {{/if}}
-          {{/if}}
-        </div>
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "clusterNew.amazoneks.role.label"}}
-          </label>
-          {{#if (eq step 2)}}
-            <div class="radio pt-0">
-              <label>
-                {{radio-button
-                  selection=serviceRoleMode
-                  value="default"
-                  disabled=editing
-                }}
-                {{t "clusterNew.amazoneks.role.radio.default"}}
-              </label>
-              <label>
-                {{radio-button
-                  selection=serviceRoleMode
-                  value="custom"
-                  disabled=editing
-                }}
-                {{t "clusterNew.amazoneks.role.radio.custom"}}
-              </label>
-            </div>
-            {{#unless (eq serviceRoleMode "default")}}
-              <NewSelect
-                class="form-control"
-                @value={{selectedServiceRole}}
-                @content={{serviceRoles}}
-                @optionValuePath="RoleName"
-                @optionLabelPath="RoleName"
-              />
-            {{/unless}}
-          {{else}}
-            <div>
-              {{#if config.serviceRole}}
-                {{readableServiceRole}}
-              {{else}}
-                {{t "clusterNew.amazoneks.role.noneSelected"}}
-              {{/if}}
-            </div>
-          {{/if}}
-        </div>
-      </div>
       <div class="row">
-        <div class="col span-6">
+        <div class="col span-3">
           <label class="acc-label">
-            {{t "clusterNew.amazoneks.secretsEncryption.label"}}
+            {{t "clusterNew.amazoneks.access.region"}}
           </label>
-          {{#if isNew}}
-            <div class="radio pt-0">
-              <label>
-                <RadioButton
-                  @selection={{mut config.secretsEncryption}}
-                  @value={{false}}
-                  @disabled={{editing}}
-                />
-                {{t "clusterNew.amazoneks.secretsEncryption.disabled"}}
-              </label>
-              <label>
-                <RadioButton
-                  @selection={{mut config.secretsEncryption}}
-                  @value={{true}}
-                  @disabled={{editing}}
-                />
-                {{t "clusterNew.amazoneks.secretsEncryption.kms"}}
-              </label>
+          {{#if (and (eq step 1) isNew)}}
+            <select
+              class="form-control"
+              onchange={{action (mut config.region) value="target.value"}}
+            >
+              {{#each regionChoices as |choice|}}
+                <option value={{choice}} selected={{eq config.region choice}}>
+                  {{choice}}
+                </option>
+              {{/each}}
+            </select>
+          {{else}}
+            <div>
+              {{config.region}}
             </div>
-            {{#if config.secretsEncryption}}
+          {{/if}}
+        </div>
+        {{#if (eq step 1)}}
+          <FormAuthCloudCredential
+            @cloudCredentialKey="eksConfig.amazonCredentialSecret"
+            @mode={{mode}}
+            @cancel={{action "close"}}
+            @cloudCredentials={{cloudCredentials}}
+            @createLabel="clusterNew.amazoneks.access.next"
+            @driverName="amazonec2"
+            @parseAndCollectErrors={{action "errorHandler"}}
+            @finishAndSelectCloudCredential={{action
+              "finishAndSelectCloudCredential"
+            }}
+            @primaryResource={{primaryResource}}
+            @progressStep={{action "startAwsConfiguration"}}
+            @region={{config.region}}
+          />
+        {{else}}
+          <div class="row">
+            <div class="col span-4">
               <label class="acc-label">
-                {{t "clusterNew.amazoneks.secretsEncryption.kmsHelpLabel"}}
+                <!-- {{t "clusterNew.amazoneks.access.region"}} -->
+                Cloud Credential
               </label>
-              {{searchable-select
+              <div>
+                {{selectedCloudCredential.displayName}}
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </AccordionListItem>
+    {{#if (gte step 2)}}
+      <AccordionListItem
+        @title={{t "clusterNew.amazoneks.clusterOption.title"}}
+        @detail={{t "clusterNew.amazoneks.clusterOption.detail"}}
+        @expandAll={{expandAll}}
+        @expand={{action expandFn}}
+        @expandOnInit={{true}}
+        @showExpand={{false}}
+      >
+        <div class="row mb-20">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.amazoneks.kubernetesVersion.label"}}
+            </label>
+            {{#if disableVersionSelect}}
+              <div>
+                {{config.kubernetesVersion}}
+                <p class="help-block">
+                  {{t "clusterNew.amazoneks.kubernetesVersion.warning"}}
+                </p>
+              </div>
+            {{else}}
+              {{new-select
                 classNames="form-control"
-                optionValuePath="KeyArn"
-                optionLabelPath="KeyArn"
-                content=kmsKeys
-                value=(mut config.kmsKey)
-                allowCustom=true
+                content=versionChoices
+                value=config.kubernetesVersion
               }}
-              {{#if loadFailedKmsKeys}}
-                <p class="help-block text-warning">
-                  {{t "clusterNew.amazoneks.secretsEncryption.failure"}}
+              {{#if editing}}
+                <p class="help-block">
+                  {{t "formVersions.eks.helpBlock"}}
                 </p>
               {{/if}}
             {{/if}}
-          {{else}}
-            <div>
-              {{#if config.secretsEncryption}}
+          </div>
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.amazoneks.role.label"}}
+            </label>
+            {{#if (eq step 2)}}
+              <div class="radio pt-0">
                 <label>
+                  {{radio-button
+                    selection=serviceRoleMode
+                    value="default"
+                    disabled=editing
+                  }}
+                  {{t "clusterNew.amazoneks.role.radio.default"}}
+                </label>
+                <label>
+                  {{radio-button
+                    selection=serviceRoleMode
+                    value="custom"
+                    disabled=editing
+                  }}
+                  {{t "clusterNew.amazoneks.role.radio.custom"}}
+                </label>
+              </div>
+              {{#unless (eq serviceRoleMode "default")}}
+                <NewSelect
+                  class="form-control"
+                  @value={{selectedServiceRole}}
+                  @content={{serviceRoles}}
+                  @optionValuePath="RoleName"
+                  @optionLabelPath="RoleName"
+                />
+              {{/unless}}
+            {{else}}
+              <div>
+                {{#if config.serviceRole}}
+                  {{readableServiceRole}}
+                {{else}}
+                  {{t "clusterNew.amazoneks.role.noneSelected"}}
+                {{/if}}
+              </div>
+            {{/if}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.amazoneks.secretsEncryption.label"}}
+            </label>
+            {{#if isNew}}
+              <div class="radio pt-0">
+                <label>
+                  <RadioButton
+                    @selection={{mut config.secretsEncryption}}
+                    @value={{false}}
+                    @disabled={{editing}}
+                  />
+                  {{t "clusterNew.amazoneks.secretsEncryption.disabled"}}
+                </label>
+                <label>
+                  <RadioButton
+                    @selection={{mut config.secretsEncryption}}
+                    @value={{true}}
+                    @disabled={{editing}}
+                  />
                   {{t "clusterNew.amazoneks.secretsEncryption.kms"}}
                 </label>
+              </div>
+              {{#if config.secretsEncryption}}
                 <label class="acc-label">
                   {{t "clusterNew.amazoneks.secretsEncryption.kmsHelpLabel"}}
                 </label>
-                {{#if config.kmsKey}}
-                  <div>
-                    {{config.kmsKey}}
-                  </div>
-                {{/if}}
-              {{else}}
-                <label>
-                  {{t "clusterNew.amazoneks.secretsEncryption.disabled"}}
-                </label>
-              {{/if}}
-            </div>
-          {{/if}}
-        </div>
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "clusterNew.amazoneks.tags.label"}}
-          </label>
-          <FormKeyValue
-            @initialMap={{initalTags}}
-            @changed={{action "setTags"}}
-            @addActionLabel="clusterNew.amazoneks.tags.addActionLabel"
-          />
-        </div>
-      </div>
-    </AccordionListItem>
-    {{#if (eq step 2)}}
-      <SaveCancel
-        @editing={{eq mode "edit"}}
-        @save={{action "loadSubnets"}}
-        @cancel={{close}}
-        @createLabel="clusterNew.amazoneks.role.next"
-        @savingLabel="clusterNew.amazoneks.role.loading"
-      />
-    {{/if}}
-  {{/if}}
-  {{#if (gte step 3)}}
-    <AccordionListItem
-      @title={{t "clusterNew.amazoneks.vpc.title"}}
-      @detail={{t "clusterNew.amazoneks.vpc.detail"}}
-      @expandAll={{expandAll}}
-      @expand={{action expandFn}}
-      @expandOnInit={{true}}
-      @showExpand={{false}}
-    >
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "clusterNew.amazoneks.vpc.access.title"}}
-            <p class="help-block">
-              {{t "clusterNew.amazoneks.vpc.access.help" htmlSafe=true}}
-            </p>
-          </label>
-          <div class="col span-12">
-            <div class="checkbox">
-              <label>
-                {{#tooltip-element
-                  type="tooltip-basic"
-                  model=(t "clusterNew.amazoneks.vpc.access.public.tooltip")
-                  tooltipTemplate="tooltip-static"
-                  aria-describedby="tooltip-base"
-                  tooltipFor="tooltip-basic"
-                  placement="top"
+                {{searchable-select
+                  classNames="form-control"
+                  optionValuePath="KeyArn"
+                  optionLabelPath="KeyArn"
+                  content=kmsKeys
+                  value=(mut config.kmsKey)
+                  allowCustom=true
                 }}
-                  <Input
-                    @type="checkbox"
-                    @classNames="form-control"
-                    @checked={{mut config.publicAccess}}
-                  />
-                  {{t "clusterNew.amazoneks.vpc.access.public.label"}}
-                {{/tooltip-element}}
-              </label>
-            </div>
-            <div class="checkbox">
-              <label>
-                <Input
-                  @type="checkbox"
-                  @classNames="form-control"
-                  @checked={{mut config.privateAccess}}
-                />
-                {{t "clusterNew.amazoneks.vpc.access.private.label"}}
-              </label>
-            </div>
+                {{#if loadFailedKmsKeys}}
+                  <p class="help-block text-warning">
+                    {{t "clusterNew.amazoneks.secretsEncryption.failure"}}
+                  </p>
+                {{/if}}
+              {{/if}}
+            {{else}}
+              <div>
+                {{#if config.secretsEncryption}}
+                  <label>
+                    {{t "clusterNew.amazoneks.secretsEncryption.kms"}}
+                  </label>
+                  <label class="acc-label">
+                    {{t "clusterNew.amazoneks.secretsEncryption.kmsHelpLabel"}}
+                  </label>
+                  {{#if config.kmsKey}}
+                    <div>
+                      {{config.kmsKey}}
+                    </div>
+                  {{/if}}
+                {{else}}
+                  <label>
+                    {{t "clusterNew.amazoneks.secretsEncryption.disabled"}}
+                  </label>
+                {{/if}}
+              </div>
+            {{/if}}
           </div>
-          <div class="col span-12">
+          <div class="col span-6">
             <label class="acc-label">
-              {{t "clusterNew.amazoneks.vpc.access.endpoints.label"}}
-              <p class="help-block">
-                {{t "clusterNew.amazoneks.vpc.access.endpoints.helpBlock"}}
-              </p>
+              {{t "clusterNew.amazoneks.tags.label"}}
             </label>
-            <FormValueArray
-              @initialValues={{config.publicAccessSources}}
-              @changed={{action (mut config.publicAccessSources)}}
-              @editing={{gte step 3}}
-              @addButtonEnabled={{config.publicAccess}}
-              @valueLabelEnabled={{false}}
-              @valueLabel="clusterNew.amazoneks.vpc.access.endpoints.valueLabel"
-              @addActionLabel="clusterNew.amazoneks.vpc.access.endpoints.addActionLabel"
-              @addInitialEmptyRow={{true}}
+            <FormKeyValue
+              @initialMap={{initalTags}}
+              @changed={{action "setTags"}}
+              @addActionLabel="clusterNew.amazoneks.tags.addActionLabel"
             />
           </div>
         </div>
-        <div class="col span-6">
-          {{#if (or (eq step 3) (eq step 4))}}
+      </AccordionListItem>
+      {{#if (eq step 2)}}
+        <SaveCancel
+          @editing={{eq mode "edit"}}
+          @save={{action "loadSubnets"}}
+          @cancel={{close}}
+          @createLabel="clusterNew.amazoneks.role.next"
+          @savingLabel="clusterNew.amazoneks.role.loading"
+        />
+      {{/if}}
+    {{/if}}
+    {{#if (gte step 3)}}
+      <AccordionListItem
+        @title={{t "clusterNew.amazoneks.vpc.title"}}
+        @detail={{t "clusterNew.amazoneks.vpc.detail"}}
+        @expandAll={{expandAll}}
+        @expand={{action expandFn}}
+        @expandOnInit={{true}}
+        @showExpand={{false}}
+      >
+        <div class="row">
+          <div class="col span-6">
             <label class="acc-label">
-              {{t "clusterNew.amazoneks.subnet.title"}}
-            </label>
-            <div class="radio">
-              <label>
-                <RadioButton
-                  @selection={{vpcSubnetMode}}
-                  @value="default"
-                  @disabled={{editing}}
-                />
-                {{t "clusterNew.amazoneks.vpc.radio.default"}}
-              </label>
-            </div>
-            <div class="radio">
-              <label>
-                <RadioButton
-                  @selection={{vpcSubnetMode}}
-                  @value="custom"
-                  @disabled={{editing}}
-                />
-                {{t "clusterNew.amazoneks.vpc.radio.custom"}}
-              </label>
-            </div>
-            {{#unless (eq vpcSubnetMode "default")}}
-              <select
-                class="form-control existing-subnet-groups"
-                multiple="true"
-                onchange={{action "multiSubnetGroupSelect" ""}}
-              >
-                {{#each groupedSubnets as |group|}}
-                  <optgroup label="{{group.group}}">
-                    {{#each group.subnets as |choice|}}
-                      <option
-                        value={{choice.subnetId}}
-                        selected={{array-includes config.subnets choice.subnetId
-                        }}
-                      >
-                        {{choice.subnetName}}
-                        (
-                        {{choice.subnetId}}
-                        )
-                      </option>
-                    {{/each}}
-                  </optgroup>
-                {{/each}}
-              </select>
-              <p class="help-block mt-5">
-                {{t "clusterNew.amazoneks.subnet.help"}}
+              {{t "clusterNew.amazoneks.vpc.access.title"}}
+              <p class="help-block">
+                {{t "clusterNew.amazoneks.vpc.access.help" htmlSafe=true}}
               </p>
-            {{/unless}}
-          {{else}}
-            <div class="col span-6">
+            </label>
+            <div class="col span-12">
+              <div class="checkbox">
+                <label>
+                  {{#tooltip-element
+                    type="tooltip-basic"
+                    model=(t "clusterNew.amazoneks.vpc.access.public.tooltip")
+                    tooltipTemplate="tooltip-static"
+                    aria-describedby="tooltip-base"
+                    tooltipFor="tooltip-basic"
+                    placement="top"
+                  }}
+                    <Input
+                      @type="checkbox"
+                      @classNames="form-control"
+                      @checked={{mut config.publicAccess}}
+                    />
+                    {{t "clusterNew.amazoneks.vpc.access.public.label"}}
+                  {{/tooltip-element}}
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <Input
+                    @type="checkbox"
+                    @classNames="form-control"
+                    @checked={{mut config.privateAccess}}
+                  />
+                  {{t "clusterNew.amazoneks.vpc.access.private.label"}}
+                </label>
+              </div>
+            </div>
+            <div class="col span-12">
+              <label class="acc-label">
+                {{t "clusterNew.amazoneks.vpc.access.endpoints.label"}}
+                <p class="help-block">
+                  {{t "clusterNew.amazoneks.vpc.access.endpoints.helpBlock"}}
+                </p>
+              </label>
+              <FormValueArray
+                @initialValues={{config.publicAccessSources}}
+                @changed={{action (mut config.publicAccessSources)}}
+                @editing={{gte step 3}}
+                @addButtonEnabled={{config.publicAccess}}
+                @valueLabelEnabled={{false}}
+                @valueLabel="clusterNew.amazoneks.vpc.access.endpoints.valueLabel"
+                @addActionLabel="clusterNew.amazoneks.vpc.access.endpoints.addActionLabel"
+                @addInitialEmptyRow={{true}}
+              />
+            </div>
+          </div>
+          <div class="col span-6">
+            {{#if (or (eq step 3) (eq step 4))}}
               <label class="acc-label">
                 {{t "clusterNew.amazoneks.subnet.title"}}
               </label>
-              {{#each selectedSubnets as |sub|}}
-                <div>
-                  {{sub}}
-                </div>
-              {{else}}
-                <div>
-                  {{t "clusterNew.amazoneks.subnet.noneSelected"}}
-                </div>
+              <div class="radio">
+                <label>
+                  <RadioButton
+                    @selection={{vpcSubnetMode}}
+                    @value="default"
+                    @disabled={{editing}}
+                  />
+                  {{t "clusterNew.amazoneks.vpc.radio.default"}}
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <RadioButton
+                    @selection={{vpcSubnetMode}}
+                    @value="custom"
+                    @disabled={{editing}}
+                  />
+                  {{t "clusterNew.amazoneks.vpc.radio.custom"}}
+                </label>
+              </div>
+              {{#unless (eq vpcSubnetMode "default")}}
+                <select
+                  class="form-control existing-subnet-groups"
+                  multiple="true"
+                  onchange={{action "multiSubnetGroupSelect" ""}}
+                >
+                  {{#each groupedSubnets as |group|}}
+                    <optgroup label="{{group.group}}">
+                      {{#each group.subnets as |choice|}}
+                        <option
+                          value={{choice.subnetId}}
+                          selected={{array-includes
+                            config.subnets
+                            choice.subnetId
+                          }}
+                        >
+                          {{choice.subnetName}}
+                          (
+                          {{choice.subnetId}}
+                          )
+                        </option>
+                      {{/each}}
+                    </optgroup>
+                  {{/each}}
+                </select>
+                <p class="help-block mt-5">
+                  {{t "clusterNew.amazoneks.subnet.help"}}
+                </p>
+              {{/unless}}
+            {{else}}
+              <div class="col span-6">
+                <label class="acc-label">
+                  {{t "clusterNew.amazoneks.subnet.title"}}
+                </label>
+                {{#each selectedSubnets as |sub|}}
+                  <div>
+                    {{sub}}
+                  </div>
+                {{else}}
+                  <div>
+                    {{t "clusterNew.amazoneks.subnet.noneSelected"}}
+                  </div>
+                {{/each}}
+              </div>
+            {{/if}}
+          </div>
+        </div>
+      </AccordionListItem>
+      {{#if (eq step 3)}}
+        <SaveCancel
+          @editing={{eq mode "edit"}}
+          @saveDisabled={{and
+            (eq vpcSubnetMode "custom")
+            (lte selectedSubnets.length 1)
+          }}
+          @save={{action "setSubnets"}}
+          @cancel={{close}}
+          @createLabel="clusterNew.amazoneks.subnet.next"
+          @savingLabel="clusterNew.amazoneks.subnet.loading"
+        />
+      {{/if}}
+    {{/if}}
+    {{#if (and (gte step 4) (or (eq vpcSubnetMode "custom") (eq mode "edit")))}}
+      <AccordionListItem
+        @title={{t "clusterNew.amazoneks.securityGroup.title"}}
+        @detail={{t "clusterNew.amazoneks.securityGroup.detail"}}
+        @showExpand={{false}}
+        @expandOnInit={{true}}
+        @expandAll={{al.expandAll}}
+        @expand={{action expandFn}}
+      >
+        <div class="row">
+          <label class="acc-label">
+            {{t "clusterNew.amazoneks.securityGroup.title"}}
+          </label>
+          {{#if (and (eq step 4) (not-eq mode "edit"))}}
+            <select
+              class="form-control existing-security-groups"
+              multiple="true"
+              onchange={{action "multiSecurityGroupSelect" ""}}
+            >
+              {{#each filteredSecurityGroups as |choice|}}
+                <option
+                  value={{choice.GroupId}}
+                  selected={{array-includes config.securityGroups choice.GroupId
+                  }}
+                >
+                  {{choice.GroupName}}
+                  (
+                  {{choice.GroupId}}
+                  )
+                </option>
               {{/each}}
-            </div>
+            </select>
+          {{else if (eq mode "new")}}
+            {{#each config.securityGroups as |sg|}}
+              <div>
+                {{sg}}
+              </div>
+            {{/each}}
+          {{else}}
+            {{#each primaryResource.eksStatus.securityGroups as |sg|}}
+              <div>
+                {{sg}}
+              </div>
+            {{/each}}
           {{/if}}
         </div>
-      </div>
-    </AccordionListItem>
-    {{#if (eq step 3)}}
+      </AccordionListItem>
+    {{/if}}
+    {{#if (eq step 4)}}
+      <AccordionListItem
+        @title={{t "clusterNew.amazoneks.logging.title"}}
+        @detail={{t "clusterNew.amazoneks.logging.detail"}}
+        @showExpand={{false}}
+        @expandOnInit={{true}}
+        @expandAll={{al.expandAll}}
+        @expand={{action expandFn}}
+      >
+        <div class="row">
+          <div class="checkbox inline-block mr-10">
+            <TooltipElement
+              @type="tooltip-basic"
+              @model={{t "clusterNew.amazoneks.logging.audit.tooltip"}}
+              @tooltipTemplate="tooltip-static"
+              @aria-describedby="tooltip-base"
+              @inlineBlock={{true}}
+              @placement="top"
+            >
+              <label>
+                <Input
+                  @type="checkbox"
+                  @checked={{mut cloudWatchAuditEnabled}}
+                  @classNames="form-control"
+                />
+                {{t "clusterNew.amazoneks.logging.audit.label"}}
+              </label>
+            </TooltipElement>
+          </div>
+          <div class="checkbox inline-block mr-10">
+            <TooltipElement
+              @type="tooltip-basic"
+              @model={{t "clusterNew.amazoneks.logging.api.tooltip"}}
+              @tooltipTemplate="tooltip-static"
+              @aria-describedby="tooltip-base"
+              @inlineBlock={{true}}
+              @placement="top"
+            >
+              <label>
+                <Input
+                  @type="checkbox"
+                  @checked={{mut cloudWatchApiEnabled}}
+                  @classNames="form-control"
+                />
+                {{t "clusterNew.amazoneks.logging.api.label"}}
+              </label>
+            </TooltipElement>
+          </div>
+          <div class="checkbox inline-block mr-10">
+            <TooltipElement
+              @type="tooltip-basic"
+              @model={{t "clusterNew.amazoneks.logging.scheduler.tooltip"}}
+              @tooltipTemplate="tooltip-static"
+              @aria-describedby="tooltip-base"
+              @inlineBlock={{true}}
+              @placement="top"
+            >
+              <label>
+                <Input
+                  @type="checkbox"
+                  @checked={{mut cloudWatchSchedulerEnabled}}
+                  @classNames="form-control"
+                />
+                {{t "clusterNew.amazoneks.logging.scheduler.label"}}
+              </label>
+            </TooltipElement>
+          </div>
+          <div class="checkbox inline-block mr-10">
+            <TooltipElement
+              @type="tooltip-basic"
+              @model={{t
+                "clusterNew.amazoneks.logging.controllerManager.tooltip"
+              }}
+              @tooltipTemplate="tooltip-static"
+              @aria-describedby="tooltip-base"
+              @inlineBlock={{true}}
+              @placement="top"
+            >
+              <label>
+                <Input
+                  @type="checkbox"
+                  @checked={{mut cloudWatchControllerManagerEnabled}}
+                  @classNames="form-control"
+                />
+                {{t "clusterNew.amazoneks.logging.controllerManager.label"}}
+              </label>
+            </TooltipElement>
+          </div>
+          <div class="checkbox inline-block mr-10">
+            <TooltipElement
+              @type="tooltip-basic"
+              @model={{t "clusterNew.amazoneks.logging.authenticator.tooltip"}}
+              @tooltipTemplate="tooltip-static"
+              @aria-describedby="tooltip-base"
+              @inlineBlock={{true}}
+              @placement="top"
+            >
+              <label>
+                <Input
+                  @type="checkbox"
+                  @checked={{mut cloudWatchAuthenticatorEnabled}}
+                  @classNames="form-control"
+                />
+                {{t "clusterNew.amazoneks.logging.authenticator.label"}}
+              </label>
+            </TooltipElement>
+          </div>
+        </div>
+      </AccordionListItem>
+      <AccordionListItem
+        @title={{t "clusterNew.amazoneks.nodeGroups.title"}}
+        @detail={{t "clusterNew.amazoneks.nodeGroups.detail"}}
+        @showExpand={{false}}
+        @expandOnInit={{true}}
+        @expandAll={{al.expandAll}}
+        @expand={{action expandFn}}
+      >
+        <div class="row">
+          {{#each config.nodeGroups as |nodeGroup|}}
+            <NodeGroupRow
+              @clusterConfig={{config}}
+              @keyPairs={{filteredKeyPairs}}
+              @mode={{mode}}
+              @model={{nodeGroup}}
+              @nodeGroupsVersionCollection={{nodeGroupsVersionCollection}}
+              @originalCluster={{originalCluster}}
+              @removeNodeGroup={{action "removeNodeGroup"}}
+              @versions={{versionChoices}}
+            />
+          {{else}}
+            <div class="p-20">
+              {{t "clusterNew.amazoneks.nodeGroups.noNodes"}}
+            </div>
+          {{/each}}
+        </div>
+        <div class="row mt-15">
+          <button
+            class="btn bg-link icon-btn pull-left"
+            type="button"
+            {{action "addNodeGroup"}}
+          >
+            <span class="darken">
+              <i class="icon icon-plus text-small"></i>
+            </span>
+            <span>
+              {{t "clusterNew.amazoneks.nodeGroups.addLabel"}}
+            </span>
+          </button>
+        </div>
+      </AccordionListItem>
       <SaveCancel
         @editing={{eq mode "edit"}}
-        @saveDisabled={{and
-          (eq vpcSubnetMode "custom")
-          (lte selectedSubnets.length 1)
-        }}
-        @save={{action "setSubnets"}}
+        @save={{action "driverSave"}}
         @cancel={{close}}
-        @createLabel="clusterNew.amazoneks.subnet.next"
-        @savingLabel="clusterNew.amazoneks.subnet.loading"
       />
     {{/if}}
-  {{/if}}
-  {{#if (and (gte step 4) (or (eq vpcSubnetMode "custom") (eq mode "edit")))}}
-    <AccordionListItem
-      @title={{t "clusterNew.amazoneks.securityGroup.title"}}
-      @detail={{t "clusterNew.amazoneks.securityGroup.detail"}}
-      @showExpand={{false}}
-      @expandOnInit={{true}}
-      @expandAll={{al.expandAll}}
-      @expand={{action expandFn}}
-    >
-      <div class="row">
-        <label class="acc-label">
-          {{t "clusterNew.amazoneks.securityGroup.title"}}
-        </label>
-        {{#if (and (eq step 4) (not-eq mode "edit"))}}
-          <select
-            class="form-control existing-security-groups"
-            multiple="true"
-            onchange={{action "multiSecurityGroupSelect" ""}}
-          >
-            {{#each filteredSecurityGroups as |choice|}}
-              <option
-                value={{choice.GroupId}}
-                selected={{array-includes config.securityGroups choice.GroupId}}
-              >
-                {{choice.GroupName}}
-                (
-                {{choice.GroupId}}
-                )
-              </option>
-            {{/each}}
-          </select>
-        {{else if (eq mode "new")}}
-          {{#each config.securityGroups as |sg|}}
-            <div>
-              {{sg}}
-            </div>
-          {{/each}}
-        {{else}}
-          {{#each primaryResource.eksStatus.securityGroups as |sg|}}
-            <div>
-              {{sg}}
-            </div>
-          {{/each}}
-        {{/if}}
-      </div>
-    </AccordionListItem>
-  {{/if}}
-  {{#if (eq step 4)}}
-    <AccordionListItem
-      @title={{t "clusterNew.amazoneks.logging.title"}}
-      @detail={{t "clusterNew.amazoneks.logging.detail"}}
-      @showExpand={{false}}
-      @expandOnInit={{true}}
-      @expandAll={{al.expandAll}}
-      @expand={{action expandFn}}
-    >
-      <div class="row">
-        <div class="checkbox inline-block mr-10">
-          <TooltipElement
-            @type="tooltip-basic"
-            @model={{t "clusterNew.amazoneks.logging.audit.tooltip"}}
-            @tooltipTemplate="tooltip-static"
-            @aria-describedby="tooltip-base"
-            @inlineBlock={{true}}
-            @placement="top"
-          >
-            <label>
-              <Input
-                @type="checkbox"
-                @checked={{mut cloudWatchAuditEnabled}}
-                @classNames="form-control"
-              />
-              {{t "clusterNew.amazoneks.logging.audit.label"}}
-            </label>
-          </TooltipElement>
-        </div>
-        <div class="checkbox inline-block mr-10">
-          <TooltipElement
-            @type="tooltip-basic"
-            @model={{t "clusterNew.amazoneks.logging.api.tooltip"}}
-            @tooltipTemplate="tooltip-static"
-            @aria-describedby="tooltip-base"
-            @inlineBlock={{true}}
-            @placement="top"
-          >
-            <label>
-              <Input
-                @type="checkbox"
-                @checked={{mut cloudWatchApiEnabled}}
-                @classNames="form-control"
-              />
-              {{t "clusterNew.amazoneks.logging.api.label"}}
-            </label>
-          </TooltipElement>
-        </div>
-        <div class="checkbox inline-block mr-10">
-          <TooltipElement
-            @type="tooltip-basic"
-            @model={{t "clusterNew.amazoneks.logging.scheduler.tooltip"}}
-            @tooltipTemplate="tooltip-static"
-            @aria-describedby="tooltip-base"
-            @inlineBlock={{true}}
-            @placement="top"
-          >
-            <label>
-              <Input
-                @type="checkbox"
-                @checked={{mut cloudWatchSchedulerEnabled}}
-                @classNames="form-control"
-              />
-              {{t "clusterNew.amazoneks.logging.scheduler.label"}}
-            </label>
-          </TooltipElement>
-        </div>
-        <div class="checkbox inline-block mr-10">
-          <TooltipElement
-            @type="tooltip-basic"
-            @model={{t "clusterNew.amazoneks.logging.controllerManager.tooltip"
-            }}
-            @tooltipTemplate="tooltip-static"
-            @aria-describedby="tooltip-base"
-            @inlineBlock={{true}}
-            @placement="top"
-          >
-            <label>
-              <Input
-                @type="checkbox"
-                @checked={{mut cloudWatchControllerManagerEnabled}}
-                @classNames="form-control"
-              />
-              {{t "clusterNew.amazoneks.logging.controllerManager.label"}}
-            </label>
-          </TooltipElement>
-        </div>
-        <div class="checkbox inline-block mr-10">
-          <TooltipElement
-            @type="tooltip-basic"
-            @model={{t "clusterNew.amazoneks.logging.authenticator.tooltip"}}
-            @tooltipTemplate="tooltip-static"
-            @aria-describedby="tooltip-base"
-            @inlineBlock={{true}}
-            @placement="top"
-          >
-            <label>
-              <Input
-                @type="checkbox"
-                @checked={{mut cloudWatchAuthenticatorEnabled}}
-                @classNames="form-control"
-              />
-              {{t "clusterNew.amazoneks.logging.authenticator.label"}}
-            </label>
-          </TooltipElement>
-        </div>
-      </div>
-    </AccordionListItem>
-    <AccordionListItem
-      @title={{t "clusterNew.amazoneks.nodeGroups.title"}}
-      @detail={{t "clusterNew.amazoneks.nodeGroups.detail"}}
-      @showExpand={{false}}
-      @expandOnInit={{true}}
-      @expandAll={{al.expandAll}}
-      @expand={{action expandFn}}
-    >
-      <div class="row">
-        {{#each config.nodeGroups as |nodeGroup|}}
-          <NodeGroupRow
-            @clusterConfig={{config}}
-            @keyPairs={{filteredKeyPairs}}
-            @mode={{mode}}
-            @model={{nodeGroup}}
-            @nodeGroupsVersionCollection={{nodeGroupsVersionCollection}}
-            @originalCluster={{originalCluster}}
-            @removeNodeGroup={{action "removeNodeGroup"}}
-            @versions={{versionChoices}}
-          />
-        {{else}}
-          <div class="p-20">
-            {{t "clusterNew.amazoneks.nodeGroups.noNodes"}}
-          </div>
-        {{/each}}
-      </div>
-      <div class="row mt-15">
-        <button
-          class="btn bg-link icon-btn pull-left"
-          type="button"
-          {{action "addNodeGroup"}}
-        >
-          <span class="darken">
-            <i class="icon icon-plus text-small"></i>
-          </span>
-          <span>
-            {{t "clusterNew.amazoneks.nodeGroups.addLabel"}}
-          </span>
-        </button>
-      </div>
-    </AccordionListItem>
-    <SaveCancel
-      @editing={{eq mode "edit"}}
-      @save={{action "driverSave"}}
-      @cancel={{close}}
-    />
+  {{/unless}}
+  {{#if (eq step 5)}}
+    <ImportCommand @cluster={{primaryResource}} />
+    <div class="footer-actions">
+      <button class="btn bg-primary" type="button" {{action "close"}}>
+        {{t "clusterNew.rke.done"}}
+      </button>
+    </div>
   {{/if}}
   <TopErrors @errors={{allErrors}} />
 </AccordionList>

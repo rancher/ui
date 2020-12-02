@@ -161,10 +161,35 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!actionLinks.saveAsTemplate;
   }),
 
-  canShowAddHost: computed('nodes.[]', 'clusterProvider', function() {
-    if (this.clusterProvider !== 'custom' && this.clusterProvider !== 'import') {
+  eksDisplayEksImport: computed('clusterProvider', 'eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', function() {
+    const {
+      clusterProvider, eksConfig = {}, eksStatus = {}
+    } = this;
+    const privateAccess = get(eksConfig, 'privateAccess') || get(eksStatus, 'upstreamSpec.privateAccess') || false;
+
+    if (clusterProvider === 'amazoneksv2' && privateAccess) {
+      return true;
+    }
+
+    return false;
+  }),
+
+  canShowAddHost: computed('nodes.[]', 'clusterProvider', 'eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', function() {
+    const {
+      clusterProvider, eksConfig = {}, eksStatus = {}
+    } = this;
+    const privateAccess = get(eksConfig, 'privateAccess') || get(eksStatus, 'upstreamSpec.privateAccess') || false;
+    const ignored = ['custom', 'import', 'amazoneksv2'];
+
+    if (!ignored.includes(clusterProvider)) {
       return false;
     }
+
+    // private access requires the ability to run the import command on the cluster
+    if (clusterProvider === 'amazoneksv2' && privateAccess) {
+      return true;
+    }
+
     const nodes = get(this, 'nodes');
 
     if (isEmpty(nodes)) {
@@ -372,7 +397,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return false;
   }),
 
-  availableActions: computed('actionLinks.rotateCertificates', 'canSaveAsTemplate', 'isClusterScanDisabled', 'canShowAddHost', function() {
+  availableActions: computed('actionLinks.rotateCertificates', 'canSaveAsTemplate', 'isClusterScanDisabled', 'canShowAddHost', 'eksDisplayEksImport', function() {
     const a = get(this, 'actionLinks') || {};
 
     return [
@@ -401,7 +426,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         enabled:   this.canSaveAsTemplate,
       },
       {
-        label:     'clusterDashboard.clusterHasNoNodes',
+        label:     this.eksDisplayEksImport ? 'action.importHost' : 'action.addHost',
         icon:      'icon icon-host',
         action:    'showCommandModal',
         enabled:   this.canShowAddHost,
