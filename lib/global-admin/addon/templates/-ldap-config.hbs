@@ -46,6 +46,9 @@
             <div>
               <b>{{t "ldap.accessEnabled.general.tls"}} </b> <span class="text-muted">{{if authConfig.tls "Yes" "No"}}</span>
             </div>
+            <div>
+              <b>{{t "ldap.accessConfig.starttls.label"}}</b> <span class="text-muted">{{if authConfig.starttls "Yes" "No"}}</span>
+            </div>
             {{#if authConfig.serviceAccountUsername}}
               <div>
                 <b>{{t "ldap.accessEnabled.general.serviceAccount"}} </b> <span class="text-muted">{{authConfig.serviceAccountUsername}}</span>
@@ -155,7 +158,12 @@
               }}
               <span class="input-group-addon bg-default">
                 <label>
-                  {{t "ldap.accessConfig.port.checkbox"}} {{input type="checkbox" checked=authConfig.tls}}
+                  {{t "ldap.accessConfig.port.checkbox"}}
+                  {{input
+                    type="checkbox"
+                    checked=authConfig.tls
+                    disabled=authConfig.starttls
+                  }}
                 </label>
               </span>
             </div>
@@ -195,6 +203,21 @@
                 </label>
               </span>
             </div>
+          </div>
+          <div class="col span-6 mb-0 pt-25">
+            <div class="radio">
+              <label class="acc-label">
+                {{input
+                  type="checkbox"
+                  checked=authConfig.starttls
+                  disabled=authConfig.tls
+                }}
+                {{t "ldap.accessConfig.starttls.label"}}
+              </label>
+            </div>
+            <span class="help-block">
+              {{t "ldap.accessConfig.starttls.helpText"}}
+            </span>
           </div>
         </div>
         <hr class="mt-30 mb-30"/>
