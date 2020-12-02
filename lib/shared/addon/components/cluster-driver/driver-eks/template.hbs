@@ -295,26 +295,36 @@
               <label class="acc-label">
                 {{t "clusterNew.amazoneks.subnet.title"}}
               </label>
-              <div class="radio">
-                <label>
-                  <RadioButton
-                    @selection={{vpcSubnetMode}}
-                    @value="default"
-                    @disabled={{editing}}
-                  />
-                  {{t "clusterNew.amazoneks.vpc.radio.default"}}
-                </label>
-              </div>
-              <div class="radio">
-                <label>
-                  <RadioButton
-                    @selection={{vpcSubnetMode}}
-                    @value="custom"
-                    @disabled={{editing}}
-                  />
-                  {{t "clusterNew.amazoneks.vpc.radio.custom"}}
-                </label>
-              </div>
+              {{#if (eq step 3)}}
+                <div class="radio">
+                  <label>
+                    <RadioButton
+                      @selection={{vpcSubnetMode}}
+                      @value="default"
+                      @disabled={{editing}}
+                    />
+                    {{t "clusterNew.amazoneks.vpc.radio.default"}}
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <RadioButton
+                      @selection={{vpcSubnetMode}}
+                      @value="custom"
+                      @disabled={{editing}}
+                    />
+                    {{t "clusterNew.amazoneks.vpc.radio.custom"}}
+                  </label>
+                </div>
+              {{else}}
+                <div>
+                  {{#if (eq vpcSubnetMode "default")}}
+                    {{t "clusterNew.amazoneks.vpc.radio.default"}}
+                  {{else}}
+                    {{t "clusterNew.amazoneks.vpc.radio.custom"}}
+                  {{/if}}
+                </div>
+              {{/if}}
               {{#unless (eq vpcSubnetMode "default")}}
                 <select
                   class="form-control existing-subnet-groups"
