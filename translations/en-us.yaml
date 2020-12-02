@@ -1495,6 +1495,7 @@ clusterDashboard:
       memoryPressure: 'Alert: Node {node} has memory pressure.'
       outOfDisk: 'Alert: Node {node} is out of disk.'
   clusterHasNoNodes: Add Host
+  importHost: Import Host
   clusterNotReady: Graph information from Cluster currently not available
   controllerManager: Controller Manager
   controllerManagerUnavailable: Controller Manager Not Applicable
@@ -8520,6 +8521,7 @@ kontainerDriver:
     tencentkubernetesengine: Tencent TKE
     baiducloudcontainerengine: Baidu CCE
     oraclecontainerengine: Oracle OKE
+    otccceEngineConfig: Open Telekom Cloud CCE
 
 
 nodeDriver:
@@ -9902,29 +9904,33 @@ nav:
 action:
   activate: Activate
   addContainer: Deploy Pod
+  addHost: Add Host
   addSidekick: Add a Sidecar
   backupEtcd: Snapshot Now
   backupEtcdMessage:
     success:
+      message: 'A { backupType } snapshot has been started for { clusterId }'
       title: Snapshot initiated
-      message: "A { backupType } snapshot has been started for { clusterId }"
   clone: Clone
   cloneRevision: Clone Revision
   console: Open Console
   convertToService: Convert to Service
   cordon: Cordon
   deactivate: Deactivate
-  downloadYaml: Download YAML
+  disableAutoInject: Disable Istio Auto Injection
   download: Download
+  downloadYaml: Download YAML
   drain: Drain
   edit: Edit
   editConfig: Edit Config
   editService: Edit Service
   editYaml: View/Edit YAML
+  enableAutoInject: Enable Istio Auto Injection
   evacuate: Evacuate
   execute: Execute Shell
   exportConfig: Export Config
   garbageCollect: Cleanup
+  importHost: Import Host
   logs: View Logs
   makeDefault: Set as Default
   move: Move
@@ -9934,16 +9940,18 @@ action:
   pauseAll: Pause All
   redeploy: Redeploy
   refreshAuthProviderAccess:
+    allSuccess:
+      message: A group membership refresh has been triggered for all users.
+      title: Refresh Successful
     label: Refresh Group Memberships
     success:
-      title: Refresh Successful
       message: A group membership refresh has been triggered
-    allSuccess:
       title: Refresh Successful
-      message: A group membership refresh has been triggered for all users.
   remove: Delete
   replay: Replay
+  rerun: Rerun
   resetDefault: Reset default
+  resize: Resize
   restart: Restart
   restoreFromEtcdBackup: Restore Snapshot
   resume: Resume Orchestration
@@ -9953,16 +9961,14 @@ action:
   revision: New Revision from Default
   rollback: Rollback
   rotate: Rotate Certificates
-  rerun: Rerun
   run: Run
   runCISScan: Run CIS Scan
-  resize: Resize
   saveAsTemplate: Save As RKE Template
   setDefault: Set as Login Environment
   setDefaultRevision:
     success:
-      title: Success
       message: '{ name } has been set at the default revision on { ctName }.'
+      title: Success
   setting: Setting
   start: Start
   startAll: Start All
@@ -9981,8 +9987,6 @@ action:
   viewInGrafana: Go to Grafana
   viewInstance: View Instance
   viewYaml: View YAML
-  enableAutoInject: Enable Istio Auto Injection
-  disableAutoInject: Disable Istio Auto Injection
 
 ##############################
 # Resource Actions
