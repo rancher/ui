@@ -131,10 +131,14 @@
   <div class="text-center text-muted">
     {{t "clusterDashboard.clusterNotReady"}}
   </div>
-  {{#if (lte nodes 0)}}
+  {{#if cluster.canShowAddHost}}
   <div class="text-center mt-20">
     <button class="btn bg-primary" type="button" {{action "addHost"}}>
-      {{t "clusterDashboard.clusterHasNoNodes"}}
+      {{#if cluster.eksDisplayEksImport}}
+        {{t "clusterDashboard.importHost"}}
+      {{else}}
+        {{t "clusterDashboard.clusterHasNoNodes"}}
+      {{/if}}
     </button>
   </div>
   {{/if}}
