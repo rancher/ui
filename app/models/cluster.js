@@ -266,7 +266,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     }
   }),
 
-  displayProvider: computed('configName', 'nodePools.@each.displayProvider', 'intl.locale', 'driver', function() {
+  displayProvider: computed('configName', 'driver', 'intl.locale', 'nodePools.@each.displayProvider', 'provider', function() {
     const intl = get(this, 'intl');
     const pools = get(this, 'nodePools');
     const firstPool = (pools || []).objectAt(0);
@@ -295,7 +295,17 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return intl.t('clusterNew.k3simport.shortLabel');
     case 'rke2Config':
     case 'rancherKubernetesEngineConfig':
-      var shortLabel = configName === 'rancherKubernetesEngineConfig' ? 'clusterNew.rke.shortLabel' : 'clusterNew.rke2.shortLabel';
+      var shortLabel;
+
+      if (configName === 'rancherKubernetesEngineConfig') {
+        if (this.provider === 'rke.windows') {
+          shortLabel = 'clusterNew.rkeWindows.shortLabel'
+        } else {
+          shortLabel = 'clusterNew.rke.shortLabel'
+        }
+      } else {
+        shortLabel = 'clusterNew.rke2.shortLabel';
+      }
 
       if ( !!pools ) {
         if ( firstPool ) {
