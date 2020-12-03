@@ -593,7 +593,11 @@
     {{/if}}
   {{/unless}}
   {{#if (eq step 5)}}
-    <ImportCommand @cluster={{primaryResource}} />
+    <ImportCommand
+      @cluster={{primaryResource}}
+      @showClusterAdminWarning={{false}}
+      @showEksClusterWarning={{true}}
+    />
     <div class="footer-actions">
       <button class="btn bg-primary" type="button" {{action "close"}}>
         {{t "clusterNew.rke.done"}}
