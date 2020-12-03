@@ -10,12 +10,10 @@
       }}
     </div>
   {{/if}}
-
   <h1>
     {{title}}
   </h1>
 </section>
-
 <div class="row">
   {{#if isView}}
     {{#if model.description}}
@@ -38,7 +36,6 @@
       }}
     </div>
   {{/if}}
-
   {{#if selectNamespace}}
     <div class="col span-6">
       {{form-namespace
@@ -50,7 +47,6 @@
     </div>
   {{/if}}
 </div>
-
 {{#if isView}}
   {{#if primaryResource.storageClass}}
     <div class="row">
@@ -67,7 +63,13 @@
           {{t "cruPersistentVolumeClaim.storageClass.label"}}
         </label>
         <div>
-          <a href="{{href-to "authenticated.cluster.storage.classes.detail.index" scope.currentCluster.id primaryResource.storageClass.id}}">
+          <a
+            href="{{href-to
+                "authenticated.cluster.storage.classes.detail.index"
+                scope.currentCluster.id
+                primaryResource.storageClass.id
+              }}"
+          >
             {{primaryResource.storageClass.displayName}}
           </a>
         </div>
@@ -88,7 +90,13 @@
           {{t "cruPersistentVolumeClaim.pv.label"}}
         </label>
         <div>
-          <a href="{{href-to "authenticated.cluster.storage.persistent-volumes.detail.index" scope.currentCluster.id primaryResource.persistentVolume.id}}">
+          <a
+            href="{{href-to
+                "authenticated.cluster.storage.persistent-volumes.detail.index"
+                scope.currentCluster.id
+                primaryResource.persistentVolume.id
+              }}"
+          >
             {{primaryResource.persistentVolume.displayName}}
           </a>
         </div>
@@ -113,10 +121,7 @@
       </div>
       <div class="radio">
         <label>
-          {{radio-button
-            selection=useStorageClass
-            value=false
-          }}
+          {{radio-button selection=useStorageClass value=false}}
           {{t "cruPersistentVolumeClaim.source.pv"}}
         </label>
       </div>
@@ -135,15 +140,12 @@
           required=true
           value=primaryResource.storageClassId
         }}
-
         <label class="acc-label mt-20">
-          {{t "cruPersistentVolumeClaim.capacity.label"}}{{field-required editing=editing}}
+          {{t "cruPersistentVolumeClaim.capacity.label"}}
+          {{field-required editing=editing}}
         </label>
         <div class="input-group">
-          {{input-number
-            classNames="form-control"
-            value=capacity
-          }}
+          {{input-number classNames="form-control" value=capacity}}
           <span class="input-group-addon bg-default">
             {{t "cruPersistentVolumeClaim.capacity.unit"}}
           </span>
@@ -163,11 +165,16 @@
     </div>
   </div>
 {{/if}}
-
-<hr/>
-
-{{#accordion-list showExpandAll=false as | al expandFn |}}
+<hr />
+{{#accordion-list showExpandAll=false as |al expandFn|}}
   {{#if isView}}
+    {{resource-condition-list
+      resourceType=(t "generic.persistentVolumeClaim")
+      conditions=model.status.conditions
+      expandAll=al.expandAll
+      expandFn=expandFn
+      expandOnInit=model.status.conditions
+    }}
     {{form-related-workloads
       workloads=model.workloads
       expandAll=al.expandAll
@@ -175,18 +182,15 @@
     }}
   {{/if}}
   {{#accordion-list-item
-     title=(t "cruPersistentVolume.customize.title")
-     detail=(t "cruPersistentVolume.customize.detail")
-     expandAll=expandAll
-     expand=(action expandFn)
-     everExpanded=true
+    title=(t "cruPersistentVolume.customize.title")
+    detail=(t "cruPersistentVolume.customize.detail")
+    expandAll=expandAll
+    expand=(action expandFn)
+    everExpanded=true
   }}
     <div class="row">
       <div class="col span-6">
-        {{form-access-modes
-          model=primaryResource
-          mode=mode
-        }}
+        {{form-access-modes model=primaryResource mode=mode}}
       </div>
     </div>
   {{/accordion-list-item}}
@@ -201,11 +205,14 @@
     }}
   {{/if}}
 {{/accordion-list}}
-
 {{#unless isView}}
   {{top-errors errors=errors}}
   {{save-cancel
-    createLabel=(if actuallySave "saveCancel.create" "cruPersistentVolumeClaim.define.addActionLabel")
+    createLabel=(if
+      actuallySave
+      "saveCancel.create"
+      "cruPersistentVolumeClaim.define.addActionLabel"
+    )
     save=(action "save")
     cancel=(action "viewEditCancel")
   }}
