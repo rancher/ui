@@ -165,7 +165,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const {
       clusterProvider, eksConfig = {}, eksStatus = {}
     } = this;
-    const privateAccess = get(eksConfig, 'privateAccess') || get(eksStatus, 'upstreamSpec.privateAccess') || false;
+    const privateAccess = !get(eksConfig, 'publicAccess') && get(eksConfig, 'privateAccess') || get(eksStatus, 'upstreamSpec.privateAccess') || false;
 
     if (clusterProvider === 'amazoneksv2' && privateAccess) {
       return true;
@@ -178,7 +178,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const {
       clusterProvider, eksConfig = {}, eksStatus = {}
     } = this;
-    const privateAccess = get(eksConfig, 'privateAccess') || get(eksStatus, 'upstreamSpec.privateAccess') || false;
+    const privateAccess = !get(eksConfig, 'publicAccess') && get(eksConfig, 'privateAccess') || get(eksStatus, 'upstreamSpec.privateAccess') || false;
     const ignored = ['custom', 'import', 'amazoneksv2'];
 
     if (!ignored.includes(clusterProvider)) {
