@@ -234,7 +234,7 @@
            expand=(action expandFn)
         }}
           <div class="row">
-            <div class="col span-4">
+            <div class="col span-3">
               <label class="acc-label">
                 {{t "clusterNew.rke.ingress.label"}}
                 {{#if clusterTemplateCreate}}
@@ -277,7 +277,50 @@
                 {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
-            <div class="col span-4">
+            <div class="col span-3">
+              <label class="acc-label">
+                {{t "clusterNew.rke.ingress.defaultBackend.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="rancherKubernetesEngineConfig.ingress.defaultBackend"
+                    @configVariable={{config.ingress.defaultBackend}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
+              </label>
+              <CheckOverrideAllowed
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @paramName="rancherKubernetesEngineConfig.ingress.defaultBackend"
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                {{#input-or-display
+                   editable=notView
+                   value=config.ingress.defaultBackend
+                }}
+                  <div class="radio">
+                    <label>
+                      {{radio-button
+                        selection=config.ingress.defaultBackend
+                        value=true
+                      }}
+                      {{t "generic.enabled"}}
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      {{radio-button
+                        selection=config.ingress.defaultBackend
+                        value=false
+                      }}
+                      {{t "generic.disabled"}}
+                    </label>
+                  </div>
+                {{/input-or-display}}
+              </CheckOverrideAllowed>
+            </div>
+            <div class="col span-3">
               <label class="acc-label">
                 {{t "clusterNew.rke.serviceNodePortRange.label"}}
                 {{#if clusterTemplateCreate}}
@@ -308,7 +351,7 @@
                 {{/input-or-display}}
               </CheckOverrideAllowed>
             </div>
-            <div class="col span-4">
+            <div class="col span-3">
               <label class="acc-label">
                 {{t "clusterNew.rke.monitoring.label"}}
                 {{#if clusterTemplateCreate}}
