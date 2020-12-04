@@ -1,27 +1,42 @@
-<BannerMessage @color="bg-info m-0">
-  <div class="mt-20">
-    {{t
-      "clusterNew.import.command.instructionsAdminRole"
-      appName=settings.appName
-      htmlSafe=true
-    }}
-  </div>
-  <div class="copy-pre mt-20 mb-20">
-    {{#if loading}}
-      <div class="text-center">
-        <i class="icon icon-spinner icon-spin"></i>
-        {{t "generic.loading"}}
-      </div>
-    {{else}}
-      <CopyToClipboard
-        @clipboardText={{clusterAdmin}}
-        @tagName="div"
-        class="copy-to-pre"
-      />
-      <pre style="font-size: 14px;">{{clusterAdmin}}</pre>
-    {{/if}}
-  </div>
-</BannerMessage>
+{{#if showClusterAdminWarning}}
+  <BannerMessage @color="bg-info m-0">
+    <div class="mt-20">
+      {{t
+        "clusterNew.import.command.instructionsAdminRole"
+        appName=settings.appName
+        htmlSafe=true
+      }}
+    </div>
+    <div class="copy-pre mt-20 mb-20">
+      {{#if loading}}
+        <div class="text-center">
+          <i class="icon icon-spinner icon-spin"></i>
+          {{t "generic.loading"}}
+        </div>
+      {{else}}
+        <CopyToClipboard
+          @clipboardText={{clusterAdmin}}
+          @tagName="div"
+          class="copy-to-pre"
+        />
+        <pre style="font-size: 14px;">
+          {{clusterAdmin}}
+        </pre>
+      {{/if}}
+    </div>
+  </BannerMessage>
+{{/if}}
+{{#if showEksClusterWarning}}
+  <BannerMessage @color="bg-info">
+    <div class="pt-15 pb-15">
+      {{t
+        "clusterNew.import.command.instructionEksCluster"
+        appName=settings.appName
+        htmlSafe=true
+      }}
+    </div>
+  </BannerMessage>
+{{/if}}
 <div class="mt-20">
   {{t
     "clusterNew.import.command.instructions"
@@ -42,7 +57,9 @@
       @tagName="div"
       class="copy-to-pre"
     />
-    <pre id="registration-command" style="font-size: 14px;">{{token.command}}</pre>
+    <pre id="registration-command" style="font-size: 14px;">
+      {{token.command}}
+    </pre>
   {{/if}}
 </div>
 <div class="mt-20">
@@ -65,6 +82,8 @@
       @tagName="div"
       class="copy-to-pre"
     />
-    <pre id="registration-command" style="font-size: 14px;">{{token.insecureCommand}}</pre>
+    <pre id="registration-command" style="font-size: 14px;">
+      {{token.insecureCommand}}
+    </pre>
   {{/if}}
 </div>
