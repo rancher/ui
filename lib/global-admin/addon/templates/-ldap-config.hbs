@@ -274,7 +274,9 @@
                   {{input
                     type="checkbox"
                     checked=authConfig.tls
-                    disabled=authConfig.starttls
+                    disabled=(and
+                      (eq authConfig.name "openldap") authConfig.starttls
+                    )
                   }}
                 </label>
               </span>
@@ -319,21 +321,23 @@
               </span>
             </div>
           </div>
-          <div class="col span-6 mb-0 pt-25">
-            <div class="radio">
-              <label class="acc-label">
-                {{input
-                  type="checkbox"
-                  checked=authConfig.starttls
-                  disabled=authConfig.tls
-                }}
-                {{t "ldap.accessConfig.starttls.label"}}
-              </label>
+          {{#if (eq authConfig.name "openldap")}}
+            <div class="col span-6 mb-0 pt-25">
+              <div class="radio">
+                <label class="acc-label">
+                  {{input
+                    type="checkbox"
+                    checked=authConfig.starttls
+                    disabled=authConfig.tls
+                  }}
+                  {{t "ldap.accessConfig.starttls.label"}}
+                </label>
+              </div>
+              <span class="help-block">
+                {{t "ldap.accessConfig.starttls.helpText"}}
+              </span>
             </div>
-            <span class="help-block">
-              {{t "ldap.accessConfig.starttls.helpText"}}
-            </span>
-          </div>
+          {{/if}}
         </div>
         <hr class="mt-30 mb-30" />
         <p class="text-info mb-0">
