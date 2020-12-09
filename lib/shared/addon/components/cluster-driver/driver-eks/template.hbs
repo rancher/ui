@@ -1,5 +1,16 @@
 <AccordionList @showExpandAll="false" as |al expandFn|>
-  {{#unless (eq step 5)}}
+  {{#if (and (eq step 5) clusterIsPending)}}
+    <ImportCommand
+      @cluster={{primaryResource}}
+      @showClusterAdminWarning={{false}}
+      @showEksClusterWarning={{true}}
+    />
+    <div class="footer-actions">
+      <button class="btn bg-primary" type="button" {{action "close"}}>
+        {{t "clusterNew.rke.done"}}
+      </button>
+    </div>
+  {{else}}
     <AccordionListItem
       @title={{t "clusterNew.amazoneks.access.title"}}
       @detail={{t "clusterNew.amazoneks.access.detail"}}
@@ -591,18 +602,6 @@
         @cancel={{close}}
       />
     {{/if}}
-  {{/unless}}
-  {{#if (eq step 5)}}
-    <ImportCommand
-      @cluster={{primaryResource}}
-      @showClusterAdminWarning={{false}}
-      @showEksClusterWarning={{true}}
-    />
-    <div class="footer-actions">
-      <button class="btn bg-primary" type="button" {{action "close"}}>
-        {{t "clusterNew.rke.done"}}
-      </button>
-    </div>
   {{/if}}
   <TopErrors @errors={{allErrors}} />
 </AccordionList>
