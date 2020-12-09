@@ -6,11 +6,11 @@ export default Component.extend({
   layout,
 
   didReceiveAttrs() {
-    const config = get(this, 'workloadConfig');
-    let  strategy = get(config, 'strategy');
+    const { workloadConfig = {} } = this;
+    const  strategy = get(workloadConfig, 'strategy');
 
     if ( !strategy ) {
-      set(config, 'strategy', 'RollingUpdate');
+      set(workloadConfig, 'strategy', 'RollingUpdate');
     }
   }
 });
