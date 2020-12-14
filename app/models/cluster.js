@@ -165,9 +165,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const {
       clusterProvider, eksConfig = {}, eksStatus = {}
     } = this;
-    const privateAccess = !get(eksConfig, 'publicAccess') && get(eksConfig, 'privateAccess') || get(eksStatus, 'upstreamSpec.privateAccess') || false;
+    const publicAccess = get(eksStatus, 'upstreamSpec.publicAccess') || get(eksConfig, 'publicAccess') || true;
+    const privateAccess = get(eksStatus, 'upstreamSpec.privateAccess') || get(eksConfig, 'privateAccess') || false;
 
-    if (clusterProvider === 'amazoneksv2' && privateAccess) {
+    if (clusterProvider === 'amazoneksv2' && !publicAccess && privateAccess) {
       return true;
     }
 
@@ -178,21 +179,19 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const {
       clusterProvider, eksConfig = {}, eksStatus = {}
     } = this;
-    const privateAccess = !get(eksConfig, 'publicAccess') && get(eksConfig, 'privateAccess') || get(eksStatus, 'upstreamSpec.privateAccess') || false;
+    const publicAccess = get(eksStatus, 'upstreamSpec.publicAccess') || get(eksConfig, 'publicAccess') || true;
+    const privateAccess = get(eksStatus, 'upstreamSpec.privateAccess') || get(eksConfig, 'privateAccess') || false;
     const ignored = ['custom', 'import', 'amazoneksv2'];
+    const nodes = get(this, 'nodes');
 
     if (!ignored.includes(clusterProvider)) {
       return false;
     }
 
     // private access requires the ability to run the import command on the cluster
-    if (clusterProvider === 'amazoneksv2' && privateAccess) {
+    if (clusterProvider === 'amazoneksv2' && !publicAccess && privateAccess) {
       return true;
-    }
-
-    const nodes = get(this, 'nodes');
-
-    if (isEmpty(nodes)) {
+    } else if (clusterProvider !== 'amazoneksv2' && isEmpty(nodes)) {
       return true;
     }
 
