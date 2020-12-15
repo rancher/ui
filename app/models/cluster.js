@@ -189,7 +189,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     }
 
     // private access requires the ability to run the import command on the cluster
-    if (clusterProvider === 'amazoneksv2' && !publicAccess && privateAccess) {
+    if (clusterProvider === 'amazoneksv2' && !!publicAccess && privateAccess) {
       return true;
     } else if (clusterProvider !== 'amazoneksv2' && isEmpty(nodes)) {
       return true;
