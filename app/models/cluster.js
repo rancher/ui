@@ -138,6 +138,19 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!this.actionLinks.rotateCertificates;
   }),
 
+  canRotateEncryptionKey: computed('actionLinks.rotateEncryptionKeys', 'etcdbackups.@each.created', function() {
+    const acceptableTimeFrame = 360;
+    const { actionLinks: { rotateEncryptionKeys }, etcdbackups } = this;
+    const lastBackup = !isEmpty(etcdbackups) ? get(etcdbackups, 'lastObject') : undefined;
+    let diffInMinutes = 0;
+
+    if (lastBackup) {
+      diffInMinutes = moment().diff(lastBackup.created, 'minutes');
+    }
+
+    return rotateEncryptionKeys && diffInMinutes <= acceptableTimeFrame;
+  }),
+
   canBulkRemove: computed('action.remove', function() { // eslint-disable-line
     return get(this, 'hasSessionToken') ? false : true;
   }),
@@ -408,7 +421,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return false;
   }),
 
-  availableActions: computed('actionLinks.rotateCertificates', 'canSaveAsTemplate', 'isClusterScanDisabled', 'canShowAddHost', 'eksDisplayEksImport', function() {
+  availableActions: computed('actionLinks.{rotateCertificates,rotateEncryptionKeys}', 'canSaveAsTemplate', 'isClusterScanDisabled', 'canShowAddHost', 'eksDisplayEksImport', 'canRotateEncryptionKey', function() {
     const a = get(this, 'actionLinks') || {};
 
     return [
@@ -417,6 +430,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
         icon:      'icon icon-history',
         action:    'rotateCertificates',
         enabled:   !!a.rotateCertificates,
+      },
+      {
+        label:     'action.rotateEncryption',
+        icon:      'icon icon-key',
+        action:    'rotateEncryptionKeys',
+        enabled:   !!this.canRotateEncryptionKey,
+        // enabled: true
       },
       {
         label:     'action.backupEtcd',
@@ -666,6 +686,14 @@ export default Resource.extend(Grafana, ResourceUsage, {
       get(this, 'modalService').toggleModal('modal-rotate-certificates', {
         model,
         serviceDefaults: get(this, 'globalStore').getById('schema', 'rotatecertificateinput').optionsFor('services'),
+      });
+    },
+
+    rotateEncryptionKeys() {
+      const model = this;
+
+      get(this, 'modalService').toggleModal('modal-rotate-encryption-key', {
+        model,
       });
     },
 
