@@ -692,9 +692,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     rotateEncryptionKeys() {
       const model = this;
 
-      get(this, 'modalService').toggleModal('modal-rotate-encryption-key', {
-        model,
-      });
+      get(this, 'modalService').toggleModal('modal-rotate-encryption-key', { model, });
     },
 
     showCommandModal() {
