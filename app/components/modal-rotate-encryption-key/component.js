@@ -20,7 +20,7 @@ export default Component.extend(ModalBase, {
       const { cluster } = this;
 
       try {
-        await cluster.doAction('rotateEncryptionKeys');
+        await cluster.doAction('rotateEncryptionKey');
 
         cb(true);
 
