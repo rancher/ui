@@ -138,6 +138,38 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!this.actionLinks.rotateCertificates;
   }),
 
+  canRotateEncryptionKey: computed('actionLinks.rotateEncryptionKey', 'etcdbackups.@each.created', 'rancherKubernetesEngineConfig.rotateEncryptionKey', 'rancherKubernetesEngineConfig.services.kubeApi.secretsEncryptionConfig.enabled', 'transitioning', function() {
+    const acceptableTimeFrame = 360;
+    const {
+      actionLinks: { rotateEncryptionKey }, etcdbackups, rancherKubernetesEngineConfig
+    } = this;
+    const lastBackup = !isEmpty(etcdbackups) ? get(etcdbackups, 'lastObject') : undefined;
+    let diffInMinutes = 0;
+
+    if (this.transitioning !== 'no') {
+      return false;
+    }
+
+    if (isEmpty(rancherKubernetesEngineConfig)) {
+      return false;
+    } else {
+      const {
+        rotateEncryptionKey = false,
+        services: { kubeApi: { secretsEncryptionConfig = null } }
+      } = rancherKubernetesEngineConfig;
+
+      if (!!rotateEncryptionKey || isEmpty(secretsEncryptionConfig) || !get(secretsEncryptionConfig, 'enabled')) {
+        return false
+      }
+    }
+
+    if (lastBackup) {
+      diffInMinutes = moment().diff(lastBackup.created, 'minutes');
+    }
+
+    return rotateEncryptionKey && diffInMinutes <= acceptableTimeFrame;
+  }),
+
   canBulkRemove: computed('action.remove', function() { // eslint-disable-line
     return get(this, 'hasSessionToken') ? false : true;
   }),
@@ -408,7 +440,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return false;
   }),
 
-  availableActions: computed('actionLinks.rotateCertificates', 'canSaveAsTemplate', 'isClusterScanDisabled', 'canShowAddHost', 'eksDisplayEksImport', function() {
+  availableActions: computed('actionLinks.{rotateCertificates,rotateEncryptionKey}', 'canRotateEncryptionKey', 'canSaveAsTemplate', 'canShowAddHost', 'eksDisplayEksImport', 'isClusterScanDisabled', function() {
     const a = get(this, 'actionLinks') || {};
 
     return [
@@ -417,6 +449,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
         icon:      'icon icon-history',
         action:    'rotateCertificates',
         enabled:   !!a.rotateCertificates,
+      },
+      {
+        label:     'action.rotateEncryption',
+        icon:      'icon icon-key',
+        action:    'rotateEncryptionKey',
+        enabled:   !!this.canRotateEncryptionKey,
+        // enabled: true
       },
       {
         label:     'action.backupEtcd',
@@ -667,6 +706,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
         model,
         serviceDefaults: get(this, 'globalStore').getById('schema', 'rotatecertificateinput').optionsFor('services'),
       });
+    },
+
+    rotateEncryptionKey() {
+      const model = this;
+
+      get(this, 'modalService').toggleModal('modal-rotate-encryption-key', { model, });
     },
 
     showCommandModal() {

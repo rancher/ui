@@ -1,0 +1,26 @@
+<div class="container-header-text">
+  <h3>
+    {{t "modalRotateEncryption.title"}}
+  </h3>
+</div>
+{{banner-message
+  color="bg-warning"
+  message=(t "modalRotateEncryption.backupWarning")
+}}
+<div class="row">
+  <div class="col span-12">
+    <p>
+      {{t "modalRotateEncryption.lastBackup" backupName=lastBackup.backupName backupTime=lastBackup.backupTime}}
+    </p>
+  </div>
+</div>
+<TopErrors @errors={{errors}} />
+<div class="footer-actions">
+  {{save-cancel
+    class="pt-0"
+    cancel=(action "cancel")
+    editLabel="generic.confirm"
+    editing=true
+    save=(action "rotate")
+  }}
+</div>
