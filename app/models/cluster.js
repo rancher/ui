@@ -138,17 +138,36 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!this.actionLinks.rotateCertificates;
   }),
 
-  canRotateEncryptionKey: computed('actionLinks.rotateEncryptionKeys', 'etcdbackups.@each.created', function() {
+  canRotateEncryptionKey: computed('actionLinks.rotateEncryptionKey', 'etcdbackups.@each.created', 'rancherKubernetesEngineConfig.rotateEncryptionKey', 'rancherKubernetesEngineConfig.services.kubeApi.secretsEncryptionConfig.enabled', 'transitioning', function() {
     const acceptableTimeFrame = 360;
-    const { actionLinks: { rotateEncryptionKeys }, etcdbackups } = this;
+    const {
+      actionLinks: { rotateEncryptionKey }, etcdbackups, rancherKubernetesEngineConfig
+    } = this;
     const lastBackup = !isEmpty(etcdbackups) ? get(etcdbackups, 'lastObject') : undefined;
     let diffInMinutes = 0;
+
+    if (this.transitioning !== 'no') {
+      return false;
+    }
+
+    if (isEmpty(rancherKubernetesEngineConfig)) {
+      return false;
+    } else {
+      const {
+        rotateEncryptionKey = false,
+        services: { kubeApi: { secretsEncryptionConfig = null } }
+      } = rancherKubernetesEngineConfig;
+
+      if (!!rotateEncryptionKey || isEmpty(secretsEncryptionConfig) || !get(secretsEncryptionConfig, 'enabled')) {
+        return false
+      }
+    }
 
     if (lastBackup) {
       diffInMinutes = moment().diff(lastBackup.created, 'minutes');
     }
 
-    return rotateEncryptionKeys && diffInMinutes <= acceptableTimeFrame;
+    return rotateEncryptionKey && diffInMinutes <= acceptableTimeFrame;
   }),
 
   canBulkRemove: computed('action.remove', function() { // eslint-disable-line
@@ -421,7 +440,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return false;
   }),
 
-  availableActions: computed('actionLinks.{rotateCertificates,rotateEncryptionKeys}', 'canSaveAsTemplate', 'isClusterScanDisabled', 'canShowAddHost', 'eksDisplayEksImport', 'canRotateEncryptionKey', function() {
+  availableActions: computed('actionLinks.{rotateCertificates,rotateEncryptionKey}', 'canRotateEncryptionKey', 'canSaveAsTemplate', 'canShowAddHost', 'eksDisplayEksImport', 'isClusterScanDisabled', function() {
     const a = get(this, 'actionLinks') || {};
 
     return [
@@ -434,7 +453,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
       {
         label:     'action.rotateEncryption',
         icon:      'icon icon-key',
-        action:    'rotateEncryptionKeys',
+        action:    'rotateEncryptionKey',
         enabled:   !!this.canRotateEncryptionKey,
         // enabled: true
       },
@@ -689,7 +708,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
       });
     },
 
-    rotateEncryptionKeys() {
+    rotateEncryptionKey() {
       const model = this;
 
       get(this, 'modalService').toggleModal('modal-rotate-encryption-key', { model, });
