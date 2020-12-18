@@ -29,12 +29,18 @@ export default Route.extend(Preload, {
 
         return get(this, 'scope').startSwitchToCluster(cluster).then(() => {
           if ( get(cluster, 'isReady') ) {
-            return this.loadSchemas('clusterStore').then(() => PromiseAll([
+            const preloads = [
               this.preload('clusterScan', 'globalStore'),
               this.preload('namespace', 'clusterStore'),
-              this.preload('storageClass', 'clusterStore'),
               this.preload('persistentVolume', 'clusterStore'),
-            ]).then(() => cluster));
+              this.preload('storageClass', 'clusterStore'),
+            ];
+
+            if (get(cluster, 'isRKE')) {
+              preloads.push(this.preload('etcdBackup', 'globalStore'));
+            }
+
+            return this.loadSchemas('clusterStore').then(() => PromiseAll(preloads).then(() => cluster));
           } else {
             return cluster;
           }
