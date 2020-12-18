@@ -138,37 +138,44 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!this.actionLinks.rotateCertificates;
   }),
 
-  canRotateEncryptionKey: computed('actionLinks.rotateEncryptionKey', 'etcdbackups.@each.created', 'rancherKubernetesEngineConfig.rotateEncryptionKey', 'rancherKubernetesEngineConfig.services.kubeApi.secretsEncryptionConfig.enabled', 'transitioning', function() {
-    const acceptableTimeFrame = 360;
-    const {
-      actionLinks: { rotateEncryptionKey }, etcdbackups, rancherKubernetesEngineConfig
-    } = this;
-    const lastBackup = !isEmpty(etcdbackups) ? get(etcdbackups, 'lastObject') : undefined;
-    let diffInMinutes = 0;
-
-    if (this.transitioning !== 'no') {
-      return false;
-    }
-
-    if (isEmpty(rancherKubernetesEngineConfig)) {
-      return false;
-    } else {
+  canRotateEncryptionKey: computed(
+    'actionLinks.rotateEncryptionKey',
+    'etcdbackups.@each.created',
+    'rancherKubernetesEngineConfig.rotateEncryptionKey',
+    'rancherKubernetesEngineConfig.services.kubeApi.secretsEncryptionConfig.enabled',
+    'transitioning',
+    'isActive',
+    function() {
+      const acceptableTimeFrame = 360;
       const {
-        rotateEncryptionKey = false,
-        services: { kubeApi: { secretsEncryptionConfig = null } }
-      } = rancherKubernetesEngineConfig;
+        actionLinks: { rotateEncryptionKey }, etcdbackups, rancherKubernetesEngineConfig
+      } = this;
+      const lastBackup = !isEmpty(etcdbackups) ? get(etcdbackups, 'lastObject') : undefined;
+      let diffInMinutes = 0;
 
-      if (!!rotateEncryptionKey || isEmpty(secretsEncryptionConfig) || !get(secretsEncryptionConfig, 'enabled')) {
-        return false
+      if (this.transitioning !== 'no' || !this.isActive) {
+        return false;
       }
-    }
 
-    if (lastBackup) {
-      diffInMinutes = moment().diff(lastBackup.created, 'minutes');
-    }
+      if (isEmpty(rancherKubernetesEngineConfig)) {
+        return false;
+      } else {
+        const {
+          rotateEncryptionKey = false,
+          services: { kubeApi: { secretsEncryptionConfig = null } }
+        } = rancherKubernetesEngineConfig;
 
-    return rotateEncryptionKey && diffInMinutes <= acceptableTimeFrame;
-  }),
+        if (!!rotateEncryptionKey || isEmpty(secretsEncryptionConfig) || !get(secretsEncryptionConfig, 'enabled')) {
+          return false
+        }
+      }
+
+      if (lastBackup) {
+        diffInMinutes = moment().diff(lastBackup.created, 'minutes');
+      }
+
+      return rotateEncryptionKey && diffInMinutes <= acceptableTimeFrame;
+    }),
 
   canBulkRemove: computed('action.remove', function() { // eslint-disable-line
     return get(this, 'hasSessionToken') ? false : true;
