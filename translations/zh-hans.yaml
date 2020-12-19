@@ -1470,7 +1470,7 @@ clusterDashboard:
   systemProject: "这是包含所有 Kubernetes 和 {appName} 系统命名空间的系统项目，修改当前项目中的资源配置可能会导致系统无法正常运行。"
   notActive: 当前集群<b>{state}</b>中...
   notReady: 当前集群<b>{state}</b>中...，在 API 准备就绪之前，直接与 API 交互的功能将不可用。
-  used: 使用值
+  used: 已使用
   title: 仪表盘
   sections:
     cluster: 集群监控
@@ -2197,6 +2197,10 @@ globalDnsPage:
       ttl:
         label: 'DNS TTL(DNS 解析记录缓存有效期，阿里云 DNS TTL 最少 600)'
   providersPage:
+    additionalOptions:
+      title: 附加选项
+      detail: 为 UI 中不可用的提供程序配置添加额外选项。
+      button: 添加选项
     title: 全局 DNS 提供商列表
     header:
       new: 添加全局 DNS 提供商
@@ -3935,6 +3939,7 @@ clusterNew:
       detail: 选择用于验证和配置 Oracle 容器引擎的区域和 API 密钥。
     region:
       label: 区域
+      help: 集群将运行的地理区域
     tenancyOCID:
       label: Tenancy OCID
       placeholder: The OCID of the tenancy in which to create resources
@@ -3943,6 +3948,7 @@ clusterNew:
       label: Compartment OCID
       placeholder: The OCID of the compartment in which to create the resources
       required: Compartment OCID is required
+      help: The compartment in which the cluster will reside
     userOcid:
       label: User OCID
       placeholder: The OCID of a user who has access to the specified tenancy/compartment
@@ -7726,7 +7732,7 @@ modalAddCloudKey:
   oci:
     userOcid:
       label: User OCID
-      placeholder: The OCID of a user
+      placeholder: The OCID of a user who has access to the specified tenancy
     userFingerprint:
       label: 用户指纹
       placeholder: 与指定用户的私有 API 密钥对应的指纹
@@ -7738,7 +7744,11 @@ modalAddCloudKey:
       placeholder: 保护指定的 OCI 用户的私钥文件的密码(如果有的话)
     tenancyOcid:
       label: Tenancy OCID
-      placeholder: The OCID of the tenancy in the user account exists
+      placeholder: The OCID of the tenancy containing the user
+    authRegion:
+      label: 区域
+      help: Any region your tenancy is subscribed to authenticate your credentials.
+
 
   vmwarevsphere:
     password:
@@ -7910,7 +7920,7 @@ modalRestoreBackup:
     all: 选择备份
   type:
     label: 恢复类型
-    etcd: Restore etcd
+    etcd: etcd
     k8sVersion: "恢复 etcd 和 Kubernetes 版本"
     versionUnknown: '未知'
     etcdAndK8sVersion: "恢复 etcd，Kubernetes 版本和 RKE 集群配置"
@@ -7943,7 +7953,7 @@ modalRollbackService:
 
 modalRollbackApp:
   title: '回滚 "{appName}"'
-  protip: '“回滚”操作将创建一个与所选修订具有相同配置的新修订。'
+  protip: '“回滚” 操作将创建一个与所选修订具有相同配置的新修订。'
   action: 回滚
   current:
     label: 当前版本
@@ -8988,6 +8998,7 @@ nodeDriver:
       helpText: 每个可用性域包含三个故障域
     shape:
       label: Shape
+      placeholder: '输入有效空格来填充选项...'
     nodeCompartment:
       label: OCID of compartment where compute instance(s) will be created
       placeholder: 'ocid1.compartment.oc1....'
@@ -9012,6 +9023,7 @@ nodeDriver:
       placeholder: '逗号分隔, e.g. 80,443'
     region:
       label: 区域
+      placeholder: '选择云凭据...'
 
   zstack:
     access:
@@ -10263,7 +10275,7 @@ newPipelineStep:
         label: 脚本
       command:
         label: 命令
-        placeholder: EntryPoint 的参数
+        placeholder: EntryPoint 参数
       entryPoint:
         label: EntryPoint
         placeholder: 该项留空将使用默认的 EntryPoint
