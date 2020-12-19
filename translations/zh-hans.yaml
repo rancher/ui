@@ -1485,53 +1485,55 @@ containersPage:
     kubernetesLink: 安装 Kubernetes
 
 clusterDashboard:
-  systemProject: "这是包含所有 Kubernetes 和 {appName} 系统命名空间的系统项目，修改当前项目中的资源配置可能会导致系统无法正常运行。"
-  notActive: 当前集群<b>{state}</b> 中...
-  notReady: 当前集群 <b>{state}</b> 中...，在 API 准备就绪之前，直接与 API 交互的功能将不可用。
-  used: 已使用
-  title: 仪表盘
+  alert:
+    component: '警告: 组件 {Component} 不健康。'
+    node: '警告: 节点 {node} 未激活。'
+    nodeCondition:
+      diskPressure: '警告: 节点 {node} 有磁盘压力。'
+      memoryPressure: '警告: 节点 {Node} 有内存压力。'
+      outOfDisk: '警告: 节点 {node} 磁盘空间不足。'
+  clusterHasNoNodes: 添加节点
+  importHost: 导入节点
+  clusterNotReady: 集群中的图形信息当前不可用
+  controllerManager: Controller Manager
+  controllerManagerUnavailable: Controller Manager 不可用
+  cpu: CPU
+  enableMonitoring: 启用监控以查看实时监控
+  etcd: Etcd
+  etcdUnavailable: Etcd 不可用
+  k3sInfo:
+    detail: 导入的 K3S 集群节点系统信息。
+    nodeArgs:
+      detail: 此节点的 K3s 启动参数的只读列表。
+      noArgs: 没有节点参数
+      title: k3s 节点参数
+    title:  k3s 集群信息
+  liveTitle: '已使用 {total} 中的 {used}'
+  memory: Memory
+  monitoringNotReady: 监控 API 未就绪
+  more: 更多
+  noRancherComponents: '在此集群中没有启用 {appName} 日志收集，或者没有足够的数据用于图形展示。'
+  node: Nodes
+  notActive: '当前集群状态 <b>{state}</b>.'
+  notReady: '当前集群 <b>{state}</b> 中...，在 API 准备就绪之前，直接与 API 交互的功能将不可用。 '
+  pods: Pods
+  reserved: 已预留
+  scheduler: Scheduler
+  schedulerUnavailable: Scheduler 不可用
   sections:
     cluster: 集群监控
     etcd: Etcd 监控
     k8s: Kubernetes 组件监控
-    rancher: '{appName} 日志功能监控'
     node: 节点监控
-  noRancherComponents: '{appName} 日志功能未启用或者没有足够的数据绘制图表。'
-  cpu: CPU
-  memory: Memory
-  pods: Pods
-  value: 值
-  more: 更多
-  clusterNotReady: 集群中的图形信息目前不可用。
+    rancher: '{appName} 日志收集功能监控'
   subtitle:
-    reserved: "已预留 {total} 中的 {used}"
-    used: "已使用 {total} 中的 {used}"
-  enableMonitoring: 启用监控并查看实时监控指标
-  upgradeAvailable: "升级监控组件到 {version} 版本"
-  monitoringNotReady: 监控 API 未就绪
-  node: Nodes
-  etcd: Etcd
-  scheduler: Scheduler
-  controllerManager: Controller Manager
-  etcdUnavailable: Etcd 不可用
-  schedulerUnavailable: Scheduler 不可用
-  controllerManagerUnavailable: Controller Manager 不可用
-  alert:
-    node: "警告: 节点 {node} 未激活"
-    component: "警告: 组件 {component} 不健康"
-    nodeCondition:
-      outOfDisk: "警告: 节点 {node} 磁盘空间不足。"
-      diskPressure: "警告: 节点 {node} 有磁盘压力。"
-      memoryPressure: "警告: 节点 {node} 有内存压力。"
-  liveTitle: "已使用 {total} 中的 {used}"
-  reserved: 已预留
-  k3sInfo:
-    title: k3S 相关信息
-    detail: 导入的 K3S 集群节点系统信息。
-    nodeArgs:
-      title: k3S 节点参数
-      detail: 当前节点的 K3S 参数的只读列表。
-      noArgs: 没有节点参数
+    reserved: '已预留 {total} 中的 {used}'
+    used: '已使用 {total} 中的 {used}'
+  systemProject: "这是包含所有 Kubernetes 和 {appName} 系统命名空间的系统项目，修改当前项目中的资源配置可能会导致系统无法正常运行。"
+  title: 仪表盘
+  upgradeAvailable: '监控有新版本 {version} 可用升级'
+  used: 已使用
+  value: 值
 
 
 ingressResponse:
@@ -1911,6 +1913,7 @@ cruPersistentVolumeClaim:
     addActionLabel: 配置
   capacity:
     label: 容量
+    help: 帮助
     unit: GiB
   name:
     placeholder: '例如: myvol'
@@ -2001,7 +2004,7 @@ destinationRulePage:
 
 globalRegistryPage:
   header: 全局镜像库
-  enabled: 镜像库已启用。点击<a href="{url}/registry" target="_blank" rel="nofollow noopener noreferrer">这里</a> 将在新页面中打开 Harbor UI。
+  enabled: 镜像库已启用。点击 <a href="{url}/registry" target="_blank" rel="nofollow noopener noreferrer">这里</a> 将在新页面中打开 Harbor UI。
   disabled: 镜像库尚未启用。
   notReady: 在 LOCAL 集群的系统项目中安装镜像库…
   confirmDisable: '再次单击将禁用全局镜像库'
@@ -2215,6 +2218,10 @@ globalDnsPage:
       ttl:
         label: 'DNS TTL(DNS 解析记录缓存有效期，阿里云 DNS TTL 最少 600)'
   providersPage:
+    additionalOptions:
+      title: 附加选项
+      detail: 为 UI 中不可用的提供程序配置添加额外选项。
+      button: 添加设置
     title: 全局 DNS 提供商列表
     header:
       new: 添加全局 DNS 提供商
@@ -3008,6 +3015,9 @@ ldap:
       labelText: 服务帐户专有名称
     connectionTimeout:
       labelText: 服务连接超时
+    starttls:
+      label: Start TLS
+      helpText: "通过在连接过程中使用 TLS 来封装未加密的连接。但是不能与 TLS 一起使用。"
   customizeSchema:
     header: "2. 自定义架构"
     helpText: "如果活动目录架构(Schema)不是标准格式，可以在此处进行自定义设置。"
@@ -3110,7 +3120,7 @@ authorizedEndpoint:
   enabled:
     label: '此地址必须是能够访问 k8s api-server 的域名或者 IP。在 Rancher Server 不可用时，可使用包含此地址的 kubecfg 文件，通过命令 "kubectl --context" 直接访问 k8s 集群。'
   fqdn:
-    label: FQDN(域名和后面的 CA 证书可不用填写。 )
+    label: FQDN(域名和后面的 CA 证书可不用填写。)
 
 taintsSection:
   title: Taints
@@ -4179,8 +4189,13 @@ clusterNew:
       quick: Quick Create
       custom: Custom Create
       existing: Existing
-
+  otccce:
+    shortLabel: Open Telekom Cloud CCE
+  rancherd:
+    shortLabel: RancherD
   rke:
+    secretsEncryption:
+      label: 加密密文
     upgradeStrategy:
       maximumWorkersDown:
         view:
@@ -4214,7 +4229,6 @@ clusterNew:
           label: CIS 扫描报告保留副本数
         profile:
           label: CIS 扫描配置文件
-
     etcd:
       enabled:
         label: Etcd 备份轮换
@@ -4357,6 +4371,8 @@ clusterNew:
         info: '仅支持 host-gw 后端'
     ingress:
       label: Nginx Ingress
+      defaultBackend:
+        label: Nginx Default Backend
     monitoring:
       label: 监控指标
     networkPolicy:
@@ -4439,6 +4455,8 @@ clusterNew:
       title: 授权集群访问地址
       detail: '授权集群访问地址可用于直接访问 Kubernetes API SERVER，绕过 Rancher API 代理。'
       label: 授权集群访问地址
+  rkeWindows:
+    shortLabel: Windows
   register:
     title: 使用现有的 Kubernetes 集群
     label: 注册
@@ -4456,6 +4474,7 @@ clusterNew:
     helpBlock: 导入现有的 Kubernetes 集群。Kubernetes 集群的管理和配置继续由原提供商负责。
     command:
       instructionsAdminRole: "<b>注意: </b> 如果想要导入 Google Kubernetes Engine(GKE) 集群（或一些不提供绑定集群管理角色<b>cluster-admin</b>的 kubectl 配置文件的集群）, 需要通过以下命令来绑定集群管理角色<b>cluster-admin</b>。 用您的谷歌帐户地址替换<b>[USER_ACCOUNT]</b>（您可以使用<b>gcloud config get-value account</b>检索这个地址）。如果您不是导入谷歌 Kubernetes 集群，那么用 kubectl 配置文件中配置的执行用户替换<b>[USER_ACCOUNT]</b>。"
+      instructionEksCluster: "您正在创建一个仅具有私有 API 访问权限的 EKS 集群。{appName} 需要访问 Kubernetes 端点才能完成集群创建;您必须手动运行以下命令之一。"
       instructions: '在现有的受支持的 Kubernetes 集群上运行下面的 kubectl 命令，将其导入 {appName}: '
       instructionsInsecure: "如果由于您的 {appName} 安装使用不受信任/自签名的 SSL 证书而出现 由未知权限签名的证书 错误，请运行下面的命令以绕过证书检查: "
     select:
@@ -4735,6 +4754,7 @@ confirmDelete:
   forceDelete:
     label: 强制删除
     warning: '重要提示: 强制删除 Pod 并不等待确认 Pod 中的进程是否终止，这可能导致这些进程一直运行，直到节点检测到并完成优雅的删除。如果您的进程使用共享存储或与远程 API 通信，并且依赖于 pod 的名称来标识自己，那么强制删除这些 pod 可能导致多个进程使用相同的标识运行在不同的机器上，这可能导致数据损坏或不一致。只有在确定 Pod 已终止，或者应用程序可以同时运行同一 pod 的多个副本时，才强制删除 pod。此外，如果强制删除 Pod，调度器可能会在节点释放这些资源之前在这些节点上运行新的 Pod，并导致这些 Pod 立即被驱逐。'
+  twoNodeEtcd: 从两个节点的集群中删除 ETCD 节点被认为是不安全的! 我们强烈建议您在删除一个节点之前将 ETCD 节点数增加到三个或更多节点。
 
 containerLogs:
   download: 下载日志
@@ -4811,6 +4831,7 @@ cruPersistentVolume:
   capacity:
     label: 容量
     unit: GiB
+    protip: "Updating a PVs capacity may not update the size of the underlying PVCs if any are attached. Volume Expansion workflows vary depending on the storage class, PV Provisioner, and if any attached PVCs also have workloads attached. It is highly recommended you visit the <a href='https://rancher.com/docs/rancher/v2.x/en/cluster-admin/volumes-and-storage/' target='_blank' rel='nofollow noreferrer'>the Rancher Storage docs</a> and <a href='https://kubernetes.io/docs/concepts/storage/persistent-volumes/' target='_blank' rel='nofollow noreferrer'>the Kubernetes Persistent Volume docs</a> before changing the capacity of the volume."
   source:
     label: 卷插件
     title: 插件配置
@@ -8124,6 +8145,15 @@ modalRestoreBackup:
     etcdAndK8sVersion: "恢复 etcd，Kubernetes 版本和 RKE 集群配置"
     k8sVersionUnknown: 我们无法还原此快照的 kubernetes 版本，因为该版本未知。
 
+modalResizePVC:
+  title: "调整 PVC: {name}"
+  requestedCapacity:
+    label: Requested Storage
+    help: "Updating the PVCs requested storage may not immediatly be reflected upon save. Volume Expansion workflows vary depending on the storage class, PV Provisioner, and if any workloads are attached to the PVC. It is highly recommended you visit the <a href='https://rancher.com/docs/rancher/v2.x/en/cluster-admin/volumes-and-storage/' target='_blank' rel='nofollow noreferrer'>the Rancher Storage docs</a> and <a href='https://kubernetes.io/docs/concepts/storage/persistent-volumes/' target='_blank' rel='nofollow noreferrer'>the Kubernetes Persistent Volume docs</a> before changing the capacity of the volume."
+  currentValue:
+    label: 当前大小
+  protip: Volume expansion and resizing are advanced use cases. It is highly recommended that you read and fully understand the requirements for your storage provider. Additionally you should have a disaster recovery plan in place before proceeding.
+
 modalRotateCertificates:
   title: 更新集群证书
   caCerts: 更新集群 CA 证书和所有服务证书
@@ -8137,9 +8167,14 @@ modalRotateCertificates:
     until: '{ cert } (expires { expiresIn })'
     from: '{ cert } (expired { expiresIn })'
 
+modalRotateEncryption:
+  title: 轮换加密密钥
+  backupWarning: 在继续之前，请确保集群的 ETCD 备份已经成功完成。
+  lastBackup: 最后一次备份 {backupName} 在 {backupTime} 时执行。
+
 modalRollbackService:
   title: '回滚 "{instanceName}"'
-  titleWithSidekicks: '回滚"{instanceName}"&{count, plural,=1{#个 sidecar} other {#个 sidecars}}'
+  titleWithSidekicks: '回滚 "{instanceName}"&{count, plural,=1{#个 sidecar} other {#个 sidecars}}'
   action: 回滚
   current:
     label: 当前版本
@@ -8151,7 +8186,7 @@ modalRollbackService:
 
 modalRollbackApp:
   title: '回滚 "{appName}"'
-  protip: '"回滚"操作将创建一个与所选修订具有相同配置的新修订。'
+  protip: '"回滚" 操作将创建一个与所选修订具有相同配置的新修订。'
   action: 回滚
   current:
     label: 当前版本
@@ -8187,6 +8222,12 @@ modalShortcuts:
   nextTab: 下一页
   search: 聚焦搜索字段
   shortcuts: 您在此处
+
+modalShowCommand:
+  title: 集群注册命令
+  success: 主机已注册!
+  errors:
+    token: '获取集群注册令牌错误 - {err}'
 
 modalYaml:
   title:
@@ -8497,6 +8538,7 @@ kontainerDriver:
     tencentkubernetesengine: Tencent TKE
     baiducloudcontainerengine: Baidu CCE
     oraclecontainerengine: Oracle OKE
+    opentelekomcloudcontainerengine: Open Telekom Cloud CCE
 
 
 nodeDriver:
@@ -8528,6 +8570,7 @@ nodeDriver:
     openstack: OpenStack
     oracleoke: Oracle OKE
     otc: Open Telekom Cloud
+    otccce: Open Telekom Cloud CCE
     packet: Packet
     pinganyunecs: Pinganyun ECS
     rackspace: RackSpace
@@ -9879,6 +9922,7 @@ nav:
 action:
   activate: 激活
   addContainer: 部署 Pod
+  addHost: 添加主机
   addSidekick: 添加 Sidecar
   backupEtcd: 备份
   backupEtcdMessage:
@@ -9891,19 +9935,22 @@ action:
   convertToService: 转换为服务
   cordon: 暂停
   deactivate: 停用
-  downloadYaml: 下载 YAML
+  disableAutoInject: 禁用 Istio 自动注入
   download: 下载
+  downloadYaml: 下载 YAML
   drain: 驱散
   edit: 升级
   editConfig: 编辑配置
   editService: 编辑服务
   editYaml: '查看/编辑 YAML'
+  enableAutoInject: 启用 Istio 自动注入
   evacuate: 疏散
   execute: 执行命令行
   exportConfig: 导出配置
   garbageCollect: 清理
+  importHost: 导入主机
   logs: 查看日志
-  makeDefault: 设置为缺省
+  makeDefault: 设置为默认
   move: 移动
   mute: 静默
   nodeConfig: 下载 Keys
@@ -9911,16 +9958,18 @@ action:
   pauseAll: 全部暂停
   redeploy: 重新部署
   refreshAuthProviderAccess:
+    allSuccess:
+      message: 已为所有用户触发组成员更新。
+      title: 更新成功
     label: 刷新组成员
     success:
-      title: 刷新成功
-      message: 已触发组成员更新
-    allSuccess:
-      title: 刷新成功
-      message: 已为所有用户触发组成员更新。
+      message: 已触发组成员刷新
+      title: Refresh Successful
   remove: 删除
   replay: 重播
+  rerun: 重新运行
   resetDefault: 恢复默认值
+  resize: 调整
   restart: 重启
   restoreFromEtcdBackup: 恢复
   resume: 恢复编排
@@ -9930,15 +9979,15 @@ action:
   revision: 新修订的默认值
   rollback: 回滚
   rotate: 更新证书
-  rerun: 重新运行
+  rotateEncryption: 轮换加密密钥
   run: 运行
   runCISScan: 运行 CIS 扫描
   saveAsTemplate: 另存为 RKE 模板
   setDefault: 设置为默认值
   setDefaultRevision:
     success:
-      title: 成功
       message: '已在 {ctName} 的默认修订中设置了 {name}。'
+      title: 成功
   setting: 设置
   start: 启动
   startAll: 全部开始
@@ -9957,8 +10006,6 @@ action:
   viewInGrafana: 查看 Grafana
   viewInstance: 查看实例
   viewYaml: 查看 YAML
-  enableAutoInject: 启用 Istio 自动注入
-  disableAutoInject: 禁用 Istio 自动注入
 
 ##############################
 # Resource Actions
