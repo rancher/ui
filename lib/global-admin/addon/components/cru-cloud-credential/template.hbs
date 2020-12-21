@@ -243,6 +243,37 @@
         </div>
       </div>
 
+    {{else if (eq cloudCredentialType "pnap")}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label" for="pnap-client-identifier">
+            {{t "modalAddCloudKey.pnap.clientIdentifier.label"}}{{field-required}}
+          </label>
+          {{input
+          type="text"
+          value=config.clientIdentifier
+          classNames="form-control"
+          id="pnap-client-identifier"
+          placeholder=(t "modalAddCloudKey.pnap.clientIdentifier.placeholder")
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label" for="pnap-client-secret">
+            {{t "modalAddCloudKey.pnap.clientSecret.label"}}{{field-required}}
+          </label>
+          {{input
+          type="password"
+          value=config.clientSecret
+          classNames="form-control"
+          id="pnap-client-secret"
+          placeholder=(t "modalAddCloudKey.pnap.clientSecret.placeholder")
+          }}
+          <p class="text-info">
+            {{t "modalAddCloudKey.pnap.clientSecret.help" htmlSafe=true}}
+          </p>
+        </div>
+      </div>
+
     {{else if (eq cloudCredentialType "vmware")}}
       <div class="row">
         <div class="col span-6">
