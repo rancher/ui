@@ -736,7 +736,7 @@ authPage:
       detail: 在下面添加 OpenLDAP 配置来配置搜索功能。
       help: "<span class='text-italic'>注意: 只有在使用 Shibboleth 授权配置 OpenLDAP 搜索时，才需要本节中的必需字段。</span>"
     advanced:
-      hr: 额外的配置参数
+      hr: 其他配置参数
   root:
     header: 访问控制
   github:
@@ -2199,7 +2199,7 @@ globalDnsPage:
   providersPage:
     additionalOptions:
       title: 附加选项
-      detail: 为 UI 中不可用的提供程序配置添加额外选项。
+      detail: 为 UI 中不可用的提供程序配置添加其他选项。
       button: 添加选项
     title: 全局 DNS 提供商列表
     header:
@@ -2464,11 +2464,11 @@ k8sPage:
       helpText: |
         将配置保存到 <code>~/.kube/config</code>
       downloadText: |
-        然后下载<a href="https://www.cnrancher.com/docs/rancher/v2.x/cn/install-prepare/download/kubernetes/" target="_blank"><code>kubectl</code></a>(如有需要)安装并运行。
+        然后下载 <a href="http://mirror.cnrancher.com/" target="_blank"><code>kubectl</code></a> 安装并运行。
 
 loginPage:
   greeting: "您好！<br>欢迎使用 {appName}"
-  insecure: "{appName} 仅支持 <code>https://</code>连接，您必须:<br><br>使用服务器内置的 TLS 支持<br><br>，或者在容器前面提供自己的 TLS 终止服务。"
+  insecure: "{appName} 仅支持 <code>https://</code>连接，您必须<br><br>使用服务器内置的 TLS 支持<br><br>，或者在容器前面提供自己的 TLS 终止服务。"
   githubMessage: "{appName} 使用 GitHub 管理账号和团队。点击以下按钮以登录，我们将仅使用基本的 GitHub 账号信息。"
   shibbolethMessage: "{appName} 使用 Shibboleth 管理账号。点击以下按钮以登录到设置的 Shibboleth IDP。"
   shibbolethError:
@@ -2734,7 +2734,7 @@ newStack:
   description:
     placeholder: '例如: MyApp Stack'
   files:
-    label: 额外的 Compose 文件
+    label: 其他 Compose 文件
     addActionLabel: 添加文件
     uploadActionLabel: 从磁盘读取
     namePlaceholder: 文件名
@@ -2953,7 +2953,7 @@ ldap:
       tls: "TLS:"
       serviceAccount: "服务账号: "
       searchBase: "搜索起点:"
-      defaultDomain: "缺省域:"
+      defaultDomain: "默认域:"
     users:
       header: 用户
       objectClass: "对象分类:"
@@ -2994,6 +2994,9 @@ ldap:
       labelText: 服务帐户专有名称
     connectionTimeout:
       labelText: 服务连接超时
+    starttls:
+      label: Start TLS
+      helpText: "通过在连接过程中使用 TLS 封装未加密的连接。不能与 TLS 一起使用。"
   customizeSchema:
     header: "2. 自定义架构"
     helpText: "如果活动目录架构(Schema)不是标准格式，可以在此处进行自定义设置。"
@@ -3130,10 +3133,10 @@ cloudProvider:
   name: 云提供商名称
   custom:
     notInList: '如果云提供商没有列出，请使用<b>自定义</b>选项。'
-    helpText: '请通过编辑 YAML 来添加其他<a href="http://rancher.com/docs/rke/v0.1.x/en/config-options/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>'
+    helpText: '请通过编辑 YAML 来添加其他 <a href="http://rancher.com/docs/rke/v0.1.x/en/config-options/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>'
 
   helpText: |
-    详细了解<a href="https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>
+    详细了解 <a href="https://kubernetes.io/blog/2019/04/17/the-future-of-cloud-providers-in-kubernetes/" target="_blank" rel="nofollow noopener noreferrer">云提供商</a>
   warning:
     使用云提供程序而不传递云提供程序配置可能会导致集群无法正确配置，推荐您在创建集群之前添加云提供程序配置，文档中可以找到支持的云提供商所需的先决条件。
   azureCloudConfig:
@@ -5831,7 +5834,7 @@ stacksPage:
 featureFlags:
   warningHeader: '您应该谨慎地启用这些功能，它们应该被视为可能会给您的系统带来问题的 beta 功能。此外，一些功能 (非动态) 需要重新启动 Rancher 服务才能启用。'
   features:
-   istioVirtualServiceUi: "启用此功能将为 Istio 公开额外的 UI 页面"
+   istioVirtualServiceUi: "启用此功能将为 Istio 公开其他 UI 界面"
    unsupportedStorageDrivers: "启用此功能将为持久卷和存储类公开不受支持的存储驱动程序选项。"
   table:
     description: 描述
@@ -5848,7 +5851,7 @@ formBalancerConfig:
   title: 自定义配置文件
   detail: 提供自定义配置文件，这个配置将会被应用到 {appName} 自动生产的配置上方。
   custom: |
-    请参考 <a href="https://cbonte.github.io/haproxy-dconv/1.6/configuration.html" target="_blank" rel="nofollow noopener noreferrer">haproxy 文档</a>了解更多关于该配置文件的参数。当重写<code>backend</code>或包括目标容器 IP 的某行时，请使用<code>$IP</code>来代替 IP 地址，{appName} 将会自动转换成相应的配置。
+    请参考 <a href="https://cbonte.github.io/haproxy-dconv/1.6/configuration.html" target="_blank" rel="nofollow noopener noreferrer">haproxy 文档</a> 了解更多关于该配置文件的参数。当重写<code>backend</code>或包括目标容器 IP 的某行时，请使用<code>$IP</code>来代替 IP 地址，{appName} 将会自动转换成相应的配置。
   config:
     prompt: 自定义 haproxy.cfg 内容
 
@@ -6797,7 +6800,7 @@ formSslTermination:
     placeholder: '例如: example.com'
   addHostLabel: 添加域名
   helpBlock: |
-    "注意: 一些旧的 SSL/TLS 客户的不支持<a href='https://en.wikipedia.org/wiki/Server_Name_Indication' target='_blank'>Server Name Indication(SNI)</a>功能，对于这些客户端将只提供主证书。对于支持 SNI 功能的现代客户端将根据匹配结果从备选证书列表中选择一个合适的证书。"
+    "注意: 一些旧的 SSL/TLS 客户的不支持 <a href='https://en.wikipedia.org/wiki/Server_Name_Indication' target='_blank'>Server Name Indication(SNI)</a>功能，对于这些客户端将只提供主证书。对于支持 SNI 功能的现代客户端将根据匹配结果从备选证书列表中选择一个合适的证书。"
   notNeeded: 没有配置了有效的目标规则的 SSL/TLS 的监听端口。
   removeCertLabel: 删除此证书
   addCertLabel: 添加证书
@@ -7389,8 +7392,8 @@ loggingPage:
     jsonParsing:
       label: 支持 JSON 解析
   advanced:
-    file: 以文件形式编辑
-    cancel: 以表单形式编辑
+    file: 文本编辑
+    cancel: 表单编辑
 
   elasticsearch:
     header: Elasticsearch 配置
@@ -8606,7 +8609,7 @@ nodeDriver:
     apiKey:
       label: API Key
       placeholder: Packet API Key
-    apiKeyHelp: '由 Packet 的<a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a>页面获取。'
+    apiKeyHelp: '由 Packet 的<a href="https://app.packet.net/users/0/api-keys" target="_blank">API Keys</a>页面获取。'
     instanceSection: 实例
     instanceOptionsSection: 实例选项
     loginAction: '下一步: 认证并且选择实例'
@@ -8701,7 +8704,7 @@ nodeDriver:
       unit: MB
     boot2dockerUrl:
       label: 操作系统 ISO 下载地址
-      placeholder: '缺省: 最新的 rancheros-vmware 镜像'
+      placeholder: '默认: 最新的 rancheros-vmware 镜像'
     cloudConfig:
       label: Cloud config
       placeholder: '/etc/kubernetes/vsphere.conf'
@@ -9693,7 +9696,7 @@ action:
   exportConfig: 导出配置
   garbageCollect: 清理
   logs: 查看日志
-  makeDefault: 设置为缺省
+  makeDefault: 设置为默认
   move: 移动
   mute: 静默
   nodeConfig: 下载 Keys
