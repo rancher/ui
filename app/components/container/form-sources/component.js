@@ -44,19 +44,10 @@ export default Component.extend({
     if (!get(this, 'sources') ) {
       set(this, 'sources', [])
     }
-
-    get(this, 'sources').forEach((source) => {
-      if ( source.sourceKey === undefined ) {
-        set(source, 'sourceKey', null);
-      }
-    });
   },
   actions: {
     addSource() {
-      let source = {
-        source:    'secret',
-        sourceKey: null
-      };
+      let source = { source: null };
 
       get(this, 'sources').addObject(source);
     },

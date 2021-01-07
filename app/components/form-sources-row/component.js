@@ -1,8 +1,12 @@
 import Component from '@ember/component';
 import layout from './template';
-import { get, set, computed } from '@ember/object';
+import { get, set, computed, observer } from '@ember/object';
 
 const SOURCES = [
+  {
+    id:       null,
+    label:    'Key/Value Pair'
+  },
   {
     id:       'configMap',
     label:    'Config Map',
@@ -21,6 +25,33 @@ const SOURCES = [
   }
 ];
 
+const RESOURCE_KEY_OPTS = [
+  {
+    id:    'limits.cpu',
+    label: 'limits.cpu'
+  },
+  {
+    id:    'limits.ephemeral-storage',
+    label: 'limits.ephemeral-storage'
+  },
+  {
+    id:    'limits.memory',
+    label: 'limits.memory'
+  },
+  {
+    id:    'requests.cpu',
+    label: 'requests.cpu'
+  },
+  {
+    id:    'requests.ephemeral-storage',
+    label: 'requests.ephemeral-storage'
+  },
+  {
+    id:    'requests.memory',
+    label: 'requests.memory'
+  },
+]
+
 export default Component.extend({
   layout,
   tagName:         'tr',
@@ -29,33 +60,23 @@ export default Component.extend({
   secretOnly:      false,
   specificKeyOnly: false,
 
-  selectedSecret: null,
-  sources:        SOURCES,
+  selectedSecret:  null,
+  sources:         SOURCES,
+  resourceKeyOpts: RESOURCE_KEY_OPTS,
 
-  prefixOrTarget: computed('source.{prefix,source,sourceKey,targetKey}', {
-    get() {
-      if ( get(this, 'source.source') !== 'field' && (get(this, 'source.sourceKey') === null || get(this, 'source.sourceKey') === undefined) ) {
-        return get(this, 'source.prefix');
-      } else {
-        return get(this, 'source.targetKey');
-      }
-    },
-    set(key, value) {
-      if ( get(this, 'source.source') !== 'field' && (get(this, 'source.sourceKey') === null || get(this, 'source.sourceKey') === undefined) ) {
-        return set(this, 'source.prefix', value);
-      } else {
-        return set(this, 'source.targetKey', value);
-      }
-    }
+  onSourceChange: observer('source.source', function() {
+    set(this, 'source.value', null);
+    set(this, 'source.valueFrom', null);
+    set(this, 'source.name', null);
   }),
 
-  prefixOrKeys: computed('selectedConfigMap', 'selectedSecret', 'source.{source,sourceName}', 'specificKeyOnly', function() {
+  prefixOrKeys: computed('selectedConfigMap', 'selectedSecret', 'source.{source,name,valueFrom}', 'specificKeyOnly', function() {
     let prefix = {
       id:    null,
       label: 'All'
     };
     let sourceType = get(this, 'source.source');
-    let sourceName = get(this, 'source.sourceName');
+    let valueFrom = get(this, 'source.valueFrom');
     let out = get(this, 'specificKeyOnly') ? [] : [prefix];
     let selected;
 
@@ -68,7 +89,7 @@ export default Component.extend({
       break;
     }
 
-    if (sourceName) {
+    if (valueFrom) {
       if (selected && get(selected, 'data')) {
         let keys = Object.keys(get(selected, 'data'));
 

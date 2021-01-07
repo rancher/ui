@@ -6861,18 +6861,19 @@ formSources:
   addLabel: Add Source
   type:
     label: Type
-  source:
-    label: Source
-  prefixOrKey:
+  value:
+    label: Value/Value From
+  key:
     label: Key
+  prefixOrKey:
+    label: Variable Name
   prefix:
     label: Prefix or Alias
-  field:
-    placeholder: e.g. spec.nodeName
-  resource:
-    placeholder: e.g. requests.cpu
-  container:
-    placeholder: e.g. my-container
+  fieldPlaceholder: e.g. spec.nodeName
+  containerPlaceholder: e.g. my-container
+  fooPlaceholder: e.g. foo
+  barPlaceholder: e.g. bar
+  labelsKeyPlaceholder: e.g. e.g. metadata.labels['<KEY>']
 
 formSecurity:
   title: Security & Host Config
@@ -8479,12 +8480,10 @@ newContainer:
     placeholder: e.g. My Application
   environment:
     label: Environment Variables
-    from: Inject Values From Another Resource
     detail: Set the environment that will be visible to the container, including injecting values from other resources like Secrets.
     addAction: Add Variable
-    addFrom: Add From Source
     keyLabel: Variable
-    keyPlaceholder: e.g. FOO
+    keyPlaceholder: e.g. foo
     valueLabel: Value
     valuePlaceholder: e.g. bar
   sidekick:
@@ -10567,9 +10566,7 @@ fromSecret:
   prefix:
     label: Alias
   keyLabel: Variable
-  keyPlaceholder: e.g. FOO
   valueLabel: Value
-  valuePlaceholder: e.g. bar
 
 pipelineNotification:
   header: Notification

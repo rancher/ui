@@ -67,8 +67,8 @@ export default Component.extend(NewOrEdit, ChildHook, {
     window.nec = this;
     this._super(...arguments);
 
-    if (get(this, 'launchConfig') && !get(this, 'launchConfig.environmentFrom')) {
-      set(this, 'launchConfig.environmentFrom', []);
+    if (get(this, 'launchConfig') && !get(this, 'launchConfig.environment')) {
+      set(this, 'launchConfig.environment', []);
     }
 
     const service = get(this, 'service');
