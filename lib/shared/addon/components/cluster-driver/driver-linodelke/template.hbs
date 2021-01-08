@@ -1,0 +1,343 @@
+<section class="horizontal-form">
+  {{#accordion-list showExpandAll=false as |al expandFn|}}
+    {{#if (eq step 1)}}
+      {{#accordion-list-item
+        title=accessConfigTitle
+        detail=accessConfigDetail
+        expandAll=expandAll
+        expand=(action expandFn)
+        expandOnInit=true
+      }}
+        <div class="row">
+          <div class="col span-12">
+            <label class="acc-label">
+              {{t "clusterNew.linodelke.accessToken.label"}}
+              {{field-required}}
+            </label>
+            {{#input-or-display
+              editable=true
+              value=cluster.lkeEngineConfig.accessToken
+            }}
+              {{input
+                type="password"
+                name="accessToken"
+                classNames="form-control"
+                placeholder=(t "clusterNew.linodelke.accessToken.placeholder")
+                value=cluster.lkeEngineConfig.accessToken
+              }}
+            {{/input-or-display}}
+          </div>
+        </div>
+      {{/accordion-list-item}}
+      {{top-errors errors=errors}}
+      {{save-cancel
+        btnLabel="clusterNew.linodelke.accessConfig.next"
+        savingLabel="clusterNew.linodelke.accessConfig.loading"
+        save="verifyAccessToken"
+        cancel=close
+      }}
+    {{else if (eq step 2)}}
+      {{#accordion-list-item
+        title=clusterConfigTitle
+        detail=clusterConfigDetail
+        expandAll=expandAll
+        expand=(action expandFn)
+        expandOnInit=true
+      }}
+        {{#if (eq mode "new")}}
+          <div class="row">
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t "clusterNew.linodelke.region.label"}}
+                {{field-required}}
+              </label>
+              {{#input-or-display
+                editable=true
+                value=cluster.lkeEngineConfig.region
+              }}
+                {{new-select
+                  class="form-control"
+                  content=regionChoises
+                  value=cluster.lkeEngineConfig.region
+                }}
+              {{/input-or-display}}
+            </div>
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t "clusterNew.linodelke.kubernetesVersion.label"}}
+                {{field-required}}
+              </label>
+              {{#input-or-display
+                editable=true
+                value=cluster.lkeEngineConfig.kubernetesVersion
+              }}
+                {{new-select
+                  class="form-control"
+                  content=k8sVersionChoises
+                  value=cluster.lkeEngineConfig.kubernetesVersion
+                }}
+              {{/input-or-display}}
+            </div>
+          </div>
+        {{/if}}
+        <div class="row">
+          <div class="header mt-20 clearfix">
+            <div class="pull-left">
+              <h2 class="mb-0">
+                {{t "clusterNew.linodelke.tags.label"}}
+              </h2>
+            </div>
+          </div>
+          <div class="col span-5">
+            <label class="acc-label">
+              {{t "clusterNew.linodelke.tags.newTag"}}
+            </label>
+            {{#input-or-display editable=true value=newTag}}
+              {{input
+                type="text"
+                name="tags"
+                classNames="form-control"
+                placeholder=(t "clusterNew.linodelke.tags.placeholder")
+                value=newTag
+              }}
+            {{/input-or-display}}
+          </div>
+          <div class="col span-1">
+            <button class="btn bg-primary btn-sm mt-30" {{action "addNewTag"}}>
+              <i class="icon icon-plus"></i>
+            </button>
+          </div>
+          <div class="col span-6">
+            <div class="lke-tags">
+              {{#each cluster.lkeEngineConfig.tags as |tag tagIdx|}}
+                <!--     single tag start -->
+                <div class="lke-tag bg-primary">
+                  <span>
+                    {{tag}}
+                  </span>
+                  <button
+                    class="lke-delete bg-error"
+                    {{action "deleteTag" tagIdx}}
+                  >
+                    <i class="icon icon-trash"></i>
+                  </button>
+                </div>
+                <!--     single tag end  -->
+              {{else}}
+                No tags added
+              {{/each}}
+            </div>
+          </div>
+        </div>
+      {{/accordion-list-item}}
+      {{top-errors errors=errors}}
+      {{save-cancel
+        btnLabel="clusterNew.linodelke.clusterConfig.next"
+        savingLabel="clusterNew.linodelke.clusterConfig.loading"
+        save="verifyClusterConfig"
+        cancel=close
+      }}
+    {{else if (eq step 3)}}
+      {{#accordion-list-item
+        title=nodePoolConfigTitle
+        detail=nodePoolConfigDetail
+        expandAll=expandAll
+        expand=(action expandFn)
+        expandOnInit=true
+      }}
+        {{! select node pool }}
+        <div class="row">
+          <div class="col span-4">
+            <label class="acc-label">
+              {{t "clusterNew.linodelke.selectedNodePoolType.label"}}
+            </label>
+            {{#input-or-display editable=true value=selectedNodePoolType}}
+              {{new-select
+                class="form-control"
+                content=nodePoolChoises
+                value=selectedNodePoolType
+              }}
+            {{/input-or-display}}
+          </div>
+          <div class="col span-1">
+            <div class="acc-label pb-15">
+              Monthly:
+            </div>
+            $
+            {{this.selectedNodePoolObj.price.monthly}}
+          </div>
+          <div class="col span-1">
+            <div class="acc-label pb-15">
+              Hourly:
+            </div>
+            $
+            {{this.selectedNodePoolObj.price.hourly}}
+          </div>
+          <div class="col span-1">
+            <div class="acc-label pb-15">
+              RAM:
+            </div>
+            {{this.selectedNodePoolObj.memoryGb}}
+            GB
+          </div>
+          <div class="col span-1">
+            <div class="acc-label pb-15">
+              CPUs:
+            </div>
+            {{this.selectedNodePoolObj.vcpus}}
+          </div>
+          <div class="col span-1">
+            <div class="acc-label pb-15">
+              Storage:
+            </div>
+            {{this.selectedNodePoolObj.diskGb}}
+            GB
+          </div>
+          <div class="col span-1">
+            <div class="acc-label">
+              Count:
+            </div>
+            <Input
+              @type="number"
+              @min="1"
+              @value={{this.selectedNodePoolObj.count}}
+            />
+          </div>
+          <div class="col span-1">
+            <div class="acc-label pb-10">
+              Actions
+            </div>
+            <button
+              class="btn bg-primary icon-btn p-0"
+              {{action "addSelectedNodePool"}}
+            >
+              <span class="darken">
+                <i class="icon icon-plus text-small"></i>
+              </span>
+              <span>
+                Add Node Pool
+              </span>
+            </button>
+          </div>
+        </div>
+        <div class="ember-view">
+          <div class="header mt-20 clearfix">
+            <div class="pull-left">
+              <h2 class="mb-0">
+                {{t "clusterNew.linodelke.nodePools.label"}}
+              </h2>
+            </div>
+          </div>
+          <div class="grid sortable-table ember-view">
+            <table class="fixed grid sortable-table">
+              <thead>
+                <tr class="fixed-header">
+                  <th lass="sortable ember-view" role="columnheader">
+                    <a class="btn bg-transparent">
+                      Label
+                    </a>
+                  </th>
+                  <th lass="sortable ember-view" role="columnheader">
+                    <a class="btn bg-transparent">
+                      Monthly $
+                    </a>
+                  </th>
+                  <th lass="sortable ember-view" role="columnheader">
+                    <a class="btn bg-transparent">
+                      Hourly $
+                    </a>
+                  </th>
+                  <th lass="sortable ember-view" role="columnheader">
+                    <a class="btn bg-transparent">
+                      RAM (GB)
+                    </a>
+                  </th>
+                  <th lass="sortable ember-view" role="columnheader">
+                    <a class="btn bg-transparent">
+                      CPUs
+                    </a>
+                  </th>
+                  <th lass="sortable ember-view" role="columnheader">
+                    <a class="btn bg-transparent">
+                      Storage (GB)
+                    </a>
+                  </th>
+                  <th lass="sortable ember-view" role="columnheader">
+                    <a class="btn bg-transparent">
+                      Count
+                    </a>
+                  </th>
+                  <th lass="sortable ember-view" role="columnheader">
+                    <a class="btn bg-transparent"></a>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each this.selectedNodePoolList as |selectedNodePool|}}
+                  <tr class="main-row ember-view">
+                    <td>
+                      {{selectedNodePool.label}}
+                    </td>
+                    <td>
+                      {{selectedNodePool.price.monthly}}
+                    </td>
+                    <td>
+                      {{selectedNodePool.price.hourly}}
+                    </td>
+                    <td>
+                      {{selectedNodePool.memoryGb}}
+                    </td>
+                    <td>
+                      {{selectedNodePool.vcpus}}
+                    </td>
+                    <td>
+                      {{selectedNodePool.diskGb}}
+                    </td>
+                    <td>
+                      <Input
+                        @type="number"
+                        @min="1"
+                        @value={{selectedNodePool.count}}
+                      />
+                    </td>
+                    <td class="text-center">
+                      <button
+                        class="btn bg-error btn-sm"
+                        {{action "deleteNodePool" selectedNodePool.id}}
+                      >
+                        <i class="icon icon-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                {{else}}
+                  <tr class="main-row ember-view">
+                    <td colspan="8" class="p-10 text-center">
+                      {{t "clusterNew.linodelke.nodePools.empty"}}
+                    </td>
+                  </tr>
+                {{/each}}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {{! show selected node pools end }}
+      {{/accordion-list-item}}
+      {{top-errors errors=errors}}
+      {{#if (eq mode "edit")}}
+        {{save-cancel
+          btnLabel="clusterNew.linodelke.nodePoolConfig.update"
+          savingLabel="clusterNew.linodelke.nodePoolConfig.loading"
+          save="updateCluster"
+          cancel=close
+        }}
+      {{else}}
+        {{save-cancel
+          btnLabel="clusterNew.linodelke.nodePoolConfig.next"
+          savingLabel="clusterNew.linodelke.nodePoolConfig.loading"
+          save="createCluster"
+          cancel=close
+        }}
+      {{/if}}
+    {{/if}}
+  {{/accordion-list}}
+</section>
