@@ -2931,136 +2931,141 @@ notifierPage:
 # Partials
 ##############################
 ldap:
-  providerName:
-    openldap: OpenLDAP
-    ad: Active Directory
-    freeipa: FreeIPA
-    saveLabels:
-      openldap: Authenticate with OpenLDAP
-      ad: Authenticate with Active Directory
-      freeipa: Authenticate with FreeIPA
-  header:
-    disabled:
-      label: "{providerName} is not configured"
-  accessEnabled:
-    header: Authentication
-    subtext: "To change the server configuration, disable access control below and then set it up again."
-    serviceAccountDistinguishedName:
-      labelText: "Service Account Distinguished Name:"
+  accessConfig:
     connectionTimeout:
-      labelText: "Server Connection Timeout:"
-    general:
-      header: General
-      server: "Server:"
-      tls: "TLS:"
-      serviceAccount: "Service Account Username:"
-      searchBase: "Search Base:"
-      defaultDomain: "Default Domain:"
-    users:
-      header: Users
-      objectClass: "Object Class:"
-      login: "Login Attribute:"
-      name: "Username Attribute:"
-      search: "Search Attribute:"
-      searchFilter: "Search Filter:"
-      enabled: "Status Attribute:"
-      disabledBitMask: "Disabled BitMask:"
-    group:
-      header: Group
-      objectClass: "Object Class:"
-      name: "Name Attribute:"
-      search: "Search Attribute:"
-      searchFilter: "Search Filter:"
+      labelText: Server Connection Timeout
+    defaultDomain:
+      helpText: This domain will be used if a user logs in without specifying one.
+      labelText: Default Login Domain
+      placeholder: e.g. mycompany
+    groupSearchBase:
+      helpText: 'If set, groups will be searched for only under this base instead of under the User Search Base.'
+      labelText: Group Search Base
+      placeholder: 'e.g. ou=Groups,dc=mycompany,dc=com'
+    header: '1. Configure an {providerName} server'
+    port:
+      labelText: Port
+      radioGroup:
+        label: Encryption
+        none: None
+        starttls: STARTTLS
+        tls: TLS
+    serviceAccountDistinguishedName:
+      labelText: Service Account Distinguished Name
+    starttls:
+      helpText: Upgrades non-encrypted connections by wrapping with TLS during the connection process. Can not be used in conjunction with TLS.
+      label: Start TLS
+    subtext1: 'Enter the address, port, and protocol to connect to your {providerName} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS.'
+    subtext2: '{appName} needs a service account that has (read-only) access to all of the domains that will be able to login, so that we can determine what groups a user is a member of when they make a request with an API key.'
+    userSearchBase:
+      labelText: User Search Base
+      placeholder: 'e.g. ou=users,dc=mycompany,dc=com'
+  accessEnabled:
+    connectionTimeout:
+      labelText: 'Server Connection Timeout:'
     disable:
       confirmDisable:
         pre: Disable access control
-  accessConfig:
-    header: "1. Configure an {providerName} server"
-    subtext1: "Enter the address, port, and protocol to connect to your {providerName} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS."
-    subtext2: "{appName} needs a service account that has (read-only) access to all of the domains that will be able to login, so that we can determine what groups a user is a member of when they make a request with an API key."
-    port:
-      labelText: Port
-      checkbox: TLS
-    groupSearchBase:
-      labelText: Group Search Base
-      placeholder: "e.g. ou=Groups,dc=mycompany,dc=com"
-      helpText: "If set, groups will be searched for only under this base instead of under the User Search Base."
-    userSearchBase:
-      labelText: User Search Base
-      placeholder: "e.g. ou=users,dc=mycompany,dc=com"
-    defaultDomain:
-      helpText: "This domain will be used if a user logs in without specifying one."
-      labelText: Default Login Domain
-      placeholder: "e.g. mycompany"
+    general:
+      defaultDomain: 'Default Domain:'
+      header: General
+      searchBase: 'Search Base:'
+      server: 'Server:'
+      serviceAccount: 'Service Account Username:'
+      tls: 'TLS:'
+      encryption: Encryption
+    group:
+      header: Group
+      name: 'Name Attribute:'
+      objectClass: 'Object Class:'
+      search: 'Search Attribute:'
+      searchFilter: 'Search Filter:'
+    header: Authentication
     serviceAccountDistinguishedName:
-      labelText: Service Account Distinguished Name
-    connectionTimeout:
-      labelText: Server Connection Timeout
-    starttls:
-      label: Start TLS
-      helpText: "Upgrades non-encrypted connections by wrapping with TLS during the connection process. Can not be used in conjunction with TLS."
-  customizeSchema:
-    header: "2. Customize Schema"
-    helpText: "If your schema does not match the standard ActiveDirectory format, you can customize it here."
-    cert:
-      labelText: CA Certificate
-      helpText: If needed, enter a CA certificate
-      placeholder: "Paste in the certificate, starting with -----BEGIN CERTIFICATE-----"
+      labelText: 'Service Account Distinguished Name:'
+    subtext: 'To change the server configuration, disable access control below and then set it up again.'
     users:
+      disabledBitMask: 'Disabled BitMask:'
+      enabled: 'Status Attribute:'
       header: Users
+      login: 'Login Attribute:'
+      name: 'Username Attribute:'
+      objectClass: 'Object Class:'
+      search: 'Search Attribute:'
+      searchFilter: 'Search Filter:'
+  customizeSchema:
+    cert:
+      helpText: 'If needed, enter a CA certificate'
+      labelText: CA Certificate
+      placeholder: 'Paste in the certificate, starting with -----BEGIN CERTIFICATE-----'
+    groups:
+      groupDN:
+        labelText: Group DN Attribute
+        placeholder: distinguishedName
+      groupMemberMapping:
+        labelText: Group Member Mapping Attribute
+      groupMemberUser:
+        labelText: Group Member User Attribute
+        placeholder: uid
+      header: Groups
+      name:
+        labelText: Name Attribute
+      nestedGroup:
+        disabled:
+          labelText: Search only direct group memberships
+        enabled:
+          helpText: Nested search may be slower in large directories
+          labelText: Search direct and nested group memberships
+        title: Nested Group Membership
       objectClass:
         labelText: Object Class
+      search:
+        labelText: Search Attribute
+      searchFilter:
+        labelText: Search Filter
+    header: 2. Customize Schema
+    helpText: 'If your schema does not match the standard ActiveDirectory format, you can customize it here.'
+    users:
+      disabledBitMask:
+        labelText: Disabled Status Bitmask
+      enabledAttribute:
+        labelText: User Enabled Attribute
+      header: Users
       login:
         labelText: Login Attribute
       name:
         labelText: Username Attribute
-      search:
-        labelText: Search Attribute
-      searchFilter:
-        labelText: Search Filter
-      searchBase:
-        labelText: User Search Base
-      enabledAttribute:
-        labelText: User Enabled Attribute
-      disabledBitMask:
-        labelText: Disabled Status Bitmask
-      userMemberAttribute:
-        labelText: User Member Attribute
-    groups:
-      header: Groups
       objectClass:
         labelText: Object Class
-      name:
-        labelText: Name Attribute
       search:
         labelText: Search Attribute
+      searchBase:
+        labelText: User Search Base
       searchFilter:
         labelText: Search Filter
-      groupMemberUser:
-        labelText: Group Member User Attribute
-        placeholder: uid
-      groupMemberMapping:
-        labelText: Group Member Mapping Attribute
-      groupDN:
-        labelText: Group DN Attribute
-        placeholder: distinguishedName
-      nestedGroup:
-        title: Nested Group Membership
-        enabled:
-          labelText: Search direct and nested group memberships
-          helpText: Nested search may be slower in large directories
-        disabled:
-          labelText: Search only direct group memberships
+      userMemberAttribute:
+        labelText: User Member Attribute
+  header:
+    disabled:
+      label: '{providerName} is not configured'
+  providerName:
+    ad: Active Directory
+    freeipa: FreeIPA
+    openldap: OpenLDAP
+    saveLabels:
+      ad: Authenticate with Active Directory
+      freeipa: Authenticate with FreeIPA
+      openldap: Authenticate with OpenLDAP
   testAuth:
-    header: "3. Test and enable authentication"
-    helpText: "Check that everything is configured correctly by testing authentication with your {providerName} account:"
-    userName:
-      labelText: Your Username
+    authenticate:
+      post: Testing...
+      pre: Authenticate
+    header: 3. Test and enable authentication
+    helpText: 'Check that everything is configured correctly by testing authentication with your {providerName} account:'
     password:
       labelText: Your Password
-    authenticate:
-      pre: Authenticate
-      post: "Testing..."
+    userName:
+      labelText: Your Username
 
 servicePartial:
   noContainers:
