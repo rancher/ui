@@ -59,29 +59,17 @@
                 {{t "ldap.accessEnabled.general.server"}}
               </b>
               <span class="text-muted">
-                {{authConfig.servers.firstObject}}
-                :
-                {{authConfig.port}}
+                {{authConfig.servers.firstObject}} : {{authConfig.port}}
               </span>
             </div>
             <div>
               <b>
-                {{t "ldap.accessEnabled.general.tls"}}
+                {{t "ldap.accessEnabled.general.encryption"}}
               </b>
               <span class="text-muted">
-                {{if authConfig.tls "Yes" "No"}}
+                {{upper-case encryption}}
               </span>
             </div>
-            {{#if (eq authConfig.name "openldap")}}
-              <div>
-                <b>
-                  {{t "ldap.accessConfig.starttls.label"}}
-                </b>
-                <span class="text-muted">
-                  {{if authConfig.starttls "Yes" "No"}}
-                </span>
-              </div>
-            {{/if}}
             {{#if authConfig.serviceAccountUsername}}
               <div>
                 <b>
@@ -267,7 +255,7 @@
               {{input value=configServers classNames="form-control"}}
             </div>
           </div>
-          <div class="col span-6 mb-0">
+          <div class="col span-2 mb-0">
             <label class="acc-label pb-5">
               {{t "ldap.accessConfig.port.labelText"}}
             </label>
@@ -278,23 +266,36 @@
                 max=65535
                 classNames="form-control"
               }}
-              <span class="input-group-addon bg-default">
-                <label>
-                  {{t "ldap.accessConfig.port.checkbox"}}
-                  {{input
-                    type="checkbox"
-                    checked=authConfig.tls
-                    disabled=(and
-                      (eq authConfig.name "openldap") authConfig.starttls
-                    )
-                  }}
-                </label>
-              </span>
+            </div>
+          </div>
+          <div class="col span-4 mb-0">
+            <label class="acc-label pb-5">
+              {{t "ldap.accessConfig.port.radioGroup.label"}}
+            </label>
+            <div class="radio">
+              <label>
+                {{radio-button selection=encryption value="none"}}
+                {{t "ldap.accessConfig.port.radioGroup.none"}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                {{radio-button selection=encryption value="tls"}}
+                {{t "ldap.accessConfig.port.radioGroup.tls"}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                {{radio-button selection=encryption value="starttls"}}
+                {{t "ldap.accessConfig.port.radioGroup.starttls"}}
+              </label>
+              <p class="help-block">
+                {{t "ldap.accessConfig.starttls.helpText"}}
+              </p>
             </div>
           </div>
         </div>
-        {{#if authConfig.tls}}
-          <hr />
+        {{#if (or authConfig.tls authConfig.starttls)}}
           <div class="row pt-10">
             <div class="col span-12 input-group mt-0">
               {{input-text-file
@@ -311,6 +312,7 @@
               </p>
             </div>
           </div>
+          <hr/>
         {{/if}}
         <div class="row">
           <div class="col span-6 mb-0">
@@ -331,23 +333,6 @@
               </span>
             </div>
           </div>
-          {{#if (eq authConfig.name "openldap")}}
-            <div class="col span-6 mb-0 pt-25">
-              <div class="radio">
-                <label class="acc-label">
-                  {{input
-                    type="checkbox"
-                    checked=authConfig.starttls
-                    disabled=authConfig.tls
-                  }}
-                  {{t "ldap.accessConfig.starttls.label"}}
-                </label>
-              </div>
-              <span class="help-block">
-                {{t "ldap.accessConfig.starttls.helpText"}}
-              </span>
-            </div>
-          {{/if}}
         </div>
         <hr class="mt-30 mb-30" />
         <p class="text-info mb-0">
