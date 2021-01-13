@@ -176,7 +176,9 @@
               {{t "clusterNew.linodelke.nodePoolConfig.ram"}}:
             </div>
             {{this.selectedNodePoolObj.memoryGb}}
-            {{t "generic.gigabyte"}}
+            {{#if this.selectedNodePoolObj.memoryGb}}
+              {{t "generic.gigabyte"}}
+            {{/if}}
           </div>
           <div class="col span-1">
             <div class="acc-label pb-15">
@@ -189,7 +191,9 @@
               {{t "clusterNew.linodelke.nodePoolConfig.storage"}}:
             </div>
             {{this.selectedNodePoolObj.diskGb}}
-            {{t "generic.gigabyte"}}
+            {{#if this.selectedNodePoolObj.diskGb}}
+              {{t "generic.gigabyte"}}
+            {{/if}}
           </div>
           <div class="col span-1">
             <div class="acc-label">
@@ -226,97 +230,63 @@
               </h2>
             </div>
           </div>
-          <div class="grid sortable-table ember-view">
-            <table class="fixed grid sortable-table">
-              <thead>
-                <tr class="fixed-header">
-                  <th lass="sortable ember-view" role="columnheader">
-                    <a class="btn bg-transparent">
-                      {{t "clusterNew.linodelke.nodePoolConfig.label"}}
-                    </a>
-                  </th>
-                  <th lass="sortable ember-view" role="columnheader">
-                    <a class="btn bg-transparent">
-                      {{t "clusterNew.linodelke.nodePoolConfig.monthly"}}
-                    </a>
-                  </th>
-                  <th lass="sortable ember-view" role="columnheader">
-                    <a class="btn bg-transparent">
-                      {{t "clusterNew.linodelke.nodePoolConfig.hourly"}}
-                    </a>
-                  </th>
-                  <th lass="sortable ember-view" role="columnheader">
-                    <a class="btn bg-transparent">
-                      {{t "clusterNew.linodelke.nodePoolConfig.ram"}} ({{t "generic.gigabyte"}})
-                    </a>
-                  </th>
-                  <th lass="sortable ember-view" role="columnheader">
-                    <a class="btn bg-transparent">
-                      {{t "clusterNew.linodelke.nodePoolConfig.cpus"}}
-                    </a>
-                  </th>
-                  <th lass="sortable ember-view" role="columnheader">
-                    <a class="btn bg-transparent">
-                      {{t "clusterNew.linodelke.nodePoolConfig.storage"}} ({{t "generic.gigabyte"}})
-                    </a>
-                  </th>
-                  <th lass="sortable ember-view" role="columnheader">
-                    <a class="btn bg-transparent">
-                      {{t "clusterNew.linodelke.nodePoolConfig.count"}}
-                    </a>
-                  </th>
-                  <th lass="sortable ember-view" role="columnheader">
-                    <a class="btn bg-transparent"></a>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {{#each this.selectedNodePoolList as |selectedNodePool|}}
-                  <tr class="main-row ember-view">
-                    <td>
-                      {{selectedNodePool.label}}
-                    </td>
-                    <td>
-                      {{format-number selectedNodePool.price.monthly style='currency' currency='USD' allowEmpty=true}}
-                    </td>
-                    <td>
-                      {{format-number selectedNodePool.price.hourly style='currency' currency='USD' allowEmpty=true}}
-                    </td>
-                    <td>
-                      {{selectedNodePool.memoryGb}}
-                    </td>
-                    <td>
-                      {{selectedNodePool.vcpus}}
-                    </td>
-                    <td>
-                      {{selectedNodePool.diskGb}}
-                    </td>
-                    <td>
-                      <Input
-                        @type="number"
-                        @min="1"
-                        @value={{selectedNodePool.count}}
-                      />
-                    </td>
-                    <td class="text-center">
-                      <button
-                        class="btn bg-error btn-sm"
-                        {{action "deleteNodePool" selectedNodePool.id}}
-                      >
-                        <i class="icon icon-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                {{else}}
-                  <tr class="main-row ember-view">
-                    <td colspan="8" class="p-10 text-center">
-                      {{t "clusterNew.linodelke.nodePools.empty"}}
-                    </td>
-                  </tr>
-                {{/each}}
-              </tbody>
-            </table>
-          </div>
+          {{#sortable-table
+            classNames="grid fixed mb-0 sortable-table"
+            sortBy=sortBy
+            bulkActions=false
+            rowActions=true
+            paging=false
+            search=false
+            stickyHeader=false
+            descending=descending
+            headers=nodePoolHeaders
+            body=selectedNodePoolList
+            as |sortable kind member dt|
+          }}
+            {{#if (eq kind "row")}}
+              <tr>
+                <td data-title="{{dt.label}}">
+                  {{member.label}}
+                </td>
+                <td data-title="{{dt.priceMonthly}}">
+                  {{format-number member.price.monthly style='currency' currency='USD' allowEmpty=true}}
+                </td>
+                <td data-title="{{dt.priceHourly}}">
+                  {{format-number member.price.hourly style='currency' currency='USD' allowEmpty=true}}
+                </td>
+                <td data-title="{{dt.ram}}">
+                  {{member.memoryGb}} {{t "generic.gigabyte"}}
+                </td>
+                <td data-title="{{dt.cpus}}">
+                  {{member.vcpus}}
+                </td>
+                <td data-title="{{dt.storage}}">
+                  {{member.diskGb}} {{t "generic.gigabyte"}}
+                </td>
+                <td>
+                  <Input
+                    @type="number"
+                    @min="1"
+                    @value={{member.count}}
+                  />
+                </td>
+                <td class="text-center pt-20 pb-20 pl-20 pr-20">
+                  <button
+                    class="btn bg-error btn-sm"
+                    {{action "deleteNodePool" member.id}}
+                  >
+                    <i class="icon icon-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            {{else if (eq kind "norows")}}
+              <tr>
+                <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+                  {{t "clusterNew.linodelke.nodePools.empty"}}
+                </td>
+              </tr>
+            {{/if}}
+          {{/sortable-table}}
         </div>
         {{! show selected node pools end }}
       {{/accordion-list-item}}
