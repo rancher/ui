@@ -8,11 +8,11 @@
 </label>
 
 {{#if ary.length}}
-  {{#each ary as |row|}}
+  {{#each ary as |row index|}}
     <div class="input-group mb-10">
-      <span data-title="{{t valueLabel}}">
+      <span class="value-container" data-title="{{t valueLabel}}">
         {{#if hasBlock}}
-          {{yield this row}}
+          {{yield this row index}}
         {{else if editing}}
           {{input-paste
             pasted=(action "pastedValues")

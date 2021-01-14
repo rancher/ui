@@ -7498,34 +7498,61 @@ inputTextFile:
   tooltip: Read from a file
 
 nodeGroupRow:
-  name:
-    label: Node Group Name
+  additional:
+    button: Add Instance Type
+    label: Additional Spot Instance Types
+  desired:
+    label: Desired ASG Size
+  gpu:
+    help: This option will be ignored because the selected launch template includes a custom AMI.
+    label: GPU Enabled Instance
+  groups:
+    label: Group Details
+  images:
+    label: Image ID
   instance:
     label: Instance Type
-  gpu:
-    label: GPU Enabled Instance
+    prompt: Select Instance Type
+  labels:
+    addLabel: Add Label
+    label: Labels
+  launchTemplates:
+    label: Launch Template
+    managed: Rancher Managed Launch Template
+    prompt: Select Launch Template
   max:
     label: Maximum ASG Size
   min:
     label: Minimum ASG Size
-  desired:
-    label: Desired ASG Size
+  name:
+    label: Node Group Name
   nodeVolumeSize:
     label: Node Volume Size
     placeholder: e.g. 20
-  ssh:
-    label: SSH Key
-  labels:
-    label: Labels
-    addLabel: Add Label
-  tags:
-    label: Tags
-    addLabel: Add Tag
+  nodes:
+    label: Node Details
   remove:
     label: Remove Node Group
+  requestSpot:
+    help: 'Amazon recommends using spot instances in EKS with multiple instance types. Since the selected template can have at most one instance type, your nodes may be interrupted more often.'
+    label: Request Spot Instances
+  resourceTags:
+    label: Instance Resource Tags
+  ssh:
+    label: SSH Key
+  tags:
+    addLabel: Add Tag
+    label: Tags
+  templateVersions:
+    label: Template Version
+    prompt: Select Version
+  userData:
+    help: 'Pass user data to <a href=''https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html#launch-template-user-data'' target=''_blank''>Amazon using cloud-init</a> to automate common operations.'
+    label: User Data
+    placeholder: Paste in the script
   version:
     label: Kubernetes Version
-    upgrade: Upgrade Node Group Version from { from } to { version }
+    upgrade: 'Upgrade Node Group Version from { from } to { version }'
     warning: A new cluster version has been selected. Once completed you may come back and upgrade the node group version.
 
 
@@ -8043,7 +8070,7 @@ modalAddCloudKey:
     clientSecret:
       label: Client Secret
       placeholder: Your Client Secret
-      help: 
+      help:
         From <a href="https://bmc.phoenixnap.com/applications/" target="_blank" rel="nofollow noreferrer noopener">phoenixNAP BMC Portal</a> Application Credentials
 
   vmwarevsphere:
@@ -9356,7 +9383,7 @@ nodeDriver:
       detail: Select details of the instances that will be created by this template.
     location:
       label: Location
-      placeholder: 'Please select server location.'   
+      placeholder: 'Please select server location.'
     os:
       label: OS
       placeholder: 'Please select Operating System.'
