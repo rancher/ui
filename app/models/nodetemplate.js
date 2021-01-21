@@ -130,11 +130,8 @@ export default Resource.extend({
   },
 
   registerDynamicComputedProperty(propertyName, watchedKeys, key) {
-    set(this, 'dynamicComputedKeyName', key);
-    defineProperty(this, propertyName, computed(...watchedKeys, 'dynamicComputedKeyName', this.getDisplayVar));
+    defineProperty(this, propertyName, computed(...watchedKeys, function() {
+      return this._displayVar(key);
+    }));
   },
-
-  getDisplayVar() {
-    return this._displayVar(get(this, 'dynamicComputedKeyName'));
-  }
 });
