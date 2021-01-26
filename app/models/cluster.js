@@ -19,16 +19,18 @@ const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
 const SCHEDULE_CLUSTER_SCAN_QUESTION_KEY = 'scheduledClusterScan.enabled';
 
 export const DEFAULT_NODE_GROUP_CONFIG = {
-  desiredSize:   2,
-  diskSize:      20,
-  ec2SshKey:     '',
-  gpu:           false,
-  instanceType:  't3.medium',
-  maxSize:       2,
-  minSize:       2,
-  nodegroupName: '',
-  subnets:       [],
-  type:          'nodeGroup',
+  desiredSize:          2,
+  diskSize:             20,
+  ec2SshKey:            '',
+  gpu:                  false,
+  instanceType:         't3.medium',
+  maxSize:              2,
+  minSize:              2,
+  nodegroupName:        '',
+  requestSpotInstances: false,
+  resourceTags:         {},
+  subnets:              [],
+  type:                 'nodeGroup',
 };
 
 export const DEFAULT_EKS_CONFIG = {
@@ -415,7 +417,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const kubernetesVersion = get(this, 'eksStatus.upstreamSpec.kubernetesVersion');
     const nodeGroupVersions = (get(this, 'eksStatus.upstreamSpec.nodeGroups') || []).getEach('version');
 
-    return nodeGroupVersions.any((ngv) => Semver.lt(Semver.coerce(ngv), Semver.coerce(kubernetesVersion)));
+    return nodeGroupVersions.any((ngv) => {
+      if (isEmpty(ngv)) {
+        return false;
+      } else {
+        return Semver.lt(Semver.coerce(ngv), Semver.coerce(kubernetesVersion));
+      }
+    });
   }),
 
 
