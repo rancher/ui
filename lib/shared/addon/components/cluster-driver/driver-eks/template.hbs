@@ -1,5 +1,5 @@
 <AccordionList @showExpandAll="false" as |al expandFn|>
-  {{#if (and (eq step 5) clusterIsPending)}}
+  {{#if (and (eq step 5) importedClusterIsPending)}}
     <ImportCommand
       @cluster={{primaryResource}}
       @showClusterAdminWarning={{false}}
@@ -446,7 +446,7 @@
         </div>
       </AccordionListItem>
     {{/if}}
-    {{#if (eq step 4)}}
+    {{#if (gte step 4)}}
       <AccordionListItem
         @title={{t "clusterNew.amazoneks.logging.title"}}
         @detail={{t "clusterNew.amazoneks.logging.detail"}}
