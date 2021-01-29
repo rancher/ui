@@ -119,9 +119,14 @@
             @optionValuePath="name"
             @optionLabelPath="name"
             @optionGroupPath="group"
-            @disabled={{model.launchTemplate.version}}
+            @disabled={{or model.launchTemplate.version model.requestSpotInstances}}
           />
         {{/input-or-display}}
+        {{#if model.requestSpotInstances}}
+          <p class="help-block">
+            {{t "nodeGroupRow.instance.help"}}
+          </p>
+        {{/if}}
       </div>
       <div class="col span-4">
         <label class="acc-label">
