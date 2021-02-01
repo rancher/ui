@@ -512,7 +512,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         enabled:   this.canSaveAsTemplate,
       },
       {
-        label:     this.eksDisplayEksImport ? 'action.importHost' : 'action.addHost',
+        label:     this.eksDisplayEksImport ? 'action.importHost' : 'action.registration',
         icon:      'icon icon-host',
         action:    'showCommandModal',
         enabled:   this.canShowAddHost,
