@@ -44,7 +44,6 @@ export const DEFAULT_NODE_GROUP_CONFIG = {
   requestSpotInstances: false,
   resourceTags:         {},
   spotInstanceTypes:    [],
-  subnets:              [],
   tags:                 {},
   type:                 'nodeGroup',
   userData:             DEFAULT_USER_DATA,
