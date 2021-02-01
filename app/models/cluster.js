@@ -18,19 +18,36 @@ const TRUE = 'True';
 const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
 const SCHEDULE_CLUSTER_SCAN_QUESTION_KEY = 'scheduledClusterScan.enabled';
 
+export const DEFAULT_USER_DATA =
+`MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
+
+--==MYBOUNDARY==
+Content-Type: text/x-shellscript; charset="us-ascii"
+
+#!/bin/bash
+echo "Running custom user data script"
+
+--==MYBOUNDARY==--\\`;
+
 export const DEFAULT_NODE_GROUP_CONFIG = {
   desiredSize:          2,
   diskSize:             20,
   ec2SshKey:            '',
   gpu:                  false,
+  imageId:              null,
   instanceType:         't3.medium',
+  labels:               {},
   maxSize:              2,
   minSize:              2,
   nodegroupName:        '',
   requestSpotInstances: false,
   resourceTags:         {},
+  spotInstanceTypes:    [],
   subnets:              [],
+  tags:                 {},
   type:                 'nodeGroup',
+  userData:             DEFAULT_USER_DATA,
 };
 
 export const DEFAULT_EKS_CONFIG = {
