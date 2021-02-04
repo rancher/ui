@@ -200,25 +200,6 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     return out;
   }),
 
-  parseNodeName(nameIn) {
-    const suffix = nameIn.split('.').slice(1).join('.');
-    const nodesWithSameSuffix = (this.nodes || []).filter((node) => (node.nodeName || '').endsWith(suffix));
-
-    if (nodesWithSameSuffix.length === 1) {
-      return this.nodeName;
-    } else if (nodesWithSameSuffix.length > 1) {
-      const neu = nameIn.replace(/\..*$/, '');
-
-      if ( neu.match(/^\d+$/) ) {
-        return this.nodeName;
-      } else {
-        return neu;
-      }
-    }
-
-    return nameIn;
-  },
-
   engineIcon: computed('info.os.dockerVersion', function() {
     if ( (get(this, 'info.os.dockerVersion') || '').startsWith(CONTAINERD) ) {
       return 'icon-container-d';
@@ -278,6 +259,25 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
       .split(/\s*,\s*/)
       .filter((x) => x.length > 0 && x !== C.LABEL.SYSTEM_TYPE);
   }),
+  parseNodeName(nameIn) {
+    const suffix = nameIn.split('.').slice(1).join('.');
+    const nodesWithSameSuffix = (this.nodes || []).filter((node) => (node.nodeName || '').endsWith(suffix));
+
+    if (nodesWithSameSuffix.length === 1) {
+      return this.nodeName;
+    } else if (nodesWithSameSuffix.length > 1) {
+      const neu = nameIn.replace(/\..*$/, '');
+
+      if ( neu.match(/^\d+$/) ) {
+        return this.nodeName;
+      } else {
+        return neu;
+      }
+    }
+
+    return nameIn;
+  },
+
   actions: {
     activate() {
       return this.doAction('activate');
