@@ -317,7 +317,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
       return firstPool.driver || get(firstPool, 'nodeTemplate.driver') || null;
     default:
-      if (get(this, 'driver')) {
+      if (get(this, 'driver') && get(this, 'configName')) {
         return get(this, 'driver');
       } else {
         return 'import';
