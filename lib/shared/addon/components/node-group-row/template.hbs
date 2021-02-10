@@ -36,7 +36,7 @@
             <div>
               {{#if isRancherLaunchTemplate}}
                 {{t "nodeGroupRow.launchTemplates.managed"}}
-              {{else}}
+              {{else if isUserLaunchTemplate}}
                 {{searchable-select
                   classNames="form-control"
                   value=selectedLaunchTemplate
@@ -47,6 +47,10 @@
                   localizedPrompt=true
                   readOnly=(and (not isRancherLaunchTemplate) editing)
                 }}
+              {{else}}
+                <div>
+                  {{t "generic.na"}}
+                </div>
               {{/if}}
             </div>
           {{else if selectedLaunchTemplate}}
@@ -63,13 +67,33 @@
           <label class="acc-label">
             {{t "nodeGroupRow.templateVersions.label"}}
           </label>
-          <NewSelect
-            class="form-control"
-            @disabled={{not model.launchTemplate.id}}
-            @value={{mut selectedLaunchTemplateVersion}}
-            @content={{selectedLaunchTemplateVersions}}
-            @optionValuePath="label"
-          />
+          {{#if creating}}
+            <NewSelect
+              class="form-control"
+              @disabled={{not model.launchTemplate.id}}
+              @value={{mut selectedLaunchTemplateVersion}}
+              @content={{selectedLaunchTemplateVersions}}
+              @optionValuePath="label"
+            />
+          {{else}}
+            <div>
+              {{#if isRancherLaunchTemplate}}
+                {{t "nodeGroupRow.launchTemplates.managedVersion"}}
+              {{else if isUserLaunchTemplate}}
+                <NewSelect
+                  class="form-control"
+                  @disabled={{not model.launchTemplate.id}}
+                  @value={{mut selectedLaunchTemplateVersion}}
+                  @content={{selectedLaunchTemplateVersions}}
+                  @optionValuePath="label"
+                />
+              {{else}}
+                <div>
+                  {{t "generic.na"}}
+                </div>
+              {{/if}}
+            </div>
+          {{/if}}
         </div>
         <div class="col span-2 offset-2">
           <label class="acc-label">
@@ -300,8 +324,14 @@
           value=model.userData
           minHeight=100
           disabled=(or
-            (and isRancherLaunchTemplate editing)
-            (and model.launchTemplate.version model.launchTemplate.id)
+            (or
+              (and isUserLaunchTemplate (not creating))
+              (and
+                creating
+                (and model.launchTemplate.version model.launchTemplate.id)
+              )
+            )
+            (and (not creating) isNoLaunchTemplate)
           )
         }}
         <p class="help-block">
