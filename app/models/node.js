@@ -98,16 +98,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     name = get(this, 'nodeName');
     if ( name ) {
       if ( name.match(/[a-z]/i) ) {
-        name = name.replace(/\..*$/, '');
-
-        const nodesWithSamePrefix = (this.nodes || []).filter((node) => (node.nodeName || '').startsWith(`${ name }.`));
-
-        if ( nodesWithSamePrefix.length > 1 ) {
-          name = this.nodeName.slice(this.nodeName.lastIndexOf('.') + 1, this.nodeName.length)
-          if ( name.match(/^\d+$/) ) {
-            name = this.nodeName;
-          }
-        }
+        name = this.parseNodeName(name);
       }
 
       return name;
@@ -268,6 +259,25 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
       .split(/\s*,\s*/)
       .filter((x) => x.length > 0 && x !== C.LABEL.SYSTEM_TYPE);
   }),
+  parseNodeName(nameIn) {
+    const suffix = nameIn.split('.').slice(1).join('.');
+    const nodesWithSameSuffix = (this.nodes || []).filter((node) => (node.nodeName || '').endsWith(suffix));
+
+    if (nodesWithSameSuffix.length === 1) {
+      return this.nodeName;
+    } else if (nodesWithSameSuffix.length > 1) {
+      const neu = nameIn.replace(/\..*$/, '');
+
+      if ( neu.match(/^\d+$/) ) {
+        return this.nodeName;
+      } else {
+        return neu;
+      }
+    }
+
+    return nameIn;
+  },
+
   actions: {
     activate() {
       return this.doAction('activate');
