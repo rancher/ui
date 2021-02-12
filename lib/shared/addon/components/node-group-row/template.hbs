@@ -288,12 +288,13 @@
       <div class="row">
         <div class="col span-6 offset-6 request-spot-instance-types">
           <label class="acc-label pb-5">
-            {{t "nodeGroupRow.additional.label"}} <FieldRequired/>
+            {{t "nodeGroupRow.additional.label"}}
+            <FieldRequired />
           </label>
           <FormValueArray
             @defaultValue={{"t3.medium"}}
             @initialValues={{model.spotInstanceTypes}}
-            @editing={{or (and isRancherLaunchTemplate editing) creating}}
+            @editing={{creating}}
             @changed={{fn (mut model.spotInstanceTypes)}}
             @addActionLabel="nodeGroupRow.additional.button"
             @autoAddIfEmpty={{true}}
@@ -301,14 +302,16 @@
             @focusEl={{false}}
             @valueLabelEnabled={{false}} as |fva fvaRow|
           >
-            <NewSelect
-              class="form-control"
-              @value={{fvaRow.value}}
-              @content={{instanceTypes}}
-              @optionValuePath="name"
-              @optionLabelPath="name"
-              @optionGroupPath="group"
-            />
+            {{#input-or-display editable=creating value=fvaRow.value}}
+              <NewSelect
+                class="form-control"
+                @value={{fvaRow.value}}
+                @content={{instanceTypes}}
+                @optionValuePath="name"
+                @optionLabelPath="name"
+                @optionGroupPath="group"
+              />
+            {{/input-or-display}}
           </FormValueArray>
         </div>
       </div>
