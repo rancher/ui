@@ -132,27 +132,28 @@
         <label class="acc-label">
           {{t "nodeGroupRow.instance.label"}}
         </label>
-        {{#input-or-display
-          editable=(or creating (and isRancherLaunchTemplate editing))
-          value=model.instanceType
-        }}
-          <NewSelect
-            class="form-control"
-            @value={{mut model.instanceType}}
-            @content={{instanceTypes}}
-            @optionValuePath="name"
-            @optionLabelPath="name"
-            @optionGroupPath="group"
-            @disabled={{or
-              model.launchTemplate.version
-              model.requestSpotInstances
-            }}
-          />
-        {{/input-or-display}}
         {{#if model.requestSpotInstances}}
-          <p class="help-block">
+          <p class="mt-5">
             {{t "nodeGroupRow.instance.help"}}
           </p>
+        {{else}}
+          {{#input-or-display
+            editable=(or creating (and isRancherLaunchTemplate editing))
+            value=model.instanceType
+          }}
+            <NewSelect
+              class="form-control"
+              @value={{mut model.instanceType}}
+              @content={{instanceTypes}}
+              @optionValuePath="name"
+              @optionLabelPath="name"
+              @optionGroupPath="group"
+              @disabled={{or
+                model.launchTemplate.version
+                model.requestSpotInstances
+              }}
+            />
+          {{/input-or-display}}
         {{/if}}
       </div>
       <div class="col span-4">
@@ -287,14 +288,15 @@
       <div class="row">
         <div class="col span-6 offset-6 request-spot-instance-types">
           <label class="acc-label pb-5">
-            {{t "nodeGroupRow.additional.label"}}
+            {{t "nodeGroupRow.additional.label"}} <FieldRequired/>
           </label>
           <FormValueArray
-            @defaultValue={{model.instanceType}}
+            @defaultValue={{"t3.medium"}}
             @initialValues={{model.spotInstanceTypes}}
             @editing={{or (and isRancherLaunchTemplate editing) creating}}
             @changed={{fn (mut model.spotInstanceTypes)}}
             @addActionLabel="nodeGroupRow.additional.button"
+            @autoAddIfEmpty={{true}}
             @showProTip={{false}}
             @focusEl={{false}}
             @valueLabelEnabled={{false}} as |fva fvaRow|
