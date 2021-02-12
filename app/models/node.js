@@ -69,6 +69,13 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
         bulkable: true
       },
       {
+        label:    'action.scaledown',
+        icon:     'icon icon-arrow-circle-up icon-rotate-180',
+        action:   'scaledown',
+        enabled:  !!a.scaledown,
+        bulkable: true
+      },
+      {
         label:    'action.stopDrain',
         icon:     'icon icon-stop',
         action:   'stopDrain',
@@ -293,6 +300,10 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
 
     uncordon() {
       return this.doAction('uncordon');
+    },
+
+    scaledown() {
+      return this.doAction('scaledown');
     },
 
     drain() {
