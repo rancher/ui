@@ -576,6 +576,8 @@
               @versions={{versionChoices}}
               @launchTemplates={{allLaunchTemplates}}
               @authCreds={{fn (action "getAuthCreds")}}
+              @clusterSaving={{saving}}
+              @clusterSaved={{saved}}
             />
           {{else}}
             <div class="p-20">
@@ -599,6 +601,8 @@
         </div>
       </AccordionListItem>
       <SaveCancel
+        @saving={{mut saving}}
+        @saved={{mut saved}}
         @editing={{eq mode "edit"}}
         @save={{action "driverSave"}}
         @cancel={{close}}
