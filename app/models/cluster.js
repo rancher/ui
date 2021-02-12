@@ -219,35 +219,39 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!actionLinks.saveAsTemplate;
   }),
 
-  eksDisplayEksImport: computed('clusterProvider', 'eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', function() {
-    const {
-      clusterProvider, eksConfig = {}, eksStatus = {}
-    } = this;
-    const publicAccess = get(eksStatus, 'upstreamSpec.publicAccess') || get(eksConfig, 'publicAccess') || true;
-    const privateAccess = get(eksStatus, 'upstreamSpec.privateAccess') || get(eksConfig, 'privateAccess') || false;
+  hasPublicAccess: computed('eksConfig.publicAccess', 'eksStatus.upstreamSpec.publicAccess', 'property', function() {
+    return this?.eksStatus?.upstreamSpec?.publicAccess || this?.eksConfig?.publicAccess || true;
+  }),
 
-    if (clusterProvider === 'amazoneksv2' && !publicAccess && privateAccess) {
+  hasPrivateAccess: computed('eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', 'property', function() {
+    return this?.eksStatus?.upstreamSpec?.privateAccess || this?.eksConfig?.privateAccess || false;
+  }),
+
+  eksDisplayEksImport: computed('hasPrivateAccess', 'hasPublicAccess', function() {
+    const { clusterProvider } = this;
+
+    if (clusterProvider !== 'amazoneksv2') {
+      return false;
+    }
+
+    if (!this.hasPublicAccess && this.hasPrivateAccess) {
       return true;
     }
 
     return false;
   }),
 
-  canShowAddHost: computed('nodes.[]', 'clusterProvider', 'eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', function() {
-    const {
-      clusterProvider, eksConfig = {}, eksStatus = {}
-    } = this;
-    const publicAccess = get(eksStatus, 'upstreamSpec.publicAccess') || get(eksConfig, 'publicAccess') || true;
-    const privateAccess = get(eksStatus, 'upstreamSpec.privateAccess') || get(eksConfig, 'privateAccess') || false;
-    const ignored = ['custom', 'import', 'amazoneksv2'];
+  canShowAddHost: computed('clusterProvider', 'hasPrivateAccess', 'hasPublicAccess', 'nodes', function() {
+    const { clusterProvider } = this;
+    const compatibleProviders = ['custom', 'import', 'amazoneksv2'];
     const nodes = get(this, 'nodes');
 
-    if (!ignored.includes(clusterProvider)) {
+    if (!compatibleProviders.includes(clusterProvider)) {
       return false;
     }
 
     // private access requires the ability to run the import command on the cluster
-    if (clusterProvider === 'amazoneksv2' && !!publicAccess && privateAccess) {
+    if (clusterProvider === 'amazoneksv2' && !!this.hasPublicAccess && this.hasPrivateAccess) {
       return true;
     } else if (clusterProvider !== 'amazoneksv2' && isEmpty(nodes)) {
       return true;
