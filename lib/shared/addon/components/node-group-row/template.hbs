@@ -139,11 +139,11 @@
         {{else}}
           {{#input-or-display
             editable=(or creating (and isRancherLaunchTemplate editing))
-            value=model.instanceType
+            value=instanceType
           }}
             <NewSelect
               class="form-control"
-              @value={{mut model.instanceType}}
+              @value={{mut instanceType}}
               @content={{instanceTypes}}
               @optionValuePath="name"
               @optionLabelPath="name"
@@ -162,11 +162,11 @@
         </label>
         {{#input-or-display
           editable=(or creating (and isRancherLaunchTemplate editing))
-          value=model.imageId
+          value=imageId
         }}
           <Input
             @type="text"
-            @value={{mut model.imageId}}
+            @value={{mut imageId}}
             @classNames="form-control"
             @disabled={{model.launchTemplate.version}}
           />
@@ -181,12 +181,12 @@
         </label>
         {{#input-or-display
           editable=(or creating (and isRancherLaunchTemplate editing))
-          value=(concat model.diskSize (t "generic.gigabyte"))
+          value=(concat diskSize (t "generic.gigabyte"))
         }}
           <div class="input-group">
             <InputInteger
               @min={{0}}
-              @value={{mut model.diskSize}}
+              @value={{mut diskSize}}
               @classNames="form-control"
               @placeholder={{t "nodeGroupRow.nodeVolumeSize.placeholder"}}
               @disabled={{model.launchTemplate.version}}
@@ -205,12 +205,12 @@
         </label>
         {{#input-or-display
           editable=(or creating (and isRancherLaunchTemplate editing))
-          value=model.ec2SshKey
+          value=ec2SshKey
         }}
           {{#if keyPairs}}
             {{searchable-select
               classNames="form-control"
-              value=model.ec2SshKey
+              value=ec2SshKey
               content=keyPairs
               optionValuePath="KeyName"
               optionLabelPath="KeyName"
@@ -220,7 +220,7 @@
           {{else}}
             <Input
               @type="text"
-              @value={{mut model.ec2SshKey}}
+              @value={{mut ec2SshKey}}
               @classNames="form-control"
               @disabled={{model.launchTemplate.version}}
             />
@@ -326,7 +326,7 @@
           canChangeName=false
           classNames="box"
           placeholder="nodeGroupRow.userData.placeholder"
-          value=model.userData
+          value=userData
           minHeight=150
           disabled=(or
             (or
@@ -349,7 +349,7 @@
         </label>
         {{#if refreshResourceInstanceTags}}
           <FormKeyValue
-            @initialMap={{model.resourceTags}}
+            @initialMap={{resourceTags}}
             @changed={{action "setResourceTags"}}
             @addActionLabel="clusterNew.amazoneks.tags.addActionLabel"
             @editing={{not model.launchTemplate.version}}
