@@ -37,16 +37,7 @@
               {{#if isRancherLaunchTemplate}}
                 {{t "nodeGroupRow.launchTemplates.managed"}}
               {{else if isUserLaunchTemplate}}
-                {{searchable-select
-                  classNames="form-control"
-                  value=selectedLaunchTemplate
-                  content=filteredLaunchTemplates
-                  optionValuePath="LaunchTemplateId"
-                  optionLabelPath="LaunchTemplateName"
-                  prompt="nodeGroupRow.launchTemplates.label"
-                  localizedPrompt=true
-                  readOnly=(and (not isRancherLaunchTemplate) editing)
-                }}
+                {{selectedLaunchTemplate.LaunchTemplateName}}
               {{else}}
                 <div>
                   {{t "generic.na"}}
@@ -303,7 +294,11 @@
             @removeButtonClass="btn bg-primary btn-remove"
             @valueLabelEnabled={{false}} as |fva fvaRow|
           >
-            {{#input-or-display editable=creating value=fvaRow.value class="input-or-display"}}
+            {{#input-or-display
+              editable=creating
+              value=fvaRow.value
+              class="input-or-display"
+            }}
               <NewSelect
                 @value={{fvaRow.value}}
                 @content={{instanceTypes}}
@@ -352,7 +347,10 @@
             @initialMap={{resourceTags}}
             @changed={{action "setResourceTags"}}
             @addActionLabel="clusterNew.amazoneks.tags.addActionLabel"
-            @editing={{not model.launchTemplate.version}}
+            @editing={{or
+                (and creating isNoLaunchTemplate)
+                (and editing isRancherLaunchTemplate)
+            }}
           />
         {{/if}}
       </div>
