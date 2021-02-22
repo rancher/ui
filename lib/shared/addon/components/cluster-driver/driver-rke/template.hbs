@@ -1253,6 +1253,21 @@
               {{drain-node selection=upgradeStrategy.nodeDrainInput clusterTemplateCreate=clusterTemplateCreate editable=notView applyClusterTemplate=applyClusterTemplate clusterTemplateRevision=model.clusterTemplateRevision.clusterConfig questions=model.clusterTemplateRevision.questions addOverride=(action "addOverride")}}
             </div>
           {{/if}}
+          {{#if (not clusterTemplateCreate)}}
+            <div class="row mt-10">
+              <label class="acc-label">
+                {{t "clusterNew.rke.agentEnvVars.label"}}
+              </label>
+              <FormAgentEnvVar 
+                @editable={{notView}} 
+                @value={{cluster.agentEnvVars}} 
+                @showCustomConfigMaps={{showCustomConfigMapsAndSecrets}} 
+                @showCustomSecrets={{showCustomConfigMapsAndSecrets}} 
+                @configMaps={{model.configMaps}} 
+                @secrets={{model.secrets}} 
+              />
+            </div>
+          {{/if}}
         {{/accordion-list-item}}
 
         {{#accordion-list-item
