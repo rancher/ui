@@ -633,7 +633,7 @@ authPage:
       clientSecret:
         labelText: Secret
   bitbucketserver:
-    warning: Bitbucket server webhooks need to do SSL verification, please ensure that {appName} serverâ€™s certificate is trusted by the bitbucket server. More info can be found <a href="https://rancher.com/docs/rancher/v2.x/en/tools/pipelines/configurations/#1-configuring-version-control-providers" target="_blank" rel="nofollow noopener noreferrer">here</a>.
+    warning: Bitbucket server webhooks need to do SSL verification, please ensure that {appName} server’s certificate is trusted by the bitbucket server. More info can be found <a href="https://rancher.com/docs/rancher/v2.x/en/tools/pipelines/configurations/#1-configuring-version-control-providers" target="_blank" rel="nofollow noopener noreferrer">here</a>.
     copy: Click the icon to copy it
     target:
       header: '1. Choose the Bitbucket type you want to use'
@@ -1494,7 +1494,7 @@ clusterDashboard:
       diskPressure: 'Alert: Node {node} has disk pressure.'
       memoryPressure: 'Alert: Node {node} has memory pressure.'
       outOfDisk: 'Alert: Node {node} is out of disk.'
-  clusterHasNoNodes: Add Host
+  clusterHasNoNodes: Get Registration Command
   importHost: Import Host
   clusterNotReady: Graph information from Cluster currently not available
   controllerManager: Controller Manager
@@ -2952,136 +2952,141 @@ notifierPage:
 # Partials
 ##############################
 ldap:
-  providerName:
-    openldap: OpenLDAP
-    ad: Active Directory
-    freeipa: FreeIPA
-    saveLabels:
-      openldap: Authenticate with OpenLDAP
-      ad: Authenticate with Active Directory
-      freeipa: Authenticate with FreeIPA
-  header:
-    disabled:
-      label: "{providerName} is not configured"
-  accessEnabled:
-    header: Authentication
-    subtext: "To change the server configuration, disable access control below and then set it up again."
-    serviceAccountDistinguishedName:
-      labelText: "Service Account Distinguished Name:"
+  accessConfig:
     connectionTimeout:
-      labelText: "Server Connection Timeout:"
-    general:
-      header: General
-      server: "Server:"
-      tls: "TLS:"
-      serviceAccount: "Service Account Username:"
-      searchBase: "Search Base:"
-      defaultDomain: "Default Domain:"
-    users:
-      header: Users
-      objectClass: "Object Class:"
-      login: "Login Attribute:"
-      name: "Username Attribute:"
-      search: "Search Attribute:"
-      searchFilter: "Search Filter:"
-      enabled: "Status Attribute:"
-      disabledBitMask: "Disabled BitMask:"
-    group:
-      header: Group
-      objectClass: "Object Class:"
-      name: "Name Attribute:"
-      search: "Search Attribute:"
-      searchFilter: "Search Filter:"
+      labelText: Server Connection Timeout
+    defaultDomain:
+      helpText: This domain will be used if a user logs in without specifying one.
+      labelText: Default Login Domain
+      placeholder: e.g. mycompany
+    groupSearchBase:
+      helpText: 'If set, groups will be searched for only under this base instead of under the User Search Base.'
+      labelText: Group Search Base
+      placeholder: 'e.g. ou=Groups,dc=mycompany,dc=com'
+    header: '1. Configure an {providerName} server'
+    port:
+      labelText: Port
+      radioGroup:
+        label: Encryption
+        none: None
+        starttls: STARTTLS
+        tls: TLS
+    serviceAccountDistinguishedName:
+      labelText: Service Account Distinguished Name
+    starttls:
+      helpText: Upgrades non-encrypted connections by wrapping with TLS during the connection process. Can not be used in conjunction with TLS.
+      label: Start TLS
+    subtext1: 'Enter the address, port, and protocol to connect to your {providerName} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS.'
+    subtext2: '{appName} needs a service account that has (read-only) access to all of the domains that will be able to login, so that we can determine what groups a user is a member of when they make a request with an API key.'
+    userSearchBase:
+      labelText: User Search Base
+      placeholder: 'e.g. ou=users,dc=mycompany,dc=com'
+  accessEnabled:
+    connectionTimeout:
+      labelText: 'Server Connection Timeout:'
     disable:
       confirmDisable:
         pre: Disable access control
-  accessConfig:
-    header: "1. Configure an {providerName} server"
-    subtext1: "Enter the address, port, and protocol to connect to your {providerName} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS."
-    subtext2: "{appName} needs a service account that has (read-only) access to all of the domains that will be able to login, so that we can determine what groups a user is a member of when they make a request with an API key."
-    port:
-      labelText: Port
-      checkbox: TLS
-    groupSearchBase:
-      labelText: Group Search Base
-      placeholder: "e.g. ou=Groups,dc=mycompany,dc=com"
-      helpText: "If set, groups will be searched for only under this base instead of under the User Search Base."
-    userSearchBase:
-      labelText: User Search Base
-      placeholder: "e.g. ou=users,dc=mycompany,dc=com"
-    defaultDomain:
-      helpText: "This domain will be used if a user logs in without specifying one."
-      labelText: Default Login Domain
-      placeholder: "e.g. mycompany"
+    general:
+      defaultDomain: 'Default Domain:'
+      header: General
+      searchBase: 'Search Base:'
+      server: 'Server:'
+      serviceAccount: 'Service Account Username:'
+      tls: 'TLS:'
+      encryption: Encryption
+    group:
+      header: Group
+      name: 'Name Attribute:'
+      objectClass: 'Object Class:'
+      search: 'Search Attribute:'
+      searchFilter: 'Search Filter:'
+    header: Authentication
     serviceAccountDistinguishedName:
-      labelText: Service Account Distinguished Name
-    connectionTimeout:
-      labelText: Server Connection Timeout
-    starttls:
-      label: Start TLS
-      helpText: "Upgrades non-encrypted connections by wrapping with TLS during the connection process. Can not be used in conjunction with TLS."
-  customizeSchema:
-    header: "2. Customize Schema"
-    helpText: "If your schema does not match the standard ActiveDirectory format, you can customize it here."
-    cert:
-      labelText: CA Certificate
-      helpText: If needed, enter a CA certificate
-      placeholder: "Paste in the certificate, starting with -----BEGIN CERTIFICATE-----"
+      labelText: 'Service Account Distinguished Name:'
+    subtext: 'To change the server configuration, disable access control below and then set it up again.'
     users:
+      disabledBitMask: 'Disabled BitMask:'
+      enabled: 'Status Attribute:'
       header: Users
+      login: 'Login Attribute:'
+      name: 'Username Attribute:'
+      objectClass: 'Object Class:'
+      search: 'Search Attribute:'
+      searchFilter: 'Search Filter:'
+  customizeSchema:
+    cert:
+      helpText: 'If needed, enter a CA certificate'
+      labelText: CA Certificate
+      placeholder: 'Paste in the certificate, starting with -----BEGIN CERTIFICATE-----'
+    groups:
+      groupDN:
+        labelText: Group DN Attribute
+        placeholder: distinguishedName
+      groupMemberMapping:
+        labelText: Group Member Mapping Attribute
+      groupMemberUser:
+        labelText: Group Member User Attribute
+        placeholder: uid
+      header: Groups
+      name:
+        labelText: Name Attribute
+      nestedGroup:
+        disabled:
+          labelText: Search only direct group memberships
+        enabled:
+          helpText: Nested search may be slower in large directories
+          labelText: Search direct and nested group memberships
+        title: Nested Group Membership
       objectClass:
         labelText: Object Class
+      search:
+        labelText: Search Attribute
+      searchFilter:
+        labelText: Search Filter
+    header: 2. Customize Schema
+    helpText: 'If your schema does not match the standard ActiveDirectory format, you can customize it here.'
+    users:
+      disabledBitMask:
+        labelText: Disabled Status Bitmask
+      enabledAttribute:
+        labelText: User Enabled Attribute
+      header: Users
       login:
         labelText: Login Attribute
       name:
         labelText: Username Attribute
-      search:
-        labelText: Search Attribute
-      searchFilter:
-        labelText: Search Filter
-      searchBase:
-        labelText: User Search Base
-      enabledAttribute:
-        labelText: User Enabled Attribute
-      disabledBitMask:
-        labelText: Disabled Status Bitmask
-      userMemberAttribute:
-        labelText: User Member Attribute
-    groups:
-      header: Groups
       objectClass:
         labelText: Object Class
-      name:
-        labelText: Name Attribute
       search:
         labelText: Search Attribute
+      searchBase:
+        labelText: User Search Base
       searchFilter:
         labelText: Search Filter
-      groupMemberUser:
-        labelText: Group Member User Attribute
-        placeholder: uid
-      groupMemberMapping:
-        labelText: Group Member Mapping Attribute
-      groupDN:
-        labelText: Group DN Attribute
-        placeholder: distinguishedName
-      nestedGroup:
-        title: Nested Group Membership
-        enabled:
-          labelText: Search direct and nested group memberships
-          helpText: Nested search may be slower in large directories
-        disabled:
-          labelText: Search only direct group memberships
+      userMemberAttribute:
+        labelText: User Member Attribute
+  header:
+    disabled:
+      label: '{providerName} is not configured'
+  providerName:
+    ad: Active Directory
+    freeipa: FreeIPA
+    openldap: OpenLDAP
+    saveLabels:
+      ad: Authenticate with Active Directory
+      freeipa: Authenticate with FreeIPA
+      openldap: Authenticate with OpenLDAP
   testAuth:
-    header: "3. Test and enable authentication"
-    helpText: "Check that everything is configured correctly by testing authentication with your {providerName} account:"
-    userName:
-      labelText: Your Username
+    authenticate:
+      post: Testing...
+      pre: Authenticate
+    header: 3. Test and enable authentication
+    helpText: 'Check that everything is configured correctly by testing authentication with your {providerName} account:'
     password:
       labelText: Your Password
-    authenticate:
-      pre: Authenticate
-      post: "Testing..."
+    userName:
+      labelText: Your Username
 
 servicePartial:
   noContainers:
@@ -3147,14 +3152,16 @@ billingInfo:
       actions: Actions
 
 cloudProvider:
-  title: In-Tree Cloud Provider
-  amazon: Amazon
-  azure: Azure
+  title: Cloud Provider
+  amazon: Amazon (In-Tree)
+  azure: Azure (In-Tree)
   external:
-    label: External
+    label: External (Out-of-tree)
     helpText: 'Please edit the YAML to specify the required addon for cloud controller manager.'
+    vsphereHelpText: 'Out-of-tree cloud provider for vsphere is available through the <a href="{csi}" target="_blank" rel="nofollow noopener noreferrer">vsphere-csi</a> and <a href="{cpi}" target="_blank" rel="nofollow noopener noreferrer">vsphere-cpi</a> helm charts.'
   name: Cloud Provider Name
   custom:
+    label: Custom (In-Tree)
     notInList: 'If your cloud provider is not listed, please use the <b>Custom</b> option.'
     helpText: 'Please edit the YAML to add in any other <a href="http://rancher.com/docs/rke/v0.1.x/en/config-options/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">cloud providers</a>'
 
@@ -4092,10 +4099,11 @@ clusterNew:
     access:
       next: "Next: Authenticate & Configure Cluster"
       loading: Loading values from Oracle Cloud Infrastructure
-      title: Choose the region and API Key that will be used to authenticate and configure Oracle Container Engine.
+      title: OCI Cloud Credentials
       detail: Choose the region and API Key that will be used to authenticate and configure Oracle Container Engine.
     region:
       label: Region
+      help: The geographic region in which the cluster will run
     tenancyOCID:
       label: Tenancy OCID
       placeholder: The OCID of the tenancy in which to create resources
@@ -4104,9 +4112,10 @@ clusterNew:
       label: Compartment OCID
       placeholder: The OCID of the compartment in which to create the resources
       required: Compartment OCID is required
+      help: The compartment in which the cluster will reside
     userOcid:
       label: User OCID
-      placeholder: The OCID of a user who has access to the specified tenancy/compartment
+      placeholder: The OCID of a user who has access to the specified tenancy
       required: Tenancy OCID is required
     userFingerprint:
       label: User fingerprint
@@ -4119,11 +4128,11 @@ clusterNew:
       required: User Private API Key is required
     secretKeyPassphrase:
       label: User Private Key Passphrase
-      placeholder: The passphrase (if any) that protects private key file the specified OCI user
+      placeholder: The passphrase (if any) that protects private key file of the specified OCI user
       provided: Provided
     cluster:
       title: Cluster Configuration
-      detail: Choose the Kubernetes version and the number of nodes per availability-domain for the cluster.
+      detail: Choose the Kubernetes version, the number of nodes, and the target compartment for the cluster.
       next: "Next: Configure Virtual Cloud Network"
       loading: Loading VCNs from Oracle Cloud Infrastructure
     vcn:
@@ -4180,8 +4189,11 @@ clusterNew:
       label: Operating System
     storageType:
       label: Default Persistent Volume Disk Type
-    storageSize:
-      label: Default Persistent Volume Disk Size
+    bootVolumeSize:
+      label: Optionally override default boot volume size for nodes
+      error: Custom boot volume disk size should be greater than the default (46.6 GB)
+    flexShapeConfig:
+      label: Specify the number of OCPUs for the flex shape
       placeholder: e.g. 10
       error: Default Persistent Volume Disk Size should be greater than 0
     localDisk:
@@ -4191,11 +4203,68 @@ clusterNew:
       quick: Quick Create
       custom: Custom Create
       existing: Existing
+  linodelke:
+    label: Linode Kubernetes Engine
+    shortLabel: Linode LKE
+    accessConfig:
+      next: Proceed to Cluster Configuration
+      loading: Verifying your access token
+      title: Linode Account Access Configuration
+      description: Provide us with the access token that will be used to access your Linode account
+    accessToken:
+      label: Access Token
+      placeholder: The access token to use for accessing your Linode account
+      required: Access Token is required
+      invalid: Access Token is invalid
+    clusterConfig:
+      next: Proceed to Node pool selection
+      loading: Saving your cluster configuration
+      title: Cluster Configuration
+      description: Configure your cluster
+    region:
+      label: Region
+      placeholder: Select a region for your cluster
+      required: Region is required
+    kubernetesVersion:
+      label: Kubernetes Version
+      placeholder: Select a kubernetes version for your cluster
+      required: Kubernetes Version is required
+    tags:
+      newTag: New tag
+      label: Tags
+      placeholder: Add a new tag
+      noTags: No tags added
+    nodePoolConfig:
+      next: Create
+      loading: Creating your cluster
+      title: Node Pool Configuration
+      description: Configure your desired node pools
+      update: Update
+      monthly: Monthly
+      hourly: Hourly
+      ram: RAM
+      cpus: CPUs
+      storage: Storage
+      actions: Actions
+      addNodePool: Add Node Pool
+      label: Label
+      count: Count
+    selectedNodePoolType:
+      label: Select type
+      placeholder: Select a node pool type
+    nodePools:
+      label: Selected Node Pools
+      required: Please add at least one node pool
+      empty: No Node Pools
+      countError: All node counts must be greater than 0.
+      placeholder: Please select a node type to add
   otccce:
     shortLabel: Open Telekom Cloud CCE
   rancherd:
     shortLabel: RancherD
   rke:
+    secretsEncryption:
+      label: Secrets Encryption
     upgradeStrategy:
       maximumWorkersDown:
         view:
@@ -4313,19 +4382,20 @@ clusterNew:
       title: Node Taints
       detail: Optional taints to be applied to the node
     nodes:
-      title: Node Pools
-      detail: Configure the machines that will make up the cluster
       add: Add Node Pool
       addTemplate: Add Node Template
-      templatePrompt: "Choose a Template..."
-      myTemplatesGroup: "My Templates"
-      othersTemplatesGroup: "Other's Templates"
-      hostnamePrefix: Name Prefix
       count: Count
-      template: Template
       deleteNotReadyAfterSecs: Auto Replace
       deleteNotReadyAfterSecsTooltip: "If greater than 0, nodes that are unreachable for this long will be automatically deleted and replaced."
+      drainBeforeDelete: Drain Before Delete
+      detail: Configure the machines that will make up the cluster
+      hostnamePrefix: Name Prefix
+      myTemplatesGroup: "My Templates"
+      othersTemplatesGroup: "Other's Templates"
       taints: Taints
+      template: Template
+      templatePrompt: "Choose a Template..."
+      title: Node Pools
     detected: |
       {count, plural,
         =1 {# new node has registered}
@@ -4337,7 +4407,7 @@ clusterNew:
       text: Editing node options will update the command you will run on your existing machines
     command:
       instructions: 'Run this command on one or more existing machines already running a supported version of Docker.'
-      winInstructions: 'Run this command in <code>CMD</code> on one or more existing machines already running a supported version of Docker and Windows Server version <code class="code-version">{version}</code> and above.'
+      winInstructions: 'Run this command in <code>CMD</code> on one or more existing machines already running <a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/windows-clusters/" target="_blank" rel="nofollow noopener noreferrer">supported versions of Docker and Windows Server</a>.'
     auth:
       label: Auth Provider
       x509: x509
@@ -5767,7 +5837,9 @@ dangerZone:
     'ingress-ip-domain': 'Wildcard DNS domain to use for automatically generated Ingress hostnames. <ingress-name>.<namespace-name>.<ip address of ingress controller> will be added to the domain.'
     'server-url': 'Default {appName} install url. Must be HTTPS. All nodes in your cluster must be able to reach this.'
     'system-default-registry': 'Private registry to be used for all system Docker images.'
-    'ui-index': 'HTML index location for the UI.'
+    'ui-index': 'HTML index location for the Cluster Manager UI.'
+    'ui-dashboard-index': 'HTML index location for the Cluster Explorer UI.'
+    'ui-offline-preferred': "Controls whether UI assets are served locally by the server container or from the remote URL defined in the ui-index and ui-dashboard-index settings."
     'ui-pl': 'Private-Label company name.'
     'ui-issues': "Use a url address to send new 'File an Issue' reports instead of sending users to the Github issues page."
     'telemetry-opt': 'Telemetry reporting opt-in.'
@@ -6263,6 +6335,9 @@ formEngineOpts:
     placeholder: e.g. http://get.docker.com/
     recommended: Recommended
     latest: Latest
+    none:
+      label: None
+      help: "Warning: When selecting a value of 'None', Rancher will not install docker under the assumption that the docker is already installed."
   engineStorageDriver:
     label: Storage Driver
     placeholder: e.g. overlay
@@ -7242,7 +7317,7 @@ formAllowedHostPathsPodSecurityPolicy:
 
 formFsGroupPodSecurityPolicy:
   title: FS Group Policy
-  detail: Allocating an FSGroup that owns the podâ€™s volumes
+  detail: Allocating an FSGroup that owns the pod’s volumes
   rule:
     mustRunAs: MustRunAs - Requires at least one range to be specified. Uses the minimum value of the first range as the default. Validates against the first ID in the first range.
     runAsAny: RunAsAny - No default provided. Allows any fsGroup ID to be specified.
@@ -7343,7 +7418,7 @@ formBasicPodSecurityPolicy:
     disable: "No"
   hostIPC:
     label: Host IPC
-    enable: "Yes: The use of hostâ€™s IPC namespace"
+    enable: "Yes: The use of host’s IPC namespace"
     disable: "No"
   hostNetwork:
     label: Host Network
@@ -7351,7 +7426,7 @@ formBasicPodSecurityPolicy:
     disable: "No"
   hostPID:
     label: Host PID
-    enable: "Yes: The use of hostâ€™s PID namespace"
+    enable: "Yes: The use of host’s PID namespace"
     disable: "No"
   privileged:
     label: Privileged
@@ -7434,34 +7509,64 @@ inputTextFile:
   tooltip: Read from a file
 
 nodeGroupRow:
-  name:
-    label: Node Group Name
+  additional:
+    button: Add Type
+    label: Spot Instance Types
+  desired:
+    label: Desired ASG Size
+  gpu:
+    help: This option will be ignored because the selected launch template includes a custom AMI.
+    label: GPU Enabled Instance
+  groups:
+    label: Group Details
+  images:
+    label: AMI ID
+    help: Custom AMIs is an advanced use case. We highly recommended that you read and fully understand the requirements for creating custom EKS AMIs <a href="https://aws.amazon.com/premiumsupport/knowledge-center/eks-custom-linux-ami/" target="_blank">here</a>.
   instance:
     label: Instance Type
-  gpu:
-    label: GPU Enabled Instance
+    prompt: Select Instance Type
+    help: "Warning: Instance Type will not be sent when requesting spot instances. You must include Spot Instance types instead."
+  labels:
+    addLabel: Add Label
+    label: Labels
+  launchTemplates:
+    label: Launch Template
+    managed: Rancher Managed Launch Template
+    managedVersion: Managed Version
+    prompt: Select Launch Template
   max:
     label: Maximum ASG Size
   min:
     label: Minimum ASG Size
-  desired:
-    label: Desired ASG Size
+  name:
+    label: Node Group Name
   nodeVolumeSize:
     label: Node Volume Size
     placeholder: e.g. 20
-  ssh:
-    label: SSH Key
-  labels:
-    label: Labels
-    addLabel: Add Label
-  tags:
-    label: Tags
-    addLabel: Add Tag
+  nodes:
+    label: Node Details
   remove:
     label: Remove Node Group
+  requestSpot:
+    help: 'Amazon recommends using spot instances in EKS with multiple instance types. Since the selected template can have at most one instance type, your nodes may be interrupted more often.'
+    label: Request Spot Instances
+  resourceTags:
+    label: Instance Resource Tags
+  ssh:
+    label: SSH Key
+  tags:
+    addLabel: Add Tag
+    label: Tags
+  templateVersions:
+    label: Template Version
+    prompt: Select Version
+  userData:
+    help: 'Pass user data to <a href=''https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html#launch-template-user-data'' target=''_blank''>Amazon using cloud-init</a> to automate common operations.'
+    label: User Data
+    placeholder: Paste in the script
   version:
     label: Kubernetes Version
-    upgrade: Upgrade Node Group Version from { from } to { version }
+    upgrade: 'Upgrade Node Group Version from { from } to { version }'
     warning: A new cluster version has been selected. Once completed you may come back and upgrade the node group version.
 
 
@@ -7654,7 +7759,7 @@ loggingPage:
     sourceHelpText: 'A default field that identifies the source of an event, that is, where the event originated. <a href="https://docs.splunk.com/Splexicon:Source" target="_blank">Detail</a>'
     index: Index
     indexPlaceholder: e.g. main
-    indexHelpText: 'The index you specify here must be within the list of this tokenâ€™s allowed indexes. <a href="https://docs.splunk.com/Splexicon:Index" target="_blank">Detail</a>'
+    indexHelpText: 'The index you specify here must be within the list of this token’s allowed indexes. <a href="https://docs.splunk.com/Splexicon:Index" target="_blank">Detail</a>'
     endpoint:
       placeholder: 'e.g. https://192.168.1.10:8088'
   kafka:
@@ -7872,7 +7977,7 @@ modalAddPayment:
       label: Select your currency
     cc:
       label: Credit Card Number
-      placeholder: 'â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢'
+      placeholder: '•••• •••• •••• ••••'
     default:
       label: Default Card
     name:
@@ -7880,10 +7985,10 @@ modalAddPayment:
       placeholder: 'John Smith'
     exp:
       label: Expiration
-      placeholder: 'â€¢â€¢/â€¢â€¢'
+      placeholder: '••/••'
     cvc:
       label: CVC
-      placeholder: 'â€¢â€¢â€¢'
+      placeholder: '•••'
     address:
       addressLine1:
         label: Address
@@ -7904,8 +8009,8 @@ modalAddPayment:
         label: Country
         placeholder: United States
   currencies:
-    yuan: "Chinese Yuan (Â¥)"
-    euro: "Euro (â‚¬)"
+    yuan: "Chinese Yuan (¥)"
+    euro: "Euro (€)"
     dollar: "US Dollar ($)"
 
 modalAddCloudKey:
@@ -7956,7 +8061,7 @@ modalAddCloudKey:
   oci:
     userOcid:
       label: User OCID
-      placeholder: The OCID of a user
+      placeholder: The OCID of a user who has access to the specified tenancy
     userFingerprint:
       label: User fingerprint
       placeholder: The fingerprint corresponding to the specified user's private API Key
@@ -7965,19 +8070,15 @@ modalAddCloudKey:
       placeholder: The private API key contents for the specified OCI user, in PEM format
     secretKeyPassphrase:
       label: User Private Key Passphrase
-      placeholder: The passphrase (if any) that protects private key file the specified OCI user
+      placeholder: The passphrase (if any) that protects private key file of the specified OCI user
     tenancyOcid:
       label: Tenancy OCID
-      placeholder: The OCID of the tenancy in the user account exists
-  pnap:
-    clientIdentifier:
-      label: Client ID
-      placeholder: Your Client ID
-    clientSecret:
-      label: Client Secret
-      placeholder: Your Client Secret
-      help: 
-        From <a href="https://bmc.phoenixnap.com/applications/" target="_blank" rel="nofollow noreferrer noopener">phoenixNAP BMC Portal</a> Application Credentials
+      placeholder: The OCID of the tenancy containing the user
+    authRegion:
+      label: Region
+      help: Any region your tenancy is subscribed to authenticate your credentials.
+
+
   vmwarevsphere:
     password:
       label: Password
@@ -8111,7 +8212,7 @@ drainNode:
   titleOne: 'Drain "{name}"'
   titleMultiple: 'Drain {count} Nodes'
   action: Drain
-  deleteLocalData: Delete Local Data
+  deleteLocalData: Delete Empty Dir Data
   force: Force
   safe:
     label: Safe
@@ -8176,6 +8277,11 @@ modalRotateCertificates:
   expiring:
     until: '{ cert } (expires { expiresIn })'
     from: '{ cert } (expired { expiresIn })'
+
+modalRotateEncryption:
+  title: Rotate Encryption Keys
+  backupWarning: Before proceeding, ensure a successful ETCD backup of the cluster has been completed.
+  lastBackup: The last backup {backupName} was performed on {backupTime}
 
 modalRollbackService:
   title: 'Rollback "{instanceName}"'
@@ -8541,8 +8647,8 @@ kontainerDriver:
     tencentkubernetesengine: Tencent TKE
     baiducloudcontainerengine: Baidu CCE
     oraclecontainerengine: Oracle OKE
+    linodekubernetesengine: Linode LKE
     opentelekomcloudcontainerengine: Open Telekom Cloud CCE
-
 
 nodeDriver:
   addTemplate: Add Node Template
@@ -8569,13 +8675,14 @@ nodeDriver:
     import: Other
     importeks: Amazon EKS
     linode: Linode
+    linodelke: Linode LKE
     oci: Oracle Cloud Infrastructure
     openstack: OpenStack
     oracleoke: Oracle OKE
     otc: Open Telekom Cloud
+    otccce: Open Telekom Cloud CCE
     packet: Packet
     pinganyunecs: Pinganyun ECS
-    pnap: phoenixNAP
     rackspace: RackSpace
     rancherkubernetesengine: RKE
     softlayer: SoftLayer
@@ -9281,7 +9388,7 @@ nodeDriver:
       detail: Select details of the instances that will be created by this template.
     location:
       label: Location
-      placeholder: 'Please select server location.'   
+      placeholder: 'Please select server location.'
     os:
       label: OS
       placeholder: 'Please select Operating System.'
@@ -9964,6 +10071,7 @@ action:
   download: Download
   downloadYaml: Download YAML
   drain: Drain
+  scaledown: Scale Down
   edit: Edit
   editConfig: Edit Config
   editService: Edit Service
@@ -9990,6 +10098,7 @@ action:
     success:
       message: A group membership refresh has been triggered
       title: Refresh Successful
+  registration: Registration Cmd
   remove: Delete
   replay: Replay
   rerun: Rerun
@@ -10004,6 +10113,7 @@ action:
   revision: New Revision from Default
   rollback: Rollback
   rotate: Rotate Certificates
+  rotateEncryption: Rotate Encryption Keys
   run: Run
   runCISScan: Run CIS Scan
   saveAsTemplate: Save As RKE Template
