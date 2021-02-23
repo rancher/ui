@@ -9,6 +9,7 @@ import { scheduleOnce } from '@ember/runloop';
 export default Route.extend({
   access:                 service(),
   globalStore:            service(),
+  clusterStore:           service(),
   releaseVersions:        service(),
   clusterTemplateService: service('clusterTemplates'),
   roleTemplateService:    service('roleTemplate'),
@@ -21,11 +22,13 @@ export default Route.extend({
       originalCluster:            cluster,
       cluster:                    cluster.clone(),
       cloudCredentials:           globalStore.findAll('cloudcredential'),
+      configMaps:                 this.configMaps(),
       kontainerDrivers:           globalStore.findAll('kontainerDriver'),
       nodeTemplates:              globalStore.findAll('nodeTemplate'),
       nodeDrivers:                globalStore.findAll('nodeDriver'),
       psps:                       globalStore.findAll('podSecurityPolicyTemplate'),
       roleTemplates:              get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
+      secrets:                    this.secrets(),
       users:                      globalStore.findAll('user'),
       clusterRoleTemplateBinding: globalStore.findAll('clusterRoleTemplateBinding'),
       me:                         get(this, 'access.principal'),
@@ -155,6 +158,28 @@ export default Route.extend({
     willTransition() {
       set(this, 'controller.scrollTo', null);
     }
+  },
+
+  async configMaps() {
+    const projects = await this.projects();
+    const configMapPromises = projects.map((project) => project.hasLink('configMaps') ? project.followLink('configMaps') : Promise.resolve([]));
+    const nestedConfigMaps = await Promise.all(configMapPromises) || [];
+
+    return nestedConfigMaps.flatMap((maps) => maps.content);
+  },
+
+  async secrets() {
+    const projects = await this.projects();
+    const secretPromises = projects.map((project) => project.hasLink('secrets') ? project.followLink('secrets') : Promise.resolve([]));
+    const nestedSecrets = await Promise.all(secretPromises) || [];
+
+    return nestedSecrets.flatMap((maps) => maps.content);
+  },
+
+  async projects() {
+    const cluster = this.modelFor('authenticated.cluster');
+
+    return (await cluster.followLink('projects')).content;
   },
 
   queryParams: {

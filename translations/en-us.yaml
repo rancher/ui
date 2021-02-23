@@ -4263,6 +4263,8 @@ clusterNew:
   rancherd:
     shortLabel: RancherD
   rke:
+    agentEnvVars:
+      label: Agent Environment Variables
     secretsEncryption:
       label: Secrets Encryption
     upgradeStrategy:
@@ -6427,6 +6429,32 @@ formEnvVar:
   labels:
     key: Key
     value: Value
+
+formAgentEnvVar:
+  headers:
+    type: Type
+    variableName: Variable Name
+    value: Value
+    containerName: Container Name
+    configMap: Config Map
+    secret: Secret
+    key: Key
+  placeholders:
+    foo: e.g. FOO
+    bar: e.g. bar
+    container: e.g. my-container
+    key: e.g. metadata.labels['KEY']
+
+  typeChoices:
+    keyValue: Key/Value Pair
+    resource: Resource
+    configMap: ConfigMap Key 
+    configMapNone: ConfigMap Key (None Available)
+    secret: Secret Key
+    secretNone: Secret Key (None Available)
+    podField: Pod Field
+
+  addActionLabel: Add Environment Variable
 
 formGlobalRoles:
   title: Global Permissions
