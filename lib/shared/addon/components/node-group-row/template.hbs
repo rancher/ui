@@ -1,202 +1,437 @@
 <div class="box">
   <div class="row">
+    <div class="pull-right">
+      <button
+        class="btn bg-transparent text-small vertical-middle"
+        type="button"
+        {{action removeNodeGroup model}}
+      >
+        {{t "nodeGroupRow.remove.label"}}
+      </button>
+    </div>
+  </div>
+  <div class="node-details">
     <div class="row">
-      <div class="pull-right">
-        <button
-          class="btn bg-transparent text-small vertical-middle"
-          type="button"
-          {{action removeNodeGroup model}}
-        >
-          {{t "nodeGroupRow.remove.label"}}
-        </button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "nodeGroupRow.name.label"}}
-        </label>
-        {{#input-or-display editable=nameIsEditable value=model.nodegroupName}}
-          <Input
-            @type="text"
-            @value={{mut model.nodegroupName}}
-            @classNames="form-control"
-          />
-        {{/input-or-display}}
-      </div>
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "nodeGroupRow.version.label"}}
-        </label>
-        {{#if upgradeAvailable}}
-          <div class="checkbox form-control-static">
-            <label class="acc-label">
-              <Input
-                @type="checkbox"
-                @checked={{mut upgradeVersion}}
-                @classNames="form-control"
-              />
-              {{t
-                "nodeGroupRow.version.upgrade"
-                from=model.version
-                version=clusterConfig.kubernetesVersion
-              }}
-            </label>
-          </div>
-        {{else}}
-          <div>
-            {{model.version}}
-            {{#if showNodeUpgradePreventionReason}}
-              <div class="help-block">
-                {{t "nodeGroupRow.version.warning"}}
-              </div>
-            {{/if}}
-          </div>
-        {{/if}}
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label">
-        {{t "nodeGroupRow.instance.label"}}
-      </label>
-      {{#input-or-display editable=creating value=model.instanceType}}
-        <NewSelect
-          class="form-control"
-          @value={{mut model.instanceType}}
-          @content={{instanceTypes}}
-          @optionValuePath="name"
-          @optionLabelPath="name"
-          @optionGroupPath="group"
-        />
-      {{/input-or-display}}
-    </div>
-    <div class="col span-6">
-      <label class="acc-label">
-        {{t "nodeGroupRow.nodeVolumeSize.label"}}
-      </label>
-      {{#input-or-display
-        editable=creating
-        value=(concat model.diskSize (t "generic.gigabyte"))
-      }}
-        <div class="input-group">
-          <InputInteger
-            @min={{0}}
-            @value={{mut model.diskSize}}
-            @classNames="form-control"
-            @placeholder={{t "nodeGroupRow.nodeVolumeSize.placeholder"}}
-          />
-          <span class="input-group-addon bg-default">
-            {{t "generic.gigabyte"}}
-          </span>
-        </div>
-      {{/input-or-display}}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label">
-        {{t "nodeGroupRow.desired.label"}}
-      </label>
-      <InputNumber
-        @value={{mut model.desiredSize}}
-        @min={{1}}
-        @classNames="form-control"
-      />
-    </div>
-  </div>
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label">
-        {{t "nodeGroupRow.max.label"}}
-      </label>
-      <InputNumber
-        @value={{mut model.maxSize}}
-        @min={{1}}
-        @classNames="form-control"
-      />
-    </div>
-    <div class="col span-6">
-      <label class="acc-label">
-        {{t "nodeGroupRow.min.label"}}
-      </label>
-      <InputNumber
-        @value={{mut model.minSize}}
-        @min={{1}}
-        @classNames="form-control"
-      />
-    </div>
-  </div>
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label">
-        {{t "nodeGroupRow.ssh.label"}}
-      </label>
-      {{#input-or-display editable=creating value=model.ec2SshKey}}
-        {{#if keyPairs}}
-          {{searchable-select
-            classNames="form-control"
-            value=model.ec2SshKey
-            content=keyPairs
-            optionValuePath="KeyName"
-            optionLabelPath="KeyName"
-            prompt=(t "nodeDriver.amazoneks.keyPairs.prompt")
-          }}
-        {{else}}
-          <Input
-            @type="text"
-            @value={{mut model.ec2SshKey}}
-            @classNames="form-control"
-          />
-        {{/if}}
-      {{/input-or-display}}
-    </div>
-    <div class="col span-6">
-      <div class="checkbox form-control-static">
-        <label class="acc-label">
+      <h4 class="mb-0">
+        {{t "nodeGroupRow.nodes.label"}}
+      </h4>
+      <hr />
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeGroupRow.launchTemplates.label"}}
+          </label>
           {{#if creating}}
-            <Input
-              class="mt-30"
-              @type="checkbox"
-              @checked={{mut model.gpu}}
-              @classNames="form-control"
-            />
-            {{t "nodeGroupRow.gpu.label"}}
-          {{else}}
-            {{t "nodeGroupRow.gpu.label"}}
+            {{searchable-select
+              classNames="form-control"
+              value=selectedLaunchTemplate
+              content=filteredLaunchTemplates
+              optionValuePath="LaunchTemplateId"
+              optionLabelPath="LaunchTemplateName"
+              prompt="nodeGroupRow.launchTemplates.label"
+              localizedPrompt=true
+              readOnly=isRancherLaunchTemplate
+            }}
+          {{else if editing}}
             <div>
-              {{#if model.gpu}}
-                {{t "generic.yes"}}
+              {{#if isRancherLaunchTemplate}}
+                {{t "nodeGroupRow.launchTemplates.managed"}}
+              {{else if isUserLaunchTemplate}}
+                {{selectedLaunchTemplate.LaunchTemplateName}}
               {{else}}
-                {{t "generic.no"}}
+                <div>
+                  {{t "generic.na"}}
+                </div>
+              {{/if}}
+            </div>
+          {{else if selectedLaunchTemplate}}
+            <div>
+              {{selectedLaunchTemplate.LaunchTemplateName}}
+            </div>
+          {{else}}
+            <div>
+              {{t "generic.na"}}
+            </div>
+          {{/if}}
+        </div>
+        <div class="col span-2">
+          <label class="acc-label">
+            {{t "nodeGroupRow.templateVersions.label"}}
+          </label>
+          {{#if creating}}
+            <NewSelect
+              class="form-control"
+              @disabled={{not model.launchTemplate.id}}
+              @value={{mut selectedLaunchTemplateVersion}}
+              @content={{selectedLaunchTemplateVersions}}
+              @optionValuePath="label"
+            />
+          {{else}}
+            <div>
+              {{#if isRancherLaunchTemplate}}
+                {{t "nodeGroupRow.launchTemplates.managedVersion"}}
+              {{else if isUserLaunchTemplate}}
+                <NewSelect
+                  class="form-control"
+                  @disabled={{not model.launchTemplate.id}}
+                  @value={{mut selectedLaunchTemplateVersion}}
+                  @content={{selectedLaunchTemplateVersions}}
+                  @optionValuePath="label"
+                />
+              {{else}}
+                <div>
+                  {{t "generic.na"}}
+                </div>
               {{/if}}
             </div>
           {{/if}}
+        </div>
+        <div class="col span-2 offset-2">
+          <label class="acc-label">
+            {{t "nodeGroupRow.version.label"}}
+          </label>
+          {{#if upgradeAvailable}}
+            <div class="checkbox form-control-static">
+              <label class="acc-label">
+                <Input
+                  @type="checkbox"
+                  @checked={{mut upgradeVersion}}
+                  @classNames="form-control"
+                />
+                {{t
+                  "nodeGroupRow.version.upgrade"
+                  from=model.version
+                  version=clusterConfig.kubernetesVersion
+                }}
+              </label>
+            </div>
+          {{else}}
+            <div>
+              {{model.version}}
+              {{#if showNodeUpgradePreventionReason}}
+                <div class="help-block">
+                  {{t "nodeGroupRow.version.warning"}}
+                </div>
+              {{/if}}
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "nodeGroupRow.instance.label"}}
         </label>
+        {{#if model.requestSpotInstances}}
+          <p class="mt-5">
+            {{t "nodeGroupRow.instance.help"}}
+          </p>
+        {{else}}
+          {{#input-or-display
+            editable=(or creating (and isRancherLaunchTemplate editing))
+            value=instanceType
+          }}
+            <NewSelect
+              class="form-control"
+              @value={{mut instanceType}}
+              @content={{instanceTypes}}
+              @optionValuePath="name"
+              @optionLabelPath="name"
+              @optionGroupPath="group"
+              @disabled={{or
+                model.launchTemplate.version
+                model.requestSpotInstances
+              }}
+            />
+          {{/input-or-display}}
+        {{/if}}
+      </div>
+      <div class="col span-4">
+        <label class="acc-label">
+          {{t "nodeGroupRow.images.label"}}
+        </label>
+        {{#input-or-display
+          editable=(or creating (and isRancherLaunchTemplate editing))
+          value=imageId
+        }}
+          <Input
+            @type="text"
+            @value={{mut imageId}}
+            @classNames="form-control"
+            @disabled={{model.launchTemplate.version}}
+          />
+        {{/input-or-display}}
+        <p class="help-block">
+          {{t "nodeGroupRow.images.help" htmlSafe=true}}
+        </p>
+      </div>
+      <div class="col span-2">
+        <label class="acc-label">
+          {{t "nodeGroupRow.nodeVolumeSize.label"}}
+        </label>
+        {{#input-or-display
+          editable=(or creating (and isRancherLaunchTemplate editing))
+          value=(concat diskSize (t "generic.gigabyte"))
+        }}
+          <div class="input-group">
+            <InputInteger
+              @min={{0}}
+              @value={{mut diskSize}}
+              @classNames="form-control"
+              @placeholder={{t "nodeGroupRow.nodeVolumeSize.placeholder"}}
+              @disabled={{model.launchTemplate.version}}
+            />
+            <span class="input-group-addon bg-default">
+              {{t "generic.gigabyte"}}
+            </span>
+          </div>
+        {{/input-or-display}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "nodeGroupRow.ssh.label"}}
+        </label>
+        {{#input-or-display
+          editable=(or creating (and isRancherLaunchTemplate editing))
+          value=ec2SshKey
+        }}
+          {{#if keyPairs}}
+            {{searchable-select
+              classNames="form-control"
+              value=ec2SshKey
+              content=keyPairs
+              optionValuePath="KeyName"
+              optionLabelPath="KeyName"
+              prompt=(t "nodeDriver.amazoneks.keyPairs.prompt")
+              readOnly=model.launchTemplate.version
+            }}
+          {{else}}
+            <Input
+              @type="text"
+              @value={{mut ec2SshKey}}
+              @classNames="form-control"
+              @disabled={{model.launchTemplate.version}}
+            />
+          {{/if}}
+        {{/input-or-display}}
+      </div>
+      <div class="col span-3 pt-10">
+        <div class="checkbox">
+          <label>
+            {{#if creating}}
+              <Input
+                @type="checkbox"
+                @checked={{mut model.gpu}}
+                @classNames="form-control"
+              />
+              {{t "nodeGroupRow.gpu.label"}}
+            {{else}}
+              {{t "nodeGroupRow.gpu.label"}}
+              <div>
+                {{#if model.gpu}}
+                  {{t "generic.yes"}}
+                {{else}}
+                  {{t "generic.no"}}
+                {{/if}}
+              </div>
+            {{/if}}
+          </label>
+          {{#if showGPUWarning}}
+            <p class="help-block">
+              {{t "nodeGroupRow.gpu.help"}}
+            </p>
+          {{/if}}
+        </div>
+      </div>
+      <div class="col span-3 pt-10">
+        <div class="checkbox">
+          <label>
+            {{#if creating}}
+              <Input
+                @type="checkbox"
+                @checked={{mut model.requestSpotInstances}}
+                @classNames="form-control"
+              />
+              {{t "nodeGroupRow.requestSpot.label"}}
+            {{else}}
+              {{t "nodeGroupRow.requestSpot.label"}}
+              <div>
+                {{#if model.requestSpotInstances}}
+                  {{t "generic.yes"}}
+                {{else}}
+                  {{t "generic.no"}}
+                {{/if}}
+              </div>
+            {{/if}}
+          </label>
+          {{#if (and model.requestSpotInstances model.launchTemplate.version)}}
+            <p class="help-block">
+              {{t "nodeGroupRow.requestSpot.help"}}
+            </p>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+    {{#if model.requestSpotInstances}}
+      <div class="row">
+        <div class="col span-6 offset-6 request-spot-instance-types">
+          <label class="acc-label pb-5">
+            {{t "nodeGroupRow.additional.label"}}
+            <FieldRequired />
+          </label>
+          <FormValueArray
+            @defaultValue={{"t3.medium"}}
+            @initialValues={{model.spotInstanceTypes}}
+            @editing={{creating}}
+            @changed={{fn (mut model.spotInstanceTypes)}}
+            @addActionLabel="nodeGroupRow.additional.button"
+            @autoAddIfEmpty={{true}}
+            @showProTip={{false}}
+            @focusEl={{false}}
+            @removeButtonClass="btn bg-primary btn-remove"
+            @valueLabelEnabled={{false}} as |fva fvaRow|
+          >
+            {{#input-or-display
+              editable=creating
+              value=fvaRow.value
+              class="input-or-display"
+            }}
+              <NewSelect
+                @value={{fvaRow.value}}
+                @content={{instanceTypes}}
+                @optionValuePath="name"
+                @optionLabelPath="name"
+                @optionGroupPath="group"
+              />
+            {{/input-or-display}}
+          </FormValueArray>
+        </div>
+      </div>
+    {{/if}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label pb-5">
+          {{t "nodeGroupRow.userData.label"}}
+        </label>
+        {{input-text-file
+          accept="text/plain"
+          canChangeName=false
+          classNames="box"
+          placeholder="nodeGroupRow.userData.placeholder"
+          value=userData
+          minHeight=150
+          disabled=(or
+            (or
+              (and isUserLaunchTemplate (not creating))
+              (and
+                creating
+                (and model.launchTemplate.version model.launchTemplate.id)
+              )
+            )
+            (and (not creating) isNoLaunchTemplate)
+          )
+        }}
+        <p class="help-block">
+          {{t "nodeGroupRow.userData.help" htmlSafe=true}}
+        </p>
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "nodeGroupRow.resourceTags.label"}}
+        </label>
+        {{#if refreshResourceInstanceTags}}
+          <FormKeyValue
+            @initialMap={{resourceTags}}
+            @changed={{action "setResourceTags"}}
+            @addActionLabel="clusterNew.amazoneks.tags.addActionLabel"
+            @editing={{or
+                (and creating isNoLaunchTemplate)
+                (and editing isRancherLaunchTemplate)
+            }}
+          />
+        {{/if}}
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col span-6">
-      <label class="acc-label">
-        {{t "nodeGroupRow.labels.label"}}
-      </label>
-      <FormKeyValue
-        @initialMap={{model.labels}}
-        @changed={{action "setLabels"}}
-        @addActionLabel="nodeGroupRow.labels.addLabel"
-      />
-    </div>
-    <div class="col span-6">
-      <label class="acc-label">
-        {{t "nodeGroupRow.tags.label"}}
-      </label>
-      <FormKeyValue
-        @initialMap={{model.tags}}
-        @changed={{action "setTags"}}
-        @addActionLabel="nodeGroupRow.tags.addLabel"
-      />
+  <div class="group-details">
+    <div class="row">
+      <h4 class="mb-0">
+        {{t "nodeGroupRow.groups.label"}}
+      </h4>
+      <hr />
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeGroupRow.name.label"}}
+            {{#if (or creating editing)}}
+              {{field-required}}
+            {{/if}}
+          </label>
+          {{#input-or-display editable=nameIsEditable value=model.nodegroupName
+          }}
+            <Input
+              @type="text"
+              @value={{mut model.nodegroupName}}
+              @classNames="form-control"
+            />
+          {{/input-or-display}}
+        </div>
+        <div class="col span-2">
+          <label class="acc-label">
+            {{t "nodeGroupRow.desired.label"}}
+          </label>
+          <InputNumber
+            @value={{mut model.desiredSize}}
+            @min={{1}}
+            @classNames="form-control"
+          />
+        </div>
+        <div class="col span-2">
+          <label class="acc-label">
+            {{t "nodeGroupRow.max.label"}}
+          </label>
+          <InputNumber
+            @value={{mut model.maxSize}}
+            @min={{1}}
+            @classNames="form-control"
+          />
+        </div>
+        <div class="col span-2">
+          <label class="acc-label">
+            {{t "nodeGroupRow.min.label"}}
+          </label>
+          <InputNumber
+            @value={{mut model.minSize}}
+            @min={{1}}
+            @classNames="form-control"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeGroupRow.labels.label"}}
+          </label>
+          <FormKeyValue
+            @initialMap={{model.labels}}
+            @changed={{action "setLabels"}}
+            @addActionLabel="nodeGroupRow.labels.addLabel"
+          />
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeGroupRow.tags.label"}}
+          </label>
+          <FormKeyValue
+            @initialMap={{model.tags}}
+            @changed={{action "setTags"}}
+            @addActionLabel="nodeGroupRow.tags.addLabel"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </div>

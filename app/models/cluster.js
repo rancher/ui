@@ -18,17 +18,36 @@ const TRUE = 'True';
 const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
 const SCHEDULE_CLUSTER_SCAN_QUESTION_KEY = 'scheduledClusterScan.enabled';
 
+export const DEFAULT_USER_DATA =
+`MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
+
+--==MYBOUNDARY==
+Content-Type: text/x-shellscript; charset="us-ascii"
+
+#!/bin/bash
+echo "Running custom user data script"
+
+--==MYBOUNDARY==--\\`;
+
 export const DEFAULT_NODE_GROUP_CONFIG = {
-  desiredSize:   2,
-  diskSize:      20,
-  ec2SshKey:     '',
-  gpu:           false,
-  instanceType:  't3.medium',
-  maxSize:       2,
-  minSize:       2,
-  nodegroupName: '',
-  subnets:       [],
-  type:          'nodeGroup',
+  desiredSize:          2,
+  diskSize:             20,
+  ec2SshKey:            '',
+  gpu:                  false,
+  imageId:              null,
+  instanceType:         't3.medium',
+  labels:               {},
+  maxSize:              2,
+  minSize:              2,
+  nodegroupName:        '',
+  requestSpotInstances: false,
+  resourceTags:         {},
+  spotInstanceTypes:    [],
+  subnets:                [],
+  tags:                 {},
+  type:                 'nodeGroup',
+  userData:             DEFAULT_USER_DATA,
 };
 
 export const DEFAULT_EKS_CONFIG = {
@@ -138,6 +157,45 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!this.actionLinks.rotateCertificates;
   }),
 
+  canRotateEncryptionKey: computed(
+    'actionLinks.rotateEncryptionKey',
+    'etcdbackups.@each.created',
+    'rancherKubernetesEngineConfig.rotateEncryptionKey',
+    'rancherKubernetesEngineConfig.services.kubeApi.secretsEncryptionConfig.enabled',
+    'transitioning',
+    'isActive',
+    function() {
+      const acceptableTimeFrame = 360;
+      const {
+        actionLinks: { rotateEncryptionKey }, etcdbackups, rancherKubernetesEngineConfig
+      } = this;
+      const lastBackup = !isEmpty(etcdbackups) ? get(etcdbackups, 'lastObject') : undefined;
+      let diffInMinutes = 0;
+
+      if (this.transitioning !== 'no' || !this.isActive) {
+        return false;
+      }
+
+      if (isEmpty(rancherKubernetesEngineConfig)) {
+        return false;
+      } else {
+        const {
+          rotateEncryptionKey = false,
+          services: { kubeApi: { secretsEncryptionConfig = null } }
+        } = rancherKubernetesEngineConfig;
+
+        if (!!rotateEncryptionKey || isEmpty(secretsEncryptionConfig) || !get(secretsEncryptionConfig, 'enabled')) {
+          return false
+        }
+      }
+
+      if (lastBackup) {
+        diffInMinutes = moment().diff(lastBackup.created, 'minutes');
+      }
+
+      return rotateEncryptionKey && diffInMinutes <= acceptableTimeFrame;
+    }),
+
   canBulkRemove: computed('action.remove', function() { // eslint-disable-line
     return get(this, 'hasSessionToken') ? false : true;
   }),
@@ -161,35 +219,39 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!actionLinks.saveAsTemplate;
   }),
 
-  eksDisplayEksImport: computed('clusterProvider', 'eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', function() {
-    const {
-      clusterProvider, eksConfig = {}, eksStatus = {}
-    } = this;
-    const publicAccess = get(eksStatus, 'upstreamSpec.publicAccess') || get(eksConfig, 'publicAccess') || true;
-    const privateAccess = get(eksStatus, 'upstreamSpec.privateAccess') || get(eksConfig, 'privateAccess') || false;
+  hasPublicAccess: computed('eksConfig.publicAccess', 'eksStatus.upstreamSpec.publicAccess', 'property', function() {
+    return this?.eksStatus?.upstreamSpec?.publicAccess || this?.eksConfig?.publicAccess || true;
+  }),
 
-    if (clusterProvider === 'amazoneksv2' && !publicAccess && privateAccess) {
+  hasPrivateAccess: computed('eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', 'property', function() {
+    return this?.eksStatus?.upstreamSpec?.privateAccess || this?.eksConfig?.privateAccess || false;
+  }),
+
+  eksDisplayEksImport: computed('hasPrivateAccess', 'hasPublicAccess', function() {
+    const { clusterProvider } = this;
+
+    if (clusterProvider !== 'amazoneksv2') {
+      return false;
+    }
+
+    if (!this.hasPublicAccess && this.hasPrivateAccess) {
       return true;
     }
 
     return false;
   }),
 
-  canShowAddHost: computed('nodes.[]', 'clusterProvider', 'eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', function() {
-    const {
-      clusterProvider, eksConfig = {}, eksStatus = {}
-    } = this;
-    const publicAccess = get(eksStatus, 'upstreamSpec.publicAccess') || get(eksConfig, 'publicAccess') || true;
-    const privateAccess = get(eksStatus, 'upstreamSpec.privateAccess') || get(eksConfig, 'privateAccess') || false;
-    const ignored = ['custom', 'import', 'amazoneksv2'];
+  canShowAddHost: computed('clusterProvider', 'hasPrivateAccess', 'hasPublicAccess', 'nodes', function() {
+    const { clusterProvider } = this;
+    const compatibleProviders = ['custom', 'import', 'amazoneksv2'];
     const nodes = get(this, 'nodes');
 
-    if (!ignored.includes(clusterProvider)) {
+    if (!compatibleProviders.includes(clusterProvider)) {
       return false;
     }
 
     // private access requires the ability to run the import command on the cluster
-    if (clusterProvider === 'amazoneksv2' && !!publicAccess && privateAccess) {
+    if (clusterProvider === 'amazoneksv2' && !!this.hasPublicAccess && this.hasPrivateAccess) {
       return true;
     } else if (clusterProvider !== 'amazoneksv2' && isEmpty(nodes)) {
       return true;
@@ -248,6 +310,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return 'huaweicce';
     case 'okeEngineConfig':
       return 'oracleoke';
+    case 'lkeEngineConfig':
+      return 'linodelke';
     case 'rke2Config':
       return 'rke2';
     case 'rancherKubernetesEngineConfig':
@@ -257,7 +321,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
       return firstPool.driver || get(firstPool, 'nodeTemplate.driver') || null;
     default:
-      if (get(this, 'driver')) {
+      if (get(this, 'driver') && get(this, 'configName')) {
         return get(this, 'driver');
       } else {
         return 'import';
@@ -290,6 +354,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return intl.t('clusterNew.oracleoke.shortLabel');
     case 'otccceEngineConfig':
       return intl.t('clusterNew.otccce.shortLabel');
+    case 'lkeEngineConfig':
+      return intl.t('clusterNew.linodelke.shortLabel');
     case 'k3sConfig':
       return intl.t('clusterNew.k3simport.shortLabel');
     case 'rke2Config':
@@ -372,7 +438,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const kubernetesVersion = get(this, 'eksStatus.upstreamSpec.kubernetesVersion');
     const nodeGroupVersions = (get(this, 'eksStatus.upstreamSpec.nodeGroups') || []).getEach('version');
 
-    return nodeGroupVersions.any((ngv) => Semver.lt(Semver.coerce(ngv), Semver.coerce(kubernetesVersion)));
+    return nodeGroupVersions.any((ngv) => {
+      if (isEmpty(ngv)) {
+        return false;
+      } else {
+        return Semver.lt(Semver.coerce(ngv), Semver.coerce(kubernetesVersion));
+      }
+    });
   }),
 
 
@@ -408,7 +480,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return false;
   }),
 
-  availableActions: computed('actionLinks.rotateCertificates', 'canSaveAsTemplate', 'isClusterScanDisabled', 'canShowAddHost', 'eksDisplayEksImport', function() {
+  availableActions: computed('actionLinks.{rotateCertificates,rotateEncryptionKey}', 'canRotateEncryptionKey', 'canSaveAsTemplate', 'canShowAddHost', 'eksDisplayEksImport', 'isClusterScanDisabled', function() {
     const a = get(this, 'actionLinks') || {};
 
     return [
@@ -417,6 +489,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
         icon:      'icon icon-history',
         action:    'rotateCertificates',
         enabled:   !!a.rotateCertificates,
+      },
+      {
+        label:     'action.rotateEncryption',
+        icon:      'icon icon-key',
+        action:    'rotateEncryptionKey',
+        enabled:   !!this.canRotateEncryptionKey,
+        // enabled: true
       },
       {
         label:     'action.backupEtcd',
@@ -437,7 +516,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         enabled:   this.canSaveAsTemplate,
       },
       {
-        label:     this.eksDisplayEksImport ? 'action.importHost' : 'action.addHost',
+        label:     this.eksDisplayEksImport ? 'action.importHost' : 'action.registration',
         icon:      'icon icon-host',
         action:    'showCommandModal',
         enabled:   this.canShowAddHost,
@@ -667,6 +746,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
         model,
         serviceDefaults: get(this, 'globalStore').getById('schema', 'rotatecertificateinput').optionsFor('services'),
       });
+    },
+
+    rotateEncryptionKey() {
+      const model = this;
+
+      get(this, 'modalService').toggleModal('modal-rotate-encryption-key', { model, });
     },
 
     showCommandModal() {

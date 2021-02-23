@@ -100,7 +100,7 @@
           {{#if (and applyClusterTemplate (eq selectedCloudProvider "generic"))}}
             <div class="radio">
               <label>
-                {{t "generic.custom"}}
+                {{t "cloudProvider.custom.label"}}
               </label>
             </div>
           {{else if isCreateClusterOrClusterTemplate}}
@@ -109,7 +109,7 @@
                 {{radio-button
                   selection=selectedCloudProvider
                   value="generic"
-                }} {{t "generic.custom"}}
+                }} {{t "cloudProvider.custom.label"}}
               </label>
             </div>
           {{/if}}
@@ -200,8 +200,18 @@
   <p class="text-info">
     {{#if (eq selectedCloudProvider "generic")}}
       {{t "cloudProvider.custom.helpText" htmlSafe=true}}
-    {{else if (eq selectedCloudProvider "external")}}
+    {{else if (and (eq selectedCloudProvider "external") (not (eq driver "vmwarevsphere")) )}}
       {{t "cloudProvider.external.helpText" htmlSafe=true}}
     {{/if}}
   </p>
+  {{#if showVsphereHelperText}}
+    <p class="text-info">
+      {{t 
+        "cloudProvider.external.vsphereHelpText" 
+        csi=(href-to 'global-admin.multi-cluster-apps.catalog.launch' 'cattle-global-data:helm3-library-vsphere-csi') 
+        cpi=(href-to 'global-admin.multi-cluster-apps.catalog.launch' 'cattle-global-data:helm3-library-vsphere-cpi')
+        htmlSafe=true
+      }}
+    </p>
+  {{/if}}
 {{/if}}

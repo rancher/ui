@@ -179,6 +179,18 @@
             id="oci-tenancy"
           }}
         </div>
+
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "modalAddCloudKey.oci.authRegion.label"}}{{field-required}}
+          </label>
+          <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
+            <option value="" selected={{eq config.region choice}}>Select a region to authenticate credentials</option>
+            {{#each ociRegionChoices as |choice|}}
+              <option value={{choice}} selected={{eq config.region choice}}>{{choice}}</option>
+            {{/each}}
+          </select>
+        </div>
       </div>
 
       <div class="row">
@@ -213,6 +225,21 @@
 
       <div class="row">
         <div class="col span-6">
+          <label class="acc-label" for="oci-privateKeyPassphrase">
+            {{t "modalAddCloudKey.oci.secretKeyPassphrase.label"}}
+          </label>
+          {{input
+            type="password"
+            classNames="form-control"
+            placeholder=(t "modalAddCloudKey.oci.secretKeyPassphrase.placeholder")
+            value=config.privateKeyPassphrase
+            id="oci-privateKeyPassphrase"
+          }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
           <label class="acc-label" for="oci-privateKeyContents">
             {{t "modalAddCloudKey.oci.secretKey.label"}}{{field-required}}
           </label>
@@ -229,18 +256,6 @@
           }}
         </div>
 
-        <div class="col span-6">
-          <label class="acc-label" for="oci-privateKeyPassphrase">
-            {{t "modalAddCloudKey.oci.secretKeyPassphrase.label"}}
-          </label>
-          {{input
-            type="password"
-            classNames="form-control"
-            placeholder=(t "modalAddCloudKey.oci.secretKeyPassphrase.placeholder")
-            value=config.privateKeyPassphrase
-            id="oci-privateKeyPassphrase"
-          }}
-        </div>
       </div>
 
     {{else if (eq cloudCredentialType "pnap")}}
@@ -284,6 +299,9 @@
             classNames="form-control"
             id="server-url"
             value=config.vcenter
+            isInvalid=(action (mut urlInvalid))
+            urlWarning=(action (mut urlWarning))
+            urlError=(action (mut urlError))
             placeholder=(t "nodeDriver.vmwarevsphere.vcenter.placeholder")
           }}
         </div>

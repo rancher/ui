@@ -566,7 +566,45 @@
           </div>
           <div class="row">
             <div class="col span-12">
-
+              <label class="acc-label">
+                {{t "clusterNew.rke.secretsEncryption.label"}}
+                {{#if clusterTemplateCreate}}
+                  <ClusterTemplateOverrideToggle
+                    @path="rancherKubernetesEngineConfig.services.kubeApi.secretsEncryptionConfig.enabled"
+                    @configVariable={{config.services.kubeApi.secretsEncryptionConfig.enabled}}
+                    @addOverride={{action "addOverride"}}
+                    @questions={{model.clusterTemplateRevision.questions}}
+                  />
+                {{/if}}
+              </label>
+              <CheckOverrideAllowed
+                @paramName="rancherKubernetesEngineConfig.services.kubeApi.secretsEncryptionConfig.enabled"
+                @applyClusterTemplate={{applyClusterTemplate}}
+                @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                @questions={{model.clusterTemplateRevision.questions}}
+              >
+                {{#input-or-display
+                   editable=notView
+                   value=config.services.kubeApi.secretsEncryptionConfig.enabled
+                }}
+                  <div>
+                    <label class="radio mt-0">
+                      {{radio-button selection=config.services.kubeApi.secretsEncryptionConfig.enabled value=true}}
+                      {{t "generic.enabled"}}
+                    </label>
+                  </div>
+                  <div>
+                    <label class="radio">
+                      {{radio-button selection=config.services.kubeApi.secretsEncryptionConfig.enabled value=false}}
+                      {{t "generic.disabled"}}
+                    </label>
+                  </div>
+                {{/input-or-display}}
+              </CheckOverrideAllowed>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col span-12">
               <label class="acc-label">
                 {{t "clusterNew.rke.etcd.location.label"}}
                 {{#if clusterTemplateCreate}}
@@ -834,6 +872,7 @@
                      editable=notView
                      obfuscate=true
                      value=cluster.rancherKubernetesEngineConfig.services.etcd.backupConfig.s3BackupConfig.customCa
+                     classesForDisplay="col span-12 force-wrap"
                   }}
                     {{input-text-file
                       accept="application/x-x509-ca-cert,text/plain,.pem,.crt"
