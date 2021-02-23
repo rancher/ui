@@ -42,7 +42,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     this.defineStateCounts('arrangedInstances', 'instanceStates', 'instanceCountSort');
   },
 
-  availableActions: computed('links.nodeConfig', 'actionLinks.{cordon,uncordon,drain}', function() {
+  availableActions: computed('actionLinks.{cordon,drain,uncordon}', 'canScaleDown', 'links.nodeConfig', function() {
     let l = get(this, 'links');
     const a = get(this, 'actionLinks') || {};
 
@@ -72,7 +72,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
         label:    'action.scaledown',
         icon:     'icon icon-arrow-circle-up icon-rotate-180',
         action:   'scaledown',
-        enabled:  !!a.scaledown,
+        enabled:  this.canScaleDown,
         bulkable: true
       },
       {
@@ -93,6 +93,13 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     ];
 
     return out;
+  }),
+
+  canScaleDown: computed('actionLinks.scaledown', 'nodePool.quantity', function() {
+    const actions = get(this, 'actionLinks');
+    const nodePool = get(this, 'nodePool');
+
+    return !!actions.scaledown && nodePool?.quantity > 1;
   }),
 
   displayName: computed('id', 'name', 'nodeName.length', 'nodes', 'requestedHostname', function() {
