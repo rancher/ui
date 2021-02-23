@@ -352,7 +352,7 @@
 
           <div class="row">
 
-            <div class="col span-6">
+            <div class="col span-4">
               <label class="acc-label">
                 {{t 'clusterNew.oracleoke.nodeShape.label'}}{{field-required}}
               </label>
@@ -366,10 +366,26 @@
                 <div>{{config.nodeShape}}</div>
               {{/if}}
             </div>
+            {{#if (eq config.nodeShape "VM.Standard.E3.Flex")}}
+              <div class="col span-4">
+                <label class="acc-label" for="input-ocpu-count">
+                  {{t "clusterNew.oracleoke.flexShapeConfig.label"}}
+                </label>{{field-required}}
+                {{input-number
+                  id="input-ocpu-count"
+                  min=1
+                  max=64
+                  value=config.flexOcpus
+                }}
+              </div>
+            {{/if}}
+          </div>
 
-            <div class="col span-6">
+          <div class="row">
+
+            <div class="col span-4">
               <label class="acc-label">
-                {{t 'clusterNew.oracleoke.os.label'}}
+                {{t 'clusterNew.oracleoke.os.label'}}{{field-required}}
               </label>
               {{#if (eq step 4)}}
                 <select class="form-control" onchange={{action (mut config.nodeImage) value="target.value"}}>
@@ -379,10 +395,19 @@
                   {{/each}}
                 </select>
               {{else}}
-                <div>{{ config.nodeImage}}</div>
+                <div>{{config.nodeImage}}</div>
               {{/if}}
             </div>
 
+            <div class="col span-4">
+              <label class="acc-label">
+                {{t "clusterNew.oracleoke.bootVolumeSize.label"}}
+              </label>
+              <div class="input-group">
+                {{input-number min=50 max=32768 value=config.customBootVolumeSize }}
+                <span class="input-group-addon bg-default">{{t "generic.gigabyte"}}</span>
+              </div>
+            </div>
           </div>
 
           <div class="row">
