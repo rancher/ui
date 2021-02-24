@@ -99,7 +99,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     const actions = get(this, 'actionLinks');
     const nodePool = get(this, 'nodePool');
 
-    return !!actions.scaledown && nodePool?.quantity > 1;
+    return !!actions?.scaledown && nodePool?.quantity > 1;
   }),
 
   displayName: computed('id', 'name', 'nodeName.length', 'nodes', 'requestedHostname', function() {
