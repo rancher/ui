@@ -20,7 +20,7 @@ export default Component.extend(ModalBase, {
         url:    `/v3/kontainerdrivers/rancher-images`,
         method: 'GET',
       }).then((res) => {
-        downloadFile(`.rancher-linux-images.txt`, get(res, 'body'));
+        downloadFile(`rancher-linux-images.txt`, get(res, 'body'));
       }).catch((error) => {
         get(this, 'growl').fromError('Error downloading Linux image list', error.message);
       });
@@ -31,7 +31,7 @@ export default Component.extend(ModalBase, {
         url:    `/v3/kontainerdrivers/rancher-windows-images`,
         method: 'GET',
       }).then((res) => {
-        downloadFile(`.rancher-windows-images.txt`, get(res, 'body'));
+        downloadFile(`rancher-windows-images.txt`, get(res, 'body'));
       }).catch((error) => {
         get(this, 'growl').fromError('Error downloading Windows image list', error.message);
       });
