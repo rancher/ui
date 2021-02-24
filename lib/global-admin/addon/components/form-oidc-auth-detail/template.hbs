@@ -1,0 +1,85 @@
+<section>
+  <div class="row">
+    <div class="clearfix">
+      <div class="pull-right">
+        <button
+          class="btn btn-sm right-divider-btn bg-error"
+          type="button"
+          {{action disable}}
+        >
+          {{t "authPage.oidc.enabled.disableAccess"}}
+        </button>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label pb-5">
+        {{t "authPage.oidc.form.clientId"}}:
+      </label>
+      <div>
+        {{authConfig.clientId}}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <label class="acc-label">
+      {{t "authPage.oidc.enabled.endpoints"}}:
+    </label>
+    <div class="col span-12 mt-0">
+      <div>
+        <label class="acc-label pb-5">
+          {{t "authPage.oidc.form.rancherUrl"}}:
+        </label>
+        <code>
+          {{authConfig.rancherUrl}}
+        </code>
+        {{copy-to-clipboard
+          class="ml-5"
+          clipboardText=authConfig.rancherUrl
+          size="md"
+        }}
+      </div>
+      <div>
+        <label class="acc-label pb-5">
+          {{t "authPage.oidc.form.authEndpoint"}}:
+        </label>
+        <code>
+          {{authConfig.authEndpoint}}
+        </code>
+        {{copy-to-clipboard
+          class="ml-5"
+          clipboardText=authConfig.authEndpoint
+          size="md"
+        }}
+      </div>
+      <div>
+        <label class="acc-label pb-5">
+          {{t "authPage.oidc.form.tokenEndpoint"}}:
+        </label>
+        <code>
+          {{authConfig.tokenEndpoint}}
+        </code>
+        {{copy-to-clipboard
+          class="ml-5"
+          clipboardText=authConfig.tokenEndpoint
+          size="md"
+        }}
+      </div>
+      <div>
+        <label class="acc-label pb-5">
+          {{t "authPage.oidc.form.userInfoEndpoint"}}:
+        </label>
+        <code>
+          {{authConfig.userInfoEndpoint}}
+        </code>
+        {{copy-to-clipboard
+          class="ml-5"
+          clipboardText=authConfig.userInfoEndpoint
+          size="md"
+        }}
+      </div>
+    </div>
+  </div>
+</section>

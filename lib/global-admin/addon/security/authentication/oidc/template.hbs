@@ -1,0 +1,78 @@
+<section>
+  {{#unless isEnabled}}
+    <BannerMessage
+      @color="bg-warning"
+      @icon="icon-alert"
+      @message={{t "authPage.oidc.disabled.banner"}}
+    />
+  {{/unless}}
+  {{top-errors errors=errors}}
+</section>
+{{#accordion-list showExpandAll=false as |al expandFn|}}
+  {{#if isEnabled}}
+    {{#accordion-list-item
+      expand=(action expandFn)
+      expandAll=al.expandAll
+      expandOnInit=true
+      expanded=true
+      showExpand=false
+      title=(t "authPage.github.authenticated.header.text")
+    }}
+      <FormOidcAuthDetail @disable={{action "disable"}} @authConfig={{authConfig}} />
+    {{/accordion-list-item}}
+    {{#accordion-list-item
+      classNames="mt-30"
+      detail=(t "siteAccess.helpText" appName=settings.appName htmlSafe=true)
+      expand=(action expandFn)
+      expandAll=al.expandAll
+      expandOnInit=true
+      expanded=true
+      showExpand=false
+      title=(t "siteAccess.header")
+    }}
+      {{site-access
+        model=authConfig
+        principals=model.principals
+        collection="siteAccess.organizations"
+      }}
+    {{/accordion-list-item}}
+  {{else}}
+    {{#accordion-list-item
+      expand=(action expandFn)
+      expandAll=al.expandAll
+      expandOnInit=true
+      expanded=true
+      showExpand=false
+      title=(t "authPage.oidc.disabled.header.label")
+      detail=(t "authPage.oidc.disabled.header.headerDetail")
+    }}
+      <FormOidcAuth @authConfig={{mut authConfig}} />
+    {{/accordion-list-item}}
+    {{#accordion-list-item
+      detail=(t "authPage.oidc.form.testAuth.subtext")
+      expand=(action expandFn)
+      expandAll=al.expandAll
+      expandOnInit=true
+      expanded=true
+      showExpand=false
+      title=(t "authPage.oidc.form.testAuth.header")
+    }}
+      <section>
+        {{top-errors errors=errors}}
+        <div class="row">
+          <div class="col span-12">
+            {{save-cancel
+              editing=editing
+              save=(action "save")
+              cancel=(action "cancel")
+              createLabel="authPage.oidc.form.save.pre"
+              savingLabel="authPage.oidc.form.save.post"
+              saving=testing
+              saveDisabled=createDisabled
+            }}
+          </div>
+        </div>
+      </section>
+    {{/accordion-list-item}}
+  {{/if}}
+{{/accordion-list}}

@@ -1,0 +1,195 @@
+<section>
+  <div class="row">
+    <div class="col span-12">
+      <p class="text-info">{{t "authPage.oidc.form.replyUrl" appName=settings.appName htmlSafe=true}}</p>
+      <div>
+        <label class="acc-label pb-5">
+          {{t "authPage.oidc.form.rancherUrl"}}:
+        </label>
+        <code>
+          {{authConfig.rancherUrl}}
+        </code>
+        {{copy-to-clipboard
+          class="ml-5"
+          clipboardText=authConfig.rancherUrl
+          size="md"
+        }}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label pb-5" for="oidc-input-clientid">
+        {{t "authPage.oidc.form.clientId"}}
+        {{field-required}}
+      </label>
+      {{input
+        id="oidc-input-clientid"
+        type="text"
+        value=authConfig.clientId
+        classNames="form-control"
+      }}
+    </div>
+    <div class="col span-6">
+      <label class="acc-label pb-5" for="oidc-input-client-secret">
+        {{t "authPage.oidc.form.clientSecret"}}
+        {{field-required}}
+      </label>
+      {{input
+        id="oidc-input-client-secret"
+        type="password"
+        value=authConfig.clientSecret
+        classNames="form-control"
+      }}
+    </div>
+  </div>
+  <div class="row">
+    <label class="acc-label mt-5">
+      {{t "authPage.oidc.form.endpoints.label"}}
+      {{field-required}}
+    </label>
+    <div class="row">
+      <div class="col span-6">
+        <div class="radio">
+          <label>
+            {{radio-button selection=endpointSelection value="standard"}}
+            {{t "authPage.oidc.form.endpoints.standard"}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button selection=endpointSelection value="custom"}}
+            {{t "authPage.oidc.form.endpoints.custom"}}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{#if (eq endpointSelection "standard")}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label pb-5" for="oidc-input-host">
+          {{t "authPage.oidc.form.host"}}
+          {{field-required}}
+        </label>
+        <div class="input-group">
+          <span class="input-group-addon bg-default">
+            <label>
+              {{protocol}}
+            </label>
+          </span>
+          {{input-url
+            classNames="form-control"
+            id="oidc-server-url"
+            isInvalid=(action (mut urlInvalid))
+            urlWarning=(action (mut urlWarning))
+            urlError=(action (mut urlError))
+            value=oidcHost
+            disabled=(eq endpointSelection "custom")
+          }}
+        </div>
+        <div>
+          {{#if urlInvalid}}
+            {{#each urlError as |error|}}
+              <BannerMessage
+                @classNames="banner mt-30"
+                @color="bg-{{error.type}}"
+                @icon="icon-alert"
+                @message={{t error.msg activeValue=serverUrl htmlSafe=true
+                }}
+              />
+            {{/each}}
+          {{/if}}
+        </div>
+      </div>
+      <div class="col span-6">
+        <label class="acc-label pb-5" for="oidc-input-realm">
+          {{t "authPage.oidc.form.realm"}}
+          {{field-required}}
+        </label>
+        {{input
+          id="oidc-input-realm"
+          type="text"
+          value=oidcRealm
+          classNames="form-control"
+          disabled=(eq endpointSelection "custom")
+        }}
+      </div>
+    </div>
+  {{else}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label pb-5" for="oidc-input-auth-endpoint">
+          {{t "authPage.oidc.form.authEndpoint"}}
+          {{field-required}}
+        </label>
+        {{input
+          id="oidc-input-auth-endpoint"
+          type="text"
+          value=authConfig.authEndpoint
+          classNames="form-control"
+        }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label pb-5" for="oidc-input-token-endpoint">
+          {{t "authPage.oidc.form.tokenEndpoint"}}
+          {{field-required}}
+        </label>
+        {{input
+          id="oidc-input-token-endpoint"
+          type="text"
+          value=authConfig.tokenEndpoint
+          classNames="form-control"
+        }}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label pb-5" for="oidc-input-user-endpoint">
+          {{t "authPage.oidc.form.userInfoEndpoint"}}
+          {{field-required}}
+        </label>
+        {{input
+          id="oidc-input-user-endpoint"
+          type="text"
+          value=authConfig.userInfoEndpoint
+          classNames="form-control"
+        }}
+      </div>
+    </div>
+  {{/if}}
+  <div class="row">
+    <div class="col span-6">
+      <div class="inline-form">
+        <label class="acc-label pb-5" for="oidc-input-client-private-key">
+          {{t "newCertificate.key.label"}}
+        </label>
+        {{input-text-file
+          id="oidc-input-client-private-key"
+          accept="text/*, .pem, .pkey, .key"
+          canChangeName=false
+          classNames="box"
+          minHeight=60
+          placeholder="newCertificate.key.placeholder"
+          value=authConfig.privateKey
+        }}
+      </div>
+    </div>
+    <div class="col span-6">
+      <div class="inline-form">
+        <label class="acc-label pb-5" for="oidc-input-client-cert">
+          {{t "newCertificate.cert.label"}}
+        </label>
+        {{input-text-file
+          id="oidc-input-client-cert"
+          accept="text/*, .pem, .crt"
+          canChangeName=false
+          classNames="box"
+          minHeight=60
+          placeholder="newCertificate.cert.placeholder"
+          value=authConfig.certificate
+        }}
+      </div>
+    </div>
+  </div>
+</section>
