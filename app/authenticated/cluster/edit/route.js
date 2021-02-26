@@ -165,7 +165,9 @@ export default Route.extend({
     const configMapPromises = projects.map((project) => project.hasLink('configMaps') ? project.followLink('configMaps') : Promise.resolve([]));
     const nestedConfigMaps = await Promise.all(configMapPromises) || [];
 
-    return nestedConfigMaps.flatMap((maps) => maps.content);
+    return nestedConfigMaps
+      .flatMap((maps) => maps.content)
+      .filter((configMap) => configMap);
   },
 
   async secrets() {
@@ -173,7 +175,9 @@ export default Route.extend({
     const secretPromises = projects.map((project) => project.hasLink('secrets') ? project.followLink('secrets') : Promise.resolve([]));
     const nestedSecrets = await Promise.all(secretPromises) || [];
 
-    return nestedSecrets.flatMap((maps) => maps.content);
+    return nestedSecrets
+      .flatMap((secrets) => secrets.content)
+      .filter((secret) => secret);
   },
 
   async projects() {
