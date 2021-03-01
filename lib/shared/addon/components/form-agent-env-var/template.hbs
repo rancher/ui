@@ -18,7 +18,12 @@
           {{/input-or-display}}
         </td>
         <td class="pl-10">
-          <label class="text-small">{{t 'formAgentEnvVar.headers.variableName'}}</label>
+          <label class="text-small">
+            {{t 'formAgentEnvVar.headers.variableName'}}
+            {{#if editing}}
+              {{field-required}}
+            {{/if}}
+          </label>
           {{#input-or-display
               editable=editable
               value=envVar.name
