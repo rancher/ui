@@ -108,13 +108,13 @@
         <label class="acc-label">
           {{t "clusterNew.rke.agentEnvVars.label"}}
         </label>
-        <FormAgentEnvVar 
-          @editable={{notView}} 
-          @value={{agentEnvVars}} 
-          @showCustomConfigMaps={{true}} 
-          @showCustomSecrets={{true}} 
-          @configMaps={{model.configMaps}} 
-          @secrets={{model.secrets}} 
+        <FormAgentEnvVar
+          @editable={{notView}}
+          @value={{agentEnvVars}}
+          @showCustomConfigMaps={{true}}
+          @showCustomSecrets={{true}}
+          @configMaps={{model.configMaps}}
+          @secrets={{model.secrets}}
         />
       {{/accordion-list-item}}
     {{/accordion-list}}
@@ -142,7 +142,9 @@
   }}
 {{/if}}
 
-{{#if (and isEdit (not provider))}}
+{{!-- in older ver of rancher no provider was import but we only want to show this save if is generic (non eks) import --}}
+{{!-- otherwise save is handled by the cluster driver component --}}
+{{#if (and isEdit (or (not provider) isImportedOther))}}
   {{top-errors errors=errors}}
   {{save-cancel
     editing=isEdit
@@ -150,6 +152,7 @@
     cancel=(action "close")
   }}
 {{else if (not showDriverComponent)}}
+  {{!-- something is super wrong because your not import or custom or any driver in general so we're not letting you save --}}
   {{save-cancel
     saveDisabled=true
     cancel=(action "close")
