@@ -90,13 +90,6 @@
     }}
   {{/accordion-list}}
   {{#if isImportedOther}}
-    <section class="header mt-20 clearfix">
-      <div class="pull-left">
-        <h2 class="mb-0">
-          {{t "clusterNew.rke.customize.label"}}
-        </h2>
-      </div>
-    </section>
     {{#accordion-list showExpandAll=false as |al expandFn|}}
       {{#accordion-list-item
         title=(t "clusterNew.rke.advanced.label")
@@ -111,10 +104,6 @@
         <FormAgentEnvVar
           @editable={{notView}}
           @value={{agentEnvVars}}
-          @showCustomConfigMaps={{true}}
-          @showCustomSecrets={{true}}
-          @configMaps={{model.configMaps}}
-          @secrets={{model.secrets}}
         />
       {{/accordion-list-item}}
     {{/accordion-list}}
