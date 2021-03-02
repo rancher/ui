@@ -1,29 +1,25 @@
 <div>
   <table style="width: 100%;">
-    <tbody>
-      {{#each value as |envVar index|}}
-        <tr>
-        <td>
-          <label class="text-small">{{t 'formAgentEnvVar.headers.type'}}</label>
-          {{#input-or-display
-              editable=editable
-              value=envVar.type
-          }}
-            {{new-select
-              class="form-control"
-              content=typeChoices
-              value=envVar.type
-              onChange=(action 'updateType' index)
-            }}
-          {{/input-or-display}}
-        </td>
-        <td class="pl-10">
+    <thead>
+      <tr>
+        <th>
           <label class="text-small">
             {{t 'formAgentEnvVar.headers.variableName'}}
             {{#if editing}}
               {{field-required}}
             {{/if}}
           </label>
+        </th>
+        <th class="pl-10">
+           <label class="text-small">{{t 'formAgentEnvVar.headers.value'}}</label>
+        </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each value as |envVar index|}}
+        <tr>
+        <td>
           {{#input-or-display
               editable=editable
               value=envVar.name
@@ -36,161 +32,20 @@
             }}
           {{/input-or-display}}
         </td>
-        {{#if envVar.showValue}}
-          <td colspan="2" class="pl-10">
-            <label class="text-small">{{t 'formAgentEnvVar.headers.value'}}</label>
-            {{#input-or-display
-                editable=editable
-                value=envVar.value
-            }}                   
-              {{input
-                class="form-control"
-                type="text"
-                value=envVar.value
-                placeholder=(t 'formAgentEnvVar.placeholders.bar')
-              }}
-            {{/input-or-display}}
-          </td>
-        {{/if}}
-        {{#if envVar.showContainer}}
-          <td class="pl-10">
-            <label class="text-small">{{t 'formAgentEnvVar.headers.containerName'}}</label>
-            {{#input-or-display
+        <td colspan="2" class="pl-10">
+          {{#input-or-display
               editable=editable
-              value=envVar.valueFrom.resourceFieldRef.containerName
-            }}      
-              {{input
-                class="form-control"
-                type="text"
-                value=envVar.valueFrom.resourceFieldRef.containerName
-                placeholder=(t 'formAgentEnvVar.placeholders.container')
-              }}
-            {{/input-or-display}}
-          </td>
-          <td class="pl-10">
-            <label class="text-small">{{t 'formAgentEnvVar.headers.key'}}</label>
-            {{#input-or-display
-              editable=editable
-              value=envVar.valueFrom.resourceFieldRef.resource
-            }}    
-              {{new-select
-                class="form-control"
-                content=resourcekeyChoices
-                value=envVar.valueFrom.resourceFieldRef.resource
-              }}
-            {{/input-or-display}}
-          </td>
-        {{/if}}
-        {{#if envVar.showConfigMap}}
-          <td class="pl-10">
-            <label class="text-small">{{t 'formAgentEnvVar.headers.configMap'}}</label>
-            {{#input-or-display
-              editable=editable
-              value=envVar.valueFrom.configMapKeyRef.name
-            }}    
-              {{#if showCustomConfigMaps}}
-                {{input
-                  class="form-control"
-                  type="text"
-                  value=envVar.valueFrom.configMapKeyRef.name
-                }}            
-              {{else}}
-                {{new-select
-                  class="form-control"
-                  content=configMapChoices
-                  value=envVar.valueFrom.configMapKeyRef.name
-                  onChange=(action 'updateConfigMap' index)
-                }}
-              {{/if}}
-            {{/input-or-display}}
-          </td>
-          <td class="pl-10">
-            <label class="text-small">{{t 'formAgentEnvVar.headers.key'}}</label>
-            {{#input-or-display
-              editable=editable
-              value=envVar.valueFrom.configMapKeyRef.key
-            }}    
-              {{#if showCustomConfigMaps}}
-                {{input
-                  class="form-control"
-                  type="text"
-                  value=envVar.valueFrom.configMapKeyRef.key
-                }}
-              {{else}}
-                {{new-select
-                  class="form-control"
-                  content=envVar.configMapKeyChoices
-                  value=envVar.valueFrom.configMapKeyRef.key
-                  disabled=(not envVar.configMapKeyChoices.length)
-                }}
-              {{/if}}
-            {{/input-or-display}}
-          </td>
-        {{/if}}
-        {{#if envVar.showSecret}}
-          <td class="pl-10">
-            <label class="text-small">{{t 'formAgentEnvVar.headers.secret'}}</label>
-            {{#input-or-display
-              editable=editable
-              value=envVar.valueFrom.secretKeyRef.name
-            }}                
-              {{#if showCustomSecrets}}
-                {{input
-                  class="form-control"
-                  type="text"
-                  value=envVar.valueFrom.secretKeyRef.name
-                }}            
-              {{else}}
-                {{new-select
-                  class="form-control"
-                  content=secretChoices
-                  value=envVar.valueFrom.secretKeyRef.name
-                  onChange=(action 'updateSecret' index)
-                }}            
-              {{/if}}
-            {{/input-or-display}}
-          </td>
-          <td class="pl-10">
-            <label class="text-small">{{t 'formAgentEnvVar.headers.key'}}</label>
-            {{#input-or-display
-              editable=editable
-              value=envVar.valueFrom.secretKeyRef.key
-            }}                            
-              {{#if showCustomSecrets}}
-                {{input
-                  class="form-control"
-                  type="text"
-                  value=envVar.valueFrom.secretKeyRef.key
-                }}            
-              {{else}}
-                {{new-select
-                  class="form-control"
-                  content=envVar.secretKeyChoices
-                  value=envVar.valueFrom.secretKeyRef.key
-                  disabled=(not envVar.secretKeyChoices.length)
-                }}        
-              {{/if}}
-            {{/input-or-display}}
-          </td>
-        {{/if}}
-        {{#if envVar.showPodField}}
-          <td colspan="2" class="pl-10">
-            <label class="text-small">{{t 'formAgentEnvVar.headers.key'}}</label>
-            {{#input-or-display
-              editable=editable
-              value=envVar.valueFrom.fieldRef.fieldPath
-            }}                 
-              {{input
-                class="form-control"
-                type="text"
-                value=envVar.valueFrom.fieldRef.fieldPath
-                placeholder=(t 'formAgentEnvVar.placeholders.key')
-              }}
-            {{/input-or-display}}
-          </td>
-        {{/if}}
+              value=envVar.value
+          }}                   
+            {{input
+              class="form-control"
+              type="text"
+              value=envVar.value
+              placeholder=(t 'formAgentEnvVar.placeholders.bar')
+            }}
+          {{/input-or-display}}
+        </td>
         <td class="valign-top text-right" style="width: 45px">
-          <label class="text-small">&nbsp;</label>
           {{#if editable}}
             <div>
               <button
