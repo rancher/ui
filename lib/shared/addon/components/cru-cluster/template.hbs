@@ -142,9 +142,8 @@
   }}
 {{/if}}
 
-{{!-- in older ver of rancher no provider was import but we only want to show this save if is generic (non eks) import --}}
 {{!-- otherwise save is handled by the cluster driver component --}}
-{{#if (and isEdit (or (not provider) isImportedOther))}}
+{{#if (and isEdit (not provider))}}
   {{top-errors errors=errors}}
   {{save-cancel
     editing=isEdit

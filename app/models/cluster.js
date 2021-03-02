@@ -700,6 +700,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
         }
       };
 
+      if (provider === 'import' && isEmpty(get(this, 'eksConfig'))) {
+        set(queryParams, 'queryParams.importProvider', 'other');
+      }
+
       if (provider === 'amazoneks' && !isEmpty(get(this, 'eksConfig'))) {
         set(queryParams, 'queryParams.provider', 'amazoneksv2');
       }

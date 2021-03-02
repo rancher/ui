@@ -6,9 +6,10 @@ import { inject as service } from '@ember/service';
 export default Controller.extend({
   settings: service(),
 
-  queryParams:             ['provider', 'clusterTemplateRevision', 'scrollTo'],
+  queryParams:             ['provider', 'importProvider', 'clusterTemplateRevision', 'scrollTo'],
   provider:                null,
   clusterTemplateRevision: null,
+  importProvider:          null,
 
   cluster: alias('model.cluster'),
 
