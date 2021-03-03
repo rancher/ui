@@ -1,150 +1,156 @@
 <div class="login">
   <h1>
     {{t
-      "loginPage.greeting"
-      appName=settings.appName
-      htmlSafe=true
+    "loginPage.greeting"
+    appName=settings.appName
+    htmlSafe=true
     }}
     <div class="logo"></div>
   </h1>
   <section class="pb-0">
     {{language-dropdown login=true class="mb-10"}}
-    <br/>
+    <br />
     {{#if isInsecure}}
-      {{banner-message
-        color="bg-error text-left"
-        icon="icon-certificate"
-        message=(t "loginPage.insecure" appName=settings.appName htmlSafe=true)
-      }}
+    {{banner-message
+    color="bg-error text-left"
+    icon="icon-certificate"
+    message=(t "loginPage.insecure" appName=settings.appName htmlSafe=true)
+    }}
     {{else}}
-      {{#unless app.initError}}
-        {{#if (or showLocal onlyLocal)}}
-          {{login-user-pass
-            action=(action "authenticate")
-            classNames="row"
-            onlyLocal=onlyLocal
-            provider="local"
-            waiting=localWaiting
-          }}
-        {{else}}
-          {{#if isGithub}}
-            {{login-github action=(action "started")}}
-          {{/if}}
+    {{#unless app.initError}}
+    {{#if (or showLocal onlyLocal)}}
+    {{login-user-pass
+    action=(action "authenticate")
+    classNames="row"
+    onlyLocal=onlyLocal
+    provider="local"
+    waiting=localWaiting
+    }}
+    {{else}}
+    {{#if isGithub}}
+    {{login-github action=(action "started")}}
+    {{/if}}
 
-          {{#if isGoogle}}
-            {{login-google action=(action "started")}}
-          {{/if}}
+    {{#if isGoogle}}
+    {{login-google action=(action "started")}}
+    {{/if}}
 
-          {{#if isShibboleth}}
-            {{login-saml
-              action=(action "started")
-              provider="shibboleth"
-              requestId=requestId
-              publicKey=publicKey
-              responseType=responseType
-            }}
-          {{/if}}
+    {{#if isShibboleth}}
+    {{login-saml
+    action=(action "started")
+    provider="shibboleth"
+    requestId=requestId
+    publicKey=publicKey
+    responseType=responseType
+    }}
+    {{/if}}
 
-          {{#if isActiveDirectory}}
-            {{login-user-pass
-              action=(action "authenticate")
-              classNames="row"
-              provider="activedirectory"
-              waiting=adWaiting
-            }}
-          {{/if}}
+    {{#if isActiveDirectory}}
+    {{login-user-pass
+    action=(action "authenticate")
+    classNames="row"
+    provider="activedirectory"
+    waiting=adWaiting
+    }}
+    {{/if}}
 
-          {{#if isOpenLdap}}
-            {{login-user-pass
-              action=(action "authenticate")
-              classNames="row"
-              provider="openldap"
-              waiting=adWaiting
-            }}
-          {{/if}}
+    {{#if isSambaBox}}
+    {{login-user-pass
+    action=(action "authenticate")
+    classNames="row"
+    provider="sambabox"
+    waiting=adWaiting
+    }}
+    {{/if}}
 
-          {{#if isFreeIpa}}
-            {{login-user-pass
-              action=(action "authenticate")
-              classNames="row"
-              provider="freeipa"
-              waiting=adWaiting
-            }}
-          {{/if}}
+    {{#if isOpenLdap}}
+    {{login-user-pass
+    action=(action "authenticate")
+    classNames="row"
+    provider="openldap"
+    waiting=adWaiting
+    }}
+    {{/if}}
 
-          {{#if isAzureAd}}
-            {{login-azure action=(action "started")}}
-          {{/if}}
+    {{#if isFreeIpa}}
+    {{login-user-pass
+    action=(action "authenticate")
+    classNames="row"
+    provider="freeipa"
+    waiting=adWaiting
+    }}
+    {{/if}}
 
-          {{#if isPing}}
-            {{login-saml
-              action=(action "started")
-              provider="ping"
-              requestId=requestId
-              publicKey=publicKey
-              responseType=responseType
-            }}
-          {{/if}}
+    {{#if isAzureAd}}
+    {{login-azure action=(action "started")}}
+    {{/if}}
 
-          {{#if isAdfs}}
-            {{login-saml
-              action=(action "started")
-              provider="adfs"
-              requestId=requestId
-              publicKey=publicKey
-              responseType=responseType
-            }}
-          {{/if}}
+    {{#if isPing}}
+    {{login-saml
+    action=(action "started")
+    provider="ping"
+    requestId=requestId
+    publicKey=publicKey
+    responseType=responseType
+    }}
+    {{/if}}
 
-          {{#if isOkta}}
-            {{login-saml
-              action=(action "started")
-              provider="okta"
-              requestId=requestId
-              publicKey=publicKey
-              responseType=responseType
-            }}
-          {{/if}}
+    {{#if isAdfs}}
+    {{login-saml
+    action=(action "started")
+    provider="adfs"
+    requestId=requestId
+    publicKey=publicKey
+    responseType=responseType
+    }}
+    {{/if}}
 
-          {{#if isKeycloak}}
-            {{login-saml
-              action=(action "started")
-              provider="keycloak"
-              requestId=requestId
-              publicKey=publicKey
-              responseType=responseType
-            }}
-          {{/if}}
-        {{/if}}
+    {{#if isOkta}}
+    {{login-saml
+    action=(action "started")
+    provider="okta"
+    requestId=requestId
+    publicKey=publicKey
+    responseType=responseType
+    }}
+    {{/if}}
 
-        {{#unless onlyLocal}}
-          <a class="link-text text-small mt-10 hand" {{action "toggleAuth"}}>
-            {{t
-              (if showLocal "loginUserPass.externalProvider" "loginUserPass.local")
-              externalName=externalProvider
-            }}
-          </a>
-        {{/unless}}
-      {{/unless}}
+    {{#if isKeycloak}}
+    {{login-saml
+    action=(action "started")
+    provider="keycloak"
+    requestId=requestId
+    publicKey=publicKey
+    responseType=responseType
+    }}
+    {{/if}}
+    {{/if}}
 
-      {{#if infoMsg}}
-        <div
-          class="banner p-10 {{if errorMsg "bg-error" "bg-warning"}}"
-          role="alert"
-        >
-          {{infoMsg}}
-        </div>
-      {{/if}}
+    {{#unless onlyLocal}}
+    <a class="link-text text-small mt-10 hand" {{action "toggleAuth" }}>
+      {{t
+      (if showLocal "loginUserPass.externalProvider" "loginUserPass.local")
+      externalName=externalProvider
+      }}
+    </a>
+    {{/unless}}
+    {{/unless}}
+
+    {{#if infoMsg}}
+    <div class="banner p-10 {{if errorMsg " bg-error" "bg-warning" }}" role="alert">
+      {{infoMsg}}
+    </div>
+    {{/if}}
     {{/if}}
 
     {{#if app.initError}}
-      {{banner-message
-        color="bg-error"
-        icon="icon-alert"
-        message=app.initError.message
-      }}
+    {{banner-message
+    color="bg-error"
+    icon="icon-alert"
+    message=app.initError.message
+    }}
 
-      {{reload-btn}}
+    {{reload-btn}}
     {{/if}}
   </section>
 </div>

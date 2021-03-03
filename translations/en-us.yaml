@@ -2510,6 +2510,7 @@ loginPage:
     local: a Local User
     openldap: OpenLDAP
     freeipa: FreeIPA
+    sbx: SambaBox
 
 machinePage:
   header: Node Drivers
@@ -2978,6 +2979,8 @@ ldap:
       label: Start TLS
     subtext1: 'Enter the address, port, and protocol to connect to your {providerName} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS.'
     subtext2: '{appName} needs a service account that has (read-only) access to all of the domains that will be able to login, so that we can determine what groups a user is a member of when they make a request with an API key.'
+    subtext3: 'Enter the address and protocol to connect to your {providerName} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS.'
+
     userSearchBase:
       labelText: User Search Base
       placeholder: 'e.g. ou=users,dc=mycompany,dc=com'
@@ -3046,6 +3049,8 @@ ldap:
         labelText: Search Filter
     header: 2. Customize Schema
     helpText: 'If your schema does not match the standard ActiveDirectory format, you can customize it here.'
+    helpTextsbx: 'If your schema does not match the standard SambaBox format, you can customize it here.'
+
     users:
       disabledBitMask:
         labelText: Disabled Status Bitmask
@@ -3071,10 +3076,12 @@ ldap:
       label: '{providerName} is not configured'
   providerName:
     ad: Active Directory
+    sbx: SambaBox
     freeipa: FreeIPA
     openldap: OpenLDAP
     saveLabels:
       ad: Authenticate with Active Directory
+      sbx: Authenticate with SambaBox
       freeipa: Authenticate with FreeIPA
       openldap: Authenticate with OpenLDAP
   testAuth:
@@ -3082,6 +3089,7 @@ ldap:
       post: Testing...
       pre: Authenticate
     header: 3. Test and enable authentication
+    headersbx: 2. Test and enable authentication
     helpText: 'Check that everything is configured correctly by testing authentication with your {providerName} account:'
     password:
       labelText: Your Password
@@ -6448,7 +6456,7 @@ formAgentEnvVar:
     notAvailable: "{type} (Not Available)"
     keyValue: Key/Value Pair
     resource: Resource
-    configMap: ConfigMap Key 
+    configMap: ConfigMap Key
     secret: Secret Key
     podField: Pod Field
 
