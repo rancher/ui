@@ -1,25 +1,13 @@
 <div class="accordion-header" style="{{style}}" {{action "doExpand"}}>
   <div class="expand">
     {{#if showExpand}}
-      <i
-        role="button"
-        class="icon icon-play eased btn bg-transparent
-          {{if expanded "icon-rotate-90"}}"
-      >
-        <span class="visually-hidden">
-          Open accordion
-        </span>
-      </i>
+      <i role="button" class="icon icon-play eased btn bg-transparent {{if expanded 'icon-rotate-90'}}">
+      <span class="visually-hidden">Open accordion</span></i>
     {{/if}}
   </div>
   <div class="title">
-    <span class="m-0">
-      {{title}}
-      {{providerName}}
-    </span>
-    <p class="help-block accordion-detail-text">
-      {{detail}}
-    </p>
+    <span class="m-0">{{title}}</span>
+    <p class="help-block accordion-detail-text">{{detail}}</p>
   </div>
   {{#if showStatus}}
     <div class="badge-state {{statusClass}}">
@@ -27,20 +15,15 @@
     </div>
   {{/if}}
   {{#if grafanaUrl}}
-    <div
-      class="pull-right grafana-link pr-20"
-      {{action "goToGrafana" bubbles=false}}
-    >
+    <div class="pull-right grafana-link pr-20" {{action "goToGrafana" bubbles=false}}>
       <div>
         <div class="inline-block vertical-middle grafana"></div>
-        <span class="vertical-middle text-muted">
-          {{t "metricsAction.grafana.label"}}
-        </span>
+        <span class="vertical-middle text-muted">{{t 'metricsAction.grafana.label'}}</span>
       </div>
     </div>
   {{/if}}
 </div>
-<div class="accordion-content {{unless expanded "hide"}}">
+<div class="accordion-content {{unless expanded 'hide'}}">
   {{#if everExpanded}}
     {{yield this}}
   {{/if}}
