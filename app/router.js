@@ -26,7 +26,7 @@ Router.map(function() {
   this.route('not-found', { path: '*path' });
 
   this.route('signup' );
-  this.route('verify', { path: '/verify/:verify_token' });
+  this.route('verify');
   this.route('verify-reset-password', { path: '/verify-reset-password/:verify_token' });
 
   this.route('logout');
