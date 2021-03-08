@@ -65,11 +65,55 @@
       </div>
     </div>
   </div>
-  {{#if (eq endpointSelection "standard")}}
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label pb-5" for="oidc-input-issuer">
+        {{t "authPage.oidc.form.issuer"}}
+        {{field-required}}
+      </label>
+      <div class="input-group">
+        <span class="input-group-addon bg-default">
+          <label>
+            {{protocol}}
+          </label>
+        </span>
+        {{input-url
+          classNames="form-control"
+          id="oidc-input-issuer"
+          isInvalid=(action (mut issuerUrlInvalid))
+          urlWarning=(action (mut issuerUrlWarning))
+          urlError=(action (mut urlError))
+          value=authConfig.issuer
+        }}
+      </div>
+    </div>
+    <div class="col span-6">
+      <label class="acc-label pb-5" for="oidc-input-auth-endpoint">
+        {{t "authPage.oidc.form.authEndpoint"}}
+        {{field-required}}
+      </label>
+      <div class="input-group">
+        <span class="input-group-addon bg-default">
+          <label>
+            {{protocol}}
+          </label>
+        </span>
+        {{input-url
+          classNames="form-control"
+          id="oidc-input-auth-endpoint"
+          isInvalid=(action (mut authEndpointUrlInvalid))
+          urlWarning=(action (mut authEndpointUrlWarning))
+          urlError=(action (mut urlError))
+          value=authConfig.authEndpoint
+        }}
+      </div>
+    </div>
+  </div>
+  {{#if (eq endpointSelection "custom")}}
     <div class="row">
       <div class="col span-6">
-        <label class="acc-label pb-5" for="oidc-input-host">
-          {{t "authPage.oidc.form.host"}}
+        <label class="acc-label pb-5" for="oidc-input-token-endpoint">
+          {{t "authPage.oidc.form.tokenEndpoint"}}
           {{field-required}}
         </label>
         <div class="input-group">
@@ -80,84 +124,52 @@
           </span>
           {{input-url
             classNames="form-control"
-            id="oidc-server-url"
-            isInvalid=(action (mut urlInvalid))
-            urlWarning=(action (mut urlWarning))
+            id="oidc-input-token-endpoint"
+            isInvalid=(action (mut tokenEndpointUrlInvalid))
+            urlWarning=(action (mut tokenEndpointUrlWarning))
             urlError=(action (mut urlError))
-            value=oidcHost
-            disabled=(eq endpointSelection "custom")
+            value=authConfig.tokenEndpoint
           }}
         </div>
-        <div>
-          {{#if urlInvalid}}
-            {{#each urlError as |error|}}
-              <BannerMessage
-                @classNames="banner mt-30"
-                @color="bg-{{error.type}}"
-                @icon="icon-alert"
-                @message={{t error.msg activeValue=serverUrl htmlSafe=true
-                }}
-              />
-            {{/each}}
-          {{/if}}
-        </div>
-      </div>
-      <div class="col span-6">
-        <label class="acc-label pb-5" for="oidc-input-realm">
-          {{t "authPage.oidc.form.realm"}}
-          {{field-required}}
-        </label>
-        {{input
-          id="oidc-input-realm"
-          type="text"
-          value=oidcRealm
-          classNames="form-control"
-          disabled=(eq endpointSelection "custom")
-        }}
-      </div>
-    </div>
-  {{else}}
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label pb-5" for="oidc-input-auth-endpoint">
-          {{t "authPage.oidc.form.authEndpoint"}}
-          {{field-required}}
-        </label>
-        {{input
-          id="oidc-input-auth-endpoint"
-          type="text"
-          value=authConfig.authEndpoint
-          classNames="form-control"
-        }}
-      </div>
-    </div>
-    <div class="row">
-      <div class="col span-6">
-        <label class="acc-label pb-5" for="oidc-input-token-endpoint">
-          {{t "authPage.oidc.form.tokenEndpoint"}}
-          {{field-required}}
-        </label>
-        {{input
-          id="oidc-input-token-endpoint"
-          type="text"
-          value=authConfig.tokenEndpoint
-          classNames="form-control"
-        }}
       </div>
       <div class="col span-6">
         <label class="acc-label pb-5" for="oidc-input-user-endpoint">
           {{t "authPage.oidc.form.userInfoEndpoint"}}
           {{field-required}}
         </label>
-        {{input
-          id="oidc-input-user-endpoint"
-          type="text"
-          value=authConfig.userInfoEndpoint
-          classNames="form-control"
-        }}
+        <div class="input-group">
+          <span class="input-group-addon bg-default">
+            <label>
+              {{protocol}}
+            </label>
+          </span>
+          {{input-url
+            classNames="form-control"
+            id="oidc-input-user-endpoint"
+            isInvalid=(action (mut userInfoEndpointUrlInvalid))
+            urlWarning=(action (mut userInfoEndpointUrlWarning))
+            urlError=(action (mut urlError))
+            value=authConfig.userInfoEndpoint
+          }}
+        </div>
       </div>
     </div>
   {{/if}}
+  <div class="row">
+    <div class="col span-12">
+      {{#if urlError}}
+        {{#each urlError as |error|}}
+          <BannerMessage
+            @classNames="banner"
+            @color="bg-{{error.type}}"
+            @icon="icon-alert"
+            @message={{t error.msg activeValue=authConfig.issuer htmlSafe=true
+            }}
+          />
+        {{/each}}
+      {{/if}}
+    </div>
+  </div>
   <div class="row">
     <div class="col span-6">
       <div class="inline-form">
