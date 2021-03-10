@@ -117,9 +117,6 @@ export default Route.extend(VerifyAuth, {
         if ( get(params, 'code') ) {
           let openers = openersOauth
 
-          if (parsedState.provider === 'azuread'){
-            openers = openersAzure
-          }
           if ( openers.stateMatches(get(parsedState, 'nonce')) ) {
             reply(params.error_description, params.code);
           } else {
@@ -143,7 +140,7 @@ export default Route.extend(VerifyAuth, {
       } catch {
         reply({ err: 'nonce' })
       }
-      if (oauth.stateMatches(parsedState.nonce) || (parsedState.provider === 'azuread' && azure.stateMatches(parsedState.nonce))){
+      if (oauth.stateMatches(parsedState.nonce)){
         const providerType = parsedState.provider
 
         const currentProvider = get(this, 'access.providers').findBy('id', providerType);
