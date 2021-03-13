@@ -1,4 +1,3 @@
----
 languageName: "Deutsch"
 languageContribute: "Helfen Sie bei der Übersetzung von Rancher"
 ##############################
@@ -713,8 +712,7 @@ certificatesPage:
   domainNames:
     labelText: Domainname
     single: '<a href="https://{cn}" target="_blank" rel="nofollow noreferrer noopener">{cn} <i class="icon icon-sm icon-external-link"/></a>'
-    withSan: |
-       
+    withSan: ""
     wildcardSingle: '{cn}'
     wildcardWithSan: |
       {cn} +
@@ -1539,6 +1537,7 @@ loginPage:
     local: ein lokaler Benutzer
     openldap: OpenLDAP
     freeipa: FreeIPA
+    sbx: SambaBox
 machinePage:
   header: Knoten-Treiber
   inactive: Inaktiv
@@ -1692,21 +1691,11 @@ stackPage:
   loadBalancers:
     header: Load Balancer
     detail: 'Load-Balancer-Container, die von diesem Stack getrennt sind'
-    status: |
-      {count, plural,
-      =0 {Kein Balancer} 
-      =1 {# Balancer}
-      other {# Balancer}
-      }
+    status: "{count, plural,\n=0 {Kein Balancer} \n=1 {# Balancer}\nother {# Balancer}\n}\n"
   dnsServices:
     header: DNS-Einträge
     detail: 'Load-Balancer, die von diesem Stack getrennt sind'
-    status: |
-      {count, plural,
-      =0 {Keine Einträge} 
-      =1 {# Eintrag}
-      other {# Einträge}
-      }
+    status: "{count, plural,\n=0 {Keine Einträge} \n=1 {# Eintrag}\nother {# Einträge}\n}\n"
   scalingGroups:
     header: Skalierungsgruppen
     detail: 'Container, die in dieser Skalierungsgruppe vorhanden sind'
@@ -1885,6 +1874,8 @@ ldap:
       openldap: Mit OpenLDAP authentifizieren
       ad: Mit Active Directory authentifizieren
       freeipa: Mit FreeIPA authentifizieren
+      sbx: Authenticate with SambaBox
+    sbx: SambaBox
   header:
     disabled:
       label: "{providerName} ist nicht konfiguriert"
@@ -1979,6 +1970,7 @@ ldap:
         placeholder: versteckter Name
       nestedGroup:
         title: Verschachtelte Gruppenmitgliedschaft
+    helpTextsbx: 'If your schema does not match the standard SambaBox format, you can customize it here.'
   testAuth:
     header: "3. Authentifizierung testen und aktivieren"
     helpText: "Authentifizierung mit dem {providerName} Zugang überprüfen:"

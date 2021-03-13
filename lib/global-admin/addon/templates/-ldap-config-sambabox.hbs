@@ -17,7 +17,7 @@
     {{#accordion-list-item
       classNames="mt-30"
       detail=(t
-        "ldap.accessConfig.subtext1" providerName=(t providerName) htmlSafe=true
+        "ldap.accessConfig.subtext3" providerName=(t providerName) htmlSafe=true
       )
       expand=(action expandFn)
       expandAll=al.expandAll
@@ -235,7 +235,7 @@
     {{#accordion-list-item
       classNames="mt-30"
       detail=(t
-        "ldap.accessConfig.subtext1" providerName=(t providerName) htmlSafe=true
+        "ldap.accessConfig.subtext3" providerName=(t providerName) htmlSafe=true
       )
       expand=(action expandFn)
       expandAll=al.expandAll
@@ -255,7 +255,7 @@
               {{input value=configServers classNames="form-control"}}
             </div>
           </div>
-          <div class="col span-2 mb-0">
+          <div class="col span-2 mb-0" style="display: none;">
             <label class="acc-label pb-5">
               {{t "ldap.accessConfig.port.labelText"}}
             </label>
@@ -470,11 +470,14 @@
     {{/accordion-list-item}}
     {{#accordion-list-item
       title=(t "ldap.customizeSchema.header")
-      detail=(t "ldap.customizeSchema.helpText")
+      detail=(t "ldap.customizeSchema.helpTextsbx")      
+      providerName=(t providerName)
+      displayNoneSambaboxStep2=true
+      style="display:none"
       expandAll=al.expandAll
       expand=(action expandFn)
     }}
-      <section class="">
+      <section class="" style="display:none">
         <div class="row">
           <div class="col span-6">
             <h3>
@@ -670,7 +673,7 @@
       expandOnInit=true
       expanded=true
       showExpand=false
-      title=(t "ldap.testAuth.header")
+      title=(t "ldap.testAuth.headersbx")
     }}
       <section class="">
         <div class="row">
