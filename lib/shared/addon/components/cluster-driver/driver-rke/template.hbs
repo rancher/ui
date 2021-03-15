@@ -37,7 +37,7 @@
 </section>
 
 {{#if (and (not clusterTemplateCreate) notView) }}
-  {{#if (or isEdit (eq step 1))}}
+  {{#if (or (and isEdit (not isPostSave)) (eq step 1))}}
     <section class="cluster-template-select mb-5">
       <div class="row">
         {{#if (or (or model.clusterTemplateRevisions model.clusterTemplateRevision) clusterTemplatesEnforced)}}
@@ -95,7 +95,7 @@
 {{/if}}
 
 {{#if (or clusterTemplateCreate (or (not clusterTemplatesEnforced) (and clusterTemplatesEnforced clusterTemplateRevisionId)))}}
-  {{#if (or isEdit (eq step 1))}}
+  {{#if (or (and isEdit (not isPostSave)) (eq step 1))}}
     {{#accordion-list
        expandAll=(mut forceExpandAll)
        showExpandAll=true
