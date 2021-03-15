@@ -1370,7 +1370,7 @@
 
 {{top-errors errors=allErrors}}
 
-{{#if (or (and notView (eq step 1)) (and isEdit (eq step 2)))}}
+{{#if (or (and notView (eq step 1)) (and (and (not isPostSave) isEdit) (eq step 2)))}}
   {{#if (and clusterTemplatesEnforced (not clusterTemplateRevisionId) )}}
     <section class="mt-20 mb-20">
       <BannerMessage
