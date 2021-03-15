@@ -275,6 +275,9 @@ const rootNav = [
         resourceScope:  'global',
         resource:       [],
         ctx:            [getClusterId],
+        condition() {
+          return get(this, 'cluster.isActive')
+        },
       },
       {
         id:                       'cluster-tools-istio',
@@ -283,6 +286,9 @@ const rootNav = [
         resourceScope:            'global',
         resource:                 [],
         ctx:                      [getClusterId],
+        condition() {
+          return get(this, 'cluster.isActive')
+        },
       },
       {
         id:                       'cluster-tools-cis-scan',
