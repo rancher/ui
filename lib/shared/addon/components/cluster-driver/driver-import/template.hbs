@@ -18,40 +18,24 @@
       />
     </AccordionListItem>
   </AccordionList>
+{{else if (and (eq step 2) (eq originalCluster.state "pending"))}}
+  <ImportCommand @cluster={{cluster}}/>
+{{/if}}
 
-  <TopErrors @errors={{errors}} />
-  <TopErrors @errors={{otherErrors}} />
-  <TopErrors @errors={{clusterErrors}} />
+<TopErrors @errors={{errors}} />
+<TopErrors @errors={{otherErrors}} />
+<TopErrors @errors={{clusterErrors}} />
+
+{{#if (and (eq step 2) (eq originalCluster.state "pending"))}}
+  <div class="footer-actions">
+    <button class="btn bg-primary" type="button" {{action "close"}}>
+      {{t "clusterNew.rke.done"}}
+    </button>
+  </div>
+{{else}}
   <SaveCancel
-    @save={{action "driverSave"}}
+    @save={{"driverSave"}}
     @editing={{isEdit}}
     @cancel={{action "close"}}
   />
-{{else if (and (eq step 2) (eq originalCluster.state "pending"))}}
-  <ImportCommand @cluster={{cluster}}/>
-
-  {{#if isEdit}}
-    {{top-errors errors=otherErrors}}
-    {{top-errors errors=clusterErrors}}
-    {{save-cancel
-      save=(action "driverSave")
-      editing=true
-      cancel=(action "close")
-    }}
-  {{else}}
-    <div class="footer-actions">
-      <button class="btn bg-primary" type="button" {{action "close"}}>
-        {{t "clusterNew.rke.done"}}
-      </button>
-    </div>
-  {{/if}}
-{{else}}
-  {{top-errors errors=errors}}
-  {{top-errors errors=otherErrors}}
-  {{top-errors errors=clusterErrors}}
-  {{save-cancel
-    save=(action "driverSave")
-    editing=isEdit
-    cancel=(action "close")
-  }}
 {{/if}}
