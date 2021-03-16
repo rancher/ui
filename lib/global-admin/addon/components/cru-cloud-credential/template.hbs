@@ -145,11 +145,35 @@
           </p>
         </div>
       </div>
+    {{else if (eq cloudCredentialType "google")}}
+      <div class="row">
+        <div class="col span-12">
+          {{#input-text-file
+            label="clusterNew.googlegke.credential.label"
+            value=config.authEncodedJson
+            accept="text/*, .json"
+            minHeight=60
+            canChangeName=false
+            nameRequired=true
+            placeholder="clusterNew.googlegke.credential.placeholder"
+            concealValue=true as |section|
+          }}
+            {{#if (eq section "description")}}
+              <div class="row">
+                <div class="col span-12 wrap mb-0">
+                  {{t "clusterNew.googlegke.credential.helpText" htmlSafe=true}}
+                </div>
+              </div>
+            {{/if}}
+          {{/input-text-file}}
+        </div>
+      </div>
     {{else if (eq cloudCredentialType "linode")}}
       <div class="row">
         <div class="col span-6">
           <label class="acc-label" for="linode-token">
-            {{t "modalAddCloudKey.linode.token.label"}}{{field-required}}
+            {{t "modalAddCloudKey.linode.token.label"}}
+            {{field-required}}
           </label>
           {{input
             type="password"
