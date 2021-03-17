@@ -1,0 +1,185 @@
+<AccordionList @showExpandAll="false" as |al expandFn|>
+  {{#if (gte step 1)}}
+    <AccordionListItem
+      @title={{t "clusterNew.googlegke.access.title"}}
+      @detail={{t "clusterNew.googlegke.access.detail"}}
+      @expandAll={{expandAll}}
+      @expand={{action expandFn}}
+      @expandOnInit={{true}}
+    >
+      <div class="row">
+        <div class="col span-3">
+          <label class="acc-label">
+            {{t "clusterNew.googlegke.access.projectId.label"}}<FieldRequired />
+          </label>
+          {{#if (eq step 1)}}
+            {{input type="text" value=config.projectID classNames="form-control"
+            }}
+          {{else}}
+            <div>
+              {{config.projectID}}
+            </div>
+          {{/if}}
+        </div>
+        {{#if (eq step 1)}}
+          <FormAuthCloudCredential
+            @cloudCredentialKey="gkeConfig.googleCredentialSecret"
+            @mode={{mode}}
+            @cancel={{action "close"}}
+            @cloudCredentials={{cloudCredentials}}
+            @createLabel="clusterNew.googlegke.access.next"
+            @driverName="google"
+            @parseAndCollectErrors={{action "errorHandler"}}
+            @finishAndSelectCloudCredential={{action
+              "finishAndSelectCloudCredential"
+            }}
+            @primaryResource={{primaryResource}}
+            @progressStep={{action "checkServiceAccount"}}
+            @disableSave={{not config.projectID}}
+          />
+        {{else}}
+          <div class="row">
+            <div class="col span-4">
+              <label class="acc-label">
+                {{t "clusterNew.googlegke.access.cloudCred"}}
+              </label>
+              <div>
+                {{config.googleCredentialSecret}}
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </AccordionListItem>
+  {{/if}}
+  {{#if (gte step 2)}}
+    <AccordionListItem
+      @title={{t "clusterNew.googlegke.import.locations.title"}}
+      @detail={{t "clusterNew.googlegke.import.locations.detail"}}
+      @expandAll={{expandAll}}
+      @expand={{action expandFn}}
+      @expandOnInit={{true}}
+    >
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "clusterNew.googlegke.locationType.label"}}
+          </label>
+          <div class="radio">
+            <label>
+              {{radio-button selection=locationType value="zonal"}}
+              {{t "clusterNew.googlegke.locationType.zone"}}
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button selection=locationType value="regional"}}
+              {{t "clusterNew.googlegke.locationType.region"}}
+            </label>
+          </div>
+        </div>
+        {{#if (eq locationType "zonal")}}
+          <div class="col span-4">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.zone.label"}}
+            </label>
+            <NewSelect
+              @classNames="form-control select-algin-checkbox"
+              @content={{zoneChoices}}
+              @disabled={{editing}}
+              @localizedPrompt={{true}}
+              @optionLabelPath="name"
+              @optionValuePath="name"
+              @prompt="clusterNew.googlegke.zone.prompt"
+              @value={{config.zone}}
+            />
+          </div>
+        {{/if}}
+        {{#if (eq locationType "regional")}}
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.region.label"}}
+            </label>
+            <NewSelect
+              @classNames="form-control select-algin-checkbox"
+              @content={{regionChoices}}
+              @disabled={{editing}}
+              @localizedPrompt={{true}}
+              @optionLabelPath="name"
+              @optionValuePath="name"
+              @prompt="clusterNew.googlegke.region.prompt"
+              @value={{mut config.region}}
+            />
+          </div>
+        {{/if}}
+      </div>
+      {{#if (eq step 2)}}
+        <SaveCancel
+          @createLabel="clusterNew.googlegke.import.clusterSelect.loadLabel"
+          @save={{action "loadClusters"}}
+          @cancel={{action "close"}}
+        />
+      {{/if}}
+    </AccordionListItem>
+  {{/if}}
+  {{#if (eq step 3)}}
+    <AccordionListItem
+      @title={{t "clusterNew.googlegke.import.clusterSelect.title"}}
+      @detail={{t "clusterNew.googlegke.import.clusterSelect.detail"}}
+      @expandAll={{expandAll}}
+      @expand={{action expandFn}}
+      @expandOnInit={{true}}
+    >
+      <div class="row">
+        <div class="col span-6">
+          {{#if loadingClusters}}
+            <section class="horizontal-form">
+              <div class="text-center">
+                <i class="icon icon-spinner icon-spin"></i>
+              </div>
+            </section>
+          {{else if loadFailedAllClusters}}
+            <label class="acc-label" for="">
+              {{t "clusterNew.googlegke.import.clusterSelect.input.label"}}
+              {{field-required}}
+            </label>
+            <Input
+              @type="text"
+              @classNames="form-control"
+              @value={{config.clusterName}}
+            />
+          {{else}}
+            <label class="acc-label" for="">
+              {{t "clusterNew.googlegke.import.clusterSelect.select.label"}}
+              {{field-required}}
+            </label>
+            <SearchableSelect
+              class="form-control"
+              @value={{mut config.clusterName}}
+              @content={{allClusters}}
+              @allowCustom={{true}}
+            />
+          {{/if}}
+        </div>
+      </div>
+      {{#if (eq step 3)}}
+        <SaveCancel
+          @createLabel="clusterNew.googlegke.import.clusterSelect.createLabel"
+          @save={{action "driverSave"}}
+          @saveDisabled={{disableImport}}
+          @editing={{isEdit}}
+          @cancel={{action "close"}}
+        />
+        {{/if}}
+    </AccordionListItem>
+  {{/if}}
+  {{#if (eq step 4)}}
+    <ImportCommand @cluster={{primaryResource}} />
+    <div class="footer-actions">
+      <button class="btn bg-primary" type="button" {{action "close"}}>
+        {{t "clusterNew.rke.done"}}
+      </button>
+    </div>
+  {{/if}}
+  <TopErrors @errors={{mut allErrors}} />
+</AccordionList>
