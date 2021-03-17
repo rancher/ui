@@ -1,0 +1,556 @@
+<AccordionList @showExpandAll="false" as |al expandFn|>
+  {{#if (and (eq step 5) importedClusterIsPending)}}
+    <ImportCommand
+      @cluster={{primaryResource}}
+      @showClusterAdminWarning={{false}}
+      @showGkeksClusterWarning={{true}}
+    />
+    <div class="footer-actions">
+      <button class="btn bg-primary" type="button" {{action "close"}}>
+        {{t "clusterNew.rke.done"}}
+      </button>
+    </div>
+  {{/if}}
+  {{#if (gte step 1)}}
+    <AccordionListItem
+      @title={{t "clusterNew.googlegke.access.title"}}
+      @detail={{t "clusterNew.googlegke.access.detail"}}
+      @expandAll={{expandAll}}
+      @expand={{action expandFn}}
+      @expandOnInit={{true}}
+    >
+      <div class="row">
+        <div class="col span-3">
+          <label class="acc-label">
+            {{t "clusterNew.googlegke.access.projectId.label"}}
+            <FieldRequired />
+          </label>
+          <InputOrDisplay
+            @editable={{and isNew (eq step 1)}}
+            @value={{config.projectID}}
+          >
+            {{input type="text" value=config.projectID classNames="form-control"
+            }}
+          </InputOrDisplay>
+        </div>
+        {{#if (eq step 1)}}
+          <FormAuthCloudCredential
+            @cloudCredentialKey="gkeConfig.googleCredentialSecret"
+            @mode={{mode}}
+            @cancel={{action "close"}}
+            @cloudCredentials={{cloudCredentials}}
+            @createLabel="clusterNew.googlegke.access.next"
+            @driverName="google"
+            @parseAndCollectErrors={{action "errorHandler"}}
+            @finishAndSelectCloudCredential={{action
+              "finishAndSelectCloudCredential"
+            }}
+            @primaryResource={{primaryResource}}
+            @progressStep={{action "loadZones"}}
+            @disableSave={{not config.projectID}}
+          />
+        {{else}}
+          <div class="row">
+            <div class="col span-4">
+              <label class="acc-label">
+                {{t "clusterNew.googlegke.access.cloudCred"}}
+              </label>
+              <div>
+                {{selectedCloudCredential.displayName}}
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </AccordionListItem>
+    <TopErrors @errors={{allErrors}} />
+  {{/if}}
+  {{#if (gte step 2)}}
+    <AccordionListItem
+      @title={{t "clusterNew.googlegke.clusterLocation.title"}}
+      @detail={{t "clusterNew.googlegke.clusterLocation.detail"}}
+      @expandAll={{expandAll}}
+      @expand={{action expandFn}}
+      @expandOnInit={{true}}
+    >
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "clusterNew.googlegke.locationType.label"}}
+          </label>
+          <InputOrDisplay
+            @editable={{and isNew (eq step 2)}}
+            @value={{locationType}}
+          >
+            <div class="radio">
+              <label>
+                {{radio-button selection=locationType value="zonal"}}
+                {{t "clusterNew.googlegke.locationType.zone"}}
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                {{radio-button selection=locationType value="regional"}}
+                {{t "clusterNew.googlegke.locationType.region"}}
+              </label>
+            </div>
+          </InputOrDisplay>
+        </div>
+        {{#if (eq locationType "zonal")}}
+          <div class="col span-4">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.zone.label"}}
+            </label>
+            <InputOrDisplay
+              @editable={{and isNew (eq step 2)}}
+              @value={{config.zone}}
+            >
+              <NewSelect
+                @classNames="form-control select-algin-checkbox"
+                @content={{zoneChoices}}
+                @disabled={{editing}}
+                @localizedPrompt={{true}}
+                @optionLabelPath="name"
+                @optionValuePath="name"
+                @prompt="clusterNew.googlegke.zone.prompt"
+                @value={{config.zone}}
+              />
+            </InputOrDisplay>
+          </div>
+          <div class="col span-2">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.locations.label"}}
+            </label>
+            {{#each locationContent as |location|}}
+              <div class="checkbox">
+                <label>
+                  {{input type="checkbox" checked=location.checked}}
+                  {{location.name}}
+                </label>
+              </div>
+            {{/each}}
+          </div>
+        {{/if}}
+        {{#if (eq locationType "regional")}}
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.region.label"}}
+            </label>
+            <InputOrDisplay
+              @editable={{and isNew (eq step 2)}}
+              @value={{config.region}}
+            >
+              <NewSelect
+                @classNames="form-control select-algin-checkbox"
+                @content={{regionChoices}}
+                @disabled={{editing}}
+                @localizedPrompt={{true}}
+                @optionLabelPath="name"
+                @optionValuePath="name"
+                @prompt="clusterNew.googlegke.region.prompt"
+                @value={{mut config.region}}
+              />
+            </InputOrDisplay>
+          </div>
+        {{/if}}
+      </div>
+      {{#if (eq step 2)}}
+        <SaveCancel
+          @createLabel="clusterNew.googlegke.clusterLocation.createLabel"
+          @savingLabel="clusterNew.googlegke.clusterLocation.savingLabel"
+          @save={{action "checkServiceAccount"}}
+          @cancel={{close}}
+        />
+      {{/if}}
+    </AccordionListItem>
+  {{/if}}
+  {{#if (gte step 3)}}
+    <AccordionListItem
+      @title={{t "clusterNew.googlegke.clusterOption.title"}}
+      @detail={{t "clusterNew.googlegke.clusterOption.detail"}}
+      @expandAll={{expandAll}}
+      @expand={{action expandFn}}
+      @expandOnInit={{true}}
+    >
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "clusterNew.googlegke.masterVersion.label"}}
+          </label>
+          <NewSelect
+            @classNames="form-control"
+            @content={{versionChoices}}
+            @value={{config.kubernetesVersion}}
+          />
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "clusterNew.googlegke.clusterIpv4Cidr.label"}}
+          </label>
+          <InputOrDisplay @editable={{isNew}} @value={{config.clusterIpv4Cidr}}>
+            <InputCidr @value={{mut config.clusterIpv4Cidr}} />
+          </InputOrDisplay>
+        </div>
+      </div>
+      <section class="networks">
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.network.label"}}
+            </label>
+            <InputOrDisplay @editable={{isNew}} @value={{config.network}}>
+              {{searchable-select
+                content=networkContent
+                classNames="form-control"
+                value=config.network
+                optionValuePath="name"
+                optionLabelPath="name"
+              }}
+            </InputOrDisplay>
+          </div>
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t
+                (if
+                  config.ipAllocationPolicy.useIpAliases
+                  "clusterNew.googlegke.nodeSubNetwork.label"
+                  "clusterNew.googlegke.subNetwork.label"
+                )
+              }}
+            </label>
+            <InputOrDisplay @editable={{isNew}} @value={{config.subnetwork}}>
+              {{searchable-select
+                content=subNetworkContent
+                classNames="form-control"
+                value=config.subnetwork
+                readOnly=(lte subNetworkContent.length 0)
+              }}
+            </InputOrDisplay>
+          </div>
+        </div>
+      </section>
+      <section class="ip-allocation-policies mb-20">
+        <div class="row">
+          <div class="col span-6">
+            <div class="checkbox">
+              <label>
+                {{input
+                  type="checkbox"
+                  checked=config.ipAllocationPolicy.useIpAliases
+                  disabled=(or
+                    config.privateClusterConfig.enablePrivateNodes editing
+                  )
+                }}
+                {{t "clusterNew.googlegke.useIpAliases.label"}}
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                {{input
+                  type="checkbox"
+                  checked=config.networkPolicyEnabled
+                  disabled=editing
+                }}
+                {{t "clusterNew.googlegke.networkPolicy.label"}}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          {{#if config.ipAllocationPolicy.createSubnetwork}}
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t "clusterNew.googlegke.ipPolicySubnetworkName.label"}}
+                <FieldRequired />
+              </label>
+              <InputOrDisplay
+                @editable={{isNew}}
+                @value={{config.ipAllocationPolicy.subnetworkName}}
+              >
+                {{input
+                  value=config.ipAllocationPolicy.subnetworkName
+                  placeholder=(t
+                    "clusterNew.googlegke.ipPolicySubnetworkName.placeholder"
+                  )
+                  disabled=(not config.ipAllocationPolicy.createSubnetwork)
+                }}
+              </InputOrDisplay>
+            </div>
+          {{else}}
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t
+                  "clusterNew.googlegke.ipPolicyClusterSecondaryRangeName.label"
+                }}
+              </label>
+              <InputOrDisplay
+                @editable={{isNew}}
+                @value={{config.ipAllocationPolicy.clusterSecondaryRangeName}}
+              >
+                {{searchable-select
+                  content=secondaryIpRangeContent
+                  classNames="form-control"
+                  value=config.ipAllocationPolicy.clusterSecondaryRangeName
+                  readOnly=disableSecondaryRangeNames
+                  placeholder=(t
+                    "clusterNew.googlegke.ipPolicyClusterSecondaryRangeName.placeholder"
+                  )
+                }}
+              </InputOrDisplay>
+            </div>
+          {{/if}}
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t
+                "clusterNew.googlegke.ipAllocationPolicy.clusterIpv4CidrBlock.accesslabel"
+              }}
+            </label>
+            <InputOrDisplay
+              @editable={{isNew}}
+              @value={{config.ipAllocationPolicy.clusterIpv4CidrBlock}}
+            >
+              <InputCidr
+                @value={{mut config.ipAllocationPolicy.clusterIpv4CidrBlock}}
+                @disabled={{not config.ipAllocationPolicy.useIpAliases}}
+                @placeholder={{t
+                  "clusterNew.googlegke.ipAllocationPolicy.clusterIpv4CidrBlock.placeholder"
+                }}
+              />
+            </InputOrDisplay>
+          </div>
+        </div>
+        <div class="row">
+          {{#if config.ipAllocationPolicy.createSubnetwork}}
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t "clusterNew.googlegke.ipPolicyNodeIpv4CidrBlock.label"}}
+              </label>
+              <InputOrDisplay
+                @editable={{isNew}}
+                @value={{config.ipAllocationPolicy.nodeIpv4CidrBlock}}
+              >
+                <InputCidr
+                  @value={{mut config.ipAllocationPolicy.nodeIpv4CidrBlock}}
+                  @disabled={{not config.ipAllocationPolicy.createSubnetwork}}
+                  @placeholder={{t
+                    "clusterNew.googlegke.ipPolicyNodeIpv4CidrBlock.placeholder"
+                  }}
+                />
+              </InputOrDisplay>
+            </div>
+          {{else}}
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t
+                  "clusterNew.googlegke.ipPolicyServicesSecondaryRangeName.label"
+                }}
+              </label>
+              <InputOrDisplay
+                @editable={{isNew}}
+                @value={{config.ipAllocationPolicy.servicesSecondaryRangeName}}
+              >
+                {{searchable-select
+                  content=secondaryIpRangeContent
+                  classNames="form-control"
+                  value=config.ipAllocationPolicy.servicesSecondaryRangeName
+                  readOnly=disableSecondaryRangeNames
+                  placeholder=(t
+                    "clusterNew.googlegke.ipPolicyServicesSecondaryRangeName.placeholder"
+                  )
+                }}
+              </InputOrDisplay>
+            </div>
+          {{/if}}
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.label"}}
+            </label>
+            <InputOrDisplay
+              @editable={{isNew}}
+              @value={{config.ipAllocationPolicy.servicesIpv4CidrBlock}}
+            >
+              <InputCidr
+                @value={{mut config.ipAllocationPolicy.servicesIpv4CidrBlock}}
+                @disabled={{not config.ipAllocationPolicy.useIpAliases}}
+                @placeholder={{t
+                  "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.placeholder"
+                }}
+              />
+            </InputOrDisplay>
+          </div>
+        </div>
+      </section>
+      <AdvancedSection @advanced={{clusterAdvanced}}>
+        <CruPrivateCluster
+          @config={{mut config.privateClusterConfig}}
+          @editing={{editing}}
+          @mode={{mode}}
+          @isNew={{isNew}}
+        />
+        <CruMasterAuthNetwork
+          @config={{mut config.masterAuthorizedNetworks}}
+          @isNew={{isNew}}
+          @editing={{editing}}
+          @addMSAN={{action "addMSAN"}}
+          @removeMSAN={{action "removeMSAN"}}
+        />
+      </AdvancedSection>
+    </AccordionListItem>
+    <AccordionListItem
+      @title={{t "clusterNew.googlegke.clusterExtras.title"}}
+      @detail={{t "clusterNew.googlegke.clusterExtras.detail"}}
+      @expandAll={{expandAll}}
+      @expand={{action expandFn}}
+      @expandOnInit={{true}}
+    >
+      <section class="cluster-addons">
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.clusterAddons.label"}}
+            </label>
+            <div class="checkbox">
+              <label>
+                {{input
+                  type="checkbox"
+                  checked=config.clusterAddons.horizontalPodAutoscaling
+                }}
+                {{t
+                  "clusterNew.googlegke.clusterAddons.horizontalPodAutoscaling"
+                }}
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                {{input
+                  type="checkbox"
+                  checked=config.clusterAddons.httpLoadBalancing
+                }}
+                {{t "clusterNew.googlegke.clusterAddons.httpLoadBalancing"}}
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                {{input
+                  type="checkbox"
+                  checked=config.clusterAddons.networkPolicyConfig
+                }}
+                {{t "clusterNew.googlegke.clusterAddons.networkPolicyConfig"}}
+              </label>
+            </div>
+          </div>
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.clusterFeatures.label"}}
+            </label>
+            <div class="checkbox">
+              <label class={{if editing "text-muted"}}>
+                {{input
+                  type="checkbox"
+                  checked=config.enableKubernetesAlpha
+                  disabled=editing
+                }}
+                {{t "clusterNew.googlegke.alphaFeatures.label"}}
+              </label>
+            </div>
+            {{#if config.enableKubernetesAlpha}}
+              <BannerMessage
+                @icon="icon-alert"
+                @color="bg-warning mb-10"
+                @message={{t
+                  "clusterNew.googlegke.alphaFeatures.warning"
+                  htmlSafe=true
+                }}
+              />
+            {{/if}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.loggingService.label"}}
+            </label>
+            <NewSelect
+              @classNames="form-control select-algin-checkbox"
+              @content={{loggingServiceChoices}}
+              @value={{config.loggingService}}
+            />
+          </div>
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.monitoringService.label"}}
+            </label>
+            <NewSelect
+              @classNames="form-control select-algin-checkbox"
+              @content={{monitoringServiceChoices}}
+              @value={{config.monitoringService}}
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.maintenanceWindow.label"}}
+            </label>
+            <div class="form-control-static">
+              <NewSelect
+                @classNames="form-control"
+                @content={{maintenanceWindowTimes}}
+                @value={{mut config.maintenanceWindow}}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </AccordionListItem>
+    <AccordionListItem
+      @title={{t "clusterNew.googlegke.nodePool.title"}}
+      @detail={{t "clusterNew.googlegke.nodePool.detail"}}
+      @expandAll={{expandAll}}
+      @expand={{action expandFn}}
+      @expandOnInit={{true}}
+    >
+      <div class="row">
+        {{#each config.nodePools as |nodePool|}}
+          <GkeNodePoolRow
+            @originalCluster={{model.originalCluster}}
+            @isNew={{isNew}}
+            @machineTypes={{machineTypes}}
+            @mode={{mode}}
+            @model={{nodePool}}
+            @removeNodePool={{action "removeNodePool"}}
+            @nodeVersions={{versions.validNodeVersions}}
+            @controlPlaneVersion={{config.kubernetesVersion}}
+            @cluster={{cluster}}
+          />
+        {{else}}
+          <div class="p-20">
+            {{t "clusterNew.googlegke.nodePool.noNodes"}}
+          </div>
+        {{/each}}
+      </div>
+      <div class="row mt-15">
+        <button
+          class="btn bg-link icon-btn pull-left"
+          type="button"
+          {{action "addNodePool"}}
+        >
+          <span class="darken">
+            <i class="icon icon-plus text-small"></i>
+          </span>
+          <span>
+            {{t "clusterNew.googlegke.nodePool.addLabel"}}
+          </span>
+        </button>
+      </div>
+    </AccordionListItem>
+    <TopErrors @errors={{allErrors}} />
+    <SaveCancel
+      @editing={{eq mode "edit"}}
+      @save={{action "driverSave"}}
+      @cancel={{close}}
+      @saving={{saving}}
+      @saved={{saved}}
+    />
+  {{/if}}
+</AccordionList>
