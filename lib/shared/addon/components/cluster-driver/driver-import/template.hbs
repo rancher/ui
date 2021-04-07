@@ -1,4 +1,4 @@
-{{#if (and (eq step 1) (or isK3sCluster isRke2Cluster))}}
+{{#if (and (eq step 1) (and (or isK3sCluster isRke2Cluster) (not isDockerCluster)))}}
   <AccordionList @showExpandAll={{false}} as |al expandFn|>
     <AccordionListItem
       @title={{t "managedImportClusterInfo.title" provider=cluster.displayProvider}}
