@@ -1,38 +1,63 @@
 <div class="row">
-  {{!-- <div class="col span-6 clip vertical-middle"> --}}
-  {{#if (and canChangeName shouldChangeName)}}
-    {{input value=name placeholder=(if namePlaceholder (t namePlaceholder) "")}}
-  {{else}}
-    <h4 class="mb-0 vertical-middle">
-      {{#if label}}
-        {{t label}}
-      {{else}}
-        {{name}}
-      {{/if}}
-      {{#if nameRequired}}{{field-required}}{{/if}}
-      {{#if canChangeName}}
-        <button class="btn btn-sm bg-link p-0 pl-10 acc-label-hover" type="button" {{action "wantsChange"}}>{{t "action.edit"}}</button>
-      {{/if}}
-    </h4>
-  {{/if}}
-  {{!-- </div> --}}
   <div class="pull-right vertical-middle">
     {{#if canUpload}}
       {{#if showUploadLabel}}
-        <button class="btn bg-link icon-btn" disabled={{disabled}} type="button" {{action "click"}}>
-          <span class="darken"><i class="icon icon-upload text-small"/></span>
-          <span>{{t "inputTextFile.tooltip"}}</span>
+        <button
+          class="btn bg-link icon-btn"
+          disabled={{disabled}}
+          type="button"
+          {{action "click"}}
+        >
+          <span class="darken">
+            <i class="icon icon-upload text-small"></i>
+          </span>
+          <span>
+            {{t "inputTextFile.tooltip"}}
+          </span>
         </button>
       {{else}}
-        {{#tooltip-element type="tooltip-basic" model=(t "inputTextFile.tooltip") tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="inputTextFile"}}
-          <button type="button" class="btn bg-link" {{action "click"}}><i class="icon icon-upload"></i></button>
+        {{#tooltip-element
+          type="tooltip-basic"
+          model=(t "inputTextFile.tooltip")
+          tooltipTemplate="tooltip-static"
+          aria-describedby="tooltip-base"
+          tooltipFor="inputTextFile"
+        }}
+          <button type="button" class="btn bg-link" {{action "click"}}>
+            <i class="icon icon-upload"></i>
+          </button>
         {{/tooltip-element}}
       {{/if}}
     {{/if}}
     {{yield}}
   </div>
+  <div class="col span-6 clip vertical-middle mt-5 mb-5">
+    {{#if (and canChangeName shouldChangeName)}}
+      {{input value=name placeholder=(if namePlaceholder (t namePlaceholder) "")}}
+    {{else}}
+      <h4 class="mb-0">
+        {{#if label}}
+          {{t label}}
+        {{else}}
+          {{name}}
+        {{/if}}
+        {{#if nameRequired}}
+          {{field-required}}
+        {{/if}}
+        {{#if canChangeName}}
+          <button
+            class="btn btn-sm bg-link acc-label-hover"
+            type="button"
+            {{action "wantsChange"}}
+          >
+            {{t "action.edit"}}
+          </button>
+        {{/if}}
+      </h4>
+    {{/if}}
+  </div>
 </div>
-<hr/>
+<hr class="mt-10 mb-10"/>
 <div class="row">
   <div class="col span-12 m-0 p-0">
     {{textarea-autogrow
@@ -47,4 +72,9 @@
   </div>
 </div>
 {{yield "description"}}
-<input type="file" accept="{{actualAccept}}" multiple={{multiple}} class="hide">
+<input
+  type="file"
+  accept="{{actualAccept}}"
+  multiple={{multiple}}
+  class="hide"
+/>
