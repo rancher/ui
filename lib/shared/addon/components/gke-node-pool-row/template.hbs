@@ -1,0 +1,309 @@
+<div class="gke-node-pool-row box mt-20">
+  <div class="row">
+    <div class="pull-right">
+      <button
+        class="btn bg-transparent text-small vertical-middle"
+        type="button"
+        {{action removeNodePool model}}
+      >
+        {{t "clusterNew.googlegke.nodePool.remove"}}
+      </button>
+    </div>
+  </div>
+  <section class="node-details">
+    <h4 class="mb-0">
+      {{t "clusterNew.googlegke.nodePools.nodes.title"}}
+    </h4>
+    <hr />
+    <div class="col span-4">
+      <label class="acc-label">
+        {{t "clusterNew.googlegke.masterVersion.label"}}
+      </label>
+      {{!-- <NewSelect
+        @classNames="form-control"
+        @content={{versionChoices}}
+        @value={{mut model.version}}
+      /> --}}
+      {{#if upgradeAvailable}}
+        <div class="checkbox form-control-static">
+          <label class="acc-label">
+            <Input
+              @type="checkbox"
+              @checked={{mut upgradeVersion}}
+              @classNames="form-control"
+            />
+            {{t
+              "nodeGroupRow.version.upgrade"
+              from=model.version
+              version=controlPlaneVersion
+            }}
+          </label>
+        </div>
+      {{else}}
+        <div>
+          {{model.version}}
+          {{#if showNodeUpgradePreventionReason}}
+            <div class="help-block">
+              {{t "nodeGroupRow.version.warning"}}
+            </div>
+          {{/if}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="row">
+      <div class="col span-4">
+        <label class="acc-label">
+          {{t "clusterNew.googlegke.imageType.label"}}
+        </label>
+        <SearchableSelect
+          @content={{imageTypeContent}}
+          @classNames="form-control"
+          @value={{mut model.config.imageType}}
+          @localizedLabel={{true}}
+        />
+      </div>
+      <div class="col span-4">
+        <label class="acc-label">
+          {{t "clusterNew.googlegke.machineType.label"}}
+        </label>
+        <InputOrDisplay
+          @editable={{isNewNodePool}}
+          @value={{editedMachineChoice.displayName}}
+        >
+          <NewSelect
+            @classNames="form-control"
+            @optionValuePath="name"
+            @optionLabelPath="displayName"
+            @optionGroupPath="group"
+            @content={{machineChoices}}
+            @value={{mut model.config.machineType}}
+            @prompt="clusterNew.googlegke.machineType.prompt"
+            @localizedPrompt={{true}}
+          />
+        </InputOrDisplay>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-4">
+        <label class="acc-label">
+          {{t "clusterNew.googlegke.diskType.label"}}
+        </label>
+        <InputOrDisplay
+          @editable={{isNewNodePool}}
+          @value={{model.config.diskType}}
+        >
+          <SearchableSelect
+            @content={{diskTypeContent}}
+            @classNames="form-control"
+            @value={{mut model.config.diskType}}
+            @localizedLabel={{true}}
+            @readOnly={{editingExistingNodePool}}
+          />
+        </InputOrDisplay>
+      </div>
+      <div class="col span-4">
+        <label class="acc-label">
+          {{t "clusterNew.googlegke.diskSizeGb.label"}}
+        </label>
+        <div class="input-group">
+          {{#if editingExistingNodePool}}
+            {{model.config.diskSizeGb}}{{t "generic.gigabyte"}}
+          {{else}}
+            <InputNumber @min={{10}} @value={{model.config.diskSizeGb}} />
+            <span class="input-group-addon bg-default">
+              {{t "generic.gigabyte"}}
+            </span>
+          {{/if}}
+        </div>
+      </div>
+      <div class="col span-4">
+        <label class="acc-label">
+          {{t "clusterNew.googlegke.localSsdCount.label"}}
+        </label>
+        <div class="input-group">
+          {{#if editingExistingNodePool}}
+            {{model.config.localSsdCount}}{{t "generic.gigabyte"}}
+          {{else}}
+            <InputInteger
+              @min={{0}}
+              @value={{mut model.config.localSsdCount}}
+            />
+            <span class="input-group-addon bg-default">
+              {{t "generic.gigabyte"}}
+            </span>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <div class="checkbox">
+          <label>
+            {{input
+              type="checkbox"
+              checked=model.config.preemptible
+              disabled=editingExistingNodePool
+            }}
+            {{t "clusterNew.googlegke.preemptible.label"}}
+          </label>
+        </div>
+      </div>
+    </div>
+    <FormGkeTaints @taints={{taints}} @editable={{isNewNodePool}} />
+    <div class="row mt-20">
+      <div class="col span-12 mb-0">
+        <label class="acc-label">
+          {{t "clusterNew.googlegke.nodeLabels.label"}}
+        </label>
+        <FormKeyValue
+          @initialMap={{labels}}
+          @changed={{action "setNodeLabels"}}
+          @addActionLabel="clusterNew.googlegke.nodeLabels.addAction"
+          @editing={{isNewNodePool}}
+        />
+      </div>
+    </div>
+  </section>
+  <section class="group-details mt-30 mb-30">
+    <h4 class="mb-0">
+      {{t "clusterNew.googlegke.nodePools.groups.title"}}
+    </h4>
+    <hr />
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "clusterNew.googlegke.nodePools.name.label"}}
+          {{#if (or isNewNodePool editingExistingNodePool)}}
+            {{field-required}}
+          {{/if}}
+        </label>
+        <InputOrDisplay @editable={{isNewNodePool}} @value={{model.name}}>
+          <Input
+            @type="text"
+            @value={{mut model.name}}
+            @classNames="form-control"
+          />
+        </InputOrDisplay>
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "clusterNew.googlegke.nodePools.initialNodeCount.label"}}
+        </label>
+        <InputNumber
+          @value={{mut model.initialNodeCount}}
+          @min={{1}}
+          @classNames="form-control"
+        />
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "clusterNew.googlegke.nodePools.maxPodsConstraint.label"}}
+        </label>
+        <InputNumber
+          @value={{mut model.maxPodsConstraint}}
+          @min={{1}}
+          @classNames="form-control"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6 mt-25">
+        <div class="form-control-static">
+          <div class="checkbox">
+            <label>
+              {{input type="checkbox" checked=model.autoscaling.enabled}}
+              {{t "clusterNew.googlegke.clusterAddons.horizontalPodAutoscaling"
+              }}
+            </label>
+          </div>
+        </div>
+        <div class="form-control-static">
+          <div class="checkbox">
+            <label>
+              {{input type="checkbox" checked=model.management.autoRepair}}
+              {{t "clusterNew.googlegke.enableAutoRepair.label"}}
+            </label>
+          </div>
+        </div>
+        <div class="form-control-static">
+          <div class="checkbox">
+            <label>
+              {{input type="checkbox" checked=model.management.autoUpgrade}}
+              {{t "clusterNew.googlegke.enableAutoUpgrade.label"}}
+            </label>
+          </div>
+        </div>
+      </div>
+      {{#if model.autoscaling.enabled}}
+        <div class="col span-3">
+          <label class="acc-label" for="input-min-node-count">
+            {{t "clusterNew.googlegke.minNodeCount.label"}}
+          </label>
+          <InputNumber
+            id="input-min-node-count"
+            @value={{mut model.autoscaling.minNodeCount}}
+            @min={{1}}
+            @max={{model.autoscaling.minNodeCount}}
+            @classNames="form-control"
+          />
+        </div>
+        <div class="col span-3">
+          <label class="acc-label" for="input-max-node-count">
+            {{t "clusterNew.googlegke.maxNodeCount.label"}}
+          </label>
+          <InputNumber
+            id="input-max-node-count"
+            @value={{mut model.autoscaling.maxNodeCount}}
+            @min={{model.autoscaling.minNodeCount}}
+            @classNames="form-control"
+          />
+        </div>
+      {{/if}}
+    </div>
+  </section>
+  <AdvancedSection @advanced={{nodeAdvanced}}>
+    <div class="row mt-20">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "clusterNew.googlegke.oauthScopes.label"}}
+        </label>
+        <div class="radio">
+          <label>
+            <RadioButton
+              @selection={{mut oauthScopesSelection}}
+              @value="default"
+              @disabled={{editingExistingNodePool}}
+            />
+            {{t "clusterNew.googlegke.oauthScopes.default"}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <RadioButton
+              @selection={{mut oauthScopesSelection}}
+              @value="full"
+              @disabled={{editingExistingNodePool}}
+            />
+            {{t "clusterNew.googlegke.oauthScopes.full"}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <RadioButton
+              @selection={{mut oauthScopesSelection}}
+              @value="custom"
+              @disabled={{editingExistingNodePool}}
+            />
+            {{t "clusterNew.googlegke.oauthScopes.custom"}}
+          </label>
+        </div>
+      </div>
+      {{#if (eq oauthScopesSelection "custom")}}
+        <GkeAccessScope
+          @model={{scopeConfig}}
+          @readOnly={{editingExistingNodePool}}
+        />
+      {{/if}}
+    </div>
+  </AdvancedSection>
+</div>

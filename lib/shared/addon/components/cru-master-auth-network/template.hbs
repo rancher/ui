@@ -1,0 +1,73 @@
+<div class="row">
+  <div class="col span-6">
+    <div class="form-control-static">
+      <div class="checkbox">
+        <label>
+          {{input type="checkbox" checked=config.enabled disabled=editing}}
+          {{t "clusterNew.googlegke.enableMasterAuthorizedNetwork.label"}}
+        </label>
+      </div>
+    </div>
+  </div>
+  {{#if config.enabled}}
+    <div class="col span-6">
+      {{#each config.cidrBlocks as |network index|}}
+        <div class="row">
+          <div class="col span-5">
+            {{#if (eq index 0)}}
+              <label class="acc-label">
+                {{t "generic.displayName"}}
+              </label>
+            {{/if}}
+            {{input
+              type="text"
+              value=network.displayName
+              classNames="form-control"
+            }}
+          </div>
+          <div class="col span-6 ml-10">
+            {{#if (eq index 0)}}
+              <label class="acc-label">
+                {{t
+                  "clusterNew.googlegke.masterAuthorizedNetworkCidrBlocks.cidrBlock"
+                }}
+              </label>
+            {{/if}}
+            <div class="input-group mb-20">
+              <InputCidr
+                @classNames="form-control"
+                @value={{mut network.cidrBlock}}
+              />
+              <span class="input-group-btn ml-10">
+                <button
+                  class="btn bg-primary btn-sm"
+                  type="button"
+                  {{action removeMSAN network}}
+                >
+                  <i class="icon icon-minus"></i>
+                  <span class="sr-only">
+                    {{t "generic.remove"}}
+                  </span>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+      <button
+        class="btn bg-link icon-btn mt-10"
+        type="button"
+        {{action addMSAN}}
+      >
+        <span class="darken">
+          <i class="icon icon-plus text-small"></i>
+        </span>
+        <span>
+          {{t
+            "clusterNew.googlegke.masterAuthorizedNetworkCidrBlocks.addActionLabel"
+          }}
+        </span>
+      </button>
+    </div>
+  {{/if}}
+</div>

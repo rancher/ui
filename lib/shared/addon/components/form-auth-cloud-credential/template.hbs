@@ -51,7 +51,7 @@
 {{else}}
   {{#unless hideSave}}
     {{save-cancel
-      saveDisabled=(unless (get primaryResource cloudCredentialKey) true)
+      saveDisabled=(or (unless (get primaryResource cloudCredentialKey) true) disableSave)
       save=progressStep
       cancel=cancel
       createLabel=createLabel

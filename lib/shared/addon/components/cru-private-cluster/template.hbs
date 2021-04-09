@@ -1,0 +1,63 @@
+<section class="cru-private-cluster">
+  <div class="row">
+    <div class="col span-12">
+      <BannerMessage
+        @icon="icon-alert"
+        @color="bg-warning mb-10"
+        @message={{t
+          "clusterNew.googlegke.privateCluster.details"
+          appName=settings.appName
+          htmlSafe=true
+        }}
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <div class="form-control-static">
+        <div class="checkbox">
+          <label>
+            {{input
+              type="checkbox"
+              checked=config.enablePrivateNodes
+              disabled=editing
+            }}
+            {{t "clusterNew.googlegke.enablePrivateNodes.label"}}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <div class="form-control-static">
+        <div class="checkbox">
+          <label>
+            {{input
+              type="checkbox"
+              checked=config.enablePrivateEndpoint
+              disabled=(or editing (not config.enablePrivateNodes))
+            }}
+            {{t "clusterNew.googlegke.privateCluster.privateEndpoint.label"}}
+          </label>
+        </div>
+        <p class="ml-25 help-block">
+          {{t "clusterNew.googlegke.privateCluster.privateEndpoint.help"}}
+        </p>
+      </div>
+    </div>
+    <div class="col span-6">
+      <label class="acc-label">
+        {{t "clusterNew.googlegke.masterIpv4CidrBlock.label"}}
+      </label>
+      {{input
+        value=config.masterIpv4CidrBlock
+        placeholder=(t "clusterNew.googlegke.masterIpv4CidrBlock.placeholder")
+        disabled=(or editing (not config.enablePrivateNodes))
+      }}
+      <p class="help-block">
+        {{t "clusterNew.googlegke.masterIpv4CidrBlock.help"}}
+      </p>
+    </div>
+  </div>
+</section>
