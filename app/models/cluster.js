@@ -70,6 +70,80 @@ export const DEFAULT_EKS_CONFIG = {
   type:                   'eksclusterconfigspec',
 };
 
+export const DEFAULT_GKE_NODE_POOL_CONFIG = {
+  autoscaling: {
+    enabled:      false,
+    maxNodeCount: 0,
+    minNodeCount: 0
+  },
+  config: {
+    diskSizeGb:    100,
+    diskType:      'pd-standard',
+    imageType:     'COS',
+    labels:        null,
+    localSsdCount: 0,
+    machineType:   'n1-standard-2',
+    oauthScopes:   null,
+    preemptible:   false,
+    taints:        null
+  },
+  initialNodeCount: 3,
+  management:       {
+    autoRepair:        false,
+    autoUpgrade:       false,
+  },
+  maxPodsConstraint: 110,
+  name:              null,
+  version:           null,
+  type:              'gkenodepoolconfig'
+};
+
+export const DEFAULT_GKE_CONFIG = {
+  clusterAddons: {
+    horizontalPodAutoscaling: true,
+    httpLoadBalancing:        true,
+    networkPolicyConfig:      true
+  },
+  clusterIpv4Cidr:        null,
+  clusterName:            null,
+  description:            null,
+  enableKubernetesAlpha:  false,
+  googleCredentialSecret: null,
+  imported:               false,
+  ipAllocationPolicy:     {
+    clusterIpv4CidrBlock:       null,
+    clusterSecondaryRangeName:  null,
+    createSubnetwork:           false,
+    nodeIpv4CidrBlock:          null,
+    servicesIpv4CidrBlock:      null,
+    servicesSecondaryRangeName: null,
+    subnetworkName:             null,
+    useIpAliases:               true
+  },
+  kubernetesVersion:        '',
+  locations:                null,
+  loggingService:           null,
+  maintenanceWindow:        null,
+  masterAuthorizedNetworks: {
+    cidrBlocks: null,
+    enabled:    false
+  },
+  monitoringService:    null,
+  network:              null,
+  networkPolicyEnabled: false,
+  nodePools:            [DEFAULT_GKE_NODE_POOL_CONFIG],
+  privateClusterConfig: {
+    enablePrivateEndpoint: false,
+    enablePrivateNodes:    false,
+    masterIpv4CidrBlock:   null,
+  },
+  projectID:  null,
+  region:     'us-west2',
+  subnetwork: null,
+  type:       'gkeclusterconfigspec',
+  zone:       null,
+};
+
 
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
@@ -219,12 +293,59 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!actionLinks.saveAsTemplate;
   }),
 
-  hasPublicAccess: computed('eksConfig.publicAccess', 'eksStatus.upstreamSpec.publicAccess', 'property', function() {
-    return this?.eksStatus?.upstreamSpec?.publicAccess || this?.eksConfig?.publicAccess || true;
+  hasPublicAccess: computed('eksConfig.publicAccess', 'eksStatus.upstreamSpec.publicAccess', 'gkeStatus.privateClusterConfig.enablePrivateNodes', 'gkeStatus.upstreamSpec.privateClusterConfig.enablePrivateNodes', function() {
+    const { clusterProvider } = this;
+
+    switch (clusterProvider) {
+    case 'amazoneksv2':
+      return this?.eksStatus?.upstreamSpec?.publicAccess || this?.eksConfig?.publicAccess || true;
+    case 'googlegkev2':
+      return !this?.gkeStatus?.upstreamSpec?.privateClusterConfig?.enablePrivateNodes || !this?.gkeStatus?.privateClusterConfig?.enablePrivateNodes || true;
+    default:
+      return true;
+    }
   }),
 
-  hasPrivateAccess: computed('eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', 'property', function() {
-    return this?.eksStatus?.upstreamSpec?.privateAccess || this?.eksConfig?.privateAccess || false;
+  hasPrivateAccess: computed('eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', 'gkeConfig.privateClusterConfig.enablePrivateNodes', 'gkeStatus.upstreamSpec.privateClusterConfig.enablePrivateNodes', function() {
+    const { clusterProvider } = this;
+
+    switch (clusterProvider) {
+    case 'amazoneksv2':
+      return this?.eksStatus?.upstreamSpec?.privateAccess || this?.eksConfig?.privateAccess || false;
+    case 'googlegkev2':
+      return this?.gkeStatus?.upstreamSpec?.privateClusterConfig?.enablePrivateNodes || this?.gkeConfig?.privateClusterConfig?.enablePrivateNodes;
+    default:
+      return false;
+    }
+  }),
+
+  displayImportLabel: computed('clusterProvider', 'eksDisplayEksImport', 'gkeDisplayImport', function() {
+    const { clusterProvider } = this;
+
+    switch (clusterProvider) {
+    case 'amazoneksv2':
+      return this.eksDisplayEksImport ? true : false;
+    case 'googlegkev2':
+      return this.gkeDisplayImport ? true : false;
+    case 'import':
+      return true;
+    default:
+      return false;
+    }
+  }),
+
+  gkeDisplayImport: computed('clusterProvider', 'hasPrivateAccess', 'imported', function() {
+    const { clusterProvider } = this;
+
+    if (clusterProvider !== 'googlegkev2') {
+      return false;
+    }
+
+    if (this.hasPrivateAccess) {
+      return true;
+    }
+
+    return false;
   }),
 
   eksDisplayEksImport: computed('hasPrivateAccess', 'hasPublicAccess', function() {
@@ -241,9 +362,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return false;
   }),
 
-  canShowAddHost: computed('clusterProvider', 'hasPrivateAccess', 'hasPublicAccess', 'nodes', function() {
+  canShowAddHost: computed('clusterProvider', 'hasPrivateAccess', 'hasPublicAccess', 'imported', 'nodes', function() {
     const { clusterProvider } = this;
-    const compatibleProviders = ['custom', 'import', 'amazoneksv2'];
+    const compatibleProviders = ['custom', 'import', 'amazoneksv2', 'googlegkev2'];
     const nodes = get(this, 'nodes');
 
     if (!compatibleProviders.includes(clusterProvider)) {
@@ -253,7 +374,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
     // private access requires the ability to run the import command on the cluster
     if (clusterProvider === 'amazoneksv2' && !!this.hasPublicAccess && this.hasPrivateAccess) {
       return true;
-    } else if (clusterProvider !== 'amazoneksv2' && isEmpty(nodes)) {
+    } else if (clusterProvider === 'googlev2' && this.hasPrivateAccess) {
+      return true;
+    } else if (( clusterProvider !== 'amazoneksv2' || clusterProvider !== 'googlegkev2') && isEmpty(nodes)) {
       return true;
     }
 
@@ -302,6 +425,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return 'amazoneksv2';
     case 'azureKubernetesServiceConfig':
       return 'azureaks';
+    case 'gkeConfig':
+      return 'googlegkev2';
     case 'googleKubernetesEngineConfig':
       return 'googlegke';
     case 'tencentEngineConfig':
@@ -480,7 +605,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return false;
   }),
 
-  availableActions: computed('actionLinks.{rotateCertificates,rotateEncryptionKey}', 'canRotateEncryptionKey', 'canSaveAsTemplate', 'canShowAddHost', 'eksDisplayEksImport', 'isClusterScanDisabled', function() {
+  availableActions: computed('actionLinks.{rotateCertificates,rotateEncryptionKey}', 'canRotateEncryptionKey', 'canSaveAsTemplate', 'canShowAddHost', 'displayImportLabel', 'isClusterScanDisabled', function() {
     const a = get(this, 'actionLinks') || {};
 
     return [
@@ -516,7 +641,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         enabled:   this.canSaveAsTemplate,
       },
       {
-        label:     this.eksDisplayEksImport ? 'action.importHost' : 'action.registration',
+        label:     this.displayImportLabel ? 'action.importHost' : 'action.registration',
         icon:      'icon icon-host',
         action:    'showCommandModal',
         enabled:   this.canShowAddHost,
@@ -700,12 +825,16 @@ export default Resource.extend(Grafana, ResourceUsage, {
         }
       };
 
-      if (provider === 'import' && isEmpty(get(this, 'eksConfig'))) {
+      if (provider === 'import' && isEmpty(get(this, 'eksConfig') && isEmpty(get(this, 'gkeConfig')))) {
         set(queryParams, 'queryParams.importProvider', 'other');
       }
 
       if (provider === 'amazoneks' && !isEmpty(get(this, 'eksConfig'))) {
         set(queryParams, 'queryParams.provider', 'amazoneksv2');
+      }
+
+      if (provider === 'gke' && !isEmpty(get(this, 'gkeConfig'))) {
+        set(queryParams, 'queryParams.provider', 'googlegkev2');
       }
 
       if (this.clusterTemplateRevisionId) {
@@ -847,99 +976,167 @@ export default Resource.extend(Grafana, ResourceUsage, {
   },
 
   save(opt) {
-    const { globalStore, eksConfig } = this;
+    const { eksConfig, gkeConfig } = this;
 
-    if (get(this, 'driver') === 'EKS' || (this.isObject(get(this, 'eksConfig')) && !this.isEmptyObject(get(this, 'eksConfig')))) {
-      const options = ({
-        ...opt,
-        data: {
-          name:      this.name,
-          eksConfig: {},
-        }
-      });
-      const eksClusterConfigSpec = globalStore.getById('schema', 'eksclusterconfigspec');
-      const nodeGroupConfigSpec = globalStore.getById('schema', 'nodegroup');
-
-      if (isEmpty(this.id)) {
-        sanitizeConfigs(eksClusterConfigSpec, nodeGroupConfigSpec);
-
-        if (!get(this, 'eksConfig.imported') && this.name !== get(this, 'eksConfig.displayName')) {
-          set(this, 'eksConfig.displayName', this.name);
-        }
-
-        return this._super(...arguments);
-      } else {
-        const config = jsondiffpatch.clone(get(this, 'eksConfig'));
-        const upstreamSpec = jsondiffpatch.clone(get(this, 'eksStatus.upstreamSpec'));
-
-        if (isEmpty(upstreamSpec)) {
-          sanitizeConfigs(eksClusterConfigSpec, nodeGroupConfigSpec);
-
-          return this._super(...arguments);
-        }
-
-        set(options, 'data.eksConfig', this.diffEksUpstream(upstreamSpec, config));
-
-        if (!isEmpty(get(options, 'data.eksConfig.nodeGroups'))) {
-          get(options, 'data.eksConfig.nodeGroups').forEach((ng) => {
-            replaceNullWithEmptyDefaults(ng, get(nodeGroupConfigSpec, 'resourceFields'));
-          });
-        }
-
-        if (get(options, 'qp._replace')) {
-          delete options.qp['_replace'];
-        }
-
-        return this._super(options);
-      }
-    } else {
-      return this._super(...arguments);
+    if (get(this, 'driver') === 'EKS' || (this.isObject(eksConfig) && !this.isEmptyObject(eksConfig))) {
+      this.syncEksConfigs(opt);
+    } else if (this.isObject(gkeConfig) && !this.isEmptyObject(gkeConfig)) {
+      this.syncGkeConfigs(opt);
     }
 
-    function sanitizeConfigs(eksClusterConfigSpec, nodeGroupConfigSpec) {
-      replaceNullWithEmptyDefaults(eksConfig, get(eksClusterConfigSpec, 'resourceFields'));
+    return this._super(...arguments);
+  },
 
-      if (!isEmpty(get(eksConfig, 'nodeGroups'))) {
-        get(eksConfig, 'nodeGroups').forEach((ng) => {
-          replaceNullWithEmptyDefaults(ng, get(nodeGroupConfigSpec, 'resourceFields'));
+  syncGkeConfigs(opt) {
+    const {
+      gkeConfig, globalStore, id
+    } = this;
+
+    const options = ({
+      ...opt,
+      data: {
+        name:      this.name,
+        gkeConfig: {},
+      }
+    });
+
+    const gkeClusterConfigSpec = globalStore.getById('schema', 'gkeclusterconfigspec');
+    const gkeNodePoolConfigSpec = globalStore.getById('schema', 'gkenodepoolconfig'); // will be gkeNodeConfig
+
+    if (isEmpty(id)) {
+      this.sanitizeConfigs(gkeConfig, gkeClusterConfigSpec, gkeNodePoolConfigSpec, 'nodePools');
+
+      if (!get(this, 'gkeConfig.imported') && this.name !== get(this, 'gkeConfig.clusterName')) {
+        set(this, 'gkeConfig.clusterName', this.name);
+      }
+
+      return;
+    } else {
+      const config = jsondiffpatch.clone(gkeConfig);
+      const upstreamSpec = jsondiffpatch.clone(get(this, 'gkeStatus.upstreamSpec'));
+
+      if (isEmpty(upstreamSpec)) {
+        this.sanitizeConfigs(gkeConfig, gkeClusterConfigSpec, gkeNodePoolConfigSpec, 'nodePools');
+
+        return;
+      }
+
+      set(options, 'data.gkeConfig', this.diffUpstreamSpec(upstreamSpec, config));
+
+      if (!isEmpty(get(options, 'data.gkeConfig.nodeGroups'))) {
+        get(options, 'data.gkeConfig.nodeGroups').forEach((ng) => {
+          this.replaceNullWithEmptyDefaults(ng, get(gkeNodePoolConfigSpec, 'resourceFields'));
         });
       }
+
+      if (get(options, 'qp._replace')) {
+        delete options.qp['_replace'];
+      }
+
+      return;
     }
+  },
 
-    function replaceNullWithEmptyDefaults(config, resourceFields) {
-      Object.keys(config).forEach((ck) => {
-        const configValue = get(config, ck);
+  syncEksConfigs(opt) {
+    const { eksConfig, globalStore, } = this;
 
-        if (configValue === null || typeof configValue === 'undefined') {
-          const resourceField = resourceFields[ck];
+    const options = ({
+      ...opt,
+      data: {
+        name:      this.name,
+        eksConfig: {},
+      }
+    });
 
-          if (resourceField.type === 'string') {
-            set(config, ck, '');
-          } else if (resourceField.type.includes('array')) {
-            set(config, ck, []);
-          } else if (resourceField.type.includes('map')) {
-            set(config, ck, {});
-          } else if (resourceField.type.includes('boolean')) {
-            if (resourceField.default) {
-              set(config, ck, resourceField.default);
-            } else {
+    const eksClusterConfigSpec = globalStore.getById('schema', 'eksclusterconfigspec');
+    const nodeGroupConfigSpec = globalStore.getById('schema', 'nodegroup');
+
+    if (isEmpty(this.id)) {
+      this.sanitizeConfigs(eksConfig, eksClusterConfigSpec, nodeGroupConfigSpec);
+
+      if (!get(this, 'eksConfig.imported') && this.name !== get(this, 'eksConfig.displayName')) {
+        set(this, 'eksConfig.displayName', this.name);
+      }
+
+      return;
+    } else {
+      const config = jsondiffpatch.clone(get(this, 'eksConfig'));
+      const upstreamSpec = jsondiffpatch.clone(get(this, 'eksStatus.upstreamSpec'));
+
+      if (isEmpty(upstreamSpec)) {
+        this.sanitizeConfigs(eksConfig, eksClusterConfigSpec, nodeGroupConfigSpec);
+
+        return;
+      }
+
+      set(options, 'data.eksConfig', this.diffUpstreamSpec(upstreamSpec, config));
+
+      if (!isEmpty(get(options, 'data.eksConfig.nodeGroups'))) {
+        get(options, 'data.eksConfig.nodeGroups').forEach((ng) => {
+          this.replaceNullWithEmptyDefaults(ng, get(nodeGroupConfigSpec, 'resourceFields'));
+        });
+      }
+
+      if (get(options, 'qp._replace')) {
+        delete options.qp['_replace'];
+      }
+
+      return;
+    }
+  },
+
+  sanitizeConfigs(currentConfig, clusterConfigSpec, nodeGroupConfigSpec, nodeType = 'nodeGroups') {
+    this.replaceNullWithEmptyDefaults(currentConfig, get(clusterConfigSpec, 'resourceFields'));
+
+    if (!isEmpty(get(currentConfig, nodeType))) {
+      get(currentConfig, nodeType).forEach((ng) => {
+        this.replaceNullWithEmptyDefaults(ng, get(nodeGroupConfigSpec, 'resourceFields'));
+      });
+    }
+  },
+
+  replaceNullWithEmptyDefaults(config, resourceFields) {
+    const { clusterProvider } = this;
+
+    Object.keys(config).forEach((ck) => {
+      const configValue = get(config, ck);
+
+      if (configValue === null || typeof configValue === 'undefined') {
+        const resourceField = resourceFields[ck];
+
+        if (resourceField.type === 'string') {
+          set(config, ck, '');
+        } else if (resourceField.type.includes('array')) {
+          set(config, ck, []);
+        } else if (resourceField.type.includes('map')) {
+          set(config, ck, {});
+        } else if (resourceField.type.includes('boolean')) {
+          if (resourceField.default) {
+            set(config, ck, resourceField.default);
+          } else {
+            // we shouldn't get here, there are not that many fields in EKS and I've set the defaults for bools that are there
+            // but if we do hit this branch my some magic case imo a bool isn't something we can default cause its unknown...just dont do anything.
+            if (clusterProvider === 'amazoneksv2') {
               if ( !isEmpty(get(DEFAULT_EKS_CONFIG, ck)) || !isEmpty(get(DEFAULT_NODE_GROUP_CONFIG, ck)) ) {
                 let match = isEmpty(get(DEFAULT_EKS_CONFIG, ck)) ? get(DEFAULT_NODE_GROUP_CONFIG, ck) : get(DEFAULT_EKS_CONFIG, ck);
 
                 set(config, ck, match);
               }
-              // we shouldn't get here, there are not that many fields in EKS and I've set the defaults for bools that are there
-              // but if we do hit this branch my some magic case imo a bool isn't something we can default cause its unknown...just dont do anything.
+            } else if (clusterProvider === 'googlegkev2') {
+              if ( !isEmpty(get(DEFAULT_GKE_CONFIG, ck)) || !isEmpty(get(DEFAULT_GKE_NODE_POOL_CONFIG, ck)) ) {
+                let match = isEmpty(get(DEFAULT_GKE_CONFIG, ck)) ? get(DEFAULT_GKE_NODE_POOL_CONFIG, ck) : get(DEFAULT_GKE_CONFIG, ck);
+
+                set(config, ck, match);
+              }
             }
           }
         }
-      });
-
-      return config;
-    }
+      }
+    });
   },
 
-  diffEksUpstream(lhs, rhs) {
+
+  diffUpstreamSpec(lhs, rhs) {
     // this is NOT a generic object diff.
     // It tries to be as generic as possible but it does make certain assumptions regarding nulls and emtpy arrays/objects
     // if LHS (upstream) is null and RHS (eks config) is empty we do not count this as a change
@@ -961,7 +1158,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         }
       } catch (e){}
 
-      if (k === 'nodeGroups' || k === 'tags') {
+      if (k === 'nodeGroups' || k === 'nodePools' || k === 'tags') {
         if (!isEmpty(rhsMatch)) {
           // node groups need ALL data so short circut and send it all
           set(delta, k, rhsMatch);
@@ -1012,7 +1209,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
                     if (lMatch) {
                       // we have a match in the upstream, meaning we've probably made updates to the object itself
-                      const diffedMatch = this.diffEksUpstream(lMatch, match);
+                      const diffedMatch = this.diffUpstreamSpec(lMatch, match);
 
                       if (!isArray(get(delta, k))) {
                         set(delta, k, [diffedMatch]);
@@ -1047,7 +1244,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
             if (!isEmpty(rhsMatch) && !this.isEmptyObject(rhsMatch)) {
               if ((Object.keys(lhsMatch) || []).length > 0) {
                 // You have more diffing to do
-                set(delta, k, this.diffEksUpstream(lhsMatch, rhsMatch));
+                set(delta, k, this.diffUpstreamSpec(lhsMatch, rhsMatch));
               } else if (this.isEmptyObject(lhsMatch)) {
                 // we had a map now we have an empty map
                 set(delta, k, {});
