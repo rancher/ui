@@ -102,7 +102,7 @@ export const DEFAULT_GKE_CONFIG = {
   clusterAddons: {
     horizontalPodAutoscaling: true,
     httpLoadBalancing:        true,
-    networkPolicyConfig:      true
+    networkPolicyConfig:      false
   },
   clusterIpv4Cidr:        null,
   clusterName:            null,
