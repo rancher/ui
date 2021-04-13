@@ -1023,8 +1023,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
       set(options, 'data.gkeConfig', this.diffUpstreamSpec(upstreamSpec, config));
 
-      if (!isEmpty(get(options, 'data.gkeConfig.nodeGroups'))) {
-        get(options, 'data.gkeConfig.nodeGroups').forEach((ng) => {
+      if (!isEmpty(get(options, 'data.gkeConfig.nodePools'))) {
+        get(options, 'data.gkeConfig.nodePools').forEach((ng) => {
           this.replaceNullWithEmptyDefaults(ng, get(gkeNodePoolConfigSpec, 'resourceFields'));
         });
       }
