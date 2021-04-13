@@ -365,7 +365,6 @@ export default Resource.extend(Grafana, ResourceUsage, {
   canShowAddHost: computed('clusterProvider', 'hasPrivateAccess', 'hasPublicAccess', 'imported', 'nodes', function() {
     const { clusterProvider } = this;
     const compatibleProviders = ['custom', 'import', 'amazoneksv2', 'googlegkev2'];
-    const nodes = get(this, 'nodes');
 
     if (!compatibleProviders.includes(clusterProvider)) {
       return false;
@@ -376,7 +375,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return true;
     } else if (clusterProvider === 'googlev2' && this.hasPrivateAccess) {
       return true;
-    } else if (( clusterProvider !== 'amazoneksv2' || clusterProvider !== 'googlegkev2') && isEmpty(nodes)) {
+    } else if (( clusterProvider === 'custom' || clusterProvider === 'import')) {
       return true;
     }
 
