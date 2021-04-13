@@ -572,6 +572,22 @@ export default Resource.extend(Grafana, ResourceUsage, {
     });
   }),
 
+  gkeNodePoolVersionUpdate: computed('gkeStatus.upstreamSpec.kubernetesVersion', 'gkeStatus.upstreamSpec.nodePools.@each.version', function() {
+    if (isEmpty(get(this, 'gkeStatus.upstreamSpec.nodePools'))) {
+      return false;
+    }
+
+    const kubernetesVersion = get(this, 'gkeStatus.upstreamSpec.kubernetesVersion');
+    const nodePoolVersions = (get(this, 'gkeStatus.upstreamSpec.nodePools') || []).getEach('version');
+
+    return nodePoolVersions.any((ngv) => {
+      if (isEmpty(ngv)) {
+        return false;
+      } else {
+        return Semver.lt(Semver.coerce(ngv), Semver.coerce(kubernetesVersion));
+      }
+    });
+  }),
 
   certsExpiring: computed('certificatesExpiration', function() {
     let { certificatesExpiration = {}, expiringCerts } = this;
