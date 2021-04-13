@@ -138,10 +138,10 @@ export const DEFAULT_GKE_CONFIG = {
     masterIpv4CidrBlock:   null,
   },
   projectID:  null,
-  region:     'us-west2',
+  region:     null,
   subnetwork: null,
   type:       'gkeclusterconfigspec',
-  zone:       null,
+  zone:       'us-central1-c',
 };
 
 
