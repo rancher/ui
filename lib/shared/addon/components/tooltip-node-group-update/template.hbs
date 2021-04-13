@@ -1,6 +1,10 @@
 <span class="tooltip-node-group-update">
   <p class="mb-5">
-    {{t "tooltipNodeGroupUpdate.label"}}
+      {{#if (eq model.provider "gke")}}
+        {{t "tooltipNodeGroupUpdate.gkeLabel"}}
+      {{else}}
+        {{t "tooltipNodeGroupUpdate.label"}}
+      {{/if}}
   </p>
   <p>
     <span class="text-link hand" {{on "click" (action "updateNodeGroup")}}>
