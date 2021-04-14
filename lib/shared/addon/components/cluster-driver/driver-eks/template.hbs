@@ -302,7 +302,7 @@
             </div>
           </div>
           <div class="col span-6">
-            {{#if (or (eq step 3) (eq step 4))}}
+            {{#if (gte step 3)}}
               <label class="acc-label">
                 {{t "clusterNew.amazoneks.subnet.title"}}
               </label>
@@ -328,15 +328,33 @@
                   </label>
                 </div>
               {{else}}
-                <div>
-                  {{#if (eq vpcSubnetMode "default")}}
-                    {{t "clusterNew.amazoneks.vpc.radio.default"}}
-                  {{else}}
-                    {{t "clusterNew.amazoneks.vpc.radio.custom"}}
-                  {{/if}}
-                </div>
+                {{#unless editing}}
+                  <div>
+                    {{#if (eq vpcSubnetMode "default")}}
+                      {{t "clusterNew.amazoneks.vpc.radio.default"}}
+                    {{else}}
+                      {{t "clusterNew.amazoneks.vpc.radio.custom"}}
+                    {{/if}}
+                  </div>
+                {{/unless}}
               {{/if}}
-              {{#unless (eq vpcSubnetMode "default")}}
+              {{#if (eq vpcSubnetMode "default")}}
+                {{#if editing}}
+                  <div>
+                    {{t "clusterNew.amazoneks.subnet.noneSelected"}}
+                  </div>
+                {{/if}}
+              {{else if editing}}
+                {{#each selectedSubnets as |sub|}}
+                  <div>
+                    {{sub}}
+                  </div>
+                {{else}}
+                  <div>
+                    {{t "clusterNew.amazoneks.subnet.noneSelected"}}
+                  </div>
+                {{/each}}
+              {{else}}
                 <select
                   class="form-control existing-subnet-groups"
                   multiple="true"
@@ -364,7 +382,7 @@
                 <p class="help-block mt-5">
                   {{t "clusterNew.amazoneks.subnet.help"}}
                 </p>
-              {{/unless}}
+              {{/if}}
             {{else}}
               <div class="col span-6">
                 <label class="acc-label">
@@ -440,6 +458,10 @@
             {{#each primaryResource.eksStatus.securityGroups as |sg|}}
               <div>
                 {{sg}}
+              </div>
+            {{else}}
+              <div>
+                {{t "clusterNew.amazoneks.securityGroup.noneSelected"}}
               </div>
             {{/each}}
           {{/if}}
