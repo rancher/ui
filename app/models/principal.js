@@ -52,6 +52,7 @@ var Principal = Resource.extend({
     case C.PROJECT.TYPE_PING_USER:
     case C.PROJECT.TYPE_RANCHER:
     case C.PROJECT.TYPE_SHIBBOLETH_USER:
+    case C.PROJECT.TYPE_OKTA_USER:
     default:
       return C.PROJECT.PERSON;
     case C.PROJECT.TYPE_GITHUB_TEAM:
@@ -67,6 +68,7 @@ var Principal = Resource.extend({
     case C.PROJECT.TYPE_PING_GROUP:
     case C.PROJECT.TYPE_SHIBBOLETH_GROUP:
     case C.PROJECT.TYPE_GOOGLE_GROUP:
+    case C.PROJECT.TYPE_OKTA_GROUP:
       return C.PROJECT.ORG;
     }
   }),
