@@ -73,7 +73,7 @@ export const DEFAULT_EKS_CONFIG = {
 export const DEFAULT_GKE_NODE_POOL_CONFIG = {
   autoscaling: {
     enabled:      false,
-    maxNodeCount: 1,
+    maxNodeCount: 0,
     minNodeCount: 3,
   },
   config: {
