@@ -4,7 +4,7 @@
       <button
         class="btn bg-transparent text-small vertical-middle"
         type="button"
-        {{action removeNodePool model}}
+        {{action removeNodePool nodePool}}
       >
         {{t "clusterNew.googlegke.nodePool.remove"}}
       </button>
@@ -22,7 +22,7 @@
       {{!-- <NewSelect
         @classNames="form-control"
         @content={{versionChoices}}
-        @value={{mut model.version}}
+        @value={{mut nodePool.version}}
       /> --}}
       {{#if upgradeAvailable}}
         <div class="checkbox form-control-static">
@@ -34,14 +34,14 @@
             />
             {{t
               "nodeGroupRow.version.upgrade"
-              from=model.version
+              from=nodePool.version
               version=controlPlaneVersion
             }}
           </label>
         </div>
       {{else}}
         <div>
-          {{model.version}}
+          {{nodePool.version}}
         </div>
       {{/if}}
     </div>
@@ -53,7 +53,7 @@
         <SearchableSelect
           @content={{imageTypeContent}}
           @classNames="form-control"
-          @value={{mut model.config.imageType}}
+          @value={{mut nodePool.config.imageType}}
           @localizedLabel={{true}}
         />
       </div>
@@ -71,7 +71,7 @@
             @optionLabelPath="displayName"
             @optionGroupPath="group"
             @content={{machineChoices}}
-            @value={{mut model.config.machineType}}
+            @value={{mut nodePool.config.machineType}}
             @prompt="clusterNew.googlegke.machineType.prompt"
             @localizedPrompt={{true}}
           />
@@ -85,14 +85,14 @@
         </label>
         <InputOrDisplay
           @editable={{isNewNodePool}}
-          @value={{model.config.diskType}}
+          @value={{nodePool.config.diskType}}
         >
           <SearchableSelect
             @content={{diskTypeContent}}
             @classNames="form-control"
-            @value={{mut model.config.diskType}}
+            @value={{mut nodePool.config.diskType}}
             @localizedLabel={{true}}
-            @readOnly={{editingExistingNodePool}}
+            @readOnly={{not isNewNodePool}}
           />
         </InputOrDisplay>
       </div>
@@ -101,13 +101,13 @@
           {{t "clusterNew.googlegke.diskSizeGb.label"}}
         </label>
         <div class="input-group">
-          {{#if editingExistingNodePool}}
-            {{model.config.diskSizeGb}}{{t "generic.gigabyte"}}
-          {{else}}
-            <InputNumber @min={{10}} @value={{model.config.diskSizeGb}} />
+          {{#if isNewNodePool}}
+            <InputNumber @min={{10}} @value={{nodePool.config.diskSizeGb}} />
             <span class="input-group-addon bg-default">
               {{t "generic.gigabyte"}}
             </span>
+          {{else}}
+            {{nodePool.config.diskSizeGb}}{{t "generic.gigabyte"}}
           {{/if}}
         </div>
       </div>
@@ -116,16 +116,16 @@
           {{t "clusterNew.googlegke.localSsdCount.label"}}
         </label>
         <div class="input-group">
-          {{#if editingExistingNodePool}}
-            {{model.config.localSsdCount}}{{t "generic.gigabyte"}}
-          {{else}}
+          {{#if isNewNodePool}}
             <InputInteger
               @min={{0}}
-              @value={{mut model.config.localSsdCount}}
+              @value={{mut nodePool.config.localSsdCount}}
             />
             <span class="input-group-addon bg-default">
               {{t "generic.gigabyte"}}
             </span>
+          {{else}}
+            {{nodePool.config.localSsdCount}}{{t "generic.gigabyte"}}
           {{/if}}
         </div>
       </div>
@@ -136,15 +136,15 @@
           <label>
             {{input
               type="checkbox"
-              checked=model.config.preemptible
-              disabled=editingExistingNodePool
+              checked=nodePool.config.preemptible
+              disabled=(not isNewNodePool)
             }}
             {{t "clusterNew.googlegke.preemptible.label"}}
           </label>
         </div>
       </div>
     </div>
-    <FormGkeTaints @taints={{model.config.taints}} @editable={{isNewNodePool}} />
+    <FormGkeTaints @taints={{nodePool.config.taints}} @editable={{isNewNodePool}} />
     <div class="row mt-20">
       <div class="col span-12 mb-0">
         <label class="acc-label">
@@ -168,14 +168,14 @@
       <div class="col span-6">
         <label class="acc-label">
           {{t "clusterNew.googlegke.nodePools.name.label"}}
-          {{#if (or isNewNodePool editingExistingNodePool)}}
+          {{#if isNewNodePool}}
             {{field-required}}
           {{/if}}
         </label>
-        <InputOrDisplay @editable={{isNewNodePool}} @value={{model.name}}>
+        <InputOrDisplay @editable={{isNewNodePool}} @value={{nodePool.name}}>
           <Input
             @type="text"
-            @value={{mut model.name}}
+            @value={{mut nodePool.name}}
             @classNames="form-control"
           />
         </InputOrDisplay>
@@ -185,7 +185,7 @@
           {{t "clusterNew.googlegke.nodePools.initialNodeCount.label"}}
         </label>
         <InputNumber
-          @value={{mut model.initialNodeCount}}
+          @value={{mut nodePool.initialNodeCount}}
           @min={{1}}
           @classNames="form-control"
         />
@@ -195,7 +195,7 @@
           {{t "clusterNew.googlegke.nodePools.maxPodsConstraint.label"}}
         </label>
         <InputNumber
-          @value={{mut model.maxPodsConstraint}}
+          @value={{mut nodePool.maxPodsConstraint}}
           @min={{1}}
           @classNames="form-control"
         />
@@ -206,8 +206,8 @@
         <div class="form-control-static">
           <div class="checkbox">
             <label>
-              {{input type="checkbox" checked=model.autoscaling.enabled}}
-              {{t "clusterNew.googlegke.clusterAddons.horizontalPodAutoscaling"
+              {{input type="checkbox" checked=nodePool.autoscaling.enabled}}
+              {{t "clusterNew.googlegke.autoscaling.label"
               }}
             </label>
           </div>
@@ -215,7 +215,7 @@
         <div class="form-control-static">
           <div class="checkbox">
             <label>
-              {{input type="checkbox" checked=model.management.autoRepair}}
+              {{input type="checkbox" checked=nodePool.management.autoRepair}}
               {{t "clusterNew.googlegke.enableAutoRepair.label"}}
             </label>
           </div>
@@ -223,22 +223,22 @@
         <div class="form-control-static">
           <div class="checkbox">
             <label>
-              {{input type="checkbox" checked=model.management.autoUpgrade}}
+              {{input type="checkbox" checked=nodePool.management.autoUpgrade}}
               {{t "clusterNew.googlegke.enableAutoUpgrade.label"}}
             </label>
           </div>
         </div>
       </div>
-      {{#if model.autoscaling.enabled}}
+      {{#if nodePool.autoscaling.enabled}}
         <div class="col span-3">
           <label class="acc-label" for="input-min-node-count">
             {{t "clusterNew.googlegke.minNodeCount.label"}}
           </label>
           <InputNumber
             id="input-min-node-count"
-            @value={{mut model.autoscaling.minNodeCount}}
-            @min={{1}}
-            @max={{model.autoscaling.minNodeCount}}
+            @value={{mut nodePool.autoscaling.minNodeCount}}
+            @min={{0}}
+            @max={{nodePool.autoscaling.minNodeCount}}
             @classNames="form-control"
           />
         </div>
@@ -248,8 +248,8 @@
           </label>
           <InputNumber
             id="input-max-node-count"
-            @value={{mut model.autoscaling.maxNodeCount}}
-            @min={{model.autoscaling.minNodeCount}}
+            @value={{mut nodePool.autoscaling.maxNodeCount}}
+            @min={{nodePool.autoscaling.minNodeCount}}
             @classNames="form-control"
           />
         </div>
@@ -267,7 +267,7 @@
             <RadioButton
               @selection={{mut oauthScopesSelection}}
               @value="default"
-              @disabled={{editingExistingNodePool}}
+              @disabled={{not isNewNodePool}}
             />
             {{t "clusterNew.googlegke.oauthScopes.default"}}
           </label>
@@ -277,7 +277,7 @@
             <RadioButton
               @selection={{mut oauthScopesSelection}}
               @value="full"
-              @disabled={{editingExistingNodePool}}
+              @disabled={{not isNewNodePool}}
             />
             {{t "clusterNew.googlegke.oauthScopes.full"}}
           </label>
@@ -287,7 +287,7 @@
             <RadioButton
               @selection={{mut oauthScopesSelection}}
               @value="custom"
-              @disabled={{editingExistingNodePool}}
+              @disabled={{not isNewNodePool}}
             />
             {{t "clusterNew.googlegke.oauthScopes.custom"}}
           </label>
@@ -296,7 +296,7 @@
       {{#if (eq oauthScopesSelection "custom")}}
         <GkeAccessScope
           @model={{scopeConfig}}
-          @readOnly={{editingExistingNodePool}}
+          @readOnly={{not isNewNodePool}}
         />
       {{/if}}
     </div>
