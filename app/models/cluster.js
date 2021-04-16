@@ -122,13 +122,13 @@ export const DEFAULT_GKE_CONFIG = {
   },
   kubernetesVersion:        '',
   locations:                null,
-  loggingService:           null,
+  loggingService:           'logging.googleapis.com/kubernetes',
   maintenanceWindow:        null,
   masterAuthorizedNetworks: {
     cidrBlocks: null,
     enabled:    false
   },
-  monitoringService:    null,
+  monitoringService:    'monitoring.googleapis.com/kubernetes',
   network:              null,
   networkPolicyEnabled: false,
   nodePools:            [DEFAULT_GKE_NODE_POOL_CONFIG],
