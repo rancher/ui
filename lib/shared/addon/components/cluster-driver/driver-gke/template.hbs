@@ -482,7 +482,7 @@
               <NewSelect
                 @classNames="form-control select-algin-checkbox"
                 @content={{loggingServiceChoices}}
-                @value={{config.loggingService}}
+                @value={{mut config.loggingService}}
               />
             </div>
             <div class="col span-6">
@@ -492,10 +492,21 @@
               <NewSelect
                 @classNames="form-control select-algin-checkbox"
                 @content={{monitoringServiceChoices}}
-                @value={{config.monitoringService}}
+                @value={{mut config.monitoringService}}
               />
             </div>
           </div>
+          {{#if showLogMonServiceWarning}}
+            <div class="row">
+              <div class="col span-12">
+                <BannerMessage
+                  @icon="icon-alert"
+                  @color="bg-warning mb-10"
+                  @message={{t "clusterNew.googlegke.loggingMonitoringWarning"}}
+                />
+              </div>
+            </div>
+          {{/if}}
           <div class="row">
             <div class="col span-6">
               <label class="acc-label">
