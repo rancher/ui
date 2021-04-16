@@ -3647,11 +3647,6 @@ clusterNew:
   externalError: Component could not be loaded. Check URL.
 
   googlegke:
-    clusterLocation:
-      title: Cluster Location
-      detail: Configure cluster and node location options
-      createLabel: Configure Cluster
-      savingLabel: Loading Resources
     access:
       cloudCred: Cloud Credential
       detail: Choose the Google Project ID and Cloud Credential that will be used to launch your cluster.
@@ -3663,6 +3658,8 @@ clusterNew:
     alphaFeatures:
       label: Alpha Features
       warning: Warning! <a href="https://cloud.google.com/kubernetes-engine/docs/concepts/alpha-clusters" target="_blank" rel="nofollow noopener noreferrer">Kubernetes Alpha Features</a> should not be used for production clusters. Alpha Clusters expire after 30 days along with other caveats. Ensure you fully understand this feature before enabling it.
+    autoscaling:
+      label: Autoscaling
     bigQuery:
       label: BigQuery
     bigtableAdmin:
@@ -3698,6 +3695,11 @@ clusterNew:
       placeholder: e.g. 10.42.0.0/16
     clusterLabels:
       label: Cluster Labels
+    clusterLocation:
+      createLabel: Configure Cluster
+      detail: Configure cluster and node location options
+      savingLabel: Loading Resources
+      title: Cluster Location
     clusterLogging:
       label: System Logging Type
       placeholder: logging.googleapis.com/kubernetes
@@ -3736,13 +3738,6 @@ clusterNew:
       label: Node Pool Autoscaling
     enablePrivateEndpoint:
       label: Access Master Using Its Internal IP Address
-    privateCluster:
-      privateNodes:
-        label: Enable Private Nodes
-      privateEndpoint:
-        label: Enable Private Endpoint
-        help: Control plane may only be accessed via the private IP.
-      details: GKE private clusters is an advanced and unique use case which requires a special GKE configurations. Before enabling private clusters ensure you have read through the <a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning" target="_blank" rel="nofollow noopener noreferrer">docs TBD</a> for instructions on configuring GKE so private nodes may communicate with {appName}.
     enablePrivateNodes:
       label: Private Cluster
     header:
@@ -3766,18 +3761,18 @@ clusterNew:
       WINDOWS_SAC: Windows Semi-Annual Channel
       label: Image Type
     import:
-      locations:
-        title: Cluster Location
-        detail: Choose a region or zone to import an GKE cluster from
       clusterSelect:
-        loadLabel: Load Clusters
         createLabel: Register Cluster
         detail: Choose an GKE cluster to register
         input:
           label: Cluster Name To register
+        loadLabel: Load Clusters
         select:
           label: Cluster To register
         title: Choose Cluster
+      locations:
+        detail: Choose a region or zone to import an GKE cluster from
+        title: Cluster Location
     ipAllocationPolicy:
       clusterIpv4CidrBlock:
         accesslabel: Cluster Pod address range
@@ -3842,10 +3837,10 @@ clusterNew:
       label: Master Authorized Network CIDR Blocks
       placeholder: Your Master Authorized Network CIDR Blocks
     masterIpv4CidrBlock:
+      error: A Master IPV4 CIDR block is required when creating a private cluster
+      help: Master CIDR block size must be /28
       label: Master IPV4 CIDR Block
       placeholder: e.g. 10.42.0.0/28
-      help: Master CIDR block size must be /28
-      error: A Master IPV4 CIDR block is required when creating a private cluster
     masterVersion:
       label: Kubernetes Version
       prompt: Choose a Version...
@@ -3901,6 +3896,13 @@ clusterNew:
     preemptible:
       label: Preemptible nodes (beta)
       warning: Preemptible nodes will live at most 24 hours.
+    privateCluster:
+      details: GKE private clusters is an advanced and unique use case which requires a special GKE configurations. Before enabling private clusters ensure you have read through the <a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning" target="_blank" rel="nofollow noopener noreferrer">docs TBD</a> for instructions on configuring GKE so private nodes may communicate with {appName}.
+      privateEndpoint:
+        help: Control plane may only be accessed via the private IP.
+        label: Enable Private Endpoint
+      privateNodes:
+        label: Enable Private Nodes
     privateEndpoint:
       label: Private Endpoint
     project:
