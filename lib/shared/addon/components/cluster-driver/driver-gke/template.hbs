@@ -312,17 +312,27 @@
                 {{t
                   "clusterNew.googlegke.ipAllocationPolicy.clusterIpv4CidrBlock.accesslabel"
                 }}
+                  <p class="inline help-block">
+                    {{t
+                      "clusterNew.googlegke.ipAllocationPolicy.minMax"
+                      min=minMaxRanges.clusterIpv4CidrBlock.min
+                      max=minMaxRanges.clusterIpv4CidrBlock.max
+                    }}
+                  </p>
               </label>
               <InputOrDisplay
                 @editable={{isNew}}
                 @value={{config.ipAllocationPolicy.clusterIpv4CidrBlock}}
               >
                 <InputCidr
-                  @value={{mut config.ipAllocationPolicy.clusterIpv4CidrBlock}}
                   @disabled={{not config.ipAllocationPolicy.useIpAliases}}
+                    @maxSize={{minMaxRanges.clusterIpv4CidrBlock.max}}
+                    @minSize={{minMaxRanges.clusterIpv4CidrBlock.min}}
                   @placeholder={{t
                     "clusterNew.googlegke.ipAllocationPolicy.clusterIpv4CidrBlock.placeholder"
                   }}
+                  @validateMinMax={{true}}
+                  @value={{mut config.ipAllocationPolicy.clusterIpv4CidrBlock}}
                 />
               </InputOrDisplay>
             </div>
@@ -332,17 +342,27 @@
               <div class="col span-6">
                 <label class="acc-label">
                   {{t "clusterNew.googlegke.ipPolicyNodeIpv4CidrBlock.label"}}
+                  <p class="inline help-block">
+                    {{t
+                      "clusterNew.googlegke.ipAllocationPolicy.minMax"
+                      min=minMaxRanges.nodeIpv4CidrBlock.min
+                      max=minMaxRanges.nodeIpv4CidrBlock.max
+                    }}
+                  </p>
                 </label>
                 <InputOrDisplay
                   @editable={{isNew}}
                   @value={{config.ipAllocationPolicy.nodeIpv4CidrBlock}}
                 >
                   <InputCidr
-                    @value={{mut config.ipAllocationPolicy.nodeIpv4CidrBlock}}
                     @disabled={{not config.ipAllocationPolicy.createSubnetwork}}
+                    @maxSize={{minMaxRanges.nodeIpv4CidrBlock.max}}
+                    @minSize={{minMaxRanges.nodeIpv4CidrBlock.min}}
                     @placeholder={{t
                       "clusterNew.googlegke.ipPolicyNodeIpv4CidrBlock.placeholder"
                     }}
+                    @validateMinMax={{true}}
+                    @value={{mut config.ipAllocationPolicy.nodeIpv4CidrBlock}}
                   />
                 </InputOrDisplay>
               </div>
@@ -373,17 +393,27 @@
             <div class="col span-6">
               <label class="acc-label">
                 {{t "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.label"}}
+                <p class="inline help-block">
+                  {{t
+                    "clusterNew.googlegke.ipAllocationPolicy.minMax"
+                    min=minMaxRanges.servicesIpv4CidrBlock.min
+                    max=minMaxRanges.servicesIpv4CidrBlock.max
+                  }}
+                </p>
               </label>
               <InputOrDisplay
                 @editable={{isNew}}
                 @value={{config.ipAllocationPolicy.servicesIpv4CidrBlock}}
               >
                 <InputCidr
-                  @value={{mut config.ipAllocationPolicy.servicesIpv4CidrBlock}}
                   @disabled={{not config.ipAllocationPolicy.useIpAliases}}
+                  @maxSize={{minMaxRanges.servicesIpv4CidrBlock.max}}
+                  @minSize={{minMaxRanges.servicesIpv4CidrBlock.min}}
                   @placeholder={{t
                     "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.placeholder"
                   }}
+                  @validateMinMax={{true}}
+                  @value={{mut config.ipAllocationPolicy.servicesIpv4CidrBlock}}
                 />
               </InputOrDisplay>
             </div>
