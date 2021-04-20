@@ -12,6 +12,7 @@ export default Component.extend(ViewNewEdit, {
   intl:         service(),
   clusterStore: service(),
   features:     service(),
+  settings:     service(),
 
   layout,
   model:      null,
