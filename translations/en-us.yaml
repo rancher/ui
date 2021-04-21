@@ -3652,7 +3652,7 @@ clusterNew:
       detail: Choose the Google Project ID and Cloud Credential that will be used to launch your cluster.
       next: 'Next: Configure Cluster'
       projectId:
-        help: TBD - Needs to match Project Id in Credential
+        help: Must to match Project Id from Credential JSON
         label: Google Project ID
       title: Google Account Access
     alphaFeatures:
@@ -3774,7 +3774,6 @@ clusterNew:
         detail: Choose a region or zone to import an GKE cluster from
         title: Cluster Location
     ipAllocationPolicy:
-      minMax: "(Min: {min}, Max: {max})"
       clusterIpv4CidrBlock:
         accesslabel: Cluster Pod address range
         placeholder: e.g. 10.96.0.0/11
@@ -3840,7 +3839,7 @@ clusterNew:
       placeholder: Your Master Authorized Network CIDR Blocks
     masterIpv4CidrBlock:
       error: A Master IPV4 CIDR block is required when creating a private cluster
-      help: Master CIDR block size must be /28
+      help: Master CIDR block mask must be /28
       label: Master IPV4 CIDR Block
       placeholder: e.g. 10.42.0.0/28
     masterVersion:
@@ -3899,7 +3898,7 @@ clusterNew:
       label: Preemptible nodes (beta)
       warning: Preemptible nodes will live at most 24 hours.
     privateCluster:
-      details: GKE private clusters is an advanced and unique use case which requires a special GKE configurations. Before enabling private clusters ensure you have read through the <a href="{docsBase}/cluster-provisioning" target="_blank" rel="nofollow noopener noreferrer">docs TBD</a> for instructions on configuring GKE so private nodes may communicate with {appName}.
+      details: GKE private clusters is an advanced and unique use case which requires a special GKE configurations. Before enabling private clusters ensure you have read through the <a href="{docsBase}/cluster-provisioning/hosted-kubernetes-clusters/gke/" target="_blank" rel="nofollow noopener noreferrer">GKE cluster provisioning docs</a> for instructions on configuring GKE so private nodes may communicate with {appName}.
       privateEndpoint:
         help: Control plane may only be accessed via the private IP.
         label: Enable Private Endpoint
@@ -4101,7 +4100,7 @@ clusterNew:
   import:
     command:
       instructionEksCluster: You are creating an EKS cluster that has private API access only. {appName} requires network access to the Kubernetes endpoint to complete cluster creation; You must manually run one of the following commands.
-      instructionGkeCluster: You are creating a private GKE cluster, nodes in a private cluster do not have public IP addresses. For {appName} to finish setting up your cluster it must be able to speak to your nodes. Follow these <a href="https://rancher.com/docs/rancher/v2.x/" target="_blank" rel="nofollow noopener noreferrer">instructions TBD</a> to configure GKE in a way which allows this access.
+      instructionGkeCluster: You are creating a private GKE cluster, nodes in a private cluster do not have public IP addresses. For {appName} to finish setting up your cluster it must be able to speak to your nodes. Ensure you follow these <a href="{docsBase}/cluster-provisioning/hosted-kubernetes-clusters/gke/" target="_blank" rel="nofollow noopener noreferrer">private cluster provisioning instructions</a> to configure GKE in a way which allows this access.
       instructions: 'Run the kubectl command below on an existing Kubernetes cluster running a supported Kubernetes version to import it into {appName}:'
       instructionsAdminRole: >-
         <b>Note:</b> If you want to import a Google Kubernetes Engine (GKE) cluster (or any cluster that does not supply you with a kubectl configuration file with the ClusterRole <b>cluster-admin</b> bound to it), you need to bind the ClusterRole <b>cluster-admin</b> using the command below.<br/><br/>Replace <b>[USER_ACCOUNT]</b> with your Google account address (you can retrieve this using <b>gcloud config get-value account</b>). If you are not importing a Google Kubernetes Engine cluster,
