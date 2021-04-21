@@ -3,7 +3,11 @@
     <div class="form-control-static">
       <div class="checkbox">
         <label>
-          {{input type="checkbox" checked=config.enabled disabled=editing}}
+          {{input
+            type="checkbox"
+            checked=config.enabled
+            disabled=(or editing clusterConfig.privateClusterConfig.enablePrivateEndpoint)
+          }}
           {{t "clusterNew.googlegke.enableMasterAuthorizedNetwork.label"}}
         </label>
       </div>
