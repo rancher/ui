@@ -312,13 +312,13 @@
                 {{t
                   "clusterNew.googlegke.ipAllocationPolicy.clusterIpv4CidrBlock.accesslabel"
                 }}
-                  <p class="inline help-block">
-                    {{t
-                      "clusterNew.googlegke.ipAllocationPolicy.minMax"
-                      min=minMaxRanges.clusterIpv4CidrBlock.min
-                      max=minMaxRanges.clusterIpv4CidrBlock.max
-                    }}
-                  </p>
+                <p class="inline help-block">
+                  {{t
+                    "clusterNew.googlegke.ipAllocationPolicy.minMax"
+                    min=minMaxRanges.clusterIpv4CidrBlock.min
+                    max=minMaxRanges.clusterIpv4CidrBlock.max
+                  }}
+                </p>
               </label>
               <InputOrDisplay
                 @editable={{isNew}}
@@ -326,8 +326,8 @@
               >
                 <InputCidr
                   @disabled={{not config.ipAllocationPolicy.useIpAliases}}
-                    @maxSize={{minMaxRanges.clusterIpv4CidrBlock.max}}
-                    @minSize={{minMaxRanges.clusterIpv4CidrBlock.min}}
+                  @maxSize={{minMaxRanges.clusterIpv4CidrBlock.max}}
+                  @minSize={{minMaxRanges.clusterIpv4CidrBlock.min}}
                   @placeholder={{t
                     "clusterNew.googlegke.ipAllocationPolicy.clusterIpv4CidrBlock.placeholder"
                   }}
@@ -427,6 +427,7 @@
             @isNew={{isNew}}
           />
           <CruMasterAuthNetwork
+            @clusterConfig={{config}}
             @config={{mut config.masterAuthorizedNetworks}}
             @isNew={{isNew}}
             @editing={{editing}}
