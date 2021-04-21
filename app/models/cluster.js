@@ -89,8 +89,8 @@ export const DEFAULT_GKE_NODE_POOL_CONFIG = {
   },
   initialNodeCount: 3,
   management:       {
-    autoRepair:        false,
-    autoUpgrade:       false,
+    autoRepair:        true,
+    autoUpgrade:       true,
   },
   maxPodsConstraint: 110,
   name:              null,
