@@ -1,6 +1,6 @@
 import Router from '@ember/routing/router';
 
-export function initialize(application) {
+export function initialize() {
   const isEmbedded = window !== window.top;
 
   if (isEmbedded) {
