@@ -284,11 +284,31 @@
                   }}
                 </InputOrDisplay>
               </div>
+              <div class="col span-6">
+                <label class="acc-label">
+                  {{t
+                    "clusterNew.googlegke.ipAllocationPolicy.clusterIpv4CidrBlock.accesslabel"
+                  }}
+                </label>
+                <InputOrDisplay
+                  @editable={{isNew}}
+                  @value={{config.ipAllocationPolicy.clusterIpv4CidrBlock}}
+                >
+                  <InputCidr
+                    @disabled={{not config.ipAllocationPolicy.useIpAliases}}
+                    @placeholder={{t
+                      "clusterNew.googlegke.ipAllocationPolicy.clusterIpv4CidrBlock.placeholder"
+                    }}
+                    @value={{mut config.ipAllocationPolicy.clusterIpv4CidrBlock
+                    }}
+                  />
+                </InputOrDisplay>
+              </div>
             {{else}}
               <div class="col span-6">
                 <label class="acc-label">
                   {{t
-                    "clusterNew.googlegke.ipPolicyClusterSecondaryRangeName.label"
+                    "clusterNew.googlegke.ipAllocationPolicy.clusterSecondaryRangeName.label"
                   }}
                 </label>
                 <InputOrDisplay
@@ -307,25 +327,6 @@
                 </InputOrDisplay>
               </div>
             {{/if}}
-            <div class="col span-6">
-              <label class="acc-label">
-                {{t
-                  "clusterNew.googlegke.ipAllocationPolicy.clusterIpv4CidrBlock.accesslabel"
-                }}
-              </label>
-              <InputOrDisplay
-                @editable={{isNew}}
-                @value={{config.ipAllocationPolicy.clusterIpv4CidrBlock}}
-              >
-                <InputCidr
-                  @disabled={{not config.ipAllocationPolicy.useIpAliases}}
-                  @placeholder={{t
-                    "clusterNew.googlegke.ipAllocationPolicy.clusterIpv4CidrBlock.placeholder"
-                  }}
-                  @value={{mut config.ipAllocationPolicy.clusterIpv4CidrBlock}}
-                />
-              </InputOrDisplay>
-            </div>
           </div>
           <div class="row">
             {{#if config.ipAllocationPolicy.createSubnetwork}}
@@ -346,11 +347,30 @@
                   />
                 </InputOrDisplay>
               </div>
+              <div class="col span-6">
+                <label class="acc-label">
+                  {{t "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.label"
+                  }}
+                </label>
+                <InputOrDisplay
+                  @editable={{isNew}}
+                  @value={{config.ipAllocationPolicy.servicesIpv4CidrBlock}}
+                >
+                  <InputCidr
+                    @disabled={{not config.ipAllocationPolicy.useIpAliases}}
+                    @placeholder={{t
+                      "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.placeholder"
+                    }}
+                    @value={{mut config.ipAllocationPolicy.servicesIpv4CidrBlock
+                    }}
+                  />
+                </InputOrDisplay>
+              </div>
             {{else}}
               <div class="col span-6">
                 <label class="acc-label">
                   {{t
-                    "clusterNew.googlegke.ipPolicyServicesSecondaryRangeName.label"
+                    "clusterNew.googlegke.ipAllocationPolicy.servicesSecondaryRangeName.label"
                   }}
                 </label>
                 <InputOrDisplay
@@ -370,23 +390,6 @@
                 </InputOrDisplay>
               </div>
             {{/if}}
-            <div class="col span-6">
-              <label class="acc-label">
-                {{t "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.label"}}
-              </label>
-              <InputOrDisplay
-                @editable={{isNew}}
-                @value={{config.ipAllocationPolicy.servicesIpv4CidrBlock}}
-              >
-                <InputCidr
-                  @disabled={{not config.ipAllocationPolicy.useIpAliases}}
-                  @placeholder={{t
-                    "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.placeholder"
-                  }}
-                  @value={{mut config.ipAllocationPolicy.servicesIpv4CidrBlock}}
-                />
-              </InputOrDisplay>
-            </div>
           </div>
         </section>
         <AdvancedSection @advanced={{clusterAdvanced}}>
