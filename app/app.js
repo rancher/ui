@@ -10,6 +10,15 @@ export default class App extends Application {
 
   Resolver = Resolver;
 
+  ready = function() {
+    // Notify outer window that the app has loaded when we are embedded
+    const isEmbedded = window.top !== window;
+
+    if (isEmbedded) {
+      window.top.postMessage({ action: 'ready' });
+    }
+  };
+
   engines = {
     login: {
       dependencies: {

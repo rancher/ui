@@ -31,6 +31,13 @@ export default Controller.extend({
       if ( bg ) {
         $('BODY').css('background', bg); // eslint-disable-line
       }
+
+      // Add class to hide Page Header and Footer when embedded
+      const embedded = window.top !== window;
+
+      if (embedded) {
+        $('BODY').addClass('embedded'); // eslint-disable-line
+      }
     });
   }),
 
