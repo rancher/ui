@@ -1,0 +1,131 @@
+{{#if (eq step "3")}}
+  <ImportCommand @cluster={{primaryResource}} />
+  <div class="footer-actions">
+    <button class="btn bg-primary" type="button" {{action "close"}}>
+      {{t "clusterNew.rke.done"}}
+    </button>
+  </div>
+{{else}}
+  <AccordionList @showExpandAll={{false}} as |al expandFn|>
+    <AccordionListItem
+      @title={{t "clusterNew.azureaks.access.title"}}
+      @detail={{t "clusterNew.azureaks.access.detailCC"}}
+      @expandAll={{expandAll}}
+      @expand={{action expandFn}}
+      @expandOnInit={{true}}
+      @showExpand={{false}}
+    >
+      <div class="row">
+        <div class="col span-4 mb-0">
+          <label class="acc-label" for="azureaks-tenant-id">
+            {{t "clusterNew.azureaks.tenant.label"}}
+            <FieldRequired />
+          </label>
+          <InputOrDisplay
+            @editable={{and (not isEdit) (eq step 1)}}
+            @value={{config.tenantId}}
+          >
+            <Input
+              @classNames="form-control"
+              @id="azureaks-tenant-id"
+              @placeholder={{t "clusterNew.azureaks.tenant.placeholder"}}
+              @type="text"
+              @value={{mut config.tenantId}}
+            />
+          </InputOrDisplay>
+        </div>
+        {{#if (eq step 1)}}
+          <FormAuthCloudCredential
+            @cloudCredentialKey="aksConfig.azureCredentialSecret"
+            @mode={{mode}}
+            @cancel={{action "close"}}
+            @cloudCredentials={{cloudCredentials}}
+            @createLabel="clusterNew.azureaks.access.next"
+            @driverName="aks"
+            @parseAndCollectErrors={{action "errorHandler"}}
+            @finishAndSelectCloudCredential={{action
+              "finishAndSelectCloudCredential"
+            }}
+            @primaryResource={{primaryResource}}
+            @progressStep={{action "fetchAksResources"}}
+            @disableSave={{not config.tenantId}}
+          />
+        {{else}}
+          <div class="row">
+            <div class="col span-4">
+              <label class="acc-label">
+                {{t "clusterNew.azureaks.access.cloudCred"}}
+              </label>
+              <div>
+                {{config.azureCredentialSecret}}
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </AccordionListItem>
+    {{#if
+      (or
+        (and (gte step 2) config.azureCredentialSecret)
+        (and config.azureCredentialSecret loadingClusters)
+      )
+    }}
+      <AccordionListItem
+        @title={{t "clusterNew.azureaks.import.clusterSelect.title"}}
+        @detail={{t "clusterNew.azureaks.import.clusterSelect.detail"}}
+        @expandAll={{expandAll}}
+        @expand={{action expandFn}}
+        @expandOnInit={{true}}
+      >
+        {{#if loadingClusters}}
+          <div class="row">
+            <section class="horizontal-form">
+              <div class="text-center">
+                <i class="icon icon-spinner icon-spin"></i>
+              </div>
+            </section>
+          </div>
+        {{else}}
+          <div class="row">
+            <div class="col span-6">
+              {{#if loadFailedAllClusters}}
+                <label class="acc-label" for="">
+                  {{t "clusterNew.azureaks.import.clusterSelect.input.label"}}
+                  {{field-required}}
+                </label>
+                <Input
+                  @type="text"
+                  @classNames="form-control"
+                  @value={{config.clusterName}}
+                />
+              {{else}}
+                <label class="acc-label" for="">
+                  {{t "clusterNew.azureaks.import.clusterSelect.select.label"}}
+                  {{field-required}}
+                </label>
+                <SearchableSelect
+                  class="form-control"
+                  @value={{mut config.clusterName}}
+                  @content={{allClusters}}
+                  @prompt="clusterNew.azureaks.import.prompt"
+                  @localizedPrompt={{true}}
+                  @change={{action "clusterSet"}}
+                />
+              {{/if}}
+            </div>
+          </div>
+        {{/if}}
+      </AccordionListItem>
+    {{/if}}
+  </AccordionList>
+  <TopErrors @errors={{mut allErrors}} />
+  {{#if (gte step 2)}}
+    <SaveCancel
+      @createLabel="clusterNew.azureaks.import.clusterSelect.createLabel"
+      @save={{action "driverSave"}}
+      @saveDisabled={{disableImport}}
+      @editing={{isEdit}}
+      @cancel={{action "close"}}
+    />
+  {{/if}}
+{{/if}}

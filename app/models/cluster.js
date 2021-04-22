@@ -145,6 +145,53 @@ export const DEFAULT_GKE_CONFIG = {
   zone:       'us-central1-c',
 };
 
+export const DEFAULT_AKS_CONFIG = {
+  authBaseUrl:                 null,
+  authorizedIpRanges:          [],
+  azureCredentialSecret:       null,
+  baseUrl:                     null,
+  clusterName:                 null,
+  dnsPrefix:                   null,
+  dnsServiceIp:                null,
+  dockerBridgeCidr:            null,
+  imported:                    false,
+  kubernetesVersion:           null,
+  linuxAdminUsername:          'azureuser',
+  loadBalancerSku:             'Standard',
+  networkPlugin:               'kubenet',
+  networkPolicy:               null,
+  nodePools:                   [],
+  podCidr:                     null,
+  privateCluster:              false,
+  resourceGroup:               null,
+  resourceLocation:            'eastus',
+  serviceCidr:                 null,
+  sshPublicKey:                null,
+  subnet:                      null,
+  tags:                        {},
+  type:                        'aksclusterconfigspec',
+  virtualNetwork:              null,
+  virtualNetworkResourceGroup: null,
+  windowsAdminPassword:        null,
+  windowsAdminUsername:        null,
+};
+
+export const DEFAULT_AKS_NODE_POOL_CONFIG = {
+  availabilityZones:   ['1', '2', '3'],
+  count:               1,
+  enableAutoScaling:   false,
+  maxCount:            3,
+  maxPods:             110,
+  minCount:            1,
+  mode:                'System',
+  name:                '',
+  orchestratorVersion: '',
+  osDiskSizeGB:        128,
+  osDiskType:          'Managed',
+  osType:              'Linux',
+  type:                'aksnodepool',
+  vmSize:              'Standard_DS2_v2',
+}
 
 export default Resource.extend(Grafana, ResourceUsage, {
   globalStore: service(),
@@ -294,7 +341,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return !!actionLinks.saveAsTemplate;
   }),
 
-  hasPublicAccess: computed('eksConfig.publicAccess', 'eksStatus.upstreamSpec.publicAccess', 'gkeStatus.privateClusterConfig.enablePrivateNodes', 'gkeStatus.upstreamSpec.privateClusterConfig.enablePrivateNodes', function() {
+  hasPublicAccess: computed('aksConfig.privateCluster', 'aksStatus.upstreamSpec.privateCluster', 'eksConfig.publicAccess', 'eksStatus.upstreamSpec.publicAccess', 'gkeStatus.privateClusterConfig.enablePrivateNodes', 'gkeStatus.upstreamSpec.privateClusterConfig.enablePrivateNodes', function() {
     const { clusterProvider } = this;
 
     switch (clusterProvider) {
@@ -302,12 +349,14 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return this?.eksStatus?.upstreamSpec?.publicAccess || this?.eksConfig?.publicAccess || true;
     case 'googlegkev2':
       return !this?.gkeStatus?.upstreamSpec?.privateClusterConfig?.enablePrivateNodes || !this?.gkeStatus?.privateClusterConfig?.enablePrivateNodes || true;
+    case 'azureaksv2':
+      return !this?.aksStatus?.upstreamSpec?.privateCluster || !this?.aksConfig?.privateCluster || true;
     default:
       return true;
     }
   }),
 
-  hasPrivateAccess: computed('eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', 'gkeConfig.privateClusterConfig.enablePrivateNodes', 'gkeStatus.upstreamSpec.privateClusterConfig.enablePrivateNodes', function() {
+  hasPrivateAccess: computed('aksConfig.privateCluster', 'aksStatus.upstreamSpec.privateCluster', 'eksConfig.privateAccess', 'eksStatus.upstreamSpec.privateAccess', 'gkeConfig.privateClusterConfig.enablePrivateNodes', 'gkeStatus.upstreamSpec.privateClusterConfig.enablePrivateNodes', function() {
     const { clusterProvider } = this;
 
     switch (clusterProvider) {
@@ -315,12 +364,14 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return this?.eksStatus?.upstreamSpec?.privateAccess || this?.eksConfig?.privateAccess || false;
     case 'googlegkev2':
       return this?.gkeStatus?.upstreamSpec?.privateClusterConfig?.enablePrivateNodes || this?.gkeConfig?.privateClusterConfig?.enablePrivateNodes;
+    case 'azureaksv2':
+      return this?.aksStatus?.upstreamSpec?.privateCluster || this?.aksConfig?.privateCluster;
     default:
       return false;
     }
   }),
 
-  displayImportLabel: computed('clusterProvider', 'eksDisplayEksImport', 'gkeDisplayImport', function() {
+  displayImportLabel: computed('aksDisplayImport', 'clusterProvider', 'eksDisplayEksImport', 'gkeDisplayImport', function() {
     const { clusterProvider } = this;
 
     switch (clusterProvider) {
@@ -328,11 +379,27 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return this.eksDisplayEksImport ? true : false;
     case 'googlegkev2':
       return this.gkeDisplayImport ? true : false;
+    case 'azureaksv2':
+      return this.aksDisplayImport ? true : false;
     case 'import':
       return true;
     default:
       return false;
     }
+  }),
+
+  aksDisplayImport: computed('clusterProvider', 'hasPrivateAccess', 'imported', function() {
+    const { clusterProvider } = this;
+
+    if (clusterProvider !== 'azureaksv2') {
+      return false;
+    }
+
+    if (this.hasPrivateAccess) {
+      return true;
+    }
+
+    return false;
   }),
 
   gkeDisplayImport: computed('clusterProvider', 'hasPrivateAccess', 'imported', function() {
@@ -365,7 +432,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
   canShowAddHost: computed('clusterProvider', 'hasPrivateAccess', 'hasPublicAccess', 'imported', 'nodes', function() {
     const { clusterProvider } = this;
-    const compatibleProviders = ['custom', 'import', 'amazoneksv2', 'googlegkev2'];
+    const compatibleProviders = ['custom', 'import', 'amazoneksv2', 'googlegkev2', 'azureaksv2'];
 
     if (!compatibleProviders.includes(clusterProvider)) {
       return false;
@@ -375,6 +442,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
     if (clusterProvider === 'amazoneksv2' && !!this.hasPublicAccess && this.hasPrivateAccess) {
       return true;
     } else if (clusterProvider === 'googlegkev2' && this.hasPrivateAccess) {
+      return true;
+    } else if (clusterProvider === 'azureaksv2' && this.hasPrivateAccess) {
       return true;
     } else if (( clusterProvider === 'custom' || clusterProvider === 'import')) {
       return true;
@@ -425,6 +494,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return 'amazoneksv2';
     case 'azureKubernetesServiceConfig':
       return 'azureaks';
+    case 'aksConfig':
+      return 'azureaksv2';
     case 'gkeConfig':
       return 'googlegkev2';
     case 'googleKubernetesEngineConfig':
@@ -841,7 +912,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
         }
       };
 
-      if (provider === 'import' && isEmpty(get(this, 'eksConfig') && isEmpty(get(this, 'gkeConfig')))) {
+      if (provider === 'import' &&
+      isEmpty(get(this, 'eksConfig')) &&
+      isEmpty(get(this, 'gkeConfig')) &&
+      isEmpty(get(this, 'aksConfig'))) {
         set(queryParams, 'queryParams.importProvider', 'other');
       }
 
@@ -851,6 +925,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
       if (provider === 'gke' && !isEmpty(get(this, 'gkeConfig'))) {
         set(queryParams, 'queryParams.provider', 'googlegkev2');
+      }
+
+      if (provider === 'aks' && !isEmpty(get(this, 'aksConfig'))) {
+        set(queryParams, 'queryParams.provider', 'azureaksv2');
       }
 
       if (this.clusterTemplateRevisionId) {
@@ -992,13 +1070,17 @@ export default Resource.extend(Grafana, ResourceUsage, {
   },
 
   save(opt) {
-    const { eksConfig, gkeConfig } = this;
+    const {
+      eksConfig, gkeConfig, aksConfig
+    } = this;
     let options = null;
 
     if (get(this, 'driver') === 'EKS' || (this.isObject(eksConfig) && !this.isEmptyObject(eksConfig))) {
       options = this.syncEksConfigs(opt);
     } else if (this.isObject(gkeConfig) && !this.isEmptyObject(gkeConfig)) {
       options = this.syncGkeConfigs(opt);
+    } else if (this.isObject(aksConfig) && !this.isEmptyObject(aksConfig)) {
+      options = this.syncAksConfigs(opt);
     }
 
     if (!isEmpty(options)) {
@@ -1006,6 +1088,56 @@ export default Resource.extend(Grafana, ResourceUsage, {
     }
 
     return this._super(...arguments);
+  },
+
+  syncAksConfigs(opt) {
+    const {
+      aksConfig, globalStore, id
+    } = this;
+
+    const options = ({
+      ...opt,
+      data: {
+        name:      this.name,
+        aksConfig: {},
+      }
+    });
+
+    const aksClusterConfigSpec = globalStore.getById('schema', 'aksclusterconfigspec');
+    const aksNodePoolConfigSpec = globalStore.getById('schema', 'aksnodepool');
+
+    if (isEmpty(id)) {
+      this.sanitizeConfigs(aksConfig, aksClusterConfigSpec, aksNodePoolConfigSpec, 'nodePools');
+
+      if (!get(this, 'aksConfig.imported') && this.name !== get(this, 'aksConfig.clusterName')) {
+        set(this, 'aksConfig.clusterName', this.name);
+      }
+
+      return;
+    } else {
+      const config = jsondiffpatch.clone(aksConfig);
+      const upstreamSpec = jsondiffpatch.clone(get(this, 'aksStatus.upstreamSpec'));
+
+      if (isEmpty(upstreamSpec)) {
+        this.sanitizeConfigs(aksConfig, aksClusterConfigSpec, aksNodePoolConfigSpec, 'nodePools');
+
+        return;
+      }
+
+      set(options, 'data.aksConfig', this.diffUpstreamSpec(upstreamSpec, config));
+
+      if (!isEmpty(get(options, 'data.aksConfig.nodePools'))) {
+        get(options, 'data.aksConfig.nodePools').forEach((np) => {
+          this.replaceNullWithEmptyDefaults(np, get(aksNodePoolConfigSpec, 'resourceFields'));
+        });
+      }
+
+      if (get(options, 'qp._replace')) {
+        delete options.qp['_replace'];
+      }
+
+      return options;
+    }
   },
 
   syncGkeConfigs(opt) {
@@ -1146,6 +1278,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
             } else if (clusterProvider === 'googlegkev2') {
               if ( !isEmpty(get(DEFAULT_GKE_CONFIG, ck)) || !isEmpty(get(DEFAULT_GKE_NODE_POOL_CONFIG, ck)) ) {
                 let match = isEmpty(get(DEFAULT_GKE_CONFIG, ck)) ? get(DEFAULT_GKE_NODE_POOL_CONFIG, ck) : get(DEFAULT_GKE_CONFIG, ck);
+
+                set(config, ck, match);
+              }
+            } else if (clusterProvider === 'azureaksv2') {
+              if ( !isEmpty(get(DEFAULT_AKS_CONFIG, ck)) || !isEmpty(get(DEFAULT_AKS_NODE_POOL_CONFIG, ck)) ) {
+                let match = isEmpty(get(DEFAULT_AKS_CONFIG, ck)) ? get(DEFAULT_AKS_NODE_POOL_CONFIG, ck) : get(DEFAULT_AKS_CONFIG, ck);
 
                 set(config, ck, match);
               }

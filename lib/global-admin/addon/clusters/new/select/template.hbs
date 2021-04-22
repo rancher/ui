@@ -25,6 +25,18 @@
       </a>
       <a
         class="col span-2 cluster-driver-box small span-height"
+        href="{{href-to "global-admin.clusters.new.launch" "import" (query-params importProvider='aks')}}"
+        disabled={{disabledAddCluster}}
+      >
+        <div class="machine-driver azureaks"></div>
+        <div class="driver-content">
+          <p class="driver-name">
+            {{t "clusterNew.azureaks.shortLabel"}}
+          </p>
+        </div>
+      </a>
+      <a
+        class="col span-2 cluster-driver-box small span-height"
         href="{{href-to "global-admin.clusters.new.launch" "import" (query-params importProvider='gke')}}"
         disabled={{disabledAddCluster}}
       >
@@ -138,7 +150,7 @@
         </div>
         {{#each (get providerGroups "cloudGroup") as |provider|}}
           {{#unless provider.scriptError}}
-            {{#unless (or (eq provider.name "amazoneks") (eq provider.name "googlegke"))}}
+            {{#unless (or (or (eq provider.name "amazoneks") (eq provider.name "googlegke")) (eq provider.name "azureaks"))}}
               {{#link-to
                 "clusters.new.launch"
                 provider.name
