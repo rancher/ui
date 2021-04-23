@@ -373,7 +373,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     // private access requires the ability to run the import command on the cluster
     if (clusterProvider === 'amazoneksv2' && !!this.hasPublicAccess && this.hasPrivateAccess) {
       return true;
-    } else if (clusterProvider === 'googlev2' && this.hasPrivateAccess) {
+    } else if (clusterProvider === 'googlegkev2' && this.hasPrivateAccess) {
       return true;
     } else if (( clusterProvider === 'custom' || clusterProvider === 'import')) {
       return true;
