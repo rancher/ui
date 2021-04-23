@@ -108,7 +108,7 @@
                 @editable={{and isNew (eq step 2)}}
                 @value={{config.zone}}
               >
-                <NewSelect
+                <SearchableSelect
                   @classNames="form-control select-algin-checkbox"
                   @content={{zoneChoices}}
                   @disabled={{editing}}
@@ -117,7 +117,7 @@
                   @optionValuePath="name"
                   @prompt="clusterNew.googlegke.zone.prompt"
                   @value={{config.zone}}
-                />
+                 />
               </InputOrDisplay>
             </div>
             <div class="col span-2">
@@ -143,10 +143,10 @@
                 @editable={{and isNew (eq step 2)}}
                 @value={{config.region}}
               >
-                <NewSelect
+                <SearchableSelect
                   @classNames="form-control select-algin-checkbox"
                   @content={{regionChoices}}
-                  @disabled={{editing}}
+                  @readOnly={{editing}}
                   @localizedPrompt={{true}}
                   @optionLabelPath="name"
                   @optionValuePath="name"
@@ -159,6 +159,7 @@
         </div>
         {{#if (eq step 2)}}
           <SaveCancel
+            @saveDisabled={{and (not config.region) (not config.zone)}}
             @createLabel="clusterNew.googlegke.clusterLocation.createLabel"
             @savingLabel="clusterNew.googlegke.clusterLocation.savingLabel"
             @saving={{mut clusterLocationSaving}}
