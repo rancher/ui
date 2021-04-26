@@ -144,7 +144,10 @@
         </div>
       </div>
     </div>
-    <FormGkeTaints @taints={{nodePool.config.taints}} @editable={{isNewNodePool}} />
+    <FormGkeTaints
+      @taints={{nodePool.config.taints}}
+      @editable={{isNewNodePool}}
+    />
     <div class="row mt-20">
       <div class="col span-12 mb-0">
         <label class="acc-label">
@@ -201,14 +204,24 @@
         />
       </div>
     </div>
+    {{#if showManagementWarning}}
+      <div class="row">
+        <div class="col span-12">
+          <BannerMessage
+            @icon="icon-alert"
+            @color="bg-warning mb-10"
+            @message={{t "clusterNew.googlegke.autoRepairUpgradeWarning.label"}}
+          />
+        </div>
+      </div>
+    {{/if}}
     <div class="row">
       <div class="col span-6 mt-25">
         <div class="form-control-static">
           <div class="checkbox">
             <label>
               {{input type="checkbox" checked=nodePool.autoscaling.enabled}}
-              {{t "clusterNew.googlegke.autoscaling.label"
-              }}
+              {{t "clusterNew.googlegke.autoscaling.label"}}
             </label>
           </div>
         </div>
