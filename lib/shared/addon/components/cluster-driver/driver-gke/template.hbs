@@ -26,7 +26,7 @@
               <FieldRequired />
             </label>
             <InputOrDisplay
-              @editable={{and isNew (eq step 1)}}
+              @editable={{and isNewOrEditable (eq step 1)}}
               @value={{config.projectID}}
             >
               {{input
@@ -82,7 +82,7 @@
               {{t "clusterNew.googlegke.locationType.label"}}
             </label>
             <InputOrDisplay
-              @editable={{and isNew (eq step 2)}}
+              @editable={{and isNewOrEditable (eq step 2)}}
               @value={{locationType}}
             >
               <div class="radio">
@@ -105,13 +105,13 @@
                 {{t "clusterNew.googlegke.zone.label"}}
               </label>
               <InputOrDisplay
-                @editable={{and isNew (eq step 2)}}
+                @editable={{and isNewOrEditable (eq step 2)}}
                 @value={{config.zone}}
               >
                 <SearchableSelect
                   @classNames="form-control select-algin-checkbox"
                   @content={{zoneChoices}}
-                  @disabled={{editing}}
+                  @disabled={{not isNewOrEditable}}
                   @localizedPrompt={{true}}
                   @optionLabelPath="name"
                   @optionValuePath="name"
@@ -140,13 +140,13 @@
                 {{t "clusterNew.googlegke.region.label"}}
               </label>
               <InputOrDisplay
-                @editable={{and isNew (eq step 2)}}
+                @editable={{and isNewOrEditable (eq step 2)}}
                 @value={{config.region}}
               >
                 <SearchableSelect
                   @classNames="form-control select-algin-checkbox"
                   @content={{regionChoices}}
-                  @readOnly={{editing}}
+                  @disabled={{not isNewOrEditable}}
                   @localizedPrompt={{true}}
                   @optionLabelPath="name"
                   @optionValuePath="name"
@@ -194,7 +194,7 @@
               {{t "clusterNew.googlegke.clusterIpv4Cidr.label"}}
             </label>
             <InputOrDisplay
-              @editable={{isNew}}
+              @editable={{isNewOrEditable}}
               @value={{config.clusterIpv4Cidr}}
             >
               <InputCidr @value={{mut config.clusterIpv4Cidr}} />
@@ -207,7 +207,7 @@
               <label class="acc-label">
                 {{t "clusterNew.googlegke.network.label"}}
               </label>
-              <InputOrDisplay @editable={{isNew}} @value={{config.network}}>
+              <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.network}}>
                 {{searchable-select
                   content=networkContent
                   classNames="form-control"
@@ -227,7 +227,7 @@
                   )
                 }}
               </label>
-              <InputOrDisplay @editable={{isNew}} @value={{config.subnetwork}}>
+              <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.subnetwork}}>
                 {{searchable-select
                   content=subNetworkContent
                   classNames="form-control"
@@ -247,7 +247,7 @@
                     type="checkbox"
                     checked=config.ipAllocationPolicy.useIpAliases
                     disabled=(or
-                      config.privateClusterConfig.enablePrivateNodes editing
+                      config.privateClusterConfig.enablePrivateNodes (not isNewOrEditable)
                     )
                   }}
                   {{t "clusterNew.googlegke.useIpAliases.label"}}
@@ -258,7 +258,7 @@
                   {{input
                     type="checkbox"
                     checked=config.networkPolicyEnabled
-                    disabled=editing
+                    disabled=(not isNewOrEditable)
                   }}
                   {{t "clusterNew.googlegke.networkPolicy.label"}}
                 </label>
@@ -272,7 +272,7 @@
                   {{t "clusterNew.googlegke.ipPolicySubnetworkName.label"}}
                 </label>
                 <InputOrDisplay
-                  @editable={{isNew}}
+                  @editable={{isNewOrEditable}}
                   @value={{config.ipAllocationPolicy.subnetworkName}}
                 >
                   {{input
@@ -292,7 +292,7 @@
                   }}
                 </label>
                 <InputOrDisplay
-                  @editable={{isNew}}
+                  @editable={{isNewOrEditable}}
                   @value={{config.ipAllocationPolicy.clusterSecondaryRangeName}}
                 >
                   {{searchable-select
@@ -314,7 +314,7 @@
                 }}
               </label>
               <InputOrDisplay
-                @editable={{and isNew (not config.ipAllocationPolicy.clusterSecondaryRangeName)}}
+                @editable={{and isNewOrEditable (not config.ipAllocationPolicy.clusterSecondaryRangeName)}}
                 @value={{config.ipAllocationPolicy.clusterIpv4CidrBlock}}
               >
                 <InputCidr
@@ -334,7 +334,7 @@
                   {{t "clusterNew.googlegke.ipPolicyNodeIpv4CidrBlock.label"}}
                 </label>
                 <InputOrDisplay
-                  @editable={{isNew}}
+                  @editable={{isNewOrEditable}}
                   @value={{config.ipAllocationPolicy.nodeIpv4CidrBlock}}
                 >
                   <InputCidr
@@ -354,7 +354,7 @@
                   }}
                 </label>
                 <InputOrDisplay
-                  @editable={{isNew}}
+                  @editable={{isNewOrEditable}}
                   @value={{config.ipAllocationPolicy.servicesSecondaryRangeName
                   }}
                 >
@@ -375,7 +375,7 @@
                 {{t "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.label"}}
               </label>
               <InputOrDisplay
-                @editable={{and isNew (not config.ipAllocationPolicy.servicesSecondaryRangeName)}}
+                @editable={{and isNewOrEditable (not config.ipAllocationPolicy.servicesSecondaryRangeName)}}
                 @value={{config.ipAllocationPolicy.servicesIpv4CidrBlock}}
               >
                 <InputCidr
@@ -392,15 +392,15 @@
         <AdvancedSection @advanced={{clusterAdvanced}}>
           <CruPrivateCluster
             @config={{mut config.privateClusterConfig}}
-            @editing={{editing}}
+            @editing={{isNewOrEditable}}
             @mode={{mode}}
-            @isNew={{isNew}}
+            @isNew={{isNewOrEditable}}
           />
           <CruMasterAuthNetwork
             @clusterConfig={{config}}
             @config={{mut config.masterAuthorizedNetworks}}
-            @isNew={{isNew}}
-            @editing={{editing}}
+            @isNew={{isNewOrEditable}}
+            @editing={{isNewOrEditable}}
             @addMSAN={{action "addMSAN"}}
             @removeMSAN={{action "removeMSAN"}}
           />
@@ -454,11 +454,11 @@
                 {{t "clusterNew.googlegke.clusterFeatures.label"}}
               </label>
               <div class="checkbox">
-                <label class={{if editing "text-muted"}}>
+                <label class={{if isNewOrEditable "text-muted"}}>
                   {{input
                     type="checkbox"
                     checked=config.enableKubernetesAlpha
-                    disabled=editing
+                    disabled=(not isNewOrEditable)
                   }}
                   {{t "clusterNew.googlegke.alphaFeatures.label"}}
                 </label>
@@ -535,7 +535,7 @@
           {{#each config.nodePools as |nodePool|}}
             <GkeNodePoolRow
               @originalCluster={{model.originalCluster}}
-              @isNew={{isNew}}
+              @isNew={{isNewOrEditable}}
               @machineTypes={{machineTypes}}
               @mode={{mode}}
               @nodePool={{nodePool}}
