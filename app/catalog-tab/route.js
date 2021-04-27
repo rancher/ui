@@ -13,11 +13,15 @@ export default Route.extend({
     return get(this, 'catalog').fetchUnScopedCatalogs();
   },
 
-  model() {
+  model(params, transition) {
     // Do not use the model result
     const out = {};
 
-    return get(this, 'catalog').fetchTemplates().then(() => out);
+    if (get(transition, 'targetName') === 'catalog-tab.index') {
+      return get(this, 'catalog').fetchTemplates().then(() => out);
+    }
+
+    return out;
   },
 
   resetController(controller, isExiting/* , transition*/) {
