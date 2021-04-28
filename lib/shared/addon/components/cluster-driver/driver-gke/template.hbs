@@ -117,7 +117,7 @@
                   @optionValuePath="name"
                   @prompt="clusterNew.googlegke.zone.prompt"
                   @value={{config.zone}}
-                 />
+                />
               </InputOrDisplay>
             </div>
             <div class="col span-2">
@@ -207,7 +207,10 @@
               <label class="acc-label">
                 {{t "clusterNew.googlegke.network.label"}}
               </label>
-              <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.network}}>
+              <InputOrDisplay
+                @editable={{isNewOrEditable}}
+                @value={{config.network}}
+              >
                 {{searchable-select
                   content=networkContent
                   classNames="form-control"
@@ -227,7 +230,10 @@
                   )
                 }}
               </label>
-              <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.subnetwork}}>
+              <InputOrDisplay
+                @editable={{isNewOrEditable}}
+                @value={{config.subnetwork}}
+              >
                 {{searchable-select
                   content=subNetworkContent
                   classNames="form-control"
@@ -247,7 +253,8 @@
                     type="checkbox"
                     checked=config.ipAllocationPolicy.useIpAliases
                     disabled=(or
-                      config.privateClusterConfig.enablePrivateNodes (not isNewOrEditable)
+                      config.privateClusterConfig.enablePrivateNodes
+                      (not isNewOrEditable)
                     )
                   }}
                   {{t "clusterNew.googlegke.useIpAliases.label"}}
@@ -307,15 +314,21 @@
             <div class="col span-6">
               <label class="acc-label">
                 {{t
-                 "clusterNew.googlegke.ipAllocationPolicy.clusterSecondaryRange.cidrLabel"
+                  "clusterNew.googlegke.ipAllocationPolicy.clusterSecondaryRange.cidrLabel"
                 }}
               </label>
               <InputOrDisplay
-                @editable={{and isNewOrEditable (not config.ipAllocationPolicy.clusterSecondaryRangeName)}}
+                @editable={{and
+                  isNewOrEditable
+                  (not config.ipAllocationPolicy.clusterSecondaryRangeName)
+                }}
                 @value={{config.ipAllocationPolicy.clusterIpv4CidrBlock}}
               >
                 <InputCidr
-                  @disabled={{and (not config.ipAllocationPolicy.useIpAliases ) (not disableNamelessSecondaryRanges)}}
+                  @disabled={{and
+                    (not config.ipAllocationPolicy.useIpAliases)
+                    (not disableNamelessSecondaryRanges)
+                  }}
                   @placeholder={{t
                     "clusterNew.googlegke.ipAllocationPolicy.clusterIpv4CidrBlock.placeholder"
                   }}
@@ -366,14 +379,22 @@
             {{/if}}
             <div class="col span-6">
               <label class="acc-label">
-                {{t "clusterNew.googlegke.ipAllocationPolicy.servicesSecondaryRange.cidrLabel"}}
+                {{t
+                  "clusterNew.googlegke.ipAllocationPolicy.servicesSecondaryRange.cidrLabel"
+                }}
               </label>
               <InputOrDisplay
-                @editable={{and isNewOrEditable (not config.ipAllocationPolicy.servicesSecondaryRangeName)}}
+                @editable={{and
+                  isNewOrEditable
+                  (not config.ipAllocationPolicy.servicesSecondaryRangeName)
+                }}
                 @value={{config.ipAllocationPolicy.servicesIpv4CidrBlock}}
               >
                 <InputCidr
-                  @disabled={{and (not config.ipAllocationPolicy.useIpAliases ) (not disableNamelessSecondaryRanges)}}
+                  @disabled={{and
+                    (not config.ipAllocationPolicy.useIpAliases)
+                    (not disableNamelessSecondaryRanges)
+                  }}
                   @placeholder={{t
                     "clusterNew.googlegke.ipPolicyServicesIpv4CidrBlock.placeholder"
                   }}
@@ -513,6 +534,24 @@
                   @content={{maintenanceWindowTimes}}
                   @value={{mut config.maintenanceWindow}}
                 />
+              </div>
+            </div>
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t "clusterNew.googlegke.clusterDescription.label"}}
+              </label>
+              <div class="form-control-static">
+                <InputOrDisplay
+                  @editable={{isNewOrEditable}}
+                  @value={{config.description}}
+                >
+                  <TextareaAutogrow
+                    @value={{mut config.description}}
+                    @classNames="form-control no-resize description"
+                    @rows={{"1"}}
+                    @placeholder={{"formNameDescription.description.placeholder"}}
+                  />
+                </InputOrDisplay>
               </div>
             </div>
           </div>
