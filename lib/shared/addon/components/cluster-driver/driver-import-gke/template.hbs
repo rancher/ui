@@ -79,11 +79,11 @@
           </div>
         </div>
         {{#if (eq locationType "zonal")}}
-          <div class="col span-4">
+          <div class="col span-6">
             <label class="acc-label">
               {{t "clusterNew.googlegke.zone.label"}}
             </label>
-            <NewSelect
+            <SearchableSelect
               @classNames="form-control select-algin-checkbox"
               @content={{zoneChoices}}
               @disabled={{editing}}
@@ -91,7 +91,8 @@
               @optionLabelPath="name"
               @optionValuePath="name"
               @prompt="clusterNew.googlegke.zone.prompt"
-              @value={{mut config.zone}}
+              @change={{action "setZone"}}
+              @value={{config.zone}}
             />
           </div>
         {{/if}}
@@ -100,7 +101,7 @@
             <label class="acc-label">
               {{t "clusterNew.googlegke.region.label"}}
             </label>
-            <NewSelect
+            <SearchableSelect
               @classNames="form-control select-algin-checkbox"
               @content={{regionChoices}}
               @disabled={{editing}}
@@ -108,7 +109,8 @@
               @optionLabelPath="name"
               @optionValuePath="name"
               @prompt="clusterNew.googlegke.region.prompt"
-              @value={{mut config.region}}
+              @change={{action "setRegion"}}
+              @value={{config.region}}
             />
           </div>
         {{/if}}
