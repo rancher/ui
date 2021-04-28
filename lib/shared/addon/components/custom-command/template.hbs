@@ -47,6 +47,19 @@
                 </label>
               </div>
             </div>
+            {{#unless (and (and controlplane worker) etcd)}}
+              <row class="mb-20">
+                <div class="col span-12">
+                  <BannerMessage
+                    @color="bg-warning"
+                    @message={{t
+                      "clusterNew.rke.role.warning"
+                      appName=settings.appName
+                    }}
+                  />
+                </div>
+              </row>
+            {{/unless}}
             {{#advanced-section advanced=commandAdvanced}}
               <div class="row mt-20">
                 <div class="col span-6">
@@ -229,7 +242,9 @@
                   @tagName="div"
                   @classNames="copy-to-pre"
                 />
-                <pre id="registration-command" style="font-size: 14px;">{{command}}</pre>
+                <pre id="registration-command" style="font-size: 14px;">
+                  {{command}}
+                </pre>
               {{/if}}
             </div>
           </li>
