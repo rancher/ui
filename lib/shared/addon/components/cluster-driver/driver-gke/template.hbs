@@ -190,7 +190,10 @@
             />
             <p class="help-block">
               {{#if clusterReleaseChannel}}
-                {{t "clusterNew.googlegke.masterVersion.channel" channel=clusterReleaseChannel}}
+                {{t
+                  "clusterNew.googlegke.masterVersion.channel"
+                  channel=clusterReleaseChannel
+                }}
               {{else}}
                 {{t "clusterNew.googlegke.masterVersion.staticRelease"}}
               {{/if}}
@@ -556,10 +559,24 @@
                     @value={{mut config.description}}
                     @classNames="form-control no-resize description"
                     @rows={{"1"}}
-                    @placeholder={{"formNameDescription.description.placeholder"}}
+                    @placeholder={{"formNameDescription.description.placeholder"
+                    }}
                   />
                 </InputOrDisplay>
               </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t "clusterNew.googlegke.clusterLabels.label"}}
+              </label>
+              <FormKeyValue
+                @initialMap={{config.labels}}
+                @changed={{fn (mut config.labels)}}
+                @addActionLabel="clusterNew.googlegke.clusterLabels.addAction"
+                @editing={{isNewOrEditable}}
+              />
             </div>
           </div>
         </section>
