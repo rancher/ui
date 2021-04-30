@@ -992,11 +992,16 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
   save(opt) {
     const { eksConfig, gkeConfig } = this;
+    let options = null;
 
     if (get(this, 'driver') === 'EKS' || (this.isObject(eksConfig) && !this.isEmptyObject(eksConfig))) {
-      this.syncEksConfigs(opt);
+      options = this.syncEksConfigs(opt);
     } else if (this.isObject(gkeConfig) && !this.isEmptyObject(gkeConfig)) {
-      this.syncGkeConfigs(opt);
+      options = this.syncGkeConfigs(opt);
+    }
+
+    if (!isEmpty(options)) {
+      return this._super(options);
     }
 
     return this._super(...arguments);
@@ -1048,7 +1053,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         delete options.qp['_replace'];
       }
 
-      return;
+      return options;
     }
   },
 
@@ -1096,7 +1101,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         delete options.qp['_replace'];
       }
 
-      return;
+      return options;
     }
   },
 
