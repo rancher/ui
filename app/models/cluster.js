@@ -121,6 +121,7 @@ export const DEFAULT_GKE_CONFIG = {
     useIpAliases:               true
   },
   kubernetesVersion:        '',
+  labels:                   {},
   locations:                null,
   loggingService:           'logging.googleapis.com/kubernetes',
   maintenanceWindow:        null,
