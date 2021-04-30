@@ -40,6 +40,12 @@ export function initialize() {
         }
 
         router.transitionTo(msg.name);
+      } else if (msg.action == 'set-theme') {
+        const userTheme = window.ls('userTheme');
+
+        if (userTheme) {
+          userTheme.setTheme( msg.name, false);
+        }
       }
     });
   }
