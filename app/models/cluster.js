@@ -1270,6 +1270,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
                 // we had a map now we have an empty map
                 set(delta, k, {});
               }
+            } else if (!this.isEmptyObject(lhsMatch) && this.isEmptyObject(rhsMatch)) {
+              // we had a map now we have an empty map
+              set(delta, k, {});
             }
           } else { // lhsMatch not an array or object
             set(delta, k, rhsMatch);
