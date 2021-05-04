@@ -1179,7 +1179,9 @@ export default Resource.extend(Grafana, ResourceUsage, {
         }
       } catch (e){}
 
-      if (k === 'nodeGroups' || k === 'nodePools' || k === 'tags') {
+      if (k === 'nodeGroups' || k === 'nodePools' || k === 'tags' || k === 'labels') {
+        // Node Groups and Node Pools do not require a sync, we can safely send the entire object
+        // Tags and Labels (maps) are also included by default because what is present in the config is exactly what should be used on save and any equal maps would have been caught by the JSON isEqual comparison above
         if (!isEmpty(rhsMatch)) {
           // node groups need ALL data so short circut and send it all
           set(delta, k, rhsMatch);
