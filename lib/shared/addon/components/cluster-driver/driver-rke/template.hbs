@@ -14,7 +14,7 @@
     </h2>
   </div>
   <div class="right-buttons">
-    {{#if (or (and isEdit (not applyClusterTemplate)) (and (lte step 1) (not applyClusterTemplate)))}}
+    {{#if (and (lte step 1) (not applyClusterTemplate))}}
       {{#if pasteOrUpload}}
         <button {{action "cancel"}} type="button" class="btn btn-sm bg-primary" disabled={{not canEditForm}}>
           {{#if notView}}
@@ -1294,7 +1294,7 @@
        showExpandAll=false
        as |al expandFn|
     }}
-      {{#if cluster.windowsPreferedCluster}}
+      {{#if isWindowsPreferedCluster}}
         {{#accordion-list-item
            title=(t "clusterNew.rke.system.title")
            detail=(t "clusterNew.rke.system.detail")
