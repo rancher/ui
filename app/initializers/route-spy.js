@@ -13,9 +13,12 @@ export function initialize() {
       }.on('didTransition'),
 
       willTranstionNotify: function(transition) {
+        const router = window.ls('router');
+
         window.top.postMessage({
           action: 'before-navigation',
-          target: transition.targetName
+          target: transition.targetName,
+          url:    router.urlFor(transition.targetName)
         })
       }.on('willTransition')
     });
