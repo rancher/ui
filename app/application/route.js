@@ -1,8 +1,8 @@
+import { get, observer, set } from '@ember/object';
+import Route from '@ember/routing/route';
 import { cancel, next, schedule } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
-import { get, set, observer } from '@ember/object';
 
 export default Route.extend({
   access:   service(),
@@ -60,10 +60,12 @@ export default Route.extend({
 
       cancel(get(this, 'hideTimer'));
 
+      // console.log('Loading', id);
       this.notifyAction('need-to-load');
 
       if ( !get(this, 'loadingShown') ) {
         set(this, 'loadingShown', true);
+        // console.log('Loading Show', id);
         this.notifyLoading(true);
 
         schedule('afterRender', () => {
