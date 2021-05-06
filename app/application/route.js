@@ -1,8 +1,8 @@
+import { get, observer, set } from '@ember/object';
+import Route from '@ember/routing/route';
 import { cancel, next, schedule } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
-import { get, set, observer } from '@ember/object';
 
 export default Route.extend({
   access:   service(),
@@ -51,6 +51,9 @@ export default Route.extend({
   },
 
   actions: {
+    didTransition() {
+      this.notifyAction('did-transition');
+    },
     loading(transition) {
       this.incrementProperty('loadingId');
       let id = get(this, 'loadingId');
@@ -58,9 +61,12 @@ export default Route.extend({
       cancel(get(this, 'hideTimer'));
 
       // console.log('Loading', id);
+      this.notifyAction('need-to-load');
+
       if ( !get(this, 'loadingShown') ) {
         set(this, 'loadingShown', true);
         // console.log('Loading Show', id);
+        this.notifyLoading(true);
 
         schedule('afterRender', () => {
           $('#loading-underlay').stop().show().fadeIn({// eslint-disable-line
@@ -89,6 +95,7 @@ export default Route.extend({
               easing:   'linear',
               complete: schedule('afterRender', function() { // eslint-disable-line
                 $('#loading-underlay').stop().fadeOut({duration: 100, queue: false, easing: 'linear'}); // eslint-disable-line
+                setTimeout(() => self.notifyLoading(false), 200);
               })
             });
           });
@@ -195,4 +202,19 @@ export default Route.extend({
     }
   },
 
+  notifyLoading(isLoading) {
+    this.notifyAction('loading', isLoading);
+  },
+
+  notifyAction(action, state) {
+    // If embedded, notify outer frame
+    const isEmbedded = window !== window.top;
+
+    if (isEmbedded) {
+      window.top.postMessage({
+        action,
+        state
+      });
+    }
+  }
 });

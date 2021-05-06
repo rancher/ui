@@ -10,6 +10,29 @@ export default class App extends Application {
 
   Resolver = Resolver;
 
+  ready = function() {
+    const isEmbedded = window.top !== window;
+
+    if (isEmbedded) {
+      // Add a class 'hide-when-embedded' which can be used to hide elements
+      // that we don't want to show up when embedded
+      const head = document.getElementsByTagName('head')[0];
+      const styl = document.createElement('style');
+      const css = '.hide-when-embedded { display: none; }';
+
+      styl.setAttribute('type', 'text/css');
+      if (styl.styleSheet) {
+        styl.styleSheet.cssText = css;
+      } else {
+        styl.appendChild(document.createTextNode(css));
+      }
+      head.appendChild(styl);
+
+      // Notify outer window that the app has loaded when we are embedded
+      window.top.postMessage({ action: 'ready' });
+    }
+  };
+
   engines = {
     login: {
       dependencies: {
