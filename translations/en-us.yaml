@@ -4226,6 +4226,16 @@ clusterNew:
       label: Virtual Cloud Network CIDR
       placeholder: e.g. 172.16.0.0/16
       required: Virtual Cloud Network CIDR is required
+    podCidr:
+      error: Virtual Cloud CIDR format error
+      label: Kubernetes Pod CIDR block
+      placeholder: e.g. 10.244.0.0/16
+      required: Kubernetes Pod CIDR block is required
+    serviceCidr:
+      error: Virtual Cloud CIDR format error
+      label: Kubernetes Service CIDR block
+      placeholder: e.g. 10.96.0.0/16
+      required: Kubernetes Service CIDR block is required
     cluster:
       detail: Choose the Kubernetes version, the number of nodes, and the target compartment for the cluster.
       loading: Loading VCNs from Oracle Cloud Infrastructure
@@ -4240,10 +4250,14 @@ clusterNew:
       compartmentOCID: OCID of the VCN's compartment
       compartmentOCIDHelp: leave blank if it's the cluster compartment
       compartmentOCIDPlaceholder: e.g. ocid1.compartment.oc1..aaaaaaaa...
-      lbSubnetName1: Name of first pre-existing LB subnet
-      lbSubnetName1Placeholder: e.g. my-lb-sub-1
+      lbSubnetName1: Name of pre-existing LB subnet
+      lbSubnetName1Placeholder: e.g. svc-sub-1
       lbSubnetName2: Name of second pre-existing LB subnet (if applicable)
-      lbSubnetName2Placeholder: e.g. my-lb-sub-2
+      lbSubnetName2Placeholder: e.g. svc-sub-2
+      nodePoolPlaneSubnetName: Name of pre-existing node-pool subnet
+      nodePoolSubnetNamePlaceholder: e.g. nodepool-sub
+      controlPlaneSubnetName: Name of pre-existing control plane subnet
+      controlPlaneSubnetNamePlaceholder: e.g. k8sendpoint-sub
       vcnName: Name of the pre-existing VCN
       vcnNamePlaceholder: e.g. my-vcn
     flexShapeConfig:
@@ -4296,8 +4310,12 @@ clusterNew:
     storageType:
       label: Default Persistent Volume Disk Type
     subnet:
-      label: Subnet Access
-      required: Subnet access is required
+      label: Node-pool Subnet Access
+      required: Node-pool subnet access is required
+    controlPlaneSubnet:
+      label: Control plane Subnet Access
+      required: Control plane subnet access is required
+      warning: Rancher needs to be able to access the Kubernetes API on a private IP for this option to be successful. Typically, this requires VCN peering or running Rancher in the same VCN that hosts the (existing) control plane subnet.
     subnetAccessOptions:
       custom: Custom Create
       existing: Existing
