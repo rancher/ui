@@ -13,19 +13,9 @@ export function initialize() {
       }.on('didTransition'),
 
       willTranstionNotify: function(transition) {
-        const router = window.ls('router');
-        let url;
-
-        if (transition.targetName && transition.to) {
-          try {
-            url = router.urlFor(transition.targetName, transition.to.params );
-          } catch (e) {}
-        }
-
         window.top.postMessage({
           action: 'before-navigation',
           target: transition.targetName,
-          url
         })
       }.on('willTransition')
     });
