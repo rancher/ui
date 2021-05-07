@@ -139,7 +139,7 @@
             {{t 'clusterNew.oracleoke.quantityPerSubnet.label'}}
           </label>
           {{#input-or-display editable=(or (eq mode "new") eq mode "editing") value=config.quantityPerSubnet}}
-            {{input-integer min=1 max=maxNodeCount value=config.quantityPerSubnet classNames="form-control" placeholder=(t 'clusterNew.oracleoke.quantityPerSubnet.placeholder')}}
+            {{input-integer min=0 max=maxNodeCount value=config.quantityPerSubnet classNames="form-control" placeholder=(t 'clusterNew.oracleoke.quantityPerSubnet.placeholder')}}
             <p class="help-block">
               {{t 'clusterNew.oracleoke.quantityPerSubnet.help'}}
             </p>
@@ -191,7 +191,7 @@
               {{t 'clusterNew.oracleoke.quantityPerSubnet.label'}}
             </label>
             {{#input-or-display editable=(and (eq step 2) isNew) value=config.quantityPerSubnet}}
-              {{input-integer min=1 max=maxNodeCount value=config.quantityPerSubnet classNames="form-control" placeholder=(t 'clusterNew.oracleoke.quantityPerSubnet.placeholder')}}
+              {{input-integer min=0 max=maxNodeCount value=config.quantityPerSubnet classNames="form-control" placeholder=(t 'clusterNew.oracleoke.quantityPerSubnet.placeholder')}}
               <p class="help-block">
                 {{t 'clusterNew.oracleoke.quantityPerSubnet.help'}}
               </p>
@@ -272,19 +272,46 @@
               {{#if (eq vcnCreationMode "Custom")}}
                 <div class="row">
                   <div class="col span-6">
+                    <label class="acc-label">{{t 'clusterNew.oracleoke.controlPlaneSubnet.label'}}{{field-required}}</label>
+                    {{#input-or-display editable=(and (eq step 3) isNew) value=selectedSubnetAccess}}
+                      {{searchable-select class="form-control"
+                                          content=subnetAccessChoices
+                                          value=config.cpSubnetAccess
+                      }}
+                    {{/input-or-display}}
+                  </div>
+                  <div class="col span-6">
                     <label class="acc-label">{{t 'clusterNew.oracleoke.subnet.label'}}{{field-required}}</label>
                     {{#input-or-display editable=(and (eq step 3) isNew) value=selectedSubnetAccess}}
                       {{searchable-select class="form-control"
                                           content=subnetAccessChoices
-                                          value=config.subnetAccess
+                                          value=config.npSubnetAccess
                       }}
                     {{/input-or-display}}
                   </div>
-
+                </div>
+                <div class="row">
+                  <div class="col span-12">
+                    {{#if (and (not-eq config.cpSubnetAccess "public") (eq step 3))}}
+                      {{banner-message
+                              icon="icon-alert"
+                              color="bg-warning mb-10"
+                              message=(t "clusterNew.oracleoke.controlPlaneSubnet.warning")
+                      }}
+                    {{/if}}
+                  </div>
+                </div>
+                <div class="row">
                   <div class="col span-6">
-                    <label class="acc-label">{{t 'clusterNew.oracleoke.cidr.label'}}</label>
-                    {{#input-or-display editable=(and (eq step 3) isNew) value=config.vcnCidr}}
-                      {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.cidr.placeholder') value=config.vcnCidr}}
+                    <label class="acc-label">{{t 'clusterNew.oracleoke.podCidr.label'}}</label>
+                    {{#input-or-display editable=(and (eq step 3) isNew) value=config.podCidr}}
+                      {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.podCidr.placeholder') value=config.podCidr}}
+                    {{/input-or-display}}
+                  </div>
+                  <div class="col span-6">
+                    <label class="acc-label">{{t 'clusterNew.oracleoke.serviceCidr.label'}}</label>
+                    {{#input-or-display editable=(and (eq step 3) isNew) value=config.serviceCidr}}
+                      {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.serviceCidr.placeholder') value=config.serviceCidr}}
                     {{/input-or-display}}
                   </div>
                 </div>
@@ -306,6 +333,22 @@
                       {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.existingVCNDetails.vcnNamePlaceholder') value=config.vcnName}}
                     {{/input-or-display}}
                   </div>
+                </div>
+                <div class="row">
+                  <div class="col span-6">
+                    <label class="acc-label">{{t 'clusterNew.oracleoke.existingVCNDetails.controlPlaneSubnetName'}}{{field-required}}</label>
+                    {{#input-or-display editable=(and (eq step 3) isNew) value=config.controlPlaneSubnetName}}
+                      {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.existingVCNDetails.controlPlaneSubnetNamePlaceholder') value=config.controlPlaneSubnetName}}
+                    {{/input-or-display}}
+                  </div>
+
+                  <div class="col span-6">
+                    <label class="acc-label">{{t 'clusterNew.oracleoke.existingVCNDetails.nodePoolPlaneSubnetName'}}</label>
+                    {{#input-or-display editable=(and (eq step 3) isNew) value=config.nodePoolSubnetName}}
+                      {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.oracleoke.existingVCNDetails.nodePoolSubnetNamePlaceholder') value=config.nodePoolSubnetName}}
+                    {{/input-or-display}}
+                  </div>
+
                 </div>
                 <div class="row">
                   <div class="col span-6">

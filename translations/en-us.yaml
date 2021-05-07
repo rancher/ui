@@ -3996,14 +3996,18 @@ clusterNew:
       error: Virtual Cloud CIDR format error
     existingVCNDetails:
       compartmentOCID: OCID of the VCN's compartment
-      compartmentOCIDPlaceholder: e.g. ocid1.compartment.oc1..aaaaaaaa...
       compartmentOCIDHelp: leave blank if it's the cluster compartment
+      compartmentOCIDPlaceholder: e.g. ocid1.compartment.oc1..aaaaaaaa...
+      lbSubnetName1: Name of pre-existing LB subnet
+      lbSubnetName1Placeholder: e.g. svc-sub-1
+      lbSubnetName2: Name of second pre-existing LB subnet (if applicable)
+      lbSubnetName2Placeholder: e.g. svc-sub-2
+      nodePoolPlaneSubnetName: Name of pre-existing node-pool subnet
+      nodePoolSubnetNamePlaceholder: e.g. nodepool-sub
+      controlPlaneSubnetName: Name of pre-existing control plane subnet
+      controlPlaneSubnetNamePlaceholder: e.g. k8sendpoint-sub
       vcnName: Name of the pre-existing VCN
       vcnNamePlaceholder: e.g. my-vcn
-      lbSubnetName1: Name of first pre-existing LB subnet
-      lbSubnetName1Placeholder: e.g. my-lb-sub-1
-      lbSubnetName2: Name of second pre-existing LB subnet (if applicable)
-      lbSubnetName2Placeholder: e.g. my-lb-sub-2
     quantityPerSubnet:
       label: Nodes Per AD Count
       placeholder: e.g. 1
@@ -4021,8 +4025,16 @@ clusterNew:
       gpuLabel: Instance Configuration(CPU/Memory/GPU Type/GPU Count)
       required: Instance Configuration is required
     subnet:
-      label: Subnet Access
-      required: Subnet access is required
+      label: Node-pool Subnet Access
+      required: Node-pool subnet access is required
+    controlPlaneSubnet:
+      label: Control plane Subnet Access
+      required: Control plane subnet access is required
+      warning: Rancher needs to be able to access the Kubernetes API on a private IP for this option to be successful. Typically, this requires VCN peering or running Rancher in the same VCN that hosts the (existing) control plane subnet.
+    subnetAccessOptions:
+      custom: Custom Create
+      existing: Existing
+      quick: Quick Create
     node:
       title: Node Type
       detail: Choose the node type that will be used for this Kubernetes cluster
@@ -4038,6 +4050,11 @@ clusterNew:
     bootVolumeSize:
       label: Optionally override default boot volume size for nodes
       error: Custom boot volume disk size should be greater than the default (46.6 GB)
+    podCidr:
+      error: Virtual Cloud CIDR format error
+      label: Kubernetes Pod CIDR block
+      placeholder: e.g. 10.244.0.0/16
+      required: Kubernetes Pod CIDR block is required
     flexShapeConfig:
       label: Specify the number of OCPUs for the flex shape
       placeholder: e.g. 10
@@ -4045,10 +4062,6 @@ clusterNew:
     localDisk:
       label: Local Disk
       placeholder: size GB
-    subnetAccessOptions:
-      quick: Quick Create
-      custom: Custom Create
-      existing: Existing
 
   rke:
     upgradeStrategy:
