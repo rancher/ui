@@ -18,7 +18,7 @@ export default class App extends Application {
       // that we don't want to show up when embedded
       const head = document.getElementsByTagName('head')[0];
       const styl = document.createElement('style');
-      const css = '.hide-when-embedded { display: none; }';
+      const css = '.embedded .hide-when-embedded { display: none !important; }\n  .embedded-no-overflow { overflow-y: hidden; }';
 
       styl.setAttribute('type', 'text/css');
       if (styl.styleSheet) {

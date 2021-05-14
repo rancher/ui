@@ -1,0 +1,10 @@
+{{#if scope.currentCluster.isMonitoringReady}}
+<div class="pull-right grafana-link" style="cursor: pointer;" {{action "goToGrafana" model.grafanaUrl bubbles=false}}>
+  <div>
+    <div class="inline-block vertical-middle grafana"></div>
+    <span class="vertical-middle text-muted">{{t 'metricsAction.grafana.label'}}</span>
+  </div>
+</div>
+<div class="mb-20 clearfix"></div>
+{{container-metrics podId=model.pod.id resourceId=model.name}}
+{{/if}}

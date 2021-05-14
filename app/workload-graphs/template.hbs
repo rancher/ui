@@ -1,0 +1,12 @@
+{{#if scope.currentCluster.isMonitoringReady}}
+  {{#if service.grafanaUrl}}
+    <div class="pull-right grafana-link" style="cursor: pointer;" {{action "goToGrafana" service.grafanaUrl bubbles=false}}>
+      <div>
+        <div class="inline-block vertical-middle grafana"></div>
+        <span class="vertical-middle text-muted">{{t 'metricsAction.grafana.label'}}</span>
+      </div>
+    </div>
+  {{/if}}
+  <div class="mb-20 clearfix"></div>
+  {{workload-metrics resourceId=service.id}}
+{{/if}}
