@@ -1,7 +1,8 @@
-import { inject as service } from '@ember/service';
-import EmberRouter from '@ember/routing/router';
-import config from './config/environment';
 import { get } from '@ember/object';
+import EmberRouter from '@ember/routing/router';
+import { inject as service } from '@ember/service';
+
+import config from './config/environment';
 
 const Router = EmberRouter.extend({
   modalService: service('modal'),
@@ -52,6 +53,9 @@ Router.map(function() {
 
     this.route('apikeys');
     this.route('prefs');
+
+    // Only to avoid conflicy with /c path on dashboard when developing embedded pages
+    this.route('embed', { path: '/k/*path' });
 
     // Per-Cluster
     this.route('cluster', { path: '/c/:cluster_id' }, function() {
@@ -150,7 +154,19 @@ Router.map(function() {
         this.route('container', {
           path:           '/:pod_id/container/:container_name',
           resetNamespace: true
-        })
+        });
+
+        // Pos metrics graphs for embedding
+        this.route('pod-graphs', {
+          path:           '/pod-metrics/:pod_id',
+          resetNamespace: true
+        });
+
+        // Container metrics graphs for embedding
+        this.route('container-graphs', {
+          path:           '/:pod_id/container-metrics/:container_name',
+          resetNamespace: true
+        });
       });
 
       this.route('ingresses', { resetNamespace: true }, function() {
@@ -190,6 +206,11 @@ Router.map(function() {
         resetNamespace: true
       });
 
+      // Worlkload metrics graphs for embedding
+      this.route('workload-graphs', {
+        path:           '/workload-metrics/:workload_id',
+        resetNamespace: true
+      });
 
       this.route('project-catalogs', { path: '/catalogs' });
 
