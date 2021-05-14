@@ -27,4 +27,9 @@ export default Route.extend({
       return container;
     });
   },
+  actions: {
+    goToGrafana(grafanaUrl) {
+      window.open(grafanaUrl, '_blank');
+    }
+  }
 });

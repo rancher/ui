@@ -22,4 +22,9 @@ export default Route.extend({
 
     return pod;
   },
+  actions: {
+    goToGrafana(grafanaUrl) {
+      window.open(grafanaUrl, '_blank');
+    }
+  }
 });
