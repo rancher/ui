@@ -40,10 +40,12 @@
     {{rancher-metrics largeScale=largeScale noDataLabel="clusterDashboard.noRancherComponents"}}
   {{/metrics-summary}}
 
+{{#unless isEmbedded}}
   {{resource-event-list
     resourceType=(t "generic.cluster")
     clusterEvents=true
     expandAll=al.expandAll
     expandFn=expandFn
   }}
+{{/unless}}
 {{/accordion-list}}
