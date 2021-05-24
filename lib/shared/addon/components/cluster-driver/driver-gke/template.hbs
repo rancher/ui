@@ -120,22 +120,9 @@
                 />
               </InputOrDisplay>
             </div>
-            <div class="col span-2">
-              <label class="acc-label">
-                {{t "clusterNew.googlegke.locations.label"}}
-              </label>
-              {{#each locationContent as |location|}}
-                <div class="checkbox">
-                  <label>
-                    {{input type="checkbox" checked=location.checked}}
-                    {{location.name}}
-                  </label>
-                </div>
-              {{/each}}
-            </div>
           {{/if}}
           {{#if (eq locationType "regional")}}
-            <div class="col span-6">
+            <div class="col span-4">
               <label class="acc-label">
                 {{t "clusterNew.googlegke.region.label"}}
               </label>
@@ -156,6 +143,19 @@
               </InputOrDisplay>
             </div>
           {{/if}}
+          <div class="col span-2">
+            <label class="acc-label">
+              {{t "clusterNew.googlegke.locations.label"}}
+            </label>
+            {{#each locationContent as |location|}}
+              <div class="checkbox">
+                <label>
+                  {{input type="checkbox" checked=location.checked}}
+                  {{location.name}}
+                </label>
+              </div>
+            {{/each}}
+          </div>
         </div>
         {{#if (eq step 2)}}
           <SaveCancel
@@ -591,6 +591,8 @@
         <div class="row">
           {{#each config.nodePools as |nodePool|}}
             <GkeNodePoolRow
+              @locationType={{locationType}}
+              @locationContent={{locationContent}}
               @originalCluster={{model.originalCluster}}
               @isNew={{isNewOrEditable}}
               @machineTypes={{machineTypes}}
