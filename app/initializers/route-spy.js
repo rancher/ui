@@ -3,6 +3,8 @@ import Router from '@ember/routing/router';
 export function initialize() {
   const isEmbedded = window !== window.top;
 
+  let stylesheet = null;
+
   if (isEmbedded) {
     Router.reopen({
       notifyTopFrame: function() {
@@ -43,6 +45,23 @@ export function initialize() {
         if (userTheme) {
           userTheme.setTheme( msg.name, false);
         }
+      } else if (msg.action === 'colors') {
+        const head = document.getElementsByTagName('head')[0];
+
+        // Inject stylesheet to customize some colors
+        if (stylesheet) {
+          head.removeChild(stylesheet);
+        }
+
+        let css = `.bg-primary { background-color: ${ msg.primary }; color: ${ msg.primaryText } }\n `;
+
+        css += `.ember-basic-dropdown-content > li > a:hover {background-color: ${ msg.primary }; color: ${ msg.primaryText } }\n `;
+        css += `.ember-basic-dropdown-content > li > a:focus {background-color: ${ msg.primary }; color: ${ msg.primaryText } }\n `;
+
+        stylesheet = document.createElement('style');
+        stylesheet.setAttribute('type', 'text/css');
+        stylesheet.appendChild(document.createTextNode(css));
+        head.appendChild(stylesheet);
       }
     });
   }
