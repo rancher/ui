@@ -1,12 +1,12 @@
-import $ from 'jquery';
-import C from 'ui/utils/constants';
-import Route from '@ember/routing/route';
-import Preload from 'ui/mixins/preload';
-import { inject as service } from '@ember/service';
-import { scheduleOnce, later, cancel } from '@ember/runloop';
-import { resolve, all as PromiseAll } from 'rsvp';
 import { get, set } from '@ember/object';
+import Route from '@ember/routing/route';
+import { cancel, later, scheduleOnce } from '@ember/runloop';
+import { inject as service } from '@ember/service';
+import $ from 'jquery';
+import { all as PromiseAll, resolve } from 'rsvp';
 import { compare, isDevBuild } from 'shared/utils/parse-version';
+import Preload from 'ui/mixins/preload';
+import C from 'ui/utils/constants';
 
 const CHECK_AUTH_TIMER = 60 * 10 * 1000;
 
@@ -150,13 +150,15 @@ export default Route.extend(Preload, {
       return;
     }
 
-    if ( get(this, 'settings.isRancher') ) {
+    // Don't show any modals when embedded
+    const isEmbedded = window.top !== window;
+
+    if ( get(this, 'settings.isRancher') && !isEmbedded) {
       const telemetry = get(this, `settings.${ C.SETTING.TELEMETRY }`);
       const form = get(this, `settings.${ C.SETTING.FEEDBACK_FORM }`);
       const seenWhatsNew = get(this, `prefs.${ C.PREFS.SEEN_WHATS_NEW }`);
       const version = get(this, 'settings.rancherVersion');
       const isDev = isDevBuild(version);
-
 
       if ( get(this, 'access.admin') && (!telemetry || telemetry === 'prompt') ) {
         // Show the telemetry opt-in if not set
