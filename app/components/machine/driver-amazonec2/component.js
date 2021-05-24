@@ -282,6 +282,76 @@ let INSTANCE_TYPES = [
     group: 'M3 - General Purpose',
     name:  'm3.2xlarge'
   },
+  
+  {
+    group: 'C6g - High CPU',
+    name:  'c6g.medium'
+  },
+  {
+    group: 'C6g - High CPU',
+    name:  'c6g.large'
+  },
+  {
+    group: 'C6g - High CPU',
+    name:  'c6g.xlarge'
+  },
+  {
+    group: 'C6g - High CPU',
+    name:  'c6g.2xlarge'
+  },
+  {
+    group: 'C6g - High CPU',
+    name:  'c6g.4xlarge'
+  },
+  {
+    group: 'C6g - High CPU',
+    name:  'c6g.8xlarge'
+  },
+  {
+    group: 'C6g - High CPU',
+    name:  'c6g.12xlarge'
+  },
+  {
+    group: 'C6g - High CPU',
+    name:  'c6g.16xlarge'
+  },
+  {
+    group: 'C6g - High CPU',
+    name:  'c6g.metal'
+  },
+  
+  {
+    group: 'C6gn - High CPU',
+    name:  'c6gn.medium'
+  },
+  {
+    group: 'C6gn - High CPU',
+    name:  'c6gn.large'
+  },
+  {
+    group: 'C6gn - High CPU',
+    name:  'c6gn.xlarge'
+  },
+  {
+    group: 'C6gn - High CPU',
+    name:  'c6gn.2xlarge'
+  },
+  {
+    group: 'C6gn - High CPU',
+    name:  'c6gn.4xlarge'
+  },
+  {
+    group: 'C6gn - High CPU',
+    name:  'c6gn.8xlarge'
+  },
+  {
+    group: 'C6gn - High CPU',
+    name:  'c6gn.12xlarge'
+  },
+  {
+    group: 'C6gn - High CPU',
+    name:  'c6gn.16xlarge'
+  },
 
   {
     group: 'C5 - High CPU',
