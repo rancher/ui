@@ -192,6 +192,14 @@
           @min={{1}}
           @classNames="form-control"
         />
+        {{#if (gt regionalTotalNodeCounts nodePool.initialNodeCount)}}
+          <span class="pl-10 help-block text-warning">
+            {{t
+              "clusterNew.googlegke.locations.warning"
+              totalNodes=regionalTotalNodeCounts
+            }}
+          </span>
+        {{/if}}
       </div>
       <div class="col span-3">
         <label class="acc-label">
