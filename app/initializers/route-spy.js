@@ -48,7 +48,7 @@ export function initialize() {
       } else if (msg.action === 'colors') {
         const head = document.getElementsByTagName('head')[0];
 
-        // Inject stylesheet to customize some colors
+        // Inject stylesheet to customize some styles to reflect the primary color
         if (stylesheet) {
           head.removeChild(stylesheet);
         }
