@@ -104,7 +104,7 @@ export const DEFAULT_GKE_CONFIG = {
     httpLoadBalancing:        true,
     networkPolicyConfig:      false
   },
-  clusterIpv4Cidr:        null,
+  clusterIpv4Cidr:        '',
   clusterName:            null,
   description:            null,
   enableKubernetesAlpha:  false,
@@ -124,7 +124,7 @@ export const DEFAULT_GKE_CONFIG = {
   labels:                   {},
   locations:                null,
   loggingService:           'logging.googleapis.com/kubernetes',
-  maintenanceWindow:        null,
+  maintenanceWindow:        '',
   masterAuthorizedNetworks: {
     cidrBlocks: null,
     enabled:    false
