@@ -2,7 +2,7 @@ import { oneWay } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import { run } from '@ember/runloop';
-import { observer } from '@ember/object';
+import { observer, set } from '@ember/object';
 
 export default Controller.extend({
   settings: service(),
@@ -19,6 +19,7 @@ export default Controller.extend({
   state:             null,
   code:              null,
   isPopup:           null,
+  isEmbedded:        false,
 
   tooltip:           oneWay('tooltipService.tooltipOpts.type'),
   tooltipTemplate:   oneWay('tooltipService.tooltipOpts.template'),
@@ -29,6 +30,10 @@ export default Controller.extend({
     if ( this.get('app.environment') === 'development' ) {
       run.backburner.DEBUG = true;
     }
+
+    const embedded = window.top !== window;
+
+    set(this, 'isEmbedded', embedded);
   },
 
   // currentRouteName is set by Ember.Router
