@@ -1,7 +1,7 @@
+import Controller from '@ember/controller';
+import { computed, observer } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
-import { computed, observer } from '@ember/object';
-import Controller from '@ember/controller';
 import C from 'ui/utils/constants';
 
 // const NONE = 'none';
@@ -19,12 +19,20 @@ export default Controller.extend({
   group:             NAMESPACE,
   nodes:             null,
   expandedInstances: null,
+  notEmbedded:       true,
 
   namespaces: alias('scope.currentProject.namespaces'),
+
+  showSystemProjectWarning: computed.and('model.project.isSystemProject', 'notEmbedded'),
+
   init() {
     this._super(...arguments);
     this.set('nodes', this.get('store').all('node'));
     this.set('expandedInstances', []);
+
+    const notEmbedded = window.top === window;
+
+    this.set('notEmbedded', notEmbedded);
   },
 
   actions: {
