@@ -40,7 +40,14 @@
   {{nodes-live nodes=nodes}}
 
   <div class="row mt-0">
-    {{#if hideEtcdStatus}}
+    {{#if (and whichComponentStatusExists.etcd (not hideEtcdStatus))}}
+      {{k8s-component-status
+        label="clusterDashboard.etcd"
+        showUrl=scope.currentCluster.isRKE
+        healthy=etcdHealthy
+        url=grafana.etcdUrl
+      }}
+    {{else}}
       <div class="col mt-0 span-3">
         {{#banner-message
            icon="icon-alert"
@@ -51,16 +58,15 @@
           </p>
         {{/banner-message}}
       </div>
-    {{else}}
-      {{k8s-component-status
-        label="clusterDashboard.etcd"
-        showUrl=scope.currentCluster.isRKE
-        healthy=etcdHealthy
-        url=grafana.etcdUrl
-      }}
     {{/if }}
 
-    {{#if hideManagerAndSchedulerStatus}}
+    {{#if whichComponentStatusExists.controllerManager}}
+      {{k8s-component-status
+        label="clusterDashboard.controllerManager"
+        healthy=controllerHealthy
+        url=grafana.controllerUrl
+      }}
+    {{else}}
       <div class="col mt-0 span-3">
         {{#banner-message
            icon="icon-alert"
@@ -71,15 +77,15 @@
           </p>
         {{/banner-message}}
       </div>
-    {{else}}
-      {{k8s-component-status
-        label="clusterDashboard.controllerManager"
-        healthy=controllerHealthy
-        url=grafana.controllerUrl
-      }}
     {{/if}}
 
-    {{#if hideManagerAndSchedulerStatus}}
+    {{#if whichComponentStatusExists.scheduler}}
+      {{k8s-component-status
+        label="clusterDashboard.scheduler"
+        healthy=schedulerHealthy
+        url=grafana.schedulerUrl
+      }}
+    {{else}}
       <div class="col mt-0 span-3">
         {{#banner-message
            icon="icon-alert"
@@ -90,12 +96,6 @@
           </p>
         {{/banner-message}}
       </div>
-    {{else}}
-      {{k8s-component-status
-        label="clusterDashboard.scheduler"
-        healthy=schedulerHealthy
-        url=grafana.schedulerUrl
-      }}
     {{/if}}
 
     {{k8s-component-status
@@ -105,7 +105,7 @@
     }}
   </div>
 
-  {{#unless hideManagerAndSchedulerStatus}}
+  {{#unless (or whichComponentStatusExists.controllerManager whichComponentStatusExists.scheduler)}}
     <div class="row">
       {{#each cluster.displayWarnings as |warning|}}
         {{#banner-message icon="icon-alert" color="text-left bg-error mt-30"}}
