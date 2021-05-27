@@ -150,7 +150,12 @@
             {{#each locationContent as |location|}}
               <div class="checkbox">
                 <label>
-                  {{input type="checkbox" checked=location.checked}}
+                  <Input
+                    @type="checkbox"
+                    @checked={{location.checked}}
+                    @disabled={{and (not isNewOrEditable) (eq locationType "regional")
+                    }}
+                  />
                   {{location.name}}
                 </label>
               </div>
