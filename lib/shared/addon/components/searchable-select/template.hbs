@@ -8,9 +8,11 @@
     value=filter
     key-up=(action "search")
   }}
-
   {{#if showOptions}}
-    <section class={{concat optionsClass " searchable-options"}} style={{optionsMaxHeightCss}}>
+    <section
+      class={{concat optionsClass " searchable-options"}}
+      style={{optionsMaxHeightCss}}
+    >
       {{#if prompt}}
         <div
           class="searchable-option searchable-prompt"
@@ -28,14 +30,13 @@
           {{/if}}
         </div>
       {{/if}}
-
       {{#if prefix}}
         {{yield this "prefix"}}
       {{/if}}
-
       {{#if loading}}
         <div class="text-muted no-match">
-          <i class="icon icon-spinner icon-spin"/> {{t "generic.loading"}}
+          <i class="icon icon-spinner icon-spin"></i>
+          {{t "generic.loading"}}
         </div>
       {{else if showMessage}}
         <div class="text-muted no-match">
@@ -43,35 +44,72 @@
         </div>
       {{else}}
         {{#each unGroupedContent as |item idx|}}
-          <div
-            class="searchable-option"
-            onmouseup={{action "selectUnGroupedItem" idx}}
-            onmouseenter={{action "mouseEnter"}}
-            onmouseleave={{action "mouseLeave"}}
-          >
-            {{#if (eq value (get item optionValuePath))}}
-              <i class="icon icon-check"></i>
-            {{/if}}
-            {{#if showOptionIcon}}
-              <img width="32" height="32" alt="logo" src="{{item.imgUrl}}" class="p-5" style="margin-left:-5px" />
-            {{/if}}
-            {{#if item.custom}}
-              {{get item optionLabelPath}}
-            {{else if localizedLabel}}
-              {{t (get item optionLabelPath)}}
-            {{else if localizedHtmlLabel}}
-              {{t (get item optionLabelPath) htmlSafe=true}}
-            {{else if customLabel}}
-              {{yield item}}
-            {{else}}
-              {{get item optionLabelPath}}
-            {{/if}}
-          </div>
+          {{#if item.disabled}}
+            <div class="searchable-option disabled">
+              {{#if (eq value (get item optionValuePath))}}
+                <i class="icon icon-check"></i>
+              {{/if}}
+              {{#if showOptionIcon}}
+                <img
+                  width="32"
+                  height="32"
+                  alt="logo"
+                  src="{{item.imgUrl}}"
+                  class="p-5"
+                  style="margin-left:-5px"
+                />
+              {{/if}}
+              {{#if item.custom}}
+                {{get item optionLabelPath}}
+              {{else if localizedLabel}}
+                {{t (get item optionLabelPath)}}
+              {{else if localizedHtmlLabel}}
+                {{t (get item optionLabelPath) htmlSafe=true}}
+              {{else if customLabel}}
+                {{yield item}}
+              {{else}}
+                {{get item optionLabelPath}}
+              {{/if}}
+            </div>
+          {{else}}
+            <div
+              class="searchable-option"
+              onmouseup={{action "selectUnGroupedItem" idx}}
+              onmouseenter={{action "mouseEnter"}}
+              onmouseleave={{action "mouseLeave"}}
+            >
+              {{#if (eq value (get item optionValuePath))}}
+                <i class="icon icon-check"></i>
+              {{/if}}
+              {{#if showOptionIcon}}
+                <img
+                  width="32"
+                  height="32"
+                  alt="logo"
+                  src="{{item.imgUrl}}"
+                  class="p-5"
+                  style="margin-left:-5px"
+                />
+              {{/if}}
+              {{#if item.custom}}
+                {{get item optionLabelPath}}
+              {{else if localizedLabel}}
+                {{t (get item optionLabelPath)}}
+              {{else if localizedHtmlLabel}}
+                {{t (get item optionLabelPath) htmlSafe=true}}
+              {{else if customLabel}}
+                {{yield item}}
+              {{else}}
+                {{get item optionLabelPath}}
+              {{/if}}
+            </div>
+          {{/if}}
         {{/each}}
-
         {{#each groupedContent as |group|}}
           <div class="searchable-group">
-            <div class="group-label">{{group.group}}</div>
+            <div class="group-label">
+              {{group.group}}
+            </div>
             {{#each group.options as |item idx|}}
               <div
                 class="searchable-option"
@@ -98,11 +136,10 @@
           </div>
         {{/each}}
       {{/if}}
-
       {{#if suffix}}
         {{yield this "suffix"}}
       {{/if}}
     </section>
   {{/if}}
 {{/outside-click}}
-<i class="icon icon-spinner icon-spin" />
+<i class="icon icon-spinner icon-spin"></i>

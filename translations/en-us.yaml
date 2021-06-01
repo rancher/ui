@@ -1383,8 +1383,9 @@ clustersPage:
   launch:
     new: Add Cluster
     import: Import Cluster
-    importEks: Import Amazon EKS
-    importGke: Import Google GKE
+    importAks: Import AKS
+    importEks: Import EKS
+    importGke: Import GKE
     register: Register Cluster
   cluster:
     label: Cluster Name
@@ -3468,27 +3469,47 @@ clusterNew:
         custom: 'Custom: Choose from your existing VPC and Subnets'
         default: 'Standard: VPC and Subnet are automatically created'
       title: Networking
+
   azureaks:
     access:
+      cloudCred: Cloud Credential
       detail: Configure the Azure Active Directory (AD) Service Principal that will be used to talk to Azure
+      detailCC: Enter the Tenant ID and select the cloud credential that will be used to launch your cluster.
       help: You can find instructions on how to create an Azure AD Service Principal <a href="https://docs.microsoft.com/en-us/azure/aks/kubernetes-service-principal" target="_blank">here</a>.
+      next: 'Next: Configure Cluster'
       title: Account Access
     accountAccessSection:
       label: Account Access
     admin:
-      label: Admin Username
+      label: Linux Admin Username
       placeholder: user-1
     authenticate:
       next: 'Next: Authenticate & configure nodes'
+    authorizedIpRanges:
+      addActionLabel: Add Range
+      inputLabel: Set Authorized IP Ranges
+      label: Authorized IP Ranges
+      placeholder: 73.140.245.0/24
     availabilitySet:
       label: Availability Set
       placeholder: availability-set-name
+    availabilityZones:
+      label: Availablity Zones
+      zone: Zone {loc}
     clientId:
       label: Client ID
       placeholder: Your Client ID
     clientSecret:
       label: Client Secret
       placeholder: Your Client Secret
+    clusterLocation:
+      createLabel: Configure Cluster
+      detail: Configure cluster and node location options
+      savingLabel: Loading Resources
+      title: Cluster Location
+    clusterOption:
+      detail: Configure your cluster details
+      title: Cluster Options
     count:
       label: Node Count
       placeholder: e.g. 1
@@ -3501,6 +3522,8 @@ clusterNew:
     dockerPort:
       label: Docker Port
       placeholder: '2376'
+    enableAutoScaling:
+      label: Enable Auto Scaling
     enableHttpApplicationRouting:
       label: HTTP Application Routing
     enableMonitoring:
@@ -3518,12 +3541,23 @@ clusterNew:
     image:
       label: Image
       placeholder: canonical:UbuntuServer:18.04-LTS:latest
+    import:
+      clusterSelect:
+        createLabel: Register Cluster
+        detail: Choose an AKS cluster to register
+        input:
+          label: Cluster Name To register
+        select:
+          label: Cluster To register
+        title: Choose Cluster
+      prompt: Select cluster to import
     ingressWarning: 'Note: Currently Azure AKS will not create an ingress controller when launching a new cluster. If you need this functionality you will have to create an ingress controller manually after cluster creation.'
     kubernetesVersion:
       label: Kubernetes Version
       prompt: Choose a Version...
     label: Azure Container Service
     loadBalancerSku:
+      immutable: You have selected one or more availablity zones. When selected the Load Balancer SKU must be Standard.
       label: LoadBalancer SKU
     location:
       label: Location
@@ -3531,11 +3565,24 @@ clusterNew:
     machineType:
       label: VM Size
       prompt: Choose a size...
+    maxCount:
+      label: Max Node Count
+      placeholder: e.g. 5
+    maxPods:
+      label: Max Pods Per Node
+      placeholder: '110'
     members:
       label: Member Roles
+    minCount:
+      label: Min Node Count
+      placeholder: e.g. 1
+    networkOptions:
+      detail: Change the network settings for the cluster.
+      title: Networking Options
     networkPolicy:
       label: Network Policy
       placeholder: Select a Network Policy
+      help: Azure Network Policy is only available when Azure CNI is selected as the Network Plugin
     networking:
       advanced: Advanced
       default: Default
@@ -3549,6 +3596,7 @@ clusterNew:
         placeholder: e.g. 172.17.0.1/16
       label: Networking
       networkPlugin:
+        help: When using Azure CNI, IP addresses from the selected subnet will be allocated for each pod on the node. This will exhaust available IP addresses more quickly if "Pods Per Node" is set to a high value. It is suggested to that you change the default values for "Pods Per Node" to account for this.
         label: Network Plugin
         prompt: Select a Network Plugin
       podCidr:
@@ -3570,13 +3618,36 @@ clusterNew:
         prompt: Please select a Virtual Network
     noPublicIp:
       label: No Public IP
+    nodePools:
+      availablityZones:
+        label: Node Availabilty Zones
+      errors:
+        linuxName: Linux node pool names must be 1-11 characters.
+        nameFormat: Node pool names must be all lower case, start with a letter and may only contain letters and numbers.
+        windowsName: Windows node pool names must be 1-6 characters.
+      name:
+        label: Name
+      nodeType:
+        label: Mode
+        primary: Primary Pool - System
+        system: System
+        user: User
     openPort:
       label: Open Port
       placeholder: Comma-separated, e.g. 80,443
+    osDiskType:
+      label: OS Disk Type
+      placeholder: Select OS Disk Type
+    osType:
+      label: VM Operating System
+      prompt: Select VM OS
     placement:
       label: Placement
     pod:
       label: Pod Security Policies
+    privateCluster:
+      label: Enable Private Cluster
+      warning: AKS private clusters is an advanced  use case which requires {appName} to be running on the same NAT as the AKS nodes. Before enabling private clusters ensure you have read through the <a href="{docsBase}/cluster-provisioning/hosted-kubernetes-clusters/aks/" target="_blank" rel="nofollow noopener noreferrer">AKS cluster provisioning docs</a> for instructions on configuring AKS so nodes may communicate with {appName}.
     privateIpAddress:
       label: Private IP
       placeholder: 127.0.0.1
@@ -3624,6 +3695,12 @@ clusterNew:
     vnet:
       label: VNet
       placeholder: '[resourcegroup:]name'
+    windowsAdmin:
+      password:
+        label: Windows Admin Password
+      username:
+        label: Windows Admin Username
+
   config:
     detail: Choose where the nodes for the cluster will come from
     label: Provider
@@ -3712,7 +3789,7 @@ clusterNew:
       label: System Monitoring Type
       placeholder: monitoring.googleapis.com/kubernetes
     clusterOption:
-      detail: Configure your cluster options.
+      detail: Configure your cluster details
       title: Cluster Options
     computeEngine:
       label: Compute Engine
@@ -7743,8 +7820,8 @@ nodeGroupRow:
     placeholder: Paste in the script
   version:
     label: Kubernetes Version
-    upgrade: 'Upgrade Node Group Version from { from } to { version }'
-    warning: A new cluster version has been selected. Once completed you may come back and upgrade the node group version.
+    upgrade: 'Upgrade Node Version from { from } to { version }'
+    warning: A new cluster version has been selected. Once completed you may come back and upgrade the node version.
 
 
 uploadFile:
@@ -8220,6 +8297,13 @@ modalAddCloudKey:
     clientSecret:
       label: Client Secret
       placeholder: Your Client Secret
+    subscriptionId:
+      label: Subscription ID
+      placeholder: Your Azure subscription ID
+    tenantId:
+      label: Tenant ID
+      placeholder: A long UUID string
+      help: From the Azure AD portal
   digitalocean:
     accessToken:
       label: Access Token
@@ -8850,6 +8934,7 @@ nodeDriver:
     amazoneks: Amazon EKS
     amazoneksv2: Amazon EKS
     azure: Azure
+    azureaksv2: Azure AKS
     azureaks: Azure AKS
     baidu: Baidu CCE
     cloudca: Cloud.ca

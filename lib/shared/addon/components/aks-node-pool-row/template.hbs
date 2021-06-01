@@ -1,0 +1,287 @@
+<div class="aks-node-pool-row box mt-20">
+  {{#unless primaryPool}}
+    <div class="row">
+      <div class="pull-right">
+        <button
+          class="btn bg-transparent text-small vertical-middle"
+          type="button"
+          {{action removeNodePool nodePool}}
+        >
+          {{t "clusterNew.googlegke.nodePool.remove"}}
+        </button>
+      </div>
+    </div>
+  {{/unless}}
+  <div class="row">
+    <div class="col span-3">
+      <label class="acc-label">
+        {{t "clusterNew.azureaks.nodePools.name.label"}}
+        {{#if isNewNodePool}}
+          {{field-required}}
+        {{/if}}
+      </label>
+      <InputOrDisplay
+        @editable={{isNewNodePool}}
+        @value={{nodePool.name}}
+        @classesForDisplay="form-control-static"
+      >
+        <Input
+          @type="text"
+          @value={{mut nodePool.name}}
+          @classNames="form-control"
+        />
+      </InputOrDisplay>
+    </div>
+    <div class="col span-3">
+      <label class="acc-label">
+        {{t "clusterNew.googlegke.masterVersion.label"}}
+      </label>
+      {{#if upgradeAvailable}}
+        <div class="checkbox form-control-static">
+          <label class="acc-label">
+            <Input
+              @type="checkbox"
+              @checked={{mut upgradeVersion}}
+              @classNames="form-control"
+            />
+            {{t
+              "nodeGroupRow.version.upgrade"
+              from=nodePool.orchestratorVersion
+              version=cluster.aksConfig.kubernetesVersion
+            }}
+          </label>
+        </div>
+      {{else}}
+        <div class="form-control-static">
+          {{nodePool.orchestratorVersion}}
+          {{#if showNodeUpgradePreventionReason}}
+            <div class="help-block">
+              {{t "nodeGroupRow.version.warning"}}
+            </div>
+          {{/if}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="col span-3">
+      <label class="acc-label">
+        {{t "clusterNew.azureaks.nodePools.nodeType.label"}}
+      </label>
+      <div class="form-control-static">
+        {{#if primaryPool}}
+          {{t "clusterNew.azureaks.nodePools.nodeType.primary"}}
+        {{else}}
+          {{!-- <label class="hand mr-20">
+            <RadioButton
+              @selection={{mut nodePool.mode}}
+              @value="System"
+              @name={{concat "node-type" this.elementId}}
+              @disabled={{primaryPool}}
+            />
+            {{t "clusterNew.azureaks.nodePools.nodeType.system"}}
+          </label>
+          <label class="hand">
+            <RadioButton
+              @selection={{mut nodePool.mode}}
+              @value="User"
+              @name={{concat "node-type" this.elementId}}
+              @disabled={{primaryPool}}
+            />
+            {{t "clusterNew.azureaks.nodePools.nodeType.user"}}
+          </label> --}}
+          {{t "clusterNew.azureaks.nodePools.nodeType.user"}}
+        {{/if}}
+      </div>
+    </div>
+    <div class="col span-3">
+      <label class="acc-label">
+        {{t "clusterNew.azureaks.nodePools.availablityZones.label"}}
+      </label>
+      <div class="form-control-static">
+        {{#if nodePool.availabilityZones.length}}
+          {{displayZones}}
+        {{else}}
+          {{t "generic.na"}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-3">
+      <label
+        class="acc-label"
+        for={{concat "azureaks-vm-disk-size-" this.elementId}}
+      >
+        {{t "clusterNew.azureaks.machineType.label"}}
+      </label>
+      <InputOrDisplay
+        @editable={{isNewNodePool}}
+        @value={{nodePool.vmSize}}
+        @classesForDisplay="form-control-static"
+      >
+        <SearchableSelect
+          @id={{concat "azureaks-vm-disk-size-" this.elementId}}
+          @classNames="form-control"
+          @optionValuePath="value"
+          @optionLabelPath="value"
+          @content={{machineSizes}}
+          @value={{mut nodePool.vmSize}}
+          @prompt="clusterNew.azureaks.machineType.prompt"
+          @localizedPrompt={{true}}
+        />
+      </InputOrDisplay>
+    </div>
+    <div class="col span-3">
+      <label
+        class="acc-label"
+        for={{concat "azureaks-vm-os-type-" this.elementId}}
+      >
+        {{t "clusterNew.azureaks.osType.label"}}
+      </label>
+      {{! removed until windows support returns }}
+      {{!-- @editable={{and isNewNodePool (not isSystemType)}} --}}
+      <InputOrDisplay
+        @editable={{false}}
+        @value={{nodePool.osType}}
+        @classesForDisplay="form-control-static"
+      >
+        <NewSelect
+          @id={{concat "azureaks-vm-os-type-" this.elementId}}
+          @classNames="form-control"
+          @optionValuePath="value"
+          @optionLabelPath="value"
+          @content={{vmOs}}
+          @value={{mut nodePool.osType}}
+          @prompt="clusterNew.azureaks.osType.prompt"
+          @localizedPrompt={{true}}
+        />
+      </InputOrDisplay>
+    </div>
+    <div class="col span-3">
+      <label
+        class="acc-label"
+        for={{concat "azureaks-vm-os-disk-type-" this.elementId}}
+      >
+        {{t "clusterNew.azureaks.osDiskType.label"}}
+      </label>
+      <InputOrDisplay
+        @editable={{isNewNodePool}}
+        @value={{nodePool.osDiskType}}
+        @classesForDisplay="form-control-static"
+      >
+        <NewSelect
+          @id={{concat "azureaks-vm-os-disk-type-" this.elementId}}
+          @classNames="form-control"
+          @optionValuePath="value"
+          @optionLabelPath="value"
+          @content={{diskTypes}}
+          @value={{mut nodePool.osDiskType}}
+        />
+      </InputOrDisplay>
+    </div>
+    <div class="col span-3">
+      <label
+        class="acc-label"
+        for={{concat "azureaks-os-disk-size-" this.elementId}}
+      >
+        {{t "clusterNew.azureaks.diskSizeGb.label"}}
+      </label>
+      <InputOrDisplay
+        @editable={{isNewNodePool}}
+        @value={{nodePool.osDiskSizeGB}}
+        @classesForDisplay="form-control-static"
+      >
+        <div class="input-group">
+          <InputNumber
+            @id={{concat "azureaks-os-disk-size-" this.elementId}}
+            @min={{0}}
+            @value={{mut nodePool.osDiskSizeGB}}
+            @placeholder={{t "clusterNew.azureaks.diskSizeGb.placeholder"}}
+          />
+          <span class="input-group-addon bg-default">
+            {{t "generic.gigabyte"}}
+          </span>
+        </div>
+      </InputOrDisplay>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-3">
+      <label
+        class="acc-label"
+        for={{concat "azureaks-config-count-" this.elementId}}
+      >
+        {{t "clusterNew.azureaks.count.label"}}
+      </label>
+      <InputNumber
+        @id={{concat "azureaks-config-count-" this.elementId}}
+        @min={{1}}
+        @value={{mut nodePool.count}}
+        @placeholder={{t "clusterNew.azureaks.count.placeholder"}}
+      />
+    </div>
+    <div class="col span-3">
+      <label
+        class="acc-label"
+        for={{concat "azureaks-config-maxpods-" this.elementId}}
+      >
+        {{t "clusterNew.azureaks.maxPods.label"}}
+      </label>
+      <InputOrDisplay
+        @editable={{isNewNodePool}}
+        @value={{nodePool.maxPods}}
+        @classesForDisplay="form-control-static"
+      >
+        <InputNumber
+          @id={{concat "azureaks-config-maxpods-" this.elementId}}
+          @min={{1}}
+          @value={{mut nodePool.maxPods}}
+          @placeholder={{t "clusterNew.azureaks.maxPods.placeholder"}}
+          @disabled={{not isNewNodePool}}
+        />
+      </InputOrDisplay>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <div class="checkbox">
+        <label>
+          <Input @type="checkbox" @checked={{nodePool.enableAutoScaling}} />
+          {{t "clusterNew.azureaks.enableAutoScaling.label"}}
+        </label>
+      </div>
+    </div>
+    {{#if nodePool.enableAutoScaling}}
+      <div class="col span-3">
+        <label
+          class="acc-label"
+          for={{concat "azureaks-config-mincount-" this.elementId}}
+        >
+          {{t "clusterNew.azureaks.minCount.label"}}
+        </label>
+        <InputNumber
+          @id={{concat "azureaks-config-mincount-" this.elementId}}
+          @min={{1}}
+          @max={{100}}
+          @value={{mut nodePool.minCount}}
+          @placeholder={{t "clusterNew.azureaks.minCount.placeholder"}}
+        />
+      </div>
+      <div class="col span-3">
+        <label
+          class="acc-label"
+          for={{concat "azureaks-config-maxcount-" this.elementId}}
+        >
+          {{t "clusterNew.azureaks.maxCount.label"}}
+        </label>
+        <InputNumber
+          @id={{concat "azureaks-config-maxcount-" this.elementId}}
+          @min={{1}}
+          @max={{100}}
+          @value={{mut nodePool.maxCount}}
+          @placeholder={{t "clusterNew.azureaks.maxCount.placeholder"}}
+        />
+      </div>
+    {{/if}}
+  </div>
+  <div class="row"></div>
+</div>

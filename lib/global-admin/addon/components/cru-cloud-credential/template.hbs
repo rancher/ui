@@ -88,45 +88,7 @@
         </div>
       </div>
     {{else if (eq cloudCredentialType "azure")}}
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "nodeDriver.azure.subscriptionId.label"}}{{field-required}}
-          </label>
-          {{input
-            type="text"
-            value=config.subscriptionId
-            classNames="form-control"
-            placeholder=(t "nodeDriver.azure.subscriptionId.placeholder")
-          }}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label" for="azure-clientId">
-            {{t "modalAddCloudKey.azure.clientId.label"}}{{field-required}}
-          </label>
-          {{input
-            type="text"
-            value=config.clientId
-            classNames="form-control"
-            id="azure-clientId"
-            placeholder=(t "modalAddCloudKey.azure.clientId.placeholder")
-          }}
-        </div>
-        <div class="col span-6">
-          <label class="acc-label" for="azure-clientSecret">
-            {{t "modalAddCloudKey.azure.clientSecret.label"}}{{field-required}}
-          </label>
-          {{input
-            type="password"
-            value=config.clientSecret
-            classNames="form-control"
-            id="azure-clientSecret"
-            placeholder=(t "modalAddCloudKey.azure.clientSecret.placeholder")
-          }}
-        </div>
-      </div>
+      <CloudCredentialAzure @config={{mut config}} />
     {{else if (eq cloudCredentialType "digitalOcean")}}
       <div class="row">
         <div class="col span-6">
