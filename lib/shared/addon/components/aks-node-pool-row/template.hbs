@@ -94,14 +94,58 @@
     </div>
     <div class="col span-3">
       <label class="acc-label">
-        {{t "clusterNew.azureaks.nodePools.availablityZones.label"}}
+        {{t "clusterNew.azureaks.availabilityZones.label"}}
       </label>
-      <div class="form-control-static">
-        {{#if nodePool.availabilityZones.length}}
-          {{displayZones}}
-        {{else}}
-          {{t "generic.na"}}
-        {{/if}}
+      <div class="checkbox">
+        <label>
+          {{#if isNewNodePool}}
+            <Input
+              @type="checkbox"
+              @checked={{mut availablityZoneOne}}
+              @disabled={{or disableAzs (not isNewNodePool)}}
+            />
+          {{/if}}
+          {{t "clusterNew.azureaks.availabilityZones.zone" loc=1}}
+          {{#unless isNewNodePool}}
+            {{if availablityZoneOne (t "generic.enabled") (t "generic.disabled")
+            }}
+          {{/unless}}
+        </label>
+      </div>
+      <div class="checkbox">
+        <label>
+          {{#if isNewNodePool}}
+            <Input
+              @type="checkbox"
+              @checked={{mut availablityZoneTwo}}
+              @disabled={{or disableAzs (not isNewNodePool)}}
+            />
+          {{/if}}
+          {{t "clusterNew.azureaks.availabilityZones.zone" loc=2}}
+          {{#unless isNewNodePool}}
+            {{if availablityZoneTwo (t "generic.enabled") (t "generic.disabled")
+            }}
+          {{/unless}}
+        </label>
+      </div>
+      <div class="checkbox">
+        <label>
+          {{#if isNewNodePool}}
+            <Input
+              @type="checkbox"
+              @checked={{mut availablityZoneThree}}
+              @disabled={{or disableAzs (not isNewNodePool)}}
+            />
+          {{/if}}
+          {{t "clusterNew.azureaks.availabilityZones.zone" loc=3}}
+          {{#unless isNewNodePool}}
+            {{if
+              availablityZoneThree
+              (t "generic.enabled")
+              (t "generic.disabled")
+            }}
+          {{/unless}}
+        </label>
       </div>
     </div>
   </div>
