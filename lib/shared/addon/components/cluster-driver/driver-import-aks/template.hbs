@@ -16,24 +16,6 @@
       @showExpand={{false}}
     >
       <div class="row">
-        <div class="col span-4 mb-0">
-          <label class="acc-label" for="azureaks-tenant-id">
-            {{t "clusterNew.azureaks.tenant.label"}}
-            <FieldRequired />
-          </label>
-          <InputOrDisplay
-            @editable={{and (not isEdit) (eq step 1)}}
-            @value={{config.tenantId}}
-          >
-            <Input
-              @classNames="form-control"
-              @id="azureaks-tenant-id"
-              @placeholder={{t "clusterNew.azureaks.tenant.placeholder"}}
-              @type="text"
-              @value={{mut config.tenantId}}
-            />
-          </InputOrDisplay>
-        </div>
         {{#if (eq step 1)}}
           <FormAuthCloudCredential
             @cloudCredentialKey="aksConfig.azureCredentialSecret"
@@ -48,7 +30,6 @@
             }}
             @primaryResource={{primaryResource}}
             @progressStep={{action "fetchAksResources"}}
-            @disableSave={{not config.tenantId}}
           />
         {{else}}
           <div class="row">
