@@ -1311,11 +1311,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
       const lhsMatch = get(lhs, k);
       const rhsMatch = get(rhs, k);
 
-      try {
-        if (isEqual(JSON.stringify(lhsMatch), JSON.stringify(rhsMatch))) {
-          return;
-        }
-      } catch (e){}
+      if (k !== 'nodeGroups' && k !== 'nodePools') {
+        try {
+          if (isEqual(JSON.stringify(lhsMatch), JSON.stringify(rhsMatch))) {
+            return;
+          }
+        } catch (e){}
+      }
 
       if (k === 'nodeGroups' || k === 'nodePools' || k === 'tags' || k === 'labels') {
         // Node Groups and Node Pools do not require a sync, we can safely send the entire object
