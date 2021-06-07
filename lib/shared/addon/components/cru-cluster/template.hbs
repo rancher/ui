@@ -98,13 +98,39 @@
         everExpanded=true
         expand=(action expandFn)
       }}
-        <label class="acc-label">
-          {{t "clusterNew.rke.agentEnvVars.label"}}
-        </label>
-        <FormAgentEnvVar
-          @editable={{notView}}
-          @value={{mut agentEnvVars}}
-        />
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "generic.networking"}}
+          </label>
+          <div class="checkbox">
+            <label>
+              {{input type="checkbox" checked=cluster.enableNetworkPolicy}}
+              {{t "clusterNew.rke.networkPolicy.label"}}
+            </label>
+          </div>
+        </div>
+        <div class="col span-6">
+          {{#if cluster.enableNetworkPolicy}}
+            <BannerMessage
+              @icon="icon-alert"
+              @color="bg-warning mt-0"
+              @message={{t "clusterNew.import.clusterOptions.warning"}}
+            />
+          {{/if}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "clusterNew.rke.agentEnvVars.label"}}
+          </label>
+          <FormAgentEnvVar
+            @editable={{notView}}
+            @value={{mut agentEnvVars}}
+          />
+        </div>
+      </div>
       {{/accordion-list-item}}
     {{/accordion-list}}
   {{/if}}

@@ -80,6 +80,7 @@ generic:
   name: Name
   namespace: Namespace
   namespaces: Namespaces
+  networking: Networking
   never: Never
   no: "No"
   noRating: No Rating
@@ -4191,6 +4192,8 @@ clusterNew:
     vpcId:
       label: VPC Name
   import:
+    clusterOptions:
+      warning: The imported cluster must support Kubernetes NetworkPolicy resources for Project Network Isolation to be enforced
     command:
       instructionEksCluster: You are creating an EKS cluster that has private API access only. {appName} requires network access to the Kubernetes endpoint to complete cluster creation; You must manually run one of the following commands.
       instructionGkeCluster: You are creating a private GKE cluster, nodes in a private cluster do not have public IP addresses. For {appName} to finish setting up your cluster it must be able to speak to your nodes. Ensure you follow these <a href="{docsBase}/cluster-provisioning/hosted-kubernetes-clusters/gke/" target="_blank" rel="nofollow noopener noreferrer">private cluster provisioning instructions</a> to configure GKE in a way which allows this access.
