@@ -102,66 +102,13 @@
               </InputOrDisplay>
             </div>
             <div class="col span-6">
-              <label class="acc-label">
-                {{t "clusterNew.azureaks.availabilityZones.label"}}
-              </label>
-              <div class="checkbox">
-                <label>
-                  {{#if isNewOrEditable}}
-                    <Input
-                      @type="checkbox"
-                      @checked={{mut availablityZoneOne}}
-                      @disabled={{and disableAzs (not isNewOrEditable)}}
-                    />
-                  {{/if}}
-                  {{t "clusterNew.azureaks.availabilityZones.zone" loc=1}}
-                  {{#unless isNewOrEditable}}
-                    {{if
-                      availablityZoneOne
-                      (t "generic.enabled")
-                      (t "generic.disabled")
-                    }}
-                  {{/unless}}
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  {{#if isNewOrEditable}}
-                    <Input
-                      @type="checkbox"
-                      @checked={{mut availablityZoneTwo}}
-                      @disabled={{and disableAzs (not isNewOrEditable)}}
-                    />
-                  {{/if}}
-                  {{t "clusterNew.azureaks.availabilityZones.zone" loc=2}}
-                  {{#unless isNewOrEditable}}
-                    {{if
-                      availablityZoneTwo
-                      (t "generic.enabled")
-                      (t "generic.disabled")
-                    }}
-                  {{/unless}}
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  {{#if isNewOrEditable}}
-                    <Input
-                      @type="checkbox"
-                      @checked={{mut availablityZoneThree}}
-                      @disabled={{and disableAzs (not isNewOrEditable)}}
-                    />
-                  {{/if}}
-                  {{t "clusterNew.azureaks.availabilityZones.zone" loc=3}}
-                  {{#unless isNewOrEditable}}
-                    {{if
-                      availablityZoneThree
-                      (t "generic.enabled")
-                      (t "generic.disabled")
-                    }}
-                  {{/unless}}
-                </label>
-              </div>
+              {{#if disableAzs}}
+                <BannerMessage
+                  @icon="icon-alert"
+                  @color="bg-warning mb-10"
+                  @message={{t "clusterNew.azureaks.availabilityZoneWarning" }}
+                />
+              {{/if}}
             </div>
           </div>
           {{#if (eq step 2)}}
@@ -377,7 +324,9 @@
             <div class="col span-6">
               <label class="acc-label" for="azureaks-master-dns-prefix">
                 {{t "clusterNew.azureaks.dns.label"}}
-                <FieldRequired />
+                {{#if isNew}}
+                  <FieldRequired />
+                {{/if}}
               </label>
               <InputOrDisplay
                 @editable={{isNewOrEditable}}
@@ -641,6 +590,7 @@
           <div class="row">
             {{#each config.nodePools as |nodePool|}}
               <AksNodePoolRow
+                @disableAzs={{disableAzs}}
                 @originalCluster={{model.originalCluster}}
                 @isNew={{isNewOrEditable}}
                 @mode={{mode}}
