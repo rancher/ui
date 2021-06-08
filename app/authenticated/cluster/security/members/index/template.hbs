@@ -1,8 +1,9 @@
 <section class="header clearfix">
   <h1 class="pull-left">{{t 'nav.admin.security.members'}}</h1>
   <div class="right-buttons">
-    {{#link-to "authenticated.cluster.security.members.new" scope.currentCluster.id classNames="btn btn-sm bg-primary right-divider-btn" disabled=(rbac-prevents resource="clusterroletemplatebinding" scope="global" permission="create")}} {{t 'membersPage.index.localLink' 'Cluster'}}{{/link-to}}
-    <span id="header-search"/>
+    {{#link-to "authenticated.cluster.security.members.new" scope.currentCluster.id classNames="btn bg-primary right-divider-btn" disabled=(rbac-prevents resource="clusterroletemplatebinding" scope="global" permission="create")}}
+      {{t 'membersPage.index.localLink' 'Cluster'}}{{/link-to}}
+    <span id="header-search" />
   </div>
 </section>
 
@@ -26,7 +27,7 @@
         <td valign="middle" class="row-check" style="padding-top: 2px;">
           {{check-box nodeId=row.id}}
         </td>
-        <td data-title="{{t 'membersPage.index.table.userId'}}:" >
+        <td data-title="{{t 'membersPage.index.table.userId'}}:">
           {{#if row.principalId}}
             {{identity-block principalId=row.principalId}}
           {{else if row.user}}
@@ -37,7 +38,7 @@
             <span class="text-muted">Unknown</span>
           {{/if}}
         </td>
-        <td data-title="{{t 'membersPage.index.table.template'}}:" >
+        <td data-title="{{t 'membersPage.index.table.template'}}:">
           {{row.roleTemplate.displayName}}
         </td>
         <td data-title="{{t 'generic.created'}}:" class="text-right pr-20">

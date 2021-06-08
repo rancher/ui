@@ -2,7 +2,8 @@
   <h1 class="pull-left">{{t 'projectsListNamespacePage.header'}}</h1>
   <div class="vertical-middle"></div>
   <div class="right-buttons">
-    <a href="#" {{action "newNs"}} class="btn bg-primary btn-sm ml-10" disabled={{rbac-prevents resource="namespace" scope="cluster" permission="create"}}>{{t 'namespacesPage.addNamespace'}}</a>
+    <a href="#" {{action "newNs" }} class="btn bg-primary ml-10" disabled={{rbac-prevents resource="namespace"
+      scope="cluster" permission="create" }}>{{t 'namespacesPage.addNamespace'}}</a>
   </div>
 </section>
 
@@ -63,9 +64,15 @@
         </tr>
       {{/if}}
     {{else if (eq kind "nomatch")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'namespacesPage.noMatch'}}</td></tr>
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+          {{t 'namespacesPage.noMatch'}}</td>
+      </tr>
     {{else if (eq kind "norows")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'namespacesPage.noData'}}</td></tr>
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+          {{t 'namespacesPage.noData'}}</td>
+      </tr>
     {{/if}}
   {{/sortable-table}}
 </section>

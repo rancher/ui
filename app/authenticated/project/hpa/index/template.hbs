@@ -1,15 +1,13 @@
 <section class="header clearfix">
   <div class="right-buttons">
-    <button
-      class="btn btn-sm bg-default mr-10"
-      disabled={{rbac-prevents resource="horizontalpodautoscaler" scope="project" permission="create"}} type="button" {{action "importYaml"}}
-    >
+    <button class="btn bg-default mr-10" disabled={{rbac-prevents resource="horizontalpodautoscaler" scope="project"
+      permission="create" }} type="button" {{action "importYaml" }}>
       {{t "nav.containers.importCompose"}}
     </button>
     {{#link-to
       "authenticated.project.hpa.new"
       scope.currentProject.id
-      class="btn btn-sm bg-primary"
+      class="btn bg-primary"
       disabled=(or (not model.supported) (rbac-prevents resource="horizontalpodautoscaler" scope="project" permission="create"))
     }}
       {{t "nav.containers.addHpa"}}
@@ -51,29 +49,23 @@
         }}
       {{else if (eq kind "nomatch")}}
         <tr>
-          <td
-            colspan="{{sortable.fullColspan}}"
-            class="text-center text-muted pt-20 pb-20"
-          >
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
             {{t "hpaPage.noMatch"}}
           </td>
         </tr>
       {{else if (eq kind "norows")}}
         <tr>
-          <td
-            colspan="{{sortable.fullColspan}}"
-            class="text-center text-muted pt-20 pb-20"
-          >
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
             {{t "hpaPage.noData"}}
           </td>
         </tr>
       {{/if}}
     {{/sortable-table}}
   </section>
-{{else}}
-  {{banner-message
+  {{else}}
+    {{banner-message
     icon="icon-alert"
     color="bg-warning mb-10"
     message=(t "hpaPage.notSupported" htmlSafe=true)
   }}
-{{/if}}
+    {{/if}}
