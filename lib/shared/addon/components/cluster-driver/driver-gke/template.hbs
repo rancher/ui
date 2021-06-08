@@ -280,9 +280,17 @@
                   {{input
                     type="checkbox"
                     checked=config.networkPolicyEnabled
-                    disabled=(not isNewOrEditable)
+                    disabled=(or
+                      (not isNewOrEditable) cluster.enableNetworkPolicy
+                    )
                   }}
                   {{t "clusterNew.googlegke.networkPolicy.label"}}
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  {{input type="checkbox" checked=cluster.enableNetworkPolicy}}
+                  {{t "clusterNew.rke.networkPolicy.label"}}
                 </label>
               </div>
             </div>
@@ -486,7 +494,9 @@
                   {{input
                     type="checkbox"
                     checked=config.clusterAddons.networkPolicyConfig
-                    disabled=(not isNewOrEditable)
+                    disabled=(or
+                      (not isNewOrEditable) cluster.enableNetworkPolicy
+                    )
                   }}
                   {{t "clusterNew.googlegke.clusterAddons.networkPolicyConfig"}}
                 </label>

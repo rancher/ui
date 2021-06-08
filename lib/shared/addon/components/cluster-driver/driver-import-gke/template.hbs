@@ -10,7 +10,8 @@
       <div class="row">
         <div class="col span-3">
           <label class="acc-label">
-            {{t "clusterNew.googlegke.access.projectId.label"}}<FieldRequired />
+            {{t "clusterNew.googlegke.access.projectId.label"}}
+            <FieldRequired />
           </label>
           {{#if (eq step 1)}}
             {{input type="text" value=config.projectID classNames="form-control"
@@ -164,16 +165,41 @@
           {{/if}}
         </div>
       </div>
-      {{#if (eq step 3)}}
-        <SaveCancel
-          @createLabel="clusterNew.googlegke.import.clusterSelect.createLabel"
-          @save={{action "driverSave"}}
-          @saveDisabled={{disableImport}}
-          @editing={{isEdit}}
-          @cancel={{action "close"}}
-        />
-        {{/if}}
     </AccordionListItem>
+    <AccordionListItem
+      @title={{t "clusterNew.googlegke.import.clusterOptions.title"}}
+      @detail={{t "clusterNew.googlegke.import.clusterOptions.detail"}}
+      @expandAll={{expandAll}}
+      @expand={{action expandFn}}
+      @expandOnInit={{true}}
+    >
+      <div class="row">
+        <div class="col span-6">
+          <div class="checkbox">
+            <label>
+              {{input type="checkbox" checked=cluster.enableNetworkPolicy}}
+              {{t "clusterNew.rke.networkPolicy.label"}}
+            </label>
+          </div>
+        </div>
+        <div class="col span-6">
+          {{#if cluster.enableNetworkPolicy}}
+            <BannerMessage
+              @icon="icon-alert"
+              @color="bg-warning mt-0"
+              @message={{t "clusterNew.googlegke.import.clusterOptions.warning"}}
+            />
+          {{/if}}
+        </div>
+      </div>
+    </AccordionListItem>
+    <SaveCancel
+      @createLabel="clusterNew.googlegke.import.clusterSelect.createLabel"
+      @save={{action "driverSave"}}
+      @saveDisabled={{disableImport}}
+      @editing={{isEdit}}
+      @cancel={{action "close"}}
+    />
   {{/if}}
   {{#if (eq step 4)}}
     <ImportCommand @cluster={{primaryResource}} />
