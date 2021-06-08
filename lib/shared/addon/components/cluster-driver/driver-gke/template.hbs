@@ -153,7 +153,9 @@
                   <Input
                     @type="checkbox"
                     @checked={{location.checked}}
-                    @disabled={{and (not isNewOrEditable) (eq locationType "regional")
+                    @disabled={{and
+                      (not isNewOrEditable)
+                      (eq locationType "regional")
                     }}
                   />
                   {{location.name}}
@@ -231,7 +233,6 @@
                   classNames="form-control"
                   value=config.network
                   optionValuePath="name"
-                  optionLabelPath="name"
                 }}
               </InputOrDisplay>
             </div>
@@ -253,7 +254,6 @@
                   content=subNetworkContent
                   classNames="form-control"
                   value=config.subnetwork
-                  readOnly=(lte subNetworkContent.length 0)
                 }}
               </InputOrDisplay>
             </div>
@@ -286,6 +286,15 @@
                 </label>
               </div>
             </div>
+            <div class="col span-6">
+              {{#unless config.ipAllocationPolicy.useIpAliases}}
+                <BannerMessage
+                  @icon="icon-alert"
+                  @color="bg-warning mt-0"
+                  @message={{t "clusterNew.googlegke.useIpAliases.warning"}}
+                />
+              {{/unless}}
+            </div>
           </div>
           <div class="row">
             {{#if config.ipAllocationPolicy.createSubnetwork}}
@@ -302,7 +311,10 @@
                     placeholder=(t
                       "clusterNew.googlegke.ipPolicySubnetworkName.placeholder"
                     )
-                    disabled=(not config.ipAllocationPolicy.createSubnetwork)
+                    disabled=(or
+                      (not config.ipAllocationPolicy.createSubnetwork)
+                      (not config.ipAllocationPolicy.useIpAliases)
+                    )
                   }}
                 </InputOrDisplay>
               </div>
