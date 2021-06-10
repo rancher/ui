@@ -18,7 +18,7 @@
       />
     </AccordionListItem>
   </AccordionList>
-{{else if (and (eq step 2) (eq originalCluster.state "pending"))}}
+{{else if (and (eq step 2) (or (eq originalCluster.state "pending") isPostSave))}}
   <ImportCommand @cluster={{cluster}}/>
 {{/if}}
 
@@ -26,7 +26,7 @@
 <TopErrors @errors={{otherErrors}} />
 <TopErrors @errors={{clusterErrors}} />
 
-{{#if (and (eq step 2) (eq originalCluster.state "pending"))}}
+{{#if (and (eq step 2) (or (eq originalCluster.state "pending") isPostSave))}}
   <div class="footer-actions">
     <button class="btn bg-primary" type="button" {{action "close"}}>
       {{t "clusterNew.rke.done"}}
