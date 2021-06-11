@@ -21,25 +21,6 @@
           @showExpand={{false}}
         >
           <div class="row">
-            {{!-- <div class="col span-4 mb-0">
-              <label class="acc-label" for="azureaks-tenant-id">
-                {{t "clusterNew.azureaks.tenant.label"}}
-                <FieldRequired />
-              </label>
-              <InputOrDisplay
-                @editable={{and isNewOrEditable (eq step 1)}}
-                @value={{config.tenantId}}
-                @classesForDisplay="form-control-static"
-              >
-                <Input
-                  @classNames="form-control"
-                  @id="azureaks-tenant-id"
-                  @placeholder={{t "clusterNew.azureaks.tenant.placeholder"}}
-                  @type="text"
-                  @value={{mut config.tenantId}}
-                />
-              </InputOrDisplay>
-            </div> --}}
             {{#if (eq step 1)}}
               <FormAuthCloudCredential
                 @cloudCredentialKey="aksConfig.azureCredentialSecret"
@@ -106,7 +87,7 @@
                 <BannerMessage
                   @icon="icon-alert"
                   @color="bg-warning mb-10"
-                  @message={{t "clusterNew.azureaks.availabilityZoneWarning" }}
+                  @message={{t "clusterNew.azureaks.availabilityZoneWarning"}}
                 />
               {{/if}}
             </div>
@@ -549,19 +530,55 @@
           </div>
           <AdvancedSection @advanced={{clusterAdvanced}}>
             <div class="row">
-              <BannerMessage
-                @icon="icon-alert"
-                @color="bg-warning mb-10"
-                @message={{t
-                  "clusterNew.azureaks.privateCluster.warning"
-                  appName=settings.appName
-                  docsBase=settings.docsBase
-                  htmlSafe=true
-                }}
-              />
+              <div class="col span-6 mb-0">
+                <div class="form-control-static">
+                  <div class="checkbox">
+                    <label>
+                      <Input
+                        @type="checkbox"
+                        @checked={{mut config.monitoring}}
+                      />
+                      {{t "clusterNew.azureaks.monitoring.label"}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col span-6">
+                {{#if config.monitoring}}
+                  <div class="">
+                    <label
+                      class="acc-label"
+                      for="azureaks-logging-workspace-group"
+                    >
+                      {{t "clusterNew.azureaks.monitoring.workspaceGroup.label"
+                      }}
+                    </label>
+                    <Input
+                      @classNames="form-control"
+                      @id="azureaks-logging-workspace-group"
+                      @type="text"
+                      @value={{mut config.logAnalyticsWorkspaceGroup}}
+                    />
+                  </div>
+                  <div class="">
+                    <label
+                      class="acc-label"
+                      for="azureaks-logging-workspace-name"
+                    >
+                      {{t "clusterNew.azureaks.monitoring.workspaceName.label"}}
+                    </label>
+                    <Input
+                      @classNames="form-control"
+                      @id="azureaks-logging-workspace-name"
+                      @type="text"
+                      @value={{mut config.logAnalyticsWorkspaceName}}
+                    />
+                  </div>
+                {{/if}}
+              </div>
             </div>
             <div class="row">
-              <div class="col span-6">
+              <div class="col span-6 mt-0">
                 <div class="form-control-static">
                   <div class="checkbox">
                     <label>
@@ -577,6 +594,20 @@
                     </label>
                   </div>
                 </div>
+              </div>
+              <div class="col span-6">
+                {{#if config.privateCluster}}
+                  <BannerMessage
+                    @icon="icon-alert"
+                    @color="bg-warning mb-10"
+                    @message={{t
+                      "clusterNew.azureaks.privateCluster.warning"
+                      appName=settings.appName
+                      docsBase=settings.docsBase
+                      htmlSafe=true
+                    }}
+                  />
+                {{/if}}
               </div>
             </div>
           </AdvancedSection>
