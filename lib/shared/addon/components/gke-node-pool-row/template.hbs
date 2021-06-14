@@ -315,10 +315,11 @@
         </div>
       </div>
       {{#if (eq oauthScopesSelection "custom")}}
-        <GkeAccessScope
-          @model={{scopeConfig}}
-          @readOnly={{not isNewNodePool}}
-        />
+        {{gke-access-scope
+          config=scopeConfig
+          readOnly=(not isNewNodePool)
+          change=(action "updateScopes")
+        }}
       {{/if}}
     </div>
   </AdvancedSection>
