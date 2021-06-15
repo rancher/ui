@@ -118,14 +118,16 @@
   {{#if (and showClusterTabs scope.currentCluster.isMonitoringReady)}}
     {{cluster-dashboard-tabs dashboards=dashboards}}
   {{else}}
-    {{#accordion-list showExpandAll=false as | al expandFn |}}
-      {{resource-event-list
-        resourceType=(t "generic.cluster")
-        clusterEvents=true
-        expandAll=al.expandAll
-        expandFn=expandFn
-      }}
-    {{/accordion-list}}
+    {{#unless isEmbedded}}
+      {{#accordion-list showExpandAll=false as | al expandFn |}}
+        {{resource-event-list
+          resourceType=(t "generic.cluster")
+          clusterEvents=true
+          expandAll=al.expandAll
+          expandFn=expandFn
+        }}
+      {{/accordion-list}}
+    {{/unless}}
   {{/if}}
 {{else}}
   <div class="text-center text-muted">
