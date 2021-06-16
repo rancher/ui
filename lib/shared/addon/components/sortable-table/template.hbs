@@ -1,4 +1,5 @@
-<table class="fixed grid sortable-table {{if internalBulkActions "has-actions"}} {{if groupByKey "bordered"}} {{if subRows "has-sub-rows bordered"}} {{tableClassNames}}">
+<table class="fixed grid sortable-table {{if internalBulkActions " has-actions"}} {{if groupByKey "bordered" }} {{if
+  subRows "has-sub-rows bordered" }} {{tableClassNames}}">
   <thead>
     <tr class="fixed-header-placeholder">
       {{#if internalBulkActions}}
@@ -17,14 +18,15 @@
           <div class="bulk-actions pull-left">
             {{#each availableActions as |resourceAction index|}}
               {{#if resourceAction.enabled}}
-                <a class="btn btn-sm bg-primary" href="#" onclick={{action "executeBulkAction" resourceAction.action}} tabindex={{index}}>
-                  {{t resourceAction.label}}
+                <a class="btn bg-primary" href="#" onclick={{action "executeBulkAction" resourceAction.action}}
+                  tabindex={{index}}>
                   <i class="{{resourceAction.icon}}"></i>
+                  {{t resourceAction.label}}
                 </a>
               {{else}}
-                <a class="btn btn-sm bg-default btn-disabled" href="#" onclick="return false;" tabindex={{index}}>
-                  {{t resourceAction.label}}
+                <a class="btn bg-default btn-disabled" href="#" onclick="return false;" tabindex={{index}}>
                   <i class="{{resourceAction.icon}}"></i>
+                  {{t resourceAction.label}}
                 </a>
               {{/if}}
             {{/each}}
@@ -46,11 +48,12 @@
           {{#if search}}
             <div class="vertical-middle">
               {{#ember-wormhole to=searchToWormhole renderInPlace=(not searchToWormhole)}}
-                <div class="{{unless searchToWormhole "pull-right"}} search-group input-group">
+                <div class="{{unless searchToWormhole " pull-right"}} search-group input-group">
                   {{input value=searchText aria-title=(t "generic.search") type="search" class="input-sm pull-right" placeholder=(t "generic.search")}}
                   {{#if searchText}}
                     <span class="input-group-btn">
-                      <button class="btn bg-transparent text-info pl-10 pr-10" type="button" {{action "clearSearch"}}><i class="icon icon-close"/></button>
+                      <button class="btn bg-transparent text-info pl-10 pr-10" type="button" {{action "clearSearch"
+                        }}><i class="icon icon-close" /></button>
                     </span>
                   {{/if}}
                 </div>

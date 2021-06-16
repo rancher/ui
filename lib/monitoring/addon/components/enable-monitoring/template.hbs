@@ -12,7 +12,7 @@
 
 {{#if canSaveMonitor}}
   <section class="header clearfix">
-    <h1 class="pull-left">
+    <h1 class="blarp">
       {{t (concat "monitoringPage." level ".title")}}
     </h1>
   </section>
@@ -67,7 +67,7 @@
         </div>
       </div>
 
-      <hr class="mt-15 mb-15"/>
+      <hr class="mt-15 mb-15" />
 
       <div class="row">
         <div class="col span-6">
@@ -340,17 +340,17 @@
         {{else if insufficientCpu}}
           {{t "monitoringPage.insufficientSize.total.cpu" cpu=minCpu}}
         {{else if (and insufficientPrometheusCpu insufficientPrometheusMemory nodeSelectors.length)}}
-            {{t "monitoringPage.insufficientSize.selectors.all" cpu=prometheusRequestCpu memory=prometheusRequestMemory}}
+          {{t "monitoringPage.insufficientSize.selectors.all" cpu=prometheusRequestCpu memory=prometheusRequestMemory}}
         {{else if (and insufficientPrometheusCpu insufficientPrometheusMemory)}}
-            {{t "monitoringPage.insufficientSize.prometheus.all" cpu=prometheusRequestCpu memory=prometheusRequestMemory}}
+          {{t "monitoringPage.insufficientSize.prometheus.all" cpu=prometheusRequestCpu memory=prometheusRequestMemory}}
         {{else if (and insufficientPrometheusCpu nodeSelectors.length)}}
-            {{t "monitoringPage.insufficientSize.selectors.cpu" cpu=prometheusRequestCpu}}
+          {{t "monitoringPage.insufficientSize.selectors.cpu" cpu=prometheusRequestCpu}}
         {{else if insufficientPrometheusCpu}}
-            {{t "monitoringPage.insufficientSize.prometheus.cpu" cpu=prometheusRequestCpu}}
+          {{t "monitoringPage.insufficientSize.prometheus.cpu" cpu=prometheusRequestCpu}}
         {{else if (and insufficientPrometheusMemory nodeSelectors.length)}}
-            {{t "monitoringPage.insufficientSize.selectors.memory" memory=prometheusRequestMemory}}
+          {{t "monitoringPage.insufficientSize.selectors.memory" memory=prometheusRequestMemory}}
         {{else if insufficientPrometheusMemory}}
-            {{t "monitoringPage.insufficientSize.prometheus.memory" memory=prometheusRequestMemory}}
+          {{t "monitoringPage.insufficientSize.prometheus.memory" memory=prometheusRequestMemory}}
         {{/if}}
       </p>
     {{/banner-message}}
@@ -366,7 +366,7 @@
     }}
       {{#if (and enabled canDisableMonitor)}}
         {{#if confirmDisable}}
-          <button class="btn bg-error" type="button" {{action "disable"}}>
+          <button class="btn bg-error" type="button" {{action "disable" }}>
             <i class="icon icon-alert"></i> {{t "monitoringPage.confirmDisable"}}
           </button>
         {{else}}
@@ -379,12 +379,12 @@
               inlineBlock=true
               placement="top"
             }}
-              <button class="btn bg-error" type="button" {{action "promptDisable"}}>
+              <button class="btn bg-error" type="button" {{action "promptDisable" }}>
                 {{t "monitoringPage.disable"}}
               </button>
             {{/tooltip-element}}
           {{else}}
-            <button class="btn bg-error" type="button" {{action "promptDisable"}}>
+            <button class="btn bg-error" type="button" {{action "promptDisable" }}>
               {{t "monitoringPage.disable"}}
             </button>
           {{/if}}
