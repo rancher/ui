@@ -204,6 +204,66 @@
             </div>
           </div> --}}
           <div class="row">
+            <div class="col span-6 mb-0">
+              <div class="form-control-static">
+                <div class="checkbox">
+                  <label>
+                    <Input
+                      @type="checkbox"
+                      @checked={{mut config.monitoring}}
+                      @disabled={{not isNewOrEditable}}
+                    />
+                    {{t "clusterNew.azureaks.monitoring.label"}}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col span-6">
+              {{#if config.monitoring}}
+                <div class="">
+                  <label
+                    class="acc-label"
+                    for="azureaks-logging-workspace-group"
+                  >
+                    {{t "clusterNew.azureaks.monitoring.workspaceGroup.label"}}
+                  </label>
+                  <InputOrDisplay
+                    @editable={{isNewOrEditable}}
+                    @value={{config.logAnalyticsWorkspaceGroup}}
+                    @classesForDisplay="form-control-static"
+                  >
+                    <Input
+                      @classNames="form-control"
+                      @id="azureaks-logging-workspace-group"
+                      @type="text"
+                      @value={{mut config.logAnalyticsWorkspaceGroup}}
+                    />
+                  </InputOrDisplay>
+                </div>
+                <div class="">
+                  <label
+                    class="acc-label"
+                    for="azureaks-logging-workspace-name"
+                  >
+                    {{t "clusterNew.azureaks.monitoring.workspaceName.label"}}
+                  </label>
+                  <InputOrDisplay
+                    @editable={{isNewOrEditable}}
+                    @value={{config.logAnalyticsWorkspaceName}}
+                    @classesForDisplay="form-control-static"
+                  >
+                    <Input
+                      @classNames="form-control"
+                      @id="azureaks-logging-workspace-name"
+                      @type="text"
+                      @value={{mut config.logAnalyticsWorkspaceName}}
+                    />
+                  </InputOrDisplay>
+                </div>
+              {{/if}}
+            </div>
+          </div>
+          <div class="row">
             <div class="col span-6">
               <label class="acc-label" for="azureaks-advanced-ssh-pub-key">
                 {{t "clusterNew.azureaks.ssh.label"}}
@@ -529,54 +589,6 @@
             {{/if}}
           </div>
           <AdvancedSection @advanced={{clusterAdvanced}}>
-            <div class="row">
-              <div class="col span-6 mb-0">
-                <div class="form-control-static">
-                  <div class="checkbox">
-                    <label>
-                      <Input
-                        @type="checkbox"
-                        @checked={{mut config.monitoring}}
-                      />
-                      {{t "clusterNew.azureaks.monitoring.label"}}
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col span-6">
-                {{#if config.monitoring}}
-                  <div class="">
-                    <label
-                      class="acc-label"
-                      for="azureaks-logging-workspace-group"
-                    >
-                      {{t "clusterNew.azureaks.monitoring.workspaceGroup.label"
-                      }}
-                    </label>
-                    <Input
-                      @classNames="form-control"
-                      @id="azureaks-logging-workspace-group"
-                      @type="text"
-                      @value={{mut config.logAnalyticsWorkspaceGroup}}
-                    />
-                  </div>
-                  <div class="">
-                    <label
-                      class="acc-label"
-                      for="azureaks-logging-workspace-name"
-                    >
-                      {{t "clusterNew.azureaks.monitoring.workspaceName.label"}}
-                    </label>
-                    <Input
-                      @classNames="form-control"
-                      @id="azureaks-logging-workspace-name"
-                      @type="text"
-                      @value={{mut config.logAnalyticsWorkspaceName}}
-                    />
-                  </div>
-                {{/if}}
-              </div>
-            </div>
             <div class="row">
               <div class="col span-6 mt-0">
                 <div class="form-control-static">
