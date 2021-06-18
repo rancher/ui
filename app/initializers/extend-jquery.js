@@ -1,5 +1,3 @@
-import jQuery from 'jquery';
-
 export function initialize(/* application */) {
   // Define some more easings and inject into jQuery
   jQuery.extend(jQuery.easing, {

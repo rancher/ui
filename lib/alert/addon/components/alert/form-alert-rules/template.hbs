@@ -1,28 +1,23 @@
 <div class="row">
-  <label>
-    {{t "alertPage.newOrEdit.alertRule"}}
-  </label>
+  <label>{{t 'alertPage.newOrEdit.alertRule'}}</label>
 </div>
-<hr />
+<hr/>
+
 {{#unless monitoringEnabled}}
-  {{#if enableMonitoringRoute}}
-    {{#banner-message color="bg-info mb-10 mt-10"}}
-      <p>
-        {{t "alertPage.newOrEdit.monitoringDisabled"}}
-        {{#link-to-external enableMonitoringRoute}}
-          {{t "alertPage.newOrEdit.enableMonitoring"}}
-        {{/link-to-external}}
-        .
-      </p>
-    {{/banner-message}}
-  {{/if}}
+  {{#banner-message color='bg-info mb-10 mt-10'}}
+    {{#if (eq pageScope 'cluster')}}
+      <p>{{t 'alertPage.newOrEdit.monitoringDisabled'}} {{#link-to-external 'authenticated.cluster.monitoring.cluster-setting'}} {{t 'alertPage.newOrEdit.enableMonitoring'}} {{/link-to-external}}.</p>
+    {{else}}
+      <p>{{t 'alertPage.newOrEdit.monitoringDisabled'}} {{#link-to-external 'authenticated.project.monitoring.project-setting'}} {{t 'alertPage.newOrEdit.enableMonitoring'}} {{/link-to-external}}.</p>
+    {{/if}}
+  {{/banner-message}}
 {{/unless}}
+
 <div class="mb-10 pt-5">
-  {{#if enableMonitoringRoute}}
-    {{#each alertRules key="id" as |alertRule|}}
-      {{#if (eq pageScope "cluster")}}
-        {{alert/form-cluster-rule-row
-          removeRule=(action "removeRule")
+  {{#each alertRules key="id" as |alertRule|}}
+    {{#if (eq pageScope 'cluster')}}
+      {{alert/form-cluster-rule-row
+          removeRule=(action 'removeRule')
           alertRules=alertRules
           editing=editing
           pageScope=pageScope
@@ -33,10 +28,10 @@
           alertGroup=alertGroup
           mode=mode
           level=level
-        }}
-      {{else if (eq pageScope "project")}}
-        {{alert/form-project-rule-row
-          removeRule=(action "removeRule")
+      }}
+    {{else}}
+      {{alert/form-project-rule-row
+          removeRule=(action 'removeRule')
           condition=alertRule
           alertRules=alertRules
           editing=editing
@@ -48,26 +43,16 @@
           alertGroup=alertGroup
           mode=mode
           level=level
-        }}
-      {{/if}}
-    {{else}}
-      <div class="p-20">
-        {{t "formIngress.noRules"}}
-      </div>
-    {{/each}}
-  {{/if}}
+      }}
+    {{/if}}
+  {{else}}
+    <div class="p-20">{{t 'formIngress.noRules'}}</div>
+  {{/each}}
 </div>
+
 <div class="row">
-  <button
-    class="btn bg-link icon-btn pull-right"
-    type="button"
-    {{action "addRule"}}
-  >
-    <span class="darken">
-      <i class="icon icon-plus text-small"></i>
-    </span>
-    <span>
-      {{t "alertPage.index.addAlert"}}
-    </span>
+  <button class="btn bg-link icon-btn pull-right" type="button" {{action "addRule"}}>
+    <span class="darken"><i class="icon icon-plus text-small"></i></span>
+    <span>{{t 'alertPage.index.addAlert'}}</span>
   </button>
 </div>
