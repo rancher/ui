@@ -96,7 +96,7 @@ export default class App extends Application {
         }
       }
     },
-    globalAdmin: {
+    'global-admin': {
       dependencies: {
         services: [
           'access',
@@ -112,7 +112,6 @@ export default class App extends Application {
           'modal',
           'oauth',
           'resource-actions',
-          'router',
           'scope',
           'session',
           'settings',
@@ -120,6 +119,7 @@ export default class App extends Application {
           'tooltip',
           'user-language',
           'user-theme',
+          'router',
         ],
         externalRoutes: {
           index:                                          'index',
@@ -192,30 +192,30 @@ export default class App extends Application {
           'intl',
           'modal',
           'resource-actions',
-          'router',
           'scope',
           'session',
           'store',
           'tooltip',
+          'router',
         ],
         externalRoutes: {
-          index:                                      'index',
-          failWhale:                                  'failWhale',
-          authenticated:                              'authenticated',
           'authenticated.cluster':                    'authenticated.cluster',
           'authenticated.cluster.index':              'authenticated.cluster.index',
           'authenticated.cluster.projects':           'authenticated.cluster.projects',
-          'authenticated.project':                    'authenticated.project',
           'authenticated.prefs':                      'authenticated.prefs',
-          'logout':                                   'logout',
-          'volumes.index':                            'volumes.index',
+          'authenticated.project':                    'authenticated.project',
           'authenticated.project.dns.index':          'authenticated.project.dns.index',
           'authenticated.project.hpa.index':          'authenticated.project.hpa.index',
-          'ingresses.index':                          'ingresses.index',
-          'containers.index':                         'containers.index',
           'authenticated.project.pipeline.pipeline':  'authenticated.project.pipeline.pipeline',
           'authenticated.project.pipeline.pipelines': 'authenticated.project.pipeline.pipelines',
+          'containers.index':                         'containers.index',
+          'ingresses.index':                          'ingresses.index',
+          'logout':                                   'logout',
           'notifier':                                 'authenticated.cluster.notifier',
+          'volumes.index':                            'volumes.index',
+          authenticated:                              'authenticated',
+          failWhale:                                  'failWhale',
+          index:                                      'index',
         }
       }
     },
