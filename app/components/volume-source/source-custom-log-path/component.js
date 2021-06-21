@@ -55,7 +55,7 @@ export default Component.extend(VolumeSource, {
     }
   }),
 
-  mount: computed('mounts.[]', function() {
+  firstMount: computed('mounts.[]', function() {
     return get(this, 'mounts').get('firstObject');
   }),
 
