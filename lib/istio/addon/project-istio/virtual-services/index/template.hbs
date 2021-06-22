@@ -1,7 +1,7 @@
 {{# if model.supported }}
   <section class="pl-0 pr-0">
     {{#sortable-table
-      classNames="grid sortable-table"
+      classNames="grid"
       body=rows
       searchText=searchText
       sortBy=sortBy
@@ -28,29 +28,23 @@
         }}
       {{else if (eq kind "nomatch")}}
         <tr>
-          <td
-            colspan="{{sortable.fullColspan}}"
-            class="text-center text-muted pt-20 pb-20"
-          >
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
             {{t "virtualServicePage.noMatch"}}
           </td>
         </tr>
       {{else if (eq kind "norows")}}
         <tr>
-          <td
-            colspan="{{sortable.fullColspan}}"
-            class="text-center text-muted pt-20 pb-20"
-          >
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
             {{t "virtualServicePage.noData"}}
           </td>
         </tr>
       {{/if}}
     {{/sortable-table}}
   </section>
-{{else}}
-  {{banner-message
+  {{else}}
+    {{banner-message
     icon="icon-alert"
     color="bg-warning mb-10"
     message=(t "virtualServicePage.notSupported" htmlSafe=true)
   }}
-{{/if}}
+    {{/if}}

@@ -1,6 +1,7 @@
-<section class="header clearfix">
+<section class="header">
   <div class="right-buttons">
-    {{#link-to "security.policies.new" classNames="btn btn-sm bg-primary right-divider-btn" disabled=(rbac-prevents resource="podsecuritypolicytemplate" scope="global" permission="create")}} {{t 'podSecurityPoliciesPage.addPodSecurityPolicy'}} {{/link-to}}
+    {{#link-to "security.policies.new" classNames="btn btn-sm bg-primary right-divider-btn" disabled=(rbac-prevents resource="podsecuritypolicytemplate" scope="global" permission="create")}}
+      {{t 'podSecurityPoliciesPage.addPodSecurityPolicy'}} {{/link-to}}
   </div>
 
   <h1>{{t 'podSecurityPoliciesPage.index.header'}}</h1>
@@ -8,7 +9,7 @@
 
 <section class="instances pt-5 pb-5">
   {{#sortable-table
-    classNames="grid sortable-table"
+    classNames="grid"
     descending=descending
     sortBy=sortBy
     headers=headers
@@ -34,9 +35,13 @@
         </td>
       </tr>
     {{else if (eq kind "nomatch")}}
-      <td colspan="4" class="text-center text-muted lacsso pt-20 pb-20">{{t 'podSecurityPoliciesPage.index.table.noMatch'}}</td>
+      <td colspan="4" class="text-center text-muted lacsso pt-20 pb-20">
+        {{t 'podSecurityPoliciesPage.index.table.noMatch'}}
+      </td>
     {{else if (eq kind "norows")}}
-      <td colspan="4" class="text-center text-muted lacsso pt-20 pb-20">{{t 'podSecurityPoliciesPage.index.table.noData'}}</td>
+      <td colspan="4" class="text-center text-muted lacsso pt-20 pb-20">
+        {{t 'podSecurityPoliciesPage.index.table.noData'}}
+      </td>
     {{/if}}
   {{/sortable-table}}
 </section>

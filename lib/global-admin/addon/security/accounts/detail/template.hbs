@@ -1,4 +1,4 @@
-<section class="header clearfix">
+<section class="header">
   <div class="pull-left">
     <h1>{{t "accountsPage.detail.header"}}</h1>
   </div>
@@ -45,7 +45,7 @@
       </div>
     {{else}}
       {{#sortable-table
-         classNames="grid sortable-table"
+           classNames="grid"
          body=globalRoleMapping
          search=false
          sortBy=sortGlobalBy
@@ -55,12 +55,12 @@
          headers=globalHeaders as |sortable kind entry dt|
       }}
         {{#if (eq kind "row")}}
-          <tr class="main-row {{if entry.enabled "" "text-muted"}}">
+          <tr class="main-row {{if entry.enabled "" " text-muted"}}">
             <td data-title="{{dt.enabled}}">
               {{#if entry.enabled}}
-                <i class="icon icon-check"/>
+                <i class="icon icon-check" />
               {{else}}
-                <i class="icon icon-x"/>
+                <i class="icon icon-x" />
               {{/if}}
             </td>
             <td data-title="{{dt.name}}">
@@ -99,7 +99,7 @@
      showExpand=false
   }}
     {{#sortable-table
-       classNames="grid sortable-table"
+       classNames="grid"
        body=model.user.clusterRoleBindings
        search=false
        sortBy=sortClusterBy
@@ -144,7 +144,7 @@
      showExpand=false
   }}
     {{#sortable-table
-       classNames="grid sortable-table"
+       classNames="grid"
        body=model.user.projectRoleBindings
        search=false
        sortBy=sortProjectBy

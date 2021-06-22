@@ -11,7 +11,7 @@
   </div>
   <div class="col span-12">
     {{#sortable-table
-       classNames="grid sortable-table"
+       classNames="grid"
        sortBy=sortBy
        headers=membersHeaders
        stickyHeader=false
@@ -27,31 +27,23 @@
           <td data-title="{{dt.memberName}}:">
             {{member.displayName}}
           </td>
-          <td data-title="{{dt.type}}:" >
+          <td data-title="{{dt.type}}:">
             {{member.displayType}}
           </td>
-          <td data-title="{{t "generic.actions"}}:" class="actions">
+          <td data-title="{{t " generic.actions"}}:" class="actions">
             <div class="p-5">
-              <button
-                class="btn bg-primary btn-sm" type="button" {{action removeMember member}}
-              >
-                <i class="icon icon-minus"/>
+              <button class="btn bg-primary btn-sm" type="button" {{action removeMember member}}>
+                <i class="icon icon-minus" />
               </button>
             </div>
           </td>
         </tr>
       {{else if (eq kind "nomatch")}}
-        <td
-          colspan="5"
-          class="text-center text-muted lacsso pt-20 pb-20"
-        >
+        <td colspan="5" class="text-center text-muted lacsso pt-20 pb-20">
           {{t "formMembersGlobalAccess.table.noMatch"}}
         </td>
       {{else if (eq kind "norows")}}
-        <td
-          colspan="5"
-          class="text-center text-muted lacsso pt-20 pb-20"
-        >
+        <td colspan="5" class="text-center text-muted lacsso pt-20 pb-20">
           {{t "formMembersGlobalAccess.table.noData"}}
         </td>
       {{/if}}

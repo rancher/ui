@@ -1,4 +1,4 @@
-<section class="header clearfix">
+<section class="header">
   <div class="right-buttons">
     <div class="btn-group p-0 mr-10">
       {{#tooltip-element type="tooltip-basic" model=(t 'nav.group.none') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
@@ -22,7 +22,7 @@
 
 <section class="instances pt-5 pb-5">
   {{#sortable-table
-    classNames="grid sortable-table"
+    classNames="grid"
     body=rows
     descending=descending
     groupByKey=groupTableBy
@@ -37,12 +37,14 @@
     {{else if (eq kind "nomatch")}}
       <tr>
         <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
-          {{t 'configMapsPage.index.noMatch'}}</td>
+          {{t 'configMapsPage.index.noMatch'}}
+        </td>
       </tr>
     {{else if (eq kind "norows")}}
       <tr>
         <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
-          {{t 'configMapsPage.index.noData'}}</td>
+          {{t 'configMapsPage.index.noData'}}
+        </td>
       </tr>
     {{/if}}
   {{/sortable-table}}

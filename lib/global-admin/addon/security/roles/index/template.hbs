@@ -1,13 +1,16 @@
 <section class="header has-tabs clearfix p-0">
   <ul class="tab-nav">
     <li>
-      <a href="#" {{action (action (mut context) ) "global"}} class="{{if (eq context "global") "active" ""}}">{{t "rolesPage.headers.global"}}</a>
+      <a href="#" {{action (action (mut context) ) "global" }} class="{{if (eq context " global") "active" ""
+        }}">{{t "rolesPage.headers.global"}}</a>
     </li>
     <li>
-      <a href="#" {{action (action (mut context) ) "cluster"}} class="{{if (eq context "cluster") "active" ""}}">{{t "rolesPage.headers.cluster"}}</a>
+      <a href="#" {{action (action (mut context) ) "cluster" }} class="{{if (eq context " cluster") "active" ""
+        }}">{{t "rolesPage.headers.cluster"}}</a>
     </li>
     <li>
-      <a href="#" {{action (action (mut context) ) "project"}} class="{{if (eq context "project") "active" ""}}">{{t "rolesPage.headers.project"}}</a>
+      <a href="#" {{action (action (mut context) ) "project" }} class="{{if (eq context " project") "active" ""
+        }}">{{t "rolesPage.headers.project"}}</a>
     </li>
   </ul>
   <div class="right-buttons">
@@ -19,23 +22,20 @@
     }}
       {{t "rolesPage.addRole" context=readableMode}}
     {{/link-to}}
-    <span id="header-search"/>
+    <span id="header-search" />
   </div>
 </section>
 
 {{#if defaultGlobalRoleDoesNotExist}}
   <section>
-    <BannerMessage
-      @color="bg-warning"
-      @message={{t "rolesPage.index.warning" appName=settings.appName}}
-    />
+    <BannerMessage @color="bg-warning" @message={{t "rolesPage.index.warning" appName=settings.appName}} />
   </section>
 {{/if}}
 
 <section class="instances">
   {{#sortable-table
        bulkActions=true
-       classNames="grid sortable-table"
+       classNames="grid"
        sortBy=sortBy
        descending=descending
        headers=headers
@@ -53,32 +53,32 @@
         <td valign="middle">
           {{badge-state model=row}}
         </td>
-        <td data-title="{{t "rolesPage.index.table.name"}}:" class="clip">
+        <td data-title="{{t " rolesPage.index.table.name"}}:" class="clip">
           {{#link-to "security.roles.detail" row.id (query-params type=context)}}
             {{row.name}}
           {{/link-to}}
         </td>
-        <td data-title="{{t "rolesPage.index.table.id"}}:" class="clip">
-            {{row.id}}
+        <td data-title="{{t " rolesPage.index.table.id"}}:" class="clip">
+          {{row.id}}
         </td>
-        <td data-title="{{t "rolesPage.index.table.builtin"}}:" >
+        <td data-title="{{t " rolesPage.index.table.builtin"}}:">
           {{#if row.builtin}}
-            <i class="icon icon-check"/>
+            <i class="icon icon-check" />
           {{else}}
             <span class="text-muted">&ndash;</span>
           {{/if}}
         </td>
-        <td data-title="{{t "rolesPage.index.table.builtin"}}:" >
+        <td data-title="{{t " rolesPage.index.table.builtin"}}:">
           {{#if (or row.clusterCreatorDefault row.projectCreatorDefault row.newUserDefault)}}
-            <i class="icon icon-check"/>
+            <i class="icon icon-check" />
           {{else}}
             <span class="text-muted">&ndash;</span>
           {{/if}}
         </td>
-        <td data-title="{{t "generic.created"}}:" class="text-right pr-20">
+        <td data-title="{{t " generic.created"}}:" class="text-right pr-20">
           {{date-calendar row.created}}
         </td>
-        <td data-title="{{t "generic.actions"}}:" class="actions">
+        <td data-title="{{t " generic.actions"}}:" class="actions">
           {{action-menu model=row}}
         </td>
       </tr>

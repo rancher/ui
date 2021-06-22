@@ -4,7 +4,7 @@
   {{/banner-message}}
 {{/if}}
 
-<section class="header clearfix">
+<section class="header">
   <h1>{{t 'repositories.header'}}</h1>
 </section>
 
@@ -27,15 +27,21 @@
         {{repository-row row=row}}
       {{else if (eq kind "nomatch")}}
         <tr>
-          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'repositories.table.noMatch'}}</td>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            {{t 'repositories.table.noMatch'}}
+          </td>
         </tr>
       {{else if (eq kind "norows")}}
         <tr>
-          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'repositories.table.noData'}}</td>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            {{t 'repositories.table.noData'}}
+          </td>
         </tr>
       {{else if (eq kind "norows")}}
         <tr>
-          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'repositories.table.noData'}}</td>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            {{t 'repositories.table.noData'}}
+          </td>
         </tr>
       {{else if (eq kind "left-actions")}}
         {{#if refreshing}}
@@ -44,7 +50,7 @@
             <i class="icon icon-spinner icon-spin"></i>
           </a>
         {{else}}
-          <a class="btn btn-sm bg-primary" href="#" onclick={{action 'refresh'}}>
+          <a class="btn btn-sm bg-primary" href="#" onclick={{action 'refresh' }}>
             {{t 'newPipelineStep.stepType.scm.refresh'}}
             <i class="icon icon-refresh"></i>
           </a>
@@ -56,7 +62,7 @@
             <i class="icon icon-spinner icon-spin"></i>
           </a>
         {{else}}
-          <a class="btn btn-sm bg-primary" href="#" onclick={{action 'logout'}}>
+          <a class="btn btn-sm bg-primary" href="#" onclick={{action 'logout' }}>
             {{t 'generic.logout' user=principal.name}}
             <i class="icon icon-logout"></i>
           </a>
@@ -96,26 +102,30 @@
         </tr>
       {{else if (eq kind "nomatch")}}
         <tr>
-          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'repositories.table.noMatch'}}</td>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            {{t 'repositories.table.noMatch'}}
+          </td>
         </tr>
       {{else if (eq kind "norows")}}
         <tr>
-          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'repositories.table.noData'}}</td>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+            {{t 'repositories.table.noData'}}
+          </td>
         </tr>
       {{else if (eq kind "suffix")}}
         <tbody>
           <tr>
-          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
-            <div style="width:100%;padding:8px 18px;" {{action "authorize"}} disabled={{authorizing}}>
-              <div class="btn bg-transparent btn-authorize">
-                {{#if authorizing}}
-                  <i class="icon icon-spinner icon-spin"></i> {{t 'generic.authorize'}}
-                {{else}}
-                  <i class="icon icon-user"></i> {{t 'generic.authorize'}}
-                {{/if}}
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+              <div style="width:100%;padding:8px 18px;" {{action "authorize" }} disabled={{authorizing}}>
+                <div class="btn bg-transparent btn-authorize">
+                  {{#if authorizing}}
+                    <i class="icon icon-spinner icon-spin"></i> {{t 'generic.authorize'}}
+                  {{else}}
+                    <i class="icon icon-user"></i> {{t 'generic.authorize'}}
+                  {{/if}}
+                </div>
               </div>
-            </div>
-          </td>
+            </td>
           </tr>
         </tbody>
       {{/if}}
@@ -126,5 +136,5 @@
 {{top-errors errors=errors}}
 
 <div style="text-align: center" class="mt-20 text-center">
-  <button class="btn bg-primary" type="button" {{action "cancel"}}>{{t "generic.done"}}</button>
+  <button class="btn bg-primary" type="button" {{action "cancel" }}>{{t "generic.done"}}</button>
 </div>

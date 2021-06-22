@@ -1,9 +1,9 @@
 {{#if editing}}
   <div class="row">
     <div class="col">
-      <button class="btn bg-link icon-btn p-0" type="button" {{action "addMember"}}>
+      <button class="btn bg-link icon-btn p-0" type="button" {{action "addMember" }}>
         <span class="darken">
-          <i class="icon icon-plus text-small"/>
+          <i class="icon icon-plus text-small" />
         </span>
         <span>
           {{t "formShareMember.add"}}
@@ -14,28 +14,13 @@
 {{/if}}
 
 <div class="row">
-  <SortableTable
-    @class="grid sortable-table"
-    @body={{membersRows}}
-    @searchText={{searchText}}
-    @descending={{descending}}
-    @sortBy={{sortBy}}
-    @bulkActions={{false}}
-    @pagingLabel="pagination.cluster"
-    @headers={{membersHeaders}}
-    @stickyHeader={{false}}
-    @search={{false}}
-    as |sortable kind member dt|
-  >
+  <SortableTable @class="grid" @body={{membersRows}} @searchText={{searchText}} @descending={{descending}}
+    @sortBy={{sortBy}} @bulkActions={{false}} @pagingLabel="pagination.cluster" @headers={{membersHeaders}}
+    @stickyHeader={{false}} @search={{false}} as |sortable kind member dt|>
     {{#if (eq kind "row")}}
       {{#unless member.pendingDelete}}
-        <ShareMemberRow
-          @member={{member}}
-          @editing={{editing}}
-          @clusterResource={{resource}}
-          @users={{users}}
-          @remove={{removeMember}}
-        />
+        <ShareMemberRow @member={{member}} @editing={{editing}} @clusterResource={{resource}} @users={{users}}
+          @remove={{removeMember}} />
       {{/unless}}
     {{else if (eq kind "nomatch")}}
       <tr>
@@ -52,7 +37,7 @@
     {{/if}}
   </SortableTable>
 
-  <hr/>
+  <hr />
 
   {{#if editing}}
     <div class="col span-6">

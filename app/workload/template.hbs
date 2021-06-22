@@ -1,4 +1,4 @@
-<section class="header clearfix">
+<section class="header">
   <div class="pull-left">
     <h1 class="vertical-middle">
       {{t "servicePage.header" name=service.displayName}}
@@ -98,16 +98,13 @@
       </span>
       <span>
         <div class="btn-group btn-group-xs p-0 ml-10">
-          <button
-            class="btn btn-xs bg-primary" disabled={{not service.canScaleDown}} type="button" {{action "scaleDown" target=service}}
-          >
-            <i class="icon icon-minus icon-fw"/>
+          <button class="btn btn-xs bg-primary" disabled={{not service.canScaleDown}} type="button" {{action "scaleDown"
+            target=service}}>
+            <i class="icon icon-minus icon-fw" />
           </button>
-          <button
-            style="margin-left: -1px;"
-            class="btn btn-xs bg-primary" disabled={{not service.canScaleUp}} type="button" {{action "scaleUp" target=service}}
-          >
-            <i class="icon icon-plus icon-fw"/>
+          <button style="margin-left: -1px;" class="btn btn-xs bg-primary" disabled={{not service.canScaleUp}}
+            type="button" {{action "scaleUp" target=service}}>
+            <i class="icon icon-plus icon-fw" />
           </button>
         </div>
       </span>
@@ -226,7 +223,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col {{if service.launchConfig.livenessProbe "span-6" "span-12"}}">
+        <div class="col {{if service.launchConfig.livenessProbe " span-6" "span-12" }}">
           {{form-healthcheck
             initialCheck=service.launchConfig.readinessProbe
             editing=false

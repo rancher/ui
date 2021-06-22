@@ -77,10 +77,11 @@ TABLE {
 
   .fixed-header-actions {
     background: $body-bg;
-    min-height: 40px;
+    // min-height: 40px;
     white-space: nowrap;
     width: 100%;
     z-index: 1;
+    padding: 0 0 20px 0;
 
     input[type='search'] {
       width: auto;
@@ -220,14 +221,14 @@ TABLE {
   > THEAD > TR {
     width: 100%;
     box-sizing: border-box;
-    border-width: 0 0 3px 0;
+    border-width: 0 0 1px 0;
     border-color: $table-border-color;
     border-radius: 0;
     outline: none;
     transition: all ease-in-out .2s;
     &.fixed-header {
       background: $table-header;
-      border-bottom: 3px solid $link-color;
+      border-bottom: 1px solid $border;
       TH {
         color: $link-color;
 
@@ -237,7 +238,7 @@ TABLE {
       }
     }
     > TH {
-      border-width: 0 0 3px 0;
+      border-width: 0 0 1px 0;
       border-color: $table-border-color;
       border-radius: 0;
       outline: none;
@@ -397,6 +398,14 @@ TABLE {
 }
 
 .sortable-table {
+  border-collapse: collapse;
+  min-width: 400px;
+  border-radius: 5px 5px 0 0;
+  outline: 1px solid $border;
+  overflow: hidden;
+  background: transparent;
+  border-radius: 4px;
+
   tbody {
     .no-match,
     .no-data {

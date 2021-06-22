@@ -1,4 +1,4 @@
-<section class="header clearfix">
+<section class="header">
   {{#if isView}}
     <div class="right-buttons pull-right">
       {{badge-state model=model}}
@@ -60,13 +60,8 @@
 </div>
 
 <div class="row mt-20">
-  <FormLabelsAnnotations
-    @classNames="accordion-wrapper"
-    @expandAll={{al.expandAll}}
-    @initialLabels={{primaryResource.labels}}
-    @model={{primaryResource}}
-    @editing={{notView}}
-  />
+  <FormLabelsAnnotations @classNames="accordion-wrapper" @expandAll={{al.expandAll}}
+    @initialLabels={{primaryResource.labels}} @model={{primaryResource}} @editing={{notView}} />
 </div>
 
 {{#accordion-list showExpandAll=false as | al expandFn |}}

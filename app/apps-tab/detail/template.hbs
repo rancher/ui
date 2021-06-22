@@ -1,10 +1,10 @@
-<section class="header clearfix">
+<section class="header">
   <div class="pull-left">
     <h1 class="vertical-middle">
       {{t "appDetailPage.header" appName=model.app.displayName}}
     </h1>
   </div>
-  <div class="vertical-middle"></div>
+
   <div class="right-buttons">
     {{badge-state model=model.app}}
     {{action-menu
@@ -122,7 +122,7 @@
     }}
       {{#sortable-table
          tableClassNames="double-rows"
-         classNames="grid sortable-table"
+         classNames="grid"
          body=workloadsAndPods
          searchText=podsSearchText
          descending=podsDescending
@@ -182,7 +182,7 @@
     }}
       <section class="pl-0 pr-0">
         {{#sortable-table
-           classNames="grid sortable-table"
+           classNames="grid"
            body=model.app.ingress
            searchText=ingressSearchText
            descending=ingressDescending
@@ -201,7 +201,7 @@
                 {{badge-state model=inst}}
               </td>
               <td data-title="{{dt.name}}" class="clip">
-                <a href="{{href-to "ingress" inst.id}}">{{inst.displayName}}</a>
+                <a href="{{href-to " ingress" inst.id}}">{{inst.displayName}}</a>
               </td>
               <td data-title="{{dt.created}}" class="text-right pr-20">
                 {{date-calendar inst.created}}
@@ -235,7 +235,7 @@
        expandOnInit=true
     }}
       {{#sortable-table
-         classNames="grid sortable-table"
+         classNames="grid"
          body=model.app.dnsRecords
          searchText=servicesSearchText
          descending=servicesDescending
@@ -276,7 +276,7 @@
     }}
       <section class="pl-0 pr-0">
         {{#sortable-table
-           classNames="grid sortable-table"
+           classNames="grid"
            body=model.app.volumes
            searchText=volumesSearchText
            descending=volumesDescending
@@ -294,14 +294,15 @@
                 {{badge-state model=obj}}
               </td>
               <td data-title="{{dt.name}}">
-                <a href="{{href-to "volumes.detail" obj.id}}">{{obj.displayName}}</a>
+                <a href="{{href-to " volumes.detail" obj.id}}">{{obj.displayName}}</a>
               </td>
               <td data-title="{{dt.size}}">
                 {{obj.displaySize}}
               </td>
               <td data-title="{{dt.volume}}">
                 {{#if obj.persistentVolume}}
-                  <a href="{{href-to "authenticated.cluster.storage.persistent-volumes.detail" scope.currentCluster.id obj.persistentVolume.id}}">
+                  <a href="{{href-to " authenticated.cluster.storage.persistent-volumes.detail" scope.currentCluster.id
+                    obj.persistentVolume.id}}">
                     {{obj.persistentVolume.displayName}}
                   </a>
                 {{else}}
@@ -310,7 +311,8 @@
               </td>
               <td data-title="{{dt.storageClass}}">
                 {{#if obj.storageClass}}
-                  <a href="{{href-to "authenticated.cluster.storage.classes.detail" scope.currentCluster.id obj.storageClass.id}}">
+                  <a href="{{href-to " authenticated.cluster.storage.classes.detail" scope.currentCluster.id
+                    obj.storageClass.id}}">
                     {{obj.storageClass.displayName}}
                   </a>
                 {{else}}
@@ -346,7 +348,7 @@
        expandOnInit=true
     }}
       {{#sortable-table
-         classNames="grid sortable-table"
+           classNames="grid"
          body=model.app.secrets
          descending=secretsDescending
          sortBy=sortBy
@@ -380,7 +382,7 @@
        expandOnInit=true
     }}
       {{#sortable-table
-         classNames="grid sortable-table"
+           classNames="grid"
          body=model.app.configMaps
          descending=configMapsDescending
          sortBy=sortBy

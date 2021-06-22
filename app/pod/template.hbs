@@ -1,4 +1,4 @@
-<section class="header clearfix">
+<section class="header">
   <div class="pull-left">
     <h1 class="vertical-middle">
       {{t "podPage.header" name=model.displayName}}
@@ -14,7 +14,9 @@
 {{/if}}
 
 {{#if model.showTransitioningMessage}}
-  <div class="{{model.stateColor}}"><p>{{uc-first model.transitioningMessage}}</p></div>
+  <div class="{{model.stateColor}}">
+    <p>{{uc-first model.transitioningMessage}}</p>
+  </div>
 {{/if}}
 
 <div class="row banner bg-info basics">
@@ -66,7 +68,8 @@
     <label class="acc-label vertical-middle p-0">{{t "podPage.nodeIp"}}:</label>
     {{#if (and model.node.id model.node.clusterId)}}
       <div class="inline">
-        <a href="{{href-to "authenticated.cluster.monitoring.node-detail" model.node.clusterId model.node.id}}">{{model.node.displayName}}</a>
+        <a href="{{href-to " authenticated.cluster.monitoring.node-detail" model.node.clusterId
+          model.node.id}}">{{model.node.displayName}}</a>
         {{#if (or model.node.externalIpAddress model.node.ipAddress)}}
           {{node-ip model=model.node}}
         {{/if}}

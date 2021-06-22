@@ -1,8 +1,5 @@
-<div class="col {{if fullWidth "span-12" "span-6"}}">
-  <label
-    for="add-project-target"
-    class="acc-label"
-  >
+<div class="col {{if fullWidth " span-12" "span-6" }}">
+  <label for="add-project-target" class="acc-label">
     {{t "newMultiClusterApp.targets.label"}}
   </label>
   {{field-required}}
@@ -22,7 +19,7 @@
   {{#sortable-table
      bulkActions=false
      search=false
-     classNames="grid sortable-table"
+     classNames="grid"
      sortBy=sortBy
      headers=headers
      pagingLabel="pagination.member"
@@ -54,22 +51,14 @@
             {{/tooltip-element}}
           {{/if}}
         </td>
-        <td
-          data-title="{{t "generic.actions"}}:"
-          class="actions"
-        >
-          <button
-            class="btn bg-primary btn-sm" type="button" {{action removeTarget target}}
-          >
+        <td data-title="{{t " generic.actions"}}:" class="actions">
+          <button class="btn bg-primary btn-sm" type="button" {{action removeTarget target}}>
             <i class="icon icon-minus"></i>
           </button>
         </td>
       </tr>
     {{else if (eq kind "norows")}}
-      <td
-        colspan="5"
-        class="text-center text-muted lacsso pt-20 pb-20"
-      >
+      <td colspan="5" class="text-center text-muted lacsso pt-20 pb-20">
         {{t "newMultiClusterApp.targets.noData"}}
       </td>
     {{/if}}
