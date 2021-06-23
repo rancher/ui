@@ -3472,7 +3472,6 @@ clusterNew:
       title: Networking
 
   azureaks:
-    availabilityZoneWarning: No availablity zones are available for the selected region. For the most resiliency it is recommended to select a High Availablity region.
     access:
       cloudCred: Cloud Credential
       detail: Configure the Azure Active Directory (AD) Service Principal that will be used to talk to Azure
@@ -3495,6 +3494,7 @@ clusterNew:
     availabilitySet:
       label: Availability Set
       placeholder: availability-set-name
+    availabilityZoneWarning: No availablity zones are available for the selected region. For the most resiliency it is recommended to select a High Availablity region.
     availabilityZones:
       label: Availablity Zones
       zone: Zone {loc}
@@ -3554,6 +3554,7 @@ clusterNew:
           label: Cluster To register
         title: Choose Cluster
       prompt: Select cluster to import
+      rbacWarning: This cluster has Kubernetes RBAC disabled. Importing a cluster without RBAC enabled may cause unexpected behavior.
     ingressWarning: 'Note: Currently Azure AKS will not create an ingress controller when launching a new cluster. If you need this functionality you will have to create an ingress controller manually after cluster creation.'
     kubernetesVersion:
       label: Kubernetes Version
@@ -3581,17 +3582,17 @@ clusterNew:
       placeholder: e.g. 1
     monitoring:
       label: Container Monitoring
-      workspaceName:
-        label: Log Analytics Workspace Name
       workspaceGroup:
         label: Log Analytics Workspace Resource Group
+      workspaceName:
+        label: Log Analytics Workspace Name
     networkOptions:
       detail: Change the network settings for the cluster.
       title: Networking Options
     networkPolicy:
+      help: Azure Network Policy is only available when Azure CNI is selected as the Network Plugin
       label: Network Policy
       placeholder: Select a Network Policy
-      help: Azure Network Policy is only available when Azure CNI is selected as the Network Plugin
     networking:
       advanced: Advanced
       default: Default
@@ -3663,6 +3664,7 @@ clusterNew:
     publishSettingsFile:
       label: Publish Settings
       placeholder: Your Publish Settings file
+    rbacWarning: This cluster has Kubernetes RBAC disabled. A cluster without Kubernetes RBAC enabled may exhibit unexpected behavior.
     region:
       label: Region
     resourceGroup:

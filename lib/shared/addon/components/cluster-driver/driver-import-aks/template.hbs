@@ -67,6 +67,13 @@
             </section>
           </div>
         {{else}}
+        {{#unless rbacEnabled}}
+          <BannerMessage
+            @color="bg-warning"
+            @icon="icon-alert"
+            @message={{t "clusterNew.azureaks.import.rbacWarning"}}
+          />
+        {{/unless}}
           <div class="row">
             <div class="col span-6">
               {{#if loadFailedAllClusters}}
