@@ -3918,7 +3918,7 @@ clusterNew:
       zone: Zonal
     locations:
       label: Additional Zones
-      warning: "Total (in all zones): {totalNodes}"
+      warning: 'Total (in all zones): {totalNodes}'
     loggingMonitoringWarning: Logging and Monitoring service options can be created independently, but they may not be updated separately. They must both either be NONE or have their corresponding service set.
     loggingService:
       default: logging.googleapis.com/kubernetes
@@ -3965,7 +3965,8 @@ clusterNew:
     network:
       label: Network
     networkPolicy:
-      label: Network Policy
+      help: To enable network policy for nodes, first enable network policy for master and apply the update.
+      label: Network Policy for Nodes
     nodeCount:
       label: Node Count
       outsideError: The specified number of nodes in the node pool is outside the specified autoscaling limits
@@ -4000,6 +4001,7 @@ clusterNew:
       default: Allow default access
       full: Allow full access to all Cloud APIs
       label: Access scopes
+    policyConfigDisableWarning: Disabling "network policy" will remove and recreate all nodes in all node pools. Depending on the specs of the cluster, this could take a significant amount of time.
     preemptible:
       label: Preemptible nodes (beta)
       warning: Preemptible nodes will live at most 24 hours.
@@ -4057,9 +4059,9 @@ clusterNew:
     taskQueue:
       label: Task queue
     useIpAliases:
+      error: Use IP Aliases is disabled, a network and subnetwork must be selected.
       label: Ip Aliases
       warning: When Disabling IP Aliases you must select both a network and subnet.
-      error: Use IP Aliases is disabled, a network and subnetwork must be selected.
     userInfo:
       label: User Info
     zone:
