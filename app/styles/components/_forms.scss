@@ -79,61 +79,80 @@ input[type='email'],
 input[type='search'],
 input[type='tel'],
 input[type='url'],
+textarea {
+  background: $input-bg;
+  color: $input-color;
+}
+
+input[type='text'],
+input[type='password'],
+input[type='number'],
+input[type='date'],
+input[type='email'],
+input[type='search'],
+input[type='tel'],
+input[type='url'],
 textarea,
 select {
-    display: block;
-    box-sizing: border-box;
-    border-width: 1.25px;
-    border-color: $input-border;
-    border-radius: 0;
-    border-style: solid;
-    background: $input-bg;
-    padding: 5px 10px;
-    font-size: 15px;
-    line-height: 24px;
-    width: 100%;
+  display: block;
+  box-sizing: border-box;
+  border-width: 1.25px;
+  border-color: $input-border;
+  border-radius: 0;
+  border-style: solid;
+  padding: 5px 10px;
+  font-size: 15px;
+  line-height: 24px;
+  width: 100%;
+
+  // firefox quirk, options were not inheriting there parents color styles
+  option,
+  optgroup {
     color: $input-color;
-
-    // firefox quirk, options were not inheriting there parents color styles
-    option,
-    optgroup {
-      color: $label-color;
-      background: $input-bg;
+    background: $input-bg;
+    &.disabled,
+    &[disabled] {
+      color: $mid-grey;
+      cursor: not-allowed;
     }
+  }
 
 
-    &[size] {
-      display: inline-block;
-      width: auto;
-    }
 
+  &[size] {
+    display: inline-block;
+    width: auto;
+  }
+
+  &::placeholder {
+    color: rgba($input-color-placeholder, 0.8);
+  }
+
+  &:hover {
+    border-color: $input-bg-hover;
+    background-color: rgba($input-bg-hover, 0.2);
     &::placeholder {
-        color: rgba($input-color-placeholder, .8);
+      color: rgba($input-color-placeholder, 0.35);
     }
-
-    &:hover {
-        border-color: $input-bg-hover;
-        background-color: rgba($input-bg-hover, .2);
-        &::placeholder {
-          color: rgba($input-color-placeholder, .35);
-        }
+  }
+  &.disabled,
+  &[disabled],
+  &[disabled]:hover {
+    @extend .bg-disabled;
+    border-color: $input-bg-disabled;
+    cursor: not-allowed;
+    &::placeholder {
+      color: $input-color-placeholder;
     }
-    &.disabled, &[disabled], &[disabled]:hover  {
-        @extend .bg-disabled;
-        border-color: $input-bg-disabled;
-        cursor: not-allowed;
-        &::placeholder {
-            color: $input-color-placeholder;
-        }
+  }
+  &:focus {
+    background-color: rgba($input-border-focus, 0.2);
+    border-color: $input-border-focus;
+    transition: ease-in-out all 0.25s;
+    &::placeholder {
+      color: rgba($input-color-placeholder, 0.5);
     }
-    &:focus {
-        background-color: rgba($input-border-focus, .2);
-        border-color: $input-border-focus;
-        transition: ease-in-out all .25s;
-        &::placeholder {
-            color: rgba($input-color-placeholder, .5);
-        }
-    }
+  }
 }
 
 .form-control-static {
