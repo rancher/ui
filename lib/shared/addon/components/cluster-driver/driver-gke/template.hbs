@@ -279,12 +279,47 @@
                 <label>
                   {{input
                     type="checkbox"
+                    checked=config.clusterAddons.networkPolicyConfig
+                    disabled=shouldDisableNetworkPolicyConfig
+                  }}
+                  {{t "clusterNew.googlegke.clusterAddons.networkPolicyConfig"}}
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  {{input
+                    type="checkbox"
                     checked=config.networkPolicyEnabled
-                    disabled=(or
-                      (not isNewOrEditable) cluster.enableNetworkPolicy
-                    )
+                    disabled=shouldDisableNetworkPolicyEnabled
                   }}
                   {{t "clusterNew.googlegke.networkPolicy.label"}}
+                  {{#if
+                    (and
+                      editing
+                      (and
+                        (or
+                          model.originalCluster.gkeStatus.upstreamSpec.networkPolicyEnabled
+                          model.originalCluster.gkeStatus.upstreamSpec.clusterAddons.networkPolicyConfig
+                        )
+                        (not
+                          (or
+                            config.networkPolicyEnabled
+                            config.clusterAddons.networkPolicyConfig
+                          )
+                        )
+                      )
+                    )
+                  }}
+                    {{#tooltip-element
+                      type="tooltip-basic"
+                      model=(t "clusterNew.googlegke.networkPolicy.help")
+                      tooltipTemplate="tooltip-static"
+                      aria-describedby="tooltip-base"
+                      tooltipFor="tooltipLink"
+                    }}
+                      <i class="icon icon-info"></i>
+                    {{/tooltip-element}}
+                  {{/if}}
                 </label>
               </div>
               <div class="checkbox">
@@ -302,6 +337,14 @@
                   @message={{t "clusterNew.googlegke.useIpAliases.warning"}}
                 />
               {{/unless}}
+              {{#if (or showPolicyEnabledWarning showPolicyConfigWarning)}}
+                <BannerMessage
+                  @icon="icon-alert"
+                  @color="bg-warning mb-10"
+                  @message={{t "clusterNew.googlegke.policyConfigDisableWarning"
+                  }}
+                />
+              {{/if}}
             </div>
           </div>
           <div class="row">
@@ -487,18 +530,6 @@
                     checked=config.clusterAddons.httpLoadBalancing
                   }}
                   {{t "clusterNew.googlegke.clusterAddons.httpLoadBalancing"}}
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  {{input
-                    type="checkbox"
-                    checked=config.clusterAddons.networkPolicyConfig
-                    disabled=(or
-                      (not isNewOrEditable) cluster.enableNetworkPolicy
-                    )
-                  }}
-                  {{t "clusterNew.googlegke.clusterAddons.networkPolicyConfig"}}
                 </label>
               </div>
             </div>
