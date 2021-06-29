@@ -18,6 +18,7 @@ generic:
   cancel: キャンセル
   closeModal: 閉じる
   cluster: クラスター
+  collapse: 折りたたむ
   collapseAll: すべて折りたたむ
   comingSoon: Coming Soon
   command: コマンド
@@ -42,7 +43,9 @@ generic:
   enabled: 有効
   entrypoint: エントリーポイント
   environment: 環境
+  expand: 展開
   expandAll: すべて開く
+  experimental: "実験用"
   from: from
   false: 'いいえ'
   generic: '一般'
@@ -81,6 +84,7 @@ generic:
   noRating: 評価なし
   node: ノード
   none: None
+  completedOf: "{total} のうち {completed}"
   owner: 所有者
   paste: ペースト
   pod: pod
@@ -139,6 +143,8 @@ generic:
   repository: リポジトリ
   registry: レジストリ
   imageName: イメージ名
+  loginIn: ログイン
+  logout: ユーザーログアウト{user}
   pipeline: パイプライン
   noBranch: このリポジトリにブランチはありません。
   github: GitHub
@@ -808,7 +814,9 @@ cis:
     table:
       date: 日付
 cloudCredentialsPage:
+  header: クラウド認証情報
   rightButtons:
+    addKey: クラウド認証情報を追加
     nodeTemplates: ノードテンプレートの管理
 clusterCatalogPage:
   header: カタログ
@@ -869,6 +877,7 @@ certificatesPage:
     header: 証明書
     linkTo: 証明書を追加
     noData: まだ証明書は定義されていません
+    noMatch: 検索条件に一致する証明書はありません
   new:
     header: 証明書を追加
     form:
@@ -889,6 +898,7 @@ membersPage:
     table:
       name: 名前
       created: 作成日
+      noData: メンバーはいません
       noMatch: 検索条件に一致するメンバーがいません
       userId: ユーザー
       subjectKind: 種類
@@ -897,6 +907,7 @@ namespacesPage:
   header: 名前空間
   addNamespace: 名前空間を追加
   noMatch: 検索条件に一致する名前空間がありません
+  noData: まだネームスペースは定義されていません.
   table:
     name:
       label: 名前空間
@@ -938,6 +949,8 @@ projectsPage:
     label: 作成日
   psp:
     label: ポッドセキュリティポリシー
+  resourceQuota:
+    title: リソース制限
   members:
     title: メンバー
     user: ユーザー
@@ -996,6 +1009,12 @@ clusterTemplatesPage:
     newTemplate: テンプレートを追加
   new:
     header: RKEテンプレートを追加
+  newRevision:
+    header: 新規RKEテンプレートリビジョン
+  select:
+    label: RKEテンプレートリビジョンから複製
+  table:
+    name: リビジョン名
 ingressPage:
   header: 'イングレス: {name}'
   table:
@@ -1005,6 +1024,8 @@ ingressPage:
     noData: まだイングレスルールは定義されていません
 containerPage:
   header: 'コンテナ: {name}'
+  initContainer:
+    label: initContainer
   envTab:
     header: 環境変数
   portsTab:
@@ -1048,23 +1069,39 @@ containersPage:
 clusterDashboard:
   notActive: このクラスターは現在 <b>{state}</b> 状態です
   notReady: このクラスターは現在 <b>{state}</b> 状態です; API が準備されるまでこのページでの直接の操作はできません。
+  used: 使用済み
   title: ダッシュボード
+  sections:
+    cluster: クラスターメトリック
+    node: ノードメトリック
   cpu: CPU
   memory: メモリ
   pods: ポッド
   value: 値
+  subtitle:
+    reserved: "{total} のうち {used} を予約済"
+    used: "{total} のうち {used} を使用中"
   node: ノード
   etcd: Etcd
   scheduler: スケジューラー
   controllerManager: コントローラーマネージャー
   reserved: スペア1
+ingressResponse:
+  host: ホスト
+  path: パス
 monitoringPage:
   config:
+    grafana:
+      size:
+        placeholder: '例: 10Gi'
     nodeexporter:
       cpuLimit:
         placeholder: '例: 200'
+        unit: ミリ CPUs
       memoryLimit:
         placeholder: '例: 200'
+  nodeSelector:
+    addSelectorLabel: セレクターを追加
 metricsAction:
   sections:
     workload: ワークロードメトリクス
@@ -2319,6 +2356,48 @@ clusterNew:
     tags:
       label: タグ
       addActionLabel: タグを追加する
+  aliyunkcs:
+    access:
+      next: "次へ: クラスタの設定"
+      title: アカウントアクセス
+    cluster:
+      title: クラスタ設定
+    clusters:
+      k8s: Kubernetes
+      label: クラスタータイプ
+    rootSize:
+      placeholder: '例: 120'
+    rootType:
+      label: ルートディスクタイプ
+    storageType:
+      label: データディスクタイプ
+    storageSize:
+      label: データディスクのサイズ
+      placeholder: '例: 120'
+    masterNum:
+      label: マスターノード数
+    numOfNodes:
+      label: ワーカーノード数
+      placeholder: '例: 3'
+      required: ワーカーノード数が必要です
+    keyPair:
+      label: キーペア
+      required: キーペアが必要です
+    regionId:
+      label: リージョン
+    accessKeyId:
+      label: アクセスキー
+      required: アクセスキーは必須です
+    accessKeySecret:
+      label: 秘密キー
+      provided: 入力済み
+      required: シークレットキーは必須です
+    version:
+      label: Kubernetes バージョン
+    zoneId:
+      label: アベイラビリティゾーン
+    instanceType:
+      label: インスタンスタイプ
   googlegke:
     label: Google Kubernetes Engine
     shortLabel: Google GKE

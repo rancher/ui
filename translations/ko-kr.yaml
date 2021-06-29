@@ -44,7 +44,7 @@ generic:
   entrypoint: Entrypoint
   environment: 환경
   expand: 보이기
-  expandAll: 모두 확장 
+  expandAll: 모두 확장
   experimental: "(실험)"
   from: 출처
   false: '거짓'
@@ -328,11 +328,59 @@ alertPage:
     minutes: 분
     available: 사용 가능
     createOne: 하나를 만들다
+    noNotifierHelpText: 설정된 알림 구성이 없습니다. 여기로 이동해보세요
+    workloadTypePlaceholder: 작업유형 선택
+    resourcePlaceholder: 리소스 선택
+    notifierPlaceholder: 알림 선택
+    nodePlaceholder: 노드 선택
+    systemServicePlaceholder: 시스템서비스 선택
+    nodeRequired: 노드가 필요함
+    nodeSelectorRequired: 노드 셀렉터 필요
+    recipient:
+      helpText: 알림에 설정된 값이 기본으로 사용됩니다. 다른값을 사용하여 대체할 수 있습니다.
+    expression:
+      label: 표현식
+      noData: 메트릭 그래프가 존재하지 않습니다.
+      error: 메트릭 그래프 데이터를 가져오는데 실패했습니다.
+      placeholder: 표현식 입력
+    removeAlert: 이 경고 삭제
+    alertRule: 경고 규칙
+    groupWaitSeconds:
+      label: 그룹 대기 시간
+      helpText: 동일 그룹에 버퍼 경고를 최초로 보내기 전에 얼마나 기다릴 것인가?
+    groupIntervalSeconds:
+      label: 그룹 간격 시간
+      helpText: 이미 실행된 경고가 포함된 그룹에 추가된 경고를 보내기 전에 대기하는 시간.
+    repeatIntervalSeconds:
+      label: 반복 시간
+      helpText: 이미 전송된 경고를 재발송하기까기 기다리는 시간.
+    monitoringDisabled: 표현식이 비활성화 되었습니다. 계속 진행하세요.
+    enableMonitoring: 모니터링 활성화
+    for: 대상
+    moreTarget: 기타 대상타입...
+    inherited:
+      label: 그룹 상속
+      enabled: 활성화됨 - 그룹에서 고급 옵션 상속
+  resourceKinds:
+    #backend use capitalized name
+    Pod: 파드
+    Node: 노드
+    Deployment: 디플로이먼트
+    DaemonSet: 데몬셋
+    StatefulSet: 스테이트풀셋
   targetTypes:
+    pod: 파드
     node: 노드
     deployment: 배포
+    daemonset: 데몬셋
+    statefulset: 스테이트풀셋
+    workload: 워크로드
     event: 이벤트
     systemService: 시스템 서비스
+    nodeSelector: 노드 셀렉터
+    workloadSelector: 워크로드 셀렉터
+    metric: 메트릭
+    undefined: 없음
   index:
     addAlertGroup: 경고 그룹 추가
     addAlert: 경고 규칙 추가
@@ -340,12 +388,35 @@ alertPage:
     table:
       noMatch: 현재 검색과 일치하는 경고가 없습니다.
       noData: 정의된 경고가 없습니다
+      noGroup: 알림 그룹이 없습니다
+      condition: 조건
+      target: 대상
+      recipients: 알림
       displayCondition:
+        notScheduled: 스케줄되지 않음
+        notRunning: 실행 중이 아님
+        available: '{percent}% 사용 가능'
+        restarted: 지난 {interval} 분 이내에 {times} 번 다시 시작
+        notready: 준비되지 않음
+        unhealthy: 정상적이지 않음
+        happens: 발생하다
         notReady: 준비되지 않음
+        cpuUsage: 'CPU 사용량이 {percent}%를 초과함'
+        memUsage: '메모리 사용량이 {percent}%를 초과함'
+        expression: 수식
+  new:
+    addHeader: 알람 그룹 추가
+    editHeader: 알람 그룹 수정
+    addRuleHeader: 알람 조건 추가
+    editRuleHeader: 알람 조건 수정
   comparison:
+    equal: 같음
+    not-equal: 같지 않음
+    greater-than: 보다 큼
     less-than: 보다 작음
     greater-or-equal: 크거나 같음
     less-or-equal: 작거나 같음
+    has-value: 널이 아님
 podSecurityPoliciesPage:
   index:
     header: Pod 보안 정책
@@ -469,18 +540,111 @@ apiPage:
       never: 하지 않음
     noData: 정의된 API 키가 없습니다
 authPage:
+  setting:
+    executor:
+      label: 파이프 라인 실행기의 최대 수
+      scale: 규모
+    cacerts:
+      label: 자체 서명 된 git 서비스에서 복제를 지원하도록 사용자 지정 CA 구성
+      show: ca 인증서 편집
+      saveActionLabel: ca 인증서 저장
+    limit:
+      label: 실행자에 대한 리소스 제한 및 예약 구성
+      saveActionLabel: 한도 및 예약 수정
+  header: 파이프 라인 설정
+  setup: "1. {type} 애플리케이션 설정"
+  authenticated:
+    header:
+      text: 저장소 인증 정보
+      enterpriseHostName: "호스트:"
+      clientId:
+        text: "클라이언트 ID:"
+      key:
+        text: "키:"
+  testAuth:
+    header: '3. 인증 테스트 및 활성화'
+    subtext: '인증을 테스트하여 애플리케이션이 올바르게 구성되었는지 확인하십시오:'
+    buttonText:
+      preVariable: 인증
+      post: 인증 처리 중
   form:
+    headerVariable: '2. 인증에 {SCM} 을 사용하도록 파이프 라인 구성'
+    isEnterprise:
+      labelText: https 연결을 사용하세요
+    enterprise:
+      labelText: 사설 {type} 기업용 설치본 사용
     enterpriseHost:
+      labelText: 기업용 호스트
       placeholder: '예 : example.com'
   gitlab:
     auth: '표준 GitLab의 경우, <a href="https://gitlab.com/profile/applications" target="_blank" rel="nofollow noreferrer">여기를 클릭하세요</a> 새창에서 응용 프로그램 설정 화면으로 이동합니다.'
+    enterpriseAuth: "GitLab Enterprise의 경우 계정에 로그인하십시오. 설정을 클릭 한 다음 애플리케이션을 클릭합니다."
     ul:
+      li2:
+        text: '양식을 작성하십시오:'
+        ul:
+          li1: '<b>이름:</b> <span class="text-muted">적당한 내용, 예 : 내 Pipeline</span>'
+          li2: 리디렉션 URL
       li3:
         text: '"응용 프로그램 저장"을 클릭하세요. '
-  bitbucketcloud:
     form:
+      subtextVariable: '새로 생성 된 애플리케이션에서 애플리케이션 ID 및 시크릿 정보를 복사하여 붙여 넣습니다.'
+      clientId:
+        labelText: 애플리케이션 ID
+      clientSecret:
+        labelText: 시크릿
+  bitbucketcloud:
+    target:
+      header: '1. 사용하려는 Bitbucket 유형을 선택하십시오'
+      bitbucketserver: '개인 Bitbucket 서버 설정 사용'
+      bitbucketcloud: 'Bitbucket 클라우드 사용'
+    setup: '2. Bitbucket Cloud 애플리케이션 설정'
+    auth: 'Bitbucket Cloud의 경우 <a href="https://bitbucket.org/account" target="_blank" rel="nofollow noreferrer">여기를 클릭</a>해서 새 창에서 사용자 설정으로 이동합니다.'
+    ul:
+      li2:
+        text: '"OAuth"를 클릭 한 다음, "Comsumer 추가"를 클릭하고 양식을 작성하십시오:'
+        ul:
+          li1: '<b>이름:</b> <span class="text-muted">적당한 내용, 예 : 내 Pipeline</span>'
+          li2: 콜백 Url
+          li3: '<b>권한을 선택하십시오 </b> <b>계정 읽기</b>, <b>Pull 요청 쓰기</b>, <b>프로젝트 읽기</b> 및 <b>Webhook 읽기 및 쓰기</b>'
+      li3:
+        text: '"저장"을 클릭하십시오. '
+    form:
+      headerVariable: '3. Bitbucket Cloud를 인증에 사용하도록 Pipeline 구성'
+      subtextVariable: '새로 생성 된 Consumer정보의 키와 비밀정보를 복사하여 붙여 넣습니다.'
       clientId:
         labelText: 키
+      clientSecret:
+        labelText: 비밀키
+  bitbucketserver:
+    warning: 'Bitbucket 서버의 Webhook은 SSL 확인이 필요합니다. bitbucket 서버가 {appName} 서버의 인증서를 신뢰하는지 확인하세요. 추가 정보는 <a href="https://rancher.com/docs/rancher/v2.x/en/tools/pipelines/configurations/#1-configuring-version-control-providers" target="_blank" rel="nofollow noopener noreferrer">여기</a>에서 찾을 수 있습니다 .'
+    copy: 복사하려면 아이콘을 클릭하세요.
+    target:
+      header: '1. 사용하려는 Bitbucket 유형을 선택하십시오'
+      bitbucketserver: '사설 Bitbucket 서버 설정 사용'
+      bitbucketcloud: 'Bitbucket 클라우드 사용'
+    setup: '2. Bitbucket 서버 애플리케이션 설정'
+    auth: 'Bitbucket Server의 경우 계정에 로그인하십시오. 관리를 클릭 한 다음 응용프로그램 링크를 클릭합니다.'
+    ul:
+      li2:
+        text: '새 응용프로그램 링크를 만듭니다.'
+        ul:
+          li1: '<b>링크 :</b>'
+          li2: '<b>어플리케이션 이름:</b> <span class="text-muted">아무거나 너가 좋은데로, 예를들어 나의 파이프라인</span>'
+          li3: '<b>들어오는 링크 만들기를 선택합니다</b>'
+          li4: '<b>"계속"을 클릭하십시오</b>'
+          li5: '소비자 키'
+          li6: '<b>소비자 이름:</b> <span class="text-muted">아무거나 너가 좋은데로, 예를들어 나의 파이프라인</span>'
+          li7: '공개 키 :'
+          li8: '<b>"계속"을 클릭하십시오</b>'
+    form:
+      headerVariable: '3. 인증에 Bitbucket Server를 사용하도록 파이프 라인을 구성하십시오.'
+      hostname:
+        labelText: Bitbucket 서버 호스트
+        placeholder: '예: example.com'
+        required: Bitbucket 서버 호스트가 필요합니다.
+      tls:
+        labelText: https 연결을 사용하세요
   saml:
     accessEnabled:
       header: 인증
@@ -547,6 +711,7 @@ authPage:
         header:
           text: 인증
       disableAccess:
+        header: "위험 구역&trade;"
         warning: '<b class="text-danger">주의:</b> 액세스 제어를 비활성화하면이 페이지 또는 API에 접근 할 수있는 모든 사람이 {appName} 전체를 제어 할 수 있습니다.'
         confirmDisable: "계속 진행 하시겠습니까?  액세스 제어를 비활성화하려면 다시 클릭하세요."
         disable: 액세스 제어 사용 안 함
@@ -576,6 +741,24 @@ authPage:
   root:
     header: 액세스 제어
   github:
+    auth: '표준 GitHub의 경우, <a href="https://github.com/settings/developers" target="_blank" rel="nofollow noreferrer">여기를 클릭하세요</a> 새창에서 응용 프로그램 설정 화면으로 이동합니다.'
+    enterpriseAuth: "Github Enterprise의 경우 계정으로 로인하세요. 설정을 클릭 후 Developer설정을 클릭하세요."
+    ul:
+      li2:
+        text: '"새 애플리케이션 등록"을 클릭하고 양식을 작성하십시오.'
+        ul:
+          li1: '<b>어플리케이션 이름:</b> <span class="text-muted">아무거나 너가 좋은데로, 예를들어 나의 파이프라인</span>'
+          li2: 홈페이지 URL
+          li3: '<b>응용 프로그램 설명:</b> <span class="text-muted">아무거나 (선택 사항)</span>'
+          li4: 인증 콜백 URL
+      li3:
+        text: '"응용 프로그램 등록"을 클릭하십시오. '
+    form:
+      subtextVariable: '새로 만든 응용 프로그램의 클라이언트 ID와 시크릿을 복사하여 붙여 넣으세요.'
+      clientId:
+        labelText: 클라이언트 ID
+      clientSecret:
+        labelText: 클라이언트 시크릿
     standard: GitHub
     enterprise: GitHub Enterprise
     header:
@@ -589,43 +772,122 @@ authPage:
           text: "클라이언트 ID:"
           helpText: "설정되어 있는 GitHub 애플리케이션을 변경하려면 아래의 액세스 제어를 비활성화 한 다음 다시 설정하십시오."
       disableAccess:
+        header: "위험 구역&trade;"
+        warning: '<b class="text-danger">주의:</b> 액세스 제어를 비활성화하면이 페이지 또는 API에 접근 할 수있는 모든 사람이 {appName} 전체를 제어 할 수 있습니다.'
+        confirmDisable: "확실합니까?  액세스 제어를 비활성화하려면 다시 클릭하세요."
         disable: Github 액세스 비활성화
     notAuthenticated:
       header: "1. GitHub 애플리케이션 설정"
       ul:
         li1:
+          text: '표준 GitHub의 경우, <a href="https://github.com/settings/developers" target="_blank" rel="nofollow noopener noreferrer">여기를 클릭하십시오</a> 새창에서 응용 프로그램 설정 화면이 나타납니다.'
           ul:
             li1: "Github Enterprise의 경우 로그인하십시오. 설정을 클릭한 다음 애플리케이션을 클릭하십시오."
         li2:
+          text: '"새 애플리케이션 등록"을 클릭하고 양식을 작성하십시오.'
           ul:
+            li1: '<b>어플리케이션 이름:</b> <span class="text-muted">아무거나 너가 좋은데로, 예를들어 {appName}</span>'
             li2: '홈페이지 URL'
+            li3: '<b>응용 프로그램 설명:</b> <span class="text-muted">아무거나 (선택 사항)</span>'
             li4: '인증 콜백 URL:'
         li3:
           text: '"응용 프로그램 등록"을 클릭하십시오.'
       form:
         header: '2. 응용 프로그램을 사용 인증을 위해 {appName} 을 설정하십시오.'
+        subtext: '새로 만든 응용 프로그램의 클라이언트 ID와 시크릿을 복사하여 붙여 넣으세요.'
         clientId:
           labelText: 클라이언트 ID
+        clientSecret:
+          labelText: 클라이언트 시크릿
+        ghEnterprise:
+          labelText: GitHub Enterprise 설치 사용
+        isGHEnterprise:
+          labelText: 보안 연결을 사용하세요
         enterpriseHost:
+          labelText: Enterprise Host
           placeholder: '예: github.example.com'
+    testAuth:
+      header: '3. 인증 테스트 및 활성화'
+      subtext: '인증 테스트를 수행해 응용 프로그램이 올바르게 구성되었는지 확인하십시오.'
+      buttonText:
+        pre: GitHub로 인증
+        post: GitHub의 응답을 기다리는 중
+      authError: 'Github 접근에 실패했습니다'
+      popupError: '팝업 차단을 해제하시고 "인증"을 다시 클릭하십시오.'
+  googleoauth:
+    header:
+      disabled:
+        label: 'Google이 구성되지 않았습니다. 인증 설정에 대한 자세한 지침은 <a href="https://rancher.com/docs/rancher/v2.x/en/admin-settings/authentication/google/" target="_blank" rel="nofollow noopener noreferrer">문서를 방문하십시오</a>'
+    authenticated:
+      header:
+        text: 인증
+        adminEmail:
+          text: "관리자 이메일 "
+      disableAccess:
+        header: "위험 구역&trade;"
+        warning: '<b class="text-danger">주의:</b> 액세스 제어를 비활성화하면이 페이지 또는 API에 접근 할 수있는 모든 사람이 {appName} 전체를 제어 할 수 있습니다.'
+        confirmDisable: "계속 진행 하시겠습니까?  액세스 제어를 비활성화하려면 다시 클릭하세요."
+        disable: Google 액세스 비활성화
+    notAuthenticated:
+      ul:
+        li1:
+          helpertext: '참고 : Rancher URL은 적절한 FQDN이어야합니다.'
+          ul:
+            li1: '귀하의 계정에 로그인하십시오. "API 및 서비스"로 이동 한 다음 "OAuth 동의 화면"을 선택합니다.'
+        li2:
+          text: '"OAuth 동의 화면"탭으로 이동하여 양식을 작성합니다:'
+          ul:
+            li1: '<b>승인 된 도메인 :</b> 최상위 사설 도메인 '
+            li2: '<b>응용프로그램 홈페이지 링크:</b> '
+            li3: 'Google API 범위에서 "email", "profile"및 "openid"를 활성화합니다.'
+            li4: '"저장"을 클릭하십시오.'
+        li4:
+          ul:
+            li1: '서비스 계정 생성.'
+            li2: '서비스 계정 키 생성'
+            li3: 'Google 도메인에서 서비스 계정을 OAuth 클라이언트로 추가합니다.'
+      form:
+        oauthCredential:
+          labelText: OAuth 자격 증명
+        serviceAccountCredential:
+          labelText: 서비스 계정 자격 증명
+        adminEmail:
+          labelText: 관리자 이메일
+        hostname:
+          labelText: 도메인
+    stepOne:
+      header: '1 단계 :'
+    stepTwo:
+      header: '2 단계 :'
+    stepThree:
+      header: '3 단계 :'
+      info: '서비스 계정 자격 증명 만들기'
   azuread:
     enabled:
       promptDisable: Azure AD 사용 안함
       general:
         header: 기본설정
     configure:
+      applicationId:
+        label: 애플리케이션 ID
       serverURL:
         label: 랜처 서버 URL
+      azureADEndpoint:
+        label: 엔드포인트
       azureADAuthEndpoint:
         label: 인증 엔드 포인트
       endpoints:
         label: 엔드 포인트
       regions:
+        standard: 표준
         china: 중국
         custom: 사용자 정의
       tenantId:
         label: 테넌트 ID
+        help: Azure AD 포털에서
     test:
+      header: 'Test & 인증 활성화'
+      help: '인증 테스트를 수행해 응용 프로그램이 올바르게 구성되었는지 확인하십시오.'
       username:
         label: 로그인 사용자 이름
         placeholder: '예: jsmith'
@@ -633,7 +895,12 @@ authPage:
         label: 로그인 비밀 번호
       pre: Azure를 위한 인증
       post: Azure에서 응답을 기다리는 중
+      authError: 'Azure 인증에 실패했습니다'
+      popupError: '팝업 차단을 해제하시고 "인증"을 다시 클릭하십시오.'
   localAuth:
+    header:
+      enabled: '로컬 인증이 활성화되었습니다'
+      disabled: '로컬 인증이 구성되지 않았습니다'
     subtext:
       enabled:
         linkText: 계정 관리
@@ -657,6 +924,7 @@ authPage:
       buttonText:
         post: '활성화 중...'
 backupsPage:
+  header: etcd 스냅샷
   table:
     state: 상태
     target:
@@ -665,6 +933,9 @@ backupsPage:
       local: 지역
     name: 이름
     created: 생성됨
+balancerPage:
+  table:
+    target: 타겟
 catalogPage:
   index:
     header: 카탈로그
@@ -683,9 +954,49 @@ catalogPage:
       pl:
         rancher: 코어
         partner: 공식
+    noData:
+      singular: 호환되는 템플릿이 없습니다.
+      plural: 이 카탈로그에는 호환되는 템플릿이 없습니다.
     action:
       launch: 세부정보 보기
+      notCompatible: 호환되지 않음
       alreadyDeployed: 이미 배포됨
+cis:
+  scan:
+    actions:
+      runScan: 스캔 실행
+      search:
+        placeholder: 검색
+    table:
+      state: 상태
+      name: 이름
+      passed: 통과
+      skipped: 건너 뜀
+      failed: 실패되었습니다
+      date: 날짜
+      empty: 스캔이 없습니다
+    detail:
+      error:
+        parseConfig: security-scan-cfg 구성 맵을 구문 분석하는 중에 문제가 발생했습니다.
+      actions:
+        delete: 삭제
+        download: 다운로드
+        runScan: 스캔 실행
+        search:
+          placeholder: 검색
+      table:
+        state: 상태
+        number: 번호
+cloudCredentialsPage:
+  header: 클라우드 자격 증명
+  rightButtons:
+    addKey: 클라우드 자격 증명 추가
+    nodeTemplates: 노드 템플릿 관리
+  index:
+    table:
+      noData: 정의 된 클라우드 자격 증명이 없습니다.
+      noMatch: 현재 검색과 일치하는 클라우드 자격 증명이 없습니다.
+  numberNodeTemplates: "# 노드 템플릿"
 clusterCatalogPage:
   header: 카탈로그
 certificatesPage:
@@ -897,6 +1208,10 @@ globalDnsPage:
         label: DNS TTL
   providersPage:
     title: 글로벌 DNS 공급자
+    config:
+      credentialsPath:
+        label: 자격 증명 경로
+        placeholder: "/.aws"
 #If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 #those are present in case we have an error in the app and can not load the translations file
 #the error page will at least make a little sense
@@ -970,12 +1285,10 @@ hostsPage:
       table:
         header:
           state: 상태
-loginPage:
-  shibbolethError:
-    401: "Unauthorized"
-    500: "Internal Server Error"
 registriesPage:
   index:
+    header: 레지스트리 자격 증명
+    noData: "레지스트리 자격 증명이 없습니다."
     table:
       header:
         username: 사용자 이름
@@ -987,6 +1300,9 @@ registriesPage:
         placeholder: '예: 사용자 이름'
       password:
         labelText: 비밀번호
+secretsPage:
+  table:
+    keys: 키
 servicePage:
   multistat:
     created: '생성됨:'
@@ -1027,6 +1343,9 @@ stackPage:
     header: Load Balancers
 newStack:
   header: YAML 가져 오기
+nodeTemplatesPage:
+  rightButtons:
+    cloudCredentials: 클라우드 자격 증명 관리
 storageClassPage:
   addActionLabel: 클래스 추가
 userPreferencesPage:
@@ -1093,6 +1412,11 @@ clusterRow:
 clusterNew:
   advanced:
     cancel: 양식으로 편집
+  security:
+    detail: 서비스 계정 및 액세스 범위 사용자 지정
+  tencenttke:
+    secretKey:
+      provided: 자동생성
   azureaks:
     publishSettingsFile:
       label: 게시 설정
@@ -1100,7 +1424,20 @@ clusterNew:
     networking:
       vnetresourcegroup:
         prompt: 가상 네트워크를 선택하십시오.
+  aliyunkcs:
+    accessKeySecret:
+      provided: 자동생성
+  googlegke:
+    oauthScopes:
+      label: 액세스 범위
+      default: 기본 액세스 허용
+      full: 모든 Cloud API에 대해 전체 액세스 허용
+      custom: 각 API에 대해 액세스 설정
   rke:
+    etcd:
+      backupConfig:
+        secretKey:
+          provided: 자동생성
     ignoreDockerVersion:
       label: 노드의 도커 버전
 confirmDelete:
@@ -1121,8 +1458,74 @@ copyToClipboard:
 cruRegistry:
   address:
     dockerhub: DockerHub
+cruPersistentVolume:
+  description:
+    placeholder: '예 : 운영환경 데이터베이스 용 볼륨'
+  secret:
+    defaultMode:
+      label: 기본 모드
+      placeholder: "예 : 256"
+    optional:
+      label: 선택사항
+    certificateName:
+      label: 인증서
+    items:
+      label: 항목
+  azureFile:
+    secretNamespace:
+      placeholder: "예 : 기본값"
+  cephfs:
+    secretRef:
+      name:
+        placeholder: "예 : abc"
+      namespace:
+        placeholder: "예 : 기본값"
+  rbd:
+    secretRef:
+      placeholder: "예 : 비밀키"
+  flexVolume:
+    secretRef:
+      label: 시크릿 이름
+      placeholder: "예 : 시크릿"
+  iscsi:
+    secretRef:
+      label: 시크릿 이름
+      placeholder: "예 : 시크릿"
+  cinder:
+    secretRef:
+      name:
+        label: 시크릿 이름
+        placeholder: "예 : abc"
+      namespace:
+        placeholder: "예 : 기본값"
+  scaleIO:
+    secretRef:
+      namespace:
+        placeholder: "예 : 기본값"
+  storageos:
+    secretRef:
+      namespace:
+        placeholder: "예 : 기본값"
+cruStorageClass:
+  storageos:
+    adminSecretNamespace:
+      placeholder: "예 : 기본값"
+  quobyte:
+    adminSecretNamespace:
+      placeholder: "예 : 쿠버네티스시스템"
+  rbd:
+    adminSecretNamespace:
+      placeholder: "예 : 쿠버네티스시스템"
+    userSecretNamespace:
+      placeholder: "예 : 기본값"
+  glusterfs:
+    secretNamespace:
+      placeholder: "예 : 기본값"
 dangerZone:
   header: 고급 설정
+deleteEksCluster:
+  secretKey:
+    provided: 자동생성
 editAccount:
   form:
     name:
@@ -1130,6 +1533,10 @@ editAccount:
 editApiKey:
   title:
     justCreated: API 키 생성됨
+  scope: 범위
+  scopeSelect:
+    prompt: 권한범위 없음
+    helpText: '클러스터 범위 토큰을 사용하여 <a href="https://rancher.com/docs/rancher/v2.x/en/cluster-provisioning/rke-clusters/options/#authorized-cluster-endpoint" target="_blank" rel="nofollow noreferrer">승인 된 클러스터 엔드 포인트</a>로 구성된 클러스터의 Kubernetes API와 직접 상호 작용할 수 있습니다.'
 editCluster:
   name:
     label: 이름
@@ -1141,6 +1548,9 @@ editContainer:
 editHost:
   ips:
     addActionLabel: IP 추가
+editStack:
+  group:
+    placeholder: '예 : 프런트엔드, 운영환경'
 formIngressBackends:
   targetPort:
     placeholder: '예: 80'
@@ -1186,14 +1596,48 @@ formEnvVar:
   labels:
     key: 키
     value: 값
+formScopedRoles:
+  title: '{type} 권한'
+  description: '사용자가 {type}에 필요한 액세스 권한을 제어합니다.'
+  mode:
+    admin:
+      label: 소유자
+      detail: 소유자는 {type} 과 그 안에있는 모든 리소스를 완전히 제어 할 수 있습니다.
+    user:
+      label: 구성원
+      detail: 구성원은 {type} 내부의 리소스를 관리 할 수 있지만 {type} 자체를 변경할 수는 없습니다.
+    custom:
+      label: 사용자 지정
+      detail: 이 사용자에 대한 개별 역할 선택
+    readOnly:
+      label: 읽기 전용
+      detail: 구성원은 {type} 내부의 리소스를 볼 수 있지만 {type} 자체를 변경할 수는 없습니다.
+    userDef:
+      detail: 사용자 정의 역할.
+    role:
+      read-only:
+        label: 읽기 전용
+        detail: 모든 것을 볼 수 있지만 변경할 수는 없습니다.
 formKeyValue:
   key:
     label: 키
 formScheduling:
   hostMax: 최대 노드 수
+formAuthCloudCredential:
+  label: 클라우드 자격 증명
 formSeLinuxodSecurityPolicy:
   role:
     label: 역할
+loggingPage:
+  targetNav:
+    tips:
+      caseA: 이 {pageScope}에서는 로깅이 비활성화됩니다.
+      caseB: 현재 로깅 대상은 <code class="text-capitalize">{currentTarget}</code>이며, 저장 버튼을 클릭하면 {pageScope}에서 로깅이 비활성화됩니다.
+modalAddCloudKey:
+  name:
+    placeholder: '예 : 운영환경 자격 증명'
+  description:
+    placeholder: '예 : 운영환경을 위한 클라우드 자격 증명'
 modalConfirmDeactivate:
   cancel: 취소
 modalConfirmRemovePayment:
@@ -1202,15 +1646,50 @@ modalRollbackService:
   action: 되돌리기
   revisionId:
     label: 다음 버전으로 되돌리기
+newMultiClusterApp:
+  overrides:
+    table:
+      scope: 범위
+    scopeOverride:
+      placeholder: 범위 선택
+newSecret:
+  name:
+    placeholder: '예 : API 키'
+  description:
+    placeholder: '예 : S3 키 쌍'
 nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
       radio:
         default: "true"
+    secretKey:
+      placeholder: AWS 비밀키
+      provided: 자동생성
+  amazonec2:
+    secretKey:
+      label: 보안키
+      placeholder: AWS 보안키
+      provided: 자동생성
+  exoscale:
+    secretKey:
+      label: 보안키
+      provided: 자동생성
   azure:
     publishSettingsFile:
       label: 게시 설정
       placeholder: 사용자의 게시 설정 파일
+    clientSecret:
+      label: 클라이언트 보안키
+      placeholder: 클라이언트 보안키
+  aliyunecs:
+    accessKeySecret:
+      label: 액세스 키 보안키
+      provided: 자동생성
+optionallyNamespaced:
+  scope:
+    label: 범위
+    project: 이 프로젝트의 모든 네임스페이스에서 사용 가능
+    namespace: 단일 네임스페이스에 사용 가능
 registryRow:
   created: 생성됨
 saveCancel:
@@ -1220,6 +1699,9 @@ saveCancel:
   next: 다음
   create: 생성
   cancel: 취소
+schema:
+  inputSecret:
+    certificate: 인증서 선택 ...
 vmConsole:
   footerActions:
     buttonSend: Ctrl-Alt-Delete 보내기
@@ -1228,13 +1710,19 @@ vmConsole:
 #Navigation
 ##############################
 nav:
+  projectDropdown:
+    label: 범위
   cluster:
     nodes: 노드
   hosts:
     tab: 노드
     addHost: 노드 추가
+  infra:
+    secrets: 보안키
   admin:
     machines: 노드
+    security:
+      cloudCredentials: 클라우드 자격 증명
     settings:
       tab: 설정
   settings:
@@ -1244,3 +1732,20 @@ nav:
 ##############################
 action:
   remove: 삭제
+volumeSource:
+  secret:
+    title: 암호화 볼륨
+newPipelineStep:
+  stepType:
+    publishCatalog:
+      secret:
+        label: 보안키
+fromSecret:
+  prefixOrKey:
+    label: 키
+  prefix:
+    label: 별칭
+  keyLabel: 변수
+  keyPlaceholder: '예 : 홍'
+  valueLabel: 값
+  valuePlaceholder: '예 : 길동'

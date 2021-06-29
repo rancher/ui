@@ -6,6 +6,7 @@ languageContribute: "Help Rancher vertalen"
 ##############################
 generic:
   actions: Acties
+  active: Actief
   activate: Activeer
   add: Toevoegen
   advanced: Geavanceerd
@@ -17,6 +18,7 @@ generic:
   cancel: Annuleren
   closeModal: Sluiten
   cluster: Cluster
+  collapse: Inklappen
   collapseAll: Alles inklappen
   comingSoon: Binnenkort
   command: Opdracht
@@ -41,12 +43,14 @@ generic:
   enabled: Ingeschakeld
   entrypoint: Toegangspunt
   environment: Omgeving
+  expand: Uitklappen
   expandAll: Alles uitklappen
   experimental: "(experimenteel)"
   from: van
   false: 'Onwaar'
   generic: 'Algemeen'
   gigabyte: 'GB'
+  group: 'Groep'
   hardware: Hardware
   healthy: Gezond
   help: Help
@@ -80,6 +84,7 @@ generic:
   noRating: Geen beoordeling
   node: Node
   none: Geen
+  completedOf: "{completed} van {total}"
   owner: Eigenaar
   paste: Plakken
   pod: pod
@@ -128,6 +133,29 @@ generic:
   readWrite: Lezen/schrijven
   writeOnly: Alleen schrijven
   full: Volledig
+  linux: Linux
+  windows: Windows
+  host: Host
+  istioHostPlaceholder: Selecteer of voer een host in
+  cpu: CPU
+  memory: Geheugen
+  noData: Geen Data
+  authorize: Autoriseer & haal je repositories op
+  branch: Branch
+  commit: Commit
+  repository: Repository
+  registry: Registry
+  imageName: Image Naam
+  loginIn: Inloggen
+  logout: Gebruiker {user} uitloggen
+  pipeline: Pijplijn
+  is: is
+  push: Push naar repository
+  noBranch: Er is geen branch in deze repository.
+  github: GitHub
+  gitlab: GitLab
+  bitbucket: Bitbucket
+  required: '{key}" is vereist.'
 realmNames:
   all: Alle
   usWest: US West
@@ -149,6 +177,7 @@ accountsPage:
         projectName: Project
         active: Actief
         created: Toestaan
+        group: Groep
       global:
         title: Algemene machtigingen
         description: Toegang tot het beheren van dingen die invloed hebben op de gehele installatie
@@ -167,12 +196,22 @@ accountsPage:
   index:
     header: Gebruikers
     localLink: Gebruiker toevoegen
+    groupLink: Algemene Rol Toewijzen
     table:
       id: ID
       kind: Soort
       username: Gebruikersnaam
       identity: Identiteit
+      noData: Er zijn geen gebruikers toegekend
       noMatch: Geen gebruikers gevonden die overeenkomen met de zoekopdracht
+      noName: Geen
+  groups:
+    header: Groepen
+    table:
+      groupName: Groepsnaam
+      globalRole: Algemene rol naam
+      noData: Er zijn geen groepen bepaald.
+      noMatch: Geen rollen gevonden die overeenkomen met de zoekopdracht
       noName: Geen
   new:
     header: Gebruiker toevoegen
@@ -195,6 +234,17 @@ accountsPage:
       description:
         labelText: Omschrijving
         placeholder: "bijv. Deze account is van Jan Jansen"
+  editGroup:
+    header: Groep bewerken
+  newGroup:
+    header: Algemene rollen toewijzen aan groep
+    warning: Het toewijzen van globale rollen aan een groep werkt enkel met externe autorisatieproviders die groepen ondersteunen. Lokale autorisatie ondersteunt geen groepen.
+    errors:
+      group: Groep is vereist
+      role: Rol is vereist
+    form:
+      group:
+        labelText: Selecteer een groep om toe te voegen
   modal:
     password: Wachtwoord wijzigen
 appDetailPage:
@@ -237,6 +287,125 @@ appDetailPage:
     title: Geheimen
     detail: Geheim gekoppeld aan deze toepassing
     nodata: Deze toepassing heeft geen geheimen
+alertPage:
+  na: Niet geconfigureerd
+  items: Items
+  addSelectorLabel: Voeg Selector toe
+  create: Maak aan
+  save: Bewaar
+  cluster: Cluster
+  project: Project
+  alertGroups: Waarschuwingen
+  newOrEdit:
+    showAdvanced: Geavanceerde Opties Weergeven
+    initialWait: Initiële wachttijd
+    interval: Interval
+    initialWaitHelpText: Hoe lang te wachten voordat er een notificatie word verstuurd nadat een alert is afgegaan.
+    repeatIntervalHelpText: Herhaal interval van het verzenden van een melding wanneer een melding actief is.
+    whenA: Wanneer A
+    whenAn: When An
+    happens: Gebeurd
+    sendA: Stuur een
+    to: Naar
+    alert: Waarschuwing
+    is: Is
+    lessThan: Minder dan
+    and: En
+    critical: Kritiek
+    addRecipient: Geadresseerde toevoegen
+    info: Info
+    normal: Normaal
+    warning: Waarschuwing
+    notReady: Niet Klaar
+    unhealthy: Ongezond
+    cpuUsage: CPU reservering over
+    memUsage: Geheugen reservering over
+    podPlaceholder: Kies een Pod
+    notRunning: Niet actief
+    notScheduled: Niet gepland
+    restarted: Herstart
+    restartedTimes: keer in de laatste
+    minutes: Minuten
+    available: beschikbaar
+    createOne: maak er een
+    noNotifierHelpText: U heeft geen notifiers geconfigureerd. Ga hier naar
+    workloadTypePlaceholder: Kies een type Workload
+    resourcePlaceholder: Kies een Resource
+    notifierPlaceholder: Kies een Notifier
+    nodePlaceholder: Kies een Node
+    systemServicePlaceholder: Kies een System Service
+    nodeRequired: Node vereist
+    nodeSelectorRequired: Node Selector vereist
+    recipient:
+      helpText: De waarde die is ingesteld in Notifier wordt standaard gebruikt. U kunt dit overschrijven met een andere waarde.
+    expression:
+      label: Expressie
+      noData: Geen metric grafiekgegevens.
+      error: Metric grafiekgegevens ophalen mislukt.
+      placeholder: Invoer expressie
+    removeAlert: Verwijder deze Alert
+    alertRule: Alert Regel
+    groupWaitSeconds:
+      label: Groep Wachttijd
+      helpText: Hoe lang te wachten om waarschuwingen van dezelfde groep in te schakelen voordat deze eerst wordt verzonden.
+    groupIntervalSeconds:
+      label: Groep Interval Tijd
+      helpText: Hoe lang te wachten met het verzenden van een waarschuwing die is toegevoegd aan een groep die al waarschuwingen bevat.
+    repeatIntervalSeconds:
+      label: Herhaal Interval Tijd
+      helpText: Hoe lang moet worden gewacht voordat een alert dat al verzonden is opnieuw wordt verstuurd.
+    monitoringDisabled: Expressie is uitgeschakeld, ga en
+    enableMonitoring: Monitoring inschakelen
+    for: voor
+    moreTarget: Meer targetTypes ...
+    inherited:
+      label: Overgenomen groep
+      enabled: Ingeschakeld - overnemen van de geavanceerde opties van groep
+  resourceKinds:
+    #backend use capitalized name
+    Pod: Pod
+    Node: Node
+    Deployment: Deployment
+    DaemonSet: Daemonset
+    StatefulSet: StatefulSet
+  targetTypes:
+    pod: Pod
+    node: Node
+    deployment: Deployment
+    daemonset: Daemonset
+    statefulset: StatefulSet
+    workload: Workload
+    event: Gebeurtenis
+    systemService: Systeem service
+    nodeSelector: Node Selector
+    workloadSelector: Workload Selector
+    metric: Metric
+    undefined: Geen
+  index:
+    addAlertGroup: Voeg alert aan groep toe
+    addAlert: Voeg alert regel toe
+    noAlerts: Er zijn geen alert regels gedefineerd
+    table:
+      noMatch: Geen alerts gevonden die overeenkoment met de zoekopdracht.
+      noData: Er zijn geen alerts gedefineerd.
+      noGroup: Geen alert groep
+      condition: Conditie
+      target: Doel
+      recipients: Melders
+      displayCondition:
+        notScheduled: Niet gepland
+        notRunning: Draait niet
+        available: '{percent}% beschikbaar'
+        restarted: '{times} keer herstart in de laatste {interval} minuten'
+        notready: Niet Klaar
+        unhealthy: Ongezond
+        happens: Gebeurd
+        notReady: Niet Klaar
+        cpuUsage: 'CPU gebruik meer dan {percent}%'
+        memUsage: 'MEM gebruik meer dan {percent}%'
+        expression: Expressie
+  new:
+    addHeader: Alertgroep toevoegen
 podSecurityPoliciesPage:
   index:
     header: Pod-beveiligingsbeleid
@@ -965,6 +1134,52 @@ catalogSettings:
     branch:
       placeholder: 'bijv. master'
 clusterNew:
+  aliyunkcs:
+    clusters:
+      k8s: Kubernetes
+      managed: Managed Kubernetes
+      label: Cluster type
+    master:
+      title: Master nodes
+      detail: Configureer de master nodes die gebruikt zullen worden om Alibaba Kubernetes Service te starten
+      next: "Volgende: Worker Nodes configureren"
+      loading: "Sleutelparen van Alibaba laden"
+    worker:
+      title: Worker Nodes
+      detail: Configureer de worker nodes die gebruikt zullen worden om Alibaba Kubernetes Service te starten
+    disk:
+      efficiency: Ultra Disk
+      ssd: SSD schijf
+    rootSize:
+      label: Root schijfgrootte
+      placeholder: bijv. 120
+    rootType:
+      label: Root schijftype
+    storageType:
+      label: Data schijftype
+    storageSize:
+      label: Data schrijfgrootte
+      placeholder: bijv. 120
+    masterNum:
+      label: Aantal Master nodes
+      help: Het aantal master nodes wordt gestart in dit Kubernetes-cluster
+    numOfNodes:
+      label: Aantal Worker nodes
+      placeholder: bijv. 3
+      required: Aantal Worker nodes is vereist
+      help: Het aantal worker nodes wordt gestart in dit Kubernetes-cluster
+    keyPair:
+      label: Sleutelpaar
+      required: Sleutelpaar is verplicht
+    regionId:
+      label: Regio
+    accessKeyId:
+      label: Toegangssleutel
+      placeholder: Uw Alicloud toegangssleutel
+      required: Toegangssleutel is vereist
+    accessKeySecret:
+      label: Geheime sleutel
+      placeholder: Uw Alicloud geheime sleutel
   googlegke:
     enablePrivateNodes:
       label: Eigen cluster

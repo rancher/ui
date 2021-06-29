@@ -56,6 +56,7 @@ generic:
   help: Aide
   hostname: Nom de l’hôte
   hours: heures
+  hpa: HPA
   id: ID
   image: Image
   import: Importer
@@ -139,13 +140,14 @@ generic:
   cpu: Processeur
   memory: Mémoire
   noData: Aucun résultat
+  authorize: Autorisez et récupérez vos dépôts
   branch: Branche
   commit: Révision
   repository: Dépôt
   registry: Registre
   imageName: Nom de l'Image
   loginIn: Se connecter
-  logout: "Déconnexion de l'utilisateur {user}"
+  logout: Déconnexion de l'utilisateur {user}
   pipeline: Pipeline
   is: est
   push: Pousser vers le dépôt
@@ -292,12 +294,83 @@ alertPage:
   create: Créer
   save: Enregistrer
   cluster: Cluster
+  project: Projet
+  alertGroups: Alertes
   newOrEdit:
+    showAdvanced: Afficher les options avancées
+    initialWait: Attente initiale
+    interval: Intervalle
+    initialWaitHelpText: Combien de temps attendre avant d'envoyer une notification lorsqu'une alerte est déclenchée.
+    repeatIntervalHelpText: Intervalle de répétition de l'envoi d'une notification lorsqu'une alerte est active.
+    whenA: Quand A
+    whenAn: Quand An
+    sendA: Envoyer à
+    to: À
+    alert: Alerte
+    is: Est
+    lessThan: inférieur à
+    and: Et
+    critical: Critique
+    addRecipient: Ajouter destinataire
+    info: Info
+    normal: Normal
+    warning: Attention
+    notReady: Pas prêt
     podPlaceholder: Choisissez un pod
+    notRunning: inactif
     restarted: Redémarré
     minutes: Minutes
     available: disponible
     createOne: créer une.
+    workloadTypePlaceholder: Choisissez un type de charge de travail
+    resourcePlaceholder: Choisissez une ressource
+    notifierPlaceholder: Choisissez une notification
+    nodePlaceholder: Choisissez un Node
+    systemServicePlaceholder: Choisissez un service système
+    nodeRequired: Nœud requis
+    nodeSelectorRequired: Sélecteur de nœud requis
+    expression:
+      error: Impossible de récupérer les données du graphe.
+    removeAlert: Supprimer cette alerte
+    alertRule: Règle D'Alerte
+    groupWaitSeconds:
+      label: Temps d'attente du groupe
+      helpText: Combien de temps attendre pour mettre en tampon les alertes du même groupe avant d'envoyer initialement.
+    groupIntervalSeconds:
+      label: Intervalle de temps du groupe
+      helpText: Combien de temps d'attente avant d'envoyer une alerte qui a été ajoutée à un groupe qui contient des alertes déjà envoyées.
+    repeatIntervalSeconds:
+      label: Intervalle de répétition
+    enableMonitoring: activer la surveillance
+    for: Pour
+  resourceKinds:
+    #backend use capitalized name
+    Pod: Pod
+    Node: Nœud
+    Deployment: Déploiement
+  targetTypes:
+    pod: Pod
+    node: Nœud
+    deployment: Déploiement
+    event: Évènement
+  index:
+    table:
+      noMatch: Aucune alerte ne correspond à la recherche actuelle.
+      noData: Il n'y a pas d'alertes définies
+      noGroup: Aucun groupe d'alerte
+      condition: Condition
+      target: Cible 
+      recipients: Notifications
+      displayCondition:
+        notScheduled: Non planifiée
+        notRunning: inactif
+        available: '{percent}% disponibles'
+        restarted: Redémarré {times} fois au cours des {interval} dernières minutes
+        notready: Pas prêt
+        notReady: Pas prêt
+  comparison:
+    not-equal: Non égal
+    greater-than: Supérieur à
 podSecurityPoliciesPage:
   index:
     header: Politique de sécurité des Pods
@@ -334,6 +407,7 @@ rolesPage:
       created: Date de création
       enabled: Activé
       name: Nom
+      noData: Il n'y a aucun rôle défini.
       noMatch: Aucun rôle ne correspond à la recherche en cours
       subjectKind: Type
       template: Modèle
@@ -418,6 +492,38 @@ apiPage:
       never: Jamais
     noData: Aucune clé d'API n'est définie
 authPage:
+  header: Paramètre de pipeline
+  authenticated:
+    header:
+      text: Informations d'authentification du dépôt
+      clientId:
+        text: "ID client:"
+      key:
+        text: "Clé:"
+  testAuth:
+    buttonText:
+      post: Authentification
+  form:
+    isEnterprise:
+      labelText: Utilisez une connexion https
+  gitlab:
+    enterpriseAuth: "Pour GitLab Enterprise, connectez-vous à votre compte. Cliquez sur Paramètres, puis sur Applications."
+    ul:
+      li2:
+        ul:
+          li2: URL de redirection
+      li3:
+        text: 'Cliquez sur "Enregistrer l''application" '
+    form:
+      subtextVariable: 'Copiez et collez l''identifiant de l''application et le secret de votre application nouvellement créée.'
+      clientId:
+        labelText: ID de l'application
+      clientSecret:
+        labelText: Secret
+  bitbucketcloud:
+    ul:
+      li3:
+        text: 'Cliquez sur "Enregistrer" '
   saml:
     accessEnabled:
       header: Authentification

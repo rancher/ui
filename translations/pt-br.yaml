@@ -834,6 +834,58 @@ authPage:
           helpertext: 'Nota: A URL do Rancher deve estar no formato FQDN.'
           ul:
             li1: 'Faça login na sua conta. Navegue para "APIs e serviços" e selecione "Tela de consentimento do OAuth".'
+        li2:
+          text: 'Navegue até a guia "Tela de consentimento OAuth" e preencha o formulário:'
+          ul:
+            li1: '<b>Domínios autorizados:</b> Principal domínio privado de '
+            li2: '<b>Link da página inicial do aplicativo:</b> '
+            li3: 'Em Escopos para APIs do Google, ative "email", "profile" e "openid".'
+            li4: 'Clique em "Salvar".'
+        li3:
+          ul:
+            li1: 'Selecione o menu "Criar Credenciais" e selecione "OAuth clientID" e, em seguida, selecione "Web application".'
+            li2: '<b>Origens Javascript autorizadas:</b> '
+            li3: '<b>URIs de redirecionamento autorizado:</b> '
+            li4: 'Clique em "Criar" e, em seguida, clique no botão "Baixar JSON".'
+            li5: 'Carregue o arquivo JSON baixado na caixa de credenciais OAuth.'
+        li4:
+          ul:
+            li1: 'Criando uma conta de serviço.'
+            li2: 'Gerando uma chave para a conta de serviço.'
+            li3: 'Adicionando a conta de serviço como um cliente OAuth no seu domínio do google.'
+      form:
+        oauthCredential:
+          labelText: Credenciais OAuth
+          helperText: Copie e cole no campo de credenciais OAuth JSON que podem ser encontrados no seu console de desenvolvedores de API do Google.
+        serviceAccountCredential:
+          labelText: Credenciais da conta de serviço
+          helperText: Copie e cole nas credenciais da conta de serviço JSON que podem ser encontradas na seção de contas de serviço do console de desenvolvedores da API do Google.
+        adminEmail:
+          labelText: E-mail do administrador
+          helperText: Insira o endereço de e-mail associado à sua conta.
+        hostname:
+          labelText: Domínio
+          helperText: Digite o domínio da sua conta.
+        nestedGroupMembershipEnabled:
+          labelText: Membros Do Grupo Aninhado
+    testAuth:
+      buttonText:
+        pre: Autenticar com o Google
+        post: Aguardando resposta do Google
+      authError: 'O acesso ao Google não foi autorizado'
+      popupError: 'Por favor, desabilite seu bloqueador de pop-up e clique em "Autenticar" novamente.'
+    warning:
+      doc: 'Para obter instruções mais detalhadas sobre como configurar a autenticação, visite o <a href="https://rancher.com/docs/rancher/v2.x/en/admin-settings/authentication/google/" target="_blank" rel="nofollow noopener noreferrer">docs</a>'
+    stepOne:
+      header: 'Primeiro passo:'
+      info: 'Para o Google padrão, <a href="https://console.developers.google.com/apis/credentials" target="_blank" rel="nofollow noopener noreferrer">clique aqui</a> tacessar as configurações dos aplicativos em uma nova janela'
+    stepTwo:
+      header: 'Segundo Passo:'
+      info: 'Navegue até a guia "Credenciais" para criar o seu ID de cliente OAuth'
+    stepThree:
+      header: 'Terceiro Passo:'
+      subHeader: 'Siga <a href="https://rancher.com/docs/rancher/v2.x/en/admin-settings/authentication/google/#creating-service-account-credentials" target="_blank" rel="nofollow noopener noreferrer">esse</a> guia para:'
+      info: 'Criar Credenciais de Conta de Serviço'
   azuread:
     header:
       disabled:
@@ -932,6 +984,7 @@ backupsPage:
       local: Local
     name: Nome
     created: Criado
+    noData: Não há snapshots etcd definidos.
 balancerPage:
   noMatch: Nenhum balanciador corresponde à pesquisa atual
   noData: Nenhuma alteração a mostrar.
@@ -945,6 +998,7 @@ catalogPage:
     refreshBtn: Atualizar
     allCatalogs: Todos os Catálogos
     allCategories: Todas as Categorias
+    windowsWarning: A maioria dos aplicativos deve ser executada em clusters Linux. Portanto, pode não funcionar se você implementá-los no cluster atual.
     manage: Gerenciar
     search:
       label: Busca
@@ -954,9 +1008,11 @@ catalogPage:
       rancher:
         rancher: Laboratório Rancher
         partner: Oficial
+        experimental: "Experimental"
       pl:
         rancher: Núcleo
         partner: Oficial
+        experimental: "Experimental"
     noData:
       singular: Não há templates compatíveis.
       plural: Não há templates compatíveis neste catálogo.
@@ -966,6 +1022,21 @@ catalogPage:
       alreadyDeployed: Já implantado
 cis:
   scan:
+    header: Escaneos de CIS
+    actions:
+      delete: Excluir
+      download: Baixar
+      runScan: Executar varredura
+      search:
+        placeholder: Pesquisar
+    table:
+      state: Estado
+      name: Nome
+      passed: Aprovado
+      skipped: Ignorado
+      failed: Falha
+      date: Data
+      empty: Não há leituras
     detail:
       error:
         parseConfig: Ocorreu um problema ao checar sintaxe do security-scan-cfg no config map.
@@ -1053,6 +1124,49 @@ clusterIstioPage:
     traceSampling:
       label: Porcentagem de amostragem de rastreamento
       placeholder: 'ex: 1'
+    mixerPolicyEnabled:
+      label: Ativar política do misturador
+  nodeSelector:
+    addSelectorLabel: Adicionar Seletor
+    helpText: Selecione os nós nos quais {component} cargas de trabalho serão agendadas para
+  insufficientSize:
+    total:
+      cpu: Certifique-se de ter pelo menos {minCpu} mili CPUs disponíveis para {action} Istio.
+      memory: Certifique-se de ter pelo menos {minMemory} MiB de memória disponível para {action} Istio.
+      all: Por favor, certifique-se de que você tem pelo menos {minCpu} mili CPUs e {minMemory} MiB de memória disponível para {action} Istio.
+    workload:
+      cpu: Certifique-se de ter pelo menos um nó com CPUs {cpu} milli disponíveis para implantar a carga de trabalho de {component}.
+      memory: Certifique-se de ter pelo menos um nó com MiB {memory} de memória disponível para habilitar a carga trabalho {component}.
+      all: Certifique-se de ter pelo menos um nó com {cpu} mili CPUs e {memory} MiB de memória disponível para implementar a carga trabalho {component}.
+    selectors:
+      cpu: Certifique-se de ter pelo menos um nó com {cpu} mili CPUs disponíveis para habilitar a carga de trabalho {component}.
+      memory: Certifique-se de ter pelo menos um nó com {memory} MiB de memória disponível para habilitar a carga trabalho {component}.
+      all: Certifique-se de ter pelo menos um nó com {cpu} mili CPUs e {memory} MiB de memória disponível para habilitar a carga trabalho {component}.
+      unsupported: 'O seletor de nó com valor "true", "false" ou número não é compatível'
+  telemetryAndPolicy: Telemetria e Política
+  existingClaim:
+    label: 'Reivindicação existente para {component}'
+  members:
+    title: Grupo de Acesso
+    detail: Controle quais grupos têm acesso ao Kiali e à Jaeger UI.
+  pilot:
+    title: Piloto
+    detail: Configuração de gerenciamento de tráfego.
+  mixer:
+    title: Misturador
+    detail: Política geral e configuração de telemetria.
+  tracing:
+    title: Rastreamento
+    detail: Configurar requisições de rastreamento.
+  ingress:
+    title: Porta de entrada
+    detail: Configuração de regras de monitoramento e rota.
+  allowSystemGroup:
+    'true': Permitir que <b>todos</b> os membros autenticados acessem Kiali e Jaeger UI.
+    'false': Permitir que o proprietário do cluster e <b>grupos especificados</b> acessem Kiali e Jaeger IU.
+  goToMonitoring: 'O monitoramento precisa estar ativado para que o istio funcione. Se desejar modificar os valores, vá para a página <a href="/c/{clusterId}/monitoring/cluster-setting">Página de monitoramento</a> e salve.'
+  enableMonitoring:
+    label: Ativar Monitoramento
 certificatesPage:
   cn: Nome do domínio
   expiresDate: Expira
@@ -1084,6 +1198,7 @@ certificatesPage:
     header: Certificados
     linkTo: Adicionar Certificado
     noData: Não há certificados definidos
+    noMatch: Nenhum certificado corresponde à pesquisa atual
   new:
     header: Adicionar Certificado
     form:
@@ -1104,6 +1219,7 @@ membersPage:
     table:
       name: Nome
       created: Horário de Criação
+      noData: Não há membros
       noMatch: Nenhum usuário corresponde à pesquisa atual
       userId: Usuário
       subjectKind: Tipo
@@ -1112,6 +1228,7 @@ namespacesPage:
   header: Espaços de nomes
   addNamespace: Adicionar Espaço De Nomes
   noMatch: Nenhum espaço de nomes corresponde à pesquisa atual.
+  noData: Não há espaços de nomes definidos.
   table:
     name:
       label: Namespace
@@ -1127,6 +1244,7 @@ namespacesPage:
       label: Criado
 clusterPage:
   edit: Editar Cluster
+  annotationsDetail: Configure marcadores e anotações para o cluster.
   removeMemberNote: 'Nota: A remoção do usuário não removerá suas permissões de projeto'
   internal: '<b>Cuidado:</b> Esse é o grupo que {appName} está usando como armazenamento de dados. Somente administradores devem receber acesso de gravação a esse grupo.<br>Usuários com acesso de gravação a esse grupo podem usá-lo para conceder acesso a qualquer outro grupo gerenciado por essa instalação.'
 projectsListNamespacePage:
@@ -1186,15 +1304,27 @@ projectsPage:
       nameInExists: O nome já existe. Por favor, use um novo nome de projeto.
       memberNameReq: O nome é obrigatório para um membro
       memberRoleReq: O papel é obrigatório para um membro
+clusterTemplateRevisionUpgradeNotification:
+  tooltip: Revisão {revision} disponível para atualização.
 clustersPage:
   header: Cluster
   newCluster: Adicionar Cluster
+  newTemplate: Adicionar template
   newClusterName: "Adicionar Cluster: {name}"
   editClusterName: "Editar Cluster: {name}"
+  clusterLaunchDisabled: "Você não tem permissão de acesso a nenhum Modelo RKE."
+  launch:
+    new: Adicionar Cluster
   cluster:
     label: Nome do Cluster
+  templateRevision:
+    label: Modelo/Revisão
   provider:
     label: Provedor
+  kubernetesVersion:
+    label: Versão do Kubernetes
+  rkeTemplate:
+    label: Modelo RKE
   nodes:
     label: Nós
   cpu:
@@ -1205,8 +1335,22 @@ clustersPage:
     label: Pods
   storage:
     label: Disco
+  select:
+    provider:
+      label: "Adicionar Cluster - Selecionar Tipo de Cluster"
+    template:
+      label: "Adicionar Cluster - Selecionar modelo RKE"
+clusterRibbonNav:
+  title: Clusters Recentes
 clusterTemplatesPage:
+  index:
+    header: Modelos RKE
+    newTemplate: Adicionar Modelo
+  new:
+    header: Adicionar Modelo RKE
   headers:
+    defaultRevisionId: Revisão Padrão
+    revisionsCount: Revisões
     created: Criado
   newRevision:
     header: Nova revisão do modelo RKE
@@ -1328,6 +1472,94 @@ monitoringPage:
   upgradeAvailable: "({version} Atualização Disponível)"
   confirmDisable: "Você tem certeza? Clique novamente para desativar o monitoramento."
   disable: Desativar
+  enableActionLabel: Habilitar
+  systemProject: "Se você deseja coletar métricas personalizadas para pods no Projeto do Sistema, ative o monitoramento de nível do cluster diretamente."
+  noPermission: "Você não tem permissão para configurar o monitoramento do nível {level}."
+  toUpdate:
+    cluster: Monitoramento de nível do cluster está ativo.
+    project: Monitoramento do nível de Projeto está ativo.
+  insufficientSize:
+    prometheus:
+      cpu: Para habilitar o Prometheus, você precisa de pelo menos um nó com {cpu} mili CPUs disponíveis.
+      memory: Para ativar o Prometheus, você precisa de pelo menos um nó com {memory} MiB de memória disponível.
+      all: Para ativar o Prometheus, você precisa de pelo menos um nó com {cpu} mili CPUs e {memory} MiB de memória disponível.
+    selectors:
+      cpu: Para habilitar o Prometheus, você precisa de pelo menos um nó que corresponda aos seletores de nós e possua {cpu} mili CPUs disponíveis.
+      memory: Para ativar o Prometheus, você precisa de pelo menos um nó que corresponda aos seletores de nós e possua {memory} MiB de memória disponível.
+      all: Para habilitar o Prometheus, você precisa de pelo menos um nó que corresponda aos seletores de nó, tenha {cpu} milli CPUs disponíveis e {memory} MiB de memória disponível.
+    total:
+      cpu: Para habilitar o monitoramento, você precisa de pelo menos {cpu} mili CPUs disponíveis.
+      memory: Para ativar o monitoramento, você precisa de pelo menos {memory} MiB de memória disponível.
+      all: Para habilitar o monitoramento, você precisa de pelo menos {cpu} mili CPUs e {memory} MiB de memória disponível.
+  clusterNotEnabled: O monitoramento do nível do Cluster não está ativado. Apenas métricas personalizadas serão coletadas.
+  prometheus: O monitoramento ainda não está habilitado, clique no botão Salvar abaixo para habilitá-lo.
+  resourceLimitsHelp: 'Ao habilitar o monitoramento, você precisa garantir que os nós de trabalho e o pod do Prometheus tenham recursos suficientes. Por favor, visite <a href="https://rancher.com/docs/rancher/v2.x/en/cluster-admin/tools/monitoring/#resource-consumption" target="_blank" rel="nofollow noreferrer">documentação Rancher</a> para limites de recursos sugeridas.'
+  config:
+    types:
+      none: Vazio
+      prometheus: Prometheus
+    header: Configuração do Prometheus
+    prometheus:
+      cpuLimit:
+        label: Limite de CPU do Prometheus
+        placeholder: ex. 1000
+        unit: milli CPUs
+      cpuRequest:
+        label: Reserva da CPU para Prometheus
+        placeholder: ex. 1000
+        unit: milli CPUs
+      memoryLimit:
+        label: Limite de memória do Prometheus
+        placeholder: ex. 1000
+      memoryRequest:
+        label: Reserva de memória para Prometheus
+        placeholder: ex. 1000
+      enablePersistence:
+        label: Habilitar armazenamento persistente para Prometheus
+      size:
+        label: Tamanho do volume persistente do Prometheus
+        placeholder: ex. 50Gi
+      storageClass:
+        label: Classe de armazenamento padrão para Prometheus
+    grafana:
+      enablePersistence:
+        label: Habilitar armazenamento persistente para Grafana
+      size:
+        label: Tamanho do Volume Persistente Grafana
+        placeholder: ex. 10Gi
+      storageClass:
+        label: Classe de armazenamento padrão para Grafana
+    retention:
+      label: Retenção de dados
+    storageClass:
+      label: Classe de Armazenamento
+    operator:
+      memoryLimit:
+        label: Limite de Memória do Operador Prometheus
+        placeholder: ex. 500
+    nodeexporter:
+      label: Exportador de Portas do Nó
+      enable: Habilitar Exportador de Nó
+      cpuLimit:
+        label: Limite de CPU do Exportador de Nós
+        placeholder: ex. 200
+        unit: milli CPUs
+      memoryLimit:
+        label: Limite de memória do Exportador de Nós
+        placeholder: ex. 200
+  nodeSelector:
+    addSelectorLabel: Adicionar Seletor
+    helpText: Selecione os nós onde o monitoramento de cargas de trabalho relacionadas será programado
+  cluster:
+    title: Configuração de Monitoramento de Cluster
+    disabled: O monitoramento está desativado no cluster atual.
+    toDisable: Monitoramento está habilitado. Clicar no botão Salvar abaixo irá desativar o monitoramento para o cluster atual.
+  project:
+    title: Configuração de monitoramento de projeto
+    disabled: O monitoramento está desativado no projeto atual.
+    toDisable: O monitoramento está ativado. Clicar no botão Salvar abaixo irá desativar o monitoramento para o projeto atual.
+  errors:
+    disableIstioFirst: 'Antes de desativar o monitoramento do Cluster, você precisa desativar o Istio primeiro.'
 metricsAction:
   description: Expandir para ver métricas ao vivo
   noData: Dados insuficientes para gráfico
@@ -1354,17 +1586,48 @@ metricsAction:
     7d: 7 dias
     30d: 30 dias
 metrics:
+  apiserver-request-count: Taxa de requisições do servidor API
+  apiserver-request-latency: Latência de requisição do Servidor da API
+  cluster-cpu-load: Carga Média
+  cluster-cpu-usage: Utilização da CPU
+  cluster-disk-io: L/E de Disco
+  cluster-fs-usage-percent: Utilização de disco
+  cluster-memory-usage: Utilização de Memória
+  cluster-network-io: L/E de Rede
+  cluster-network-packet: Pacotes de rede
   container-cpu-usage: Utilização da CPU
   container-disk-io: I/O de Disco
   container-memory-usage-bytes-sum: Utilização de Memória
+  controllermanager-queue-depth: Profundidade da fila do Gerenciador de Controle
+  etcd-db-bytes-sum: Tamanho do DB
+  etcd-disk-operate: Operações de disco
+  etcd-grpc-client: Tráfego do Cliente GRPC
+  etcd-leader-change: Mudança de Líder
+  etcd-peer-traffic: Tráfego de Pares
+  etcd-raft-proposals: Propostas Raft
+  etcd-rpc-rate: Taxa de RPC
+  etcd-stream: Streams ativos
+  etcd-sync-duration: Duração da sincronização do disco
+  fluentd-input-record-number: Taxa de entrada do Fluentd
   istio-global-request-volume-top10: Pedido de Volume por Serviço
   istio-global-request-volume: Solicitação de Volume de Projeto
   istio-global-success-rate: Taxa de sucesso do projeto
+  istio-request-duration-p50-top10: Latência de Requisição P50 por Serviço
+  istio-request-duration-p90-top10: Latência de Requisição P90 por Serviço
+  istio-request-duration-p99-top10: Latência de Requisição P99 por Serviço
+  node-cpu-load: Carga Média
+  node-cpu-usage: Utilização da CPU
+  node-disk-io: I/O de Disco
+  node-fs-usage-percent: Utilização de disco
+  node-memory-usage: Utilização de Memória
+  node-network-io: I/O de rede
+  node-network-packet: Pacotes de rede
   pod-cpu-usage: Utilização da CPU
   pod-disk-io: I/O de disco
   pod-memory-usage-bytes-sum: Utilização de Memória
   pod-network-io: I/O de rede
   pod-network-packet: Pacotes de rede
+  scheduler-e-2-e-scheduling-latency-seconds-quantile: Agendador de Latência de Agendamento E2E
   workload-cpu-usage: Utilização da CPU
   workload-disk-io: I/O de Disco
   workload-memory-usage-bytes-sum: Utilização de Memória
@@ -1778,8 +2041,10 @@ globalDnsPage:
   header: Entradas de DNS globais
   newDns: Adicionar entrada de DNS
   noDnsMatch: Nenhuma entrada de DNS corresponde à pesquisa atual.
+  noDnsData: Não há entradas globais de DNS definidas.
   newProvider: Adicionar provedor de DNS
   noDnsProviderMatch: Nenhuma provedor de DNS corresponde à pesquisa atual.
+  noDnsProviderData: Não há provedores de DNS globais definidos.
   noProjects: Não existem projetos para selecionar
   noApps: Nenhum aplicativo de cluster múltiplo acessível
   noProviders: Nenhum provedor acessível
@@ -1804,11 +2069,14 @@ globalDnsPage:
       title: Configurar entrada DNS
       detail: Forneça detalhes da sua configuração para adicionar uma nova entrada de DNS Global
       configType: Resolve Para
+      multi: Aplicativos Multi Cluster
       project: Projetos
       fqdn:
         label: FQDN
         placeholder: dev.exemplo.com
       multiCluster:
+        label: Aplicativo Alvo Multi Cluster
+        placeholder: Selecione um aplicativo multi cluster
         add:
           label: Adicionar Destino
       provider:
@@ -2719,6 +2987,17 @@ clusterNew:
     tags:
       label: Tags
       addActionLabel: Adicionar etiqueta
+  aliyunkcs:
+    clusters:
+      k8s: Kubernetes
+    storageSize:
+      placeholder: ex. 120
+    keyPair:
+      label: Par de Chaves
+    regionId:
+      label: Região
+    instanceType:
+      label: Tipo Instância
   googlegke:
     checkingServiceAccount: Autenticando...
     zone:

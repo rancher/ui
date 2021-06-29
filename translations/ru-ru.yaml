@@ -1,6 +1,6 @@
 ---
 languageName: "Русский"
-languageContribute: "Помощь для перевода Rancher"
+languageContribute: "Помогите перевести Rancher"
 ##############################
 #Really generic things used in multiple places (use sparingly)
 ##############################
@@ -61,6 +61,7 @@ generic:
   import: Импорт
   internal: Внутренний
   ipAddress: IP Адрес
+  istioRule: Правила трафика
   key: Ключ
   limit: Лимит
   limits: Ограничения
@@ -138,6 +139,7 @@ generic:
   cpu: ЦП
   memory: Память
   noData: Нет данных
+  authorize: Авторизация и получение ваших репозиториев
   branch: Ветвь
   commit: Коммит
   repository: Репозиторий
@@ -145,6 +147,7 @@ generic:
   imageName: Имя образа
   loginIn: Войти
   logout: Выйти пользователю {user}
+  pipeline: Трубопровод
   is: это
   push: Отправить в репозиторий
   noBranch: В этом репозитории нет ветви
@@ -308,21 +311,47 @@ alertPage:
     lessThan: меньше, чем
     and: И
     critical: Критичный
+    addRecipient: Добавить получателя
+    info: Инфо
+    normal: Обычный
+    warning: Предупреждение
     notReady: Не готов
+    unhealthy: Нездоровый
+    podPlaceholder: Выберите под
+    notRunning: Не запущено
     notScheduled: Не запланировано
+    restarted: Перезапущен
+    minutes: Минут(ы)
+    available: доступен
+    noNotifierHelpText: У вас не настроены уведомления. Идите сюда, чтобы
+    resourcePlaceholder: Выберите ресурс
+    nodeRequired: требуется нода
+    expression:
+      label: Выражение
+    removeAlert: Удалить это оповещение
+    alertRule: Правило оповещения
     enableMonitoring: включить мониторинг
     for: Для
   resourceKinds:
     #backend use capitalized name
     Pod: Под
     Node: Узел
+    Deployment: Развертывание
   targetTypes:
     pod: Под
     node: Узел
     deployment: Развертывание
     workload: Нагрузка
     event: Событие
+    systemService: Системная служба
+    nodeSelector: Выбор узла
+    workloadSelector: Выбор нагрузки
     metric: Метрики
+    undefined: Отсутствует
+  index:
+    table:
+      displayCondition:
+        notready: Не готов
 podSecurityPoliciesPage:
   index:
     header: Политики безопасности подов
@@ -341,7 +370,7 @@ podSecurityPoliciesPage:
   new:
     errors:
       nameReq: Имя является обязательным для заполнения.
-      nameInExists: Имя уже существует. Пожалуйста, используйте новое имя политики безопасности POD.
+      nameInExists: Имя уже существует. Пожалуйста, используйте новое имя политики безопасности стручка.
     form:
       name:
         labelText: Название
@@ -1686,6 +1715,17 @@ clusterNew:
       placeholder: Ваш ID клиента
     region:
       label: Регион
+  aliyunkcs:
+    clusters:
+      k8s: Kubernetes
+      managed: Управляемые Kubernetes
+      label: Тип кластера
+    rootSize:
+      placeholder: напр. 120
+    storageSize:
+      placeholder: напр. 120
+    numOfNodes:
+      placeholder: напр. 3
   googlegke:
     project:
       label: Проект
@@ -2437,7 +2477,7 @@ formScheduling:
   autoRun: "Автоматически запускать на каждом узле соответствие правилам планирования:"
   autoPick:
     vm: "Автоматически выбирать узлы для каждого правила виртуальной машины, соответствующие правилам планирования:"
-    container: "Автоматически подобрать узлы для каждого POD соответствующие правилам планирования:"
+    container: "Автоматически подобрать узлы для каждого стручка соответствующие правилам планирования:"
     host: "Автоматически подобрать узел соответствующий правилам планирования:"
   addRule: Добавить правило
   addCustom: Добавить настраиваемое правило
@@ -3152,7 +3192,7 @@ nav:
     security:
       tab: Безопасность
       roles: Роли
-      podSecurityPolicies: Политики безопасности POD
+      podSecurityPolicies: Политики безопасности Устручков
       authentication: Аунтификация
     settings:
       tab: Настройки

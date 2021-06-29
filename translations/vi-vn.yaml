@@ -47,6 +47,7 @@ generic:
   expandAll: Mở rộng tất cả
   experimental: "(thử nghiệm)"
   from: từ
+  false: 'Sai'
   generic: 'Chung'
   gigabyte: 'Gigabyte'
   group: 'Nhóm'
@@ -61,6 +62,7 @@ generic:
   import: Nhập
   internal: Nội bộ
   ipAddress: Địa chỉ IP
+  istioRule: Quy tắc phân luồng
   key: Khóa
   limit: Giới hạn
   limits: Giới hạn
@@ -86,6 +88,7 @@ generic:
   owner: Chủ sở hữu
   paste: Dán
   pod: pod
+  podRestarts: Khởi động lại Pod
   port: Cổng
   ports: Cổng
   prefix: tiền tố
@@ -114,6 +117,7 @@ generic:
   testing: Đang kiểm tra
   to: Đến
   total: Tổng cộng
+  true: 'Đúng'
   type: Kiểu dữ liệu
   unknown: Unknown
   unknownUser: Không thể tìm nạp thông tin người dùng
@@ -131,6 +135,27 @@ generic:
   full: Toàn quyền
   linux: Linux
   windows: Windows
+  host: Máy chủ
+  istioHostPlaceholder: Chọn hoặc nhập một máy chủ
+  cpu: CPU
+  memory: Bộ nhớ
+  noData: Không có dữ liệu
+  authorize: Uỷ quyền & nạp kho dữ liệu
+  branch: Nhánh
+  commit: Cam kết
+  repository: Kho lưu trữ
+  registry: Đăng ký
+  imageName: Tên Image
+  loginIn: Đăng nhập
+  logout: Người dùng đăng xuất {user}
+  pipeline: Đường ống
+  is: là
+  push: Đẩy đến kho lưu trữ
+  noBranch: Không có nhánh nào trong kho lưu trữ này
+  github: GitHub
+  gitlab: GitLab
+  bitbucket: Bitbucket
+  required: '{key} là bắt buộc'
 realmNames:
   all: Tất cả
   usWest: Phía tây Hoa Kỳ
@@ -152,24 +177,49 @@ accountsPage:
         projectName: Dự án
         active: Hoạt động
         created: Đã chấp thuận
+        group: Nhóm
       global:
         title: Toàn quyền
+        description: Quyền truy cập để quản lý những thứ ảnh hưởng đến toàn bộ cài đặt
+        admin: Người dùng này là quản trị viên và có tất cả các quyền.
+        noRoles: Người dùng này không có vai trò toàn cục
+      cluster:
+        title: Vai trò cụm
+        description: Các vai trò được cấp cho người dùng này cho các cụm riêng lẻ
+        noRoles: Người dùng này không có vai trò cụm
+      project:
+        title: Vai trò dự án
+        description: Các vai trò được cấp cho người dùng này cho các cụm riêng lẻ
+        noRoles: Người dùng này không có vai trò dự án
       roles:
         title: Vai trò
   index:
     header: Người dùng
     localLink: Thêm người dùng
+    groupLink: Chỉ định vai trò toàn cục
     table:
       id: ID
       kind: Loại
+      username: Tên người dùng cục bộ
       identity: Danh tính
+      noData: Không có người dùng nào được xác định.
       noMatch: Không tìm thấy người dùng phù hợp
       noName: Rỗng
+  groups:
+    header: Nhóm
+    table:
+      groupName: Tên nhóm
+      globalRole: Tên vai trò toàn cục
+      noData: Không có nhóm nào được xác định.
+      noMatch: Không có nhóm nào phù hợp với tìm kiếm hiện tại
+      noName: Rỗng
   new:
     header: Thêm người dùng
     errors:
       usernameReq: Yêu cầu phải có tên đăng nhập.
+      usernameInExists: Tên đăng nhập đã được sử dụng. Vui lòng chọn một tên người dùng mới.
       pwReq: Bắt buộc phải có mật khẩu.
+      role: Quyền của người dùng là bắt buộc. Chọn 1 quyền từ danh sách
     form:
       username:
         labelText: Tên người dùng
@@ -184,11 +234,34 @@ accountsPage:
       description:
         labelText: Mô tả
         placeholder: "Ví dụ: tài khoản này là cho John Smith"
+  editGroup:
+    header: Chỉnh sửa nhóm
+  newGroup:
+    header: Đặt quyền toàn cục cho nhóm
+    warning: Đặt quyền toàn cục cho nhóm chỉ hoạt động với xác thực của nhà cung cấp có hỗ trợ nhóm. Việc uỷ quyền cục bộ không hỗ trợ nhóm.
+    errors:
+      group: Nhóm là thông tin bắt buộc
+      role: Quyền là thông tin bắt buộc
+    form:
+      group:
+        labelText: Chọn một nhóm để thêm vào
   modal:
     password: Thay đổi mật khẩu
 appDetailPage:
+  header: "Ứng dụng:{appName}"
   endpoints:
+    title: Endpoints
     protocol: Giao thức
+  answers:
+    title: Câu trả lời
+    variable: Biến
+  notes:
+    title: Ghi chú
+    detail: 'Hướng dẫn sử dụng'
+alertPage:
+  items: Khoản mục
+  create: Tạo
+  save: Lưu
 apiPage:
   currentEndpoint: 'Endpoint:'
   table:
@@ -220,10 +293,6 @@ authPage:
             li1: "Có thể dùng tài khoản Github doanh nghiệp cho tài khoản của bạn. Vui lòng nhấn cài đặt và chạy danh sách ứng dụng."
         li2:
           text: 'Nhấp vào "Đăng ký ứng dụng mới" và điền vào biểu mẫu:'
-loginPage:
-  shibbolethError:
-    401: "Unauthorized"
-    500: "Internal Server Error"
 nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:
