@@ -49,24 +49,95 @@
           {{t "nodeDriver.pnap.type.label"}}
         </label>
         {{new-select
-          classNames="form-control"
-          content=typeChoices
-          optionLabelPath="value"
-          value=config.serverType
+        classNames="form-control"
+        content=typeChoices
+        optionLabelPath="label"
+        optionValuePath="value"
+        value=config.serverType
         }}
+        <p class="text-info">
+          {{t "nodeDriver.pnap.type.help" htmlSafe=true}}
+        </p>
       </div>
     </div>
-
+   
+    <div class="row mt-20">
+      {{!-- <h4>{{t "nodeDriver.pnap.product.label"}}</h4> --}}
+    
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.cpu"}}
+        </label>
+        <div>
+          {{type.metadata.cpu}}
+        </div>
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.cpucores"}}
+        </label>
+        <div>
+          {{type.metadata.coresPerCpu}}
+        </div>
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.cpucount"}}
+        </label>
+        <div>
+          {{type.metadata.cpuCount}}
+        </div>
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.cpufrequency"}}
+        </label>
+        <div>
+          {{type.metadata.cpuFrequency}}
+        </div>
+      </div>
+    
+    </div>
     <div class="row">
-      <div class="col span-6">
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.memory"}}
+        </label>
+    
+        <div>
+          {{type.metadata.ramInGb}}
+        </div>
+    
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.storage"}}
+        </label>
+    
+        <div>
+          {{type.metadata.storage}}
+        </div>
+    
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.network"}}
+        </label>
+    
+        <div>
+          {{type.metadata.network}}
+        </div>
+    
+      </div>
+      <div class="col span-3">
         <label class="acc-label">
           {{t "nodeDriver.pnap.os.label"}}
         </label>
         {{new-select
-          classNames="form-control"
-          content=osChoices
-          optionLabelPath="value"
-          value=config.serverOs
+        classNames="form-control"
+        content=osChoices
+        optionLabelPath="value"
+        value=config.serverOs
         }}
       </div>
     </div>
