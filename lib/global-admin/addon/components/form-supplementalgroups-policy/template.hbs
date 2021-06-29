@@ -13,10 +13,12 @@
       {{t 'formSupplementalGroupsPodSecurityPolicy.rule.runAsAny'}}
     {{else}}
       <div class="radio input">
-        <label>{{radio-button selection=model.supplementalGroups.rule value="MustRunAs"}} {{t 'formSupplementalGroupsPodSecurityPolicy.rule.mustRunAs'}}</label>
+        <label>{{radio-button selection=model.supplementalGroups.rule value="MustRunAs"}}
+          {{t 'formSupplementalGroupsPodSecurityPolicy.rule.mustRunAs'}}</label>
       </div>
       <div class="radio input">
-        <label>{{radio-button selection=model.supplementalGroups.rule value="RunAsAny"}} {{t 'formSupplementalGroupsPodSecurityPolicy.rule.runAsAny'}}</label>
+        <label>{{radio-button selection=model.supplementalGroups.rule value="RunAsAny"}}
+          {{t 'formSupplementalGroupsPodSecurityPolicy.rule.runAsAny'}}</label>
       </div>
     {{/if}}
   </div>
@@ -26,9 +28,13 @@
       {{#if (eq model.supplementalGroups.rule "MustRunAs")}}
         <table class="table fixed no-lines no-top-padding mt-10">
           <tr class="hidden-sm hidden-xs">
-            <th>{{t 'formSupplementalGroupsPodSecurityPolicy.range.min.label'}}{{#unless readOnly}}{{field-required}}{{/unless}}</th>
+            <th>
+              {{t 'formSupplementalGroupsPodSecurityPolicy.range.min.label'}}{{#unless readOnly}}{{field-required}}{{/unless}}
+            </th>
             <th width="30">&nbsp;</th>
-            <th>{{t 'formSupplementalGroupsPodSecurityPolicy.range.max.label'}}{{#unless readOnly}}{{field-required}}{{/unless}}</th>
+            <th>
+              {{t 'formSupplementalGroupsPodSecurityPolicy.range.max.label'}}{{#unless readOnly}}{{field-required}}{{/unless}}
+            </th>
             <th width="40">&nbsp;</th>
           </tr>
           {{#each model.supplementalGroups.ranges as |range|}}
@@ -44,7 +50,8 @@
               </td>
               <td class="text-right">
                 {{#unless readOnly}}
-                  <button class="btn bg-primary btn-sm" type="button" {{action "remove" range}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+                  <button class="btn bg-primary btn-sm" type="button" {{action "remove" range}}><i
+                      class="icon icon-minus" /><span class="sr-only">{{t 'generic.remove'}}</span></button>
                 {{/unless}}
               </td>
             </tr>
@@ -54,8 +61,8 @@
 
       {{#unless readOnly}}
         <div>
-          <button class="btn bg-link icon-btn" type="button" {{action "add"}}>
-            <span class="darken"><i class="icon icon-plus text-small"/></span>
+          <button class="btn bg-link icon-btn" type="button" {{action "add" }}>
+            <i class="icon icon-plus text-small" />
             <span>{{t 'formSupplementalGroupsPodSecurityPolicy.range.addLabel'}}</span>
           </button>
         </div>

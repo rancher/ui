@@ -11,26 +11,15 @@
     <tbody>
       {{#if isNew}}
         {{#each defaultRoles as |defRole|}}
-          <ProjectMemberRow
-            @principal={{creator}}
-            @roleTemplate={{defRole}}
-            @pageType={{primaryResource.type}}
-            @noUpdate={{true}}
-            @isCreatorMember={{true}}
-          />
+          <ProjectMemberRow @principal={{creator}} @roleTemplate={{defRole}} @pageType={{primaryResource.type}}
+            @noUpdate={{true}} @isCreatorMember={{true}} />
         {{/each}}
       {{/if}}
       {{#each memberArray as |member|}}
         {{#unless member.pendingDelete}}
-          <ProjectMemberRow
-            @member={{member}}
-            @editing={{editing}}
-            @resource={{primaryResource}}
-            @roles={{filteredRoles}}
-            @users={{filteredUsers}}
-            @pageType={{primaryResource.type}}
-            @remove={{action "removeMember"}}
-          />
+          <ProjectMemberRow @member={{member}} @editing={{editing}} @resource={{primaryResource}}
+            @roles={{filteredRoles}} @users={{filteredUsers}} @pageType={{primaryResource.type}}
+            @remove={{action "removeMember" }} />
         {{/unless}}
       {{/each}}
     </tbody>
@@ -46,13 +35,13 @@
          tooltipFor="tooltipNoUsers"
       }}
         <button class="btn bg-link icon-btn p-0" disabled=true type="button">
-          <span class="darken"><i class="icon icon-plus text-small"/></span>
+          <i class="icon icon-plus text-small" />
           <span>{{t "formMembers.members.addMember"}}</span>
         </button>
       {{/tooltip-element}}
     {{else}}
-      <button class="btn bg-link icon-btn p-0" type="button" {{action "addMember" "User"}}>
-        <span class="darken"><i class="icon icon-plus text-small"/></span>
+      <button class="btn bg-link icon-btn p-0" type="button" {{action "addMember" "User" }}>
+        <i class="icon icon-plus text-small" />
         <span>{{t "formMembers.members.addMember"}}</span>
       </button>
     {{/if}}
