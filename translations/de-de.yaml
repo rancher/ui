@@ -136,7 +136,9 @@ generic:
   linux: Linux
   windows: Windows
   host: Server
+  istioHostPlaceholder: Wählen Sie einen Host aus oder geben Sie ihn ein
   cpu: CPU
+  memory: Arbeitsspeicher
   noData: Keine Daten
   authorize: Autorisieren und Ihre Repositories abrufen
   branch: Versionszweig
@@ -144,8 +146,10 @@ generic:
   repository: Repository
   registry: Registry
   imageName: Bildname
+  loginIn: Anmelden
   logout: Benutzer {user} abmelden
   pipeline: Pipeline
+  is: ist
   noBranch: Es gibt keinen Zweig in diesem Repository.
   github: GitHub
   gitlab: GitLab
@@ -204,8 +208,10 @@ accountsPage:
     header: Gruppen
     table:
       groupName: Gruppenname
+      globalRole: Globaler Rollenname
       noData: Es wurden keine Gruppen definiert.
       noMatch: Keine Gruppen zur aktuellen Suche gefunden
+      noName: Keiner
   new:
     header: Benutzer hinzufügen
     errors:
@@ -282,15 +288,81 @@ appDetailPage:
     nodata: Diese Anwendung hat keine Geheimnisse
 alertPage:
   na: Nicht konfiguriert
+  items: Einträge
+  addSelectorLabel: Selektor hinzufügen
   create: Erstellen
   save: Speichern
   cluster: Cluster
   project: Projekt
+  alertGroups: Alarme
   newOrEdit:
     showAdvanced: Erweiterte Optionen anzeigen
+    initialWait: Erste Wartezeit
+    interval: Intervall
+    initialWaitHelpText: Wie lange muss gewartet werden, bevor eine Benachrichtigung gesendet wird, wenn eine Warnung ausgelöst wird?
+    repeatIntervalHelpText: Wiederholungsintervall einer Benachrichtigung, wenn ein Alarm aktiv ist.
+    alert: Alarm
+    is: Ist
+    and: Und
+    critical: Kritisch
     addRecipient: Empfänger hinzufügen
+    info: Info
+    normal: Normal
+    warning: Warnung
+    notReady: Nicht bereit
+    unhealthy: Ungesund
+    podPlaceholder: Wählen Sie einen Pod
+    notRunning: Nicht Ausgeführt
+    notScheduled: Nicht geplant
+    restarted: Neugestartet
+    minutes: Minuten
+    available: verfügbar
+    createOne: erstelle einen
+    workloadTypePlaceholder: Workload-Typ auswählen
+    resourcePlaceholder: Wählen Sie eine Ressource
+    notifierPlaceholder: Wählen Sie eine Notifier
+    nodePlaceholder: Wählen Sie einen Knoten
+    systemServicePlaceholder: Wählen Sie ein System-Service
+    nodeRequired: Knoten erforderlich
+    expression:
+      label: Ausdruck
+    enableMonitoring: Überwachung aktivieren
   resourceKinds:
+    #backend use capitalized name
+    Pod: Pod
     Node: Knoten
+    Deployment: Deployment
+  targetTypes:
+    pod: Pod
+    node: Knoten
+    deployment: Deployment
+    workload: Workload
+    event: Ereignis
+    nodeSelector: Knoten-Selektor
+    workloadSelector: Workload-Auswahl
+    undefined: Keine
+  index:
+    table:
+      condition: Bedingung
+      recipients: Benachrichtiger
+      displayCondition:
+        notScheduled: Nicht geplant
+        notRunning: Nicht Ausgeführt
+        available: '{percent}% verfügbar'
+        restarted: '{times} mal innerhalb der letzten {interval} Minuten neu gestartet'
+        notready: Nicht bereit
+        unhealthy: Ungesund
+        notReady: Nicht bereit
+        cpuUsage: 'CPU-Auslastung ist über {percent}%'
+        memUsage: 'Arbeitsspeicher ist über {percent}%'
+  comparison:
+    equal: Gleich
+    not-equal: Ungleich
+    greater-than: Größer als
+    less-than: Kleiner als
+    greater-or-equal: Größer oder gleich
+    less-or-equal: Weniger oder gleich
+    has-value: Nicht Null
 podSecurityPoliciesPage:
   index:
     header: Pod-Sicherheitsrichtlinien
@@ -327,6 +399,7 @@ rolesPage:
       created: Erstellungszeit
       enabled: Aktiviert
       name: Name
+      noData: Es wurden keine Rollen definiert.
       noMatch: Keine Rollen zur aktuellen Suche gefunden
       subjectKind: Typ
       template: Template
@@ -412,6 +485,47 @@ apiPage:
       never: Niemals
     noData: Es sind keine API keys definiert
 authPage:
+  setting:
+    executor:
+      scale: Skalieren
+  authenticated:
+    header:
+      enterpriseHostName: "Host:"
+      key:
+        text: "Schlüssel:"
+  form:
+    isEnterprise:
+      labelText: https Verbindung verwenden
+    enterpriseHost:
+      placeholder: 'z. B. example.com'
+  gitlab:
+    form:
+      clientSecret:
+        labelText: Geheimnis
+  bitbucketcloud:
+    ul:
+      li2:
+        ul:
+          li2: Callback-URL
+      li3:
+        text: 'Klicken Sie Auf "Speichern" '
+    form:
+      clientId:
+        labelText: Schlüssel
+      clientSecret:
+        labelText: Geheimnis
+  bitbucketserver:
+    ul:
+      li2:
+        ul:
+          li1: '<b>Link:</b>'
+          li4: '<b>Klicken Sie auf "Weiter"</b>'
+          li5: 'Verbraucherschlüssel:'
+          li7: 'Öffentlicher Schlüssel:'
+          li8: '<b>Klicken Sie auf "Weiter"</b>'
+    form:
+      hostname:
+        placeholder: z. B. example.com
   saml:
     accessEnabled:
       header: Authentifizierung
@@ -561,6 +675,31 @@ authPage:
         post: Warte auf Feedback von GitHub
       authError: 'Der Zugriff auf Github wurde nicht autorisiert'
       popupError: 'Bitte deaktivieren Sie Ihren Popup-Blocker und klicken Sie erneut auf "Authentifizieren".'
+  googleoauth:
+    authenticated:
+      header:
+        adminEmail:
+          text: "Administrator E-Mail: "
+      disableAccess:
+        header: "Gefahrenzone&trade;"
+    notAuthenticated:
+      ul:
+        li2:
+          ul:
+            li4: 'Klicken Sie auf "Speichern".'
+      form:
+        oauthCredential:
+          labelText: OAuth-Anmeldeinformationen
+        adminEmail:
+          labelText: Administrator E-Mail
+        hostname:
+          labelText: Domäne
+    stepOne:
+      header: 'Schritt 1:'
+    stepTwo:
+      header: 'Schritt 2:'
+    stepThree:
+      header: 'Schritt 3:'
   azuread:
     header:
       disabled:
@@ -681,9 +820,11 @@ catalogPage:
       rancher:
         rancher: Rancher Labor
         partner: Offiziell
+        experimental: "Experimentell"
       pl:
         rancher: Kern
         partner: Offiziell
+        experimental: "Experimentell"
     noData:
       singular: Keine kompatiblen Templates vorhanden.
       plural: Keine kompatiblen Templates in diesem Katalog vorhanden.
@@ -691,6 +832,36 @@ catalogPage:
       launch: Detailansicht
       notCompatible: Nicht kompatibel
       alreadyDeployed: Bereits eingesetzt
+cis:
+  scan:
+    actions:
+      delete: Löschen
+      download: Herunterladen
+      runScan: Scan ausführen
+      search:
+        placeholder: Suche
+    table:
+      state: Status
+      name: Name
+      passed: Bestanden
+      skipped: Übersprungen
+      failed: Fehlgeschlagen
+      date: Datum
+      empty: Es gibt keine Scans
+    detail:
+      actions:
+        delete: Löschen
+        download: Herunterladen
+        runScan: Scan ausführen
+        search:
+          placeholder: Suche
+      table:
+        state: Status
+        number: Nummer
+        description: Beschreibung
+        skip: Überspringen
+        nodesTable:
+          title: Knoten
 cloudCredentialsPage:
   header: Cloud-Anmeldeinformationen
   rightButtons:
@@ -701,6 +872,40 @@ cloudCredentialsPage:
       noMatch: Keine Ereignisse gefunden, die den Suchkriterien entsprechen
 clusterCatalogPage:
   header: Kataloge
+clusterIstioPage:
+  header: Istio
+  disable: Deaktivieren
+  enableActionLabel: Aktivieren
+  version: Istio Version
+  customAnswers:
+    title: Benutzerdefinierte Antworten
+  links:
+    kiali:
+      label: Kiali UI
+    jaeger:
+      label: Jaeger UI
+    grafana:
+      label: Grafana UI
+    prometheus:
+      label: Prometheus UI
+  config:
+    header:
+      grafana: Grafana
+      prometheus: Prometheus
+    http2Port:
+      label: Http2-Port
+    httpsPort:
+      label: Https-Port
+    loadBalancerIP:
+      placeholder: z.B. 192.0.0.1
+    prometheusRetention:
+      placeholder: z.B. 6h
+    traceSampling:
+      placeholder: z.B. 1
+  nodeSelector:
+    addSelectorLabel: Selektor hinzufügen
+  enableMonitoring:
+    label: Überwachung aktivieren
 certificatesPage:
   cn: Domainname
   expiresDate: Ablaufdatum
@@ -748,6 +953,7 @@ membersPage:
     table:
       name: Name
       created: Erstellungszeit
+      noData: Keine Mitglieder vorhanden
       noMatch: Keine Benutzer gefunden, die den Suchkriterien entsprechen
       userId: Benutzer
       subjectKind: Typ
@@ -833,12 +1039,17 @@ projectsPage:
 clustersPage:
   header: Cluster
   newCluster: Cluster hinzufügen
+  newTemplate: Vorlage hinzufügen
   newClusterName: "Hinzufügen Cluster: {name}"
   editClusterName: "Bearbeite Cluster: {name}"
+  launch:
+    new: Cluster hinzufügen
   cluster:
     label: Clustername
   provider:
     label: Anbieter
+  rkeTemplate:
+    label: RKE-Vorlage
   nodes:
     label: Knoten
   cpu:
@@ -849,6 +1060,12 @@ clustersPage:
     label: Pods
   storage:
     label: Datenträger
+clusterTemplatesPage:
+  index:
+    header: RKE-Vorlagen
+    newTemplate: Vorlage hinzufügen
+  new:
+    header: RKE-Vorlage hinzufügen
 ingressPage:
   header: 'Eingang: {name}'
   gkeIngressWarning: 'Es kann einige Minuten dauern, bis die Kubernetes Engine eine externe IP-Adresse zuweist und den Lastenausgleich vorbereitet. In der Zwischenzeit können Fehler wie HTTP 404 und HTTP 500 angezeigt werden, bis der Load Balancer bereit ist den Datenverkehr zu bedienen.'
@@ -907,6 +1124,54 @@ clusterDashboard:
   notActive: Dieser Cluster ist derzeit <b>{state}</b>.
   notReady: Dieser Cluster ist derzeit <b>{state}</b>; Bereiche, die direkt damit interagieren, sind erst verfügbar, wenn die API bereit ist.
   used: Genutzt
+  sections:
+    cluster: Cluster-Metriken
+    etcd: Etcd Metriken
+    node: Knoten-Metriken
+  cpu: CPU
+  memory: Arbeitsspeicher
+  pods: Pods
+  value: Wert
+  more: Mehr
+  node: Knoten
+  etcd: Etcd
+ingressResponse:
+  host: Host
+  responseTime: Antwortzeit
+  noData: Keine Daten
+  noMatch: Keine Datensätze stimmen mit der aktuellen Suche überein
+monitoringPage:
+  disable: Deaktivieren
+  enableActionLabel: Aktivieren
+  config:
+    types:
+      prometheus: Prometheus
+    header: Prometheus-Konfiguration
+    prometheus:
+      cpuLimit:
+        label: Prometheus CPU Limit
+        placeholder: z.B. 1000
+      cpuRequest:
+        placeholder: z.B. 1000
+      memoryLimit:
+        placeholder: z.B. 1000
+      memoryRequest:
+        placeholder: z.B. 1000
+      size:
+        placeholder: z.B. 50Gi
+    grafana:
+      size:
+        placeholder: z.B. 10Gi
+    operator:
+      memoryLimit:
+        placeholder: z.B. 500
+    nodeexporter:
+      cpuLimit:
+        placeholder: z.B. 200
+      memoryLimit:
+        placeholder: z.B. 200
+  nodeSelector:
+    addSelectorLabel: Selektor hinzufügen
 metricsAction:
   description: Erweitern, um Live-Metriken anzuzeigen
   noData: Nicht genügend Daten für die Grafik
@@ -933,12 +1198,21 @@ metricsAction:
     7d: 7 Tage
     30d: 30 Tage
 metrics:
+  cluster-cpu-load: Durchschnittslast
+  cluster-cpu-usage: CPU Auslastung
+  cluster-fs-usage-percent: Disk Auslastung
+  cluster-memory-usage: Speicherauslastung
+  cluster-network-packet: Netzwerkpakete
   container-cpu-usage: CPU Auslastung
   container-disk-io: Disk I/O
   container-memory-usage-bytes-sum: Speicherauslastung
   istio-global-request-volume-top10: Volumen nach Service anfordern
   istio-global-request-volume: Projektanforderungsvolumen
   istio-global-success-rate: Projekterfolgsrate
+  node-cpu-load: Durchschnittslast
+  node-cpu-usage: CPU Auslastung
+  node-fs-usage-percent: Disk Auslastung
+  node-memory-usage: Speicherauslastung
   pod-cpu-usage: CPU Auslastung
   pod-disk-io: Disk I/O
   pod-memory-usage-bytes-sum: Speicherauslastung
@@ -968,6 +1242,8 @@ cruHpa:
     edit: Horizontalen Pod-Autoscaler bearbeiten
   status:
     label: Aktueller Status
+  target:
+    label: Workload
   name:
     placeholder: z.B. myscaler
   description:
@@ -1177,6 +1453,10 @@ cruVolume:
     label: Quelle
     title: Ursprungskonfiguration
     prompt: Wählen Sie eine Volumenquelle...
+destinationRulePage:
+  table:
+    host:
+      label: Host
 globalRegistryPage:
   header: Globale Registry
   disabled: Registry ist noch nicht aktiviert.
@@ -1256,10 +1536,13 @@ globalRegistryPage:
         host:
           placeholder: z.B. 192.168.0.1
         port:
+          label: Port für PostgreSQL
           placeholder: z.B. 5432
         username:
+          label: Benutzername für PostgreSQL
           placeholder: z.B. Benutzer
         password:
+          label: Passwort für PostgreSQL
           placeholder: z.B. Passwort
         coreDatabase:
           placeholder: z.B. Registry
@@ -1380,6 +1663,7 @@ haPage:
 nodesPage:
   header: Knoten
   editCluster: Cluster bearbeiten
+  nodePoolGroup: "Pool: {name}"
   table:
     clusterName: Cluster
     role: Rollen
@@ -1490,6 +1774,9 @@ hostsPage:
           mounts: Einhängepunkte
         body:
           noData: Dieser Host hat noch keine Volumes.
+istio:
+  table:
+    host: Host
 k8sImport:
   header: Importieren Sie existierende Kubernetes
   name:
@@ -1575,6 +1862,10 @@ registriesPage:
       password:
         labelText: Passwort
         placeholder: z.B. passwort
+ruleDetailPage:
+  answers:
+    title: Antworten
+    variable: Variabel
 secretsPage:
   index:
     header: Geheimnisse
@@ -1582,13 +1873,18 @@ secretsPage:
     noMatch: Keine Secrets gefunden, die den Suchkriterien entsprechen
   table:
     keys: Schlüssel
+settingsPage:
+  tabs:
+    settings: Erweiterte Einstellungen
 configMapsPage:
   table:
     keys: Schlüssel
 servicePage:
+  header: 'Workload: {name}'
   globalScale: '{scale} pro Host'
   endpoints: 'Endpunkte:'
   multistat:
+    type: 'Workload-Typ'
     fqdn: 'FQDN:'
     scale: 'Skalieren:'
     image: 'Image:'
@@ -1756,6 +2052,7 @@ nodeTemplatesPage:
     noData: Es sind keine Knotenvorlagen definiert
     usedByNone: Keine Cluster
     unknown: Unbekannt
+    owner: Besitzer
 storageClassPage:
   header: Speicherklassen
   addActionLabel: Klasse hinzufügen
@@ -1859,6 +2156,8 @@ notifierPage:
     agentPlaceholder: z.B. 1000003
     corpPlaceholder: z.B. wwc0cc3d58f9b021b6
     defaultRecipientPlaceholder: z.B. 2
+  proxyUrl:
+    placeholder: z.B. http://my-proxy/
   webhook:
     url: URL
     urlPlaceholder: Ihre Webhook-URL
@@ -2189,6 +2488,10 @@ clusterNew:
       placeholder: z.B. 10
     bandwidth:
       label: Bandbreite
+      placeholder: z.B. 10
+    nodeCount:
+      label: Knotenanzahl
+      placeholder: z.B. 3
     keyPair:
       label: Schlüsselpaar
       required: Schlüsselpaar ist erforderlich
@@ -2285,6 +2588,8 @@ clusterNew:
         placeholder: z. B. 10.0.0.10
       dockerBridgeCidr:
         placeholder: z. B. 172.17.0.1/16
+      podCidr:
+        placeholder: z.B. 172.244.0.0/16
     sshUser:
       label: SSH-Benutzer
       placeholder: usr1
@@ -2298,6 +2603,7 @@ clusterNew:
       placeholder: 128.42.0.0/21
     openPort:
       label: Port öffnen
+      placeholder: 'Durch Komma getrennt, z.B. 80,443'
     privateIpAddress:
       placeholder: 127.0.0.1
     staticPublicIp:
@@ -2358,8 +2664,32 @@ clusterNew:
       label: HTTP-Lastausgleich
     maintenanceWindow:
       label: Wartungsfenster
+    masterIpv4CidrBlock:
+      placeholder: z.B. 10.42.0.0/28
+    ipPolicyClusterIpv4CidrBlock:
+      placeholder: z.B. 10.96.0.0/11
+    ipPolicyServicesIpv4CidrBlock:
+      placeholder: z.B. 10.94.0.0/18
+    nodeLabels:
+      addAction: Label hinzufügen
+  huaweicce:
+    nodeOption:
+      title: Knoten
+    containerNetworkCidr:
+      placeholder: z.B. 172.16.0.0/16
+    nodeCount:
+      label: Knotenanzahl
+    nodeLabels:
+      label: Knoten-Label
+    nodeOperationSystem:
+      label: Betriebssystem des Knotens
   rke:
     etcd:
+      backupConfig:
+        retention:
+          placeholder: "z.B. 12"
+        interval:
+          placeholder: "z.B. 6"
       heartbeat:
         label: etcd Herzschlagintervall
         placeholder: Zeit eines Herzschlagintervalls
@@ -2380,10 +2710,14 @@ clusterNew:
     customize:
       label: Clusteroptionen
       detail: "Passen Sie die Kubernetes-Optionen für den Cluster an"
+    labels:
+      title: Knoten-Labels
     nodes:
       detail: Konfigurieren Sie die Maschinen, aus denen der Cluster bestehen soll
       add: Knotenpool hinzufügen
+      addTemplate: Knotenvorlage hinzufügen
       templatePrompt: "Wählen Sie eine Vorlage..."
+      myTemplatesGroup: "Meine Vorlagen"
       count: Anzahl
       template: Template
     done: Fertig
@@ -2457,6 +2791,55 @@ clusterNew:
     shortLabel: Benutzerdefininert
   import:
     shortLabel: Importiert
+cruDestinationRule:
+  port:
+    placeholder: z.B. 8080 oder meinport
+  name:
+    placeholder: z.B. meineregel
+  loadBalancer:
+    consistentHash:
+      httpHeaderName:
+        placeholder: z.B. Endbenutzer
+      minimumRingSize:
+        placeholder: z.B. 1024
+      httpCookie:
+        name:
+          placeholder: z.B. Benutzername
+        path:
+          placeholder: z.B. /
+        ttl:
+          placeholder: z.B. 0s
+  connectionPool:
+    http1MaxPendingRequests:
+      placeholder: z.B. 1024
+    http2MaxRequests:
+      placeholder: z.B. 1024
+    maxRequestsPerConnection:
+      placeholder: z.B. 10
+    maxRetries:
+      placeholder: z.B. 1024
+    connectTimeout:
+      placeholder: z.B. 30ms
+    maxConnections:
+      placeholder: z.B. 1024
+  outlierDetection:
+    baseEjectionTime:
+      placeholder: z.B. 30s
+    consecutiveErrors:
+      placeholder: z.B. 5
+    interval:
+      placeholder: z.B. 10s
+    maxEjectionPercent:
+      placeholder: z.B. 10
+  subsets:
+    name:
+      placeholder: z.B. v1
+  tls:
+    clientCertificate:
+      placeholder: z.B. /etc/certs/meinclientcert.pem
+clusterTemplateQuestions:
+  schemaLabels:
+    rotateCertificates: 'Zertifikate rotieren'
 conditionSections:
   title: Status
   table:
@@ -2589,6 +2972,9 @@ cruPersistentVolume:
     fsType:
       label: Dateisystemtyp
   flexVolume:
+    driver:
+      label: Treiber
+      placeholder: "z.B. Treiber"
     fsType:
       label: Dateisystemtyp
       placeholder: "z.B. ext4"
@@ -2682,6 +3068,8 @@ cruStorageClass:
     type:
       pd-standard: 'Standard'
       pd-ssd: 'SSD'
+    fsType:
+      placeholder: "z.B. ext4"
   vsphere-volume:
     fstype:
       placeholder: "z.B. ext3"
@@ -2738,6 +3126,40 @@ cruStorageClass:
       placeholder: "z.B. 40000"
     gidMax:
       placeholder: "z.B. 50000"
+cruGateway:
+  port:
+    number:
+      placeholder: z.B. 80
+    name:
+      placeholder: z.B. http
+  hosts:
+    placeholder: z.B. *
+cruVirtualService:
+  http:
+    routes:
+      timeout:
+        placeholder: z.B. 5s
+      faultInjection:
+        abort:
+          httpStatus:
+            placeholder: z.B. 400
+          percent:
+            placeholder: z.B. 8
+        delay:
+          fixedDelay:
+            placeholder: z.B. 5s
+          percent:
+            placeholder: z.B. 8
+      mirror:
+        subset:
+          placeholder: z.B. v2
+        port:
+          placeholder: z.B. 8080 oder meinport
+      retries:
+        attempts:
+          placeholder: z.B. 3
+        perTryTimeout:
+          placeholder: z.B. 2s
 dangerZone:
   header: Fortgeschrittene Einstellungen
 editAccount:
@@ -2849,6 +3271,8 @@ stacksPage:
     instanceStateWithIcon: Zustände
 formatIp:
   noIp: Keine
+formNodeAffinity:
+  addRuleLabel: Knoten-Selektor hinzufügen
 formNodeRequirement:
   label: Regeln
   addRuleLabel: Regel hinzufügen
@@ -2864,7 +3288,12 @@ formIngress:
   addRuleLabel: Regel hinzufügen
   removeRuleLabel: Diese Regel löschen
   noRules: Keine Regeln
+  mode:
+    workload: Workload
 formIngressBackends:
+  addWorkloadLabel: Workload
+  workload:
+    label: Workload
   targetPort:
     label: Port
     placeholder: z.B. 80
@@ -3084,6 +3513,16 @@ formNameDescription:
 formNetwork:
   netMode:
     enable: "Ja"
+  dnsConfig:
+    nameservers:
+      placeholder: z.B. 192.168.2.1
+    options:
+      value:
+        placeholder: z.B. 5
+    searches:
+      placeholder: z.B. example.com
+  requestedIp:
+    placeholder: Optional; z.B. 10.42.2.24
   retainIp:
     label: IP beibehalten
   hostname:
@@ -3111,11 +3550,27 @@ formNetwork:
     ip:
       label: IP-Adresse
       placeholder: z. B. 192.168.0.1
+formCustomMetrics:
+  port:
+    placeholder: z.B. 8080
+formServicePorts:
+  port:
+    placeholder: "z.B. 8088"
+  targetPort:
+    placeholder: "z.B. 80"
+  nodePort:
+    label: Knoten-Port
+    placeholder: "z.B. 30000"
 formPorts:
   addAction: Port hinzufügen
+  kind:
+    NodePort: NodePort (auf jedem Knoten)
   sourcePort:
     placeholder: "z.B. 80"
     ipPlaceholder: "z.B. 80 oder 19.82.2.24:80"
+  nodePort:
+    placeholder: "Der Standard Knoten-Port Bereich ist 30000-32767, z. B. 30000"
+    customPortRangePlaceholder: "Knoten-Port Bereich ist {range}, z. B. {port}"
   containerPort:
     placeholder: "z. B. 8080"
   protocol:
@@ -3127,12 +3582,25 @@ formPorts:
     placeholder: "z.B. example"
   noPorts: Dieser Container hat keine Port Mappings.
 formScale:
+  label: Workload-Typ
   showAdvanced: Weitere Optionen
 formScheduling:
   condition: Bedingung
   field: Feld
   value: Wert
+  priority:
+    placeholder: z.B. 3
   nodeSelector:
+    operator:
+      lt: '<'
+      le: |
+        &le;
+      eq: '='
+      ne: |
+        &ne;
+      gt: '>'
+      ge: |
+        &ge;
     custom:
       placeholder: 'z.B. foo > 42 && bar != baz'
 formSecurity:
@@ -3214,6 +3682,14 @@ formSslTermination:
 formUserData:
   placeholder: "z.B. Informationen zur Konfiguration des Containers"
   isVmPlaceholder: "z.B. Informationen zur Konfiguration des Containers"
+formRelatedWorkloads:
+  title: Verknüpfte Workloads
+  nodata: Keine verknüpfte Workloads
+formNodeTaints:
+  key:
+    placeholder: z.B. foo
+  value:
+    placeholder: z.B. bar
 formUserLabels:
   addAction: Label hinzufügen
   key:
@@ -3251,6 +3727,42 @@ formVolumes:
     placeholder: 'z.B. rancher-nfs; Standard: lokal'
   noLaunchConfigs: Keine anderen Start-Configs in diesem Dienst, um Datenspeicher zu teilen.
   onlySingleHost: Nur verfügbar, wenn Sie einen Container zu einem bestimmten Host hinzufügen.
+formAllowedHostPathsPodSecurityPolicy:
+  path:
+    placeholder: z.B. /foo
+formFsGroupPodSecurityPolicy:
+  range:
+    max:
+      placeholder: z.B. 6
+    min:
+      placeholder: z.B. 1
+formHostPortsPodSecurityPolicy:
+  port:
+    max:
+      placeholder: z.B. 7000
+    min:
+      placeholder: z.B. 6000
+formRunAsUserPodSecurityPolicy:
+  range:
+    max:
+      placeholder: z.B. 6
+    min:
+      placeholder: z.B. 1
+formSupplementalGroupsPodSecurityPolicy:
+  range:
+    max:
+      placeholder: z.B. 6
+    min:
+      placeholder: z.B. 1
+formReservation:
+  limitCpu:
+    placeholder: z.B. 1000
+  limitMemory:
+    placeholder: z.B. 1000
+  requestCpu:
+    placeholder: z.B. 1000
+  requestMemory:
+    placeholder: z.B. 1000
 hostSettings:
   header: Host Registrierungs URL
   subtext: Welche Basis-URL sollen Hosts verwenden um sich zur {appName} API verwenden?
@@ -3300,6 +3812,11 @@ loginUserPass:
   genericLoginLabel: Anmelden
   loggingInLabel: Anmeldung läuft...
   passwordLabel: Passwort
+loggingPage:
+  endpointPlaceholder: 'z.B. https://192.168.1.10:9200'
+  tags:
+    keyPlaceholder: z.B. foo
+    valuePlaceholder: z.B. bar
 machineTemplatesPage:
   title: Knoten hinzufügen
   new:
@@ -3393,11 +3910,16 @@ modalProcessError:
   header: Informationen zur Ausnahme
   cause: "Grund:"
   close: Schliessen
+modalDrainNode:
+  timeout:
+    placeholder: z.B. 60
 modalShortcuts:
   project: Projekt
   shortcuts: Sie sind hier
 modalWelcome:
   closeModal: Verstanden
+nodeGroup:
+  label: "Knoten: {name}"
 newBalancer:
   header:
     add: Load Balancer hinzufügen
@@ -3422,10 +3944,14 @@ newCatalog:
   version:
     prompt: Version auswählen...
 newContainer:
+  upgrade:
+    service: Workload bearbeiten
   name:
     placeholder: z.B. myapp
   description:
     placeholder: z.B. Meine Anwendung
+  sidekick:
+    header: Workload bearbeiten
 newPassword:
   placeholder: Neues Passwort
   password: Neues Passwort
@@ -3435,6 +3961,9 @@ newSecret:
   title:
     new: Secret hinzufügen
 nodeDriver:
+  addTemplate: Knotenvorlage hinzufügen
+  editTemplate: "Knotenvorlage bearbeiten: {name}"
+  cloneTemplate: "Knotenvorlage duplizieren von: {name}"
   displayName:
     aliyunecs: Alicloud ECS
     amazonec2: Amazon EC2
@@ -3449,30 +3978,74 @@ nodeDriver:
     vmwarevsphere: vSphere
     zstack: ZStack
   amazoneks:
+    keyPairs:
+      label: SSH-Schlüssel
     associateWorkerNodePublicIp:
       radio:
-        default: "Wahr"
+        default: "true"
+    nodeVolumeSize:
+      placeholder: z.B. 20
   amazonec2:
+    tags:
+      placeholder: z.B. dev
     portHelp:
       link: Mehr erfahren
     sshUser:
       label: SSH-Benutzer
+    spotPrice:
+      unit: '$'
+  digitalocean:
+    sshUser:
+      placeholder: 'z.B. root'
+    tags:
+      placeholder: z.B. dev
   vmwarevsphere:
     username:
       label: Benutzername
     password:
       label: Passwort
     instanceSection: Instanz
+    network:
+      addActionLabel: "Netzwerk hinzufügen"
+      valueLabel: "Netzwerke"
+    vappIpprotocol:
+      placeholder: "z.B. IPv4"
+      help: "IPv4 oder IPv6"
+  azure:
+    network:
+      title: Netzwerk
+    diskSize:
+      placeholder: z.B. 30
+    updateDomainCount:
+      placeholder: z.B. 5
+    faultDomainCount:
+      placeholder: z.B. 3
+    dockerPort:
+      placeholder: '2376'
+    openPort:
+      placeholder: 'Durch Komma getrennt, z.B. 80,443'
+    privateIpAddress:
+      placeholder: 127.0.0.1
+    staticPublicIp:
+      label: Öffentliche IP
+    noPublicIp:
+      label: Nicht öffentliche IP
   aliyunecs:
+    routeCIDR:
+      placeholder: z.B. 192.168.1.0/24
     sshPassword:
       label: SSH-Passwort
       placeholder: Festlegen des SSH-Kennworts für die Instanz (optional)
+  zstack:
+    endpoint:
+      placeholder: z.B. https://192.168.1.42:8443/
 projectGroup:
   label: "Projekt: {name}"
   none: Namensraum
   project: Nicht in einem Projekt
 pageFooter:
   notARelease: (Kein Release)
+  help: 'Hilfe & Dokumentation'
   issues: Issue eröffnen
   forums: Foren
   slack: Slack
@@ -3505,6 +4078,7 @@ schema:
   inputEnum:
     option: Option auswählen...
   inputService:
+    prompt: Workload auswählen ...
     custom: Benutzerdefininert
 schedulingRuleRow:
   theHost: Der Host
@@ -3548,6 +4122,8 @@ telemetryOpt:
 tooltipWarning:
   notConfigured: Zugriffskontrolle nicht konfiguriert
   dismiss: Ausblenden
+tooltipExpire:
+  link: 'Jetzt rotieren'
 upgradeBtn:
   status:
     loading: 'Suche nach Upgrades...'
@@ -3582,8 +4158,15 @@ nav:
     members: Mitglieder
     nodes: Knoten
     projects: Projekte / Namensräume
+  containers:
+    tab: Workloads
+    containers: Workloads
+  group:
+    node: Nach Knoten gruppieren
+    workload: Nach Workload gruppieren
   hosts:
     tab: Knoten
+    addHost: Knoten hinzufügen
   catalog:
     all: Alle
     library: Bibliothek
@@ -3608,6 +4191,8 @@ nav:
     logout: Abmelden
   userPreferences:
     link: "Einstellungen"
+  nodeTemplates:
+    link: "Knotenvorlagen"
   settings:
     tab: Einstellungen
   tools:
@@ -3630,9 +4215,11 @@ action:
   logs: Logs betrachten
   move: Verschieben
   mute: Stummschalten
+  nodeConfig: Schlüssel herunterladen
   remove: Löschen
   restart: Neustart
   retry: Erneuter Versuch
+  rotate: Zertifikate rotieren
   setting: Einstellung
   start: Starten
   startAll: Alle starten
@@ -3642,6 +4229,7 @@ action:
   unmute: Stummschalten aufheben
   viewConfig: Konfiguration betrachten
   viewInApi: In API anzeigen
+  viewInGrafana: Gehe zu Grafana
 ##############################
 #Resource Actions
 ##############################
@@ -3728,7 +4316,7 @@ volumeSource:
     title: Ceph-Dateisystem
   fc:
     title: Fibre Channel
-  csi-volume-longhorn:
+  flex-volume-longhorn:
     title: Longhorn
   flocker:
     title: Flocker
@@ -3765,3 +4353,5 @@ volumeSource:
       useExistingLogFormat: Ein vorhandenes Protokollformat verwenden
 yamlPage:
   errors: Es gibt Fehler in der yaml-Datei.
+fromSecret:
+  valuePlaceholder: z.B. bar

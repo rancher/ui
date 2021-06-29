@@ -84,6 +84,7 @@ generic:
   noRating: Değerlendirme Yok
   node: Düğüm
   none: Hiçbiri
+  completedOf: "{completed}/{total}"
   owner: Sahip
   paste: Yapıştır
   pod: pod
@@ -236,6 +237,13 @@ accountsPage:
     header: Grubu Düzenle
   newGroup:
     header: Gruba Global Roller Ata
+    warning: Bir gruba genel roller atamak, yalnızca grupları destekleyen harici kimlik doğrulama sağlayıcılarıyla çalışır. Yerel yetkilendirme, grupları desteklemez.
+    errors:
+      group: Bir grup gereklidir.
+      role: Bir rol gereklidir.
+    form:
+      group:
+        labelText: Eklenecek Grubu Seçin
   modal:
     password: Parolayı değiştir
 appDetailPage:
@@ -279,26 +287,109 @@ appDetailPage:
     detail: Bu uygulama ile ilişkili gizli bilgiler
     nodata: Bu uygulama gizli bilgilere sahip değil
 alertPage:
+  na: Yapılandırılmamış
   items: Öğeler
+  addSelectorLabel: Seçici Ekle
   create: Oluştur
   save: Kaydet
+  cluster: Küme
   project: Proje
+  alertGroups: Uyarılar
   newOrEdit:
     showAdvanced: Gelişmiş Seçenekleri Göster
+    initialWait: İlk Bekleme
     interval: Zaman aralığı
+    initialWaitHelpText: Bir uyarı tetiklendiğinde bildirim göndermeden önce ne kadar bekleneceği.
+    repeatIntervalHelpText: Bir uyarı etkinleştirildiğinde bildirim tekrar gönderme aralığı.
     happens: olursa
     sendA: Gönder
     to: Alıcı
+    alert: Uyarı
     lessThan: daha az
     and: ve
     critical: Kritik
     addRecipient: Alıcı Ekle
     info: Açıklama
     normal: Normal
+    warning: Îkâz
+    notReady: Hazır Değil
+    unhealthy: Sağlıksız
+    cpuUsage: CPU reservation over
+    memUsage: Hafıza rezervasyonu bitti
+    podPlaceholder: Bir Pod Seç
     notRunning: Çalışmıyor
+    notScheduled: Planlanmamış
     restarted: Yeniden Başlatıldı
     minutes: Dakika
+    available: kullanılabilir
     createOne: bir tane oluştur
+    noNotifierHelpText: Yapılandırılmış herhangi bir bildiriciniz yok. Buraya git
+    workloadTypePlaceholder: Bir İş Yükü Türü Seçin
+    resourcePlaceholder: Bir Kaynak Seçin
+    notifierPlaceholder: Bir Bilgilendirici Seçin
+    nodePlaceholder: Bir Düğüm Seçin
+    systemServicePlaceholder: Bir Sistem Hizmeti seçin
+    nodeRequired: Düğüm gerekli
+    nodeSelectorRequired: Düğüm Seçici gerekli
+    recipient:
+      helpText: Bildiricide ayarlanan değer varsayılan olarak kullanılır. Bunu başka bir değerle geçersiz kılabilirsiniz.
+    expression:
+      label: İfade
+      noData: Metrik grafik verisi yok.
+      error: Metrik grafik verileri alınamadı.
+      placeholder: Girdi İfadesi
+    removeAlert: Bu Uyarıyı Kaldır
+    alertRule: Uyarı Kuralı
+    groupWaitSeconds:
+      label: Grup Bekleme Süresi
+      helpText: Başlangıçta göndermeden önce aynı grubun uyarılarını arabelleğe almak için ne kadar bekleneceği.
+    groupIntervalSeconds:
+      label: Grup Aralık Süresi
+      helpText: Zaten tetiklenmiş uyarıları içeren bir gruba eklenmiş bir uyarı göndermeden önce ne kadar bekleneceği.
+    repeatIntervalSeconds:
+      label: Tekrarlama aralığı
+      helpText: Zaten gönderilmiş olan belirli bir uyarıyı yeniden göndermeden önce ne kadar bekleneceği.
+    monitoringDisabled: İfade devre dışı bırakıldı, Git ve
+    enableMonitoring: izlemeyi etkinleştir
+    for: için
+  resourceKinds:
+    Node: Düğüm
+    Deployment: Dağıtım
+  targetTypes:
+    node: Düğüm
+    deployment: Dağıtım
+    workload: İş Yükü
+    event: Olay
+    systemService: Sistem Hizmeti
+    nodeSelector: Düğüm Seçici
+    workloadSelector: İş Yükü Seçici
+    metric: Metrik
+    undefined: Hiçbiri
+  index:
+    addAlertGroup: Yeni Grup Ekle
+    addAlert: Yeni Kural Ekle
+    noAlerts: Tanımlanmış uyarı kuralı yok.
+    table:
+      noMatch: Mevcut aramayla eşleşen uyarı yok.
+      noData: Tanımlanmış uyarı yok
+      noGroup: Uyarı grubu yok
+      condition: Koşul
+      target: Hedef
+      recipients: Bildiriciler
+      displayCondition:
+        notScheduled: Planlanmamış
+        notRunning: Çalışmıyor
+        available: '% {percent} mevcut'
+        restarted: Son {interval} dakika içinde {times} kez yeniden başlatıldı
+        notready: Hazır Değil
+        unhealthy: Sağlıksız
+        notReady: Hazır Değil
+        cpuUsage: '% {percent} üzerinde CPU kullanımı'
+        memUsage: '% {percent} üzerinde MEM kullanımı'
+        expression: İfade
+  new:
+    addHeader: Uyarı Grubu Ekle
+    editHeader: Uyarı Grubunu Düzenle
 podSecurityPoliciesPage:
   index:
     header: Pod Güvenlik Politikaları
@@ -420,6 +511,98 @@ apiPage:
       never: Asla
     noData: Tanımlı API anahtarı bulunmamaktadır
 authPage:
+  setting:
+    cacerts:
+      saveActionLabel: Cacerts'ı kaydet
+    limit:
+      saveActionLabel: Limit ve Rezervasyonu Güncelle
+  header: Boru Hattı Ayarı
+  setup: "1. Bir {type} uygulaması ayarlayın"
+  authenticated:
+    header:
+      text: Depo Kimlik Doğrulama Bilgileri
+      enterpriseHostName: "Ana makine:"
+      clientId:
+        text: "İstemci Kimliği"
+      key:
+        text: "Anahtar:"
+  testAuth:
+    header: '3. Kimlik doğrulamayı test edin ve aktifleştirin'
+    subtext: 'Kimlik doğrulamasını test ederek uygulamanızın doğru yapılandırıldığından emin olun:'
+    buttonText:
+      preVariable: Kimlik doğrulaması
+      post: Kimlik Doğrulanıyor
+  form:
+    headerVariable: '2. Kimlik doğrulamada kendi {SCM}''inizi kullanmak için veri hattını yapılandırın.'
+    isEnterprise:
+      labelText: Bir https bağlantısı kullanın
+    enterprise:
+      labelText: Bir Özel {type} Enterprise kurulumu kullanın
+    enterpriseHost:
+      labelText: Kurumsal Ana Bilgisayar
+      placeholder: 'örn. example.com'
+  gitlab:
+    auth: 'Standart GitLab için, yeni pencere açarak uygulama ayarlarına gitmek için <a href="https://gitlab.com/profile/applications" target="_blank" rel="nofollow noreferrer">buraya tıklayın</a>.'
+    enterpriseAuth: "GitLab Enterprise için hesabınıza giriş yapın. Ayarlara ve ardından Geliştirici ayarlarına tıklayın."
+    ul:
+      li2:
+        text: 'Formu doldur:'
+        ul:
+          li1: '<b>İsim:</b> <span class="text-muted">İstediğiniz herhangi bir şey, örneğin Pipeline''ım</span>'
+          li2: Yönlendirilen URI
+      li3:
+        text: '"Uygulamayı kaydet" i tıklayın '
+    form:
+      subtextVariable: 'Yeni oluşturduğunuz uygulamadan Uygulama Kimliğini ve Sırrını kopyalayıp yapıştırın.'
+      clientId:
+        labelText: Uygulama Kimliği
+      clientSecret:
+        labelText: Gizli Bilgi
+  bitbucketcloud:
+    target:
+      header: '1. Kullanmak istediğiniz Bitbucket türünü seçin'
+      bitbucketserver: 'Özel Bitbucket Sunucusu kurulumunu kullanın'
+      bitbucketcloud: 'Herkese açık Bitbucket Cloud kullanın'
+    setup: '2. Bir Bitbucket Bulut uygulaması kurun'
+    auth: 'Bitbucket Cloud u, yeni pencere açarak uygulama ayarlarına gitmek için <a href="https://bitbucket.org/account" target="_blank" rel="nofollow noreferrer">buraya tıklayın</a>.'
+    ul:
+      li2:
+        text: '"OAuth" u tıklayın, ardından "Tüketici ekle" yi tıklayın ve formu doldurun:'
+        ul:
+          li1: '<b>Adı:</b> <span class="text-muted">İstediğiniz herhangi bir şey, örneğin İşlem Hattım</span>'
+          li2: Geri Dönüş URL
+      li3:
+        text: '"Kaydet" i tıklayın '
+    form:
+      headerVariable: '3. Kimlik doğrulaması için Bitbucket Bulut kullanacak şekilde İşlem hattını yapılandırın'
+      subtextVariable: 'Yeni oluşturduğunuz tüketiciden Anahtarı ve Sırrı kopyalayıp yapıştırın.'
+      clientId:
+        labelText: Anahtar
+      clientSecret:
+        labelText: Gizli Bilgi
+  bitbucketserver:
+    copy: Kopyalamak için simgeye tıklayın
+    auth: 'Bitbucket Sunucusu için hesabınıza giriş yapın. Yönetim''e ve ardından Uygulama Bağlantılarına tıklayın.'
+    ul:
+      li2:
+        text: 'Yeni bir uygulama bağlantısı oluşturun:'
+        ul:
+          li1: '<b>Bağlantı:</b>'
+          li2: '<b>Adı:</b> <span class="text-muted">İstediğiniz herhangi bir şey, örneğin İşlem Hattım</span>'
+          li3: '<b>Gelen bağlantı oluştur''u seçin</b>'
+          li4: '<b>"Devam et" i tıklayın</b>'
+          li5: 'Tüketici Anahtarı:'
+          li6: '<b>Tüketici Adı:</b> <span class="text-muted">İstediğiniz herhangi bir şey, örneğin işlem hattı</span>'
+          li7: 'Genel Anahtar'
+          li8: '<b>"Devam et" i tıklayın</b>'
+    form:
+      headerVariable: '3. Kimlik doğrulaması için Bitbucket Sunucunuzu kullanacak şekilde İşlem hattını yapılandırın'
+      hostname:
+        labelText: Bitbucket Sunucu Ana Bilgisayarı
+        placeholder: örn. alanadi.com
+        required: Bitbucket Sunucu Ana Bilgisayarı gerekli.
+      tls:
+        labelText: Güvenli bir bağlantı kullanın
   saml:
     accessEnabled:
       header: Kimlik Doğrulama
@@ -516,6 +699,10 @@ authPage:
   root:
     header: Erişim Kontrolü
   github:
+    ul:
+      li2:
+        ul:
+          li2: Anasayfa URL
     standard: GitHub
     enterprise: GitHub Enterprise
     header:
@@ -569,6 +756,24 @@ authPage:
         post: GitHub'dan geri dönüş bekleniyor
       authError: 'Github erişim izni verilmedi'
       popupError: 'Lütfen açılır pencere engelleyicinizi devre dışı bırakın ve "Kimlik Doğrula" ya tekrar tıklayın.'
+  googleoauth:
+    notAuthenticated:
+      form:
+        oauthCredential:
+          labelText: OAuth Kimlik Bilgileri
+        serviceAccountCredential:
+          labelText: Hizmet Hesabı Kimlik Bilgileri
+        adminEmail:
+          labelText: Yönetici E-postası
+        hostname:
+          labelText: Etki alanı
+    stepOne:
+      header: 'İlk adım'
+    stepTwo:
+      header: 'İkinci adım'
+    stepThree:
+      header: 'Üçüncü Adım'
+      info: 'Hizmet Hesabı kimlik bilgileri oluşturun'
   azuread:
     header:
       disabled:
@@ -667,6 +872,7 @@ backupsPage:
       local: Yerel
     name: İsim
     created: Oluşturulma
+    noData: Tanımlanmış etcd anlık görüntüsü yok.
 balancerPage:
   noMatch: Mevcut aramayla eşleşen balancer yok
   noData: Gösterilecek bir balancer mevcut değil.
@@ -680,6 +886,7 @@ catalogPage:
     refreshBtn: Yenile
     allCatalogs: Tüm Kataloglar
     allCategories: Tüm Kategoriler
+    windowsWarning: Uygulamaların çoğu Linux kümelerinde çalışıyor olmalıdır. Dolayısıyla, bunları geçerli kümede dağıtırsanız işe yaramayabilir.
     manage: Yönet
     search:
       label: Ara
@@ -689,9 +896,11 @@ catalogPage:
       rancher:
         rancher: Rancher Labs
         partner: Çözüm Ortağı
+        experimental: "Deneysel"
       pl:
         rancher: Çekirdek
         partner: Çözüm Ortağı
+        experimental: "Deneysel"
     noData:
       singular: Uyumlu şablon yok.
       plural: Bu katalogda uyumlu şablon yok.
@@ -699,6 +908,38 @@ catalogPage:
       launch: Ayrıntıları Görüntüle
       notCompatible: Uyumlu Değil
       alreadyDeployed: Zaten Deploy Edilmiş
+cis:
+  scan:
+    header: CIS Taramaları
+    actions:
+      delete: Sil
+      download: İndir
+      runScan: Taramayı Çalıştır
+      search:
+        placeholder: Ara
+    table:
+      state: Durum
+      name: İsim
+      passed: Geçti
+      skipped: Atlandı
+      failed: Başarısız oldu
+      date: Tarih
+      empty: Tarama yok
+    detail:
+      error:
+        parseConfig: Security-scan-cfg yapılandırma haritasını ayrıştırırken bir sorun oluştu.
+      actions:
+        delete: Sil
+        download: İndir
+        runScan: Taramayı Çalıştır
+        search:
+          placeholder: Ara
+      table:
+        state: Durum
+        number: Numara
+        description: Açıklama
+        empty: Test yok
+        skip: Atla
 cloudCredentialsPage:
   header: Bulut Kimlik Bilgileri
   rightButtons:
@@ -709,6 +950,30 @@ cloudCredentialsPage:
       noMatch: Mevcut aramayla eşleşen bulut kimlik bilgisi yok
 clusterCatalogPage:
   header: Kataloglar
+clusterIstioPage:
+  config:
+    loadBalancerIP:
+      label: Yük Dengeleyici IP'si
+      placeholder: örn. 192.0.0.1
+    prometheusRetention:
+      label: Prometheus için Saklama Süresi
+      placeholder: örneğin 6 saat
+    traceSampling:
+      label: İz örnekleme Yüzdesi
+      placeholder: örn. 1
+  nodeSelector:
+    addSelectorLabel: Seçici Ekle
+  telemetryAndPolicy: Telemetri ve Politika
+  existingClaim:
+    label: '{component} için Mevcut Hak Talebi'
+  members:
+    title: Grup Erişimi
+  tracing:
+    title: İzleme
+  ingress:
+    title: Giriş Ağ Geçidi
+  enableMonitoring:
+    label: İzlemeyi etkinleştir
 certificatesPage:
   cn: Alan Adı
   expiresDate: Sona Erme
@@ -760,6 +1025,7 @@ membersPage:
     table:
       name: İsim
       created: Oluşturulma Zamanı
+      noData: Üye yok
       noMatch: Mevcut aramayla eşleşen üye yok
       userId: Kullanıcı
       subjectKind: Tür
@@ -768,6 +1034,7 @@ namespacesPage:
   header: Namespace'ler
   addNamespace: Namespace Ekle
   noMatch: Mevcut aramayla eşleşen namespace yok.
+  noData: Tanımlanmış ad alanı yok.
   table:
     name:
       label: Namespace
@@ -783,6 +1050,7 @@ namespacesPage:
       label: Oluşturulma
 clusterPage:
   edit: Cluster'ı Düzenle
+  annotationsDetail: Küme için etiketleri ve ek açıklamaları yapılandırın.
   removeMemberNote: 'Not: Kullanıcıyı kaldırmak, kullanıcının proje izinlerini kaldırmayacaktır'
   internal: '<b>Dikkat:</b> Bu, {appName} cluster''ı data store olarak kullanılmaktadır. Bu cluster''a yazma izni sadece yöneticilere verilmelidir.<br>Bu cluster''a yazma iznine sahip kullanıcılar, bu cluster''ı kullanarak, kendilerine başka bir cluster''a erişim izni verebilir.'
 projectsListNamespacePage:
@@ -790,6 +1058,7 @@ projectsListNamespacePage:
   notIn: Projeye dahil değil
   current: Bu projede
 projectsPage:
+  annotationsDetail: Proje için etiketleri ve ek açıklamaları yapılandırın.
   header: Projeler/Namespace'ler
   headerNS: Namespace'ler
   addProject: Proje Ekle
@@ -842,15 +1111,27 @@ projectsPage:
       nameInExists: Bu isim kullanılmakta. Lütfen başka bir proje ismi seçin.
       memberNameReq: Bir üye için isim gerekli
       memberRoleReq: Bir üye için isim gerekli
+clusterTemplateRevisionUpgradeNotification:
+  tooltip: Revizyon {revision} , yükseltme için kullanılabilir.
 clustersPage:
   header: Kümeler
   newCluster: Yeni Küme Oluştur
+  newTemplate: Şablon Ekle
   newClusterName: "Küme Ekle: {name}"
   editClusterName: "Küme Düzenle: {name}"
+  clusterLaunchDisabled: "Herhangi bir RKE Şablonuna erişim izni verilmedi."
+  launch:
+    new: Yeni Küme Oluştur
   cluster:
     label: Küme Adı
+  templateRevision:
+    label: Şablon / Revizyon
   provider:
     label: Sağlayıcı
+  kubernetesVersion:
+    label: Kubernetes Sürümü
+  rkeTemplate:
+    label: RKE Şablonu
   nodes:
     label: Düğümler
   cpu:
@@ -861,6 +1142,11 @@ clustersPage:
     label: Pod'lar
   storage:
     label: Disk
+  select:
+    provider:
+      label: "Küme Ekle - Küme Türünü Seçin"
+    template:
+      label: "Küme Ekle - RKE Şablonu Seçin"
 ingressPage:
   header: 'Ingress: {name}'
   gkeIngressWarning: 'Kubernetes Engine''in harici bir IP adresi tahsis etmesi ve yük dengeleyicisini hazırlaması birkaç dakika sürebilir. Bu arada, yük dengeleyici trafiğe hazır olana kadar HTTP 404 ve HTTP 500 gibi hatalar alabilirsiniz.'
@@ -919,6 +1205,66 @@ clusterDashboard:
   notActive: Bu cluster şu anda <b>{state}</b>.
   notReady: Bu cluster şu anda <b>{state}</b>. Bu cluster ile doğrudan etkileşime giren alanlar, API hazır olana kadar kullanılamaz.
   used: Kullanılmış
+  enableMonitoring: Canlı ölçümleri görmek için İzlemeyi etkinleştirin
+  upgradeAvailable: "İzleme {version} Yükseltme Mevcut"
+  monitoringNotReady: İzleme API'si hazır değil
+  node: Düğümler
+  etcd: Etcd
+  scheduler: Planlayıcı
+  controllerManager: Kontrolör Yöneticisi
+  alert:
+    node: "Uyarı: Düğüm {node} etkin değil."
+    component: "Uyarı: Bileşen {component} sağlıksız."
+    nodeCondition:
+      diskPressure: "Uyarı: Düğüm {node} disk kapasitesinde zorlanma var."
+      memoryPressure: "Uyarı: Düğüm {node} bellek kapasitesinde zorlanma var."
+ingressResponse:
+  host: Sunucu
+  path: Yol
+  responseTime: Yanıt süresi
+  noData: Veri Yok
+  noMatch: Mevcut aramayla eşleşen kayıt yok
+etcd:
+  hasLeader:
+    label: Etcd'nin bir lideri var
+  leaderChange:
+    label: Lider değişikliği sayısı
+  failedProposals:
+    label: Başarısız görevlerin sayısı
+monitoringPage:
+  update: Yapılandırmayı güncelle
+  version: İzleme Sürümü
+  upgrade: İzlemeyi en son sürüm {version} yükseltin
+  upgradeAvailable: "({version} Yükseltme Mevcut)"
+  confirmDisable: "Emin misiniz? İzlemeyi devre dışı bırakmak için tekrar tıklayın."
+  disable: Devre Dışı Bırak
+  enableActionLabel: Etkinleştir
+  systemProject: "Sistem Projesi'nde kapsüller için özel ölçümler toplamak istiyorsanız, lütfen doğrudan küme düzeyinde izlemeyi etkinleştirin."
+  noPermission: "{level} seviye izlemeyi yapılandırma izniniz yok."
+  toUpdate:
+    cluster: Küme düzeyinde izleme etkinleştirildi.
+    project: Proje düzeyinde izleme etkinleştirildi.
+  insufficientSize:
+    prometheus:
+      cpu: Prometheus'u etkinleştirmek için, {cpu} mili CPU bulunan en az bir düğüme ihtiyacınız vardır.
+      memory: Prometheus'u etkinleştirmek için, {memory} MiB belleğe sahip en az bir düğüme ihtiyacınız vardır.
+      all: Prometheus'u etkinleştirmek için, {cpu} mili CPU ve {memory} MiB belleğe sahip en az bir düğüme ihtiyacınız vardır.
+    selectors:
+      cpu: Prometheus'u etkinleştirmek için, düğüm seçicilerle eşleşen ve {cpu} mili CPU'ya sahip en az bir düğüme ihtiyacınız vardır.
+      memory: Prometheus'u etkinleştirmek için, düğüm seçicileriyle eşleşen ve {memory} MiB belleğe sahip en az bir düğüme ihtiyacınız vardır.
+      all: Prometheus'u etkinleştirmek için düğüm seçicilerle eşleşen, {cpu} mili CPU'ya ve {memory} MiB belleğe sahip en az bir düğüme ihtiyacınız vardır.
+    total:
+      cpu: İzlemeyi etkinleştirmek için en az {cpu} mili CPU'ya ihtiyacınız var.
+      memory: İzlemeyi etkinleştirmek için en az {memory} MiB kullanılabilir belleğe ihtiyacınız vardır.
+      all: İzlemeyi etkinleştirmek için en az {cpu} mili CPU ve {memory} MiB kullanılabilir belleğe ihtiyacınız vardır.
+  clusterNotEnabled: Küme düzeyinde izleme etkinleştirilmemiştir. Yalnızca özel metrikler toplanacaktır.
+  prometheus: İzleme henüz etkinleştirilmedi, etkinleştirmek için aşağıdaki Kaydet düğmesini tıklayın.
+  resourceLimitsHelp: 'İzlemeyi etkinleştirirken, çalışan düğümlerinizin ve Prometheus bölmesinin yeterli kaynağa sahip olduğundan emin olmanız gerekir. Önerilen kaynak sınırları için lütfen <a href="https://rancher.com/docs/rancher/v2.x/en/cluster-admin/tools/monitoring/#resource-consumption" target="_blank" rel="nofollow noreferrer">Rancher belgelerini</a> ziyaret ediniz.'
+  config:
+    types:
+      none: Hiçbiri
+      prometheus: Prometheus
+    header: Prometheus Yapılandırması
 metricsAction:
   description: Canlı ölçümleri görmek için genişletin
   noData: Grafik için yeterli veri yok
@@ -945,17 +1291,45 @@ metricsAction:
     7d: 7 gün
     30d: 30 gün
 metrics:
+  cluster-network-io: Ağ G/Ç
+  cluster-network-packet: Ağ Paketleri
   container-cpu-usage: CPU Kullanımı
   container-disk-io: Disk G/Ç
   container-memory-usage-bytes-sum: Bellek Kullanımı
+  controllermanager-queue-depth: Denetleyici Yöneticisi Sıra Derinliği
+  etcd-db-bytes-sum: DB Boyutu
+  etcd-disk-operate: Disk İşlemleri
+  etcd-grpc-client: GRPC İstemci Trafiği
+  etcd-leader-change: Lider Değişimi
+  etcd-raft-proposals: Raft Önerileri
+  etcd-rpc-rate: RPC Oranı
+  etcd-sync-duration: Disk Senkronizasyon Süresi
+  fluentd-buffer-queue-length: Fluentd Buffer Kuyruk Hızı
+  fluentd-input-record-number: Fluentd Giriş Hızı
+  fluentd-output-errors: Fluentd Çıktı Hata Oranı
+  fluentd-output-record-number: Fluentd Çıkış Hızı
+  ingresscontroller-nginx-connection: Giriş Denetleyicisi Bağlantıları
+  ingresscontroller-request-process-time: Giriş Denetleyicisi Talep İşlem Süresi
+  istio-4xxs-top10: 4xx Hizmete Göre Talep Sayısı
+  istio-4xxs: Project 4xx Talep Sayısı
+  istio-5xxs-top10: 5xx Hizmete Göre Talep Sayısı
+  istio-5xxs: Project 5xx Talep Sayısı
   istio-global-request-volume-top10: Servis tarafından talep Hacmi
   istio-global-request-volume: Proje Talep Hacmi
   istio-global-success-rate: Proje Başarı Oranı
+  node-cpu-load: Ortalama Yük
+  node-cpu-usage: CPU kullanımı
+  node-disk-io: Disk G/Ç
+  node-fs-usage-percent: Disk Kullanımı
+  node-memory-usage: Bellek Kullanımı
+  node-network-io: Ağ G/Ç
+  node-network-packet: Ağ Paketleri
   pod-cpu-usage: CPU Kullanımı
   pod-disk-io: Disk G/Ç
   pod-memory-usage-bytes-sum: Bellek Kullanımı
   pod-network-io: Ağ G/Ç
   pod-network-packet: Ağ Paketleri
+  scheduler-pod-unscheduler: Başarısız Kapsüller Planlanıyor
   workload-cpu-usage: CPU Kullanımı
   workload-disk-io: Disk G/Ç
   workload-memory-usage-bytes-sum: Bellek Kullanımı
@@ -977,12 +1351,16 @@ dnsPage:
 cruHpa:
   status:
     label: Güncel Durum
+  target:
+    label: İş Yükü
   metrics:
+    noMetrics: Metrik Yok
     addMetricLabel: Metrik Ekle
     removeMetricLabel: Metriği Kaldır
     selector:
       labels:
         addSelectorLabel: Etiket Ekle
+        label: Metrik Eşleşme Etiketleri
       expressions:
         addSelectorLabel: İfade Ekle
     describedObject:
@@ -1013,9 +1391,13 @@ editDns:
     placeholder: örn. benim-uygulamam
   sessionAffinity:
     title: Session Affinity
+  publishNotReadyAddresses:
+    all: Tüm uç noktalar
   sessionAffinityConfig:
     placeholder: örn. 10800
   kind:
+    clusterIP: Küme IP'si (Yalnızca Dahili)
+    loadBalancer: Layer-4 Yük Dengeleyici
     nodePort: NodePort(Her node'da)
     externalName: ExternalName
     headless: Headless Service
@@ -1078,12 +1460,22 @@ cruPersistentVolumeClaim:
   storageClass:
     label: Storage Class
     prompt: Varsayılan class'ı kullan
+  secretRequired:
+    name: Gizli Bilgi Adı
+    namespace: Gizli Ad Alanı
 cruVolumeClaimTemplate:
   title:
     define: Disk Alanı Talep Şablonunu Tanımla
     new: Disk Alanı Talep Şablonu Ekle
     edit: "Disk Alanı Talep Şablonunu Düzenle: {name}"
     view: "Disk Alanı Talep Şablonu: {name}"
+  define:
+    addActionLabel: Tanımla
+  capacity:
+    label: Kapasite
+    unit: GiB
+  source:
+    label: Kaynak
 globalDnsPage:
   entriesPage:
     table:
@@ -1242,10 +1634,6 @@ k8sImport:
   name:
     label: Cluster Adı
     placeholder: örn. ice-aktarilmis-cluster
-loginPage:
-  shibbolethError:
-    401: "Unauthorized"
-    500: "Internal Server Error"
 registriesPage:
   new:
     form:
@@ -1398,6 +1786,16 @@ userPreferencesPage:
 verifyPage:
   header: "E-postanızı başarıyla doğruladınız!"
   subtext: Hesap oluşturma işlemini tamamlamak için birkaç bilgiye daha ihtiyacımız var.
+  account:
+    header: Oluşturulan Hesap
+    subtext: Giriş sayfasına gitmek için aşağıdaki bağlantıya tıklayın.
+    linkText: Giriş yap
+verifyResetPasswordPage:
+  header: Parola Sıfırla
+  button: Parolayı güncelle
+  success:
+    header: Parola Sıfırla!
+    subtext: Giriş sayfasına gitmek için aşağıdaki bağlantıya tıklayın.
 notifierPage:
   wechat:
     corp:
@@ -1722,6 +2120,50 @@ clusterNew:
         parsedServiceCidr: 'Kubernetes servis adres aralığı seçili Sanal Ağ aralığı içinde olmalıdır.'
         parsedDnsServiceIp: 'Kubernetes DNS servisi IP adresi, girilen Kubernetes servis adres aralığı içinde olmalıdır.'
         parsedDockerBridgeCidr: 'Docker köprü adresi, seçilen Sanal Ağ veya Kubernetes servis adres aralığı ile çakışamaz'
+  aliyunkcs:
+    label: Alicloud Kubernetes Container Servisi
+    shortLabel: Alibaba ACK
+    access:
+      next: "Sonraki: Cluster Yapılandırma"
+      loading: "Alibaba ACK dan Bölgeler Yükleniyor"
+      title: Hesap Erişimi
+      detail: Alibaba Kubernetes Service'i başlatmak için kullanılacak bölgeyi ve API Anahtarını seçin
+    cluster:
+      title: Cluster yapılandırması
+      detail: Alibaba Kubernetes Service'i başlatmak için kullanılacak Bölgeyi ve Kubernetes Sürümünü seçin
+      next: "Sonraki: Master Node'ları Yapılandırma"
+      loading: "Alibaba'dan Kullanılabilirlik Bölgeleri Yükleniyor"
+    clusters:
+      k8s: Kubernetes
+      managed: Yönetilen Kubernete'ler
+      label: Cluster Türü
+    master:
+      title: Master Node'lar
+      detail: Alibaba Kubernetes Service'i başlatmak için master node'ları yapılandırın
+      next: "Sonraki: Worker Node'ları Yapılandırma"
+      loading: "Anahtar çiftleri Alibaba'dan Yükleniyor"
+    worker:
+      title: Worker Node'lar
+      detail: Alibaba Kubernetes Service'i başlatmak için worker node'ları yapılandırın
+    disk:
+      efficiency: Ultra Disk
+      ssd: SSD Disk
+    rootSize:
+      label: Ana Disk Boyutu
+      placeholder: örn. 120
+    rootType:
+      label: Ana Disk Türü
+    storageType:
+      label: Veri Diski Türü
+    storageSize:
+      label: Veri Diski Boyutu
+      placeholder: örn. 120
+    masterNum:
+      label: Master Node Sayısı
+      help: Bu Kubernetes cluster'ında başlatılacak olan master node sayısı
+    numOfNodes:
+      label: Worker Node Sayısı
+      placeholder: örn. 3
   googlegke:
     maxNodeCount:
       label: Maksimum Node Sayısı
@@ -2204,6 +2646,14 @@ cruStorageClass:
     label: Provisioner
   reclaimPolicy:
     label: Reclaim politikası
+loggingPage:
+  syslog:
+    severities:
+      debug: Hata ayıklama
+  ssl:
+    verify:
+      enabled: Etkin - Güvenilir sunucu sertifikasını girin
+      disabled: Devredışı
 nodeDriver:
   amazoneks:
     associateWorkerNodePublicIp:

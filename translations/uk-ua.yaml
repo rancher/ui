@@ -87,8 +87,8 @@ generic:
   completedOf: "{completed} з {total}"
   owner: Власник
   paste: Вставити
-  pod: pod
-  podRestarts: Перезапуск Pod
+  pod: под
+  podRestarts: Перезапуск Пода
   port: Порт
   ports: Порти
   prefix: префікс
@@ -136,9 +136,11 @@ generic:
   linux: Linux
   windows: Windows
   host: Хост
+  istioHostPlaceholder: Виберіть або введіть хост
   cpu: ЦП
   memory: Пам'ять
   noData: Немає даних
+  authorize: Авторизуйте та завантажте свої репозіторії
   branch: Гілка
   commit: Коміт
   repository: Репозиторій
@@ -147,11 +149,13 @@ generic:
   loginIn: Вхід
   logout: Вийти з облікового запису {user}
   pipeline: Конвеєр
+  is: це
   push: Надіслати до репозиторію
   noBranch: У цьому репозиторію немає гілки.
   github: GitHub
   gitlab: GitLab
   bitbucket: Bitbucket
+  required: '{key} є обов''язковим.'
 realmNames:
   all: Всі
   usWest: Захід США
@@ -198,12 +202,16 @@ accountsPage:
       kind: Тип
       username: Локальне Ім'я Користувача
       identity: Ідентичність
+      noData: Користувачів не визначено.
       noMatch: Немає користувачів, які відповідають поточним пошуку
       noName: Немає
   groups:
     header: Групи
     table:
       groupName: Назва групи
+      globalRole: Назва глобальної ролі
+      noData: Не визначено груп.
+      noMatch: Жодна група не відповідає поточному пошуку
       noName: Немає
   new:
     header: Додати Користувача
@@ -214,7 +222,7 @@ accountsPage:
       role: Нові користувачі повинні мати роль. Виберіть роль зі списку.
     form:
       username:
-        labelText: Ім'я користувача
+        labelText: Ім'я кристувача
         placeholder: "напр. admin"
       password:
         labelText: Пароль
@@ -228,6 +236,15 @@ accountsPage:
         placeholder: "напр. цей обліковий запис буде для Джона Сміта"
   editGroup:
     header: Редагувати групу
+  newGroup:
+    header: Призначити глобальні ролі для групи
+    warning: Присвоєння глобальних ролей групі працює тільки з зовнішніми постачальниками аутентифікації, які підтримують групи. Локальна авторизація не підтримує групи.
+    errors:
+      group: Необхідна група.
+      role: Потрібна роль.
+    form:
+      group:
+        labelText: Виберіть групу для додавання
   modal:
     password: Змінити пароль
 appDetailPage:
@@ -247,8 +264,8 @@ appDetailPage:
     title: Примітки
     detail: 'Інструкції щодо використання цього додатку'
   workloads:
-    title: Workloads
-    detail: Створено Workloads для цього додатоку.
+    title: Навантаження
+    detail: Створено Навантаження для цього додатоку.
     nodata: Для цього додатоку не було створено жодного workloads.
   ingress:
     title: Ingress Правила
@@ -260,6 +277,8 @@ appDetailPage:
     nodata: Для цього додатку не було створено жодного сервісу.
   volumes:
     title: Томи
+    detail: Заявки на Постійні томи, створені за допомогою цієї програми
+    nodata: Для цього додатку не було подано жодних заявок томів.
   configMaps:
     title: Config Maps
     detail: Config Maps пов'язані з цим додатком
@@ -279,48 +298,74 @@ alertPage:
   alertGroups: Попередження
   newOrEdit:
     showAdvanced: Показати розширені параметри
+    initialWait: Початкове очікування
     interval: Інтервал
+    initialWaitHelpText: Як довго чекати перед надсиланням сповіщення, коли спрацьовує попередження.
+    repeatIntervalHelpText: Інтервал повторних надсилань активних сповіщень.
+    whenA: Коли
+    whenAn: Коли
+    happens: трапляється
     sendA: Надіслати
+    to: До
+    alert: Попередження
+    is: Це
+    lessThan: менше ніж
     and: І
     critical: Критичний
+    addRecipient: Додати одержувача
     info: Інформація
     normal: Нормальний
     warning: Попередження
     notReady: Не готовий
     unhealthy: Нездоровий
+    cpuUsage: Перевищено резервацію ЦП
+    memUsage: Бронювання пам'яті закінчено
+    podPlaceholder: Оберіть Pod
     notRunning: Не Працює
+    notScheduled: Не заплановано
+    restarted: Перезавантажений
+    restartedTimes: разів за останні
     minutes: Хвилин
+    available: доступно
     createOne: створити один
-    workloadTypePlaceholder: Виберіть тип Workload
+    workloadTypePlaceholder: Виберіть тип Навантаження
     resourcePlaceholder: Виберіть ресурс
     nodePlaceholder: Вибрати вузол
+    expression:
+      label: Вираз
+    removeAlert: Видалити це попередження
     alertRule: Правило попередження
     enableMonitoring: увімкнути моніторинг
     for: Для
   resourceKinds:
     #backend use capitalized name
-    Pod: Pod
+    Pod: Под
     Node: Вузол
     Deployment: Deployment
     DaemonSet: DaemonSet
     StatefulSet: StatefulSet
   targetTypes:
-    pod: Pod
+    pod: Под
     node: Вузол
     deployment: Deployment
     daemonset: Daemonset
     statefulset: Statefulset
-    workload: Workload
+    workload: Навантаження
     event: Подія
     systemService: Системний сервіс
+    metric: Метрики
     undefined: Немає
   index:
     addAlertGroup: Додати групу попередження
     addAlert: Додати правило попередження
     table:
+      condition: Стан
       target: Ціль
+      recipients: Сповіщення
       displayCondition:
+        notScheduled: Не заплановано
         notRunning: Не Працює
+        available: '{percent}% доступно'
         notready: Не готовий
         unhealthy: Нездоровий
         notReady: Не готовий
@@ -330,13 +375,20 @@ alertPage:
   comparison:
     equal: Дорівнює
     not-equal: Не дорівнює
+    greater-than: Більше ніж
+    less-than: Менше ніж
+    greater-or-equal: Більше або дорівнює
+    less-or-equal: Менше або дорівнює
+    has-value: Не NULL
 podSecurityPoliciesPage:
   index:
-    header: Політики Безпеки Pod
+    header: Політики Безпеки Подів
     description: Застосувати політики до елементів, створеним користувачем з цією роллю
     table:
       name: Ім'я
       created: Час Створення
+      noData: Не визначено політику безпеки пода
+      noMatch: Політики безпеки пода не відповідають поточному пошуку
   addPodSecurityPolicy: Додати політику
   editPodSecurityPolicy: Змінити політику
   detail:
@@ -346,7 +398,7 @@ podSecurityPoliciesPage:
   new:
     errors:
       nameReq: Потрібне ім'я.
-      nameInExists: Ім'я вже існує. Будь ласка, використовуйте нове ім'я політики безпеки pod.
+      nameInExists: Ім'я вже існує. Будь ласка, використовуйте нове ім'я політики безпеки подів.
     form:
       name:
         labelText: Ім'я
@@ -358,10 +410,10 @@ rolesPage:
     cluster: Кластери
     project: Проекти
   index:
-    localLink: Додати роль
+    localLink: Додати Роль
     table:
       builtin: Вбудований
-      created: Час створення
+      created: Час Створення
       enabled: Увімкнено
       name: Ім'я
       noMatch: Немає ролей, відповідних поточному пошуку
@@ -372,7 +424,11 @@ rolesPage:
     errors:
       inherited: "Роль {displayName} успадковується: {roleNames}"
   resources:
+    title: Надати ресурси
     detail: Надати доступ до певних операцій на ресурсах Kubernetes
+  inherit:
+    title: Успадковувати з ролі
+    detail: Включити всі дозволи іншої ролі
   addRole: "Додати {context} Роль"
   editRole: Редагувати роль
   saveEdit: Редагувати
@@ -383,6 +439,7 @@ rolesPage:
       memberReq: Потрібний учасник.
       nameInExists: Ім'я вже існує. Будь ласка, використовуйте нове ім'я ролі.
       ruleResourceReq: Ресурс потрібен для правила.
+      roleTemplate: Потрібен шаблон ролі.
       noSelectedRoles: Будь ласка, виберіть принаймні одну роль для цього користувача.
       roleAlreadyExists: Користувач вже має роль "{key}".
     form:
@@ -391,9 +448,11 @@ rolesPage:
         placeholder: "наприклад, розробники"
       context:
         labelText: Контекст
+        detail: Що визначає цю роль, яка підходить для відображення.
       locked:
         labelText: Заблоковано
         detail: Ця дія не впливає на вже існуючу роль.
+        enabled: "Так: Новим зв'язкам заборонено використовувати цю роль"
         disabled: "Ні"
       allow:
         create: Створити
@@ -409,6 +468,7 @@ rolesPage:
         addAction: Додати ресурс
         apiGroups: Групи API
       otherRole:
+        labelText: Включити інші ролі
         role: Роль
         addAction: Додати Роль
       policy:
@@ -416,6 +476,8 @@ rolesPage:
         addAction: Додати політику
       default:
         global: Новий користувач за замовчуванням
+        cluster: Створювач кластеру за замовчуванням
+        project: Створювач проекту за замовчуванням
         enabled:
           global: "Так: Роль за замовчуванням для нових користувачів"
           cluster: "Так: Роль за замовчуванням для створення нового кластеру"
@@ -425,6 +487,7 @@ apiPage:
   header: API і ключі
   actionButton: Додати ключ
   currentEndpoint: 'Кінцева точка:'
+  detail: API ключі зв'язані з вашим конкретним користувачем ({name}) і можуть створювати, видалити, і управляти всіма кластерами і проєктами, до яких у Вас є доступ.
   table:
     state: Статус
     name: Ключ доступу
@@ -434,33 +497,55 @@ apiPage:
     expires:
       label: Закінчується
       never: Ніколи
+    noData: API ключі відсутні
 authPage:
   setting:
     executor:
+      label: Максимальна кількість виконавців конвеєра
       scale: Масштаб
+    cacerts:
+      label: Налаштуйте користувацький CA для підтримки клонування від самопідписаної служби git
+      show: Редагувати cacerts
+      saveActionLabel: Зберегти cacerts
+    limit:
+      label: Налаштуйте ліміт ресурсів та бронювання виконавців
+      saveActionLabel: Ліміт оновлення та бронювання
   header: Налаштування конвеєру
+  setup: "1. Налаштуйте {type} додаток"
   authenticated:
     header:
+      text: Відомості про автентифікацію в репозиторії
       enterpriseHostName: "Хост:"
       clientId:
         text: "ID Клієнта:"
       key:
         text: "Ключ:"
   testAuth:
+    header: '3. Перевірте та включіть автентифікацію'
+    subtext: 'Переконайтеся, що ваш додаток налаштовано правильно, протестувавши авторизацію з ним:'
     buttonText:
       preVariable: Авторизація
       post: Автентифікація
   form:
+    headerVariable: '2. Налаштуйте конвеєр для використання вашого {SCM} для автентифікації'
+    isEnterprise:
+      labelText: Використовувати https з'єднання
     enterpriseHost:
+      labelText: Хост Підприємства
       placeholder: 'напр. example.com'
   gitlab:
+    auth: 'Для стандартного GitLab, <a href="https://gitlab.com/profile/applications" target="_blank" rel="nofollow noreferrer">натисніть тут</a> , щоб перейти до налаштувань додатків в новому вікні.'
+    enterpriseAuth: "Для GitLab Enterprise, зайдіть в свій аккаунт. Натисніть \"Settings\", потім \"Applications\"."
     ul:
       li2:
+        text: 'Заповніть форму:'
         ul:
+          li1: '<b>Ім''я:</b> <span class="text-muted">Що завгодно, наприклад Мій Конвеєр</span>'
           li2: URI перенаправлення
       li3:
         text: 'Натисніть "Зберегти додаток" '
     form:
+      subtextVariable: 'Скопіюйте та вставте Ідентифікатор застосунку і Секрет з щойно створеного додатка.'
       clientId:
         labelText: Id додатку
       clientSecret:
@@ -468,26 +553,55 @@ authPage:
   bitbucketcloud:
     target:
       header: '1. Виберіть тип Bitbucket'
+      bitbucketserver: 'Використовувати приватний Bitbucket Server'
+      bitbucketcloud: 'Використовувати публічний Bitbucket Cloud'
+    setup: '2. Налаштуйте додаток Bitbucket Cloud'
+    auth: 'Для Bitbucket Cloud, <a href="https://bitbucket.org/account" target="_blank" rel="nofollow noreferrer">натисніть тут</a> , щоб перейти до налаштувань користувача в новому вікні.'
     ul:
+      li2:
+        text: 'Натисніть "OAuth", потім натисніть "Додати споживача" та заповніть форму:'
+        ul:
+          li1: '<b>Ім''я:</b> <span class="text-muted">Що завгодно, наприклад Мій Конвеєр</span>'
+          li2: URL-адреса зворотного дзвінка
+          li3: '<b>Виберіть Дозволи</b> <b>Читання</b>, <b>Pull Requests</b> <b>Проекти</b> і <b>Вебхуки Читання і Запису</b>'
       li3:
         text: 'Натисніть "Зберегти" '
     form:
+      headerVariable: '3. Налаштуйте конвеєр для використання Bitbucket Cloud для автентифікації'
+      subtextVariable: 'Скопіюйте та вставте ключ і секрет від новоствореного споживача.'
       clientId:
         labelText: Ключ
       clientSecret:
         labelText: Секрет
   bitbucketserver:
+    warning: 'Веб-хуки сервера Bitbucket повинні пройти перевірку SSL. Переконайтеся, що сервер bitbucket довіряє сертифікату {appName} сервера. Більше інформації можна знайти тут <a href="https://rancher.com/docs/rancher/v2.x/en/tools/pipelines/configurations/#1-configuring-version-control-providers" target="_blank" rel="nofollow noopener noreferrer"></a>.'
+    copy: Натисніть на значок, щоб скопіювати
+    target:
+      header: '1. Виберіть тип Bitbucket'
+      bitbucketserver: 'Використовувати приватний Bitbucket Server'
+      bitbucketcloud: 'Використовувати публічний Bitbucket Cloud'
+    setup: '2. Налаштуйте додаток Bitbucket Server'
+    auth: 'Увійдіть до вашого облікового запису Bitbucket Server. Натисніть на "Адмініструвати, а потім "Зв''язки додатків".'
     ul:
       li2:
+        text: 'Створити нове посилання до програми:'
         ul:
           li1: '<b>Посилання:</b>'
+          li2: '<b>Ім''я додатку:</b> <span class="text-muted">Що завгодно, наприклад Мій Конвеєр</span>'
+          li3: '<b>Вибрати створення вхідного посилання</b>'
           li4: '<b>Натисніть кнопку "Продовжити"</b>'
+          li5: 'Ключ споживача:'
+          li6: '<b>Ім''я споживача:</b> <span class="text-muted">Що завгодно, наприклад конвеєр</span>'
           li7: 'Публічний ключ:'
           li8: '<b>Натисніть кнопку "Продовжити"</b>'
     form:
+      headerVariable: '3. Налаштуйте конвеєр для використання Bitbucket Server для автентифікації'
       hostname:
         labelText: Хост сервера Bitbucket
         placeholder: напр. example.com
+        required: Потрібен хост сервера Bitbucket.
+      tls:
+        labelText: Використовуйте https з'єднання
   saml:
     accessEnabled:
       header: Автентифікація
@@ -584,6 +698,8 @@ authPage:
   root:
     header: Контроль доступу
   github:
+    auth: 'Для стандартного GitHub, <a href="https://github.com/settings/developers" target="_blank" rel="nofollow noreferrer">натисніть тут</a> , щоб перейти до налаштувань програм у новому вікні.'
+    enterpriseAuth: "Для Github Enterprise, зайдіть в свій аккаунт. Натисніть \"Settings\", потім \"Developer settings\"."
     ul:
       li2:
         ul:
@@ -620,8 +736,8 @@ authPage:
           text: 'Натисніть "Register new application" і заповніть форму:'
           ul:
             li1: '<b>Application name:</b> <span class="text-muted"> Що завгодно, напр. My {appName}</span>'
-            li2: 'URL домашньої сторінки'
-            li4: 'Авторизація URL зворотного виклику'
+            li2: 'URL домашньої сторінки:'
+            li4: 'Авторизація URL зворотного виклику:'
         li3:
           text: 'Натисніть "Register Application"'
       form:
@@ -653,7 +769,9 @@ authPage:
           text: "Email адміністратора: "
       disableAccess:
         header: "Небезпечна зона&trade;"
+        warning: '<B class = "text-danger"> Увага: </ b> Відключення контролю доступу надасть повний доступ до Системи {appName} будь-кому, хто може зайти на цю сторінку або достукатися до API. Ми попереджали.'
         confirmDisable: "Ви впевнені? Натисніть ще раз, щоб дійсно відключити контроль доступу"
+        disable: Вимкнути доступ за допомогою Google
     notAuthenticated:
       ul:
         li2:
@@ -666,6 +784,10 @@ authPage:
           labelText: Email адміністратора
         hostname:
           labelText: Домен
+    testAuth:
+      buttonText:
+        pre: Аутентифікація за допомогою Google
+      popupError: 'Будь ласка, вимкніть блокування спливаючих вікон і натисніть кнопку "Автентифікація" знову.'
     stepOne:
       header: 'Крок перший:'
     stepTwo:
@@ -795,6 +917,7 @@ catalogPage:
       alreadyDeployed: Вже розгорнутий
 cis:
   scan:
+    header: Скани CIS
     actions:
       delete: Видалити
       download: Завантажити
@@ -808,7 +931,10 @@ cis:
       skipped: Пропущені
       failed: Не вдалося
       date: Дата
+      empty: Немає сканувань
     detail:
+      error:
+        parseConfig: Виникла проблема з розбором security-scan-cfg config map
       actions:
         delete: Видалити
         download: Завантажити
@@ -821,20 +947,61 @@ cis:
         description: Опис
         empty: Тестів не знайдено
         skip: Пропустити
+        unskip: Не пропустити
         nodesTable:
           title: Вузли
+          row:
+            remediation: "Ремедація: {remediation}"
+cloudCredentialsPage:
+  header: Облікові дані хмари
+  rightButtons:
+    addKey: Додати облікові дані до хмари
+    nodeTemplates: Управління шаблонами вузла
+  index:
+    table:
+      noData: Нема облікових даних у хмарі.
+      noMatch: Немає облікових даних у хмарному сховищі, що відповідають поточному пошуку
+  numberNodeTemplates: "# Шаблони вузла"
 clusterCatalogPage:
   header: Каталоги
 clusterIstioPage:
   header: Istio
+  enabled: "Istio увімкнено. Для того щоб використовувати Istio, вам потрібно увімкнути Istio sidecar - автоін'єкцію для кожного простору імен. Якщо ви увімкнете його в існуючому просторі імен, необхідно буде повторно розгорнути його для використання в ін'єкції дочірніх процесах."
+  disabled: "Istio поки не ввімкнено. Будь ласка, натисніть кнопку \"Увімкнути\", щоб увімкнути його."
+  notReady: Встановлення Istio в системний проєкт поточного кластеру...
   confirmDisable: "Ви впевнені? Натисніть ще раз, щоб дійсно відключити Istio"
+  monitoringNotDeployed: "Моніторинг ще розгортається. Будь ласка, зачекайте закінчення розгортання моніторінгу, перш ніж включити Istio, щоб забезпечити достатню кількість реурсів у кластері."
   disable: Вимкнути
+  enableActionLabel: Увімкнути
   version: Версія Istio
+  customAnswers:
+    title: Користувацькі відповіді
+    detail: Налаштувати користувацькі відповіді.
+  links:
+    kiali:
+      label: Графічний Інтерфейс Kiali
+    jaeger:
+      label: Графічний Інтерфейс Jaeger
+    grafana:
+      label: Графічний Інтерфейс Grafana
+    prometheus:
+      label: Графічний Інтерфейс Prometheus
   config:
     header:
       grafana: Grafana
+      gateway: Ingress шлюз
+      pilot: Pilot
+      prometheus: Prometheus
+      mixer: Mixer
+      tracing: Трасування
+    tracingEnabled:
+      label: Увімкнути трасування
     grafanaEnabled:
       label: Увімкнути Grafana
+    grafanaPersistenceEnabled:
+      label: Увімкнути постійне сховище для Grafana
+    mtlsEnabled:
+      label: Сервіс взаємного обслуговування TLS
     http2Port:
       label: Порт Http2
     httpsPort:
@@ -847,6 +1014,12 @@ clusterIstioPage:
       placeholder: напр. 1
   nodeSelector:
     addSelectorLabel: Додати селектор
+  members:
+    title: Група доступу
+  pilot:
+    title: Pilot
+  mixer:
+    title: Mixer
   enableMonitoring:
     label: Увімкнути Моніторинг
 certificatesPage:
@@ -903,7 +1076,7 @@ namespacesPage:
     pods:
       label: Pod'и
     workloads:
-      label: Workloads
+      label: Навантаження
     created:
       label: Створено
 clusterPage:
@@ -958,6 +1131,8 @@ projectsPage:
       nameReq: Потрібне ім'я.
       nameInExists: Ім'я вже існує. Будь ласка, використовуйте нове ім'я проекту.
       memberNameReq: Ім'я обов'язкове для учасника
+clusterTemplateRevisionUpgradeNotification:
+  tooltip: Доступна версія {revision} для оновлення.
 clustersPage:
   header: Кластери
   newCluster: Додати кластер
@@ -968,10 +1143,14 @@ clustersPage:
     new: Додати кластер
   cluster:
     label: Ім'я Кластера
+  templateRevision:
+    label: Шаблон/Редакція
   provider:
     label: Постачальник
   kubernetesVersion:
     label: Версія Kubernetes
+  rkeTemplate:
+    label: Шаблон RKE
   nodes:
     label: Вузли
   cpu:
@@ -979,14 +1158,24 @@ clustersPage:
   memory:
     label: Опер. пам.
   pod:
-    label: Pod'и
+    label: Поди
   storage:
     label: Диск
+  select:
+    provider:
+      label: "Додати кластер - виберіть тип кластера"
+    template:
+      label: "Додати кластер - Вибрати шаблон RKE"
+clusterRibbonNav:
+  title: Останні кластери
 clusterTemplatesPage:
   index:
     header: Шаблони RKE
     newTemplate: Додати шаблон
+  new:
+    header: Добавити шаблон RKE
   headers:
+    defaultRevisionId: Версія за замовчуванням
     created: Створено
   table:
     name: Ім'я редакції
@@ -1020,11 +1209,11 @@ containerPage:
       noData: У цього контейнера немає томів
       noMatch: Немає томів, які відповідають поточному пошуку
       noContainers: У вас немає інших контейнерів
-  pod: Pod
+  pod: Под
 podPage:
-  header: 'Pod: {name}'
+  header: 'Под: {name}'
   nodeIp: Вузол IP
-  podIp: Pod IP
+  podIp: IP-адреса пода
   containerImage: 'Образ {container}'
   image: Образ
 containersPage:
@@ -1033,6 +1222,7 @@ containersPage:
     sparkPrefixMemory: "Пам'ять: "
     sparkPrefixNetwork: "Мережа: "
     sparkPrefixStorage: "Сховище: "
+    noData: Немає ніяких workload.
     noMatch: Не знайдено контейнери, що відповідають поточним пошуку.
   welcome:
     container: Відразу приступити до роботи
@@ -1046,10 +1236,12 @@ clusterDashboard:
   used: Використовується
   title: Панель управління
   sections:
+    cluster: Метрика Кластера
+    etcd: Метрика Etcd
     node: Метрика вузла
   cpu: ЦП
   memory: Пам'ять
-  pods: Pods
+  pods: Поди
   value: Значення
   more: Більше
   clusterNotReady: Інформація про графік із кластера наразі недоступна
@@ -1067,11 +1259,18 @@ ingressResponse:
   path: Шлях
   responseTime: Час відповіді
   noData: Немає даних
+  noMatch: Немає записів, які відповідають поточним пошуку
+etcd:
+  hasLeader:
+    label: Etcd має лідера
 monitoringPage:
   version: Версія моніторингу
   confirmDisable: "Ви впевнені? Натисніть ще раз, щоб дійсно відключити моніторинг."
   disable: Вимкнути
   enableActionLabel: Увімкнути
+  toUpdate:
+    cluster: Моніторинг рівня кластера увімкнено.
+    project: Моніторинг рівня проєкту увімкнено.
   config:
     types:
       none: Немає
@@ -1079,8 +1278,10 @@ monitoringPage:
     prometheus:
       cpuLimit:
         placeholder: напр. 1000
+        unit: мілі-ЦП
       cpuRequest:
         placeholder: напр. 1000
+        unit: мілі-ЦП
       memoryLimit:
         placeholder: напр. 1000
       memoryRequest:
@@ -1090,19 +1291,24 @@ monitoringPage:
     grafana:
       size:
         placeholder: напр. 10Gi
+    retention:
+      label: Зберігання Даних
+    storageClass:
+      label: Клас сховища
     operator:
       memoryLimit:
         placeholder: напр. 500
     nodeexporter:
       cpuLimit:
         placeholder: напр. 200
+        unit: мілі-ЦП
       memoryLimit:
         placeholder: напр. 200
   nodeSelector:
     addSelectorLabel: Додати селектор
 metricsAction:
   sections:
-    pod: Метрика Pod
+    pod: Метрика Пода
     container: Метрика контейнера
   grafana:
     label: Grafana
@@ -1123,12 +1329,26 @@ metricsAction:
     7d: 7 днів
     30d: 30 днів
 metrics:
+  cluster-cpu-load: Середнє навантаження
   cluster-cpu-usage: Використання ЦП
   cluster-disk-io: Диск вводу/виводу
+  cluster-fs-usage-percent: Використання диска
+  cluster-memory-usage: Використання пам'яті
+  cluster-network-io: Мережевий ввід/вивід
+  cluster-network-packet: Мережеві пакети
   container-cpu-usage: Використання ЦП
   container-disk-io: Диск вводу/виводу
+  container-memory-usage-bytes-sum: Використання пам'яті
   etcd-db-bytes-sum: Розмір БД
+  etcd-grpc-client: GRPC клієнт трафіку
+  etcd-stream: Активні потоки
   node-cpu-load: Середнє навантаження
+  node-cpu-usage: Використання ЦП
+  node-disk-io: Диск вводу/виводу
+  node-fs-usage-percent: Використання диска
+  node-memory-usage: Використання пам'яті
+  node-network-io: Мережевий ввід/вивід
+  node-network-packet: Мережеві пакети
   pod-cpu-usage: Використання ЦП
   pod-disk-io: Диск вводу/виводу
   pod-memory-usage-bytes-sum: Використання пам'яті
@@ -1145,7 +1365,7 @@ dnsPage:
     arecord: Зовнішній IP
     cname: Ім'я хосту
     alias: Псевдонім
-    workload: Workload
+    workload: Навантаження
     selector: Селектор
     clusterIp: Кластер IP
     unknown: Невідомо
@@ -1156,7 +1376,7 @@ cruHpa:
   status:
     label: Поточний Статус
   target:
-    label: Workload
+    label: Навантаження
   name:
     placeholder: напр. myscaler
   description:
@@ -1185,7 +1405,7 @@ cruHpa:
     types:
       label: Тип метрики
       object: Об’єкт
-      pods: Pods
+      pods: Поди
       resource: Ресурс
       external: Зовнішній
     name:
@@ -1221,6 +1441,7 @@ editDns:
   healthCheckNodePort:
     placeholder: напр. 8080
   externalTrafficPolicy:
+    local: Локальний
     cluster: Кластер
   publishNotReadyAddresses:
     label: Опубліковані IP адреси
@@ -1251,7 +1472,7 @@ editDns:
     cname: напр. example.com
   prompt:
     alias: Виберіть запис DNS...
-    workload: Виберіть Workload...
+    workload: Виберіть Навантаження...
   errors:
     targetRequired: 'Необхідно одне або кілька "цілей"'
 cruPersistentVolumeClaim:
@@ -1270,12 +1491,17 @@ cruPersistentVolumeClaim:
     label: Джерело
   pv:
     label: Persistent Volume
+    prompt: Виберіть persistent volume...
   storageClass:
     label: Клас сховища
   secretRequired:
-    name: ім’я секрета
+    name: Ім’я секрета
+    namespace: Простір імен
 cruVolumeClaimTemplate:
+  define:
+    addActionLabel: Визначити
   capacity:
+    label: Ємність
     unit: GiB
   name:
     placeholder: напр. myvol
@@ -1317,13 +1543,17 @@ globalRegistryPage:
     title: Докер Команди
   setting:
     adminPassword:
-      label: Пароль адміністратора
+      label: Пароль Адміністратора
   config:
     header:
       postgresql: Бази даних PostgreSQL
       redis: Redis
       registryPersistence: Реєстр
       clair: Clair
+    persistenceStorageclass:
+      label: Клас сховища
+    secretKey:
+      label: Ключ шифрування для Harbor
     registryPVSize:
       label: Розмір Persistent Volume
     databaseRequestCpu:
@@ -1347,6 +1577,7 @@ globalRegistryPage:
         host:
           placeholder: напр. 192.168.0.2
         port:
+          label: Порт для Redis
           placeholder: напр. 6379
         coreDatabaseIndex:
           placeholder: напр. 0
@@ -1354,10 +1585,16 @@ globalRegistryPage:
           placeholder: напр. 1
         registryDatabaseIndex:
           placeholder: напр. 2
+        password:
+          placeholder: Ваш пароль до redis
     s3:
       region:
         label: Регіон S3
         placeholder: напр. us-west-2
+      bucket:
+        label: Назва S3 Bucket
+      accesskey:
+        label: Ключ доступу S3
       regionendpoint:
         placeholder: напр. s3.us-west-2.amazonaws.com
     database:
@@ -1365,6 +1602,7 @@ globalRegistryPage:
         host:
           placeholder: напр. 192.168.0.1
         port:
+          label: Порт для PostgreSQL
           placeholder: напр. 5432
         username:
           label: Ім'я користувача для PostgreSQL
@@ -1380,6 +1618,8 @@ globalRegistryPage:
           placeholder: напр. notary_server
         notarySignerDatabase:
           placeholder: напр. notary_signer
+    exposeIngressHost:
+      error: '"{hostName}" - це ім''я хосту. Необхідно вказати доменне ім''я для expose.ingress.host'
   nodeSelector:
     addSelectorLabel: Додати селектор
 globalDnsPage:
@@ -1412,6 +1652,7 @@ globalDnsPage:
     config:
       accessKey:
         label: Ключ доступу
+        placeholder: Ваш ключ доступу
       secretKey:
         label: Секретний ключ
         placeholder: Ваш секретний ключ
@@ -1480,7 +1721,7 @@ nodesPage:
     cpu: ЦП
     memory: Опер. пам.
     disk: Диск
-    pod: Pod'и
+    pod: Поди
     version: Версія
     docker: Docker
     instanceState: Стан контейнерів
@@ -1538,7 +1779,7 @@ hostsPage:
       diskSpace: Дисковий простір
       ready: Kubelet
     limits:
-      cpu: 'Ліміт CPU:'
+      cpu: 'Ліміт ЦПУ:'
       memory: 'Обмеження пам''яті:'
       storage: 'Ліміт локального тома:'
     infoMultiStats:
@@ -1566,7 +1807,7 @@ hostsPage:
           service: Сервіс
           container: Контейнер
         body:
-          noData: На цьому хості поки немає портів.
+          noData: На цьому хості поки немає портів
     storageTab:
       header: Томи
       table:
@@ -1577,15 +1818,22 @@ hostsPage:
         body:
           noData: На цьому хості поки немає томів
 istio:
+  period: Період
+  table:
+    template: Шаблон
+    host: Хост
   nav:
     metrics: Метрика трафіку
+    destinationRules:
+      add: Додати правило призначення
     virtualServices:
       add: Додати віртуальну послугу
     gateways:
+      label: Шлюзи
       add: Додати шлюз
 k8sImport:
   name:
-    label: Ім'я кластера
+    label: Ім'я Кластера
     placeholder: напр. my-imported-cluster
   actionLabel: Імпорт
 k8sPage:
@@ -1638,7 +1886,7 @@ registriesPage:
       header:
         state: Статус
         address: Адреса
-        username: Ім'я користувача
+        username: Ім'я кристувача
         created: Створено
   new:
     header: Додати реєстр
@@ -1648,13 +1896,19 @@ registriesPage:
         placeholder: напр. registry.example.com
         help: 'Просто доменне ім''я або IP адреса, протокол вказувати не потрібно (https: //)'
       username:
-        labelText: Ім'я користувача
+        labelText: Ім'я кристувача
         placeholder: напр. ім'я користувача
       password:
         labelText: Пароль
         placeholder: напр. пароль
 rulesPage:
   new: Додати правило трафіку
+ruleDetailPage:
+  rules:
+    gateways: Шлюзи
+  answers:
+    title: Відповіді
+    variable: Змінна
 secretsPage:
   index:
     header: Секрети
@@ -1662,6 +1916,9 @@ secretsPage:
     noMatch: Секретів з даного запиту не знайдено
   table:
     keys: Ключі
+settingsPage:
+  tabs:
+    settings: Додаткові налаштування
 configMapsPage:
   index:
     header: Config Maps
@@ -1669,15 +1926,16 @@ configMapsPage:
   table:
     keys: Ключі
 servicePage:
+  header: 'Навантаження: {name}'
   globalScale: '{scale} на хост'
-  endpoints: 'Кінцеві точки:'
+  endpoints: 'Кінцеві точки'
   multistat:
-    type: 'Тип Workload'
-    fqdn: 'FQDN (Повне доменне ім''я):'
-    scale: 'Кількість:'
-    image: 'Образ:'
-    namespace: 'Простір імен:'
-    created: 'Створений:'
+    type: 'Тип Навантаження'
+    fqdn: 'FQDN (Повне доменне ім''я)'
+    scale: 'Кількість'
+    image: 'Образ'
+    namespace: 'Простір імен'
+    created: 'Створений'
     daemonSetScale: '1 на вузол'
   serviceType:
     deployment: Deployment
@@ -1826,7 +2084,9 @@ nodeTemplatesPage:
     usedBy: Використовується
     usedByNone: Немає кластерів
     unknown: Невідомо
+    owner: Власник
 storageClassPage:
+  header: Класи сховища
   addActionLabel: Додати клас
   provisioner:
     label: Провайдер
@@ -1843,14 +2103,14 @@ userPreferencesPage:
     header: Тема
     light: Світла
     auto: Авто
-    autoDetail: Автоматично буде переходити в темний з 18:00 до 6:00
+    autoDetail: Автоматично буде переходити в темну з 18:00 до 6:00
     dark: Темна
   generalInfo:
     header: Мій обліковий запис
     name:
       label: Ім'я
     username:
-      label: Ім'я користувача
+      label: Ім'я кристувача
     email:
       label: Ел. пошта
     password:
@@ -1862,6 +2122,10 @@ verifyPage:
     header: Обліковий запис створено
     subtext: Натисніть на посилання нижче, щоб перейти на сторінку входу.
     linkText: Вхід
+virtualServicePage:
+  table:
+    hosts:
+      label: Хости
 verifyResetPasswordPage:
   header: Скинути пароль
   button: Оновити пароль
@@ -1892,7 +2156,8 @@ notifierPage:
     hostPlaceholder: напр. 192.168.1.121
     port: Порт
     portPlaceholder: напр. 465
-    userName: Ім'я користувача
+    sender: Відправник
+    userName: Ім'я кристувача
     userNamePlaceholder: напр. John
     password: Пароль
     passwordPlaceholder: Ваш Пароль
@@ -1902,6 +2167,8 @@ notifierPage:
     recipientType:
       tag: Тег
       user: Користувач
+    secret:
+      label: Секрет Додатоку
     agentPlaceholder: напр. 1000003
     corpPlaceholder: напр. wwc0cc3d58f9b021b6
     defaultRecipientPlaceholder: напр. 2
@@ -1980,6 +2247,8 @@ ldap:
   customizeSchema:
     header: "2. Власна схема"
     helpText: "Якщо Ваша схема даних не відповідає стандартному формату Active Directory - вам сюди."
+    cert:
+      labelText: CA сертифікат
     users:
       header: Користувачі
       objectClass:
@@ -2039,9 +2308,13 @@ annotationsSection:
   title: Примітки
   key: Ключ
   value: Значення
+authorizedEndpoint:
+  fqdn:
+    label: FQDN (Повне доменне ім'я)
 taintsSection:
   key: Ключ
   value: Значення
+  effect: Ефект
 billingInfo:
   header: Інформація щодо сплати
   addNew: Додати спосіб оплати
@@ -2057,6 +2330,8 @@ billingInfo:
 cloudProvider:
   amazon: Amazon
   azure: Azure
+  external:
+    label: Зовнішній
 catalogSettings:
   header: Каталоги
   currentCluster: Кластер
@@ -2097,7 +2372,7 @@ catalogSettings:
     private:
       label: Використовувати приватний каталог
     username:
-      label: Ім'я користувача
+      label: Ім'я кристувача
       required: '"Ім''я користувача" обов''язково до заповнення'
       placeholder: Ваше ім'я користувача
     password:
@@ -2111,20 +2386,34 @@ clusterRow:
   addHost: Додати вузли
   importCluster: Використовувати існуючі Kubernetes
   loginDefault: Вхід
+clusterTemplateRow:
+  label: 'Шаблон RKE'
+  noData: 'Не визначено шаблонів RKE.'
 clusterNew:
+  header: Виберіть тип кластера
   advanced:
+    cancel: Редагувати як форму
+    viewCancel: Переглянути як форму
     yaml: Редагувати як YAML
+    viewYaml: Переглянути як YAML
   name:
     label: Ім'я Кластера
     placeholder: напр. Sandbox
+    required: '"Ім''я кластера" обов''язкове'
   description:
     placeholder: напр. Кластер для dev і test workloads
+  driverLabels:
+    import: Імпортувати існуючий кластер
   members:
     label: Ролі учасників
   config:
     label: Постачальник
+  nodes:
+    title: Параметри Вузла
   customize:
     title: Параметри Кластера
+  security:
+    title: Параметри безпеки
   amazoneks:
     shortLabel: Amazon EKS
     access:
@@ -2152,13 +2441,22 @@ clusterNew:
     bandwidth:
       placeholder: напр. 10
     nodeCount:
+      label: Кількість вузлів
       placeholder: напр. 3
+    region:
+      label: Регіон
+    secretKey:
+      label: Секретний ключ
     securityGroup:
       label: Група безпеки
+    vpc:
+      label: VPC
     version:
       label: Версія Kubernetes
     cidr:
       placeholder: напр. 172.16.0.0/16
+    zone:
+      label: Зона доступності
     instanceType:
       label: Тип інстансу
   azureaks:
@@ -2168,6 +2466,7 @@ clusterNew:
     placement:
       label: Розміщення
     count:
+      label: Кількість вузлів
       placeholder: напр. 1
     location:
       label: Розташування
@@ -2183,12 +2482,14 @@ clusterNew:
     dns:
       label: Префікс DNS
       placeholder: "напр. example"
+    ssh:
+      label: Відкритий SSH ключ
     security:
       label: Безпека
     members:
       label: Ролі учасників
     pod:
-      label: Політики Безпеки Pod
+      label: Політики Безпеки Подів
     kubernetesVersion:
       label: Версія Kubernetes
       prompt: Вибрати версію...
@@ -2213,6 +2514,9 @@ clusterNew:
       label: Мережа
       default: За замовчанням
       advanced: Розширені
+      networkPlugin:
+        label: Мережевий плагін
+        prompt: Виберіть мережевий плагін
       subnet:
         label: Підмережа
       serviceCidr:
@@ -2265,6 +2569,34 @@ clusterNew:
     tags:
       label: Теги
       addActionLabel: Додати тег
+  aliyunkcs:
+    access:
+      next: "Далі: налаштування кластера"
+      title: Доступ до облікового запису
+    cluster:
+      title: Конфігурація кластера
+    clusters:
+      k8s: Kubernetes
+      label: Тип Кластера
+    disk:
+      ssd: SSD диск
+    rootSize:
+      label: Розмір кореневого диска
+      placeholder: напр. 120
+    storageSize:
+      placeholder: напр. 120
+    numOfNodes:
+      placeholder: напр. 3
+    regionId:
+      label: Регіон
+    accessKeyId:
+      label: Ключ доступу
+    accessKeySecret:
+      label: Секретний ключ
+    version:
+      label: Версія Kubernetes
+    instanceType:
+      label: Тип інстансу
   googlegke:
     shortLabel: Google GKE
     checkServiceAccount: "Далі: налаштування вузлів"
@@ -2278,12 +2610,17 @@ clusterNew:
     project:
       label: Проект
       placeholder: наприклад, мій проект
+    locationType:
+      zone: Зональний
+      region: Регіональний
     region:
+      label: Регіон
       prompt: Виберіть регіон...
     machineType:
       label: Тип машини
       prompt: Виберіть тип...
     nodeCount:
+      label: Кількість вузлів
       prompt: Виберіть тип...
     diskSizeGb:
       label: Розмір кореневого диска
@@ -2296,14 +2633,22 @@ clusterNew:
       label: Функції Alpha
     dashboard:
       label: Панель Керування Kubernetes
+    minNodeCount:
+      label: Мінімальна кількість вузлів
+    maxNodeCount:
+      label: Максимальна кількість вузлів
     enablePrivateNodes:
       label: Приватний кластер
     masterIpv4CidrBlock:
       placeholder: напр. 10.42.0.0/28
     ipPolicySubnetworkName:
       label: Назва підмережі
+    ipPolicyCreateSubnetwork:
+      label: Створити підмережу
     ipPolicyClusterIpv4CidrBlock:
       placeholder: напр. 10.96.0.0/11
+    masterAuthorizedNetworkCidrBlocks:
+      addActionLabel: Додати CIDR блок
     ipPolicyServicesIpv4CidrBlock:
       placeholder: напр. 10.94.0.0/18
     header:
@@ -2315,13 +2660,21 @@ clusterNew:
     nodeLabels:
       label: Мітки вузла
       addAction: Додати мітку
+    clusterLabels:
+      label: Мітки кластера
+    serviceAccount:
+      label: Сервіс Облікового запису
     oauthScopes:
       default: Дозволити доступ за замовчуванням
     userInfo:
       label: Про користувача
     storage:
       label: Сховище
+    bigQuery:
+      label: BigQuery
     taints:
+      effect:
+        label: Ефект
       key:
         label: Ключ
         placeholder: Ключ
@@ -2329,8 +2682,10 @@ clusterNew:
         label: Значення
         placeholder: Значення
   huaweicce:
+    shortLabel: Huawei CCE
     name:
       label: Ім'я Кластера
+      required: Ім'я кластера обов'язкове.
     access:
       title: Доступ до облікового запису
     accessKey:
@@ -2338,22 +2693,44 @@ clusterNew:
       placeholder: Ключ доступу Huawei
     secretKey:
       label: Секретний ключ
+    projectId:
+      label: Ідентифікатор проєкту
+    region:
+      label: Регіон
     checkAccount: "Далі: Налаштування кластера"
+    checkingAccount: Аутентифікація...
     configureNode: "Далі: налаштування вузла"
     clusterOption:
       title: Параметри Кластера
     clusterType:
       label: Тип Кластера
+    vpcId:
+      label: Назва VPC
+    nodeOption:
+      title: Вузли
     description:
+      label: Опис
       placeholder: напр. Кластер для Huawei CCE
+    availableZone:
+      label: Зона
     containerNetworkCidr:
       placeholder: напр. 172.16.0.0/16
     containerNetworkMode:
       none: Немає конфігурації
+    nodeCount:
+      label: Кількість вузлів
+    ssh:
+      label: Iм'я SSH ключа
     eipSelection:
       none: Вимкнено
     clusterLabels:
       none: Без мітки
+    externalServerEnabled:
+      label: Зовнішній сервер
+    highAvailability:
+      label: Висока доступність
+    authenticatingProxyCa:
+      label: Сертифікат
     loginMode:
       password: Пароль
     password:
@@ -2361,7 +2738,16 @@ clusterNew:
       placeholder: Будь ласка, введіть пароль
     userName:
       label: Ім'я користувача
+    authentiactionMode:
+      rbac: RBAC
   rke:
+    clustersSelectTemplate:
+      select:
+        label: Шаблони RKE
+        prompt: Виберіть шаблон RKE
+    clustersSelectTemplateRevision:
+      select:
+        prompt: Виберіть версію шаблону RKE
     etcd:
       backupConfig:
         retention:
@@ -2372,14 +2758,27 @@ clusterNew:
           label: Назва S3 Bucket
           placeholder: "напр. backups"
         region:
+          label: Регіон S3
           placeholder: "напр. us-west-2"
         endpoint:
           placeholder: "напр. s3.us-west-2.amazonaws.com"
         folder:
+          label: Папка S3
           placeholder: "напр. cluster-backup"
+        accessKey:
+          label: Ключ доступу S3
+          placeholder: Ключ доступу AWS
+        secretKey:
+          placeholder: Ваш секретний ключ AWS
       location:
         s3:
           label: s3
+        local:
+          label: локальний
+      retention:
+        placeholder: "12 год"
+      creation:
+        placeholder: "6 год"
     nodeName:
       title: Назва вузла
       placeholder: напр. my-worker-node
@@ -2397,6 +2796,7 @@ clusterNew:
     labels:
       title: Мітки вузлів
     nodes:
+      addTemplate: Додати шаблон вузла
       templatePrompt: "Виберіть шаблон..."
       hostnamePrefix: Префікс імені
       count: Кількість
@@ -2407,10 +2807,15 @@ clusterNew:
     serviceNodePortRange:
       placeholder: напр. 30000-32767
     network:
+      title: Мережа
       label: Провайдер мережі
       flannel: Flannel
+      flannelCustom: Flannel
       calico: Calico
       canal: Canal
+      weave: Weave
+      flannelBackends:
+        vxlan: VXLAN (Overlay)
       options:
         flannel:
           iface:
@@ -2422,6 +2827,8 @@ clusterNew:
       label: Nginx Ingress
     monitoring:
       label: Метрики моніторингу сервера
+    networkPolicy:
+      label: Ізоляція мережі проєктів
     version:
       label: Версія Kubernetes
     registry:
@@ -2430,7 +2837,7 @@ clusterNew:
         label: URL-АДРЕСА
         placeholder: напр. quay.io
       user:
-        label: Ім'я користувача
+        label: Ім'я кристувача
       password:
         label: Пароль
     ignoreDockerVersion:
@@ -2468,7 +2875,11 @@ clusterNew:
   custom:
     shortLabel: Власний
   import:
+    label: Імпортувати існуючий кластер
     shortLabel: Імпортовано
+clusterTemplateNew:
+  members:
+    label: Ролі учасників
 cruClusterTemplate:
   name:
     label: 'Ім''я шаблону'
@@ -2476,10 +2887,12 @@ cruDestinationRule:
   title:
     new: Додати правило призначення
   port:
+    label: Порт
     placeholder: напр. 8080 або myport
   name:
     placeholder: напр. myrule
   loadBalancer:
+    label: Балансувальник Навантаження
     consistentHash:
       httpHeaderName:
         placeholder: напр. end-user
@@ -2491,6 +2904,7 @@ cruDestinationRule:
         path:
           placeholder: напр. /
         ttl:
+          label: TTL
           placeholder: напр. 0с
   connectionPool:
     http1MaxPendingRequests:
@@ -2511,6 +2925,7 @@ cruDestinationRule:
     consecutiveErrors:
       placeholder: напр. 5
     interval:
+      label: Інтервал
       placeholder: напр. 10с
     maxEjectionPercent:
       placeholder: напр. 10
@@ -2519,13 +2934,17 @@ cruDestinationRule:
       label: Ім'я
       placeholder: напр. v1
   tls:
+    label: TLS
     mode:
+      label: Режим TLS
       none:
         label: НЕМАЄ
     clientCertificate:
       placeholder: напр. /etc/certs/myclientcert.pem
     privateKey:
+      label: Приватний Ключ
       placeholder: напр. /etc/certs/client_private_key.pem
+      error: Необхідний приватний ключ.
     caCertificates:
       placeholder: напр. /etc/certs/rootcacerts.pem
     sni:
@@ -2533,9 +2952,20 @@ cruDestinationRule:
     subjectAltNames:
       placeholder: напр. example.com
 clusterTemplateQuestions:
+  table:
+    answer: 'Значення по замовчуванню'
+    type: 'Тип'
+    required: 'Обов''язково'
   schemaLabels:
+    fqdn: 'FQDN (Повне доменне ім''я)'
     addons: 'Доповнення'
+    authentication: 'Аутентифікація'
+    authorization: 'Авторизація'
+    dns: 'Налаштування DNS'
+    ingress: 'Ingress'
     kubernetesVersion: 'Версія Kubernetes'
+    network: 'Налаштування мережі'
+    services: 'Сервіси'
 conditionSections:
   title: Статус
   table:
@@ -2548,20 +2978,24 @@ resourceEventList:
   title: Події
   table:
     type: Тип
+    lastUpdate: Остання активність виявлена
     reason: Причина
     message: Повідомлення
     namespace: Простір імен
+    object: Об’єкт
   noData: Немає подій
 confirmDelete:
   resourceType:
     namespace: 'простір імен'
+    project: 'проєкт'
+    cluster: 'кластер'
   environmentNote: 'Примітка: Всі ресурси всередині цього проекту будуть видалені, включаючи будь-які простори імен, створені через {appName}.'
   protip: 'Порада: Утримуйте клавішу {key} при натисканні Delete, щоб обійти це підтвердження.'
   confirmAction: Видалити
   cancelAction: Скасувати
   forceDelete:
     label: Примусове видалення
-    warning: "ВАЖЛИВО: Примусове видалення pod'ів не чекає підтвердження того, що процеси pod'а були припинені. Це може призвести до <b>пошкодження даних або невідповідності</b>."
+    warning: "ВАЖЛИВО: Примусове видалення подів не чекає підтвердження того, що процеси пода були припинені. Це може призвести до <b>пошкодження даних або невідповідності</b>."
 containerLogs:
   title: "Логи: "
   onlyCombined: "<b>Примітка:</b> Для цього контейнера доступні комбіновані stdout/stderr журнали, тому що він був запущений з TTY (-t)."
@@ -2588,6 +3022,7 @@ containerShell:
     connected: Підключено
     disconnected: Відключений
     closed: Закриті
+    code: "Код: {code}"
 copyToClipboard:
   tooltip: Копіювати до буфера обміну
   copied: Скопійовано!
@@ -2602,12 +3037,13 @@ cruRegistry:
     custom: Власний
     globalRegistry: Глобальний реєстр
     placeholder: напр. registry.example.com
+    artifactory: Artifactory
   multiple: Декілька
   auth:
     label: Токен аутентифікації
     saved: Збережено
   username:
-    label: Ім'я користувача
+    label: Ім'я кристувача
   password:
     label: Пароль
     saved: Збережено
@@ -2620,7 +3056,7 @@ cruPersistentVolume:
     view: 'Persistent Volume: {name}'
   storageClass:
     prompt: Немає
-  pvc: Том
+  pvc: Persistent Volume Claim
   capacity:
     label: Ємність
     unit: GiB
@@ -2638,6 +3074,7 @@ cruPersistentVolume:
     readOnly:
       label: Тільки для читання
     partition:
+      label: Розділ
       placeholder: "напр. 1; 0 для всього пристрою"
     volumeID:
       label: ID Тома
@@ -2686,9 +3123,11 @@ cruPersistentVolume:
       label: Середній
       memory: Пам'ять
     sizeLimit:
+      label: Обмеження розміру
       placeholder: "напр. 300Mi"
   azureFile:
     secretName:
+      label: Ім’я секрета
       placeholder: "напр. секрет"
     secretNamespace:
       placeholder: "напр. за замовчуванням"
@@ -2839,10 +3278,11 @@ cruPersistentVolume:
       placeholder: "напр. vol"
     secretRef:
       name:
+        label: Ім’я секрета
         placeholder: "напр. abc"
       namespace:
         placeholder: "напр. за замовчуванням"
-      label: ім’я секрета
+      label: Ім’я секрета
   photonPersistentDisk:
     fsType:
       label: Тип файлової системи
@@ -2956,14 +3396,22 @@ cruStorageClass:
       label: Тип Тома
     encrypted:
       label: Шифрування
+    kmsKeyId:
+      automatic: "Автоматично: Згенерувати ключ"
   gce-pd:
     type:
+      label: Тип Тома
       pd-standard: 'Стандартний'
       pd-ssd: 'SSD'
     fsType:
+      label: Тип файлової системи
       placeholder: "напр. ext4"
+    replicationType:
+      none: Зональна
+      regionalPd: Регіональна
   cinder:
     type:
+      label: Тип Тома
       placeholder: "напр. fast"
     availability:
       placeholder: "напр. nova"
@@ -3094,6 +3542,8 @@ cruStorageClass:
       placeholder: "напр. kube"
     userSecretName:
       placeholder: "напр. ceph-secret-user"
+    userSecretNamespace:
+      placeholder: "напр. за замовчуванням"
     fsType:
       label: Тип файлової системи
       placeholder: "напр. ext4"
@@ -3112,6 +3562,7 @@ cruStorageClass:
     secretNamespace:
       placeholder: "напр. за замовчуванням"
     secretName:
+      label: Ім’я секрета
       placeholder: "напр. heketi-secret"
     clusterid:
       label: Ідентифікатор кластера
@@ -3123,17 +3574,32 @@ cruStorageClass:
     volumetype:
       label: Тип Тома
       placeholder: "напр. replicate:3"
+gatewayPage:
+  table:
+    hosts:
+      label: Хости
 cruGateway:
   title:
     new: Додати шлюз
   name:
     placeholder: напр. mygateway
   selector:
+    label: Селектор
     add: Додати значення ключа
   tls:
+    mode:
+      label: Режим
     httpsRedirect:
       enabled: 'Так'
       disabled: 'Ні'
+    serverCertificate:
+      label: Сертифікат сервера
+      placeholder: напр. /etc/istio/ingressgateway-certs/tls.crt
+    privateKey:
+      label: Приватний Ключ
+      placeholder: напр. /etc/istio/ingressgateway-certs/tls.key
+    caCertificates:
+      placeholder: напр. /etc/istio/ingressgateway-ca-certs/ca-chain.cert.pem
     credentialName:
       placeholder: напр. myssl
   port:
@@ -3144,24 +3610,130 @@ cruGateway:
       placeholder: напр. http
       error: '"Назва порту" обов''язкова.'
   hosts:
+    label: Хости
     add: Додати хост
+    placeholder: напр. *
   servers:
+    label: Сервери
     add: Додати Сервер
+    removeServerLabel: Видалити сервер
 cruVirtualService:
+  title:
+    new: Додати віртуальну послугу
+  name:
+    placeholder: напр. myservice
   hosts:
+    label: Хости
     add: Додати хост
   gateways:
+    label: Шлюзи
     add: Додати шлюз
   http:
     routes:
       addRouteLabel: Додати HTTP маршрут
+      moveUp: Перемістити вгору
+      timeout:
+        label: Час очікування
+        placeholder: напр. 5с
+      faultInjection:
+        abort:
+          httpStatus:
+            placeholder: напр. 400
+          percent:
+            label: Відсоток
+            placeholder: напр. 8
+        delay:
+          fixedDelay:
+            placeholder: напр. 5с
+          percent:
+            label: Відсоток
+            placeholder: напр. 8
+      mirror:
+        host:
+          label: Хост
+        subset:
+          placeholder: напр. v2
+        port:
+          label: Порт
+          placeholder: напр. 8080 або myport
+      retries:
+        attempts:
+          placeholder: напр. 3
+        perTryTimeout:
+          placeholder: напр. 2с
+      redirect:
+        uri:
+          placeholder: напр. /v1/bookRatings
+        authority:
+          placeholder: напр. newratings.default.svc.cluster.local
+      rewrite:
+        uri:
+          placeholder: напр. /v1/bookRatings
+        authority:
+          placeholder: напр. newratings.default.svc.cluster.local
+      destination:
+        port:
+          label: Порт
+          placeholder: напр. 8080 або myport
+        weight:
+          label: Вага
+          placeholder: напр. 50
+        subset:
+          placeholder: напр. v1
+        host:
+          label: Хост
+      matches:
+        port:
+          label: Порт
+          placeholder: напр. 8080
+        type:
+          method: Метод
+        key:
+          label: Ключ
+          placeholder: напр. end-user
+        condition:
+          label: Стан
+        value:
+          label: Значення
+          uri:
+            exact: напр. /ratings/v2/
+            prefix: напр. /ratings
+            regex: напр. /ratings.*
+          authority:
+            exact: напр. eu.bookinfo.com
+            prefix: напр. eu
+          method:
+            exact: напр. GET
+            prefix: напр. GET
+            regex: напр. ^.*(GET|POST).*$
+          scheme:
+            exact: напр. http
+            prefix: напр. http
+            regex: напр. h.*
+          headers:
+            exact: напр. jason
+            prefix: напр. jason
+            regex: напр. ja.*
+validationsList:
+  table:
+    path: Шлях
+    message: Повідомлення
 dangerZone:
   header: Додаткові налаштування
   showLabel: Я розумію, що я можу порушити працездатність, змінюючи додаткові налаштування.
+  show: Показати
 deleteEksCluster:
   title: "Видалити {clusterName}?"
+  updateKeys: Оновити ключі
+  updatingKeys: Оновлення ключів
   deleteCluster: Видалити кластер
   deletingCluster: Видалення кластера
+  accessKey:
+    label: Ключ доступу
+    placeholder: Ключ доступу AWS
+  secretKey:
+    label: Секретний ключ
+    placeholder: Ваш секретний ключ AWS
 editAccount:
   title: Редагування облікового запису
   form:
@@ -3176,11 +3748,11 @@ editAccount:
       label: Опис
       placeholder: напр. цей обліковий запис буде для Джона Сміта
     publicValue:
-      label: Ім'я коористувача
+      label: Ім'я кристувача
     oldPassword:
       label: Поточний пароль
     newPassword:
-      label: Новий пароль
+      label: Новий Пароль
     confirmPassword:
       label: Підтвердьте пароль
     identity:
@@ -3216,7 +3788,7 @@ editCluster:
     label: Опис
     placeholder: напр. Спільний кластер для розробки
   systemStacks:
-    hr: Параметри кластера
+    hr: Параметри Кластера
     title: Стеки системного каталогу
     detail: Ці стекі будуть автоматично розгорнуті в середовищі System для кластера.
     noData: Жоден стек не буде розгорнуто в середовищі системи.
@@ -3226,13 +3798,14 @@ editCluster:
     onCluster: "Увага: Ви намагаєтесь видалити кластер, яким володіє поточним середовищем. Перш ніж видалити цей кластер, виберіть нове середовище в іншому кластері."
 editContainer:
   title:
-    vm: Редагувати віртуальну машину
+    vm: Редагувати Віртуальну Машину
     container: Редагувати контейнер
   name:
     placeholder: напр. myapp
   description:
     placeholder: напр. мій додаток
 editHost:
+  title: Редагувати вузол
   hostname:
     label: Ім'я хосту
   customName:
@@ -3277,7 +3850,7 @@ editUser:
       label: Відображуване ім'я
       placeholder: напр. Іван Гнатів
     username:
-      label: Ім'я користувача
+      label: Ім'я кристувача
     otherRoles:
       label: Видалити ролі
     password:
@@ -3304,6 +3877,11 @@ stacksPage:
     scale: Кількість
     instanceState: Стан контейнерів
     instanceStateWithIcon: Статус
+featureFlags:
+  table:
+    state: Штат
+    name: Назва
+    description: Опис
 formatIp:
   noIp: Немає
 formBalancerConfig:
@@ -3314,29 +3892,36 @@ formMembersGlobalAccess:
   title: Учасники
   table:
     name: Ім'я
+    type: Тип учасника
     accessType: Тип доступу
+    noMatch: Жоден учасник не відповідає поточному пошуку
+    prompt: Виберіть значення...
 formNodeRequirement:
   label: Правила
   addRuleLabel: Додати правило
   noRules: Немає правил
   key:
     label: Ключ
+    placeholder: напр. kubernetes.io/hostname
+  operator:
+    label: Оператор
   values:
     label: Значення
 formIngress:
   label: Правила
   addRuleLabel: Додати правило
+  removeRuleLabel: Видалити це правило
   noRules: Немає правил
   host:
     label: Запит Хоста
     placeholder: "напр. example.com"
   mode:
-    workload: Workload
+    workload: Навантаження
     service: Запис DNS
 formIngressBackends:
   noRules: Немає Бакендів
   addServiceLabel: Сервіс
-  addWorkloadLabel: Workload
+  addWorkloadLabel: Навантаження
   service:
     label: сервіс
   workload:
@@ -3459,9 +4044,9 @@ formCount:
   label: Кількість
 formDisks:
   addDiskLabel: Додати диск
-  addRootDiskLabel: Додати кореневий диск
+  addRootDiskLabel: Додати Кореневий Диск
   name:
-    rootDisk: Кореневий диск
+    rootDisk: Кореневий Диск
     label: Ім'я
     placeholder: напр. data
   size:
@@ -3500,12 +4085,14 @@ formEngineOpts:
 formResourceQuota:
   table:
     value:
+      label: Ліміт
       placeholder: напр. 10
       milliCpuPlaceholder: напр. 500
       memoryPlaceholder: напр. 1Gi
     resources:
       reserved: Інші простори імен
       namespace: Цей простір імен
+      max: Всього
     projectLimit:
       placeholder: напр. 50
       milliCpuPlaceholder: напр. 2000
@@ -3515,15 +4102,18 @@ formResourceQuota:
       milliCpuPlaceholder: напр. 500
       memoryPlaceholder: напр. 1024
   resources:
-    limitsCpu: Ліміт CPU
+    limitsCpu: Ліміт ЦПУ
     limitsMemory: Обмеження пам'яті
     persistentVolumeClaims: Persistent Volume Claims
-    pods: Pod'и
-    requestsMemory: Розподіл пам'яті
+    pods: Поди
+    requestsCpu: Бронювання CPU
+    requestsMemory: Бронювання пам'яті
     secrets: Секрети
+    services: Сервіси
 formEnvVar:
   title: Змінні середовища
   detail: Змінні середовища, які були додані при створенні.
+  noData: Немає змінних середовища
   status: |
     {count, plural, one {}
     =0 {Не налаштовано}
@@ -3542,20 +4132,28 @@ formGlobalRoles:
     user:
       label: Стандартний користувач
       detail: Стандартні користувачі можуть створювати нові кластери і керувати кластерами і проектами, до яких їм було надано доступ.
+    userCreated:
+      label: Власний
   role:
+    nodetemplates-manage:
+      label: Управління шаблонами вузла
+    users-manage:
+      label: Управління користувачами
+      detail: Дозволяє користувачеві створювати, видаляти та встановлювати паролі для всіх користувачів.
     base:
       label: Доступ для входу
 formMembers:
+  owner: '{type} Власник'
   members:
     user: Користувач
     group: Група
     serviceaccount: Сервіс Облікового запису
     labelText: Учасники
     addMember: Додати учасника
-    addUser: Додати користувача
+    addUser: Додати Користувача
     noAddUser: Ви єдиний активний зареєстрований користувач.
     addGroup: Додати групу
-    addServiceAccount: Додайте обліковий запис сервіса
+    addServiceAccount: Додайте обліковий запис Сервіса
     multipleRoles: Кілька ролей
     customRoles: Спеціальні ролі
     kind:
@@ -3566,7 +4164,10 @@ formMembers:
       label: Роль
     errors:
       nameReq: Потрібне ім'я.
+      nameInExists: Ім'я вже існує. Будь ласка, використовуйте нове ім'я проекту.
+      memberNameReq: Ім'я обов'язкове для учасника
 formScopedRoles:
+  title: '{type} Дозволи'
   mode:
     admin:
       label: Власник
@@ -3574,6 +4175,7 @@ formScopedRoles:
       label: Учасник
     custom:
       label: Власний
+      detail: Вибрати окремі ролі для цього користувача
     readOnly:
       label: Тільки для читання
       detail: Користувачі можуть переглядати ресурси в {type} , але не змінювати {type}.
@@ -3582,6 +4184,18 @@ formScopedRoles:
         label: Тільки для читання
 formShareMember:
   add: 'Додати учасника'
+  table:
+    headers:
+      name: 'Назва'
+      accessType: 'Тип доступу'
+shareMemberRow:
+  table:
+    public:
+      accessType: 'Лише для перегляду'
+  accessType:
+    owner: 'Власник'
+    member: 'Учасник'
+    'read-only': 'Користувач'
 formHealthCheck:
   title: Перевірка працездатності
   readiness: Перевірка готовності
@@ -3645,7 +4259,7 @@ formKeyValue:
     placeholder: Значення
   protip: 'Підказка: Вставити кілька рядків ключ=значення в будь-яке ключове поле щоб швидко додати запис.'
 formImage:
-  label: Образ Docker
+  label: Docker зображення
   container:
     placeholder: "напр. ubuntu: xenial"
 formNameDescription:
@@ -3662,11 +4276,13 @@ formNetwork:
     disable: "Ні"
     enable: "Так"
   dnsPolicy:
+    label: Політика DNS
     clusterFirst: "Кластер перший"
   dnsConfig:
     nameservers:
       placeholder: напр. 192.168.2.1
     options:
+      addActionLabel: Додати параметр
       name:
         label: Ім'я
         placeholder: напр. ndots
@@ -3693,8 +4309,8 @@ formNetwork:
     label: Доменне ім'я
     placeholder: напр. example.com
   resolvingServers:
-    label: DNS-сервер для розпізнавання імен
-    addActionLabel: Додати сервер
+    label: Dns-сервер для розпізнавання імен
+    addActionLabel: Додати Сервер
     placeholder: напр. 8.8.4.4
   searchDomains:
     label: Домени DNS пошуку
@@ -3704,6 +4320,8 @@ formNetwork:
     label: Піддомен
     placeholder: напр. foo
   hostAlias:
+    addActionLabel: Додати псевдонім хоста
+    label: Псевдоніми хоста (/etc/host-хоста)
     host:
       label: Ім'я хосту
       placeholder: напр. база даних
@@ -3712,9 +4330,14 @@ formNetwork:
       placeholder: напр. 192.168.0.1
 formCustomMetrics:
   port:
+    label: Порт Контейнера
     placeholder: напр. 8080
   path:
+    label: Шлях
     placeholder: напр. /metrics
+  protocol:
+    label: Протокол
+  noPorts: Немає кінцевих точок
 formServicePorts:
   addAction: Додати порт
   name:
@@ -3735,6 +4358,7 @@ formPorts:
   kind:
     ClusterIP: IP-адреса кластера (лише для внутрішнього використання)
     LoadBalancer: Layer-4 Балансувальник Навантаження
+    HostPortDisbaled: 'Порт Хоста (вимкнено)'
   sourcePort:
     placeholder: "напр. 80"
     ipPlaceholder: "напр. 80 або 19.82.2.24:80"
@@ -3749,9 +4373,17 @@ formPorts:
     label: Ім'я DNS
     placeholder: "напр. example"
 formScale:
-  label: Тип Workload
+  label: Тип Навантаження
   showAdvanced: Більше опцій
   scaleMode:
+    scaleSuffix: |
+      {scale, plural,
+      =1 {Под}
+      =2 {Поди}
+      =3 {Пода}
+      =4 {Пода}
+      other {Подів}
+      }
     sidekickPrefix: "Sidecar: Додати контейнер до"
 formScheduling:
   title: Планування вузла
@@ -3761,13 +4393,14 @@ formScheduling:
     =1 {# правило} few {# правила}
     other {# правил}
     }
-  runSpecific: Запустити цей pod на конкретному вузлі
+  runSpecific: Запустити цей под на конкретному вузлі
   noRules: Немає правил.
   addRule: Додати правило
-  condition: Умова
+  condition: Стан
   field: Поле
   value: Значення
   operator: Операція
+  effect: Ефект
   scaleMin: Мінімальна кількість
   scaleMax: Максимальна кількість
   hostMax: Максимум вузлів
@@ -3794,6 +4427,7 @@ formScheduling:
       in: 'у списку'
       notIn: 'немає у списку'
       exists: 'встановлено'
+      notExists: 'не встановлено'
     multiple:
       placeholder: 'напр. foo, bar, baz'
     custom:
@@ -3836,7 +4470,7 @@ formSecurity:
     unlimited: Ліміт не встановленно
     set: Обмеження до
   cpuLimit:
-    label: Ліміт CPU
+    label: Ліміт ЦПУ
     unlimited: Ліміт не встановленно
     set: Обмеження до
     unit: мілі-ЦП
@@ -3869,10 +4503,10 @@ formSecurity:
     permissions:
       label: Дозволи
   memoryReservation:
-    label: Розподіл пам'яті
+    label: Бронювання Пам'яті
     placeholder: напр. 128
   milliCpuReservation:
-    label: Розподіл CPU
+    label: Бронювання CPU
     placeholder: напр. 1000
     unit: мілі-ЦП
   gpuReservation:
@@ -3885,6 +4519,8 @@ formSslTermination:
   title: Сертифікатів SSL/TLS
   defaultCertificate:
     prompt: Виберіть сертифікат...
+  default:
+    label: Використовувати типовий сертифікат контролера
   custom:
     label: Виберіть сертифікат
   alternateCertificate:
@@ -3900,6 +4536,7 @@ formSslTermination:
     label: Хост
     placeholder: напр. example.com
   addHostLabel: Додати хости
+  removeCertLabel: Видалити цей сертифікат
   addCertLabel: Додати сертифікат
 formNamespace:
   label:
@@ -3922,9 +4559,13 @@ formLabelsAnnotations:
   title: Мітки та Примітки
 formNodeTaints:
   key:
+    label: Ключ
     placeholder: напр. foo
   value:
+    label: Значення
     placeholder: напр. bar
+  effect:
+    label: Ефект
 formUserLabels:
   title: Мітки
   addAction: Додати мітку
@@ -3941,6 +4582,8 @@ formAccessModes:
 formAnnotations:
   addActionLabel: Додати примітку
   title: Примітки
+formAuthCloudCredential:
+  label: Облікові дані хмари
 formJobConfig:
   seconds: |
     {count, plural,
@@ -3953,7 +4596,7 @@ formJobConfig:
 formUpgrade:
   title: Масштабування/Оновити політику
   strategy:
-    recreate: Вбити ВСІ pods, потім починайте нові
+    recreate: Вбити ВСІ поди, потім запустити нові
     custom: Власний
     batchSize:
       label: Розмір групи
@@ -3968,17 +4611,18 @@ formVersions:
 formIstioHost:
   prompt: Виберіть хост...
 formVolumeRow:
-  prompt: Виберіть том...
+  prompt: Виберіть Persistent Volume Claim...
   name:
-    label: Ім'я тома
+    label: Ім'я Тома
     placeholder: напр. vol1
   volumeClaimTemplateName:
     placeholder: напр. vol1
   mode:
-    label: Тип тома
-    existingPvc: існуючий том
+    label: Тип Тома
+    existingPvc: Persistent Volume Claim
     tmpfs: Файлова система tmpfs
     secret: Секрет
+    certificate: Сертифікат
   readOnly: Тільки для читання
   mounts:
     mountPoint: Точка монтування
@@ -4024,6 +4668,7 @@ formFsGroupPodSecurityPolicy:
       label: Мінімум
       placeholder: напр. 1
 formHostPortsPodSecurityPolicy:
+  title: Політика портів хоста
   port:
     addLabel: Додати діапазон портів
     max:
@@ -4043,6 +4688,7 @@ formRunAsUserPodSecurityPolicy:
       label: Мінімум
       placeholder: напр. 1
 formSeLinuxodSecurityPolicy:
+  title: Політика SELinux
   level:
     label: Рівень
     placeholder: наприклад, рівень
@@ -4070,6 +4716,7 @@ formBasicPodSecurityPolicy:
     label: Хост IPC
     disable: "Ні"
   hostNetwork:
+    label: Мережа хоста
     enable: "Так: використання мережі хоста"
     disable: "Ні"
   hostPID:
@@ -4086,6 +4733,7 @@ formReservation:
     label: '{component} Ліміт ЦП'
     placeholder: напр. 1000
   limitMemory:
+    label: '{component} Обмеження пам’яті'
     placeholder: напр. 1000
   requestCpu:
     placeholder: напр. 1000
@@ -4112,6 +4760,8 @@ identityBlock:
 inputAnswers:
   yaml: Редагувати як YAML
   config: Параметри конфігурації
+  editAsForm: Редагувати як форму
+  noConfig: У цьому шаблоні немає налаштувань з конфігурацією
 inputIdentity:
   placeholder:
     github: Додати ім'я користувача або організації GitHub
@@ -4126,7 +4776,10 @@ inputTextFile:
 uploadFile:
   label: Прочитати з файлу
 podsSection:
-  title: Pods
+  title: Поди
+containersSection:
+  title: Контейнери
+  noData: Немає контейнерів
 labelsSection:
   kind: Тип
   title: Мітки
@@ -4157,7 +4810,7 @@ loginSaml:
 loginUserPass:
   local: Використовувати локального користувача
   provider: "{kind}"
-  userLabel: Ім'я користувача
+  userLabel: Ім'я кристувача
   remember: Запам'ятати
   userPlaceholder: напр. admin
   genericLoginLabel: Увійти
@@ -4165,30 +4818,53 @@ loginUserPass:
   loggingInLabel: Вхід до системи...
   passwordLabel: Пароль
 loggingPage:
+  targetNav:
+    experimental: Експериментальний
   targetTypes:
+    splunk: Splunk
+    kafka: Kafka
+    syslog: Syslog
+    fluentd: Fluentd
     disable: Немає
+  endpoint: Кінцева точка
   endpointPlaceholder: 'напр. https://192.168.1.10:9200'
+  logging: Логування
   tags:
     keyPlaceholder: напр. foo
     valuePlaceholder: напр. bar
   keyValueForm:
     keyPlaceholder: напр. 192.168.1.10
+  targetKafka:
+    host: Хост
+    port: Порт
   additional:
     flushInterval:
       placeholder: напр. 1
       sec: сек
+  advanced:
+    cancel: Редагувати як форму
   elasticsearch:
     xpack:
+      headerOptional: (необов'язково)
+      username: Ім'я кристувача
       usernamePlaceholder: напр. Джон
+      password: Пароль
+      passwordPlaceholder: Ваш Пароль
     indexPatterns:
+      prefix: Префікс
       prefixPlaceholder: напр. logstash
   splunk:
+    source: Джерело
     sourcePlaceholder: напр. fluentd
+    index: Індекс
     indexPlaceholder: напр. main
     endpoint:
       placeholder: 'напр. https://192.168.1.10:8088'
   kafka:
+    zookeeper: Zookeeper
     addEndpoint: Додати кінцеву точку
+    topic:
+      label: Тема
     topicPlaceholder: напр. message
     endpoint:
       broker:
@@ -4197,27 +4873,63 @@ loggingPage:
         placeholder: 'напр. https://192.168.1.10:2181'
   syslog:
     endpointPlaceholder: 'напр. 192.168.1.10:514'
+    header: Конфігурація Syslog
     programPlaceholder: напр. MyProgram
+    severities:
+      alert: Попередження
+      critical: Критичний
+      error: Помилка
+      warning: Попередження
+      notice: Повідомлення
+      info: Інформація
+      debug: Відладка
   fluentd:
     endpoint:
+      label: Кінцева точка
       placeholder: 'напр. 192.168.1.10:24224'
+    password:
+      label: Пароль
+    username:
+      label: Ім'я кристувача
+      placeholder: Ім'я користувача для автентифікації.
+    weight:
+      label: Вага
     addServer: Додати Fluentd сервер
+    enableTls:
+      label: Використовувати TLS
+    hostname:
+      label: Ім'я хосту
   ssl:
     verify:
       disabled: Вимкнено
     sslVersion:
       label: Версія SSL
+    saslType:
+      label: Тип
     saslUsername:
+      label: Ім'я кристувача
       placeholder: напр. Джон
+    saslPassword:
+      label: Пароль
+      placeholder: Ваш Пароль
+    saslScramMechanism:
+      sha256: sha256
+  testAction:
+    testing: ТЕСТУВАННЯ
+    test: ТЕСТ
+    running: ВИКОНАННЯ
 machineTemplatesPage:
   title: Додати вузол
   new:
     btn: Налаштувати
   templateBox:
+    button: Вибрати
     labels:
       region: Регіон
       zone: Зона
 modalDeleteIstio:
+  onlyIstio:
+    true: Тільки Istio
   disable: Вимкнути
 newCertificate:
   title:
@@ -4226,16 +4938,31 @@ newCertificate:
     view: 'Сертифікат: {name}'
   key:
     label: Приватний Ключ
+    required: Необхідний приватний ключ.
   cert:
+    label: CA сертифікат
+    required: Необхідно вказати сертифікат.
+    invalidFormat: Сертифікат не дійсний.
     protip: Будь ласка, включіть будь-які сертифікати ланцюга, які необхідні.
   metaXML:
     label: Метадані XML
+  publicKey:
+    label: Відкритий SSH ключ
+    required: Потрібен відкритий ключ.
+    invalidFormat: Невірний відкритий ключ.
+  errors:
+    key:
+      required: Необхідний приватний ключ.
+    cert:
+      required: Необхідно вказати сертифікат.
+      invalidFormat: Сертифікат не дійсний.
 modalAboutComponent:
   component: Компонент
   version: Версія
   cattle: Cattle
   cli: CLI
   ui: Інтерфейс користувача
+  helm: Helm
 modalAddPayment:
   header: Додати новий спосіб оплати
   save: Зберегти
@@ -4288,6 +5015,8 @@ modalAddPayment:
 modalAddCloudKey:
   name:
     placeholder: 'напр. production-credentials'
+  saving:
+    validating: Перевірка ключів
   amazonec2:
     accessKey:
       label: Ключ доступу
@@ -4301,12 +5030,18 @@ modalAddCloudKey:
       placeholder: Ваш ID клієнта
     clientSecret:
       label: Секрет Клієнта
+      placeholder: Ваш клієнтський секрет
+  digitalocean:
+    accessToken:
+      label: Токен Доступу
   linode:
     token:
       label: Токен Доступу
   vmwarevsphere:
     password:
       label: Пароль
+modalConfirmYaml2Form:
+  confirm: Підтвердити
 modalContainerStop:
   header: "Ви впевнені, що бажаєте зупинити"
   protip: "Порада: Утримуйте клавішу {key} при натисканні Стоп, щоб обійти це підтвердження."
@@ -4328,6 +5063,8 @@ modalConfirmDeactivate:
       button: Деактивувати
 modalConfirmRemovePayment:
   title: 'Ви впевнені, що бажаєте видалити'
+modalDeleteGroupRoleBinding:
+  createLabel: Видалити
 modalEditDriver:
   url:
     label: Скачати URL
@@ -4376,16 +5113,22 @@ modalProcessError:
   stackTrace: "Трасування Стека:"
   close: Закрити
 modalDrainNode:
+  mode: Режим
   gracePeriod:
     placeholder: напр. 30
   timeout:
     placeholder: напр. 60
+modalRevertSettings:
+  current: Поточне значення
+  default: Значення по замовчуванню
 modalRotateCertificates:
   dropdownLabel: Сервіси
   select:
     all: Виберіть сервіс
 modalRollbackService:
   title: 'Відкат "{instanceName}"'
+  action: Відкат
+modalRollbackApp:
   action: Відкат
 modalShortcuts:
   world: Світ
@@ -4405,7 +5148,7 @@ modalWelcome:
   closeModal: Зрозуміло
 namespaceGroup:
   label: "Простір імен: {name}"
-  none: Pod
+  none: Под
   project: "Простір імен: Усі"
 nodeGroup:
   label: "Вузол: {name}"
@@ -4424,10 +5167,16 @@ newCatalog:
   istio:
     saveNew: 'Створити'
   answers:
+    label: Відповіді
     addAction: Додати відповідь
   catalog: "Каталог:"
   category: "Категорія:"
   config: Параметри конфігурації
+  helm:
+    label: Параметри конфігурації
+    options:
+      timeout:
+        label: Час очікування Helm
   kind: "Тип Каталогу:"
   license: "Ліцензія:"
   newNamespace: Новий простір імен
@@ -4454,22 +5203,43 @@ newCatalog:
     prompt: Вибрати версію...
 newMultiClusterApp:
   answers:
+    label: Відповіді
     addAction: Додати відповідь
+  catalog: "Каталог:"
+  category: "Категорія:"
+  config: Параметри конфігурації
+  helm:
+    label: Параметри конфігурації
+  kind: "Тип Каталогу:"
+  license: "Ліцензія:"
   newNamespace: Новий простір імен
+  noConfig: У цьому шаблоні немає налаштувань з конфігурацією
   official: Офіційно сертифікований
+  preview: Попередній перегляд
   seeMore: Додаткова інформація...
   saveConfigure: Налаштувати
   saveNew: Запустити
   saveUpgrade: Оновити
+  selectVersionAdd: Виберіть версію шаблону для розгортання
+  selectVersionConfigure: Виберіть версію шаблону для налаштування
+  selectVersionUpgrade: Виберіть версію шаблону для оновлення
+  startService: Запустити сервіс після створення
   support: "Підтримка:"
   targets:
     add: Додати ціль
+    target: Ціль
     cluster: Кластер
     project: Проект
+  targetDivider:
+    label: Цілі
   rolesDivider:
     label: Ролі
   templateVersion: Версія шаблону
   titleAdd: "Додати {name} додаток"
+  titleConfigure: "Налаштувати {name} Додаток"
+  txt: answers.txt
+  upgrade: "Оновити:"
+  url: "URL-адреса проекту:"
   version:
     prompt: Вибрати версію...
   overrides:
@@ -4477,26 +5247,42 @@ newMultiClusterApp:
       clusterGroup: "Кластер: {clusterName}"
     table:
       scope: Сфера застосування
+      question: Питання
+      answer: Відповідь
   roles:
     table:
+      role: Роль
       name: Ім'я
+      external: Зовнішній
+      noMatch: Немає ролей, відповідних поточному пошуку
+      prompt: "Виберіть роль..."
   members:
+    title: Учасники
     table:
       name: Ім'я
+      type: Тип учасника
+      accessType: Тип доступу
+      noMatch: Жоден учасник не відповідає поточному пошуку
+      prompt: Виберіть значення...
   upgradeApp:
     disabled: Оновити всі додатки одночасно
+    interval: Інтервал
 newContainer:
   add:
-    container: Розгортати Pod
-    service: Розгортати Workload
-    globalService: Розгортати Загальний Workload
+    container: Розгорнути Под
+    service: Розгортати Навантаження
+    globalService: Розгортати Загальне Навантаження
     sidekick: 'Розгорнути Sidecar'
     sidekickName: 'Розгорнути Sidecar "{name}"'
   upgrade:
+    container: Редагувати контейнер
+    service: Редагувати Навантаження
     sidekick: Редагувати Sidecar
     sidekickName: 'Редагувати Sidecar "{name}"'
   saveUpgrade: Зберегти
   saveNew: Запустити
+  windows: Windows
+  linux: Linux
   all: Будь-який
   name:
     placeholder: напр. myapp
@@ -4512,6 +5298,7 @@ newContainer:
     valueLabel: Значення
     valuePlaceholder: напр. bar
   sidekick:
+    header: Редагувати Навантаження
     primary: Головний
     sidekick: Sidecar
   containerType:
@@ -4539,17 +5326,29 @@ clusterDrivers:
     noData: Цей кластер не має жодних вузлів
 kontainerDriver:
   displayName:
+    amazonElasticContainerService: Amazon EKS
+    azureKubernetesService: Azure AKS
+    googleKubernetesEngine: Google GKE
+    huaweicontainercloudengine: Huawei CCE
     import: Імпорт
 nodeDriver:
   addTemplate: Додати шаблон вузла
   displayName:
+    aliyunecs: Alicloud ECS
     amazonec2: Amazon EC2
+    amazoneks: Amazon EKS
     azure: Azure
+    azureaks: Azure AKS
     digitalocean: DigitalOcean
     exoscale: Exoscale
+    googlegke: Google GKE
+    huaweicce: Huawei CCE
     openstack: OpenStack
     packet: Packet
     rackspace: Rackspace
+    rancherkubernetesengine: RKE
+    zstack: ZStack
+  templateOptions: "{appName} шаблон"
   amazoneks:
     access:
       next: "Далі: налаштування кластера"
@@ -4558,6 +5357,7 @@ nodeDriver:
     kubernetesVersion:
       label: Версія Kubernetes
     keyPairs:
+      label: SSH ключ
       prompt: нічого не вибрано
     vpc:
       next: "Далі: виберіть підмережі"
@@ -4569,13 +5369,31 @@ nodeDriver:
         default: "true"
     securityGroup:
       title: Групи Безпеки
+      next: "Далі: встановіть параметри інстанса"
     userData:
       label: Дані користувача
+      placeholder: Вставити в скрипт
     nodeVolumeSize:
       placeholder: напр. 20
+    accessKey:
+      label: Ключ доступу
+      placeholder: Ваш ключ доступу AWS
+    secretKey:
+      label: Секретний ключ
+      placeholder: Ваш секретний ключ AWS
+    region:
+      label: Регіон
   amazonec2:
     zone:
       next: "Далі: Виберіть групу безпеки"
+    accessKey:
+      label: Ключ доступу
+      placeholder: Ключ доступу AWS
+    secretKey:
+      label: Секретний ключ
+      placeholder: Ваш секретний ключ AWS
+    region:
+      label: Регіон
     securityGroup:
       title: 3. Групи Безпеки
       next: "Далі: встановіть параметри інстанса"
@@ -4589,16 +5407,32 @@ nodeDriver:
       link: Дізнатися більше
     instanceType:
       label: Тип інстансу
+    rootSize:
+      label: Розмір кореневого диска
+      unit: ГБ
+    ami:
+      label: АМІ
     sshUser:
       label: SSH користувач
       placeholder: напр. ubuntu
     iam:
       label: IAM профіль
+    privateIp:
+      label: Приватний IP
+    spotPrice:
+      unit: '$'
   digitalocean:
     authAccountButton: 'Далі: налаштування Droplet'
+    accessToken:
+      label: Токен Доступу
+    image:
+      label: Образ
     sshUser:
       label: SSH користувач
       placeholder: 'напр. root'
+    region:
+      label: Регіон
+    optionsSection: Параметри
     ipv6:
       label: Увімкнути IPv6
     monitoring:
@@ -4607,10 +5441,18 @@ nodeDriver:
       valueLabel: Теги
       placeholder: напр. dev
   exoscale:
+    accountSection: Доступ до облікового запису
+    apiKey:
+      label: Ключ API
+    secretKey:
+      label: Секретний ключ
     securityGroupSection: Група безпеки
     securityGroup:
       label: Група безпеки
+    zoneSection: Зона
     selectZoneAction: "Далі: Виберіть групу безпеки"
+    zone:
+      label: Зона
     portHelp:
       link: Дізнатися більше
     selectSecurityGroupAction: "Далі: встановіть параметри інстанса"
@@ -4619,23 +5461,43 @@ nodeDriver:
       label: Профіль інстансу
     sshUser:
       label: SSH користувач
+    template:
+      label: Шаблон
   packet:
+    accountSection: Доступ до облікового запису
     instanceSection: Інстанс
+    authentication: Автентифікація
     location: Розташування
     planDetails:
       cpu: Процесори
       memory: Пам'ять
+      network: NICs
+    image:
+      label: Образ
+    size:
+      label: Розмір
+    regionSection: Регіон
+    region:
+      label: Регіон
   rackspace:
     username:
-      label: Ім'я користувача
+      label: Ім'я кристувача
       placeholder: Ваше ім'я користувача Rackspace
+    apiKey:
+      label: Ключ API
+    region:
+      label: Регіон
   vmwarevsphere:
+    hostOptions:
+      any:
+        label: 'Будь-який'
     tags:
+      title: 4. Теги
       addActionLabel: Додати тег
     vcenterPort:
       label: Порт
     username:
-      label: Ім'я користувача
+      label: Ім'я кристувача
     password:
       label: Пароль
     instanceSection: Інстанс
@@ -4645,22 +5507,30 @@ nodeDriver:
     memorySize:
       label: Пам'ять
       unit: Мб
+    diskSize:
+      label: Диск
+      unit: МБ
     cloneFrom:
       placeholder: напр. http://my_host/template.yml
+    library:
+      label: Бібліотека
     dataCenter:
       placeholder: "напр. datacenter_name"
     pool:
       placeholder: "напр. /dc_name/host/host_name/Resources/pool_name"
     host:
+      label: Хост
       placeholder: "напр. cluster_name/host_name"
     network:
       addActionLabel: "Додати мережу"
+      valueLabel: "Мережі"
       valuePlaceholder: "напр. VM Мережа"
     dataStore:
       placeholder: "напр. datastore_cluster_name/datastore_name"
     cloudinit:
       placeholder: "напр. http://my_host/cloud-config.yml"
     folder:
+      label: Папка
       placeholder: "напр. /folder"
     cfgparam:
       key:
@@ -4674,22 +5544,33 @@ nodeDriver:
       placeholder: "напр. com.vmware.guestInfo"
     vappIpprotocol:
       placeholder: "напр. IPv4"
+      help: "IPv4 або IPv6"
     vappIpallocationpolicy:
       placeholder: "напр. fixedAllocated"
     vappProperty:
       key:
         placeholder: "напр. guestinfo.interface.0.ip.0.address"
   azure:
+    placement:
+      title: Розміщення
+    access:
+      title: Доступ до облікового запису
     network:
       title: Мережа
     instance:
       title: Інстанс
+    subscriptionId:
+      label: Підписка ID
+    image:
+      label: Образ
     diskSize:
       placeholder: напр. 30
     updateDomainCount:
       placeholder: напр. 5
     faultDomainCount:
       placeholder: напр. 3
+    size:
+      label: Розмір
     dockerPort:
       label: Docker порт
       placeholder: '2376'
@@ -4701,9 +5582,12 @@ nodeDriver:
       placeholder: usr1
     storageType:
       label: Тип сховища
+    vnet:
+      placeholder: '[resourcegroup:] ім''я'
     subnet:
       label: Підмережа
     subnetPrefix:
+      label: Префікс підмережі
       placeholder: 128.42.0.0/21
     openPort:
       label: Відкритий порт
@@ -4711,8 +5595,12 @@ nodeDriver:
     privateIpAddress:
       label: Приватний IP
       placeholder: 127.0.0.1
+    usePrivateIp:
+      label: Використовувати приватний IP для підключення
     staticPublicIp:
       label: Публічний IP
+    noPublicIp:
+      label: Немає публічного IP
     clientId:
       label: ID Клієнта
       placeholder: Ваш ID клієнта
@@ -4748,12 +5636,22 @@ nodeDriver:
       label: Сховище
     ioOptimized:
       none: Немає
+    region:
+      label: Регіон
+      placeholder: Регіон
     networkSection:
       label: Мережа
     routeCIDR:
       placeholder: напр. 192.168.1.0/24
+    vpcId:
+      label: VPC
+    vswitchId:
+      prompt: Виберіть VSwitch...
     privateIp:
+      label: Приватний IP
       placeholder: Приватні IP в приватній мережі
+    securitySection:
+      label: Безпека
     securityGroup:
       label: Група безпеки
       placeholder: Група безпеки
@@ -4774,7 +5672,9 @@ nodeDriver:
       placeholder: Ім'я вашого облікового запису
     accountPassword:
       label: Пароль облікового запису
+      placeholder: Пароль вашого облікового запису
     zone:
+      next: "Далі: встановіть параметри інстанса"
       label: Зона
     cluster:
       label: Кластер
@@ -4782,6 +5682,8 @@ nodeDriver:
       label: Мережа
     portHelp:
       link: Дізнатися більше
+    instance:
+      title: 3. Інстанс
     instanceOffering:
       label: Тип інстанса
     imageName:
@@ -4796,6 +5698,7 @@ newConfigMap:
 projectGroup:
   label: "Проект: {name}"
   none: Простір імен
+  project: Не в проекті
 optionallyNamespaced:
   scope:
     label: Сфера застосування
@@ -4822,7 +5725,15 @@ pagination:
     =0 {немає Балансувальників Навантаження}
     =1 {{count} {count, plural, =1 {Балансувальник Навантаження} few {Балансувальника Навантаження} other {Балансувальників Навантажень}}} few {}
     other {{from} - {to} of {count} Балансувальники Навантаження}}
-  podNoSubset: "0 з {count} Pod’ів"
+  podNoSubset: "0 з {count} Подів"
+  podLabel: |
+    {count, plural,
+    =1 {Под}
+    =2 {Поди}
+    =3 {Пода}
+    =4 {Пода}
+    other {Подів}
+    }
   workload: |
     {pages, plural, one {}
     =0 {немає Workloads}
@@ -4841,7 +5752,7 @@ publicEndpoints:
   noMatch: Портів з даного запиту не знайдено
 registryRow:
   address: Адреса
-  username: Ім'я користувача
+  username: Ім'я кристувача
   created: Створено
 reservationParameters:
   label: Обмеження на ресурси
@@ -4868,12 +5779,20 @@ schema:
     prompt: Виберіть сертифікат...
   inputContainer:
     prompt: Виберіть контейнер...
+  inputConfigMap:
+    prompt: Виберіть Config Map...
   inputEnum:
     option: Виберіть варіант...
   inputHost:
     label: Виберіть хост...
   inputService:
+    prompt: Виберіть Навантаження...
     custom: Власний
+  inputDnsRecord:
+    prompt: Виберіть сервіс...
+  inputSecret:
+    secret: Виберіть секрет...
+    certificate: Виберіть сертифікат...
 schedulingRuleRow:
   theHost: Хост
   must: повинен
@@ -4893,6 +5812,7 @@ siteAccess:
   users: Користувачі
   groups: Групи
   organizations: Організації
+  helpLabel: Що це?
 systemInfoSection:
   title: Системна інформація
   key: Ключ
@@ -4938,6 +5858,7 @@ viewEditDescription:
     description:
       placeholder: наприклад, "Оточення для експериментів розробників"
 volumesPage:
+  addActionLabel: Додати Volume Claim
   volume:
     label: Persistent Volume
   storageClass:
@@ -4952,6 +5873,8 @@ vmConsole:
 volumeRow:
   mounts:
     readOnly: "(лише для читання)"
+waitOrchestration:
+  count: '({sub} з {count})'
 waitKubernetes:
   addHost: 'Додайте хоча б один хост'
   activateHost: 'В очікуванні активності хоста'
@@ -4994,13 +5917,14 @@ nav:
     namespaces: Простори імен
     storage:
       tab: Сховище
+      classes: Класи сховища
       volumes: Persistent Volumes
     projects: Проекти/Простори імен
   containers:
-    tab: Workloads
+    tab: Навантаження
     systemTab: Система
     ingresses: Балансування навантаження
-    containers: Workloads
+    containers: Навантаження
     hpa: Horizontal Pod Autoscaler
     volumes: Томи
     pipelines: Конвеєри
@@ -5009,14 +5933,15 @@ nav:
     addBalancer: Додати систему балансування навантаження
     addIngress: Додати Ingress
     addDns: Додати запис
+    addHpa: Додати HPA
     addVolume: Додати том
     importCompose: Імпорт YAML
   group:
     none: Cписок
     node: Групувати по вузлу
-    workload: Групувати за Workload
+    workload: Групувати за Навантаженням
     namespace: Групувати за Просторами імен
-    namespaceWorkload: Групувати за Просторами імен/Workload
+    namespaceWorkload: Групувати за Просторами імен/Навантаженням
   hosts:
     tab: Вузли
     addHost: Додати вузли
@@ -5040,6 +5965,9 @@ nav:
     pipelines: Конвеєри
   admin:
     tab: Загальний
+    clusters:
+      tab: Кластери
+      rkeTemplate: Шаблони RKE
     machines: Вузли
     drivers: Драйвери
     catalogs: Каталоги
@@ -5048,10 +5976,13 @@ nav:
     globalRegistry: Глобальний реєстр
     multiClusterApps: Додатки
     security:
+      accounts: Користувачі
+      groupAccounts: Групи
+      cloudCredentials: Облікові дані хмари
       tab: Безпека
       roles: Ролі
       members: Учасники
-      podSecurityPolicies: Політики Безпеки Pod
+      podSecurityPolicies: Політики Безпеки Подів
       authentication: Автентифікація
     settings:
       tab: Налаштування
@@ -5063,6 +5994,10 @@ nav:
     logout: Вихід
   userPreferences:
     link: "Налаштування"
+  nodeTemplates:
+    link: "Шаблони вузла"
+  clusterTemplates:
+    link: Шаблони RKE
   api:
     link: "API і ключі"
   settings:
@@ -5070,12 +6005,14 @@ nav:
     advanced: Розширені налаштування
   tools:
     alerts: Попередження
+    catalogs: Каталоги
     logging: Логування
     monitoring: Моніторинг
     notifiers: Сповіщення
     pipeline: Конвеєр
     tab: Інструменти
     istio: Istio
+    cisScans: Скани CIS
   project:
     none: Згруповані проекти/Простори імен
     namespaces: Простори імен
@@ -5084,13 +6021,14 @@ nav:
 ##############################
 action:
   activate: Активувати
-  addContainer: Розгортати Pod
+  addContainer: Розгорнути Под
   addSidekick: Додати Sidecar
   clone: Клонувати
   console: Відкрити консоль
   convertToService: Конвертувати в Сервіс
   deactivate: Деактивувати
   downloadYaml: Завантажити YAML
+  download: Завантажити
   edit: Редагувати
   editService: Редагувати сервіс
   editYaml: Переглянути або редагувати YAML
@@ -5100,10 +6038,14 @@ action:
   garbageCollect: Очищення
   logs: Перегляд логів
   move: Перемістити
+  mute: Беззвучний
+  nodeConfig: Завантажити ключі
   pause: Призупинити оркестрацію
   pauseAll: Призупинити все
   redeploy: Повторно розгорнути
   refreshAuthProviderAccess:
+    success:
+      title: Успішно оновлено
     allSuccess:
       title: Успішно оновлено
   remove: Видалити
@@ -5111,11 +6053,14 @@ action:
   restart: Перезапустити
   retry: Повторити
   rollback: Відкат
+  run: Старт
   setDefault: Встановити в якості середовища входу
+  setting: Параметр
   start: Запустити
   startAll: Запустити все
   stop: Стоп
   stopAll: Зупинити всі
+  test: Тест
   upgrade: Оновити
   upgradeOrEdit: Оновити / змінити
   viewConfig: Перегляд конфігурації
@@ -5123,6 +6068,7 @@ action:
   viewInApi: Відкрити в API
   viewInGrafana: Перейти до Grafana
   viewInstance: Перегляд інстанса
+  viewYaml: Переглянути YAML
 ##############################
 #Resource Actions
 ##############################
@@ -5135,13 +6081,16 @@ validation:
   dns:
     hostname:
       startDot: '"{key}" не може починатися з крапки'
+      endDot: '"{key}" не може закінчуватися крапкою'
       empty: '"{key}" має бути принаймні один символ'
       tooLong: '"{key}" не може перевищувати {max} символів'
+      startNumber: '"{key}" не може починатися з числа'
       startHyphen: '"{key}" має починатися з літери або цифри'
       endHyphen: '"{key}" повинно закінчуватися буквою чи цифрою'
       emptyLabel: '"{key}" не може мати двох послідовних крапок'
       tooLongLabel: '"{key}" не може мати розділ, довший за {max} символів'
     label:
+      startNumber: '"{key}" не може починатися з числа'
       startHyphen: '"{key}" має починатися з літери або цифри'
       endHyphen: '"{key}" повинно закінчуватися буквою чи цифрою'
       emptyLabel: '"{key}" не може бути порожнім'
@@ -5209,16 +6158,32 @@ growl:
     connecting:
       title: Помилка при підключенні на WebSocket
 storageClass:
+  glusterfs:
+    title: Gluster Volume
+  local:
+    title: Локальний
   longhorn:
     title: Longhorn
+  rbd:
+    title: Ceph RBD
   storageos:
     title: StorageOS
 volumeSource:
+  flex-volume-longhorn:
+    title: Longhorn
   flocker:
     title: Flocker
+  glusterfs:
+    title: Gluster Volume
   host-path:
     path:
+      label: Шлях до вузла
       placeholder: напр. /data
+    kind:
+      label: Шлях до вузла повинен бути
+      Any: "Будь-що: не перевіряти цільовий шлях"
+  local:
+    title: Локальний
   rbd:
     title: Ceph RBD
   storageos:
@@ -5238,12 +6203,20 @@ pipelinesPage:
 pipelinesSetting:
   authenticatedUsers: Автентифіковані користувачі
   clearing: Очищення
+repositories:
+  header: Репозиторії
+  table:
+    repository: Репозиторій
 newPipeline:
   save: Зберегти
 newPipelineStage:
+  errors:
+    name:
+      required: Потрібне ім'я.
   header:
     create: Додати етап
     edit: Редагувати етап
+  addStep: Додати крок
   trigger:
     webhook: Push
     webhookPR: Запити до злиття
@@ -5251,9 +6224,13 @@ newPipelineStage:
 newPipelineStep:
   header:
     create: Додати крок
+    edit: Редагувати крок
   stepType:
+    label: Тип кроку
     image: Базовий Образ
+    env: Змінні середовища
     publishCatalog:
+      label: Опублікувати шаблон
       secret:
         label: Секрет
       targets:
@@ -5274,14 +6251,24 @@ newPipelineStep:
         placeholder: напр. dev
       gitAuthor:
         placeholder: напр. користувач
+      gitEmail:
+        placeholder: user@example.com
     applyApp:
+      catalog:
+        label: Каталог
+      catalogTemplate:
+        label: Ім'я шаблону
       version:
         label: Версія шаблону
       name:
         label: Назва додатку
         placeholder: напр. myapp
+      targetNamespace:
+        label: Простір імен
     applyYaml:
+      label: Розгорнути YAML
       env:
+        header: Змінні середовища
         addActionLabel: Додати змінну
     scm:
       selectRepository: Репозиторій
@@ -5290,13 +6277,35 @@ newPipelineStep:
       imageName:
         placeholder: напр. example/app:v1
     task:
+      label: Запустити Скрипт
       shell:
         label: Консоль
       command:
         label: Команда
+pipelineDetailPage:
+  repository: Репозиторій
+  lastRun: Останнє Виконання
+  activity:
+    table:
+      status: Статус
+      branch: Гілка
+      runNumber: Старт
+      commit: Коміт
+runPipeline:
+  title: 'Запустити "{name}"'
+  branch:
+    label: 'Гілка'
 buildDetailPage:
+  header: 'Запуск конвеєра: #{name}'
   log:
     waiting: Очікуйте...
+    loading: Завантажується...
+editYamlPipeline:
+  branch:
+    label: 'Гілка'
+editPipelineConfig:
+  timeout:
+    label: Час очікування
 pipelineSelector:
   table:
     type: Тип
@@ -5308,5 +6317,18 @@ pipelineSelector:
   push: Push
   tag: Тег
 fromSecret:
+  secret:
+    label: Секрет
+  prefixOrKey:
+    label: Ключ
+  prefix:
+    label: Псевдонім
+  keyLabel: Змінна
   keyPlaceholder: напр. FOO
+  valueLabel: Значення
   valuePlaceholder: напр. bar
+pipelineNotification:
+  header: Повідомлення
+  condition:
+    failed:
+      label: Помилка
