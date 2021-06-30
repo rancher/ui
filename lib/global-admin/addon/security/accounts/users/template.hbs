@@ -1,4 +1,4 @@
-<section class="header clearfix">
+<section class="header">
   <div class="pull-left">
     <h1>
       {{t "accountsPage.index.header"}}
@@ -8,59 +8,39 @@
   <div class="right-buttons">
     {{#if hasRefreshProviderAccess}}
       {{#if refreshing}}
-        <button
-          class="btn bg-primary btn-sm btn-disabled"
-          disabled type="button"
-        >
+        <button class="btn bg-primary btn-sm btn-disabled" disabled type="button">
           <i class="icon icon-spinner icon-spin"></i>
           {{t "generic.loading"}}
         </button>
       {{else}}
-        <button
-          class="btn bg-primary btn-sm" type="button" {{action "refreshAllTokens"}}
-        >
+        <button class="btn bg-primary btn-sm" type="button" {{action "refreshAllTokens" }}>
           <i class="icon icon-refresh"></i>
           {{t "siteAccess.refreshGroups"}}
         </button>
       {{/if}}
     {{/if}}
 
-    <LinkTo
-      class="btn btn-sm bg-primary right-divider-btn"
-      @disabled={{rbac-prevents resource="user" scope="global" permission="create"}}
-      @route="security.accounts.new"
-    >
+    <LinkTo class="btn btn-sm bg-primary right-divider-btn" @disabled={{rbac-prevents resource="user" scope="global"
+      permission="create" }} @route="security.accounts.new">
       {{t "accountsPage.index.localLink"}}
     </LinkTo>
   </div>
 </section>
 
 <section class="instances">
-  <SortableTable
-    class="grid sortable-table"
-    @sortBy={{ sortBy }}
-    @descending={{ descending }}
-    @headers={{ headers }}
-    @body={{ model }}
-    as |sortable kind row dt|
-  >
+  <SortableTable class="grid" @sortBy={{ sortBy }} @descending={{ descending }} @headers={{ headers }} @body={{ model }}
+    as |sortable kind row dt|>
     {{#if (eq kind "row")}}
       <AccountRow @model={{ row }} />
     {{else if (eq kind "nomatch")}}
       <tr>
-        <td
-          colspan="{{sortable.fullColspan}}"
-          class="text-center text-muted lacsso pt-20 pb-20"
-        >
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
           {{t "accountsPage.index.table.noMatch"}}
         </td>
       </tr>
     {{else if (eq kind "norows")}}
       <tr>
-        <td
-          colspan="{{sortable.fullColspan}}"
-          class="text-center text-muted pt-20 pb-20"
-        >
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
           {{t "accountsPage.index.table.noData"}}
         </td>
       </tr>

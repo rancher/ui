@@ -1,6 +1,7 @@
-<section class="header clearfix">
+<section class="header">
+  <h1>{{title}}</h1>
   {{#if isView}}
-    <div class="right-buttons pull-right">
+    <div class="right-buttons">
       {{badge-state model=model}}
       {{action-menu
         model=model
@@ -10,8 +11,6 @@
       }}
     </div>
   {{/if}}
-
-  <h1>{{title}}</h1>
 </section>
 
 {{#if (and isView model.description)}}
@@ -60,13 +59,8 @@
 </div>
 
 <div class="row mt-20">
-  <FormLabelsAnnotations
-    @classNames="accordion-wrapper"
-    @expandAll={{al.expandAll}}
-    @initialLabels={{primaryResource.labels}}
-    @model={{primaryResource}}
-    @editing={{notView}}
-  />
+  <FormLabelsAnnotations @classNames="accordion-wrapper" @expandAll={{al.expandAll}}
+    @initialLabels={{primaryResource.labels}} @model={{primaryResource}} @editing={{notView}} />
 </div>
 
 {{#accordion-list showExpandAll=false as | al expandFn |}}

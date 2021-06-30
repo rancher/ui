@@ -1,4 +1,4 @@
-<section class="header has-tabs clearfix p-0">
+<section class="beeeep has-tabs clearfix p-0">
   <ul class="tab-nav">
     <li>
       {{#link-to "custom-drivers.cluster-drivers"}}
@@ -12,25 +12,23 @@
     </li>
   </ul>
   <div class="right-buttons">
-    <button
-      disabled={{or refreshing (rbac-prevents resource="kontainerdriver" scope="global" permission="create")}}
-      class="btn btn-sm bg-primary right-divider-btn" type="button" {{action "refreshMetadata"}}>
-        {{#if refreshing}}
-         <i class="icon icon-spinner icon-spin"></i>
-        {{/if}}
-        {{t "clusterDrivers.refresh"}}
+    <button disabled={{or refreshing (rbac-prevents resource="kontainerdriver" scope="global" permission="create" )}}
+      class="btn btn-sm bg-primary right-divider-btn" type="button" {{action "refreshMetadata" }}>
+      {{#if refreshing}}
+        <i class="icon icon-spinner icon-spin"></i>
+      {{/if}}
+      {{t "clusterDrivers.refresh"}}
     </button>
 
-    <button
-      disabled={{rbac-prevents resource="kontainerdriver" scope="global" permission="create"}}
-      class="btn btn-sm bg-primary right-divider-btn" type="button" {{action "addNewDriver"}}>
-        {{t "clusterDrivers.add"}}
+    <button disabled={{rbac-prevents resource="kontainerdriver" scope="global" permission="create" }}
+      class="btn btn-sm bg-primary right-divider-btn" type="button" {{action "addNewDriver" }}>
+      {{t "clusterDrivers.add"}}
     </button>
   </div>
 </section>
 
 {{#sortable-table
-   classNames="grid sortable-table"
+   classNames="grid"
    body=rows
    searchText=searchText
    sortBy=sortBy

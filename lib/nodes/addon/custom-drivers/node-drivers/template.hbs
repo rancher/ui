@@ -1,4 +1,4 @@
-<section class="header has-tabs clearfix p-0">
+<section class="beeeep has-tabs clearfix p-0">
   <ul class="tab-nav">
     <li>
       {{#link-to "custom-drivers.cluster-drivers"}}{{t 'customDrivers.clusters'}}{{/link-to}}
@@ -8,12 +8,14 @@
     </li>
   </ul>
   <div class="right-buttons">
-    <button disabled={{rbac-prevents resource="nodedriver" scope="global" permission="create"}} class="btn btn-sm bg-primary right-divider-btn" type="button" {{action 'addNewDriver'}}>{{t 'machinePage.add'}}</button>
+    <button disabled={{rbac-prevents resource="nodedriver" scope="global" permission="create" }}
+      class="btn btn-sm bg-primary right-divider-btn" type="button" {{action 'addNewDriver'
+      }}>{{t 'machinePage.add'}}</button>
   </div>
 </section>
 
 {{#sortable-table
-    classNames="grid sortable-table"
+    classNames="grid"
     body=rows
     searchText=searchText
     sortBy=sortBy
@@ -51,8 +53,14 @@
       {{error-sub-row fullColspan=sortable.fullColspan model=driver}}
     {{/if}}
   {{else if (eq kind "nomatch")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'nodesPage.table.noMatch'}}</td></tr>
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'nodesPage.table.noMatch'}}
+      </td>
+    </tr>
   {{else if (eq kind "norows")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'nodesPage.table.noData'}}</td></tr>
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'nodesPage.table.noData'}}
+      </td>
+    </tr>
   {{/if}}
 {{/sortable-table}}

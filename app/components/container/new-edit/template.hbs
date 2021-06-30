@@ -1,4 +1,4 @@
-<section class="header clearfix">
+<section class="header">
   <h1>
     {{header}}
   </h1>
@@ -57,7 +57,7 @@
 <hr class="mt-30 mb-30" />
 
 <div class="row">
-  <div class="col span-{{if showTargetOS "9" "11"}}-of-23 mt-0 mb-0">
+  <div class="col span-{{if showTargetOS " 9" "11" }}-of-23 mt-0 mb-0">
     {{container/form-image
       initialValue=launchConfig.image
       errors=imageErrors
@@ -65,37 +65,34 @@
     }}
   </div>
 
- {{#if showTargetOS}}
-   <div class="col span-5-of-23 mt-0 mb-0">
-    <label class="acc-label pb-5">
-      {{t "newContainer.os"}}
-      {{field-required}}
-    </label>
-    <div class="row">
-      <div class="btn-group no-inline-space mt-5">
-        <button
-          class="btn btn-link btn-sm bg-{{if (eq targetOs "all") "primary" "default" }}" type="button" {{action "setTargetOs" "all"}}
-        >
-          {{t "newContainer.all"}}
-        </button>
-        <button
-          class="btn btn-link btn-sm bg-{{if (eq targetOs "linux") "primary" "default" }}" type="button" {{action "setTargetOs" "linux"}}
-        >
-          <i class="icon icon-fw icon-linux"></i>
-          {{t "newContainer.linux"}}
-        </button>
-        <button
-          class="btn btn-link btn-sm bg-{{if (eq targetOs "windows") "primary" "default" }}" type="button" {{action "setTargetOs" "windows"}}
-        >
-          <i class="icon icon-fw icon-windows"></i>
-          {{t "newContainer.windows"}}
-        </button>
+  {{#if showTargetOS}}
+    <div class="col span-5-of-23 mt-0 mb-0">
+      <label class="acc-label pb-5">
+        {{t "newContainer.os"}}
+        {{field-required}}
+      </label>
+      <div class="row">
+        <div class="btn-group no-inline-space mt-5">
+          <button class="btn btn-link btn-sm bg-{{if (eq targetOs " all") "primary" "default" }}" type="button"
+            {{action "setTargetOs" "all" }}>
+            {{t "newContainer.all"}}
+          </button>
+          <button class="btn btn-link btn-sm bg-{{if (eq targetOs " linux") "primary" "default" }}" type="button"
+            {{action "setTargetOs" "linux" }}>
+            <i class="icon icon-fw icon-linux"></i>
+            {{t "newContainer.linux"}}
+          </button>
+          <button class="btn btn-link btn-sm bg-{{if (eq targetOs " windows") "primary" "default" }}" type="button"
+            {{action "setTargetOs" "windows" }}>
+            <i class="icon icon-fw icon-windows"></i>
+            {{t "newContainer.windows"}}
+          </button>
+        </div>
       </div>
-    </div>
     </div>
   {{/if}}
   {{#unless isSidekick}}
-    <div class="col span-{{if showTargetOS "8" "11"}}-of-23 mt-0 mb-0 offset-1-of-23">
+    <div class="col span-{{if showTargetOS " 8" "11" }}-of-23 mt-0 mb-0 offset-1-of-23">
       {{form-namespace
         namespace=namespace
         errors=namespaceErrors
@@ -195,17 +192,19 @@
             {{t "formHealthCheck.liveness"}}
           </label>
           <div class="pull-right text-small">
-            <button class="btn bg-transparent p-0" type="button" {{action "toggleSeparateLivenessCheck"}}>{{t "formHealthCheck.combinedLivenessCheck"}}</button>
+            <button class="btn bg-transparent p-0" type="button" {{action "toggleSeparateLivenessCheck"
+              }}>{{t "formHealthCheck.combinedLivenessCheck"}}</button>
           </div>
         {{else}}
           <div class="pull-right text-small">
-            <button class="btn bg-transparent p-0" type="button" {{action "toggleSeparateLivenessCheck"}}>{{t "formHealthCheck.separateLivenessCheck"}}</button>
+            <button class="btn bg-transparent p-0" type="button" {{action "toggleSeparateLivenessCheck"
+              }}>{{t "formHealthCheck.separateLivenessCheck"}}</button>
           </div>
         {{/if}}
       </div>
     </div>
     <div class="row">
-      <div class="col {{if separateLivenessCheck "span-6" "span-12"}}">
+      <div class="col {{if separateLivenessCheck " span-6" "span-12" }}">
         {{form-healthcheck
           initialCheck=launchConfig.readinessProbe
           changed=(action (mut launchConfig.readinessProbe))

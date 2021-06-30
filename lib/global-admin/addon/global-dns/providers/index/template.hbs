@@ -1,8 +1,8 @@
-<section class="header clearfix">
-  <h1 class="pull-left">
+<section class="header">
+  <h1>
     {{t "globalDnsPage.providersPage.title"}}
   </h1>&nbsp;
-  <div class="vertical-middle"></div>
+
 
   <div class="right-buttons">
     {{#link-to
@@ -17,7 +17,7 @@
 
 
 {{#sortable-table
-   classNames="grid sortable-table"
+   classNames="grid"
    body=rows
    searchText=searchText
    descending=descending
@@ -28,11 +28,7 @@
 }}
   {{#if (eq kind "row")}}
     <tr class="main-row">
-      <td
-        valign="middle"
-        class="row-check"
-        style="padding-top: 2px;"
-      >
+      <td valign="middle" class="row-check" style="padding-top: 2px;">
         {{check-box nodeId=provider.id}}
       </td>
       <td data-title="{{dt.state}}" class="state">
@@ -53,19 +49,13 @@
     </tr>
   {{else if (eq kind "nomatch")}}
     <tr>
-      <td
-        colspan="{{sortable.fullColspan}}"
-        class="text-center text-muted lacsso pt-20 pb-20"
-      >
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
         {{t "globalDnsPage.noDnsProviderMatch"}}
       </td>
     </tr>
   {{else if (eq kind "norows")}}
     <tr>
-      <td
-        colspan="{{sortable.fullColspan}}"
-        class="text-center text-muted lacsso pt-20 pb-20"
-      >
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
         {{t "globalDnsPage.noDnsProviderData"}}
       </td>
     </tr>

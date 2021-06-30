@@ -12,32 +12,18 @@
           </div>
           {{/unless}}
           --}}
-<SortableTable
-  classNames="grid sortable-table"
-  @body={{rows}}
-  @bulkActions={{bulkActions}}
-  @descending={{descending}}
-  @headers={{questionsHeaders}}
-  @pagingLabel="pagination.member"
-  @searchText={{searchText}}
-  @sortBy={{sortBy}}
-  @stickyHeader={{true}}
-  as |sortable kind question dt|
->
+<SortableTable classNames="grid" @body={{rows}} @bulkActions={{bulkActions}} @descending={{descending}}
+  @headers={{questionsHeaders}} @pagingLabel="pagination.member" @searchText={{searchText}} @sortBy={{sortBy}}
+  @stickyHeader={{true}} as |sortable kind question dt|>
   {{#if (eq kind "row")}}
-    <ClusterTemplateQuestionRow
-      @questions={{schemaQuestions}}
-      @question={{question}}
-      @removeQuestion={{removeQuestion}}
-      @applyClusterTemplate={{applyClusterTemplate}}
-      @clusterTemplateCreate={{clusterTemplateCreate}}
-    />
+    <ClusterTemplateQuestionRow @questions={{schemaQuestions}} @question={{question}} @removeQuestion={{removeQuestion}}
+      @applyClusterTemplate={{applyClusterTemplate}} @clusterTemplateCreate={{clusterTemplateCreate}} />
   {{else if (eq kind "nomatch")}}
-    <td colspan="5" class="no-match" >
+    <td colspan="5" class="no-match">
       {{t "clusterTemplateQuestions.table.noMatch"}}
     </td>
   {{else if (eq kind "norows")}}
-    <td colspan="5" class="no-data" >
+    <td colspan="5" class="no-data">
       {{t "clusterTemplateQuestions.table.noData"}}
     </td>
   {{/if}}

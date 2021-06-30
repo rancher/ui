@@ -1,26 +1,27 @@
-<section class="header clearfix">
+<section class="header">
+  <h1>{{t 'configMapsPage.index.header'}}</h1>
   <div class="right-buttons">
     <div class="btn-group p-0 mr-10">
       {{#tooltip-element type="tooltip-basic" model=(t 'nav.group.none') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
-        {{#link-to (query-params group="none") classNames="btn btn-sm bg-default"}}<i class="icon icon-file"></i>{{/link-to}}
+        {{#link-to (query-params group="none") classNames="btn bg-default"}}<i class="icon icon-file"></i>{{/link-to}}
       {{/tooltip-element}}
 
       {{#tooltip-element type="tooltip-basic" model=(t 'nav.group.namespace') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
-        {{#link-to (query-params group="namespace") classNames="btn btn-sm bg-default"}}<i class="icon icon-list-nested"></i>{{/link-to}}
+        {{#link-to (query-params group="namespace") classNames="btn bg-default"}}<i
+            class="icon icon-list-nested"></i>{{/link-to}}
       {{/tooltip-element}}
     </div>
 
-    <button class="btn btn-sm bg-default mr-10" disabled={{rbac-prevents resource="configmap" scope="project" permission="create"}} type="button" {{action 'importYaml'}}>{{t 'nav.containers.importCompose'}}</button>
+    <button class="btn btn-sm bg-default mr-10" disabled={{rbac-prevents resource="configmap" scope="project"
+      permission="create" }} type="button" {{action 'importYaml' }}>{{t 'nav.containers.importCompose'}}</button>
 
     {{#link-to "authenticated.project.config-maps.new" classNames="btn btn-sm bg-primary" disabled=(rbac-prevents resource=resource scope="project" permission="create")}}{{t 'configMapsPage.index.linkTo'}}{{/link-to}}
   </div>
-
-  <h1>{{t 'configMapsPage.index.header'}}</h1>
 </section>
 
 <section class="instances pt-5 pb-5">
   {{#sortable-table
-    classNames="grid sortable-table"
+    classNames="grid"
     body=rows
     descending=descending
     groupByKey=groupTableBy
@@ -33,9 +34,17 @@
     {{else if (eq kind "group")}}
       {{namespace-group model=row.ref noGroup="namespaceGroup.project" fullColspan=sortable.fullColspan}}
     {{else if (eq kind "nomatch")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'configMapsPage.index.noMatch'}}</td></tr>
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+          {{t 'configMapsPage.index.noMatch'}}
+        </td>
+      </tr>
     {{else if (eq kind "norows")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'configMapsPage.index.noData'}}</td></tr>
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+          {{t 'configMapsPage.index.noData'}}
+        </td>
+      </tr>
     {{/if}}
   {{/sortable-table}}
 </section>

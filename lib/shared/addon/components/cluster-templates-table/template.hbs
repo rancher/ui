@@ -1,42 +1,16 @@
-<SortableTable
-  @body={{rows}}
-  @bulkActions={{true}}
-  @class="grid sortable-table"
-  @descending={{descending}}
-  @groupByKey="clusterTemplateId"
-  @groupByRef="clusterTemplate"
-  @headers={{headers}}
-  @pagingLabel="pagination.clusterTemplates"
-  @searchText={{searchText}}
-  @sortBy={{sortBy}}
-  @extraSearchFields={{extraSearchFields}}
-  @subRows={{true}}
-  @suffix={{suffix}}
-  as |sortable kind inst dt|
->
+<SortableTable @body={{rows}} @bulkActions={{true}} @class="grid" @descending={{descending}}
+  @groupByKey="clusterTemplateId" @groupByRef="clusterTemplate" @headers={{headers}}
+  @pagingLabel="pagination.clusterTemplates" @searchText={{searchText}} @sortBy={{sortBy}}
+  @extraSearchFields={{extraSearchFields}} @subRows={{true}} @suffix={{suffix}} as |sortable kind inst dt|>
   {{#if (eq kind "row")}}
-    <ClusterTemplateRow
-      @model={{inst}}
-      @fullColspan={{sortable.fullColspan}}
-      @dt={{dt}}
-    />
+    <ClusterTemplateRow @model={{inst}} @fullColspan={{sortable.fullColspan}} @dt={{dt}} />
   {{else if (eq kind "group")}}
-    <ClusterTemplateRow
-      @model={{inst.ref}}
-      @fullColspan={{sortable.fullColspan}}
-      @dt={{dt}}
-      @isGroup={{true}}
-    />
+    <ClusterTemplateRow @model={{inst.ref}} @fullColspan={{sortable.fullColspan}} @dt={{dt}} @isGroup={{true}} />
   {{else if (eq kind "suffix")}}
     {{#if (and clusterTemplatesWithoutRevisionsRows.length (not searchText.length))}}
       <tbody class="fixed grid group">
         {{#each clusterTemplatesWithoutRevisionsRows as |inst|}}
-          <ClusterTemplateRow
-            @model={{inst}}
-            @fullColspan={{sortable.fullColspan}}
-            @dt={{dt}}
-            @isGroup={{true}}
-          />
+          <ClusterTemplateRow @model={{inst}} @fullColspan={{sortable.fullColspan}} @dt={{dt}} @isGroup={{true}} />
         {{/each}}
       </tbody>
     {{/if}}

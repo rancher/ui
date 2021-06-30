@@ -1,4 +1,63 @@
-<table class="fixed grid sortable-table {{if internalBulkActions "has-actions"}} {{if groupByKey "bordered"}} {{if subRows "has-sub-rows bordered"}} {{tableClassNames}}">
+{{#if showHeader}}
+  <div class="fixed-header-actions row clearfix pb-20">
+    {{#if internalBulkActions}}
+      <div class="bulk-actions pull-left">
+        {{#each availableActions as |resourceAction index|}}
+          {{#if resourceAction.enabled}}
+            <a class="btn bg-primary" href="#" onclick={{action "executeBulkAction" resourceAction.action}}
+              tabindex={{index}}>
+              <i class="{{resourceAction.icon}}"></i>
+              {{t resourceAction.label}}
+            </a>
+          {{else}}
+            <a class="btn bg-default btn-disabled" href="#" onclick="return false;" tabindex={{index}}>
+              <i class="{{resourceAction.icon}}"></i>
+              {{t resourceAction.label}}
+            </a>
+          {{/if}}
+        {{/each}}
+        {{#if selectedNodes}}
+          <div class="inline-block text-small">{{t pagingLabel pages=1 count=selectedNodes.length}}</div>
+        {{/if}}
+      </div>
+    {{/if}}
+
+    <div class="pull-left">
+      {{#if leftActions}}
+        <div class="vertical-middle pr-20">
+          {{yield this "left-actions"}}
+        </div>
+      {{/if}}
+    </div>
+
+    <div class="pull-right">
+      {{#if search}}
+        <div class="vertical-middle">
+          {{#ember-wormhole to=searchToWormhole renderInPlace=(not searchToWormhole)}}
+            <div class="{{unless searchToWormhole " pull-right"}} search-group input-group">
+              {{input value=searchText aria-title=(t "generic.search") type="search" class="input-sm pull-right" placeholder=(t "generic.search")}}
+              {{#if searchText}}
+                <span class="input-group-btn">
+                  <button class="btn bg-transparent text-info pl-10 pr-10" type="button" {{action "clearSearch" }}><i
+                      class="icon icon-close" /></button>
+                </span>
+              {{/if}}
+            </div>
+          {{/ember-wormhole}}
+        </div>
+      {{/if}}
+
+      {{#if rightActions}}
+        <div class="vertical-middle pl-20">
+          {{yield this "right-actions"}}
+        </div>
+      {{/if}}
+    </div>
+  </div>
+{{/if}}
+
+<table class="fixed grid sortable-table {{if internalBulkActions " has-actions"}} {{if groupByKey "bordered" }} {{if
+  subRows "has-sub-rows bordered" }} {{tableClassNames}}">
   <thead>
     <tr class="fixed-header-placeholder">
       {{#if internalBulkActions}}
@@ -11,61 +70,7 @@
         <th width="{{actionsWidth}}"></th>
       {{/if}}
     </tr>
-    {{#if showHeader}}
-      <div class="fixed-header-actions row clearfix">
-        {{#if internalBulkActions}}
-          <div class="bulk-actions pull-left">
-            {{#each availableActions as |resourceAction index|}}
-              {{#if resourceAction.enabled}}
-                <a class="btn btn-sm bg-primary" href="#" onclick={{action "executeBulkAction" resourceAction.action}} tabindex={{index}}>
-                  {{t resourceAction.label}}
-                  <i class="{{resourceAction.icon}}"></i>
-                </a>
-              {{else}}
-                <a class="btn btn-sm bg-default btn-disabled" href="#" onclick="return false;" tabindex={{index}}>
-                  {{t resourceAction.label}}
-                  <i class="{{resourceAction.icon}}"></i>
-                </a>
-              {{/if}}
-            {{/each}}
-            {{#if selectedNodes}}
-              <div class="inline-block text-small">{{t pagingLabel pages=1 count=selectedNodes.length}}</div>
-            {{/if}}
-          </div>
-        {{/if}}
 
-        <div class="pull-left">
-          {{#if leftActions}}
-            <div class="vertical-middle pr-20">
-              {{yield this "left-actions"}}
-            </div>
-          {{/if}}
-        </div>
-
-        <div class="pull-right">
-          {{#if search}}
-            <div class="vertical-middle">
-              {{#ember-wormhole to=searchToWormhole renderInPlace=(not searchToWormhole)}}
-                <div class="{{unless searchToWormhole "pull-right"}} search-group input-group">
-                  {{input value=searchText aria-title=(t "generic.search") type="search" class="input-sm pull-right" placeholder=(t "generic.search")}}
-                  {{#if searchText}}
-                    <span class="input-group-btn">
-                      <button class="btn bg-transparent text-info pl-10 pr-10" type="button" {{action "clearSearch"}}><i class="icon icon-close"/></button>
-                    </span>
-                  {{/if}}
-                </div>
-              {{/ember-wormhole}}
-            </div>
-          {{/if}}
-
-          {{#if rightActions}}
-            <div class="vertical-middle pl-20">
-              {{yield this "right-actions"}}
-            </div>
-          {{/if}}
-        </div>
-      </div>
-    {{/if}}
 
     <tr class="fixed-header">
       {{#if internalBulkActions}}

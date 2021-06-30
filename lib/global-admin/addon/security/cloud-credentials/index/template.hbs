@@ -1,31 +1,27 @@
-<section class="header clearfix">
+<section class="header">
+  <h1>
+    {{t "cloudCredentialsPage.header"}}
+  </h1>
   <div class="right-buttons">
     {{#link-to-external
        "nodes.node-templates"
        classNames="btn btn-sm bg-primary hide-when-embedded"
     }}
-      <i class="icon icon-gear"/>
+      <i class="icon icon-gear" />
       {{t "cloudCredentialsPage.rightButtons.nodeTemplates"}}
     {{/link-to-external}}
-    <button
-      class="btn btn-sm bg-primary right-divider-btn"
-      disabled={{rbac-prevents resource="cloudcredential" scope="global" permission="create"}} type="button" {{action "addCloudKey"}}
-    >
+    <button class="btn btn-sm bg-primary right-divider-btn" disabled={{rbac-prevents resource="cloudcredential"
+      scope="global" permission="create" }} type="button" {{action "addCloudKey" }}>
       {{t "cloudCredentialsPage.rightButtons.addKey"}}
     </button>
   </div>
-
-  <h1>
-    {{t "cloudCredentialsPage.header"}}
-  </h1>
-
 </section>
 
 <section class="instances">
   {{#sortable-table
      body=filteredContent
      bulkActions=true
-     classNames="grid sortable-table"
+     classNames="grid"
      descending=descending
      extraSearchFields=extraSearchFields
      groupByKey="displayType"
@@ -42,16 +38,16 @@
         <td valign="middle" class="row-check" style="padding-top: 2px;">
           {{check-box nodeId=row.id}}
         </td>
-        <td data-title="{{t "generic.name"}}:" class="clip">
+        <td data-title="{{t " generic.name"}}:" class="clip">
           {{row.displayName}}
         </td>
-        <td data-title="{{t "cloudCredentialsPage.numberNodeTemplates"}}:">
+        <td data-title="{{t " cloudCredentialsPage.numberNodeTemplates"}}:">
           {{row.numberOfNodeTemplateAssociations}}
         </td>
-        <td data-title="{{t "generic.created"}}:" class="text-right pr-20">
+        <td data-title="{{t " generic.created"}}:" class="text-right pr-20">
           {{date-calendar row.created}}
         </td>
-        <td data-title="{{t "generic.actions"}}:" class="actions">
+        <td data-title="{{t " generic.actions"}}:" class="actions">
           {{action-menu model=row}}
         </td>
       </tr>
@@ -62,17 +58,11 @@
         </td>
       </tr>
     {{else if (eq kind "nomatch")}}
-      <td
-        colspan="5"
-        class="text-center text-muted lacsso pt-20 pb-20"
-      >
+      <td colspan="5" class="text-center text-muted lacsso pt-20 pb-20">
         {{t "cloudCredentialsPage.index.table.noMatch"}}
       </td>
     {{else if (eq kind "norows")}}
-      <td
-        colspan="5"
-        class="text-center text-muted lacsso pt-20 pb-20"
-      >
+      <td colspan="5" class="text-center text-muted lacsso pt-20 pb-20">
         {{t "cloudCredentialsPage.index.table.noData"}}
       </td>
     {{/if}}

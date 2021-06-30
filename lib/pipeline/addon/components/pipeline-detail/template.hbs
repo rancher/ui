@@ -1,4 +1,4 @@
-<section class="header clearfix">
+<section class="header">
   <div class="pull-left">
     <h1 class="vertical-middle">
       {{t 'pipelineDetailPage.header' name=pipeline.displayName}}
@@ -15,20 +15,23 @@
 {{/if}}
 
 {{#if pipeline.showTransitioningMessage}}
-  <div class="{{pipeline.stateColor}}"><p>{{uc-first pipeline.transitioningMessage}}</p></div>
+  <div class="{{pipeline.stateColor}}">
+    <p>{{uc-first pipeline.transitioningMessage}}</p>
+  </div>
 {{/if}}
 
 <section>
   <div class="row banner bg-info basics mb-0">
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'pipelineDetailPage.repository'}}</label>
-      <a href="{{pipeline.displayRepositoryUrl}}" target="_blank" rel="nofollow noreferrer">{{pipeline.displayRepositoryUrl}}</a>
+      <a href="{{pipeline.displayRepositoryUrl}}" target="_blank"
+        rel="nofollow noreferrer">{{pipeline.displayRepositoryUrl}}</a>
     </div>
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'pipelineDetailPage.lastRun'}}</label>
       {{#if pipeline.lastExecutionId}}
         {{~#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(date-str pipeline.lastStarted) tagName="span" tooltipFor="tooltip-basic"}}
-          {{date-from-now pipeline.lastStarted}}
+        {{date-from-now pipeline.lastStarted}}
         {{~/tooltip-element}}
       {{else}}
         {{t 'generic.na'}}

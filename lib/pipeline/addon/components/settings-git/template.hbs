@@ -2,15 +2,18 @@
   {{#unless provider.enabled}}
     <section>
       <div class="row nav nav-boxes checked-active">
-        <a href="#" alt="github" class="col span-2 nav-box-item driver {{if isGithub "active" ""}}" {{action "changeOauthType" "github"}}>
+        <a href="#" alt="github" class="col span-2 nav-box-item driver {{if isGithub " active" "" }}"
+          {{action "changeOauthType" "github" }}>
           <div class="auth-driver github-for-pipeline"></div>
           <p>{{t "generic.github"}}</p>
         </a>
-        <a href="#" alt="gitlab" class="col span-2 nav-box-item driver {{if isGitlab "active" ""}}" {{action "changeOauthType" "gitlab"}}>
+        <a href="#" alt="gitlab" class="col span-2 nav-box-item driver {{if isGitlab " active" "" }}"
+          {{action "changeOauthType" "gitlab" }}>
           <div class="auth-driver gitlab"></div>
           <p>{{t "generic.gitlab"}}</p>
         </a>
-        <a href="#" alt="bitbucket" class="col span-2 nav-box-item driver {{if isBitbucket "active" ""}}" {{action "changeOauthType" "bitbucketcloud"}}>
+        <a href="#" alt="bitbucket" class="col span-2 nav-box-item driver {{if isBitbucket " active" "" }}"
+          {{action "changeOauthType" "bitbucketcloud" }}>
           <div class="auth-driver bitbucket"></div>
           <p>{{t "generic.bitbucket"}}</p>
         </a>
@@ -19,8 +22,8 @@
   {{/unless}}
 
   {{#if provider.enabled}}
-    <section class="header clearfix">
-      <h1 class="pull-left">
+    <section class="header">
+      <h1>
         {{t "authPage.header"}}
       </h1>
     </section>
@@ -46,7 +49,7 @@
 
     <section class="box mt-30">
       <h3>{{t "authPage.setting.executor.label"}}</h3>
-      <hr/>
+      <hr />
       <div class="vertical-middle">
         <label class="acc-label vertical-middle p-0">
           {{t "authPage.setting.executor.scale"}}
@@ -55,11 +58,11 @@
           {{scale.value}}
         </span>
         <div class="btn-group btn-group-xs p-0">
-          <button class="btn btn-xs bg-primary" type="button" {{action "scaleDown"}}>
-            <i class="icon icon-minus icon-fw"/>
+          <button class="btn btn-xs bg-primary" type="button" {{action "scaleDown" }}>
+            <i class="icon icon-minus icon-fw" />
           </button>
-          <button style="margin-left: -1px;" class="btn btn-xs bg-primary" type="button" {{action "scaleUp"}}>
-            <i class="icon icon-plus icon-fw"/>
+          <button style="margin-left: -1px;" class="btn btn-xs bg-primary" type="button" {{action "scaleUp" }}>
+            <i class="icon icon-plus icon-fw" />
           </button>
         </div>
       </div>
@@ -69,7 +72,7 @@
       <h3>
         {{t "authPage.setting.limit.label"}}
       </h3>
-      <hr/>
+      <hr />
       <div class="row">
         <div class="col span-6">
           <label class="acc-label">
@@ -156,7 +159,7 @@
       <h3>
         {{t "authPage.setting.cacerts.label"}}
       </h3>
-      <hr/>
+      <hr />
       {{#if showCert}}
         {{schema/input-multiline
           value=cacerts.value
@@ -184,11 +187,12 @@
       <h3>
         {{t "authPage.authenticated.header.text"}}
       </h3>
-      <hr/>
+      <hr />
       {{#if provider.hostname}}
         <div>
           <b>{{t "authPage.authenticated.header.enterpriseHostName"}} </b>
-          <a href="{{if provider.tls "https" "http"}}://{{provider.hostname}}" target="_blank" rel="nofollow noreferrer">{{provider.hostname}}</a>
+          <a href="{{if provider.tls " https" "http" }}://{{provider.hostname}}" target="_blank"
+            rel="nofollow noreferrer">{{provider.hostname}}</a>
         </div>
       {{/if}}
 
@@ -201,7 +205,8 @@
 
       {{#if provider.clientId}}
         <div>
-          <b>{{t (if isBitbucket "authPage.authenticated.header.key.text" "authPage.authenticated.header.clientId.text")}} </b>
+          <b>{{t (if isBitbucket "authPage.authenticated.header.key.text" "authPage.authenticated.header.clientId.text")}}
+          </b>
           <span class="text-muted">{{provider.clientId}}</span>
         </div>
       {{/if}}
@@ -212,12 +217,12 @@
               <i class="icon icon-spinner icon-spin"></i> {{t "generic.saving"}}
             </button>
           {{else}}
-            <button class="btn bg-primary" type="button" {{action "disable"}}>
+            <button class="btn bg-primary" type="button" {{action "disable" }}>
               <i class="icon icon-alert"></i> {{t "pipelinesSetting.sureToDisableOAuth"}}
             </button>
           {{/if}}
         {{else}}
-          <button class="btn bg-primary" type="button" {{action "promptDisable"}}>
+          <button class="btn bg-primary" type="button" {{action "promptDisable" }}>
             <i class="icon icon-umbrella"></i> {{t "pipelinesSetting.disableOAuth"}}
           </button>
         {{/if}}
@@ -233,8 +238,5 @@
       githubAuthConfig=githubAuthConfig}}
   {{/unless}}
 {{else}}
-  <BannerMessage
-    @color="bg-info"
-    @message={{t "pipelinesSetting.info.noPermission"}}
-  />
+  <BannerMessage @color="bg-info" @message={{t "pipelinesSetting.info.noPermission" }} />
 {{/if}}

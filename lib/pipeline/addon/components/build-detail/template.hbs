@@ -1,4 +1,4 @@
-<section class="header clearfix">
+<section class="header">
   <div class="pull-left">
     <h1 class="vertical-middle">
       {{t 'buildDetailPage.header' name=build.run}}
@@ -12,23 +12,28 @@
 
 {{#if build.message}}
   {{#banner-message color='bg-secondary mb-0 mt-10'}}
-    <p><label class="acc-label vertical-middle p-0 pr-10">{{t 'pipelineDetailPage.commitMessage'}}</label>{{build.message}}</p>
+    <p><label
+        class="acc-label vertical-middle p-0 pr-10">{{t 'pipelineDetailPage.commitMessage'}}</label>{{build.message}}
+    </p>
   {{/banner-message}}
 {{/if}}
 
 {{#if build.showTransitioningMessage}}
-  <div class="{{build.stateColor}}"><p>{{uc-first build.transitioningMessage}}</p></div>
+  <div class="{{build.stateColor}}">
+    <p>{{uc-first build.transitioningMessage}}</p>
+  </div>
 {{/if}}
 
 <section>
   <div class="row banner bg-info basics">
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'generic.pipeline'}}</label>
-      {{#link-to "pipelines.detail" build.pipeline.id}}{{build.pipeline.displayName}}{{/link-to}}  
+      {{#link-to "pipelines.detail" build.pipeline.id}}{{build.pipeline.displayName}}{{/link-to}}
     </div>
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'pipelineDetailPage.repository'}}</label>
-      <a href="{{build.displayRepositoryUrl}}" target="_blank" rel="nofollow noreferrer">{{build.displayRepositoryUrl}}</a>
+      <a href="{{build.displayRepositoryUrl}}" target="_blank"
+        rel="nofollow noreferrer">{{build.displayRepositoryUrl}}</a>
     </div>
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'generic.branch'}}</label>
@@ -44,9 +49,9 @@
     <div class="vertical-middle">
       <label class="acc-label vertical-middle p-0">{{t 'pipelineDetailPage.triggered'}}</label>
       {{~#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(date-str build.startedTimeStamp) tagName="span" tooltipFor="tooltip-basic"}}
-        <div class="pl-5">
-          {{date-from-now build.startedTimeStamp}}
-        </div>
+      <div class="pl-5">
+        {{date-from-now build.startedTimeStamp}}
+      </div>
       {{~/tooltip-element}}
     </div>
     <div class="vertical-middle">

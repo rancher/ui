@@ -1,8 +1,8 @@
 // Header
-$header                              : $secondary !default;
-$header-link                         : $light-grey !default;
-$header-link-active                  : $primary !default;
-$user-btn                            : darken($header, 10%) !default;
+$header                              : $primary !default;
+$header-link                         : white !default;
+$header-link-active                  : lighten($primary, 5%) !default;
+$user-btn                            : darken($primary, 5%) !default;
 $nav-spacing: 3.5px;
 
 $project-nav-hover: $secondary !default;
@@ -53,7 +53,7 @@ $project-nav-active: $dropdown-link-hover-bg !default;
     }
 
     > ul {
-      background-color: $header;
+      background-color: $primary;
       border-radius: 3px 0 0 3px;
       padding: 0;
       vertical-align: middle;
@@ -128,8 +128,12 @@ $project-nav-active: $dropdown-link-hover-bg !default;
     .nav-item {
       a.nav-link {
         padding: 0;
-        display: inline-block;
-        border: none;
+        height: 50px;
+        line-height: 42px;
+
+        .gh-avatar {
+          margin-right: 10px;
+        }
       }
     }
 
@@ -167,10 +171,10 @@ $project-nav-active: $dropdown-link-hover-bg !default;
       }
 
       &.text-white:hover {
-        background: mix($user-btn, black, 80%);
+        background: darken($primary, 12%);
 
         &::after {
-          border-left-color: mix($user-btn, black, 80%);
+          border-left-color: darken($primary, 12%);
         }
       }
     }

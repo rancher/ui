@@ -1,4 +1,4 @@
-<section class="header clearfix">
+<section class="header">
   <div class="pull-left">
     <h1>
       {{#if readOnlyOrBuiltIn}}
@@ -142,13 +142,8 @@
         </thead>
         <tbody>
           {{#each ruleArray as |rule|}}
-            <RoleRuleRow
-              @readOnly={{readOnlyOrBuiltIn}}
-              @rule={{rule}}
-              @rules={{ruleResources}}
-              @editing={{or isEdit isNew}}
-              @remove={{action "removeRule"}}
-            />
+            <RoleRuleRow @readOnly={{readOnlyOrBuiltIn}} @rule={{rule}} @rules={{ruleResources}} @editing={{or isEdit
+              isNew}} @remove={{action "removeRule" }} />
           {{/each}}
         </tbody>
       </table>
@@ -160,8 +155,8 @@
 
     {{#unless readOnlyOrBuiltIn}}
       <div>
-        <button class="btn bg-primary icon-btn p-0" type="button" {{action "addRule"}}>
-          <span class="darken"><i class="icon icon-plus text-small"/></span>
+        <button class="btn bg-primary icon-btn p-0" type="button" {{action "addRule" }}>
+          <span class="darken"><i class="icon icon-plus text-small" /></span>
           <span>{{t "rolesPage.new.form.allow.addAction"}}</span>
         </button>
       </div>
@@ -197,14 +192,14 @@
             {{/each}}
           </tbody>
         </table>
-    {{else if readOnlyOrBuiltIn}}
+      {{else if readOnlyOrBuiltIn}}
         <span class="text-muted">{{t "generic.none"}}</span>
       {{/if}}
 
       {{#unless readOnlyOrBuiltIn}}
         <div>
-          <button class="btn bg-primary icon-btn p-0" type="button" {{action "addOtherRole"}}>
-            <span class="darken"><i class="icon icon-plus text-small"/></span>
+          <button class="btn bg-primary icon-btn p-0" type="button" {{action "addOtherRole" }}>
+            <span class="darken"><i class="icon icon-plus text-small" /></span>
             <span>{{t "rolesPage.new.form.otherRole.addAction"}}</span>
           </button>
         </div>

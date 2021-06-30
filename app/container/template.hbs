@@ -1,4 +1,4 @@
-<section class="header clearfix">
+<section class="header">
   <div class="pull-left">
     <h1 class="vertical-middle">
       {{t "containerPage.header" name=model.displayName}}
@@ -6,7 +6,7 @@
   </div>
   <div class="right-buttons">
     {{badge-state model=model}}
-    {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+    {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" }}
   </div>
 </section>
 
@@ -15,7 +15,9 @@
 {{/if}}
 
 {{#if model.showTransitioningMessage}}
-  <div class="{{model.stateColor}}"><p>{{uc-first model.transitioningMessage}}</p></div>
+  <div class="{{model.stateColor}}">
+    <p>{{uc-first model.transitioningMessage}}</p>
+  </div>
 {{/if}}
 
 <div class="row banner bg-info basics">
@@ -34,7 +36,7 @@
     {{model.image}} {{copy-to-clipboard clipboardText=model.image size="small"}}
   </div>
   <div class="vertical-middle">
-    <label class="acc-label vertical-middle p-0">{{t "containerPage.pod"}}:</label>            {{#if model.pod}}
+    <label class="acc-label vertical-middle p-0">{{t "containerPage.pod"}}:</label> {{#if model.pod}}
       {{#link-to "pod" model.podId}}{{model.podId}}{{/link-to}}
     {{else if model.podId}}
       {{model.podId}}
@@ -133,7 +135,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col {{if model.livenessProbe "span-6" "span-12"}}">
+      <div class="col {{if model.livenessProbe " span-6" "span-12" }}">
         {{form-healthcheck
           initialCheck=model.readinessProbe
           editing=false

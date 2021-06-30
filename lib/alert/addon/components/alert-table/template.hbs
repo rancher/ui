@@ -1,6 +1,6 @@
 {{#sortable-table
    tableClassNames="bordered"
-   classNames="grid sortable-table"
+   classNames="grid"
    bulkActions=bulkActions
    paging=paging
    fullRows=fullRows
@@ -35,12 +35,16 @@
     {{/if}}
   {{else if (eq kind "nomatch")}}
     <tr>
-      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "alertPage.index.table.noMatch"}}</td>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+        {{t "alertPage.index.table.noMatch"}}
+      </td>
     </tr>
   {{else if (eq kind "norows")}}
     {{#unless groupsWithoutAlerts.length}}
       <tr>
-        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t "alertPage.index.table.noData"}}</td>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+          {{t "alertPage.index.table.noData"}}
+        </td>
       </tr>
     {{/unless}}
   {{else if (eq kind "group")}}

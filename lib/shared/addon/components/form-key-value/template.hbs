@@ -7,7 +7,8 @@
 
   {{#if (and allowUpload editing)}}
     <div class="pull-right">
-      <button class="btn btn-sm bg-primary" type="button" {{action "upload"}}>{{t "uploadFile.label"}} <span class="icon icon-upload"></span></button>
+      <button class="btn btn-sm bg-primary" type="button" {{action "upload" }}>{{t "uploadFile.label"}} <span
+          class="icon icon-upload"></span></button>
     </div>
   {{/if}}
 </div>
@@ -29,14 +30,9 @@
           <td data-title="{{t keyLabel}}:">
             {{#if editing}}
               {{#if keyContent}}
-                <NewSelect
-                  @content={{keyContent}}
-                  @class="form-control input-sm key"
-                  @useContentForDefaultValue={{true}}
-                  @value={{row.key}}
-                  @placeholder={{keyPlaceholder}}
-                  @disabled={{not (and allowEditKey (not-eq row.editable false))}}
-                />
+                <NewSelect @content={{keyContent}} @class="form-control input-sm key"
+                  @useContentForDefaultValue={{true}} @value={{row.key}} @placeholder={{keyPlaceholder}} @disabled={{not
+                  (and allowEditKey (not-eq row.editable false))}} />
               {{else}}
                 {{input-paste
                   separators=separators
@@ -62,14 +58,9 @@
           <td data-title="{{t valueLabel}}:">
             {{#if editing}}
               {{#if valueContent}}
-                <NewSelect
-                  @content={{valueContent}}
-                  @class="form-control input-sm key"
-                  @useContentForDefaultValue={{true}}
-                  @value={{row.value}}
-                  @placeholder={{keyPlaceholder}}
-                  @disabled={{not (and allowEditKey (not-eq row.editable false))}}
-                />
+                <NewSelect @content={{valueContent}} @class="form-control input-sm key"
+                  @useContentForDefaultValue={{true}} @value={{row.value}} @placeholder={{keyPlaceholder}}
+                  @disabled={{not (and allowEditKey (not-eq row.editable false))}} />
               {{else}}
                 {{#if row.binary}}
                   {{t "formKeyValue.binary.byte" length=row.value.length}}
@@ -96,16 +87,15 @@
                 {{/if}}
               {{/if}}
             {{else}}
-              <span class="{{if concealValue "conceal"}}">{{nl-to-br row.value}}</span>
+              <span class="{{if concealValue " conceal"}}">{{nl-to-br row.value}}</span>
             {{/if}}
           </td>
           <td>&nbsp;</td>
           <td class="valign-top text-right">
             {{#if (and editing allowRemove)}}
-              <button
-                class="btn bg-primary btn-sm" disabled={{eq row.editable false}} type="button" {{action "remove" row}}
-              >
-                <i class="icon icon-minus"/>
+              <button class="btn bg-primary btn-sm" disabled={{eq row.editable false}} type="button" {{action "remove"
+                row}}>
+                <i class="icon icon-minus" />
                 <span class="sr-only">
                   {{t "generic.remove"}}
                 </span>
@@ -132,8 +122,8 @@
     </div>
   {{/if}}
   <div>
-    <button class="btn bg-link icon-btn p-0" type="button" {{action "add"}}>
-      <span class="darken"><i class="icon icon-plus text-small"/></span>
+    <button class="btn bg-link icon-btn p-0" type="button" {{action "add" }}>
+      <i class="icon icon-plus text-small" />
       <span>{{t addActionLabel}}</span>
     </button>
   </div>

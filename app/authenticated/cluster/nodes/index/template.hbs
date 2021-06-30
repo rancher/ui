@@ -1,14 +1,14 @@
-<section class="header clearfix">
-  <h1 class="pull-left">{{t "nodesPage.header"}}</h1>
+<section class="header">
+  <h1>{{t "nodesPage.header"}}</h1>
   <div class="right-buttons">
-    <button class="btn bg-primary btn-sm ml-10" type="button" {{action "editCluster"}}>
+    <button class="btn bg-primary ml-10" type="button" {{action "editCluster" }}>
       <span>{{t "nodesPage.editCluster"}}</span>
     </button>
   </div>
 </section>
 
 {{#sortable-table
-  classNames="grid sortable-table"
+  classNames="grid"
   body=rows
   searchText=searchText
   sortBy=sortBy
@@ -36,7 +36,9 @@
           </p>
           {{#if node.ref.nodeTemplate}}
             <p class="text-small text-muted m-0">
-              {{node.ref.nodeTemplate.displayProvider}} &ndash;  {{node.ref.nodeTemplate.displayLocation}}/{{node.ref.nodeTemplate.displaySize}} ({{node.ref.nodeTemplate.name}})
+              {{node.ref.nodeTemplate.displayProvider}} &ndash;
+              {{node.ref.nodeTemplate.displayLocation}}/{{node.ref.nodeTemplate.displaySize}}
+              ({{node.ref.nodeTemplate.name}})
             </p>
           {{/if}}
         </td>
@@ -46,13 +48,13 @@
           </p>
           {{#if capabilities.nodePoolsCanScale}}
             <p class="m-0">
-              <button
-                class="btn btn-xs bg-primary" disabled={{lte node.ref.quantity 1}} type="button" {{action "scaleDownPool" node.ref.id}}
-              >
-                <i class="icon icon-minus icon-fw"/>
+              <button class="btn btn-xs bg-primary" disabled={{lte node.ref.quantity 1}} type="button"
+                {{action "scaleDownPool" node.ref.id}}>
+                <i class="icon icon-minus icon-fw" />
               </button>
-              <button style="margin-left: -5px;" class="btn btn-xs bg-primary" type="button" {{action "scaleUpPool" node.ref.id}}>
-                <i class="icon icon-plus icon-fw"/>
+              <button style="margin-left: -5px;" class="btn btn-xs bg-primary" type="button" {{action "scaleUpPool"
+                node.ref.id}}>
+                <i class="icon icon-plus icon-fw" />
               </button>
             </p>
           {{/if}}

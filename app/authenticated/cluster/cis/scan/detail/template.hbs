@@ -1,40 +1,37 @@
-<section class="header clearfix">
+<section class="header">
   <h1>{{model.scan.name}} ({{model.scan.profile}})</h1>
 </section>
 
-<div class="fixed-header-actions row clearfix">
+<div class="fixed-header-actions row clearfix pb-20">
   <div class="bulk-actions pull-left">
-      <a class="btn btn-sm bg-primary" href="#" onclick={{action "download"}} tabindex="0">
-        {{t 'cis.scan.actions.download'}}
-        <i class="icon icon-download"></i>
-      </a>
-      <a class="btn btn-sm bg-primary" href="#" onclick={{action "delete"}} tabindex="1">
-        {{t 'cis.scan.actions.delete'}}
-        <i class="icon icon-trash"></i>
-      </a>
+    <a class="btn btn-sm bg-primary" href="#" onclick={{action "download" }} tabindex="0">
+      <i class="icon icon-download"></i>
+      {{t 'cis.scan.actions.download'}}
+    </a>
+    <a class="btn btn-sm bg-primary" href="#" onclick={{action "delete" }} tabindex="1">
+      <i class="icon icon-trash"></i>
+      {{t 'cis.scan.actions.delete'}}
+    </a>
   </div>
 
   <div class="pull-right">
-      <div class="vertical-middle">
-        <div class="search-group input-group">
-          <Input 
-            @value={{searchText}} 
-            autocomplete="off" 
-            autocapitalize="none" 
-            placeholder={{t 'cis.scan.actions.search.placeholder'}}  
-            class="input-sm pull-right ember-text-field ember-view" 
-            type="search" 
-          />
-          {{#if searchText}}
-            <span class="input-group-btn">
-              <button class="btn bg-transparent text-info pl-10 pr-10" type="button" {{action "clearSearchText"}}><i class="icon icon-close"></i></button>
-            </span>
-          {{/if}}
-        </div>
-      </div>  
-      <button class="btn btn-sm bg-primary pl-40 pr-40 ml-20" disabled={{scope.currentCluster.isClusterScanDisabled}} type="button" {{action "runScan"}}>
-        {{t 'cis.scan.actions.runScan'}}
-      </button>      
+    <div class="vertical-middle">
+      <div class="search-group input-group">
+        <Input @value={{searchText}} autocomplete="off" autocapitalize="none"
+          placeholder={{t 'cis.scan.actions.search.placeholder' }}
+          class="input-sm pull-right ember-text-field ember-view" type="search" />
+        {{#if searchText}}
+          <span class="input-group-btn">
+            <button class="btn bg-transparent text-info pl-10 pr-10" type="button" {{action "clearSearchText" }}><i
+                class="icon icon-close"></i></button>
+          </span>
+        {{/if}}
+      </div>
+    </div>
+    <button class="btn btn-sm bg-primary pl-40 pr-40 ml-20" disabled={{scope.currentCluster.isClusterScanDisabled}}
+      type="button" {{action "runScan" }}>
+      {{t 'cis.scan.actions.runScan'}}
+    </button>
   </div>
 </div>
 
@@ -55,7 +52,9 @@
       <Cluster::Cis::Scan::Detail::TableRow @model={{test}} />
     {{else if (eq kind "norows")}}
       <tr>
-        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'cis.scan.detail.table.empty'}}</td>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+          {{t 'cis.scan.detail.table.empty'}}
+        </td>
       </tr>
     {{/if}}
   {{/sortable-table}}

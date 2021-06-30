@@ -1,6 +1,9 @@
-<section class="header clearfix">
+<section class="header">
+  <h1>
+    {{title}}
+  </h1>
   {{#if isView}}
-    <div class="right-buttons pull-right">
+    <div class="right-buttons">
       {{badge-state model=model}}
       {{action-menu
         model=model
@@ -10,9 +13,6 @@
       }}
     </div>
   {{/if}}
-  <h1>
-    {{title}}
-  </h1>
 </section>
 <div class="row">
   {{#if isView}}
@@ -63,13 +63,9 @@
           {{t "cruPersistentVolumeClaim.storageClass.label"}}
         </label>
         <div>
-          <a
-            href="{{href-to
-                "authenticated.cluster.storage.classes.detail.index"
-                scope.currentCluster.id
-                primaryResource.storageClass.id
-              }}"
-          >
+          <a href="{{href-to
+                " authenticated.cluster.storage.classes.detail.index" scope.currentCluster.id
+            primaryResource.storageClass.id }}">
             {{primaryResource.storageClass.displayName}}
           </a>
         </div>
@@ -90,13 +86,9 @@
           {{t "cruPersistentVolumeClaim.pv.label"}}
         </label>
         <div>
-          <a
-            href="{{href-to
-                "authenticated.cluster.storage.persistent-volumes.detail.index"
-                scope.currentCluster.id
-                primaryResource.persistentVolume.id
-              }}"
-          >
+          <a href="{{href-to
+                " authenticated.cluster.storage.persistent-volumes.detail.index" scope.currentCluster.id
+            primaryResource.persistentVolume.id }}">
             {{primaryResource.persistentVolume.displayName}}
           </a>
         </div>
@@ -110,7 +102,7 @@
         {{t "cruPersistentVolumeClaim.source.label"}}
       </label>
       <div class="radio">
-        <label class="{{unless canUseStorageClass "text-muted"}}">
+        <label class="{{unless canUseStorageClass " text-muted"}}">
           {{radio-button
             selection=useStorageClass
             value=true

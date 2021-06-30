@@ -220,30 +220,33 @@ TABLE {
   > THEAD > TR {
     width: 100%;
     box-sizing: border-box;
-    border-width: 0 0 3px 0;
+    border-width: 0 0 1px 0;
     border-color: $table-border-color;
     border-radius: 0;
     outline: none;
     transition: all ease-in-out .2s;
     &.fixed-header {
       background: $table-header;
-      border-bottom: 3px solid $link-color;
+      border-bottom: 1px solid $border;
       TH {
         color: $link-color;
 
         .btn {
           color: $link-color;
+          min-height: 0;
+          line-height: 0;
         }
       }
     }
     > TH {
-      border-width: 0 0 3px 0;
+      border-width: 0 0 1px 0;
       border-color: $table-border-color;
       border-radius: 0;
       outline: none;
       transition: all ease-in-out .3s;
       text-align: left;
       font-weight: normal;
+      padding: 8px 5px;
     }
   }
 
@@ -310,7 +313,7 @@ TABLE {
 
     > TR {
       &.main-row {
-        border-top: solid 2px $table-border-color;
+        border-top: solid 1px $table-border-color;
       }
 
       &.row-selected {
@@ -397,6 +400,14 @@ TABLE {
 }
 
 .sortable-table {
+  border-collapse: collapse;
+  min-width: 400px;
+  border-radius: 5px 5px 0 0;
+  outline: 1px solid $border;
+  overflow: hidden;
+  background: transparent;
+  border-radius: 4px;
+
   tbody {
     .no-match,
     .no-data {

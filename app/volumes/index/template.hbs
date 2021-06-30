@@ -1,14 +1,6 @@
 {{#containers-header showGroup=false}}
-  <button
-    class="btn btn-sm bg-default mr-10"
-    disabled={{rbac-prevents
-      resource="persistentvolumeclaim"
-      scope="project"
-      permission="create"
-    }}
-    type="button"
-    {{action "importYaml"}}
-  >
+  <button class="btn btn-sm bg-default mr-10" disabled={{rbac-prevents resource="persistentvolumeclaim" scope="project"
+    permission="create" }} type="button" {{action "importYaml" }}>
     {{t "nav.containers.importCompose"}}
   </button>
   {{#link-to "volumes.new" class="btn btn-sm bg-primary"}}
@@ -17,7 +9,7 @@
 {{/containers-header}}
 <section class="pl-0 pr-0">
   {{#sortable-table
-    classNames="grid sortable-table"
+    classNames="grid"
     body=rows
     searchText=searchText
     sortBy=sortBy
@@ -40,7 +32,7 @@
           {{badge-state model=obj}}
         </td>
         <td data-title="{{dt.name}}">
-          <a href="{{href-to "volumes.detail" obj.id}}">
+          <a href="{{href-to " volumes.detail" obj.id}}">
             {{obj.displayName}}
           </a>
         </td>
@@ -49,13 +41,9 @@
         </td>
         <td data-title="{{dt.volume}}">
           {{#if obj.persistentVolume}}
-            <a
-              href="{{href-to
-                  "authenticated.cluster.storage.persistent-volumes.detail"
-                  scope.currentCluster.id
-                  obj.persistentVolume.id
-                }}"
-            >
+            <a href="{{href-to
+                  " authenticated.cluster.storage.persistent-volumes.detail" scope.currentCluster.id
+              obj.persistentVolume.id }}">
               {{obj.persistentVolume.displayName}}
             </a>
           {{else}}
@@ -66,13 +54,8 @@
         </td>
         <td data-title="{{dt.storageClass}}">
           {{#if obj.storageClass}}
-            <a
-              href="{{href-to
-                  "authenticated.cluster.storage.classes.detail"
-                  scope.currentCluster.id
-                  obj.storageClass.id
-                }}"
-            >
+            <a href="{{href-to
+                  " authenticated.cluster.storage.classes.detail" scope.currentCluster.id obj.storageClass.id }}">
               {{obj.storageClass.displayName}}
             </a>
           {{else}}
@@ -89,19 +72,13 @@
       {{namespace-group model=obj.ref fullColspan=sortable.fullColspan}}
     {{else if (eq kind "nomatch")}}
       <tr>
-        <td
-          colspan="{{sortable.fullColspan}}"
-          class="text-center text-muted lacsso pt-20 pb-20"
-        >
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
           {{t "volumesPage.noMatch"}}
         </td>
       </tr>
     {{else if (eq kind "norows")}}
       <tr>
-        <td
-          colspan="{{sortable.fullColspan}}"
-          class="text-center text-muted lacsso pt-20 pb-20"
-        >
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
           {{t "volumesPage.noData"}}
         </td>
       </tr>

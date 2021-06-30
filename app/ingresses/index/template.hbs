@@ -1,11 +1,12 @@
 {{#containers-header showGroup=false}}
-  <button class="btn btn-sm bg-default mr-10" disabled={{rbac-prevents resource="ingress" scope="project" permission="create"}} type="button" {{action 'importYaml'}}>{{t 'nav.containers.importCompose'}}</button>
+  <button class="btn btn-sm bg-default mr-10" disabled={{rbac-prevents resource="ingress" scope="project"
+    permission="create" }} type="button" {{action 'importYaml' }}>{{t 'nav.containers.importCompose'}}</button>
   {{#link-to "ingresses.run" scope.currentProject.id class="btn btn-sm bg-primary" disabled=(rbac-prevents resource="ingress" scope="project" permission="create")}}{{t 'nav.containers.addIngress'}}{{/link-to}}
 {{/containers-header}}
 
 <section class="pl-0 pr-0">
   {{#sortable-table
-    classNames="grid sortable-table"
+    classNames="grid"
     body=rows
     searchText=searchText
     sortBy=sortBy
@@ -29,7 +30,7 @@
           {{#if (eq inst.type "service")}}
             {{inst.displayName}}
           {{else}}
-            <a href="{{href-to "ingress" inst.id}}">{{inst.displayName}}</a>
+            <a href="{{href-to " ingress" inst.id}}">{{inst.displayName}}</a>
           {{/if}}
           <div class="text-small text-muted">{{inst.displayKind}}</div>
         </td>
@@ -37,7 +38,8 @@
           {{#each inst.targets as |tgt|}}
             <div class="text-small">
               {{#if tgt.host}}
-                <a href="{{if tgt.tls 'https' 'http'}}://{{tgt.host}}{{tgt.path}}" target="_blank" rel="noopener noreferrer nofollow">{{tgt.host}}{{tgt.path}}</a>
+                <a href="{{if tgt.tls 'https' 'http'}}://{{tgt.host}}{{tgt.path}}" target="_blank"
+                  rel="noopener noreferrer nofollow">{{tgt.host}}{{tgt.path}}</a>
               {{else if tgt.path}}
                 {{tgt.path}}
               {{else}}
@@ -45,13 +47,13 @@
               {{/if}}
 
               {{#if tgt.service}}
-                <i class="icon icon-chevron-right"/>
-                <a href="{{href-to "authenticated.project.dns.detail" tgt.service.id}}">{{tgt.service.displayName}}</a>
+                <i class="icon icon-chevron-right" />
+                <a href="{{href-to " authenticated.project.dns.detail" tgt.service.id}}">{{tgt.service.displayName}}</a>
               {{else if tgt.workload}}
-                <i class="icon icon-chevron-right"/>
-                <a href="{{href-to "workload" tgt.workload.id}}">{{tgt.workload.displayName}}</a>
+                <i class="icon icon-chevron-right" />
+                <a href="{{href-to " workload" tgt.workload.id}}">{{tgt.workload.displayName}}</a>
               {{else}}
-                <i class="icon icon-chevron-right"/>
+                <i class="icon icon-chevron-right" />
                 {{tgt.reference}}
               {{/if}}
             </div>
@@ -67,7 +69,11 @@
     {{else if (eq kind "group")}}
       {{namespace-group model=inst.ref fullColspan=sortable.fullColspan}}
     {{else if (eq kind "nomatch")}}
-      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'ingressPage.table.noMatch'}}</td></tr>
+      <tr>
+        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">
+          {{t 'ingressPage.table.noMatch'}}
+        </td>
+      </tr>
     {{else if (eq kind "norows")}}
       <tr>
         <td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">

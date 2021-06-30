@@ -1,5 +1,5 @@
 {{#if showHeader}}
-  <section class="header clearfix">
+  <section class="header">
     <h1>
       {{#if editing}}
         {{t "newMultiClusterApp.upgrade"}}
@@ -23,11 +23,7 @@
   <div class="row">
     <div class="col span-4 text-center">
       {{#if templateResource.links.icon}}
-        <img
-          src={{templateResource.links.icon}}
-          alt={{templateResource.name}}
-          class="mr-20 app-icon"
-        >
+        <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="mr-20 app-icon">
       {{/if}}
     </div>
     <div class="col span-8">
@@ -43,9 +39,7 @@
         </h1>
         <p>{{templateResource.description}}</p>
         <div class="row">
-          <button
-            class="btn btn-sm bg-transparent pl-0" type="button" {{action "toogleDetailedDescriptions"}}
-          >
+          <button class="btn btn-sm bg-transparent pl-0" type="button" {{action "toogleDetailedDescriptions" }}>
             {{t "newMultiClusterApp.seeMore"}}
           </button>
         </div>
@@ -64,9 +58,7 @@
   }}
     <div class="row">
       {{#if readmeContent}}
-        <div
-          class="col span-12 readme-content"
-        >
+        <div class="col span-12 readme-content">
           {{marked-down markdown=readmeContent}}
         </div>
       {{else}}
@@ -291,15 +283,13 @@
      expandOnInit=true
   }}
     <div class="right-buttons">
-      <button
-        class="btn bg-primary btn-sm" type="button" {{action "addAnswerOverride"}}
-      >
+      <button class="btn bg-primary btn-sm" type="button" {{action "addAnswerOverride" }}>
         <i class="icon icon-plus"></i>
         {{t "newMultiClusterApp.overrides.add.label"}}
       </button>
     </div>
     {{#sortable-table
-       classNames="grid sortable-table"
+       classNames="grid"
        sortBy=sortBy
        headers=overridesHeaders
        searchText=searchText
@@ -322,17 +312,11 @@
           }}
         {{/unless}}
       {{else if (eq kind "nomatch")}}
-        <td
-          colspan="5"
-          class="no-match"
-        >
+        <td colspan="5" class="no-match">
           {{t "newMultiClusterApp.overrides.table.noMatch"}}
         </td>
       {{else if (eq kind "norows")}}
-        <td
-          colspan="5"
-          class="no-data"
-        >
+        <td colspan="5" class="no-data">
           {{t "newMultiClusterApp.overrides.table.noData"}}
         </td>
       {{/if}}
@@ -347,8 +331,9 @@
   {{#if showPreview}}
     <section>
       <div class="over-hr hand no-select">
-        <span {{action "togglePreview"}}>
-          {{t "newMultiClusterApp.preview"}} <i class="icon {{if previewOpen "icon-chevron-up" "icon-chevron-down"}}"></i>
+        <span {{action "togglePreview" }}>
+          {{t "newMultiClusterApp.preview"}} <i class="icon {{if previewOpen " icon-chevron-up" "icon-chevron-down"
+            }}"></i>
         </span>
       </div>
 
@@ -413,9 +398,7 @@
   </div>
 {{else}}
   <div class="footer-actions">
-    <button
-      class="btn bg-transparent" type="button" {{action "cancel"}}
-    >
+    <button class="btn bg-transparent" type="button" {{action "cancel" }}>
       {{t "saveCancel.cancel"}}
     </button>
   </div>
