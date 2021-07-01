@@ -211,7 +211,7 @@
                     <Input
                       @type="checkbox"
                       @checked={{mut config.monitoring}}
-                      @disabled={{not isNewOrEditable}}
+                      @disabled={{monitoringConfigDisabled}}
                     />
                     {{t "clusterNew.azureaks.monitoring.label"}}
                   </label>
@@ -228,7 +228,7 @@
                     {{t "clusterNew.azureaks.monitoring.workspaceGroup.label"}}
                   </label>
                   <InputOrDisplay
-                    @editable={{isNewOrEditable}}
+                    @editable={{not monitoringConfigDisabled}}
                     @value={{config.logAnalyticsWorkspaceGroup}}
                     @classesForDisplay="form-control-static"
                   >
@@ -248,7 +248,7 @@
                     {{t "clusterNew.azureaks.monitoring.workspaceName.label"}}
                   </label>
                   <InputOrDisplay
-                    @editable={{isNewOrEditable}}
+                    @editable={{not monitoringConfigDisabled}}
                     @value={{config.logAnalyticsWorkspaceName}}
                     @classesForDisplay="form-control-static"
                   >
