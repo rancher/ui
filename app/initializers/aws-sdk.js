@@ -7,8 +7,8 @@ export function initialize(application) {
   AWS.XHRClient.prototype.handleRequest = function handleRequest(httpRequest, httpOptions, callback, errCallback) {
     httpRequest.headers['X-Api-Headers-Restrict'] = 'Content-Length';
 
-    if (get(httpOptions, 'cloudCredentialId') && get(httpOptions, 'clusterId')) {
-      httpRequest.headers['X-Api-CattleAuth-Header'] = `awsv4 credID=${ get(httpOptions, 'cloudCredentialId') } clusterId=${ get(httpOptions, 'clusterId') }`;
+    if (get(httpOptions, 'cloudCredentialId') && get(httpOptions, 'clusterID')) {
+      httpRequest.headers['X-Api-CattleAuth-Header'] = `awsv4 credID=${ get(httpOptions, 'cloudCredentialId') } clusterID=${ get(httpOptions, 'clusterID') }`;
     } else if (get(httpOptions, 'cloudCredentialId')) {
       httpRequest.headers['X-Api-CattleAuth-Header'] = `awsv4 credID=${ get(httpOptions, 'cloudCredentialId') }`;
     } else {
