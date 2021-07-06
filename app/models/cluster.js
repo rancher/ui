@@ -85,7 +85,8 @@ export const DEFAULT_GKE_NODE_POOL_CONFIG = {
     machineType:   'n1-standard-2',
     oauthScopes:   null,
     preemptible:   false,
-    taints:        null
+    taints:        null,
+    tags:          null,
   },
   initialNodeCount: 3,
   management:       {
