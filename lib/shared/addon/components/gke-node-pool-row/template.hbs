@@ -149,7 +149,7 @@
       @editable={{isNewNodePool}}
     />
     <div class="row mt-20">
-      <div class="col span-12 mb-0">
+      <div class="col span-12">
         <label class="acc-label">
           {{t "clusterNew.googlegke.nodeLabels.label"}}
         </label>
@@ -157,6 +157,20 @@
           @initialMap={{nodePool.config.labels}}
           @changed={{action "setNodeLabels"}}
           @addActionLabel="clusterNew.googlegke.nodeLabels.addAction"
+          @editing={{isNewNodePool}}
+        />
+      </div>
+    </div>
+    <div class="row mt-20">
+      <div class="col span-6 mb-0">
+        <label class="acc-label">
+          {{t "clusterNew.googlegke.nodeTags.label"}}
+        </label>
+        <FormValueArray
+          @addActionLabel="clusterNew.googlegke.nodeTags.addAction"
+          @valueLabelEnabled={{false}}
+          @initialValues={{nodePool.config.tags}}
+          @changed={{action (mut nodePool.config.tags)}}
           @editing={{isNewNodePool}}
         />
       </div>
