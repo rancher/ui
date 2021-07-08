@@ -1,4 +1,4 @@
-{{#if (eq step '3')}}
+{{#if (eq step "3")}}
   <ImportCommand @cluster={{primaryResource}} />
   <div class="footer-actions">
     <button class="btn bg-primary" type="button" {{action "close"}}>
@@ -92,6 +92,27 @@
                 @allowCustom={{true}}
               />
             {{/if}}
+          </div>
+        </div>
+      </AccordionListItem>
+      <AccordionListItem
+        @title={{t "clusterNew.amazoneks.clusterOption.title"}}
+        @detail={{t "clusterNew.amazoneks.clusterOption.detail"}}
+        @expandAll={{expandAll}}
+        @expand={{action expandFn}}
+        @expandOnInit={{true}}
+      >
+        <div class="row">
+          <div class="col span-6">
+            <div class="checkbox">
+              <label>
+                <Input
+                  @type="checkbox"
+                  @checked={{mut cluster.enableNetworkPolicy}}
+                />
+                {{t "clusterNew.rke.networkPolicy.label"}}
+              </label>
+            </div>
           </div>
         </div>
       </AccordionListItem>
