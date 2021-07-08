@@ -328,6 +328,60 @@
         </div>
       </div>
       <p class="help-block">{{t "nodeDriver.vmwarevsphere.access.help"}}</p>
+
+    {{else if (eq cloudCredentialType "harvester")}}
+      <div class="row">
+        <div class="col span-12">
+          <div class="radio">
+            <label>
+              {{radio-button selection=config.clusterType value="imported"}}
+              {{t "nodeDriver.harvester.imported"}}
+            </label>
+          </div>
+
+          <div class="radio">
+            <label>
+              {{radio-button selection=config.clusterType value="external"}}
+              {{t "nodeDriver.harvester.external"}}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      {{#if (eq config.clusterType "imported")}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.cluster.label"}}{{field-required}}
+            </label>
+            <SearchableSelect
+              @class="form-control"
+              @content={{clusterContent}}
+              @value={{config.clusterId}}
+            />
+          </div>
+        </div>
+      {{else}}
+        <div class="row">
+          <div class="col span-12">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.cluster.kubeconfig"}}{{field-required}}
+            </label>
+
+            {{input-yaml
+              class="modal-yaml"
+              showDownload=false
+              showUpload=false
+              canChangeName=false
+              autoResize=true
+              gutters=(array)
+              minHeight=500
+              value=config.kubeconfigContent
+              valueUpdated=(action "updateKubeconfigYaml")
+            }}
+          </div>
+        </div>
+      {{/if}}
     {{/if}}
   </div>
 
