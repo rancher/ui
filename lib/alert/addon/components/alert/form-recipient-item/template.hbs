@@ -22,20 +22,15 @@
 
   <div class="col mt-0 span-9-of-24">
     {{#unless (or (eq model.notifierType "dingtalk") (eq model.notifierType "msteams"))}}
-      <Input
-        @type="text"
-        @value={{model.recipient}}
-        @placeholder={{recipientPlaceholder}}
-        @classNames="form-control"
-        @showSearch={{showSearch}}
-      />
+      <Input @type="text" @value={{model.recipient}} @placeholder={{recipientPlaceholder}} @classNames="form-control"
+        @showSearch={{showSearch}} />
       <p class="help-block text-info text-small">{{t 'alertPage.newOrEdit.recipient.helpText'}}</p>
     {{/unless}}
   </div>
 
   <div class="col mt-0 span-1-of-24" style="padding-top:2px;">
-    <button class="btn bg-link icon-btn {{if disableRemove 'disabled' ''}}" type="button" {{action "remove"}}>
-      <span class="darken"><i class="icon icon-minus text-small"/></span>
+    <button class="btn bg-link icon-btn {{if disableRemove 'disabled' ''}}" type="button" {{action "remove" }}>
+      <i class="icon icon-minus text-small" />
     </button>
   </div>
 </section>

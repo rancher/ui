@@ -11,7 +11,7 @@
           </label>
         </th>
         <th class="pl-10">
-           <label class="text-small">{{t 'formAgentEnvVar.headers.value'}}</label>
+          <label class="text-small">{{t 'formAgentEnvVar.headers.value'}}</label>
         </th>
         <th></th>
       </tr>
@@ -19,53 +19,52 @@
     <tbody>
       {{#each value as |envVar index|}}
         <tr>
-        <td>
-          {{#input-or-display
+          <td>
+            {{#input-or-display
               editable=editable
               value=envVar.name
-          }}          
-            {{input
+          }}
+              {{input
               class="form-control"
               type="text"
               value=envVar.name
               placeholder=(t 'formAgentEnvVar.placeholders.foo')
             }}
-          {{/input-or-display}}
-        </td>
-        <td colspan="2" class="pl-10">
-          {{#input-or-display
+            {{/input-or-display}}
+          </td>
+          <td colspan="2" class="pl-10">
+            {{#input-or-display
               editable=editable
               value=envVar.value
-          }}                   
-            {{input
+          }}
+              {{input
               class="form-control"
               type="text"
               value=envVar.value
               placeholder=(t 'formAgentEnvVar.placeholders.bar')
             }}
-          {{/input-or-display}}
-        </td>
-        <td class="valign-top text-right" style="width: 45px">
-          {{#if editable}}
-            <div>
-              <button
-                class="btn bg-primary btn-sm" disabled={{eq row.editable false}} type="button" {{action "remove" index}}
-              >
-                <i class="icon icon-minus"/>
-                <span class="sr-only">
-                  {{t "generic.remove"}}
-                </span>
-              </button>
-            </div>
-          {{/if}}
-        </td>
-      </tr>
+            {{/input-or-display}}
+          </td>
+          <td class="valign-top text-right" style="width: 45px">
+            {{#if editable}}
+              <div>
+                <button class="btn bg-primary btn-sm" disabled={{eq row.editable false}} type="button" {{action "remove"
+                  index}}>
+                  <i class="icon icon-minus" />
+                  <span class="sr-only">
+                    {{t "generic.remove"}}
+                  </span>
+                </button>
+              </div>
+            {{/if}}
+          </td>
+        </tr>
       {{/each}}
     </tbody>
   </table>
   {{#if editable}}
-    <button class="btn bg-link icon-btn p-0 mt-10" type="button" {{action "add" }}>
-      <span class="darken"><i class="icon icon-plus text-small" /></span>
+    <button class="btn bg-link icon-btn mt-10" type="button" {{action "add" }}>
+      <i class="icon icon-plus text-small" />
       <span>{{t 'formAgentEnvVar.addActionLabel'}}</span>
     </button>
   {{/if}}

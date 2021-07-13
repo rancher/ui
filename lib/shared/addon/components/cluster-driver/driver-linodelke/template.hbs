@@ -81,7 +81,7 @@
           </div>
         {{/if}}
         <div class="row">
-          <div class="header mt-20 clearfix">
+          <div class="header mt-40 mb-0">
             <div class="pull-left">
               <h2 class="mb-0">
                 {{t "clusterNew.linodelke.tags.label"}}
@@ -103,7 +103,7 @@
             {{/input-or-display}}
           </div>
           <div class="col span-1">
-            <button class="btn bg-primary btn-sm mt-30" type="button" {{action "addNewTag"}}>
+            <button class="btn bg-primary btn-sm mt-30" type="button" {{action "addNewTag" }}>
               <i class="icon icon-plus"></i>
             </button>
           </div>
@@ -115,9 +115,7 @@
                   <span>
                     {{tag}}
                   </span>
-                  <button
-                    class="lke-delete bg-error" type="button" {{action "deleteTag" tagIdx}}
-                  >
+                  <button class="lke-delete bg-error" type="button" {{action "deleteTag" tagIdx}}>
                     <i class="icon icon-trash"></i>
                   </button>
                 </div>
@@ -198,22 +196,14 @@
             <div class="acc-label">
               {{t "clusterNew.linodelke.nodePoolConfig.count"}}:
             </div>
-            <Input
-              @type="number"
-              @min="1"
-              @value={{this.selectedNodePoolObj.count}}
-            />
+            <Input @type="number" @min="1" @value={{this.selectedNodePoolObj.count}} />
           </div>
           <div class="col span-1">
             <div class="acc-label pb-10">
               {{t "clusterNew.linodelke.nodePoolConfig.actions"}}
             </div>
-            <button
-              class="btn bg-primary icon-btn p-0" type="button" {{action "addSelectedNodePool"}}
-            >
-              <span class="darken">
-                <i class="icon icon-plus text-small"></i>
-              </span>
+            <button class="btn bg-primary icon-btn" type="button" {{action "addSelectedNodePool" }}>
+              <i class="icon icon-plus text-small"></i>
               <span>
                 {{t "clusterNew.linodelke.nodePoolConfig.addNodePool"}}
               </span>
@@ -221,7 +211,7 @@
           </div>
         </div>
         <div class="ember-view">
-          <div class="header mt-20 clearfix">
+          <div class="header mt-40 mb-0">
             <div class="pull-left">
               <h2 class="mb-0">
                 {{t "clusterNew.linodelke.nodePools.label"}}
@@ -262,16 +252,10 @@
                   {{member.diskGb}} {{t "generic.gigabyte"}}
                 </td>
                 <td>
-                  <Input
-                    @type="number"
-                    @min="1"
-                    @value={{member.count}}
-                  />
+                  <Input @type="number" @min="1" @value={{member.count}} />
                 </td>
                 <td class="text-center pt-20 pb-20 pl-20 pr-20">
-                  <button
-                    class="btn bg-error btn-sm" type="button" {{action "deleteNodePool" member.id}}
-                  >
+                  <button class="btn bg-error btn-sm" type="button" {{action "deleteNodePool" member.id}}>
                     <i class="icon icon-trash"></i>
                   </button>
                 </td>

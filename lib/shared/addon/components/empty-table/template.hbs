@@ -2,43 +2,30 @@
   {{yield}}
 {{else}}
   <div class="col span-6 offset-3 text-center pt-40 pb-40">
-    <img style="width: 75%;" src="{{app.baseAssets}}assets/images/resources/{{resource}}.svg"/>
+    <img style="width: 75%;" src="{{app.baseAssets}}assets/images/resources/{{resource}}.svg" />
     {{#if showNew}}
-      <br/>
+      <br />
       {{#if istio}}
-        <a
-          class="btn bg-link icon-btn mt-50 link"
-          href="{{href-to newRoute scope.currentProject.id (query-params istio=true)}}"
-          disabled={{disabled}}
-        >
-          <span class="darken"><i class="icon icon-plus text-small"></i></span>
+        <a class="btn bg-link icon-btn mt-50 link"
+          href="{{href-to newRoute scope.currentProject.id (query-params istio=true)}}" disabled={{disabled}}>
+          <i class="icon icon-plus text-small"></i>
           <span>{{t newTranslationKey}}</span>
         </a>
       {{else if (and (eq ctx "projectId") scope.currentProject.id)}}
-        <a
-          class="btn bg-link icon-btn mt-50 link"
-          href="{{href-to newRoute scope.currentProject.id}}"
-          disabled={{disabled}}
-        >
-          <span class="darken"><i class="icon icon-plus text-small"></i></span>
+        <a class="btn bg-link icon-btn mt-50 link" href="{{href-to newRoute scope.currentProject.id}}"
+          disabled={{disabled}}>
+          <i class="icon icon-plus text-small"></i>
           <span>{{t newTranslationKey}}</span>
         </a>
       {{else if (eq ctx "clusterId")}}
-        <a
-          class="btn bg-link icon-btn mt-50 link"
-          href="{{href-to newRoute scope.currentCluster.id}}"
-          disabled={{disabled}}
-        >
-          <span class="darken"><i class="icon icon-plus text-small"></i></span>
+        <a class="btn bg-link icon-btn mt-50 link" href="{{href-to newRoute scope.currentCluster.id}}"
+          disabled={{disabled}}>
+          <i class="icon icon-plus text-small"></i>
           <span>{{t newTranslationKey}}</span>
         </a>
       {{else}}
-        <a
-          class="btn bg-link icon-btn mt-50 link"
-          href="{{href-to newRoute}}"
-          disabled={{disabled}}
-        >
-          <span class="darken"><i class="icon icon-plus text-small"></i></span>
+        <a class="btn bg-link icon-btn mt-50 link" href="{{href-to newRoute}}" disabled={{disabled}}>
+          <i class="icon icon-plus text-small"></i>
           <span>{{t newTranslationKey}}</span>
         </a>
       {{/if}}
