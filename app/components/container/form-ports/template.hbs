@@ -1,5 +1,5 @@
-<div class="clearfix {{unless editing " box"}}">
-  <label class="{{if editing " acc-label"}}">
+<div class="clearfix {{unless editing "box"}}">
+  <label class="{{if editing "acc-label"}}">
     {{t "formPorts.header"}}
   </label>
   {{#if showWarning}}
@@ -23,25 +23,25 @@
     <table class="table fixed no-lines small mb-10">
       <thead>
         <tr class="hidden-sm">
-          <th class="{{unless editing " acc-label"}}">
+          <th class="{{unless editing "acc-label"}}">
             {{t "formServicePorts.name.label"}}
           </th>
-          <th class="{{unless editing " acc-label"}}">
+          <th class="{{unless editing "acc-label"}}">
             {{t "formPorts.containerPort.label"}}
             {{#if editing}}
               {{field-required}}
             {{/if}}
           </th>
           <th width="10"></th>
-          <th class="{{unless editing " acc-label"}}" width="80">
+          <th class="{{unless editing "acc-label"}}" width="80">
             {{t "formPorts.protocol.label"}}
           </th>
           <th width="10"></th>
-          <th width="350" class="{{unless editing " acc-label"}}">
+          <th width="350" class="{{unless editing "acc-label"}}">
             {{t "formPorts.kind.label"}}
           </th>
           <th width="10"></th>
-          <th class="{{unless editing " acc-label"}}">
+          <th class="{{unless editing "acc-label"}}">
             {{t "formPorts.sourcePort.label"}}
             {{#if editing}}
               {{field-required}}
@@ -55,14 +55,14 @@
       <tbody>
         {{#each ports as |port|}}
           <tr>
-            <td data-title="{{t "formServicePortsServicePorts.name.label"}}">
+            <td data-title="{{t "formServicePorts.name.label"}}">
               {{#if editing}}
                 {{input class="form-control input-sm public" value=port.name placeholder=(t "formServicePorts.name.placeholder")}}
               {{else}}
                 {{port.name}}
               {{/if}}
             </td>
-            <td data-title="{{t "formServicePortsPorts.containerPort.label"}}">
+            <td data-title="{{t "formPorts.containerPort.label"}}">
               {{#if editing}}
                 {{input-integer
                   class="form-control input-sm"
@@ -77,7 +77,7 @@
             </td>
             <td>&nbsp;</td>
 
-            <td data-title="{{t "formServicePortsPorts.protocol.label"}}">
+            <td data-title="{{t "formPorts.protocol.label"}}">
               {{#if editing}}
                 {{new-select
                   class="form-control input-sm"
@@ -90,7 +90,7 @@
             </td>
             <td>&nbsp;</td>
 
-            <td data-title="{{t "formServicePortsPorts.kind.label"}}">
+            <td data-title="{{t "formPorts.kind.label"}}">
               {{#if editing}}
                 {{new-select
                   classNames="form-control"
@@ -111,7 +111,7 @@
               {{/if}}
             </td>
             <td>&nbsp;</td>
-            <td data-title="{{t "formServicePortsPorts.sourcePort.label"}}">
+            <td data-title="{{t "formPorts.sourcePort.label"}}">
               {{#if (or (eq port.kind "ClusterIP") (eq port.kind "NodePort"))}}
                 {{#if editing}}
                   {{#if (eq port.kind "NodePort")}}
@@ -169,7 +169,7 @@
             <td>
               {{#if editing}}
                 <button type="button" class="btn bg-primary btn-sm" {{action "removePort" port}}>
-                  <i class="icon icon-minus" />
+                  <i class="icon icon-minus"/>
                   <span class="sr-only">
                     {{t "generic.remove"}}
                   </span>
@@ -191,8 +191,8 @@
 
 <div>
   {{#if editing}}
-    <button class="btn bg-link icon-btn" type="button" {{action "addPort" }}>
-      <i class="icon icon-plus text-small" />
+    <button class="btn bg-link icon-btn" type="button" {{action "addPort"}}>
+      <i class="icon icon-plus text-small"/>
       <span>
         {{t "formPorts.addAction"}}
       </span>
