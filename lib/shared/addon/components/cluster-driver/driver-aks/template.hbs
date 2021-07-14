@@ -1,25 +1,41 @@
 <form class="form">
   <AccordionList @showExpandAll="false" as |al expandFn|>
     {{#if (eq step 4)}}
-      <ImportCommand @cluster={{primaryResource}} @showClusterAdminWarning={{false}} />
+      <ImportCommand
+        @cluster={{primaryResource}}
+        @showClusterAdminWarning={{false}}
+      />
       <div class="footer-actions">
-        <button class="btn bg-primary" type="button" {{action "close" }}>
+        <button class="btn bg-primary" type="button" {{action "close"}}>
           {{t "clusterNew.rke.done"}}
         </button>
       </div>
     {{else}}
       {{#if (gte step 1)}}
-        <AccordionListItem @title={{t "clusterNew.azureaks.access.title" }}
-          @detail={{t "clusterNew.azureaks.access.detailCC" }} @expandAll={{expandAll}} @expand={{action expandFn}}
-          @expandOnInit={{true}} @showExpand={{false}}>
+        <AccordionListItem
+          @title={{t "clusterNew.azureaks.access.title"}}
+          @detail={{t "clusterNew.azureaks.access.detailCC"}}
+          @expandAll={{expandAll}}
+          @expand={{action expandFn}}
+          @expandOnInit={{true}}
+          @showExpand={{false}}
+        >
           <div class="row">
             {{#if (eq step 1)}}
-              <FormAuthCloudCredential @cloudCredentialKey="aksConfig.azureCredentialSecret" @mode={{mode}}
-                @cancel={{action "close" }} @cloudCredentials={{cloudCredentials}}
-                @createLabel="clusterNew.azureaks.access.next" @driverName="aks"
-                @parseAndCollectErrors={{action "errorHandler" }}
-                @finishAndSelectCloudCredential={{action "finishAndSelectCloudCredential" }}
-                @primaryResource={{primaryResource}} @progressStep={{action "loadRegions" }} />
+              <FormAuthCloudCredential
+                @cloudCredentialKey="aksConfig.azureCredentialSecret"
+                @mode={{mode}}
+                @cancel={{action "close"}}
+                @cloudCredentials={{cloudCredentials}}
+                @createLabel="clusterNew.azureaks.access.next"
+                @driverName="aks"
+                @parseAndCollectErrors={{action "errorHandler"}}
+                @finishAndSelectCloudCredential={{action
+                  "finishAndSelectCloudCredential"
+                }}
+                @primaryResource={{primaryResource}}
+                @progressStep={{action "loadRegions"}}
+              />
             {{else}}
               <div class="row">
                 <div class="col span-4">
@@ -36,63 +52,107 @@
         </AccordionListItem>
       {{/if}}
       {{#if (gte step 2)}}
-        <AccordionListItem @title={{t "clusterNew.azureaks.clusterLocation.title" }}
-          @detail={{t "clusterNew.azureaks.clusterLocation.detail" }} @expandAll={{expandAll}} @expand={{action
-          expandFn}} @expandOnInit={{true}}>
+        <AccordionListItem
+          @title={{t "clusterNew.azureaks.clusterLocation.title"}}
+          @detail={{t "clusterNew.azureaks.clusterLocation.detail"}}
+          @expandAll={{expandAll}}
+          @expand={{action expandFn}}
+          @expandOnInit={{true}}
+        >
           <div class="row">
             <div class="col span-6">
               <label class="acc-label" for="azureaks-location">
                 {{t "clusterNew.azureaks.location.label"}}
                 <FieldRequired />
               </label>
-              <InputOrDisplay @editable={{and isNewOrEditable (eq step 2)}} @value={{config.resourceLocation}}
-                @classesForDisplay="form-control-static">
-                <SearchableSelect @classNames="form-control" @content={{regions}} @id="azureaks-location"
-                  @localizedPrompt={{true}} @optionLabelPath="displayName" @optionValuePath="name"
-                  @prompt="clusterNew.azureaks.location.prompt" @value={{mut config.resourceLocation}} />
+              <InputOrDisplay
+                @editable={{and isNewOrEditable (eq step 2)}}
+                @value={{config.resourceLocation}}
+                @classesForDisplay="form-control-static"
+              >
+                <SearchableSelect
+                  @classNames="form-control"
+                  @content={{regions}}
+                  @id="azureaks-location"
+                  @localizedPrompt={{true}}
+                  @optionLabelPath="displayName"
+                  @optionValuePath="name"
+                  @prompt="clusterNew.azureaks.location.prompt"
+                  @value={{mut config.resourceLocation}}
+                />
               </InputOrDisplay>
             </div>
             <div class="col span-6">
               {{#if disableAzs}}
-                <BannerMessage @icon="icon-alert" @color="bg-warning mb-10"
-                  @message={{t "clusterNew.azureaks.availabilityZoneWarning" }} />
+                <BannerMessage
+                  @icon="icon-alert"
+                  @color="bg-warning mb-10"
+                  @message={{t "clusterNew.azureaks.availabilityZoneWarning"}}
+                />
               {{/if}}
             </div>
           </div>
           {{#if (eq step 2)}}
-            <SaveCancel @saveDisabled={{not config.resourceLocation}}
+            <SaveCancel
+              @saveDisabled={{not config.resourceLocation}}
               @createLabel="clusterNew.azureaks.clusterLocation.createLabel"
-              @savingLabel="clusterNew.azureaks.clusterLocation.savingLabel" @saving={{mut clusterLocationSaving}}
-              @saved={{mut clusterLocationSaved}} @save={{action "authenticate" }} @cancel={{close}} />
+              @savingLabel="clusterNew.azureaks.clusterLocation.savingLabel"
+              @saving={{mut clusterLocationSaving}}
+              @saved={{mut clusterLocationSaved}}
+              @save={{action "authenticate"}}
+              @cancel={{close}}
+            />
           {{/if}}
         </AccordionListItem>
       {{/if}}
       {{#if (gte step 3)}}
-        <AccordionListItem @title={{t "clusterNew.azureaks.clusterOption.title" }}
-          @detail={{t "clusterNew.azureaks.clusterOption.detail" }} @expandAll={{al.expandAll}} @expandOnInit={{true}}
-          @expand={{action expandFn}}>
+        <AccordionListItem
+          @title={{t "clusterNew.azureaks.clusterOption.title"}}
+          @detail={{t "clusterNew.azureaks.clusterOption.detail"}}
+          @expandAll={{al.expandAll}}
+          @expandOnInit={{true}}
+          @expand={{action expandFn}}
+        >
           <div class="row">
             <div class="col span-6">
               <label class="acc-label" for="azureaks-kube-version">
                 {{t "clusterNew.azureaks.kubernetesVersion.label"}}
               </label>
-              <NewSelect @classNames="form-control" @content={{versionChoices}} @value={{config.kubernetesVersion}} />
+              <NewSelect
+                @classNames="form-control"
+                @content={{versionChoices}}
+                @value={{config.kubernetesVersion}}
+              />
             </div>
             <div class="col span-6">
               <label class="acc-label" for="azureaks-resource-group">
                 {{t "clusterNew.azureaks.resourceGroup.label"}}
                 <FieldRequired />
-                <TooltipElement @type="tooltip-basic" @model={{t "clusterNew.azureaks.resourceGroup.helpText" }}
-                  @tooltipTemplate="tooltip-static" @aria-describedby="tooltip-base" @tooltipFor="tooltipResourceGroup"
-                  @placement="top">
+                <TooltipElement
+                  @type="tooltip-basic"
+                  @model={{t "clusterNew.azureaks.resourceGroup.helpText"}}
+                  @tooltipTemplate="tooltip-static"
+                  @aria-describedby="tooltip-base"
+                  @tooltipFor="tooltipResourceGroup"
+                  @placement="top"
+                >
                   <i class="icon icon-info"></i>
                 </TooltipElement>
               </label>
-              <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.resourceGroup}}
-                @classesForDisplay="form-control-static">
-                <Input @classNames="form-control" @id="azureaks-resource-group"
-                  @placeholder={{t "clusterNew.azureaks.resourceGroup.placeholderv2" }} @type="text" @value={{mut
-                  config.resourceGroup}} />
+              <InputOrDisplay
+                @editable={{isNewOrEditable}}
+                @value={{config.resourceGroup}}
+                @classesForDisplay="form-control-static"
+              >
+                <Input
+                  @classNames="form-control"
+                  @id="azureaks-resource-group"
+                  @placeholder={{t
+                    "clusterNew.azureaks.resourceGroup.placeholderv2"
+                  }}
+                  @type="text"
+                  @value={{mut config.resourceGroup}}
+                />
               </InputOrDisplay>
             </div>
           </div>
@@ -101,10 +161,17 @@
               <label class="acc-label" for="azureaks-admin-username">
                 {{t "clusterNew.azureaks.admin.label"}}
               </label>
-              <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.linuxAdminUsername}}
-                @classesForDisplay="form-control-static">
-                <Input @classNames="form-control" @id="azureaks-admin-username" @type="text" @value={{mut
-                  config.linuxAdminUsername}} />
+              <InputOrDisplay
+                @editable={{isNewOrEditable}}
+                @value={{config.linuxAdminUsername}}
+                @classesForDisplay="form-control-static"
+              >
+                <Input
+                  @classNames="form-control"
+                  @id="azureaks-admin-username"
+                  @type="text"
+                  @value={{mut config.linuxAdminUsername}}
+                />
               </InputOrDisplay>
             </div>
             {{! removed until windows support returns }}
@@ -171,7 +238,10 @@
                   </InputOrDisplay>
                 </div>
                 <div class="">
-                  <label class="acc-label" for="azureaks-logging-workspace-name">
+                  <label
+                    class="acc-label"
+                    for="azureaks-logging-workspace-name"
+                  >
                     {{t "clusterNew.azureaks.monitoring.workspaceName.label"}}
                   </label>
                   <InputOrDisplay
@@ -196,17 +266,28 @@
                 {{t "clusterNew.azureaks.ssh.label"}}
                 {{! <FieldRequired /> }}
               </label>
-              <InputTextFile @id="azureaks-advanced-ssh-pub-key" @classNames="box" @value={{mut config.sshPublicKey}}
-                @multiple={{true}} @canChangeName={{false}}
-                @accept="application/x-x509-ca-cert,text/plain,.pem,.crt,.pub" @minHeight={{60}}
-                @placeholder="clusterNew.azureaks.ssh.placeholder" @shouldChangeName={{false}} />
+              <InputTextFile
+                @id="azureaks-advanced-ssh-pub-key"
+                @classNames="box"
+                @value={{mut config.sshPublicKey}}
+                @multiple={{true}}
+                @canChangeName={{false}}
+                @accept="application/x-x509-ca-cert,text/plain,.pem,.crt,.pub"
+                @minHeight={{60}}
+                @placeholder="clusterNew.azureaks.ssh.placeholder"
+                @shouldChangeName={{false}}
+              />
             </div>
             <div class="col span-6">
               <label class="acc-label">
                 {{t "clusterNew.azureaks.tags.label"}}
               </label>
-              <FormKeyValue @initialMap={{tags}} @allowEmptyValue={{true}} @changed={{action "setTags" }}
-                @addActionLabel="clusterNew.azureaks.tags.addActionLabel" />
+              <FormKeyValue
+                @initialMap={{tags}}
+                @allowEmptyValue={{true}}
+                @changed={{action "setTags"}}
+                @addActionLabel="clusterNew.azureaks.tags.addActionLabel"
+              />
             </div>
           </div>
         </AccordionListItem>
@@ -330,11 +411,20 @@
                 <label class="acc-label" for="azureaks-dns-service-ip">
                   {{t "clusterNew.azureaks.networking.dnsServiceIp.label"}}
                 </label>
-                <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.dnsServiceIp}}
-                  @classesForDisplay="form-control-static">
-                  <Input @classNames="form-control" @id="azureaks-dns-service-ip" @type="text" @value={{mut
-                    config.dnsServiceIp}} @placeholder={{t "clusterNew.azureaks.networking.dnsServiceIp.placeholder"
-                    }} />
+                <InputOrDisplay
+                  @editable={{isNewOrEditable}}
+                  @value={{config.dnsServiceIp}}
+                  @classesForDisplay="form-control-static"
+                >
+                  <Input
+                    @classNames="form-control"
+                    @id="azureaks-dns-service-ip"
+                    @type="text"
+                    @value={{mut config.dnsServiceIp}}
+                    @placeholder={{t
+                      "clusterNew.azureaks.networking.dnsServiceIp.placeholder"
+                    }}
+                  />
                 </InputOrDisplay>
                 <p class="help-block">
                   {{t "clusterNew.azureaks.networking.dnsServiceIp.help"}}
@@ -344,11 +434,20 @@
                 <label class="acc-label" for="azureaks-docker-service-ip">
                   {{t "clusterNew.azureaks.networking.dockerBridgeCidr.label"}}
                 </label>
-                <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.dockerBridgeCidr}}
-                  @classesForDisplay="form-control-static">
-                  <InputCidr @inputStyles="form-control" @inputId="azureaks-docker-service-ip" @type="text" @value={{mut
-                    config.dockerBridgeCidr}}
-                    @placeholder={{t "clusterNew.azureaks.networking.dockerBridgeCidr.placeholder" }} />
+                <InputOrDisplay
+                  @editable={{isNewOrEditable}}
+                  @value={{config.dockerBridgeCidr}}
+                  @classesForDisplay="form-control-static"
+                >
+                  <InputCidr
+                    @inputStyles="form-control"
+                    @inputId="azureaks-docker-service-ip"
+                    @type="text"
+                    @value={{mut config.dockerBridgeCidr}}
+                    @placeholder={{t
+                      "clusterNew.azureaks.networking.dockerBridgeCidr.placeholder"
+                    }}
+                  />
                 </InputOrDisplay>
                 <p class="help-block">
                   {{t "clusterNew.azureaks.networking.dockerBridgeCidr.help"}}
@@ -361,7 +460,10 @@
               <div class="form-control-static">
                 <div class="checkbox">
                   <label>
-                    <Input @type="checkbox" @checked={{mut config.httpApplicationRouting}} />
+                    <Input
+                      @type="checkbox"
+                      @checked={{mut config.httpApplicationRouting}}
+                    />
                     {{t "clusterNew.azureaks.enableHttpApplicationRouting.label"
                     }}
                   </label>
@@ -370,8 +472,14 @@
               <div class="form-control-static">
                 <div class="checkbox">
                   <label>
-                    <Input @type="checkbox" @checked={{mut enabledAuthorizedIpRanges}} @disabled={{or (gte
-                      config.authorizedIpRanges.length 1) (or config.privateCluster (eq loadBalancerSku "Basic" )) }} />
+                    <Input
+                      @type="checkbox"
+                      @checked={{mut enabledAuthorizedIpRanges}}
+                      @disabled={{or
+                        (gte config.authorizedIpRanges.length 1)
+                        (or config.privateCluster (eq loadBalancerSku "Basic"))
+                      }}
+                    />
                     {{t "clusterNew.azureaks.authorizedIpRanges.inputLabel"}}
                   </label>
                 </div>
@@ -379,12 +487,16 @@
             </div>
             {{#if enabledAuthorizedIpRanges}}
               <div class="col span-6">
-                <FormValueArray @initialValues={{config.authorizedIpRanges}} @editing={{or (eq mode "edit" ) (eq
-                  mode "new" )}} @valueLabel="clusterNew.azureaks.authorizedIpRanges.label"
+                <FormValueArray
+                  @initialValues={{config.authorizedIpRanges}}
+                  @editing={{or (eq mode "edit") (eq mode "new")}}
+                  @valueLabel="clusterNew.azureaks.authorizedIpRanges.label"
                   @valuePlaceholder="clusterNew.azureaks.authorizedIpRanges.placeholder"
                   @addActionLabel="clusterNew.azureaks.authorizedIpRanges.addActionLabel"
-                  @changed={{action "updateAuthorizedIpRanges" }} @addButtonEnabled={{lt
-                  config.authorizedIpRanges.length 10 }} as |fva row|>
+                  @changed={{action "updateAuthorizedIpRanges"}}
+                  @addButtonEnabled={{lt config.authorizedIpRanges.length 10
+                  }} as |fva row|
+                >
                   <InputCidr @value={{mut row.value}} />
                 </FormValueArray>
               </div>
@@ -396,8 +508,14 @@
                 <div class="form-control-static">
                   <div class="checkbox">
                     <label>
-                      <Input @type="checkbox" @checked={{mut config.privateCluster}} @disabled={{or (not
-                        isNewOrEditable) enabledAuthorizedIpRanges }} />
+                      <Input
+                        @type="checkbox"
+                        @checked={{mut config.privateCluster}}
+                        @disabled={{or
+                          (not isNewOrEditable)
+                          enabledAuthorizedIpRanges
+                        }}
+                      />
                       {{t "clusterNew.azureaks.privateCluster.label"}}
                     </label>
                   </div>
@@ -405,22 +523,40 @@
               </div>
               <div class="col span-6">
                 {{#if config.privateCluster}}
-                  <BannerMessage @icon="icon-alert" @color="bg-warning mb-10"
-                    @message={{t "clusterNew.azureaks.privateCluster.warning" appName=settings.appName
-                    docsBase=settings.docsBase htmlSafe=true }} />
+                  <BannerMessage
+                    @icon="icon-alert"
+                    @color="bg-warning mb-10"
+                    @message={{t
+                      "clusterNew.azureaks.privateCluster.warning"
+                      appName=settings.appName
+                      docsBase=settings.docsBase
+                      htmlSafe=true
+                    }}
+                  />
                 {{/if}}
               </div>
             </div>
           </AdvancedSection>
         </AccordionListItem>
-        <AccordionListItem @title={{t "clusterNew.googlegke.nodePool.title" }}
-          @detail={{t "clusterNew.googlegke.nodePool.detail" }} @expandAll={{expandAll}} @expand={{action expandFn}}
-          @expandOnInit={{true}}>
+        <AccordionListItem
+          @title={{t "clusterNew.googlegke.nodePool.title"}}
+          @detail={{t "clusterNew.googlegke.nodePool.detail"}}
+          @expandAll={{expandAll}}
+          @expand={{action expandFn}}
+          @expandOnInit={{true}}
+        >
           <div class="row">
             {{#each config.nodePools as |nodePool|}}
-              <AksNodePoolRow @disableAzs={{disableAzs}} @originalCluster={{model.originalCluster}}
-                @isNew={{isNewOrEditable}} @mode={{mode}} @nodePool={{nodePool}}
-                @removeNodePool={{action "removeNodePool" }} @cluster={{cluster}} @vmSizes={{vmSizes}} />
+              <AksNodePoolRow
+                @disableAzs={{disableAzs}}
+                @originalCluster={{model.originalCluster}}
+                @isNew={{isNewOrEditable}}
+                @mode={{mode}}
+                @nodePool={{nodePool}}
+                @removeNodePool={{action "removeNodePool"}}
+                @cluster={{cluster}}
+                @vmSizes={{vmSizes}}
+              />
             {{else}}
               <div class="p-20">
                 {{t "clusterNew.googlegke.nodePool.noNodes"}}
@@ -428,7 +564,11 @@
             {{/each}}
           </div>
           <div class="row mt-15">
-            <button class="btn bg-link icon-btn pull-left" type="button" {{action "addNodePool" }}>
+            <button
+              class="btn bg-link icon-btn pull-left"
+              type="button"
+              {{action "addNodePool"}}
+            >
               <i class="icon icon-plus text-small"></i>
               <span>
                 {{t "clusterNew.googlegke.nodePool.addLabel"}}
@@ -436,7 +576,11 @@
             </button>
           </div>
         </AccordionListItem>
-        <SaveCancel @editing={{eq mode "edit" }} @save={{action "driverSave" }} @cancel={{close}} />
+        <SaveCancel
+          @editing={{eq mode "edit"}}
+          @save={{action "driverSave"}}
+          @cancel={{close}}
+        />
       {{/if}}
     {{/if}}
   </AccordionList>

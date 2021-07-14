@@ -1,115 +1,154 @@
 <section>
   <p>
-  <ol class="alphalist ml-40 list-unstyled">
-    <li>
-      <ul class="list-unstyled">
-        <div class="pb-10">
-          <h3 class="mb-0">
-            {{t "clusterNew.rke.role.sectionheader"}}
-          </h3>
-          <p class="help-block">
-            {{t "clusterNew.rke.role.detail"}}
-          </p>
-        </div>
-        <li>
-          {{t "clusterNew.rke.role.title"}}
-        </li>
-        <li>
-          <div class="row">
-            <div class="col span-4 text-center mt-0 mb-0">
-              <label class="p-10 pl-30 pr-30 {{unless isLinux " text-muted"}}">
-                <Input @type="checkbox" @checked={{etcd}} @disabled={{not isLinux}} />
-                {{t "clusterNew.rke.role.header.etcd"}}
-              </label>
-            </div>
-            <div class="col span-4 text-center mt-0 mb-0">
-              <label class="p-10 pl-30 pr-30 {{unless isLinux " text-muted"}}">
-                <Input @type="checkbox" @checked={{controlplane}} @disabled={{not isLinux}} />
-                {{t "clusterNew.rke.role.header.controlplane"}}
-              </label>
-            </div>
-            <div class="col span-4 text-center mt-0 mb-0">
-              <label class="p-10 pl-30 pr-30">
-                <Input @type="checkbox" @checked={{worker}} @disabled={{not isLinux}} />
-                {{t "clusterNew.rke.role.header.worker"}}
-              </label>
-            </div>
+    <ol class="alphalist ml-40 list-unstyled">
+      <li>
+        <ul class="list-unstyled">
+          <div class="pb-10">
+            <h3 class="mb-0">
+              {{t "clusterNew.rke.role.sectionheader"}}
+            </h3>
+            <p class="help-block">
+              {{t "clusterNew.rke.role.detail"}}
+            </p>
           </div>
-          {{#unless (and (and controlplane worker) etcd)}}
-            <row class="mb-20">
-              <div class="col span-12">
-                <BannerMessage @color="bg-warning" @message={{t "clusterNew.rke.role.warning" appName=settings.appName
-                  }} />
-              </div>
-            </row>
-          {{/unless}}
-          {{#advanced-section advanced=commandAdvanced}}
-            <div class="row mt-20">
-              <div class="col span-6">
-                <label class="acc-label">
-                  {{t "clusterNew.rke.address.public.label"}}
+          <li>
+            {{t "clusterNew.rke.role.title"}}
+          </li>
+          <li>
+            <div class="row">
+              <div class="col span-4 text-center mt-0 mb-0">
+                <label class="p-10 pl-30 pr-30 {{unless isLinux "text-muted"}}">
+                  <Input
+                    @type="checkbox"
+                    @checked={{etcd}}
+                    @disabled={{not isLinux}}
+                  />
+                  {{t "clusterNew.rke.role.header.etcd"}}
                 </label>
-                <Input @type="text" @value={{address}} @placeholder={{t "clusterNew.rke.address.public.placeholder"
-                  }} />
-                <p class="help-block">
-                  {{t "clusterNew.rke.address.detail"}}
-                </p>
-                {{#unless isAddressValid}}
-                  <BannerMessage @color="bg-warning" @message={{t "clusterNew.rke.address.warning" }} />
-                {{/unless}}
               </div>
-              <div class="col span-6">
-                <label class="acc-label">
-                  {{t "clusterNew.rke.address.private.label"}}
+              <div class="col span-4 text-center mt-0 mb-0">
+                <label class="p-10 pl-30 pr-30 {{unless isLinux "text-muted"}}">
+                  <Input
+                    @type="checkbox"
+                    @checked={{controlplane}}
+                    @disabled={{not isLinux}}
+                  />
+                  {{t "clusterNew.rke.role.header.controlplane"}}
                 </label>
-                <Input @type="text" @value={{internalAddress}}
-                  @placeholder={{t "clusterNew.rke.address.private.placeholder" }} />
-                {{#unless isInternalAddressValid}}
-                  <BannerMessage @color="bg-warning" @message={{t "clusterNew.rke.address.warning" }} />
-                {{/unless}}
               </div>
-            </div>
-            <div class="row mt-20">
-              <div class="col span-6">
-                <label class="acc-label">
-                  {{t "clusterNew.rke.nodeName.title"}}
+              <div class="col span-4 text-center mt-0 mb-0">
+                <label class="p-10 pl-30 pr-30">
+                  <Input
+                    @type="checkbox"
+                    @checked={{worker}}
+                    @disabled={{not isLinux}}
+                  />
+                  {{t "clusterNew.rke.role.header.worker"}}
                 </label>
-                <Input @type="text" @value={{nodeName}} @placeholder={{t "clusterNew.rke.nodeName.placeholder" }} />
-                <p class="help-block">
-                  {{t "clusterNew.rke.nodeName.detail"}}
-                </p>
-                {{#unless isNodeNameValid}}
-                  <TopErrors @errors={{nodeNameErrors}} />
-                {{/unless}}
               </div>
             </div>
-            <div class="row mt-20">
-              <div class="col span-12">
-                <label class="acc-label">
-                  {{t "clusterNew.rke.labels.title"}}
-                </label>
-                <FormUserLabels @setLabels={{action "setLabels" }} @expand={{action "expand" }}
-                  @detailKey="formUserLabels.nodeDetail" as |userLabelArray removeLabel addUserLabel|>
-                  {{#if userLabelArray.length}}
-                    <table class="table fixed no-lines small mb-10">
-                      <thead>
-                        <tr class="hidden-sm">
-                          <th>
-                            {{t "formUserLabels.key.label"}}
-                            {{field-required}}
-                          </th>
-                          <th width="30"></th>
-                          <th>
-                            {{t "formUserLabels.value.label"}}
-                          </th>
-                          <th width="40"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {{#each userLabelArray as |label|}}
-                          <tr>
-                            <td data-title="key">
-                              {{input-paste
+            {{#unless (and (and controlplane worker) etcd)}}
+              <row class="mb-20">
+                <div class="col span-12">
+                  <BannerMessage
+                    @color="bg-warning"
+                    @message={{t
+                      "clusterNew.rke.role.warning"
+                      appName=settings.appName
+                    }}
+                  />
+                </div>
+              </row>
+            {{/unless}}
+            {{#advanced-section advanced=commandAdvanced}}
+              <div class="row mt-20">
+                <div class="col span-6">
+                  <label class="acc-label">
+                    {{t "clusterNew.rke.address.public.label"}}
+                  </label>
+                  <Input
+                    @type="text"
+                    @value={{address}}
+                    @placeholder={{t "clusterNew.rke.address.public.placeholder"
+                    }}
+                  />
+                  <p class="help-block">
+                    {{t "clusterNew.rke.address.detail"}}
+                  </p>
+                  {{#unless isAddressValid}}
+                    <BannerMessage
+                      @color="bg-warning"
+                      @message={{t "clusterNew.rke.address.warning"}}
+                    />
+                  {{/unless}}
+                </div>
+                <div class="col span-6">
+                  <label class="acc-label">
+                    {{t "clusterNew.rke.address.private.label"}}
+                  </label>
+                  <Input
+                    @type="text"
+                    @value={{internalAddress}}
+                    @placeholder={{t
+                      "clusterNew.rke.address.private.placeholder"
+                    }}
+                  />
+                  {{#unless isInternalAddressValid}}
+                    <BannerMessage
+                      @color="bg-warning"
+                      @message={{t "clusterNew.rke.address.warning"}}
+                    />
+                  {{/unless}}
+                </div>
+              </div>
+              <div class="row mt-20">
+                <div class="col span-6">
+                  <label class="acc-label">
+                    {{t "clusterNew.rke.nodeName.title"}}
+                  </label>
+                  <Input
+                    @type="text"
+                    @value={{nodeName}}
+                    @placeholder={{t "clusterNew.rke.nodeName.placeholder"}}
+                  />
+                  <p class="help-block">
+                    {{t "clusterNew.rke.nodeName.detail"}}
+                  </p>
+                  {{#unless isNodeNameValid}}
+                    <TopErrors @errors={{nodeNameErrors}} />
+                  {{/unless}}
+                </div>
+              </div>
+              <div class="row mt-20">
+                <div class="col span-12">
+                  <label class="acc-label">
+                    {{t "clusterNew.rke.labels.title"}}
+                  </label>
+                  <FormUserLabels
+                    @setLabels={{action "setLabels"}}
+                    @expand={{action "expand"}}
+                    @detailKey="formUserLabels.nodeDetail" as |userLabelArray removeLabel addUserLabel|
+                  >
+                    {{#if userLabelArray.length}}
+                      <table class="table fixed no-lines small mb-10">
+                        <thead>
+                          <tr class="hidden-sm">
+                            <th>
+                              {{t "formUserLabels.key.label"}}
+                              {{field-required}}
+                            </th>
+                            <th width="30"></th>
+                            <th>
+                              {{t "formUserLabels.value.label"}}
+                            </th>
+                            <th width="40"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {{#each userLabelArray as |label|}}
+                            <tr>
+                              <td data-title="key">
+                                {{input-paste
                                   pasted=(action "pastedLabels")
                                   class="form-control input-sm key"
                                   type="text"
@@ -117,12 +156,12 @@
                                   placeholder="formUserLabels.key.placeholder"
                                   disabled=(eq label.readonly true)
                                 }}
-                            </td>
-                            <td class="valign-top text-center">
-                              {{t "formKeyValue.separator"}}
-                            </td>
-                            <td data-title="label">
-                              {{input
+                              </td>
+                              <td class="valign-top text-center">
+                                {{t "formKeyValue.separator"}}
+                              </td>
+                              <td data-title="label">
+                                {{input
                                   class="form-control input-sm"
                                   type="text"
                                   value=label.value
@@ -131,45 +170,53 @@
                                   )
                                   disabled=(eq label.readonly true)
                                 }}
-                            </td>
-                            <td class="text-right">
-                              <button class="btn bg-primary btn-sm" disabled={{eq label.readonly true}} type="button"
-                                {{action removeLabel label}}>
-                                <i class="icon icon-minus"></i>
-                                <span class="sr-only">
-                                  {{t "generic.remove"}}
-                                </span>
-                              </button>
-                            </td>
-                          </tr>
-                        {{/each}}
-                      </tbody>
-                    </table>
-                    <div class="protip mb-5">
-                      {{t "formUserLabels.protip"}}
-                    </div>
-                  {{/if}}
-                  <button class="btn bg-link icon-btn" type="button" {{action addUserLabel}}>
-                    <i class="icon icon-plus text-small"></i>
-                    <span>
-                      {{t "formUserLabels.addAction"}}
-                    </span>
-                  </button>
-                </FormUserLabels>
+                              </td>
+                              <td class="text-right">
+                                <button
+                                  class="btn bg-primary btn-sm"
+                                  disabled={{eq label.readonly true}}
+                                  type="button"
+                                  {{action removeLabel label}}
+                                >
+                                  <i class="icon icon-minus"></i>
+                                  <span class="sr-only">
+                                    {{t "generic.remove"}}
+                                  </span>
+                                </button>
+                              </td>
+                            </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                      <div class="protip mb-5">
+                        {{t "formUserLabels.protip"}}
+                      </div>
+                    {{/if}}
+                    <button
+                      class="btn bg-link icon-btn"
+                      type="button"
+                      {{action addUserLabel}}
+                    >
+                      <i class="icon icon-plus text-small"></i>
+                      <span>
+                        {{t "formUserLabels.addAction"}}
+                      </span>
+                    </button>
+                  </FormUserLabels>
+                </div>
+                <div class="col span-12">
+                  <label class="acc-label">
+                    {{t "clusterNew.rke.taints.title"}}
+                  </label>
+                  <NodeTaints @setTaints={{action "setTaints"}} />
+                </div>
               </div>
-              <div class="col span-12">
-                <label class="acc-label">
-                  {{t "clusterNew.rke.taints.title"}}
-                </label>
-                <NodeTaints @setTaints={{action "setTaints" }} />
-              </div>
-            </div>
-          {{/advanced-section}}
-        </li>
-      </ul>
-    </li>
-    <li>
-      {{t
+            {{/advanced-section}}
+          </li>
+        </ul>
+      </li>
+      <li>
+        {{t
           (if
             isLinux
             "clusterNew.rke.command.instructions"
@@ -179,24 +226,28 @@
           htmlSafe=true
           version="1809"
         }}
-      <ul class="list-unstyled">
-        <li>
-          <div class="copy-pre mt-20 mb-20">
-            {{#if loading}}
-              <div class="text-center">
-                <i class="icon icon-spinner icon-spin"></i>
-                {{t "generic.loading"}}
-              </div>
-            {{else if command}}
-              <CopyToClipboard @clipboardText={{command}} @tagName="div" @classNames="copy-to-pre" />
-              <pre id="registration-command" style="font-size: 14px;">
-              {{command}}
-              </pre>
-            {{/if}}
-          </div>
-        </li>
-      </ul>
-    </li>
-  </ol>
+        <ul class="list-unstyled">
+          <li>
+            <div class="copy-pre mt-20 mb-20">
+              {{#if loading}}
+                <div class="text-center">
+                  <i class="icon icon-spinner icon-spin"></i>
+                  {{t "generic.loading"}}
+                </div>
+              {{else if command}}
+                <CopyToClipboard
+                  @clipboardText={{command}}
+                  @tagName="div"
+                  @classNames="copy-to-pre"
+                />
+                <pre id="registration-command" style="font-size: 14px;">
+                  {{command}}
+                </pre>
+              {{/if}}
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ol>
   </p>
 </section>

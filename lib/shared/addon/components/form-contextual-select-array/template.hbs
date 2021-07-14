@@ -1,3 +1,4 @@
+
 <label class="acc-label block">
   {{#if valueLabel}}
     {{t valueLabel}}
@@ -11,13 +12,14 @@
     {{#each selections as |selection index|}}
       <tr>
         <td data-title="{{selection}}">
-          {{selection}}
+            {{selection}}
         </td>
         <td width="10">&nbsp;</td>
         <td width="30">
           {{#if editing}}
-            <button class="btn bg-primary btn-sm" type="button" {{action "onRemove" index}}>
-              <i class="icon icon-minus" />
+            <button
+              class="btn bg-primary btn-sm" type="button" {{action "onRemove" index}}>
+              <i class="icon icon-minus"/>
               <span class="sr-only">
                 {{t "generic.remove"}}
               </span>
@@ -29,14 +31,19 @@
     {{#if (and (not (eq values.length 0)) (not (eq filteredContent.length 0)))}}
       <tr>
         <td>
-          <NewSelect @selectFirstValueOnStart={{true}} @class="input-sm value" @content={{filteredContent}}
-            @value={{lastValue}} />
+            <NewSelect
+              @selectFirstValueOnStart={{true}}
+              @class="input-sm value"
+              @content={{filteredContent}}
+              @value={{lastValue}}
+            />
         </td>
         <td width="10">&nbsp;</td>
         <td width="30">
           {{#if editing}}
-            <button class="btn bg-primary btn-sm" type="button" {{action "onRemove" lastIndex}}>
-              <i class="icon icon-minus" />
+            <button
+              class="btn bg-primary btn-sm" type="button" {{action "onRemove" lastIndex}}>
+              <i class="icon icon-minus"/>
               <span class="sr-only">
                 {{t "generic.remove"}}
               </span>
@@ -49,8 +56,10 @@
 </table>
 
 {{#if editing}}
-  <button class={{addButtonClass}} disabled={{not canAddMore}} type="button" {{action "onAdd" }}>
-    <i class="icon icon-plus text-small" />
+  <button
+    class={{addButtonClass}} disabled={{not canAddMore}} type="button" {{action "onAdd"}}
+  >
+    <i class="icon icon-plus text-small"/>
     <span>
       {{t addActionLabel}}
     </span>
