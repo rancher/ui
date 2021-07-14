@@ -221,7 +221,10 @@
             <div class="col span-6">
               {{#if config.monitoring}}
                 <div class="">
-                  <label class="acc-label" for="azureaks-logging-workspace-group">
+                  <label
+                    class="acc-label"
+                    for="azureaks-logging-workspace-group"
+                  >
                     {{t "clusterNew.azureaks.monitoring.workspaceGroup.label"}}
                   </label>
                   <InputOrDisplay
@@ -291,25 +294,42 @@
             </div>
           </div>
         </AccordionListItem>
-        <AccordionListItem @title={{t "clusterNew.azureaks.networkOptions.title" }}
-          @detail={{t "clusterNew.azureaks.networkOptions.detail" }} @expandAll={{al.expandAll}} @expandOnInit={{true}}
-          @expand={{action expandFn}}>
+        <AccordionListItem
+          @title={{t "clusterNew.azureaks.networkOptions.title"}}
+          @detail={{t "clusterNew.azureaks.networkOptions.detail"}}
+          @expandAll={{al.expandAll}}
+          @expandOnInit={{true}}
+          @expand={{action expandFn}}
+        >
           <div class="row">
             <div class="col span-6">
               <label class="acc-label" for="azureaks-load-balancer-sku">
                 {{t "clusterNew.azureaks.loadBalancerSku.label"}}
                 {{#if loadBalancerImmutable}}
-                  <TooltipElement @type="tooltip-basic" @model={{t "clusterNew.azureaks.loadBalancerSku.immutable" }}
-                    @tooltipTemplate="tooltip-static" @aria-describedby="tooltip-base"
-                    @tooltipFor="tooltipImmutableLoadBalancerSKU" @placement="top">
+                  <TooltipElement
+                    @type="tooltip-basic"
+                    @model={{t "clusterNew.azureaks.loadBalancerSku.immutable"}}
+                    @tooltipTemplate="tooltip-static"
+                    @aria-describedby="tooltip-base"
+                    @tooltipFor="tooltipImmutableLoadBalancerSKU"
+                    @placement="top"
+                  >
                     <i class="icon icon-info"></i>
                   </TooltipElement>
                 {{/if}}
               </label>
-              <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.loadBalancerSku}}
-                @classesForDisplay="form-control-static">
-                <NewSelect @id="azureaks-load-balancer-sku" @classNames="form-control" @content={{lbSkus}} @value={{mut
-                  config.loadBalancerSku}} @disabled={{loadBalancerImmutable}} />
+              <InputOrDisplay
+                @editable={{isNewOrEditable}}
+                @value={{config.loadBalancerSku}}
+                @classesForDisplay="form-control-static"
+              >
+                <NewSelect
+                  @id="azureaks-load-balancer-sku"
+                  @classNames="form-control"
+                  @content={{lbSkus}}
+                  @value={{mut config.loadBalancerSku}}
+                  @disabled={{loadBalancerImmutable}}
+                />
               </InputOrDisplay>
             </div>
           </div>
@@ -317,16 +337,30 @@
             <div class="col span-6">
               <label class="acc-label">
                 {{t "clusterNew.azureaks.networkPolicy.label"}}
-                <TooltipElement @type="tooltip-basic" @model={{t "clusterNew.azureaks.networkPolicy.help" }}
-                  @tooltipTemplate="tooltip-static" @aria-describedby="tooltip-base" @tooltipFor="tooltipNetworkPolicy"
-                  @placement="top">
+                <TooltipElement
+                  @type="tooltip-basic"
+                  @model={{t "clusterNew.azureaks.networkPolicy.help"}}
+                  @tooltipTemplate="tooltip-static"
+                  @aria-describedby="tooltip-base"
+                  @tooltipFor="tooltipNetworkPolicy"
+                  @placement="top"
+                >
                   <i class="icon icon-info"></i>
                 </TooltipElement>
               </label>
-              <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.networkPolicy}}
-                @classesForDisplay="form-control-static">
-                <SearchableSelect @class="form-control" @content={{networkPolicyContent}} @value={{mut
-                  config.networkPolicy}} @placeholder={{t "clusterNew.azureaks.networkPolicy.placeholder" }} />
+              <InputOrDisplay
+                @editable={{isNewOrEditable}}
+                @value={{config.networkPolicy}}
+                @classesForDisplay="form-control-static"
+              >
+                <SearchableSelect
+                  @class="form-control"
+                  @content={{networkPolicyContent}}
+                  @value={{mut config.networkPolicy}}
+                  @placeholder={{t
+                    "clusterNew.azureaks.networkPolicy.placeholder"
+                  }}
+                />
               </InputOrDisplay>
             </div>
             <div class="col span-6">
@@ -336,11 +370,18 @@
                   <FieldRequired />
                 {{/if}}
               </label>
-              <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.dnsPrefix}}
-                @classesForDisplay="form-control-static">
-                <Input @classNames="form-control" @id="azureaks-master-dns-prefix"
-                  @placeholder={{t "clusterNew.azureaks.dns.placeholderv2" }} @type="text" @value={{mut
-                  config.dnsPrefix}} />
+              <InputOrDisplay
+                @editable={{isNewOrEditable}}
+                @value={{config.dnsPrefix}}
+                @classesForDisplay="form-control-static"
+              >
+                <Input
+                  @classNames="form-control"
+                  @id="azureaks-master-dns-prefix"
+                  @placeholder={{t "clusterNew.azureaks.dns.placeholderv2"}}
+                  @type="text"
+                  @value={{mut config.dnsPrefix}}
+                />
               </InputOrDisplay>
             </div>
           </div>
@@ -349,32 +390,59 @@
               <label class="acc-label" for="azureaks-advanced-network-plugin">
                 {{t "clusterNew.azureaks.networking.networkPlugin.label"}}
                 {{#if (eq config.networkPlugin "azure")}}
-                  <TooltipElement @type="tooltip-basic" @model={{t "clusterNew.azureaks.networking.networkPlugin.help"
-                    }} @tooltipTemplate="tooltip-static" @aria-describedby="tooltip-base"
-                    @tooltipFor="tooltipResourceGroup" @placement="top">
+                  <TooltipElement
+                    @type="tooltip-basic"
+                    @model={{t
+                      "clusterNew.azureaks.networking.networkPlugin.help"
+                    }}
+                    @tooltipTemplate="tooltip-static"
+                    @aria-describedby="tooltip-base"
+                    @tooltipFor="tooltipResourceGroup"
+                    @placement="top"
+                  >
                     <i class="icon icon-info$('#☄')."></i>
                   </TooltipElement>
                 {{/if}}
               </label>
-              <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.networkPlugin}}
-                @classesForDisplay="form-control-static">
-                <NewSelect @classNames="form-control" @content={{networkPlugins}} @id="azureaks-advanced-network-plugin"
-                  @value={{mut config.networkPlugin}} />
+              <InputOrDisplay
+                @editable={{isNewOrEditable}}
+                @value={{config.networkPlugin}}
+                @classesForDisplay="form-control-static"
+              >
+                <NewSelect
+                  @classNames="form-control"
+                  @content={{networkPlugins}}
+                  @id="azureaks-advanced-network-plugin"
+                  @value={{mut config.networkPlugin}}
+                />
               </InputOrDisplay>
             </div>
           </div>
           {{#if (eq config.networkPlugin "azure")}}
             <div class="row">
               <div class="col span-6">
-                <label class="acc-label" for="azureaks-advanced-virtual-network">
+                <label
+                  class="acc-label"
+                  for="azureaks-advanced-virtual-network"
+                >
                   {{t "clusterNew.azureaks.networking.vnet.label"}}
                 </label>
-                <InputOrDisplay @editable={{isNewOrEditable}} @value={{networkChoiceDisplay}}
-                  @classesForDisplay="form-control-static">
-                  <NewSelect @classNames="form-control" @content={{filteredVirtualNetworks}}
-                    @id="azureaks-advanced-virtual-network" @localizedPrompt={{false}} @optionLabelPath="name"
-                    @optionValuePath="value" @optionGroupPath="group"
-                    @prompt={{t "clusterNew.azureaks.networking.vnet.prompt" }} @value={{mut networkChoice}} />
+                <InputOrDisplay
+                  @editable={{isNewOrEditable}}
+                  @value={{networkChoiceDisplay}}
+                  @classesForDisplay="form-control-static"
+                >
+                  <NewSelect
+                    @classNames="form-control"
+                    @content={{filteredVirtualNetworks}}
+                    @id="azureaks-advanced-virtual-network"
+                    @localizedPrompt={{false}}
+                    @optionLabelPath="name"
+                    @optionValuePath="value"
+                    @optionGroupPath="group"
+                    @prompt={{t "clusterNew.azureaks.networking.vnet.prompt"}}
+                    @value={{mut networkChoice}}
+                  />
                 </InputOrDisplay>
               </div>
             </div>
@@ -383,10 +451,19 @@
                 <label class="acc-label" for="azureaks-service-cidr-id">
                   {{t "clusterNew.azureaks.networking.serviceCidr.label"}}
                 </label>
-                <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.serviceCidr}}
-                  @classesForDisplay="form-control-static">
-                  <InputCidr @inputStyles="form-control" @inputId="azureaks-service-cidr-id" @value={{mut
-                    config.serviceCidr}} @placeholder={{t "clusterNew.azureaks.networking.serviceCidr.prompt" }} />
+                <InputOrDisplay
+                  @editable={{isNewOrEditable}}
+                  @value={{config.serviceCidr}}
+                  @classesForDisplay="form-control-static"
+                >
+                  <InputCidr
+                    @inputStyles="form-control"
+                    @inputId="azureaks-service-cidr-id"
+                    @value={{mut config.serviceCidr}}
+                    @placeholder={{t
+                      "clusterNew.azureaks.networking.serviceCidr.prompt"
+                    }}
+                  />
                 </InputOrDisplay>
                 <p class="help-block">
                   {{t "clusterNew.azureaks.networking.serviceCidr.help"}}
@@ -396,10 +473,19 @@
                 <label class="acc-label" for="azureaks-pod-cidr">
                   {{t "clusterNew.azureaks.networking.podCidr.label"}}
                 </label>
-                <InputOrDisplay @editable={{isNewOrEditable}} @value={{config.podCidr}}
-                  @classesForDisplay="form-control-static">
-                  <InputCidr @inputStyles="form-control" @inputId="azureaks-pod-cidr" @value={{mut config.podCidr}}
-                    @placeholder={{t "clusterNew.azureaks.networking.podCidr.placeholder" }} />
+                <InputOrDisplay
+                  @editable={{isNewOrEditable}}
+                  @value={{config.podCidr}}
+                  @classesForDisplay="form-control-static"
+                >
+                  <InputCidr
+                    @inputStyles="form-control"
+                    @inputId="azureaks-pod-cidr"
+                    @value={{mut config.podCidr}}
+                    @placeholder={{t
+                      "clusterNew.azureaks.networking.podCidr.placeholder"
+                    }}
+                  />
                 </InputOrDisplay>
                 <p class="help-block">
                   {{t "clusterNew.azureaks.networking.podCidr.help"}}
