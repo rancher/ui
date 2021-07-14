@@ -189,7 +189,7 @@ module('Integration | Component | form-key-value', (hooks) => {
     `);
 
     assert.equal(this.element.querySelectorAll('tbody tr').length, 1);
-    await click('.btn.bg-link.icon-btn.p-0');
+    await click('.btn.bg-link.icon-btn');
     assert.equal(this.element.querySelectorAll('tbody tr').length, 2);
   });
 
