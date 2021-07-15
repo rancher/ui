@@ -2,10 +2,20 @@
 // Important: Almost all selectors in here need to be ">"-ed together so they
 // apply only to the current table, not one nested inside another table.
 //
+.accordion {
+  TABLE.fixed {
+    background: none;
+  }
+}
 
 TABLE {
   position: relative;
   background: $table-header;
+  margin-bottom: 20px;
+
+  &.plain {
+    background: none;
+  }
 
   TH {
     text-align: left;
@@ -251,7 +261,12 @@ TABLE {
       transition: all ease-in-out .3s;
       text-align: left;
       font-weight: normal;
-      padding: 8px 5px;
+      padding: 8px 0px;
+
+      &:first-child {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
     }
   }
 
@@ -294,26 +309,26 @@ TABLE {
   > TBODY {
     border: none;
 
-       &.group {
-            &:after {
-              content: "";
-              display: table-row;
-              height: $table-body-separation;
-              border-top: 2px solid $table-border-color;
-              position: absolute;
-              width: 99.7%;
-            }
+      //  &.group {
+      //       &:after {
+      //         content: "";
+      //         display: table-row;
+      //         height: $table-body-separation;
+      //         border-top: 2px solid $table-border-color;
+      //         position: absolute;
+      //         width: 99.7%;
+      //       }
 
-            &:before {
-                content: "";
-                display: block;
-                height: $group-row-height;
-            }
+      //       &:before {
+      //           content: "";
+      //           display: block;
+      //           height: $group-row-height;
+      //       }
 
-            &:first-of-type:before {
-                height: 0;
-            }
-        }
+      //       &:first-of-type:before {
+      //           height: 0;
+      //       }
+      //   }
 
 
     > TR {
