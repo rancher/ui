@@ -104,6 +104,31 @@
       </div>
     </div>
 
+    {{#if isFlex}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label" for="input-ocpu-count">
+            {{t "clusterNew.oracleoke.flexShapeConfig.label"}}
+          </label>{{field-required}}
+          {{input-number
+                  id="input-ocpu-count"
+                  min=1
+                  max=64
+                  value=config.nodeOcpus
+          }}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label" for="input-memory-count">
+            {{t "clusterNew.oracleoke.flexShapeConfig.memory"}}
+          </label>{{field-required}}
+          {{input-number
+                  id="input-memory-count"
+                  value=config.nodeMemoryInGb
+          }}
+        </div>
+      </div>
+    {{/if}}
+
 
   {{/accordion-list-item}}
 
