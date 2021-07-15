@@ -23,8 +23,7 @@
       </div>
       <div class="dropdown filter-group pull-right ml-20">
         <BasicDropdown @horizontalPosition="right" @verticalPosition="below" as |dd|>
-          <dd.Trigger class="btn bg-default btn-md pt-5 pb-5">
-            <i class="icon icon-chevron-down pull-right ml-10"></i>
+          <dd.Trigger class="btn bg-default">
             <span class="text-capitalize">
               {{#if (eq category "")}}
                 {{t "catalogPage.index.allCategories"}}
@@ -32,6 +31,7 @@
                 {{category}}
               {{/if}}
             </span>
+            <i class="icon icon-chevron-down ml-10"></i>
           </dd.Trigger>
           <dd.Content class="text-right">
             <li class="text-capitalize {{if (eq category "") " active"}}" {{action dd.actions.close}}>
@@ -60,17 +60,11 @@
       <div class="pull-right">
         <button type="button" class="btn bg-primary icon-btn" disabled={{eq updating "yes" }} {{action "update" }}>
           {{#if (eq updating "yes")}}
-            <span class="darken">
-              <i class="icon icon-spinner icon-spin"></i>
-            </span>
+            <i class="icon icon-spinner icon-spin"></i>
           {{else if (eq updating "error")}}
-            <span class="darken">
-              <i class="icon icon-spinner icon-alert"></i>
-            </span>
+            <i class="icon icon-spinner icon-alert"></i>
           {{else}}
-            <span class="darken">
-              <i class="icon icon-refresh"></i>
-            </span>
+            <i class="icon icon-refresh pr-10"></i>
           {{/if}}
           <span>
             {{t "catalogPage.index.refreshBtn"}}
