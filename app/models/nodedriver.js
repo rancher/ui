@@ -4,7 +4,7 @@ import Resource from '@rancher/ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
-export const BUILT_IN_UI = ['amazonec2', 'digitalocean', 'azure', 'exoscale', 'packet', 'pnap', 'rackspace', 'vmwarevsphere', 'aliyunecs', 'oci'];
+export const BUILT_IN_UI = ['amazonec2', 'digitalocean', 'azure', 'exoscale', 'harvester', 'packet', 'pnap', 'rackspace', 'vmwarevsphere', 'aliyunecs', 'oci'];
 export const BUILT_IN_ICON_ONLY = ['openstack', 'otc'];
 
 function displayUrl(url) {
