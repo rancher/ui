@@ -472,6 +472,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return get(this, 'configName') === 'rancherKubernetesEngineConfig';
   }),
 
+  isK8s21Plus: computed('version.gitVersion', function() {
+    const version = Semver.coerce(get(this, 'version.gitVersion'));
+
+    return Semver.satisfies(version, '>=1.21.0');
+  }),
+
   displayLocation: computed('configName', function() {
     const configName = this.configName;
 
