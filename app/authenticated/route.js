@@ -153,6 +153,19 @@ export default Route.extend(Preload, {
     // Don't show any modals when embedded
     const isEmbedded = window.top !== window;
 
+    if ( !get(this, `cookies.${ C.COOKIE.REDIRECTED }`) ) {
+      // Send users to dashboard, if there's no redirect cookie, and not embedded
+      // So that if you're on <2.6 in Ember, upgrade, and get reloaded you end up in Dashboard.
+      this.cookies.set(C.COOKIE.REDIRECTED, true);
+
+      // If isEmbedded then you're already in Dashboard, so just set the cookie.
+      if ( !isEmbedded ) {
+        window.location.href = get(this, 'scope.dashboardBase');
+
+        return;
+      }
+    }
+
     if ( get(this, 'settings.isRancher') && !isEmbedded) {
       const telemetry = get(this, `settings.${ C.SETTING.TELEMETRY }`);
       const form = get(this, `settings.${ C.SETTING.FEEDBACK_FORM }`);
