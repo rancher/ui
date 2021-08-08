@@ -144,9 +144,22 @@ export default Route.extend({
     logout(transition, errorMsg) {
       let session = get(this, 'session');
       let access = get(this, 'access');
+      const isEmbedded = window.top !== window;
+
+      if ( isEmbedded ) {
+        window.top.postMessage({ action: 'logout' });
+
+        return;
+      }
 
       access.clearToken().finally(() => {
-        let url =  `${ window.location.origin }/login`;
+        let url;
+
+        if ( get(this, 'app.environment') === 'development' ) {
+          url =  `${ window.location.origin }/login`;
+        } else {
+          url =  `${ window.location.origin }/dashboard/auth/login`;
+        }
 
         get(this, 'tab-session').clear();
         set(this, `session.${ C.SESSION.CONTAINER_ROUTE }`, undefined);
