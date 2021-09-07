@@ -3,6 +3,12 @@ var pkg  = require('../package.json');
 var fs   = require('fs');
 var YAML = require('yamljs');
 
+var packageVersion = process.env.DRONE_TAG || pkg.version;
+
+if (packageVersion.startsWith('v')) {
+  packageVersion = packageVersion.slice(1);
+}
+
 // host can be an ip "1.2.3.4" -> https://1.2.3.4:30443
 // or a URL+port
 function normalizeHost(host,defaultPort) {
@@ -52,7 +58,7 @@ module.exports = function(environment) {
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
-        // e.g. EMBER_NATIVE_DECORATOR_SUPPORT: true
+        // e.g. 'with-controller': true
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
@@ -86,7 +92,7 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-      version: pkg.version,
+      version: packageVersion,
       appName: 'Rancher',
       environment: environment,
       baseAssets: '/',

@@ -2,9 +2,15 @@
 set -e
 
 BUILD_DEBUG="${BUILD_DEBUG:-}"
+CI_BUILD_TAG="${DRONE_TAG:-}"
+CI_BUILD_TAG="${CI_BUILD_TAG#v}"
+
+echo "CI_BUILD_TAG ${CI_BUILD_TAG}..."
+
+
 if [[ -n "${BUILD_DEBUG}" ]]; then
-    set -x
-    env
+  set -x
+  env
 fi
 
 # cd to app root
@@ -21,14 +27,20 @@ rm -rf node_modules build dist tmp
 echo "Bootstrapping.."
 ./scripts/bootstrap
 
-echo "Linting.."
-./node_modules/.bin/eslint --max-warnings 0 .
+if [[ -z "${CI_BUILD_TAG}" ]]; then
+  echo "Linting.."
+  ./node_modules/.bin/eslint --max-warnings 0 .
+fi
 
 if [[ "${BUILD_LATEST}" == "true" ]]; then
-  echo "Building..."
-  ./scripts/build-static -l -v latest2
+  echo "Building latest..."
+  ./scripts/build-static -l -v latest-2.6
+  # (build-static contains a call to test & build)
+elif [[ ! -z "${CI_BUILD_TAG}" ]]; then
+  echo "Building v${CI_BUILD_TAG}..."
+  ./scripts/build-static -s -v "${CI_BUILD_TAG}"
   # (build-static contains a call to test & build)
 else
-  echo "Testing.."
+  echo "Testing..."
   yarn test
 fi
