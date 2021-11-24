@@ -96,7 +96,44 @@
             </div>
           {{/if}}
         {{/if}}
-        {{#if (and (not-eq driver "amazonec2") (not-eq driver "azure"))}}
+
+        {{#if (eq driver "harvester")}}
+          {{#if (and applyClusterTemplate (eq selectedCloudProvider "harvester"))}}
+            <div class="radio">
+              <label>
+                {{t "cloudProvider.harvester.label"}}
+              </label>
+            </div>
+          {{else if isCreateClusterOrClusterTemplate}}
+            <div class="radio">
+              <label style={{if harvesterCloudProviderDisabled "color: #adaeb4"}}>
+                {{radio-button
+                  selection=selectedCloudProvider
+                  value="harvester"
+                  disabled=harvesterCloudProviderDisabled
+                }} 
+                {{t "cloudProvider.harvester.label"}}
+                {{#if harvesterCloudProviderDisabled}}
+                  <span class="inline-block">
+                    {{#tooltip-element
+                      type="tooltip-basic"
+                      model=(t "cloudProvider.harvester.helpText" htmlSafe=true)
+                      tooltipTemplate="tooltip-static"
+                      aria-describedby="tooltip-base"
+                      tooltipFor="tooltipPoolCreateAfter"
+                      placement="top"
+                      tagName="div"
+                    }}
+                      <i class="icon icon-help icon-blue"></i>
+                    {{/tooltip-element}}
+                  </span>
+                {{/if}}
+              </label>
+            </div>
+          {{/if}}
+        {{/if}}
+
+        {{#if (and (not-eq driver "amazonec2") (not-eq driver "azure") (not-eq driver "harvester"))}}
           {{#if (and applyClusterTemplate (eq selectedCloudProvider "generic"))}}
             <div class="radio">
               <label>
