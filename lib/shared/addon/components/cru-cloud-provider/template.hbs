@@ -106,11 +106,28 @@
             </div>
           {{else if isCreateClusterOrClusterTemplate}}
             <div class="radio">
-              <label>
+              <label style={{if harvesterCloudProviderDisabled "color: #adaeb4"}}>
                 {{radio-button
                   selection=selectedCloudProvider
                   value="harvester"
-                }} {{t "cloudProvider.harvester.label"}}
+                  disabled=harvesterCloudProviderDisabled
+                }} 
+                {{t "cloudProvider.harvester.label"}}
+                {{#if harvesterCloudProviderDisabled}}
+                  <span class="inline-block">
+                    {{#tooltip-element
+                      type="tooltip-basic"
+                      model=(t "cloudProvider.harvester.helpText" htmlSafe=true)
+                      tooltipTemplate="tooltip-static"
+                      aria-describedby="tooltip-base"
+                      tooltipFor="tooltipPoolCreateAfter"
+                      placement="top"
+                      tagName="div"
+                    }}
+                      <i class="icon icon-help icon-blue"></i>
+                    {{/tooltip-element}}
+                  </span>
+                {{/if}}
               </label>
             </div>
           {{/if}}
