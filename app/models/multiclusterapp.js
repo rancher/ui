@@ -76,7 +76,15 @@ const MultiClusterApp = Resource.extend({
     upgrade() {
       const templateId    = get(this, 'externalIdInfo.templateId');
       const catalogId     = get(this, 'externalIdInfo.catalog');
-      const vKeys         = Object.keys(get(this, 'catalogTemplate.versionLinks'));
+      let vKeys         = Object.keys(get(this, 'catalogTemplate.versionLinks'));
+
+      if ( !vKeys || !Object.keys(vKeys).length ) {
+        // If you install a legacy app and then upgrade Rancher,
+        // the versionLinks object can be empty. In that case,
+        // use the current template version.
+        vKeys = [this.templateVersion.version]
+      }
+
       const latestVersion =  vKeys[vKeys.length - 1];
 
       get(this, 'router').transitionTo('global-admin.multi-cluster-apps.catalog.launch', templateId, {
