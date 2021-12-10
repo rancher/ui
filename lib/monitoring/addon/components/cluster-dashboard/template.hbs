@@ -40,63 +40,65 @@
   {{nodes-live nodes=nodes}}
 
   <div class="row mt-0">
-    {{#if (and whichComponentStatusExists.etcd (not hideEtcdStatus))}}
-      {{k8s-component-status
-        label="clusterDashboard.etcd"
-        showUrl=scope.currentCluster.isRKE
-        healthy=etcdHealthy
-        url=grafana.etcdUrl
-      }}
-    {{else}}
-      <div class="col mt-0 span-3">
-        {{#banner-message
-           icon="icon-alert"
-           color="bg-disabled mt-0"
+    {{#if haveComponentStatus}}
+      {{#if (and whichComponentStatusExists.etcd (not hideEtcdStatus))}}
+        {{k8s-component-status
+          label="clusterDashboard.etcd"
+          showUrl=scope.currentCluster.isRKE
+          healthy=etcdHealthy
+          url=grafana.etcdUrl
         }}
-          <p class="text-left">
-            {{t "clusterDashboard.etcdUnavailable"}}
-          </p>
-        {{/banner-message}}
-      </div>
+      {{else}}
+        <div class="col mt-0 span-3">
+          {{#banner-message
+            icon="icon-alert"
+            color="bg-disabled mt-0"
+          }}
+            <p class="text-left">
+              {{t "clusterDashboard.etcdUnavailable"}}
+            </p>
+          {{/banner-message}}
+        </div>
+      {{/if }}
+
+      {{#if whichComponentStatusExists.controllerManager}}
+        {{k8s-component-status
+          label="clusterDashboard.controllerManager"
+          healthy=controllerHealthy
+          url=grafana.controllerUrl
+        }}
+      {{else}}
+        <div class="col mt-0 span-3">
+          {{#banner-message
+            icon="icon-alert"
+            color="bg-disabled mt-0"
+          }}
+            <p class="text-left">
+              {{t "clusterDashboard.controllerManagerUnavailable"}}
+            </p>
+          {{/banner-message}}
+        </div>
+      {{/if}}
+
+      {{#if whichComponentStatusExists.scheduler}}
+        {{k8s-component-status
+          label="clusterDashboard.scheduler"
+          healthy=schedulerHealthy
+          url=grafana.schedulerUrl
+        }}
+      {{else}}
+        <div class="col mt-0 span-3">
+          {{#banner-message
+            icon="icon-alert"
+            color="bg-disabled mt-0"
+          }}
+            <p class="text-left">
+              {{t "clusterDashboard.schedulerUnavailable"}}
+            </p>
+          {{/banner-message}}
+        </div>
+      {{/if}}
     {{/if }}
-
-    {{#if whichComponentStatusExists.controllerManager}}
-      {{k8s-component-status
-        label="clusterDashboard.controllerManager"
-        healthy=controllerHealthy
-        url=grafana.controllerUrl
-      }}
-    {{else}}
-      <div class="col mt-0 span-3">
-        {{#banner-message
-           icon="icon-alert"
-           color="bg-disabled mt-0"
-        }}
-          <p class="text-left">
-            {{t "clusterDashboard.controllerManagerUnavailable"}}
-          </p>
-        {{/banner-message}}
-      </div>
-    {{/if}}
-
-    {{#if whichComponentStatusExists.scheduler}}
-      {{k8s-component-status
-        label="clusterDashboard.scheduler"
-        healthy=schedulerHealthy
-        url=grafana.schedulerUrl
-      }}
-    {{else}}
-      <div class="col mt-0 span-3">
-        {{#banner-message
-           icon="icon-alert"
-           color="bg-disabled mt-0"
-        }}
-          <p class="text-left">
-            {{t "clusterDashboard.schedulerUnavailable"}}
-          </p>
-        {{/banner-message}}
-      </div>
-    {{/if}}
 
     {{k8s-component-status
       label="clusterDashboard.node"
