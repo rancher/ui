@@ -562,7 +562,7 @@
                     <Input
                       @type="checkbox"
                       @checked={{mut cluster.enableNetworkPolicy}}
-                      @disabled={{editing}}
+                      @disabled={{or editing (not config.networkPolicy)}}
                     />
                     {{t "clusterNew.rke.networkPolicy.label"}}
                     {{#if editing}}
@@ -571,11 +571,20 @@
                         @model={{t "clusterNew.rke.networkPolicy.editHelp"}}
                         @tooltipTemplate="tooltip-static"
                         @aria-describedby="tooltip-base"
-                        @tooltipFor="tooltipNetworkPolicy"
                         @placement="top"
                       >
                         <i class="acc-label icon icon-info"></i>
                       </TooltipElement>
+                    {{else if (not config.networkPolicy)}}
+                      <TooltipElement
+                          @type="tooltip-basic"
+                          @model={{t "clusterNew.rke.networkPolicy.selectNetworkPolicyHelp"}}
+                          @tooltipTemplate="tooltip-static"
+                          @aria-describedby="tooltip-base"
+                          @placement="top"
+                        >
+                          <i class="acc-label icon icon-info"></i>
+                        </TooltipElement>
                     {{/if}}
                   </label>
                 </div>
