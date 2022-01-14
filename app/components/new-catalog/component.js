@@ -17,7 +17,6 @@ import convertDotAnswersToYaml from 'shared/utils/convert-yaml';
 import ChildHook from 'shared/mixins/child-hook';
 import flatMap from 'shared/utils/flat-map';
 import LazyIcon from 'shared/mixins/lazy-icon';
-import $ from 'jquery';
 
 export default Component.extend(NewOrEdit, CatalogApp, ChildHook, LazyIcon, {
   catalog:                  service(),
@@ -81,7 +80,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, LazyIcon, {
   },
 
   didRender() {
-    this.initAppIcon();    
+    this.initAppIcon();
   },
 
   actions: {
