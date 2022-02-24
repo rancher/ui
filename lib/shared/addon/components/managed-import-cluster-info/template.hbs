@@ -87,12 +87,48 @@
     </div>
   </div>
 </div>
-{{#if showAce}}
-  <AuthorizedEndpoint
-    @mode={{mode}}
-    @cluster={{cluster}}
-    @clusterTemplateCreate={{clusterTemplateCreate}}
-    @clusterTemplateRevision={{model.clusterTemplateRevision}}
-    @applyClusterTemplate={{applyClusterTemplate}}
-  />
-{{/if}}
+<div class="row">
+  <div class="col span-6">
+  {{#if showAce}}
+    <AuthorizedEndpoint
+      @mode={{mode}}
+      @cluster={{cluster}}
+      @clusterTemplateCreate={{clusterTemplateCreate}}
+      @clusterTemplateRevision={{model.clusterTemplateRevision}}
+      @applyClusterTemplate={{applyClusterTemplate}}
+    />
+  {{/if}}
+  </div>
+  <div class="col span-6">
+
+    {{#input-or-display
+      editable=(not-eq mode "view")
+      value=config.enableNetworkPolicy
+    }}
+      <label class="acc-label">
+        {{t "clusterNew.rke.networkPolicy.label"}}
+      </label>
+      <div class="radio">
+        <label>
+          {{radio-button selection=enableNetworkPolicy value=true}}
+          {{t "generic.enabled"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button selection=enableNetworkPolicy value=false}}
+          {{t "generic.disabled"}}
+        </label>
+      </div>
+      <div class="reservedSpaceForBanner">
+        {{#if enableNetworkPolicy}}
+          <BannerMessage
+            @icon="icon-alert"
+            @color="bg-warning mt-0"
+            @message={{t "clusterNew.import.clusterOptions.warning"}}
+          />
+        {{/if}}
+      </div>
+    {{/input-or-display}}
+  </div>
+</div>
