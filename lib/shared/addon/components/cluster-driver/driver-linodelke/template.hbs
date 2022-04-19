@@ -81,6 +81,34 @@
           </div>
         {{/if}}
         <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.linodelke.highAvailability.label"}}
+              {{field-required}}
+            </label>
+            {{#input-or-display
+            editable=true
+            value=cluster.lkeEngineConfig.highAvailability
+            }}
+              <div class="radio">
+                <label>
+                  {{radio-button selection=cluster.lkeEngineConfig.highAvailability value=true}}
+                  {{t "generic.enabled"}}
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  {{radio-button selection=cluster.lkeEngineConfig.highAvailability disabled=highAvailability value=false}}
+                  {{t "generic.disabled"}}
+                </label>
+              </div>
+            {{/input-or-display}}
+            <p class="help-block">
+              {{t "clusterNew.linodelke.highAvailability.warning"}}
+            </p>
+          </div>
+        </div>
+        <div class="row">
           <div class="header mt-40 mb-0">
             <div class="pull-left">
               <h2 class="mb-0">
