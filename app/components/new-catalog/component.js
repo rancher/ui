@@ -16,9 +16,9 @@ import { isNumeric } from 'shared/utils/util';
 import convertDotAnswersToYaml from 'shared/utils/convert-yaml';
 import ChildHook from 'shared/mixins/child-hook';
 import flatMap from 'shared/utils/flat-map';
-import $ from 'jquery';
+import LazyIcon from 'shared/mixins/lazy-icon';
 
-export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
+export default Component.extend(NewOrEdit, CatalogApp, ChildHook, LazyIcon, {
   catalog:                  service(),
   intl:                     service(),
   scope:                    service(),
@@ -51,7 +51,6 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
 
   classNames:               ['launch-catalog'],
   catalogApp:               null,
-  srcSet:                   false,
 
   detailExpanded:           false,
   previewOpen:              false,
@@ -81,17 +80,7 @@ export default Component.extend(NewOrEdit, CatalogApp, ChildHook, {
   },
 
   didRender() {
-    if (!this.get('srcSet')) {
-      set(this, 'srcSet', true);
-
-      const $icon = $('img');
-
-      $icon.attr('src', $icon.data('src'));
-
-      $('img').on('error', () => {
-        $icon.attr('src', `${ this.get('app.baseAssets') }assets/images/generic-catalog.svg`);
-      });
-    }
+    this.initAppIcon();
   },
 
   actions: {

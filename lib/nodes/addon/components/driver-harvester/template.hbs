@@ -44,6 +44,7 @@
               max=32
               value=config.cpuCount
               classNames="form-control"
+              placeholder=(t "nodeDriver.harvester.cpuCount.placeholder")
             }}
             <div class="input-group-addon bg-default">
               {{t "nodeDriver.harvester.cpuCount.unit" cores=config.cpuCount}}
@@ -60,6 +61,7 @@
               min=1
               value=config.memorySize
               classNames="form-control"
+              placeholder=(t "nodeDriver.harvester.memorySize.placeholder")
             }}
             <div class="input-group-addon bg-default">
               {{t "nodeDriver.harvester.memorySize.unit"}}
@@ -78,6 +80,7 @@
               min=1
               value=config.diskSize
               classNames="form-control"
+              placeholder=(t "nodeDriver.harvester.diskSize.placeholder")
             }}
             <div class="input-group-addon bg-default">
               {{t "nodeDriver.harvester.diskSize.unit"}}
@@ -95,12 +98,14 @@
               @class="form-control"
               @content={{namespaceContent}}
               @value={{config.vmNamespace}}
+              @placeholder={{t "nodeDriver.harvester.namespace.placeholder"}}
             />
           {{else}}
             {{input
               type="text"
               value=config.vmNamespace
               classNames="form-control"
+              placeholder=(t "nodeDriver.harvester.namespace.placeholder")
             }}
           {{/if}}
         </div>
@@ -116,6 +121,7 @@
               @class="form-control"
               @content={{imageContent}}
               @value={{config.imageName}}
+              @placeholder={{t "nodeDriver.harvester.imageName.placeholder"}}
             />
           </div>
 
@@ -127,6 +133,7 @@
               @class="form-control"
               @content={{networkContent}}
               @value={{config.networkName}}
+              @placeholder={{t "nodeDriver.harvester.networkName.placeholder"}}
             />
           </div>
 
@@ -139,6 +146,7 @@
               type="text"
               value=config.imageName
               classNames="form-control"
+              placeholder=(t "nodeDriver.harvester.imageName.placeholder")
             }}
           </div>
 
@@ -150,6 +158,7 @@
               type="text"
               value=config.networkName
               classNames="form-control"
+              placeholder=(t "nodeDriver.harvester.networkName.placeholder")
             }}
           </div>
         {{/if}}
@@ -159,11 +168,25 @@
         <div class="col span-6">
           <label class="acc-label">
             {{t "nodeDriver.harvester.sshUser.label"}}{{field-required}}
+            <span class="inline-block">
+              {{#tooltip-element
+                type="tooltip-basic"
+                model=(t "nodeDriver.harvester.sshUser.toolTip" htmlSafe=true)
+                tooltipTemplate="tooltip-static"
+                aria-describedby="tooltip-base"
+                tooltipFor="tooltipPoolCreateAfter"
+                placement="top"
+                tagName="div"
+              }}
+                <i class="icon icon-help icon-blue"></i>
+              {{/tooltip-element}}
+            </span>
           </label>
           {{input
             type="text"
             value=config.sshUser
             classNames="form-control"
+            placeholder=(t "nodeDriver.harvester.sshUser.placeholder")
           }}
         </div>
       </div>

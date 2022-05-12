@@ -150,11 +150,26 @@
         </div>
         <div class="row">
           <div class="col span-6">
+            <div class="form-control-static">
+              <div class="checkbox">
+                <label>
+                  <Input
+                    @type="checkbox"
+                    @checked={{mut cluster.enableNetworkPolicy}}
+                  />
+                  {{t "clusterNew.rke.networkPolicy.label"}}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-6">
             <label class="acc-label">
               {{t "clusterNew.amazoneks.secretsEncryption.label"}}
             </label>
             {{#if isNew}}
-              <div class="radio pt-0">
+              <div class="radio">
                 <label>
                   <RadioButton
                     @selection={{mut config.secretsEncryption}}
@@ -163,6 +178,8 @@
                   />
                   {{t "clusterNew.amazoneks.secretsEncryption.disabled"}}
                 </label>
+              </div>
+              <div class="radio pt-0">
                 <label>
                   <RadioButton
                     @selection={{mut config.secretsEncryption}}

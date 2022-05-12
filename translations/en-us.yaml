@@ -1654,7 +1654,7 @@ monitoringPage:
     disabled: Monitoring is disabled in the current cluster.
     toDisable: Monitoring is enabled. Click the Save button below will disable monitoring in current cluster.
   project:
-    title: Project Monitoring Configuration
+    title: V1 Project Monitoring Configuration
     disabled: Monitoring is disabled in the current project.
     toDisable: Monitoring is enabled. Click the Save button below will disable monitoring in current project.
   errors:
@@ -3173,6 +3173,9 @@ cloudProvider:
     label: Custom (In-Tree)
     notInList: 'If your cloud provider is not listed, please use the <b>Custom</b> option.'
     helpText: 'Please edit the YAML to add in any other <a href="http://rancher.com/docs/rke/v0.1.x/en/config-options/cloud-providers/" target="_blank" rel="nofollow noopener noreferrer">cloud providers</a>'
+  harvester:
+    label: Harvester (Out-of-tree)
+    helpText: Please enter a "Cluster Name" and select a node template to enable this option
 
   helpText: |
      Read more about the state of the <a href="https://kubernetes.io/blog/2019/04/17/the-future-of-cloud-providers-in-kubernetes/" target="_blank" rel="nofollow noopener noreferrer">Kubernetes in-tree cloud providers</a>
@@ -3550,6 +3553,9 @@ clusterNew:
       label: Image
       placeholder: canonical:UbuntuServer:18.04-LTS:latest
     import:
+      clusterOptions:
+        detail: Configure additional cluster options
+        title: Cluster Options
       clusterSelect:
         createLabel: Register Cluster
         detail: Choose an AKS cluster to register
@@ -3596,6 +3602,7 @@ clusterNew:
       title: Networking Options
     networkPolicy:
       help: Azure Network Policy is only available when Azure CNI is selected as the Network Plugin
+      editHelp: The Azure Network Policy option cannot be changed after the cluster is created
       label: Network Policy
       placeholder: Select a Network Policy
     networking:
@@ -4641,6 +4648,8 @@ clusterNew:
       label: CNI Plugin MTU Override
     networkPolicy:
       label: Project Network Isolation
+      editHelp: The Project Network Isolation option cannot be changed after the cluster is created
+      selectNetworkPolicyHelp: You must have a Network Policy selected to use Project Network Isolation 
     nodeName:
       detail: Optionally configure the node name as identification instead of the actual hostname
       placeholder: e.g. my-worker-node
@@ -9095,7 +9104,6 @@ nodeDriver:
     ami:
       label: AMI
       placeholder: An Ubuntu AMI
-      rancherList: RancherOS AMI List
     availabilityZone: Availability Zone
     encryptEbsVolume:
       label: Encryption
@@ -9289,11 +9297,11 @@ nodeDriver:
     accountSection: Account Access
     projectId:
       label: Project ID
-      placeholder: Your Packet project ID
+      placeholder: Your Equinix Metal project ID
     apiKey:
       label: Account API Key
-      placeholder: Your Packet API key
-    apiKeyHelp: From the Packet <a href="https://app.packet.net/users/0/api-keys" target="_blank">API Keys</a> screen
+      placeholder: Your Equinix Metal API key
+    apiKeyHelp: From the Equinix Metal <a href="https://app.packet.net/users/0/api-keys" target="_blank">API Keys</a> screen
     instanceSection: Instance
     instanceOptionsSection: Instance Options
     loginAction: "Next: Authenticate & select an instance"
@@ -9503,6 +9511,9 @@ nodeDriver:
       label: Fault Domain Count
       placeholder: e.g. 3
       helpText: If the availability set has already been created, the fault domain count will be ignored.
+    plan:
+      label: Purchase Plan
+      placeholder: publisher:product:plan
     size:
       label: Size
     dockerPort:
@@ -9717,6 +9728,7 @@ nodeDriver:
       kubeconfig: KubeconfigContent
     imageName:
       label: Image
+      placeholder: Please select a image
     diskBus:
       label: Bus
     access:
@@ -9736,24 +9748,31 @@ nodeDriver:
     username:
       label: Username
     imported: Imported Harvester
-    external: External Harvester
+    external: External Harvester (Experimental)
     sshUser:
       label: SSH User
+      placeholder: e.g. ubuntu
+      toolTip: SSH user to login with the selected OS image.
     networkName:
       label: Network Name
+      placeholder: Please select a network
     password:
       label: Password
     cpuCount:
       label: CPUs
       unit: '{cores, plural, =1 {Core} other {Cores}}'
+      placeholder: e.g. 2
     memorySize:
       label: Memory
       unit: GiB
+      placeholder: e.g. 4
     namespace:
       label: Namespace
+      placeholder: e.g. default
     diskSize:
       label: Disk
       unit: GiB
+      placeholder: e.g. 4
     networkData:
       label: Network Data YAML
       template:
