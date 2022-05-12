@@ -337,16 +337,29 @@
             <div class="col span-6">
               <label class="acc-label">
                 {{t "clusterNew.azureaks.networkPolicy.label"}}
-                <TooltipElement
-                  @type="tooltip-basic"
-                  @model={{t "clusterNew.azureaks.networkPolicy.help"}}
-                  @tooltipTemplate="tooltip-static"
-                  @aria-describedby="tooltip-base"
-                  @tooltipFor="tooltipNetworkPolicy"
-                  @placement="top"
-                >
-                  <i class="icon icon-info"></i>
-                </TooltipElement>
+                {{#if editing}}
+                  <TooltipElement
+                    @type="tooltip-basic"
+                    @model={{t "clusterNew.azureaks.networkPolicy.editHelp"}}
+                    @tooltipTemplate="tooltip-static"
+                    @aria-describedby="tooltip-base"
+                    @tooltipFor="tooltipNetworkPolicy"
+                    @placement="top"
+                  >
+                    <i class="icon icon-info"></i>
+                  </TooltipElement>
+                {{else}}
+                  <TooltipElement
+                    @type="tooltip-basic"
+                    @model={{t "clusterNew.azureaks.networkPolicy.help"}}
+                    @tooltipTemplate="tooltip-static"
+                    @aria-describedby="tooltip-base"
+                    @tooltipFor="tooltipNetworkPolicy"
+                    @placement="top"
+                  >
+                    <i class="icon icon-info"></i>
+                  </TooltipElement>
+                {{/if}}
               </label>
               <InputOrDisplay
                 @editable={{isNewOrEditable}}
@@ -543,6 +556,39 @@
           {{/if}}
           <div class="row">
             <div class="col span-6 mb-0">
+              <div class="form-control-static">
+                <div class="checkbox">
+                  <label>
+                    <Input
+                      @type="checkbox"
+                      @checked={{mut cluster.enableNetworkPolicy}}
+                      @disabled={{or editing (not config.networkPolicy)}}
+                    />
+                    {{t "clusterNew.rke.networkPolicy.label"}}
+                    {{#if editing}}
+                      <TooltipElement
+                        @type="tooltip-basic"
+                        @model={{t "clusterNew.rke.networkPolicy.editHelp"}}
+                        @tooltipTemplate="tooltip-static"
+                        @aria-describedby="tooltip-base"
+                        @placement="top"
+                      >
+                        <i class="acc-label icon icon-info"></i>
+                      </TooltipElement>
+                    {{else if (not config.networkPolicy)}}
+                      <TooltipElement
+                          @type="tooltip-basic"
+                          @model={{t "clusterNew.rke.networkPolicy.selectNetworkPolicyHelp"}}
+                          @tooltipTemplate="tooltip-static"
+                          @aria-describedby="tooltip-base"
+                          @placement="top"
+                        >
+                          <i class="acc-label icon icon-info"></i>
+                        </TooltipElement>
+                    {{/if}}
+                  </label>
+                </div>
+              </div>
               <div class="form-control-static">
                 <div class="checkbox">
                   <label>

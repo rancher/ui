@@ -21,18 +21,36 @@ export default Route.extend({
   model(params, transition) {
     const { store, clusterStore } = this;
 
-    const dependencies = {
-      tpl:        get(this, 'catalog').fetchTemplate(params.template),
-      namespaces: clusterStore.findAll('namespace')
-    };
-
-    if ( params.upgrade ) {
-      dependencies.upgrade = get(this, 'catalog').fetchTemplate(`${ params.template }-${ params.upgrade }`, true);
-    }
+    let dependencies = { namespaces: clusterStore.findAll('namespace') };
 
     if (params.appId) {
       dependencies.app = store.find('app', params.appId);
+      dependencies.app.then((appData) => {
+        const getCurrentVersion = (app) => {
+          const externalId = app.externalId;
+          const splitId = externalId.split('version=')
+          const currentVersion = splitId[1];
+
+          return currentVersion;
+        }
+        const currentVersion = getCurrentVersion(appData);
+
+        // If an app ID is given, the current app version will be used in the app launch route.
+        dependencies.upgrade = get(this, 'catalog').fetchTemplate(`${ params.template }-${ params.upgrade }`, true, currentVersion);
+        dependencies.tpl = get(this, 'catalog').fetchTemplate(params.template, false, currentVersion);
+      })
+        .catch((err) => {
+          throw new Error(err);
+        })
+    } else {
+      // If an app ID is not given, the current app version will not be used in the app launch route.
+      if (params.upgrade) {
+        dependencies.upgrade = get(this, 'catalog').fetchTemplate(`${ params.template }-${ params.upgrade }`, true);
+      }
+      dependencies.tpl = get(this, 'catalog').fetchTemplate(params.template);
     }
+
+
     if (params.appName) {
       dependencies.app = store.find('app', null, { filter: { name: params.appName } }).then((apps) => get(apps, 'firstObject'));
     }
