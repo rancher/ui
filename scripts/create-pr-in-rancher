@@ -1,0 +1,16 @@
+#!/bin/bash
+set -ex
+
+REPO="https://api.github.com/repos/rancher/rancher/actions/workflows/replace-env-value.yml/dispatches"
+
+# Only use first two parts, delimited by dot
+# v2.6.5 becomes v2.6, end result: release/v2.6
+ACTION_TARGET_BRANCH="release/$(echo $DRONE_TAG | cut -f1,2 -d".")"
+
+echo "Dispatching to branch ${ACTION_TARGET_BRANCH} with INPUT_ENVVALUE=${DRONE_TAG}"
+
+# send dispatch event to workflow
+curl -XPOST -u "${PAT_USERNAME}:${PAT_TOKEN}" \
+        -H "Accept: application/vnd.github.v3+json"  \
+        -H "Content-Type: application/json" $REPO \
+        --data '{"ref":"'"${ACTION_TARGET_BRANCH}"'","inputs":{"INPUT_FILEPATH":"package/Dockerfile","INPUT_ENVVAR":"CATTLE_UI_VERSION","INPUT_ENVVALUE":"'"${DRONE_TAG##v}"'"}}'

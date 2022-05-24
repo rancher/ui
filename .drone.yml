@@ -113,6 +113,24 @@ steps:
       include:
       - "refs/tags/v2.6.*"
 
+- name: create-pr-in-rancher
+  image: curlimages/curl:7.81.0
+  user: root
+  environment:
+    PAT_USERNAME:
+      from_secret: pat_username
+    PAT_TOKEN:
+      from_secret: github_token
+  commands:
+  - apk -U --no-cache add bash
+  - scripts/create-pr-in-rancher
+  when:
+    event:
+    - tag
+    ref:
+      include:
+      - "refs/tags/v2.6.*"
+
 volumes:
 - name: docker
   host:
