@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col {{if (and isCustom (or (eq mode "new") clusterTemplateCreate)) "span-4" "span-6"}}">
+  <div class="col span-6">
     <label class="acc-label" for="network-plugin">
       {{t "clusterNew.rke.network.label"}}
       {{#if clusterTemplateCreate}}
@@ -35,54 +35,7 @@
 
   </div>
 
-  {{!-- disabled for now --}}
-  {{#if (and isCustom (or (eq mode "new") clusterTemplateCreate))}}
-    <div class="col span-4">
-      <label class="acc-label">
-        {{t "clusterNew.rke.windowsSupport.label"}}
-      </label>
-      <CheckComputedOverride
-        @applyClusterTemplate={{applyClusterTemplate}}
-        @clusterTemplateCreate={{clusterTemplateCreate}}
-        @computedOverrideAllowed={{windowsSupportOverrideAvailable}}
-        @windowsSupportAvailable={{mut windowsSupportAvailable}}
-        @computedState={{cluster.windowsPreferedCluster}}
-      >
-        {{#input-or-display
-           editable=(not-eq mode "view")
-           value=cluster.windowsPreferedCluster
-        }}
-          <div class="radio">
-            <label class={{unless windowsSupportAvailable "text-muted"}}>
-              {{radio-button
-                selection=cluster.windowsPreferedCluster
-                value=true
-                disabled=(not windowsSupportAvailable)
-              }}
-              {{t "generic.enabled"}}
-            </label>
-          </div>
-          <div class="radio">
-            <label class={{unless windowsSupportAvailable "text-muted"}}>
-              {{radio-button
-                selection=cluster.windowsPreferedCluster
-                value=false
-                disabled=(not windowsSupportAvailable)
-              }}
-              {{t "generic.disabled"}}
-            </label>
-          </div>
-        {{/input-or-display}}
-      </CheckComputedOverride>
-      {{#unless windowsSupportAvailable}}
-        <p class="help-block">
-          {{t "clusterNew.rke.windowsSupport.help"}}
-        </p>
-      {{/unless}}
-    </div>
-  {{/if}}
-
-  <div class="col {{if (and isCustom (or (eq mode "new") clusterTemplateCreate)) "span-4" "span-6"}}">
+  <div class="col span-6">
     <label class="acc-label">
       {{t "clusterNew.rke.networkPolicy.label"}}
       {{#if (and clusterTemplateCreate projectNetworkIsolationAvailable)}}
