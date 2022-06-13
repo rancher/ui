@@ -33,163 +33,167 @@
       expand=(action expandFn)
       expandOnInit=true
     }}
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "nodeDriver.harvester.cpuCount.label"}}{{field-required}}
-          </label>
-          <div class="input-group">
-            {{input-integer
-              min=1
-              max=32
-              value=config.cpuCount
-              classNames="form-control"
-              placeholder=(t "nodeDriver.harvester.cpuCount.placeholder")
-            }}
-            <div class="input-group-addon bg-default">
-              {{t "nodeDriver.harvester.cpuCount.unit" cores=config.cpuCount}}
+      {{#if loading}}
+        <i class="icon icon-spinner icon-spin"/> {{t "generic.loading"}}
+      {{else}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.cpuCount.label"}}{{field-required}}
+            </label>
+            <div class="input-group">
+              {{input-integer
+                min=1
+                max=32
+                value=config.cpuCount
+                classNames="form-control"
+                placeholder=(t "nodeDriver.harvester.cpuCount.placeholder")
+              }}
+              <div class="input-group-addon bg-default">
+                {{t "nodeDriver.harvester.cpuCount.unit" cores=config.cpuCount}}
+              </div>
+            </div>
+          </div>
+
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.memorySize.label"}}{{field-required}}
+            </label>
+            <div class="input-group">
+              {{input-integer
+                min=1
+                value=config.memorySize
+                classNames="form-control"
+                placeholder=(t "nodeDriver.harvester.memorySize.placeholder")
+              }}
+              <div class="input-group-addon bg-default">
+                {{t "nodeDriver.harvester.memorySize.unit"}}
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "nodeDriver.harvester.memorySize.label"}}{{field-required}}
-          </label>
-          <div class="input-group">
-            {{input-integer
-              min=1
-              value=config.memorySize
-              classNames="form-control"
-              placeholder=(t "nodeDriver.harvester.memorySize.placeholder")
-            }}
-            <div class="input-group-addon bg-default">
-              {{t "nodeDriver.harvester.memorySize.unit"}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.diskSize.label"}}{{field-required}}
+            </label>
+            <div class="input-group">
+              {{input-integer
+                min=1
+                value=config.diskSize
+                classNames="form-control"
+                placeholder=(t "nodeDriver.harvester.diskSize.placeholder")
+              }}
+              <div class="input-group-addon bg-default">
+                {{t "nodeDriver.harvester.diskSize.unit"}}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "nodeDriver.harvester.diskSize.label"}}{{field-required}}
-          </label>
-          <div class="input-group">
-            {{input-integer
-              min=1
-              value=config.diskSize
-              classNames="form-control"
-              placeholder=(t "nodeDriver.harvester.diskSize.placeholder")
-            }}
-            <div class="input-group-addon bg-default">
-              {{t "nodeDriver.harvester.diskSize.unit"}}
-            </div>
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.namespace.label"}}{{field-required}}
+            </label>
+
+            {{#if isImported}}
+              <SearchableSelect
+                @class="form-control"
+                @content={{namespaceContent}}
+                @value={{config.vmNamespace}}
+                @placeholder={{t "nodeDriver.harvester.namespace.placeholder"}}
+              />
+            {{else}}
+              {{input
+                type="text"
+                value=config.vmNamespace
+                classNames="form-control"
+                placeholder=(t "nodeDriver.harvester.namespace.placeholder")
+              }}
+            {{/if}}
           </div>
         </div>
 
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "nodeDriver.harvester.namespace.label"}}{{field-required}}
-          </label>
-
+        <div class="row">
           {{#if isImported}}
-            <SearchableSelect
-              @class="form-control"
-              @content={{namespaceContent}}
-              @value={{config.vmNamespace}}
-              @placeholder={{t "nodeDriver.harvester.namespace.placeholder"}}
-            />
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t "nodeDriver.harvester.imageName.label"}}{{field-required}}
+              </label>
+              <SearchableSelect
+                @class="form-control"
+                @content={{imageContent}}
+                @value={{config.imageName}}
+                @placeholder={{t "nodeDriver.harvester.imageName.placeholder"}}
+              />
+            </div>
+
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t "nodeDriver.harvester.networkName.label"}}{{field-required}}
+              </label>
+              <SearchableSelect
+                @class="form-control"
+                @content={{networkContent}}
+                @value={{config.networkName}}
+                @placeholder={{t "nodeDriver.harvester.networkName.placeholder"}}
+              />
+            </div>
+
           {{else}}
-            {{input
-              type="text"
-              value=config.vmNamespace
-              classNames="form-control"
-              placeholder=(t "nodeDriver.harvester.namespace.placeholder")
-            }}
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t "nodeDriver.harvester.imageName.label"}}{{field-required}}
+              </label>
+              {{input
+                type="text"
+                value=config.imageName
+                classNames="form-control"
+                placeholder=(t "nodeDriver.harvester.imageName.placeholder")
+              }}
+            </div>
+
+            <div class="col span-6">
+              <label class="acc-label">
+                {{t "nodeDriver.harvester.networkName.label"}}{{field-required}}
+              </label>
+              {{input
+                type="text"
+                value=config.networkName
+                classNames="form-control"
+                placeholder=(t "nodeDriver.harvester.networkName.placeholder")
+              }}
+            </div>
           {{/if}}
         </div>
-      </div>
 
-      <div class="row">
-        {{#if isImported}}
+        <div class="row">
           <div class="col span-6">
             <label class="acc-label">
-              {{t "nodeDriver.harvester.imageName.label"}}{{field-required}}
-            </label>
-            <SearchableSelect
-              @class="form-control"
-              @content={{imageContent}}
-              @value={{config.imageName}}
-              @placeholder={{t "nodeDriver.harvester.imageName.placeholder"}}
-            />
-          </div>
-
-          <div class="col span-6">
-            <label class="acc-label">
-              {{t "nodeDriver.harvester.networkName.label"}}{{field-required}}
-            </label>
-            <SearchableSelect
-              @class="form-control"
-              @content={{networkContent}}
-              @value={{config.networkName}}
-              @placeholder={{t "nodeDriver.harvester.networkName.placeholder"}}
-            />
-          </div>
-
-        {{else}}
-          <div class="col span-6">
-            <label class="acc-label">
-              {{t "nodeDriver.harvester.imageName.label"}}{{field-required}}
+              {{t "nodeDriver.harvester.sshUser.label"}}{{field-required}}
+              <span class="inline-block">
+                {{#tooltip-element
+                  type="tooltip-basic"
+                  model=(t "nodeDriver.harvester.sshUser.toolTip" htmlSafe=true)
+                  tooltipTemplate="tooltip-static"
+                  aria-describedby="tooltip-base"
+                  tooltipFor="tooltipPoolCreateAfter"
+                  placement="top"
+                  tagName="div"
+                }}
+                  <i class="icon icon-help icon-blue"></i>
+                {{/tooltip-element}}
+              </span>
             </label>
             {{input
               type="text"
-              value=config.imageName
+              value=config.sshUser
               classNames="form-control"
-              placeholder=(t "nodeDriver.harvester.imageName.placeholder")
+              placeholder=(t "nodeDriver.harvester.sshUser.placeholder")
             }}
           </div>
-
-          <div class="col span-6">
-            <label class="acc-label">
-              {{t "nodeDriver.harvester.networkName.label"}}{{field-required}}
-            </label>
-            {{input
-              type="text"
-              value=config.networkName
-              classNames="form-control"
-              placeholder=(t "nodeDriver.harvester.networkName.placeholder")
-            }}
-          </div>
-        {{/if}}
-      </div>
-
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "nodeDriver.harvester.sshUser.label"}}{{field-required}}
-            <span class="inline-block">
-              {{#tooltip-element
-                type="tooltip-basic"
-                model=(t "nodeDriver.harvester.sshUser.toolTip" htmlSafe=true)
-                tooltipTemplate="tooltip-static"
-                aria-describedby="tooltip-base"
-                tooltipFor="tooltipPoolCreateAfter"
-                placement="top"
-                tagName="div"
-              }}
-                <i class="icon icon-help icon-blue"></i>
-              {{/tooltip-element}}
-            </span>
-          </label>
-          {{input
-            type="text"
-            value=config.sshUser
-            classNames="form-control"
-            placeholder=(t "nodeDriver.harvester.sshUser.placeholder")
-          }}
         </div>
-      </div>
+      {{/if}}
     {{/accordion-list-item}}
 
     {{#accordion-list-item
