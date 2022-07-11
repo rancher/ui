@@ -8,8 +8,9 @@ export default Component.extend({
 
   term: null,
 
-  ruleArray: null,
-  editing:   true,
+  initialRules: null,
+  ruleArray:    null,
+  editing:      true,
 
   init() {
     this._super(...arguments);
@@ -17,7 +18,7 @@ export default Component.extend({
   },
 
   didInsertElement() {
-    if (get(this, 'ruleArray.length') === 0) {
+    if (get(this, 'ruleArray.length') === 0 && get(this, 'initialRules') !== false) {
       this.send('addRule');
     }
   },

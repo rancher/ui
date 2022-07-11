@@ -1,0 +1,111 @@
+<div class="box mb-20">
+  <div class="row">
+    <div class="col span-4">
+      <label class="pb-5 acc-label" for="input-project-select">
+        {{t "nodeDriver.harvester.scheduling.input.type.label"}}
+      </label>
+      {{new-select
+        value=model.type
+        content=typeChoices
+        optionValuePath="value"
+        optionLabelPath="translationKey"
+        localizedLabel=true
+      }}
+    </div>
+    <div class="col span-4">
+      <label class="pb-5 acc-label" for="input-project-select">
+        {{t "nodeDriver.harvester.scheduling.input.priority.label"}}
+      </label>
+      {{new-select
+        value=model.priority
+        content=priorityChoices
+        optionValuePath="value"
+        optionLabelPath="translationKey"
+        localizedLabel=true
+      }}
+    </div>
+    {{#if editing}}
+      <div class="col span-4 text-right mt-0">
+        <button class="btn bg-link icon-btn" type="button" {{action "remove" }}>
+          <i class="icon icon-minus text-small" />
+          <span>{{t "formNodeAffinity.removeRuleLabel"}}</span>
+        </button>
+      </div>
+    {{/if}}
+  </div>
+
+  <div class="row">
+    <div class="col span-12">
+      {{#input-or-display editable=editing value=showNamespace}}
+        <div class="radio">
+          <label>
+            {{radio-button selection=showNamespace value="false"}} {{t "nodeDriver.harvester.scheduling.pod.namespace.podsNs" htmlSafe=true}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button selection=showNamespace value="true"}} {{t "nodeDriver.harvester.scheduling.pod.namespace.PodInNs" htmlSafe=true}}
+          </label>
+        </div>
+      {{/input-or-display}}
+
+      {{#if (eq showNamespace "true")}}
+        {{#if isImported}}
+          <select class="form-control select-ns-add" multiple="true" onchange={{action "modifyNamespaces"}}>
+            {{#each namespaceChoices as |choice|}}
+              <option value={{choice.value}} selected="selected">{{choice.label}}</option>
+            {{/each}}
+          </select>
+        {{else}}
+          {{input
+            type="text"
+            value=_namespaces
+            classNames="form-control"
+            placeholder=(t "nodeDriver.harvester.scheduling.pod.namespace.tips")
+          }}
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+
+  {{form-node-requirement term=model.labelSelector editing=editing initialRules=false}}
+
+  <div class="row">
+    <div class="col span-12">
+      <label class="pb-5 acc-label" for="input-project-select">
+        {{t "nodeDriver.harvester.scheduling.input.topology.label"}}{{field-required}}
+      </label>
+      {{#if isImported}}
+        {{searchable-select
+          content=topologyChoices
+          value=model.topologyKey
+          placeholder=(t "nodeDriver.harvester.scheduling.input.topology.placeholder")
+        }}
+      {{else}}
+        {{input
+          type="text"
+          value=model.topologyKey
+          classNames="form-control"
+          placeholder=(t "nodeDriver.harvester.scheduling.input.topology.placeholder")
+        }}
+      {{/if}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-12">
+      <label class="acc-label">
+        {{t "nodeDriver.harvester.scheduling.input.weight.label"}}
+      </label>
+      {{input-integer
+        min=1
+        step=1
+        max=100
+        value=model.weight
+        classNames="form-control"
+        placeholder=(t "nodeDriver.harvester.scheduling.input.weight.placeholder")
+      }}
+    </div>
+  </div>
+
+</div>

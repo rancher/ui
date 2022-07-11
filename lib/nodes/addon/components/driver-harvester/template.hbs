@@ -203,6 +203,46 @@
       expand=(action expandFn)
       expandOnInit=true
     }}
+      {{#if loading}}
+        <i class="icon icon-spinner icon-spin"/> {{t "generic.loading"}}
+      {{else}}
+        <div class="row">
+          <div class="col span-12">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.scheduling.node.label"}}
+            </label>
+          </div>
+        </div>
+        <div>
+          {{#each nodeSchedulings as |nodeScheduling|}}
+            {{form-node-scheduling-row model=nodeScheduling remove=(action "removeNodeScheduling") update=(action "updateNodeScheduling")}}
+          {{/each}}
+
+          <button class="btn bg-link icon-btn" type="button" {{action "addNodeScheduling" }}>
+            <i class="icon icon-plus text-small" />
+            <span>{{t "formNodeAffinity.addRuleLabel"}}</span>
+          </button>
+        </div>
+
+        <div class="row">
+          <div class="col span-12">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.scheduling.pod.label"}}
+            </label>
+          </div>
+        </div>
+        <div>
+          {{#each podSchedulings as |podScheduling|}}
+            {{form-pod-scheduling-row model=podScheduling nodes=nodes namespaces=namespaces isImported=isImported remove=(action "removePodScheduling") update=(action "updatePodScheduling")}}
+          {{/each}}
+
+          <button class="btn bg-link icon-btn" type="button" {{action "addPodScheduling" }}>
+            <i class="icon icon-plus text-small" />
+            <span>{{t "formNodeAffinity.addRuleLabel"}}</span>
+          </button>
+        </div>
+      {{/if}}
+
       {{#if isImported}}
         <div class="row">
           <div class="col span-6">
