@@ -15,7 +15,6 @@
 {{#accordion-list showExpandAll=false  as |al expandFn|}}
 
   {{#if isEnabled}}
-
     {{#accordion-list-item
          detail=(t 'authPage.azuread.configure.help')
          expand=(action expandFn)
@@ -29,6 +28,11 @@
       <section class="">
         <div class="clearfix">
           <div class="pull-right">
+            {{#if needsEndpointUpdate}}
+            <button class="btn btn-sm bg-primary" type="button" {{action "updateEndpoints"}}>
+              {{t 'authPage.azuread.updateEndpoint.button'}}
+            </button>
+            {{/if}}
             <button class="btn btn-sm bg-primary" type="button" {{action "edit"}}>
               {{t 'generic.edit'}}
             </button>
