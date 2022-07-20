@@ -53,6 +53,12 @@
   <p class="help-block">{{t "clusterNew.rke.helptext"}}</p>
 {{/if}}
 
+{{#if uniqueHostNameError}}
+  {{#banner-message icon="icon-alert" color="bg-error"}}
+    <p>{{t "clusterNew.nodePools.errors.hostnamePrefix" }}</p>
+  {{/banner-message}}
+{{/if}}
+
 <div class="mt-20">
   <button class="btn bg-primary icon-btn" type="button" {{action "addPool" }}>
     <i class="icon icon-plus text-small" />
