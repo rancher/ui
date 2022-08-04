@@ -50,10 +50,10 @@
       {{/input-or-display}}
 
       {{#if (eq showNamespace "true")}}
-        {{#if isImported}}
+        {{#if namespaces.length}}
           <select class="form-control select-ns-add" multiple="true" onchange={{action "modifyNamespaces"}}>
-            {{#each namespaceChoices as |choice|}}
-              <option value={{choice.value}} selected="selected">{{choice.label}}</option>
+            {{#each namespaces as |choice|}}
+              <option value={{choice.value}} selected={{array-includes model.namespaces choice.value}}>{{choice.label}}</option>
             {{/each}}
           </select>
         {{else}}
@@ -75,7 +75,7 @@
       <label class="pb-5 acc-label" for="input-project-select">
         {{t "nodeDriver.harvester.scheduling.input.topology.label"}}{{field-required}}
       </label>
-      {{#if isImported}}
+      {{#if nodes.length}}
         {{searchable-select
           content=topologyChoices
           value=model.topologyKey
