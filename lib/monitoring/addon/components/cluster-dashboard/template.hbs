@@ -3,6 +3,12 @@
     <p>{{t "tooltipExpire.label"}} {{#if cluster.canRotateCerts}}<a href="#" {{action "rotate"}}>{{t "tooltipExpire.link"}}</a>{{/if}}</p>
   {{/banner-message}}
 {{/if}}
+{{#if scope.currentCluster.isWindows }}
+  <div>
+    {{banner-message icon='icon-alert' color='bg-warning mb-10 mt-10' message=(t
+    'clusterNew.rke.windowsSupport.deprecated')}}
+  </div>
+{{/if}}
 {{#if cluster.nodeGroupVersionUpdate}}
   {{#banner-message color="bg-warning"}}
     <p>{{t "tooltipNodeGroupUpdate.label"}} <a href="#" {{action "edit"}}>{{t "tooltipNodeGroupUpdate.link"}}</a></p>
