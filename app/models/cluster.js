@@ -79,7 +79,7 @@ export const DEFAULT_GKE_NODE_POOL_CONFIG = {
   config: {
     diskSizeGb:    100,
     diskType:      'pd-standard',
-    imageType:     'COS',
+    imageType:     'COS_CONTAINERD',
     labels:        null,
     localSsdCount: 0,
     machineType:   'n1-standard-2',
