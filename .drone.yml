@@ -136,17 +136,22 @@ volumes:
   host:
     path: /var/run/docker.sock
 
----
-kind: pipeline
-name: fossa
+# ---
+# I'm temorarily removing the FOSSA check because
+# it is blocking PRs due to the error:
+# "A FOSSA API key was specified, but it is an empty string"
+# The issue is being tracked here: https://github.com/rancherlabs/eio/issues/1306
 
-steps:
-- name: fossa
-  image: rancher/drone-fossa:latest
-  failure: ignore
-  settings:
-    api_key:
-      from_secret: FOSSA_API_KEY
-    when:
-      instance:
-        - drone-publish.rancher.io
+# kind: pipeline
+# name: fossa
+
+# steps:
+# - name: fossa
+#   image: rancher/drone-fossa:latest
+#   failure: ignore
+#   settings:
+#     api_key:
+#       from_secret: FOSSA_API_KEY
+#     when:
+#       instance:
+#         - drone-publish.rancher.io
