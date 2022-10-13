@@ -13,7 +13,6 @@ export default Component.extend({
   priorityChoices:  [],
   typeChoices:      [],
   topologyChoices:  [],
-  namespaceChoices: [],
   _namespaces:      null,
 
   init() {
@@ -21,7 +20,6 @@ export default Component.extend({
     this.initTypeChoices();
     this.initPriorityChoices();
     this.initTopologyChoices();
-    this.initNamespaceChoices();
 
     if (!!get(this, 'model.namespaces')) {
       set(this, '_namespaces', get(this, 'model.namespaces').toString());
@@ -79,15 +77,6 @@ export default Component.extend({
       return {
         label: k,
         value: k
-      }
-    }));
-  }),
-
-  initNamespaceChoices: observer('namespaces.[]', function() {
-    set(this, 'namespaceChoices', get(this, 'namespaces').map((n) => {
-      return {
-        label: n.id,
-        value: n.id
       }
     }));
   }),
