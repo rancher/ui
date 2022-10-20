@@ -22,6 +22,7 @@ function sanitize(config) {
 
 export default Component.extend(ModalBase, {
   modalService: service('modal'),
+  intl:         service(),
 
   layout,
   classNames: ['modal-container', 'large-modal', 'large-height', 'alert'],
@@ -38,6 +39,8 @@ export default Component.extend(ModalBase, {
       const diff = jsondiffpatch.formatters.html.format(delta, templates[0]).htmlSafe();
 
       set(this, 'diff', diff);
+    } else {
+      set(this, 'diff', this.intl.t('clusterTemplatesPage.compare.error'));
     }
   },
 
