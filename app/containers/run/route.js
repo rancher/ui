@@ -9,7 +9,6 @@ import C from 'ui/utils/constants';
 export default Route.extend({
   prefs:        service(),
   clusterStore: service(),
-  globalStore:  service(),
 
   beforeModel() {
     const promises = {};
@@ -37,12 +36,6 @@ export default Route.extend({
 
   model(params/* , transition*/) {
     var store = get(this, 'store');
-
-    const gs = get(this, 'globalStore');
-    const appRoute = window.l('route:application');
-    const project = appRoute.modelFor('authenticated.project').get('project');
-    const projectId = project.get('id');
-    const clusterId = project.get('clusterId');
 
     let promise = null;
 
