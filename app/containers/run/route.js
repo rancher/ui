@@ -9,7 +9,6 @@ import C from 'ui/utils/constants';
 export default Route.extend({
   prefs:        service(),
   clusterStore: service(),
-  globalStore:  service(),
 
   beforeModel() {
     const promises = {};
@@ -38,24 +37,6 @@ export default Route.extend({
   model(params/* , transition*/) {
     var store = get(this, 'store');
 
-    const gs = get(this, 'globalStore');
-    const appRoute = window.l('route:application');
-    const project = appRoute.modelFor('authenticated.project').get('project');
-    const projectId = project.get('id');
-    const clusterId = project.get('clusterId');
-
-    const clusterLogging = gs.find('clusterLogging').then((res) => {
-      const logging = res.filterBy('clusterId', clusterId).get('firstObject');
-
-      return !!logging;
-    });
-
-    const projectLogging = gs.find('projectLogging').then((res) => {
-      const logging = res.filterBy('projectId', projectId).get('firstObject');
-
-      return !!logging;
-    });
-
     let promise = null;
 
     if (params.workloadId) {
@@ -65,12 +46,8 @@ export default Route.extend({
       promise = resolve(this.modelForNew(params));
     }
 
-    return hash({
-      dataMap: promise,
-      clusterLogging,
-      projectLogging,
-    }).then((hash) => ({
-      loggingEnabled: hash.clusterLogging || hash.projectLogging,
+    return hash({ dataMap: promise }).then((hash) => ({
+      loggingEnabled: false,
       dataMap:        hash.dataMap,
     }))
   },
