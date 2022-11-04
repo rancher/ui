@@ -41,6 +41,7 @@ export const DEFAULT_NODE_GROUP_CONFIG = {
   maxSize:              2,
   minSize:              2,
   nodegroupName:        '',
+  nodeRole:             '',
   requestSpotInstances: false,
   resourceTags:         {},
   spotInstanceTypes:    [],
