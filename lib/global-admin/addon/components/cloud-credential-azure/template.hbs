@@ -1,5 +1,30 @@
 <div class="row">
   <div class="col span-6">
+    <label class="acc-label">
+      {{t "nodeDriver.azure.environment.label"}}
+    </label>
+    {{new-select
+      classNames="form-control"
+      content=environments
+      optionLabelPath="value"
+      value=config.environment
+    }}
+  </div>
+  <div class="col span-6">
+    <label class="acc-label" for="azure-subscription-id">
+      {{t "modalAddCloudKey.azure.subscriptionId.label"}}
+      <FieldRequired />
+    </label>
+    <Input
+      @classNames="form-control"
+      @id="azure-subscription-id"
+      @type="text"
+      @value={{mut config.subscriptionId}}
+    />
+  </div>
+</div>
+<div class="row">
+  <div class="col span-6">
     <label class="acc-label" for="azure-client-id">
       {{t "modalAddCloudKey.azure.clientId.label"}}
       <FieldRequired />
@@ -21,20 +46,6 @@
       @id="azure-client-secret"
       @type="password"
       @value={{mut config.clientSecret}}
-    />
-  </div>
-</div>
-<div class="row">
-  <div class="col span-6">
-    <label class="acc-label" for="azure-subscription-id">
-      {{t "modalAddCloudKey.azure.subscriptionId.label"}}
-      <FieldRequired />
-    </label>
-    <Input
-      @classNames="form-control"
-      @id="azure-subscription-id"
-      @type="text"
-      @value={{mut config.subscriptionId}}
     />
   </div>
 </div>
