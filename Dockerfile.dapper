@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:buster
 
 RUN apt-get -qq update \
   && apt-get install -y curl gnupg2 apt-transport-https \
@@ -6,11 +6,10 @@ RUN apt-get -qq update \
   && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
   && curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
-  && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
+  && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
   && DEBIAN_FRONTEND=noninteractive apt-get -qq install -y --no-install-recommends \
   git ca-certificates nodejs yarn  \
   hicolor-icon-theme g++ google-chrome-stable \
-  && update-alternatives --install /usr/bin/node node /usr/bin/nodejs 12 \
   && yarn config set cache-folder /var/cache/yarn \
   && rm -rf /var/lib/apt/lists/*
 
