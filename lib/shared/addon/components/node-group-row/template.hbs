@@ -17,7 +17,24 @@
       </h4>
       <hr />
       <div class="row">
-        <div class="col span-6">
+        <div class="col span-4">
+          <label class="acc-label">
+            {{t "nodeGroupRow.nodeInstanceRole.label"}}
+          </label>
+          {{#input-or-display
+            editable=creating
+            value=nodeRole
+          }}
+            <NewSelect
+              class="form-control"
+              @value={{model.nodeRole}}
+              @content={{nodeRoleOptions}}
+              @optionValuePath="RoleId"
+              @optionLabelPath="RoleName"
+            />
+          {{/input-or-display}}
+        </div>
+        <div class="col span-4">
           <label class="acc-label">
             {{t "nodeGroupRow.launchTemplates.label"}}
           </label>
@@ -86,7 +103,7 @@
             </div>
           {{/if}}
         </div>
-        <div class="col span-2 offset-2">
+        <div class="col span-2">
           <label class="acc-label">
             {{t "nodeGroupRow.version.label"}}
           </label>
