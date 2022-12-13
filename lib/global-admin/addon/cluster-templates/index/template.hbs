@@ -4,6 +4,11 @@
   </h1>
 
   <div class="right-buttons">
+    <button class="btn btn-sm bg-primary mr-10"
+      disabled={{not canCompare}}
+      type="button" {{action "showDiff" }}>
+      {{t "clusterTemplatesPage.compare.label"}}
+    </button>
     {{#link-to
        "cluster-templates.new"
        class="btn btn-sm bg-primary"
@@ -15,6 +20,6 @@
 </div>
 
 <div class="cluster-templates-index-container">
-  <ClusterTemplatesTable @clusterTemplates={{model.clusterTemplates}}
+  <ClusterTemplatesTable @selectionChanged={{action "selectionChanged" }} @clusterTemplates={{model.clusterTemplates}}
     @clusterTemplateRevisions={{model.clusterTemplateRevisions}} />
 </div>
