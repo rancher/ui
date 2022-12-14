@@ -30,7 +30,6 @@ export default Route.extend(Preload, {
         return get(this, 'scope').startSwitchToCluster(cluster).then(() => {
           if ( get(cluster, 'isReady') ) {
             const preloads = [
-              this.preload('clusterScan', 'globalStore'),
               this.preload('namespace', 'clusterStore'),
               this.preload('persistentVolume', 'clusterStore'),
               this.preload('storageClass', 'clusterStore'),
