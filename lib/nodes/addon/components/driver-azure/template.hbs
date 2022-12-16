@@ -328,6 +328,12 @@
           optionValuePath="value"
           value=config.storageType
         }}
+        {{#if (and (eq config.storageType 'StandardSSD_LRS') (eq managedDisks 'unmanaged'))}}
+          {{#banner-message color="bg-error"}}
+          <p>{{t 'nodeDriver.azure.managedDisks.warning'}}</p>
+          {{/banner-message}}
+        {{/if}}
+        
       </div>
     </div>
 
