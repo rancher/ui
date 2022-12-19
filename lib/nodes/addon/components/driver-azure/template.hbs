@@ -333,12 +333,24 @@
       </div>
       <div class="col span-6">
         <label class="acc-label">
-          {{t "nodeDriver.azure.acceleratedNetworking.label"}}
+          {{#tooltip-element
+            type="tooltip-basic"
+            model=(t "nodeDriver.azure.acceleratedNetworking.tooltip")
+            tooltipTemplate="tooltip-static"
+            aria-describedby="tooltip-base"
+            baseClass="text-left"
+          }}
+           <span>
+            {{t "nodeDriver.azure.acceleratedNetworking.label"}}
+            <i class="icon icon-help icon-blue"/>
+          </span>
+        {{/tooltip-element}}
         </label>
         <div>
           {{input
             type="checkbox"
             checked=config.acceleratedNetworking
+            disabled=(and (not config.acceleratedNetworking) (not selectedVmSizeSupportsAN))
           }}
         </div>
         {{#if showVmSizeAcceleratedNetworkingWarning}}
@@ -386,11 +398,6 @@
             optionGroupPath="group"
             value=config.size
           }}
-          {{#if showVmSizeAvailabilityWarning}}
-            {{#banner-message color="bg-error"}}
-              <p>{{vmSizeAvailabilityWarning}}</p>
-            {{/banner-message}}
-          {{/if}}
           {{#if showVmAvailabilityZoneWarning}}
             {{#banner-message color="bg-error"}}
               <p>{{vmAvailabilityZoneWarning}}</p>
