@@ -9542,7 +9542,14 @@ nodeDriver:
       label: Purchase Plan
       placeholder: publisher:product:plan
     size:
-      label: Size
+      label: VM Size
+      tooltip: When accelerated networking is enabled, not all sizes are available.
+      supportsAcceleratedNetworking: Sizes that Support Accelerated Networking
+      doesNotSupportAcceleratedNetworking: Sizes Without Accelerated Networking
+      availabilityWarning: The selected VM size is not available in the selected region.
+      regionDoesNotSupportAzs: Availability zones are not supported in the selected region. Please select a different region or use an availability set instead.
+      regionSupportsAzsButNotThisSize: The selected region does not support availability zones for the selected VM size. Please select a different region or VM size.
+      selectedSizeAcceleratedNetworkingWarning: The selected VM size does not support accelerated networking. Please select another VM size or disable accelerated networking.
     dockerPort:
       label: Docker Port
       placeholder: '2376'
@@ -9569,9 +9576,17 @@ nodeDriver:
     subnetPrefix:
       label: Subnet Prefix
       placeholder: 128.42.0.0/21
+    acceleratedNetworking:
+      label: Accelerated Networking
+      tooltip: Accelerated networking is only supported for certain VM sizes.
     availabilitySet:
       label: "Availability Set ({type})"
       placeholder: availability-set-name
+      description: Availability sets are used to protect applications from hardware failures within an Azure data center.
+      sectionTitle: Availability Set Config
+    availabilityZone:
+      label: Availability Zone
+      description: Availability zones protect applications from complete Azure data center failures.
     openPort:
       label: Open Port
       placeholder: 'Comma-separated, e.g. 80,443'

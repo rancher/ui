@@ -5,26 +5,33 @@
     </span>
   </div>
 
-  {{#accordion-list-item
-    title=(t "nodeDriver.azure.access.title")
-    detail=(t "nodeDriver.azure.access.detail")
-    expandAll=expandAll
-    expand=(action expandFn)
-    expandOnInit=true
-  }}
+  
+
+  {{#if (eq step 1)}}
+    {{#accordion-list-item
+      title=(t "nodeDriver.azure.access.title")
+      detail=(t "nodeDriver.azure.access.detail")
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=true
+    }}
     {{form-auth-cloud-credential
       driverName=driverName
       parseAndCollectErrors=(action "errorHandler")
       primaryResource=primaryResource
       cloudCredentials=cloudCredentials
+      createLabel="nodeDriver.amazonec2.access.next"
+      region=config.location
       finishAndSelectCloudCredential=(action "finishAndSelectCloudCredential")
-      progressStep=(action "finishAndSelectCloudCredential")
+      progressStep=(action "initAzureData")
       cancel=(action "cancel")
-      hideSave=true
     }}
+    {{top-errors errors=errors}}
+    {{/accordion-list-item}}
+  {{/if}}
+  
 
-  {{/accordion-list-item}}
-
+<div class="{{unless (gte step 2) "hide"}}">
   {{#accordion-list-item
      title=(t "nodeDriver.azure.placement.title")
      detail=(t "nodeDriver.azure.placement.detail")
@@ -33,79 +40,47 @@
      expandOnInit=true
   }}
     <div class="row">
-      <div class="col span-6">
-        <label class="acc-label">
-          {{t "nodeDriver.azure.environment.label"}}
-        </label>
-        {{new-select
-          classNames="form-control"
-          content=environments
-          optionLabelPath="value"
-          value=config.environment
-        }}
-      </div>
+
       <div class="col span-6">
         <label class="acc-label">
           {{t "nodeDriver.azure.region.label"}}
         </label>
-        {{new-select
+        {{#if regionsLoading}}
+          <i class="icon icon-spinner icon-spin"></i>
+        {{else}}
+          {{new-select
           classNames="form-control"
-          content=regionChoices
+          content=regions
           optionLabelPath="displayName"
           optionValuePath="name"
           value=config.location
         }}
+          {{#if showVmSizeAvailabilityWarning}}
+            {{#banner-message color="bg-error"}}
+              <p>{{vmSizeAvailabilityWarning}}</p>
+            {{/banner-message}}
+          {{/if}}
+        {{/if}}
       </div>
     </div>
 
     <div class="row">
       <div class="col span-6">
         <label class="acc-label">
-          {{t "nodeDriver.azure.availabilitySet.label" type=managedDisks}}
+          {{t "clusterNew.googlegke.serviceAccount.label"}}
         </label>
-        {{input
-          type="text"
-          value=config.availabilitySet
+        {{searchable-select
+          content=serviceAccountContent
           classNames="form-control"
-          placeholder=(t "nodeDriver.azure.availabilitySet.placeholder")
+          value=config.serviceAccount
+          optionLabelPath="displayName"
+          optionValuePath="uniqueId"
+          readOnly=editing
         }}
-      </div>
-
-      <div class="col span-6">
-        <label class="acc-label" for="input-fault-domain-count">
-          {{t "nodeDriver.azure.faultDomainCount.label"}}
-        </label>
-        {{input-number
-          id="input-fault-domain-count"
-          value=config.faultDomainCount
-          min=1
-          max=3
-          classNames="form-control"
-          placeholder=(t "nodeDriver.azure.faultDomainCount.placeholder")
-        }}
-        <p class="help-block">
-          {{t "nodeDriver.azure.faultDomainCount.helpText"}}
-        </p>
       </div>
     </div>
 
     <div class="row">
-      <div class="col span-6">
-        <label class="acc-label" for="input-update-domain-count">
-          {{t "nodeDriver.azure.updateDomainCount.label"}}
-        </label>
-        {{input-number
-          value=config.updateDomainCount
-          id="input-update-domain-count"
-          min=1
-          classNames="form-control"
-          placeholder=(t "nodeDriver.azure.updateDomainCount.placeholder")
-        }}
-        <p class="help-block">
-          {{t "nodeDriver.azure.updateDomainCount.helpText"}}
-        </p>
-      </div>
-
       <div class="col span-6">
         <label class="acc-label" for="input-resource-group">
           {{t "nodeDriver.azure.resourceGroup.label"}}
@@ -134,6 +109,127 @@
         }}
       </div>
     </div>
+    <div class="row">
+       
+        <div class="col span-6">
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=useAvailabilitySet
+                value=true
+              }}
+
+               {{#tooltip-element
+                  type="tooltip-basic"
+                  model=(t "nodeDriver.azure.availabilitySet.description")
+                  tooltipTemplate="tooltip-static"
+                  aria-describedby="tooltip-base"
+                  baseClass="text-left"
+                }}
+                <span>
+                  {{t "nodeDriver.azure.availabilitySet.label" type=managedDisks }}
+                  <i class="icon icon-help icon-blue"/>
+                </span>
+              {{/tooltip-element}}
+
+              
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button
+                selection=useAvailabilitySet
+                value=false
+              }}
+               {{#tooltip-element
+                  type="tooltip-basic"
+                  model=(t "nodeDriver.azure.availabilityZone.description")
+                  tooltipTemplate="tooltip-static"
+                  aria-describedby="tooltip-base"
+                  baseClass="text-left"
+                }}
+                <span>
+                  {{t "nodeDriver.azure.availabilityZone.label" }}
+                  <i class="icon icon-help icon-blue"/>
+                </span>
+              {{/tooltip-element}}
+            </label>
+          </div>
+        </div>
+
+        {{#if (eq useAvailabilitySet true)}}
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.azure.availabilitySet.label" type=managedDisks}}
+            </label>
+            {{input
+              type="text"
+              value=config.availabilitySet
+              classNames="form-control"
+              placeholder=(t "nodeDriver.azure.availabilitySet.placeholder")
+            }}
+          </div>
+        {{/if}}
+        {{#if (eq useAvailabilitySet false)}}
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.azure.availabilityZone.label" }}
+            </label>
+            {{new-select
+              classNames="form-control"
+              content=availabilityZoneChoices
+              optionLabelPath="name"
+              optionValuePath="value"
+              value=config.availabilityZone
+            }}
+            {{#if showVmSizeAvailabilityWarning}}
+              {{#banner-message color="bg-error"}}
+                <p>{{vmSizeAvailabilityWarning}}</p>
+              {{/banner-message}}
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+     
+      {{#if (eq useAvailabilitySet true)}}
+      <hr/>
+      <div class="row" >
+          <h3>{{t "nodeDriver.azure.availabilitySet.sectionTitle" }}</h3>
+          <div class="col span-6">
+            <label class="acc-label" for="input-fault-domain-count">
+              {{t "nodeDriver.azure.faultDomainCount.label"}}
+            </label>
+            {{input-number
+              id="input-fault-domain-count"
+              value=config.faultDomainCount
+              min=1
+              max=3
+              classNames="form-control"
+              placeholder=(t "nodeDriver.azure.faultDomainCount.placeholder")
+            }}
+            <p class="help-block">
+              {{t "nodeDriver.azure.faultDomainCount.helpText"}}
+            </p>
+          </div>
+          <div class="col span-6">
+            <label class="acc-label" for="input-update-domain-count">
+              {{t "nodeDriver.azure.updateDomainCount.label"}}
+            </label>
+            {{input-number
+              id="input-update-domain-count"
+              value=config.updateDomainCount
+              min=1
+              max=3
+              classNames="form-control"
+              placeholder=(t "nodeDriver.azure.updateDomainCount.placeholder")
+            }}
+            <p class="help-block">
+              {{t "nodeDriver.azure.updateDomainCount.helpText"}}
+            </p>
+          </div>
+      </div>
+      {{/if}}
+      
   {{/accordion-list-item}}
 
   {{#accordion-list-item
@@ -235,6 +331,34 @@
           {{t "nodeDriver.azure.nsg.helpText"}}
         </p>
       </div>
+      <div class="col span-6">
+        <label class="acc-label">
+          {{#tooltip-element
+            type="tooltip-basic"
+            model=(t "nodeDriver.azure.acceleratedNetworking.tooltip")
+            tooltipTemplate="tooltip-static"
+            aria-describedby="tooltip-base"
+            baseClass="text-left"
+          }}
+           <span>
+            {{t "nodeDriver.azure.acceleratedNetworking.label"}}
+            <i class="icon icon-help icon-blue"/>
+          </span>
+        {{/tooltip-element}}
+        </label>
+        <div>
+          {{input
+            type="checkbox"
+            checked=config.acceleratedNetworking
+            disabled=(and (not config.acceleratedNetworking) (not selectedVmSizeSupportsAN))
+          }}
+        </div>
+        {{#if showVmSizeAcceleratedNetworkingWarning}}
+          {{#banner-message color="bg-error"}}
+            <p>{{vmSizeAcceleratedNetworkingWarning}}</p>
+          {{/banner-message}}
+        {{/if}}
+      </div>
     </div>
   {{/accordion-list-item}}
 
@@ -264,13 +388,30 @@
         <label class="acc-label">
           {{t "nodeDriver.azure.size.label"}}
         </label>
-        {{new-select
-          classNames="form-control"
-          content=sizeChoices
-          optionLabelPath="value"
-          optionGroupPath="group"
-          value=config.size
-        }}
+        {{#if vmSizesLoading}}
+          <i class="icon icon-spinner icon-spin"></i>
+        {{else}}
+          {{new-select
+            classNames="form-control"
+            content=sizeChoices
+            optionLabelPath="value"
+            optionGroupPath="group"
+            value=config.size
+          }}
+          {{#if showVmAvailabilityZoneWarning}}
+            {{#banner-message color="bg-error"}}
+              <p>{{vmAvailabilityZoneWarning}}</p>
+            {{/banner-message}}
+          {{/if}}
+          {{#if showVmSizeAcceleratedNetworkingWarning}}
+            {{#banner-message color="bg-error"}}
+              <p>{{vmSizeAcceleratedNetworkingWarning}}</p>
+            {{/banner-message}}
+          {{/if}}
+
+        {{/if}}
+        
+    
       </div>
     </div>
 
@@ -415,4 +556,5 @@
     cancel=(action "cancel")
     editing=editing
   }}
+  </div>
 {{/accordion-list}}
