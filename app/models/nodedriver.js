@@ -125,7 +125,7 @@ export default Resource.extend({
       {
         label:     'action.deactivate',
         icon:      'icon icon-pause',
-        action:    'promotDeactivate',
+        action:    'promptDeactivate',
         enabled:   !!a.deactivate && get(this, 'state') === 'active',
         bulkable:  true,
         altAction: 'deactivate',
@@ -146,7 +146,7 @@ export default Resource.extend({
       return this.doAction('deactivate');
     },
 
-    promotDeactivate() {
+    promptDeactivate() {
       get(this, 'modalService').toggleModal('modal-confirm-deactivate', {
         originalModel: this,
         action:        'deactivate'
