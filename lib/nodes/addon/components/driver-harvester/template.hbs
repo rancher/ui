@@ -76,98 +76,17 @@
         <div class="row">
           <div class="col span-6">
             <label class="acc-label">
-              {{t "nodeDriver.harvester.diskSize.label"}}{{field-required}}
-            </label>
-            <div class="input-group">
-              {{input-integer
-                min=1
-                value=config.diskSize
-                classNames="form-control"
-                placeholder=(t "nodeDriver.harvester.diskSize.placeholder")
-              }}
-              <div class="input-group-addon bg-default">
-                {{t "nodeDriver.harvester.diskSize.unit"}}
-              </div>
-            </div>
-          </div>
-
-          <div class="col span-6">
-            <label class="acc-label">
               {{t "nodeDriver.harvester.namespace.label"}}{{field-required}}
             </label>
 
-            {{#if isImported}}
-              <SearchableSelect
-                @class="form-control"
-                @content={{namespaceContent}}
-                @value={{config.vmNamespace}}
-                @placeholder={{t "nodeDriver.harvester.namespace.placeholder"}}
-              />
-            {{else}}
-              {{input
-                type="text"
-                value=config.vmNamespace
-                classNames="form-control"
-                placeholder=(t "nodeDriver.harvester.namespace.placeholder")
-              }}
-            {{/if}}
+            <SearchableSelect
+              @class="form-control"
+              @content={{namespaceContent}}
+              @value={{config.vmNamespace}}
+              @placeholder={{t "nodeDriver.harvester.namespace.placeholder"}}
+            />
           </div>
-        </div>
 
-        <div class="row">
-          {{#if isImported}}
-            <div class="col span-6">
-              <label class="acc-label">
-                {{t "nodeDriver.harvester.imageName.label"}}{{field-required}}
-              </label>
-              <SearchableSelect
-                @class="form-control"
-                @content={{imageContent}}
-                @value={{config.imageName}}
-                @placeholder={{t "nodeDriver.harvester.imageName.placeholder"}}
-              />
-            </div>
-
-            <div class="col span-6">
-              <label class="acc-label">
-                {{t "nodeDriver.harvester.networkName.label"}}{{field-required}}
-              </label>
-              <SearchableSelect
-                @class="form-control"
-                @content={{networkContent}}
-                @value={{config.networkName}}
-                @placeholder={{t "nodeDriver.harvester.networkName.placeholder"}}
-              />
-            </div>
-
-          {{else}}
-            <div class="col span-6">
-              <label class="acc-label">
-                {{t "nodeDriver.harvester.imageName.label"}}{{field-required}}
-              </label>
-              {{input
-                type="text"
-                value=config.imageName
-                classNames="form-control"
-                placeholder=(t "nodeDriver.harvester.imageName.placeholder")
-              }}
-            </div>
-
-            <div class="col span-6">
-              <label class="acc-label">
-                {{t "nodeDriver.harvester.networkName.label"}}{{field-required}}
-              </label>
-              {{input
-                type="text"
-                value=config.networkName
-                classNames="form-control"
-                placeholder=(t "nodeDriver.harvester.networkName.placeholder")
-              }}
-            </div>
-          {{/if}}
-        </div>
-
-        <div class="row">
           <div class="col span-6">
             <label class="acc-label">
               {{t "nodeDriver.harvester.sshUser.label"}}{{field-required}}
@@ -193,6 +112,52 @@
             }}
           </div>
         </div>
+
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.imageName.label"}}{{field-required}}
+            </label>
+            <SearchableSelect
+              @class="form-control"
+              @content={{imageContent}}
+              @value={{config.imageName}}
+              @placeholder={{t "nodeDriver.harvester.imageName.placeholder"}}
+            />
+          </div>
+
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.diskSize.label"}}{{field-required}}
+            </label>
+            <div class="input-group">
+              {{input-integer
+                min=1
+                value=config.diskSize
+                classNames="form-control"
+                placeholder=(t "nodeDriver.harvester.diskSize.placeholder")
+              }}
+              <div class="input-group-addon bg-default">
+                {{t "nodeDriver.harvester.diskSize.unit"}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.networkName.label"}}{{field-required}}
+            </label>
+            <SearchableSelect
+              @class="form-control"
+              @content={{networkContent}}
+              @value={{config.networkName}}
+              @placeholder={{t "nodeDriver.harvester.networkName.placeholder"}}
+            />
+          </div>
+        </div>
+
       {{/if}}
     {{/accordion-list-item}}
 
@@ -243,20 +208,18 @@
         </div> --}}
       {{/if}}
 
-      {{#if isImported}}
-        <div class="row">
-          <div class="col span-6">
-            <label class="acc-label">
-              {{t "nodeDriver.harvester.userData.template.label"}}
-            </label>
-            <SearchableSelect
-              @class="form-control"
-              @content={{userDataContent}}
-              @value={{config.userData}}
-            />
-          </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.harvester.userData.template.label"}}
+          </label>
+          <SearchableSelect
+            @class="form-control"
+            @content={{userDataContent}}
+            @value={{config.userData}}
+          />
         </div>
-      {{/if}}
+      </div>
 
       <div class="row">
         <div class="col span-12">
@@ -275,20 +238,18 @@
         </div>
       </div>
 
-      {{#if isImported}}
-        <div class="row">
-          <div class="col span-6">
-            <label class="acc-label">
-              {{t "nodeDriver.harvester.networkData.template.label"}}
-            </label>
-            <SearchableSelect
-              @class="form-control"
-              @content={{networkDataContent}}
-              @value={{config.networkData}}
-            />
-          </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.harvester.networkData.template.label"}}
+          </label>
+          <SearchableSelect
+            @class="form-control"
+            @content={{networkDataContent}}
+            @value={{config.networkData}}
+          />
         </div>
-      {{/if}}
+      </div>
 
       <div class="row">
         <div class="col span-12">
