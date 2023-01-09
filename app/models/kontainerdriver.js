@@ -21,7 +21,7 @@ var KontainerDriver = Resource.extend({
       {
         label:     'action.deactivate',
         icon:      'icon icon-pause',
-        action:    'promotDeactivate',
+        action:    'promptDeactivate',
         enabled:   !!a.deactivate,
         bulkable:  true,
         altAction: 'deactivate',
@@ -69,7 +69,7 @@ var KontainerDriver = Resource.extend({
       get(this, 'modalService').toggleModal('modal-edit-driver', this);
     },
 
-    promotDeactivate() {
+    promptDeactivate() {
       get(this, 'modalService').toggleModal('modal-confirm-deactivate', {
         originalModel: this,
         action:        'deactivate'
