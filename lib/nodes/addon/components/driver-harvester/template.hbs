@@ -114,49 +114,159 @@
         </div>
 
         <div class="row">
-          <div class="col span-6">
-            <label class="acc-label">
-              {{t "nodeDriver.harvester.imageName.label"}}{{field-required}}
-            </label>
-            <SearchableSelect
-              @class="form-control"
-              @content={{imageContent}}
-              @value={{config.imageName}}
-              @placeholder={{t "nodeDriver.harvester.imageName.placeholder"}}
-            />
-          </div>
+          <label class="acc-label">
+            {{t "nodeDriver.harvester.disks.title"}}
+          </label>
+        </div>
+        {{#each disks as |disk idx|}}
+          <div class="box mb-10">
+            <div class="row">
+              <div class="pull-left">
+                {{#if (has-property disk 'imageName') }}
+                  <h4>{{t 'nodeDriver.harvester.disks.diskType.imageVolume'}}</h4>
+                {{else}}
+                  <h4>{{t 'nodeDriver.harvester.disks.diskType.volume'}}</h4>
+                {{/if}}
+              </div>
+              <div class="pull-right">
+                <button class="btn bg-link icon-btn" type="button" disabled={{eq idx 0}} {{action "removeDisk" disk}}>
+                  <i class="icon icon-minus text-small" />
+                  <span>{{t "generic.remove" }}</span>
+                </button>
+              </div>
+            </div>
+                
+            <div class="row">
+              <div class="col mt-0 span-6">
+                {{#if (has-property disk 'imageName') }}
+                  <label class="acc-label">
+                    {{t "nodeDriver.harvester.imageName.label"}}{{field-required}}
+                  </label>
+                  <SearchableSelect
+                    @class="form-control"
+                    @content={{imageContent}}
+                    @value={{disk.imageName}}
+                    @placeholder={{t "nodeDriver.harvester.imageName.placeholder"}}
+                  />
+                {{else}}
+                  <label class="acc-label">
+                    {{t "nodeDriver.harvester.storageClass.label"}}{{field-required}}
+                  </label>
+                  <SearchableSelect
+                    @class="form-control"
+                    @content={{storageClassContent}}
+                    @value={{disk.storageClassName}}
+                    @placeholder={{t "nodeDriver.harvester.storageClass.placeholder"}}
+                  />
+                {{/if}}
+              </div>
 
-          <div class="col span-6">
-            <label class="acc-label">
-              {{t "nodeDriver.harvester.diskSize.label"}}{{field-required}}
-            </label>
-            <div class="input-group">
-              {{input-integer
-                min=1
-                value=config.diskSize
-                classNames="form-control"
-                placeholder=(t "nodeDriver.harvester.diskSize.placeholder")
-              }}
-              <div class="input-group-addon bg-default">
-                {{t "nodeDriver.harvester.diskSize.unit"}}
+              <div class="col mt-0 span-6">
+                <label class="acc-label">
+                  {{t "nodeDriver.harvester.disks.bootOrder.label"}}{{field-required}}
+                </label>
+
+                {{boot-order-select disk=disk disks=disks idx=idx}}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col span-6">
+                <label class="acc-label">
+                  {{t "nodeDriver.harvester.diskSize.label"}}{{field-required}}
+                </label>
+                <div class="input-group">
+                  {{input-integer
+                    min=1
+                    value=disk.size
+                    classNames="form-control"
+                    placeholder=(t "nodeDriver.harvester.diskSize.placeholder")
+                  }}
+                  <div class="input-group-addon bg-default">
+                    {{t "nodeDriver.harvester.diskSize.unit"}}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        {{/each}}
+       
+        <button class="btn bg-link icon-btn" type="button" {{action "addVolume" "volume" }}>
+          <i class="icon icon-plus text-small" />
+          <span>{{t "nodeDriver.harvester.disks.addVolume.volume"}}</span>
+        </button>
+
+        <button class="btn bg-link icon-btn" type="button" {{action "addVolume" "image"}}>
+          <i class="icon icon-plus text-small" />
+          <span>{{t "nodeDriver.harvester.disks.addVolume.imageVolume"}}</span>
+        </button>
+
+        <hr class="mb-20 mt-20">
 
         <div class="row">
-          <div class="col span-6">
-            <label class="acc-label">
-              {{t "nodeDriver.harvester.networkName.label"}}{{field-required}}
-            </label>
-            <SearchableSelect
-              @class="form-control"
-              @content={{networkContent}}
-              @value={{config.networkName}}
-              @placeholder={{t "nodeDriver.harvester.networkName.placeholder"}}
-            />
-          </div>
+          <label class="acc-label">
+            {{t "nodeDriver.harvester.network.title"}}
+          </label>
         </div>
+        {{#each interfaces as |network idx|}}
+          <div class="box mb-10">
+            <div class="row">
+              <div class="pull-left">
+                <h4>{{t "nodeDriver.harvester.network.label"}}</h4>
+              </div>
+
+              <div class="pull-right">
+                <button class="btn bg-link icon-btn" type="button" disabled={{eq idx 0}} {{action "removeNetwork" network}}>
+                  <i class="icon icon-minus text-small" />
+                  <span>{{t "generic.remove" }}</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col mt-0 span-6">
+                <label class="acc-label">
+                  {{t "nodeDriver.harvester.networkName.label"}}{{field-required}}
+                </label>
+                <SearchableSelect
+                  @class="form-control"
+                  @content={{networkContent}}
+                  @value={{network.networkName}}
+                  @placeholder={{t "nodeDriver.harvester.networkName.placeholder"}}
+                />
+              </div>
+
+              <div class="col mt-0 span-6">
+                <label class="acc-label">
+                  {{t "nodeDriver.harvester.macAddress.label"}}
+                  <span class="inline-block">
+                    {{#tooltip-element
+                      type="tooltip-basic"
+                      model=(t "nodeDriver.harvester.macAddress.toolTip" htmlSafe=true)
+                      tooltipTemplate="tooltip-static"
+                      aria-describedby="tooltip-base"
+                      tooltipFor="tooltipPoolCreateAfter"
+                      placement="top"
+                      tagName="div"
+                    }}
+                      <i class="icon icon-help icon-blue"></i>
+                    {{/tooltip-element}}
+                  </span>
+                </label>
+                {{input
+                  type="text"
+                  value=network.macAddress
+                  classNames="form-control"
+                }}
+              </div>
+            </div>
+          </div>
+        {{/each}}
+
+        <button class="btn bg-link icon-btn" type="button" {{action "addNetwork" }}>
+          <i class="icon icon-plus text-small" />
+          <span>{{ t "nodeDriver.harvester.network.addNetwork.network" }}</span>
+        </button>
 
       {{/if}}
     {{/accordion-list-item}}
