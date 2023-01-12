@@ -414,14 +414,25 @@
                   />
                 {{/if}}
               </label>
+              {{#if pspInClusterWarning}}
+              {{!-- TODO nb localization --}}
+              <span> you have psp bindings in this cluster that will not work upon upgrade</span>
+              {{/if}}
+              {{#if (or supportsPSP removePSPWarning)}}
+              
+              {{#if removePSPWarning}}
+              {{!-- TODO nb localization --}}
+              <span>You have PSP enabled and shouldn't</span>
+              {{else}}
               <CheckOverrideAllowed
                 @paramName="rancherKubernetesEngineConfig.services.kubeApi.podSecurityPolicy"
                 @applyClusterTemplate={{applyClusterTemplate}}
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
               >
+              {{!-- TODO NB conditionally hide this if k8s version >= 1.24 --}}
                 {{#input-or-display
-                   editable=notView
+                   editable=(and notView supportsPSP)
                    value=config.services.kubeApi.podSecurityPolicy
                 }}
                   <div class="radio">
@@ -449,6 +460,11 @@
                   </div>
                 {{/input-or-display}}
               </CheckOverrideAllowed>
+              {{/if}}
+              {{else}}
+              {{!-- //TODO nb localization --}}
+              <span>No PSP allowed</span>
+              {{/if}}
             </div>
             <div class="col span-4">
               {{#if config.services.kubeApi.podSecurityPolicy}}
@@ -492,6 +508,31 @@
               {{/if}}
             </div>
           </div>
+          <div class="row">
+            {{#if supportsPSA}}
+            <div class="col span-4">
+                <CheckOverrideAllowed
+                  @paramName="podSecurityAdmissionConfiguration"
+                  @applyClusterTemplate={{applyClusterTemplate}}
+                  @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
+                  @questions={{model.clusterTemplateRevision.questions}}
+                >
+                  {{#input-or-display
+                     editable=notView
+                     value=config.services.kubeApi.podSecurityAdmissionConfiguration
+                  }}
+                    {{new-select
+                      content=model.psacs
+                      optionLabelPath="displayName"
+                      optionValuePath="id"
+                      localizedPrompt=true
+                      value=config.services.kubeApi.podSecurityAdmissionConfiguration
+                    }}
+                  {{/input-or-display}}
+                </CheckOverrideAllowed>
+            </div>
+            {{/if}}
+            </div>
           <div class="row">
             <div class="col span-4">
               <label class="acc-label">
