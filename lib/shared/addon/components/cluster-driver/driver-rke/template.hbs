@@ -235,21 +235,18 @@
         {{#accordion-list-item
            title=(t "clusterNew.rke.advanced.label")
            detail=(t "clusterNew.rke.advanced.detail")
-           expandOnInit=(or (or (eq mode "edit" true false) forceExpandOnInit) applyClusterTemplate)
+           expandOnInit=(or (or (eq mode "edit" true false) forceExpandOnInit) applyClusterTemplate )
            expandAll=al.expandAll
            expand=(action expandFn)
         }}
-        {{#if (not supportsPSP)}}
         <div class="row">
             <section>
-                {{!-- TODO nb localization --}}
               <BannerMessage
                   @color="bg-info m-0"
-                  @message={{"Pod Security Policy support has been removed as of v1.25.0 "}}
+                  @message={{t "clusterNew.psp.supportRemoved"}}
                 />
               </section>
           </div>
-          {{/if}}
           <div class="row">
             <div class="col span-3">
               <label class="acc-label">
@@ -413,12 +410,19 @@
             </div>
           </div>
           <div class="row">
-            {{#if removePSPWarning}}
+            {{#if disablePSPWarning}}
               <section>
-                {{!-- TODO nb localization --}}
               <BannerMessage
-                  @color="bg-warning m-0"
-                  @message={{"You have PSP support enabled and should not"}}
+                  @color="bg-error m-0"
+                  @message={{t "clusterNew.psp.unsupported"}}
+                />
+              </section>
+            {{/if}}
+            {{#if PSPInClusterWarning}}
+              <section>
+              <BannerMessage
+                  @color="bg-error m-0 mt-10"
+                  @message={{t "clusterNew.psp.deleteBeforeUpgrade"}}
                 />
               </section>
             {{/if}}
@@ -441,7 +445,6 @@
                   @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                   @questions={{model.clusterTemplateRevision.questions}}
                 >
-                {{!-- TODO NB conditionally hide this if k8s version >= 1.24 --}}
                   {{#input-or-display
                     editable=(or (and notView supportsPSP) config.services.kubeApi.podSecurityPolicy)
                     value=config.services.kubeApi.podSecurityPolicy
@@ -516,11 +519,10 @@
             {{/if}}
           </div>
           <div class="row">
-            {{!-- TODO nb localization --}}
             {{#if supportsPSA}}
             <div class="col span-4">
               <label class="acc-label">
-                Pod Security Admission Configuration Template
+                {{t "clusterNew.psa.label"}}
                 {{#if clusterTemplateCreate}}
                   <ClusterTemplateOverrideToggle
                     @path="rancherKubernetesEngineConfig.services.kubeApi.podSecurityAdmissionConfiguration"
@@ -531,7 +533,7 @@
                 {{/if}}
               </label>
               <CheckOverrideAllowed
-                @paramName="podSecurityAdmissionConfiguration"
+                @paramName="rancherKubernetesEngineConfig.services.kubeApi.podSecurityAdmissionConfiguration"
                 @applyClusterTemplate={{applyClusterTemplate}}
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}

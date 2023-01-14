@@ -4470,11 +4470,16 @@ clusterNew:
       required: Kubernetes Version is required
   otccce:
     shortLabel: Open Telekom Cloud CCE
+  psa:
+    label: Pod Security Admission Configuration Template
   psp:
     label: Default Pod Security Policy
     none: No policies are defined
     prompt: Select a Pod Security Policy...
     required: A Default Pod Security Policy is required when support is enabled.
+    unsupported: Pod security policies are not supported in the version selected; please disable PSP support and consider using the built-in Pod Security Admission Controller instead.
+    deleteBeforeUpgrade: The PSP resources in this cluster will be unreachable upon upgrade; please delete them before proceeding.
+    supportRemoved: Pod Security Policy support has been deprecated as of kubernetes version v1.21.0 and removed as of v1.25.0.
   rancherd:
     shortLabel: RancherD
   register:
