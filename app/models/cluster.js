@@ -1075,6 +1075,21 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return true;
   },
 
+  compareStringArrays(a, b) {
+    let aStr = '';
+    let bStr = '';
+
+    Object.keys(a || {}).forEach((key) => {
+      aStr += `${ key }=${ a[key] },`;
+    });
+
+    Object.keys(b || {}).forEach((key) => {
+      bStr += `${ key }=${ b[key] },`;
+    });
+
+    return aStr !== bStr;
+  },
+
   save(opt, originalModel) {
     const {
       eksConfig, gkeConfig, aksConfig
@@ -1091,24 +1106,14 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
     if (!isEmpty(options)) {
       if (originalModel && originalModel.model && originalModel.model.originalCluster) {
-        const originalLabels = originalModel.model.originalCluster.labels;
-
         // Check to see if the labels have changed and send them, if they have
-        let currentLabels = '';
-
-        Object.keys(originalLabels).forEach((key) => {
-          currentLabels += `${ key }=${ originalLabels[key] },`;
-        });
-
-        let newLabels = '';
-
-        Object.keys(this.labels).forEach((key) => {
-          newLabels += `${ key }=${ this.labels[key] },`;
-        });
-
-        if (currentLabels !== newLabels) {
-          // Labels changed
+        if (this.compareStringArrays(originalModel.model.originalCluster.labels, this.labels)) {
           options.data.labels = this.labels;
+        }
+
+        // Check to see if the annotations have changed and send them, if they have
+        if (this.compareStringArrays(originalModel.model.originalCluster.annotations, this.annotations)) {
+          options.data.annotations = this.annotations;
         }
       }
 
