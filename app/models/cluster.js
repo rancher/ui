@@ -1075,7 +1075,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return true;
   },
 
-  save(opt) {
+  save(opt, originalModel) {
     const {
       eksConfig, gkeConfig, aksConfig
     } = this;
@@ -1090,6 +1090,28 @@ export default Resource.extend(Grafana, ResourceUsage, {
     }
 
     if (!isEmpty(options)) {
+      if (originalModel && originalModel.model && originalModel.model.originalCluster) {
+        const originalLabels = originalModel.model.originalCluster.labels;
+
+        // Check to see if the labels have changed and send them, if they have
+        let currentLabels = '';
+
+        Object.keys(originalLabels).forEach((key) => {
+          currentLabels += `${ key }=${ originalLabels[key] },`;
+        });
+
+        let newLabels = '';
+
+        Object.keys(this.labels).forEach((key) => {
+          newLabels += `${ key }=${ this.labels[key] },`;
+        });
+
+        if (currentLabels !== newLabels) {
+          // Labels changed
+          options.data.labels = this.labels;
+        }
+      }
+
       return this._super(options);
     }
 
