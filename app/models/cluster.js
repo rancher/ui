@@ -1079,11 +1079,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
     let aStr = '';
     let bStr = '';
 
-    Object.keys(a || {}).forEach((key) => {
+    Object.keys(a || {}).sort().forEach((key) => {
       aStr += `${ key }=${ a[key] },`;
     });
 
-    Object.keys(b || {}).forEach((key) => {
+    Object.keys(b || {}).sort().forEach((key) => {
       bStr += `${ key }=${ b[key] },`;
     });
 
