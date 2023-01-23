@@ -1075,7 +1075,22 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return true;
   },
 
-  save(opt) {
+  compareStringArrays(a, b) {
+    let aStr = '';
+    let bStr = '';
+
+    Object.keys(a || {}).sort().forEach((key) => {
+      aStr += `${ key }=${ a[key] },`;
+    });
+
+    Object.keys(b || {}).sort().forEach((key) => {
+      bStr += `${ key }=${ b[key] },`;
+    });
+
+    return aStr !== bStr;
+  },
+
+  save(opt, originalModel) {
     const {
       eksConfig, gkeConfig, aksConfig
     } = this;
@@ -1090,6 +1105,18 @@ export default Resource.extend(Grafana, ResourceUsage, {
     }
 
     if (!isEmpty(options)) {
+      if (originalModel && originalModel.model && originalModel.model.originalCluster) {
+        // Check to see if the labels have changed and send them, if they have
+        if (this.compareStringArrays(originalModel.model.originalCluster.labels, this.labels)) {
+          options.data.labels = this.labels;
+        }
+
+        // Check to see if the annotations have changed and send them, if they have
+        if (this.compareStringArrays(originalModel.model.originalCluster.annotations, this.annotations)) {
+          options.data.annotations = this.annotations;
+        }
+      }
+
       return this._super(options);
     }
 
