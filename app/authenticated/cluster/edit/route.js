@@ -16,7 +16,24 @@ export default Route.extend({
 
   model() {
     const globalStore = this.get('globalStore');
+
     const cluster     = this.modelFor('authenticated.cluster');
+
+    const projects = cluster.projects
+
+    const hasPSPResources = async() => {
+      for (const p of projects){
+        const bindings = await p.followLink('podSecurityPolicyTemplateProjectBindings')
+
+        if (bindings.length){
+          return true
+        }
+      }
+
+      return false
+    }
+
+
 
     let modelOut      = {
       originalCluster:            cluster,
@@ -26,10 +43,12 @@ export default Route.extend({
       nodeTemplates:              globalStore.findAll('nodeTemplate'),
       nodeDrivers:                globalStore.findAll('nodeDriver'),
       psps:                       globalStore.findAll('podSecurityPolicyTemplate'),
+      psacs:                      globalStore.findAll('podSecurityAdmissionConfigurationTemplate'),
       roleTemplates:              get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
       users:                      globalStore.findAll('user'),
       clusterRoleTemplateBinding: globalStore.findAll('clusterRoleTemplateBinding'),
       me:                         get(this, 'access.principal'),
+      hasPSPResources:            hasPSPResources(),
     };
 
     if (cluster.driver === 'k3s' || cluster.driver === 'rke2') {
