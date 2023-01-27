@@ -525,29 +525,29 @@
                 {{t "clusterNew.psa.label"}}
                 {{#if clusterTemplateCreate}}
                   <ClusterTemplateOverrideToggle
-                    @path="rancherKubernetesEngineConfig.services.kubeApi.podSecurityConfiguration"
-                    @configVariable={{config.services.kubeApi.podSecurityConfiguration}}
+                    @path="defaultPodSecurityAdmissionConfigurationTemplateName"
+                    @configVariable={{cluster.defaultPodSecurityAdmissionConfigurationTemplateName}}
                     @addOverride={{action "addOverride"}}
                     @questions={{model.clusterTemplateRevision.questions}}
                   />
                 {{/if}}
               </label>
               <CheckOverrideAllowed
-                @paramName="rancherKubernetesEngineConfig.services.kubeApi.podSecurityConfiguration"
+                @paramName="defaultPodSecurityAdmissionConfigurationTemplateName"
                 @applyClusterTemplate={{applyClusterTemplate}}
                 @clusterTemplateRevision={{model.clusterTemplateRevision.clusterConfig}}
                 @questions={{model.clusterTemplateRevision.questions}}
               >
                 {{#input-or-display
                     editable=notView
-                    value=config.services.kubeApi.podSecurityConfiguration
+                    value=cluster.defaultPodSecurityAdmissionConfigurationTemplateName
                 }}
                   {{new-select
-                    content=model.psacs
+                    content=psaOpts
                     optionLabelPath="displayName"
                     optionValuePath="id"
                     localizedPrompt=true
-                    value=config.services.kubeApi.podSecurityConfiguration
+                    value=cluster.defaultPodSecurityAdmissionConfigurationTemplateName
                   }}
                 {{/input-or-display}}
               </CheckOverrideAllowed>
