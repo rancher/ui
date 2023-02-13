@@ -70,7 +70,16 @@
         {{#if primaryPool}}
           {{t "clusterNew.azureaks.nodePools.nodeType.primary"}}
         {{else}}
-          {{!-- <label class="hand mr-20">
+          <label class="hand mr-20">
+            <RadioButton
+              @selection={{mut nodePool.mode}}
+              @value="User"
+              @name={{concat "node-type" this.elementId}}
+              @disabled={{primaryPool}}
+            />
+            {{t "clusterNew.azureaks.nodePools.nodeType.user"}}
+          </label>
+          <label class="hand">
             <RadioButton
               @selection={{mut nodePool.mode}}
               @value="System"
@@ -79,16 +88,6 @@
             />
             {{t "clusterNew.azureaks.nodePools.nodeType.system"}}
           </label>
-          <label class="hand">
-            <RadioButton
-              @selection={{mut nodePool.mode}}
-              @value="User"
-              @name={{concat "node-type" this.elementId}}
-              @disabled={{primaryPool}}
-            />
-            {{t "clusterNew.azureaks.nodePools.nodeType.user"}}
-          </label> --}}
-          {{t "clusterNew.azureaks.nodePools.nodeType.user"}}
         {{/if}}
       </div>
     </div>
@@ -285,6 +284,27 @@
         />
       </InputOrDisplay>
     </div>
+    <div class="col span-3">
+      <label
+        class="acc-label"
+        for={{concat "azureaks-config-maxsurge-" this.elementId}}
+      >
+        {{t "clusterNew.azureaks.maxSurge.label"}}
+      </label>
+      <InputOrDisplay
+        @editable={{isNewNodePool}}
+        @value={{nodePool.maxSurge}}
+        @classesForDisplay="form-control-static"
+      >
+        <Input
+          @id={{concat "azureaks-config-maxsurge-" this.elementId}}
+          @type="text"
+          @value={{mut nodePool.maxSurge}}
+          @placeholder={{t "clusterNew.azureaks.maxSurge.placeholder"}}
+          @classNames="form-control"
+        />
+      </InputOrDisplay>
+    </div>
   </div>
   <div class="row">
     <div class="col span-6">
@@ -327,6 +347,18 @@
         />
       </div>
     {{/if}}
+  </div>
+  <div class="row">
+    <div class="col span-12">
+      {{form-user-labels
+        initialLabels=nodePool.nodeLabels
+        setLabels=(action "setNodeLabels")
+        detailKey="clusterNew.azureaks.nodeLabelDetail"
+      }}
+      {{form-node-taints
+        model=nodePool
+      }}  
+    </div>
   </div>
   <div class="row"></div>
 </div>

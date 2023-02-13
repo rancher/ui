@@ -634,41 +634,42 @@
               </div>
             {{/if}}
           </div>
-          <AdvancedSection @advanced={{clusterAdvanced}}>
-            <div class="row">
-              <div class="col span-6 mt-0">
-                <div class="form-control-static">
-                  <div class="checkbox">
-                    <label>
-                      <Input
-                        @type="checkbox"
-                        @checked={{mut config.privateCluster}}
-                        @disabled={{or
-                          (not isNewOrEditable)
-                          enabledAuthorizedIpRanges
-                        }}
-                      />
-                      {{t "clusterNew.azureaks.privateCluster.label"}}
-                    </label>
-                  </div>
+          <div class="row">
+            <div class="col span-12 mt-0">
+              <div class="form-control-static">
+                <div class="checkbox">
+                  <label>
+                    <Input
+                      @type="checkbox"
+                      @checked={{mut config.privateCluster}}
+                      @disabled={{or
+                        (not isNewOrEditable)
+                        enabledAuthorizedIpRanges
+                      }}
+                    />
+                    {{t "clusterNew.azureaks.privateCluster.label"}}
+                  </label>
                 </div>
               </div>
-              <div class="col span-6">
-                {{#if config.privateCluster}}
-                  <BannerMessage
-                    @icon="icon-alert"
-                    @color="bg-warning mb-10"
-                    @message={{t
-                      "clusterNew.azureaks.privateCluster.warning"
-                      appName=settings.appName
-                      docsBase=settings.docsBase
-                      htmlSafe=true
-                    }}
-                  />
-                {{/if}}
-              </div>
             </div>
-          </AdvancedSection>
+          </div>
+          {{#if config.privateCluster}}
+          <div class="row">
+            <div class="col span-12" style="margin: 0">
+              <BannerMessage
+                @icon="icon-alert"
+                @color="bg-warning mb-10"
+                style="margin-top: 0"
+                @message={{t
+                  "clusterNew.azureaks.privateCluster.warning"
+                  appName=settings.appName
+                  docsBase=settings.docsBase
+                  htmlSafe=true
+                }}
+              />
+            </div>
+          </div>
+          {{/if}}
         </AccordionListItem>
         <AccordionListItem
           @title={{t "clusterNew.googlegke.nodePool.title"}}
