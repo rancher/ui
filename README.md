@@ -44,7 +44,7 @@ Rancher releases include a static copy of the UI passed in during build as a tar
 ```
 ### Customizing
 
-We highly suggest making customizations as an [ember-cli addon](http://ember-cli.com/extending/#developing-addons-and-blueprints) rather than forking this repo, making a bunch of changes and then fighting conflicts to keep it up to date with upstream forever.  [ui-example-addon-machine](https://github.com/rancher/ui-example-addon-machine) is an example addon that adds a custom screen for a docker-machine driver.  If there is no way for you to get to what you want to change from an addon, PRs to this repo that add generalized hooks so that you can are accepted.
+We highly suggest making customizations as an [ember-cli addon](http://ember-cli.com/extending/#developing-addons-and-blueprints) rather than forking this repo, making a bunch of changes and then fighting conflicts to keep it up to date with upstream forever.  [ui-driver-skel](https://github.com/rancher/ui-driver-skel) is an example addon that adds a custom screen for a docker-machine driver.  If there is no way for you to get to what you want to change from an addon, PRs to this repo that add generalized hooks so that you can are accepted.
 
 ### Project Structure
 
