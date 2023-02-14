@@ -284,7 +284,18 @@
       </div>
       <div class="col span-6">
         <label class="acc-label">
-          {{t "nodeDriver.azure.staticPublicIp.label"}}
+          {{#tooltip-element
+            type="tooltip-basic"
+            model=(t "nodeDriver.azure.staticPublicIp.tooltip")
+            tooltipTemplate="tooltip-static"
+            aria-describedby="tooltip-base"
+            baseClass="text-left"
+          }}
+           <span>
+            {{t "nodeDriver.azure.staticPublicIp.label"}}
+            <i class="icon icon-help icon-blue"/>
+          </span>
+        {{/tooltip-element}}
         </label>
         {{new-select
           classNames="form-control"
@@ -292,6 +303,7 @@
           optionLabelPath="name"
           optionValuePath="value"
           value=publicIpChoice
+          disabled=config.availabilityZone
         }}
       </div>
     </div>
@@ -308,7 +320,7 @@
           placeholder=(t "nodeDriver.azure.privateIpAddress.placeholder")
         }}
       </div>
-      <div class="col span-6">
+      <div class="col span-3">
         <label class="acc-label">
           {{t "nodeDriver.azure.usePrivateIp.label"}}
         </label>
@@ -317,6 +329,29 @@
             type="checkbox"
             checked=config.usePrivateIp
             disabled=privateSet
+          }}
+        </div>
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{#tooltip-element
+            type="tooltip-basic"
+            model=(t "nodeDriver.azure.useStandardSKU.tooltip")
+            tooltipTemplate="tooltip-static"
+            aria-describedby="tooltip-base"
+            baseClass="text-left"
+          }}
+           <span>
+            {{t "nodeDriver.azure.useStandardSKU.label"}}
+            <i class="icon icon-help icon-blue"/>
+          </span>
+        {{/tooltip-element}}
+        </label>
+        <div>
+          {{input
+            type="checkbox"
+            checked=config.enablePublicIpStandardSku
+            disabled=config.availabilityZone
           }}
         </div>
       </div>
@@ -487,13 +522,25 @@
     <div class="row">
       <div class="col span-6">
         <label class="acc-label">
-          {{t "nodeDriver.azure.managedDisks.label"}}
+          {{#tooltip-element
+            type="tooltip-basic"
+            model=(t "nodeDriver.azure.managedDisks.tooltip")
+            tooltipTemplate="tooltip-static"
+            aria-describedby="tooltip-base"
+            baseClass="text-left"
+          }}
+           <span>
+            {{t "nodeDriver.azure.managedDisks.label"}}
+            <i class="icon icon-help icon-blue"/>
+          </span>
+        {{/tooltip-element}}
         </label>
         {{new-select
           classNames="form-control"
           content=diskChoices
           localizedLabel=true
           value=managedDisks
+          disabled=config.availabilityZone
         }}
         <p class="help-block">
           {{t "nodeDriver.azure.managedDisks.helpText" type=managedDisks}}
