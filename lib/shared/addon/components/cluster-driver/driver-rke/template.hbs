@@ -239,14 +239,7 @@
            expandAll=al.expandAll
            expand=(action expandFn)
         }}
-        <div class="row">
-            <section>
-              <BannerMessage
-                  @color="bg-info m-0"
-                  @message={{t "clusterNew.psp.supportRemoved"}}
-                />
-              </section>
-          </div>
+
           <div class="row">
             <div class="col span-3">
               <label class="acc-label">
@@ -412,9 +405,16 @@
           <div class="row">
             {{#if disablePSPWarning}}
               <section>
-              <BannerMessage
+                <BannerMessage
                   @color="bg-error m-0"
                   @message={{t "clusterNew.psp.unsupported"}}
+                />
+              </section>
+            {{else}}
+              <section>
+                <BannerMessage
+                  @color="bg-info m-0"
+                  @message={{pspInfoBanner}}
                 />
               </section>
             {{/if}}
