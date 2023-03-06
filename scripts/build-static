@@ -30,7 +30,7 @@ function printHelp() {
 build-static Usage:
   -d - Build debug instead of production build
   -f - Force: Turn off checks that prevent you from doing bad things
-  -l - Build as "latest2" instead of the version in package.json
+  -l - Build as "release-2.7.2" instead of the version in package.json
   -t - Tag and push tag
   -u - Upload to GCE
   -s - Skip tests
@@ -125,7 +125,7 @@ if [[ `git status --porcelain` ]]; then
 fi
 
 # UPLOAD_LATEST=true is set by Drone for auto upload to CDN
-if [[ "${BRANCH}" == "master" ]] && [[ "${UPLOAD_LATEST}" == "true" ]]; then
+if [[ "${BRANCH}" == "release-2.7.2" ]] && [[ "${UPLOAD_LATEST}" == "true" ]]; then
   UPLOAD=2
   LATEST=1
 fi
@@ -138,8 +138,8 @@ if [[ $LATEST -eq 1 ]] && [[ $TAG -eq 1 ]]; then
   fi
 fi
 
-if ( [[ $TAG -eq 1 ]] || [[ $UPLOAD -ne 0 ]] ) && [[ "${BRANCH}" != "master" ]]; then
-  echo "You can only tag or upload the master branch (you are on '${BRANCH}')."
+if ( [[ $TAG -eq 1 ]] || [[ $UPLOAD -ne 0 ]] ) && [[ "${BRANCH}" != "release-2.7.2" ]]; then
+  echo "You can only tag or upload the release-2.7.2 branch (you are on '${BRANCH}')."
   if [[ $FORCE -ne 1 ]]; then
     exit 1;
   fi
@@ -157,7 +157,7 @@ if [[ "${FORCE_VERSION}" != "" ]]; then
   VERSION=${FORCE_VERSION}
 else
   if [[ $LATEST -eq 1 ]]; then
-    VERSION="latest2"
+    VERSION="release-2.7.2"
   else
     VERSION=${PKG_VERSION}
   fi
