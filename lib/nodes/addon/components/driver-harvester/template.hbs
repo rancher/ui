@@ -326,7 +326,8 @@
           <SearchableSelect
             @class="form-control"
             @content={{userDataContent}}
-            @value={{config.userData}}
+            @value={{userDataTemplate}}
+            @change={{action "chooseUserDataTemplate" userDataTemplate}}
           />
         </div>
       </div>
@@ -345,6 +346,21 @@
             value=config.userData
             valueUpdated=(action "updateYaml" "userData")
           }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-12 mt-0">
+          <label class="acc-label">
+            {{input
+              type="checkbox"
+              classNames="form-control"
+              checked=installAgent
+              click=(action "updateAgent")
+            }}
+            
+            {{t "nodeDriver.harvester.installAgent.label"}}
+          </label>
         </div>
       </div>
 
