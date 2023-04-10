@@ -1,16 +1,30 @@
 <div>
-  <div class="row">
-    <ResourceList
-      @type={{t "clusterNew.agentConfig.resourceRequirements.requests"}}
-      @value={{requests}}
-      @update={{action "updateRequests" }}
-    />
-  </div>
+  {{!-- TODO nb localize --}}
+  <BannerMessage
+    @color="bg-warning mb-10"
+    @message="This is advanced blah blah"
+  />
+  <div class ="mb-10 box">
     <div class="row">
-    <ResourceList
-      @type={{t "clusterNew.agentConfig.resourceRequirements.limits"}}
-      @value={{limits}}
-      @update={{action "updateLimits"}}
-    />
+      <ResourceList
+        @type={{t "clusterNew.agentConfig.resourceRequirements.requests"}}
+        @value={{requests}}
+        @update={{action "updateRequests" }}
+      />
+    </div>
+      <div class="row">
+      <ResourceList
+        @type={{t "clusterNew.agentConfig.resourceRequirements.limits"}}
+        @value={{limits}}
+        @update={{action "updateLimits"}}
+      />
+    </div>
+  </div>
+  <div class="mb-10">
+    <div class="row">
+      <div class="col span-12 box">
+        {{scheduling-toleration editing=(or (eq mode "edit") (eq mode "new")) tolerate=appendTolerations}}
+      </div>
+    </div>
   </div>
 </div>
