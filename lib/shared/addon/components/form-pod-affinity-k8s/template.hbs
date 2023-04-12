@@ -1,0 +1,52 @@
+<div class="box">
+  <div>
+    <label class="acc-label">
+      {{#if anti}}
+        {{t "clusterNew.agentConfig.overrideAffinity.podAntiAffinity.title"}}
+      {{else}}
+        {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.title"}}
+      {{/if}}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <div>
+        {{#each requiredDuringSchedulingIgnoredDuringExecution as |requiredTerm|}}
+          <FormPodAffinityTermK8s
+            @value={{requiredTerm}}
+            @mode={{mode}}
+            @remove={{action "removeTerm" requiredTerm "requiredDuringSchedulingIgnoredDuringExecution"}}
+          />
+        {{/each}}
+      </div>
+      {{#if editing}}
+        <button class="btn bg-link icon-btn" type="button" {{action "addRequired"}}>
+          <i class="icon icon-plus text-small"/>
+          <span>
+            {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.addRequired"}}
+          </span>
+        </button>
+      {{/if}}
+    </div>
+    <div class="col span-6">
+      <div>
+        {{#each preferredDuringSchedulingIgnoredDuringExecution as |preferredTerm|}}
+          <FormPodAffinityTermK8s
+            @value={{preferredTerm}}
+            @mode={{mode}}
+            @preferred={{true}}
+            @remove={{action "removeTerm" prefferedTerm "preferredDuringSchedulingIgnoredDuringExecution"}}
+          />
+        {{/each}}
+      </div>
+      {{#if editing}}
+        <button class="btn bg-link icon-btn" type="button" {{action "addPreferred"}}>
+          <i class="icon icon-plus text-small"/>
+          <span>
+            {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.addPreferred"}}
+          </span>
+        </button>
+      {{/if}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="box mb-10 affinity-term">
+  {{#if editing}}
+    <div class="affinity-remove">
+      <button class="btn btn-sm " type="button" {{action "removeTerm"}}>
+          <i class="icon icon-x"/>
+      </button>
+    </div>
+  {{/if }}
+  <div class="row">
+    <div class="col span-12">
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=namespaceMode
+            value=namespaceModes.ALL
+          }} {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.namespaces.radioOptions.all"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=namespaceMode
+            value=namespaceModes.THIS_POD
+          }} {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.namespaces.radioOptions.thisPod"}}
+        </label>
+      </div> 
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=namespaceMode
+            value=namespaceModes.IN_LIST
+          }} {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.namespaces.radioOptions.inList"}}
+        </label>
+      </div>
+      {{#if (eq namespaceMode namespaceModes.IN_LIST) }}
+        {{#input-or-display
+          editable=editing
+          value=namespaces
+        }}
+        {{input
+          type="text"
+          class="form-control input-sm"
+          value=namespaces
+        }}
+        {{/input-or-display}}
+      {{/if}}
+    </div>
+    <div class="col span-12">
+      <label class="acc-label">{{t "clusterNew.agentConfig.overrideAffinity.podAffinity.topologyKey.label"}}</label>
+      {{#input-or-display
+        editable=editing
+        value=toplogyKey
+      }}
+      {{input
+        type="text"
+        class="form-control input-sm"
+        value=topologyKey
+        placeholder=(t "clusterNew.agentConfig.overrideAffinity.podAffinity.topologyKey.placeholder")
+      }}
+      {{/input-or-display}}
+    </div>
+  </div>
+</div>

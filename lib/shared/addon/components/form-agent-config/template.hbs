@@ -1,19 +1,21 @@
-<div>
-  {{!-- TODO nb localize --}}
-  <BannerMessage
+<div class="agent-config">
+  {{!-- <BannerMessage
     @color="bg-warning mb-10"
     @message="This is advanced blah blah"
-  />
+  /> --}}
   <div class ="mb-10 box">
     <div class="row">
       <ResourceList
+        @mode={{mode}}
         @type={{t "clusterNew.agentConfig.resourceRequirements.requests"}}
         @value={{requests}}
         @update={{action "updateRequests" }}
       />
     </div>
       <div class="row">
+        {{!-- TODO nb display/edit mode --}}
       <ResourceList
+        @mode={{mode}}
         @type={{t "clusterNew.agentConfig.resourceRequirements.limits"}}
         @value={{limits}}
         @update={{action "updateLimits"}}
@@ -27,4 +29,9 @@
       </div>
     </div>
   </div>
+  <FormAffinityK8s
+    @mode={{mode}}
+    @value={{overrideAffinity}}
+    @update={{action "updateAffinity"}}
+  />
 </div>
