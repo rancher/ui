@@ -430,11 +430,14 @@ export default Resource.extend(Grafana, ResourceUsage, {
     return false;
   }),
 
-  canShowAddHost: computed('clusterProvider', 'hasPrivateAccess', 'hasPublicAccess', 'imported', 'nodes', function() {
+  canShowAddHost: computed('clusterProvider', 'hasPrivateAccess', 'hasPublicAccess', 'imported', 'nodes', 'internal', function() {
     const { clusterProvider } = this;
     const compatibleProviders = ['custom', 'import', 'amazoneksv2', 'googlegkev2', 'azureaksv2'];
 
-    if (!compatibleProviders.includes(clusterProvider)) {
+    // internal indicates the local cluster. Rancher does not manage the local cluster, so nodes can not be added via the UI
+    const internal = get(this, 'internal');
+
+    if (!compatibleProviders.includes(clusterProvider) || internal) {
       return false;
     }
 
