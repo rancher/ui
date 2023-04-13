@@ -352,11 +352,14 @@
     <div class="col span-12">
       {{form-user-labels
         initialLabels=nodePool.nodeLabels
+        expandOnInit=hasLabels
         setLabels=(action "setNodeLabels")
         detailKey="clusterNew.azureaks.nodeLabelDetail"
       }}
       {{form-node-taints
-        model=nodePool
+        model=taints
+        expandOnInit=hasTaints
+        setTaints=(action "setTaints")
       }}  
     </div>
   </div>
