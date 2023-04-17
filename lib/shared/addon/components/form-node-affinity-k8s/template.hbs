@@ -1,3 +1,29 @@
-<div>
-  node affinity component
+<div class="box">
+  <div>
+    <label class="acc-label">
+        {{t "clusterNew.agentConfig.overrideAffinity.nodeAffinity.title"}}
+    </label>
+  </div>
+  <div class="row">
+    <div class="col span-12">
+      <div>
+        {{#each allTerms as |term|}}
+          <FormNodeSelectorTermK8s
+            @value={{term}}
+            @mode={{mode}}
+            @remove={{action "removeTerm" term}}
+            @typeChanged={{action "typeChanged" term}}
+          />
+        {{/each}}
+      </div>
+      {{#if editing}}
+        <button class="btn bg-link icon-btn" type="button" {{action "addTerm"}}>
+          <i class="icon icon-plus text-small"/>
+          <span>
+            {{t "clusterNew.agentConfig.overrideAffinity.nodeAffinity.addTerm"}}
+          </span>
+        </button>
+      {{/if}}
+    </div>
+  </div>
 </div>

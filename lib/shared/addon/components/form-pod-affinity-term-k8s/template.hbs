@@ -36,7 +36,7 @@
   </div>
   <div class="row">
     <div class="col span-12">
-            <div class="radio">
+      <div class="radio">
         <label>
           {{radio-button
             selection=namespaceMode
@@ -73,19 +73,37 @@
         {{/input-or-display}}
       {{/if}}
     </div>
-    <div class="col span-12">
+  </div>
+  <div class="row">
+    <div class="col span-6">
       <label class="acc-label">{{t "clusterNew.agentConfig.overrideAffinity.podAffinity.topologyKey.label"}}</label>
       {{#input-or-display
         editable=editing
-        value=toplogyKey
+        value=podAffintyTerm.topologyKey
       }}
       {{input
         type="text"
         class="form-control input-sm"
-        value=topologyKey
+        value=podAffintyTerm.topologyKey
         placeholder=(t "clusterNew.agentConfig.overrideAffinity.podAffinity.topologyKey.placeholder")
       }}
       {{/input-or-display}}
     </div>
+    {{#if (eq value.priority TERM_PRIORITY.PREFERRED)}}
+      <div class="col span-6">
+        <label class="acc-label">{{t "clusterNew.agentConfig.overrideAffinity.podAffinity.weight.label"}}</label>
+        {{#input-or-display
+          editable=editing
+          value=weight
+        }}
+        {{input
+          type="number"
+          class="form-control input-sm"
+          value=weight
+          placeholder=(t "clusterNew.agentConfig.overrideAffinity.podAffinity.weight.placeholder")
+        }}
+        {{/input-or-display}}
+      </div>
+    {{/if}}
   </div>
 </div>
