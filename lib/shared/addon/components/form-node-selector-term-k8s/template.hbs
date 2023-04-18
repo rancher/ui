@@ -22,12 +22,18 @@
     </div>
   </div>
   <div class="row">
+    <FormMatchExpressionsK8s
+      @nodeSelectorTerm={{nodeSelectorTerm}}
+      @mode={{mode}}
+    />
+  </div>
+  <div class="row">
     {{#if (eq value.priority TERM_PRIORITY.PREFERRED)}}
       <div class="col span-6">
         <label class="acc-label">{{t "clusterNew.agentConfig.overrideAffinity.podAffinity.weight.label"}}</label>
         {{#input-or-display
           editable=editing
-          value=toplogyKey
+          value=weight
         }}
         {{input
           type="text"
