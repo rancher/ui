@@ -35,7 +35,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col span-12">
+    <div class="col span-12 mb-0">
       <div class="radio">
         <label>
           {{radio-button
@@ -60,19 +60,21 @@
           }} {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.namespaces.radioOptions.inList"}}
         </label>
       </div>
-      {{#if (eq namespaceMode namespaceModes.IN_LIST) }}
-        {{#input-or-display
-          editable=editing
-          value=namespaces
-        }}
-        {{input
-          type="text"
-          class="form-control input-sm"
-          value=namespaces
-        }}
-        {{/input-or-display}}
-      {{/if}}
     </div>
+    {{#if (eq namespaceMode namespaceModes.IN_LIST) }}
+    <div class="col span-6 mt-0">
+      {{#input-or-display
+        editable=editing
+        value=namespaces
+      }}
+      {{input-array-as-string
+        type="text"
+        inputClass="form-control input-sm"
+        value=namespaces
+      }}
+      {{/input-or-display}}
+    </div>
+    {{/if}}
   </div>
   <div class="row">
     <div class="col span-6">
