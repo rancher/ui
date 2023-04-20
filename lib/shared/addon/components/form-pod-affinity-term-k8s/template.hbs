@@ -23,11 +23,8 @@
         />
       {{/input-or-display}}
     </div>
-    <div class="col span-6">
-      {{#input-or-display
-        editable=editing
-        value=anti
-      }}
+    <div class="col span-6"> 
+      {{#if editing}}
         <NewSelect 
           @class="form-control"
           @value={{anti}}
@@ -37,7 +34,11 @@
           @content={{affinityOptions}}
           @disabled={{not editing}}
         />
-      {{/input-or-display}}
+      {{else if anti}}
+        <span>{{ t "clusterNew.agentConfig.overrideAffinity.podAffinity.typeOptions.antiAffinity" }}</span>
+      {{else}}
+        <span>{{ t "clusterNew.agentConfig.overrideAffinity.podAffinity.typeOptions.affinity" }}</span>
+      {{/if}}
     </div>
   </div>
   <div class="row">
