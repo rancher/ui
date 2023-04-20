@@ -4,12 +4,17 @@
     {{t "clusterNew.agentConfig.resourceRequirements.cpu" type=type}}
   </label>
       <div class="input-group">
-      {{input-integer
-        step="100"
+      {{#input-or-display
+        editable=editing
         value=cpu
-        classNames="form-control"
-        placeholder=(t "formSecurity.milliCpuReservation.placeholder")
       }}
+        {{input-integer
+          step="100"
+          value=cpu
+          classNames="form-control"
+          placeholder=(t "formSecurity.milliCpuReservation.placeholder")
+        }}
+      {{/input-or-display}}
         <div class="input-group-addon bg-default">
           {{t "generic.mCPU"}}
         </div>
@@ -20,12 +25,17 @@
       {{t "clusterNew.agentConfig.resourceRequirements.memory" type=type}}
     </label>
     <div class="input-group">
-      {{input-integer
-        step="1"
+      {{#input-or-display
+        editable=editing
         value=memory
-        classNames="form-control"
-        placeholder=(t "formSecurity.memoryReservation.placeholder")
       }}
+        {{input-integer
+          step="1"
+          value=memory
+          classNames="form-control"
+          placeholder=(t "formSecurity.memoryReservation.placeholder")
+        }}
+      {{/input-or-display}}
       <div class="input-group-addon bg-default">
         {{t "generic.mibibyte"}}
       </div>

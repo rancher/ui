@@ -8,25 +8,27 @@
   {{/if }}
   <div class="row mt-10">
     <div class="col span-6">
-      {{!-- <label class="acc-label">
-        {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.priority"}}
-      </label> --}}
-      <NewSelect 
-        @class="form-control"
-        @value={{priority}}
-        @optionLabelPath="label"
-        @optionValuePath="value"
-        @localizedLabel={{true}}
-        @content={{priorityOptions}}
-      />
+      {{#input-or-display
+        editable=editing
+        value=priority
+      }}
+        <NewSelect 
+          @class="form-control"
+          @value={{priority}}
+          @optionLabelPath="label"
+          @optionValuePath="value"
+          @localizedLabel={{true}}
+          @content={{priorityOptions}}
+          @disabled={{not editing}}
+        />
+      {{/input-or-display}}
     </div>
   </div>
   <div class="row">
     <FormMatchExpressionsK8s
-      {{!-- @nodeSelectorTerm={{nodeSelectorTerm}} --}}
       @matchExpressions={{matchExpressions}}
       @matchFields={{matchFields}}
-      @mode={{mode}}
+      @editing={{editing}}
     />
   </div>
   <div class="row">
