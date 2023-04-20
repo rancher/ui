@@ -1342,32 +1342,28 @@
             @applyClusterTemplate={{applyClusterTemplate}}
           />
         {{/accordion-list-item}}
-        {{!-- TODO nb localize --}}
         {{#accordion-list-item
-           title='Cluster Agent Config'
+           title=(t "clusterNew.agentConfig.title.cluster")
            expandOnInit=false
            expandAll=al.expandAll
            expand=(action expandFn)
         }}
-        {{!-- //TODO nb should agent configs be in <v3 cluster>.rancherKubernetesEngineConfig.lusterAgentDeploymentCustomization or <v3 cluster>.clusterAgentDeploymentCustomization --}}
           <FormAgentConfig
             @mode={{mode}}
             @cluster={{cluster}}
-            @agentKey="clusterAgentDeploymentCustomization"
+            @type="cluster"
           />
         {{/accordion-list-item}}
-        {{!-- TODO nb localize --}}
         {{#accordion-list-item
-           title='Fleet Agent Config'
+           title=(t "clusterNew.agentConfig.title.fleet")
            expandOnInit=false
            expandAll=al.expandAll
            expand=(action expandFn)
         }}
-        {{!-- //TODO nb should agent configs be in <v3 cluster>.rancherKubernetesEngineConfig.fleetAgentDeploymentCustomization or <v3 cluster>.fleetAgentDeploymentCustomization --}}
           <FormAgentConfig
             @mode={{mode}}
             @cluster={{cluster}}
-            @agentKey="fleetAgentDeploymentCustomization"
+            @type="fleet"
           />
         {{/accordion-list-item}}
 

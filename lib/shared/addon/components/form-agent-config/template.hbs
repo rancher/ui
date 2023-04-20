@@ -1,9 +1,14 @@
 <div class="agent-config">
-  {{!-- <BannerMessage
+  <BannerMessage
     @color="bg-warning mb-10"
-    @message="This is advanced blah blah"
-  /> --}}
+    @message={{t "clusterNew.agentConfig.banners.advanced" type=type}}
+    @icon="icon icon-alert"
+  />
   <div class ="mb-10 box">
+    <BannerMessage
+      @color="bg-info mb-10"
+      @message={{t "clusterNew.agentConfig.banners.resourceRequests"}}
+    />
     <div class="row">
       <ResourceList
         @mode={{mode}}
@@ -25,13 +30,40 @@
   <div class="mb-10">
     <div class="row">
       <div class="col span-12 box">
+        <BannerMessage
+          @color="bg-info mb-10"
+          @message={{t "clusterNew.agentConfig.banners.tolerations"}}
+        />
         {{scheduling-toleration editing=(or (eq mode "edit") (eq mode "new")) tolerate=appendTolerations}}
       </div>
     </div>
   </div>
-  <FormAffinityK8s
+  {{#if editing}}
+    <div class="row">
+      <div class="col span-12 mb-0">
+        <div class="radio">
+          <label>
+            {{radio-button
+              selection=useDefaultAffinity
+              value=true
+            }} {{t "clusterNew.agentConfig.overrideAffinity.useDefault"}}
+          </label>
+        </div> 
+        <div class="radio">
+          <label>
+            {{radio-button
+              selection=useDefaultAffinity
+              value=false
+            }} {{t "clusterNew.agentConfig.overrideAffinity.customize"}}
+          </label>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+  {{#if (and (or (not useDefaultAffinity) (not editing) ) overrideAffinity) }}
+    <FormAffinityK8s
     @mode={{mode}}
     @value={{overrideAffinity}}
-    @update={{action "updateAffinity"}}
   />
+  {{/if}}
 </div>
