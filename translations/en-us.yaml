@@ -4340,6 +4340,205 @@ clusterNew:
   nodes:
     detail: Customize the nodes that will be created
     title: Node Options
+  ociocne:
+    label: Oracle Container Engine long
+    shortLabel: OCI OCNE
+    nodePool:
+      addNew: Add Node Pool
+      delete: Delete Node Pool
+    controlPlaneImages:
+      title: Control Plane
+      detail: Configure control plane images
+      registry: Control Plane Registry
+      registryHelp: Registry to download control plane images from
+      etcdTag: ETCD tag
+      etcdTagHelp: Control plane ETCD image tag
+      coreDNSTag: CoreDNS tag
+      coreDNSTagHelp: Control plane coreDNS image tag
+    verrazzano:
+      title: Verrazzano
+      detail: Configure Verrazzano Installation
+      resource: Verrazzano Resource YAML
+      install: Install Verrazzano
+      image: Verrazzano Platform Operator Image
+      imageHelp: image to use when installing Verrazzano Platform Operator
+    addons:
+      title: Cluster Addons
+      detail: Configure addon services for your cluster
+      calico:
+        title: Container Networking Interface
+        install: Install Calico
+        registry: Calico Registry
+        registryHelp: Registry to download Calico images from
+      csi:
+        title: Container Storage Interface
+        install: Install CSI
+        image: OCI CSI Provider Image
+        imageHelp: Install image for Oracle Cloud Container Storage Interface
+        registry: CSI Registry
+        registryHelp: Registry to download CSI images from
+      ccm:
+        title: Cloud Controller Manager
+        install: Install CCM
+        image: CCM Image
+        imageHelp: Install image for Oracle Cloud Controller Manager
+    advanced:
+      title: Advanced Settings
+      detail: Advanced Cluster Configuration
+    access:
+      next: "Authenticate and Configure Cluster"
+      loading: Loading values from Oracle Cloud Infrastructure
+      title: Choose the region and credentials that will be used for Oracle Cloud authentication.
+      detail: Choose the region and credentials that will be used for Oracle Cloud authentication.
+    cloudCredentialId:
+      invalid: A valid cloud credential is required
+    compartmentId:
+      label: Compartment OCID
+      placeholder: Compartment OCID where the cluster will be created
+      invalid: A valid compartment OCID is required
+    controlplane:
+      title: Configure Control Plane
+      detail: Configure the cluster control plane
+    workers:
+      title: Configure Node Pools
+      detail: Configure node pools for your cluster
+    cluster:
+      title: Configure control plane and worker nodes
+      detail: Configure cluster nodes and placement.
+      next: "Next: Configure Virtual Cloud Network"
+      loading: Loading VCNs from Oracle Cloud Infrastructure
+    clusterMode:
+      singleNode: Single Node
+      singleNodeHelp: Configure a single node cluster
+      multiNode: Multi-Node
+      multiNodeHelp: Configure a multi-node cluster
+    version:
+      label: Kubernetes Version
+      required: Kubernetes Version is required
+    cidr:
+      label: Virtual Cloud Network CIDR
+      placeholder: e.g. 172.16.0.0/16
+      required: Virtual Cloud Network CIDR is required
+      error: Virtual Cloud CIDR format error
+    vcnId:
+      help: The OCID of an existing VCN to be used by the cluster
+      label: Virtual Cloud Network OCID
+      placeholder: VCN OCID
+      required: Virtual Cloud Network OCID is required
+      invalid: Virtual Cloud Network OCID must be a well-formed OCID
+    controlPlaneSubnet:
+      help: The OCID of an existing subnet to be used by the control plane
+      label: Control Plane Subnet OCID
+      placeholder: Control Plane Subnet OCID
+      required: Control Plane Subnet OCID is required
+      invalid: Control Plane Subnet OCID must be a well-formed OCID
+    loadBalancerSubnet:
+      help: The OCID of an existing subnet to be used for load balancers
+      label: Load Balancer Subnet OCID
+      placeholder: Load Balancer Subnet OCID
+      required: Load Balancer Subnet OCID is required
+      invalid: Load Balancer Subnet  OCID must be a well-formed OCID
+    workerNodeSubnet:
+      help: The OCID of an existing subnet to be used by the worker nodes
+      label: Worker Node Subnet OCID
+      placeholder: Worker Node Subnet OCID
+      required: Worker Node Subnet OCID is required
+      invalid: Worker Node Subnet OCID must be a well-formed OCID
+    numControlPlaneNodes:
+      label: Number of control plane nodes
+      placeholder: e.g. 1
+      required: Number of control plane nodes is required
+      help: The number of control plane nodes to create
+      error: The number of nodes should not be greater than {max}
+    bootVolumeSize:
+      label: Boot Volume Size (Gbs)
+      help: The size of the node's boot volume in gigabytes
+    controlPlaneShape:
+      label: Control Plane Shape
+      placeholder: Compute shape for control plane nodes
+      required: Control plane shape is required
+      help: The compute shape of the control plane nodes
+      error: err
+    controlPlaneOcpus:
+      label: Control Plane OCPUs
+      placeholder: OCPUs for flex compute shapes
+      help: The number of OCPUs used by each control plane node, for flex compute shapes
+      error: The number of OCPUs should not be greater than {max}
+    controlPlaneMemoryGbs:
+      label: Control Plane Memory in GBs
+      placeholder: Number of GBS of control plane memory
+      help: The amount of memory in GBs used by each control plane node, for flex compute shapes
+      error: The amount of memory should not be greater than {max}
+    numWorkerNodes:
+      label: Number of worker nodes
+      placeholder: e.g. 1
+      required: Number of worker nodes is required
+      help: The number of worker nodes to create.
+      error: The number of nodes should not be greater than {max}
+    nodeName:
+      label: Name
+      help: Name of the node pool
+    nodeShape:
+      label: Worker Node Shape
+      placeholder: Compute shape for worker nodes
+      required: Worker node shape is required
+      help: The compute shape of the worker nodes
+      error: err
+    nodeOcpus:
+      label: Worker Node OCPUs
+      placeholder: OCPUs for flex compute shapes
+      help: The number of OCPUs used by each worker node, for flex compute shapes
+      error: The number of OCPUs should not be greater than {max}
+    nodeMemoryGbs:
+      label: Worker Node Memory in GBs
+      placeholder: Number of memory, in GBs
+      help: The amount of memory in GBs used by each worker node, for flex compute shapes
+      error: The amount of memory should not be greater than {max}
+    imageDisplayName:
+      label: Node Image
+      placeholder: OL8 image display name
+    region:
+      help: The geographic region in which the cluster will run
+      label: Region
+    nodePublicKeyContents:
+      label: Public key for node SSH
+      placeholder: ssh-rsa public key
+    instanceConfig:
+      label: Instance Configuration(CPU/Memory)
+      gpuLabel: Instance Configuration(CPU/Memory/GPU Type/GPU Count)
+      required: Instance Configuration is required
+    subnet:
+      label: Subnet Access
+      required: Subnet access is required
+    networking:
+      title: Cluster Networking
+      detail: Configure cluster networking and proxy
+      podCidr:
+        title: Pod CIDR Block
+        help: IPv4 CIDR block for pod networking
+      clusterCidr:
+        title: Cluster CIDR Block
+        help: IPv4 CIDR block for cluster networking
+      proxyEndpoint:
+        placeholder: 'http://proxy-server:80'
+        title: Proxy Endpoint
+        help: Used when your cluster is behind a HTTP/HTTPS proxy
+    vcn:
+      title: Network Setup
+      detail: Configure the virtual cloud network that will be used for your Kubernetes cluster.
+      next: Configure Control plane and worker nodes
+      loading: Loading node configuration
+      quick: Quick Create
+      quickHelp: Create a default VCN infrastructure for your cluster
+      quickResources:
+        header: 'New VCN resources include:'
+        vcn: Virtual Cloud Network (VCN)
+        igw: Internet Gateway (IG)
+        nat: NAT Gateway (NAT)
+        sgw: Service Gateway (SGW)
+      custom: Custom Create
+      existing: Existing Infrastructure
+      existingHelp: Use an existing VCN for your cluster
   oracleoke:
     access:
       detail: Choose the region and API Key that will be used to authenticate and configure Oracle Container Engine.
@@ -4444,10 +4643,6 @@ clusterNew:
     subnet:
       label: Node-pool Subnet Access
       required: Node-pool subnet access is required
-    controlPlaneSubnet:
-      label: Control plane Subnet Access
-      required: Control plane subnet access is required
-      warning: Rancher needs to be able to access the Kubernetes API on a private IP for this option to be successful. Typically, this requires VCN peering or running Rancher in the same VCN that hosts the (existing) control plane subnet.
     subnetAccessOptions:
       custom: Custom Create
       existing: Existing
@@ -8996,6 +9191,7 @@ kontainerDriver:
     tencentkubernetesengine: Tencent TKE
     baiducloudcontainerengine: Baidu CCE
     oraclecontainerengine: Oracle OKE
+    ociocneengine: OCI OCNE
     linodekubernetesengine: Linode LKE
     opentelekomcloudcontainerengine: Open Telekom Cloud CCE
 
@@ -9031,6 +9227,7 @@ nodeDriver:
     oci: Oracle Cloud Infrastructure
     openstack: OpenStack
     oracleoke: Oracle OKE
+    ociocne: OCI OCNE
     otc: Open Telekom Cloud
     otccce: Open Telekom Cloud CCE
     packet: Equinix Metal

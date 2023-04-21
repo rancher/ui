@@ -1,0 +1,833 @@
+{{#accordion-list showExpandAll=false as |al expandFn|}}
+
+{{!-- Only allow edits to tenancy, compartment, and region configuration for new cluster --}}
+  {{#accordion-list-item title=(t "clusterNew.ociocne.access.title")
+                         detail=(t "clusterNew.ociocne.access.detail")
+                         expandAll=expandAll
+                         expand=(action expandFn)
+                         expandOnInit=true
+  }}
+    <div class="row">
+      {{form-auth-cloud-credential
+        driverName="oci"
+        parseAndCollectErrors=(action "errorHandler")
+        primaryResource=primaryResource
+        cloudCredentials=cloudCredentials
+        finishAndSelectCloudCredential=(action "finishAndSelectCloudCredential")
+        progressStep=(action "finishAndSelectCloudCredential")
+        cancel=(action "cancel")
+        hideSave=true
+      }}
+    </div>
+    <div class="row">
+      <div class="col span-2">
+        <label class="acc-label">
+          {{t 'clusterNew.ociocne.region.label'}}{{field-required}}
+        </label>
+        {{#if (and (eq step 1) isNew)}}
+          <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
+            {{#each authRegionChoices as |choice|}}
+              <option value={{choice}} selected={{eq config.region choice}}>{{choice}}</option>
+            {{/each}}
+          </select>
+          <p class="help-block">
+            {{t 'clusterNew.ociocne.region.help'}}
+          </p>
+        {{else}}
+          <div>{{config.region}}</div>
+        {{/if}}
+      </div>
+      <div class="col span-10">
+        <label class="acc-label">
+          {{t 'clusterNew.ociocne.compartmentId.label'}}{{field-required}}
+        </label>
+        {{#input-or-display editable=(and (eq step 1) isNew) value=config.compartmentId}}
+          {{input type="text" name="compartment" classNames="form-control" value=config.compartmentId}}
+          <p class="help-block">
+            {{t 'clusterNew.ociocne.compartmentId.placeholder'}}
+          </p>
+        {{/input-or-display}}
+      </div>
+    </div>
+
+  {{/accordion-list-item}}
+
+  {{!-- authenticate to OCI --}}
+  {{#if (eq step 1)}}
+    {{save-cancel editing=false
+                  save="saveStep1"
+                  cancel=close
+                  saveDisabled=canAuthenticate
+                  createLabel="clusterNew.ociocne.access.next"
+                  savingLabel="clusterNew.ociocne.access.loading"
+    }}
+  {{/if}}
+
+  {{#if (and (gte step 2) editing)}}
+  {{!-- edit cluster --}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t 'clusterNew.ociocne.imageDisplayName.label'}}{{field-required}}
+        </label>
+        {{#if (eq step 2)}}
+          <select class="form-control" onchange={{action (mut config.nodeImages) value="target.value"}}>
+            {{#each nodeImages as |choice|}}
+              <option value={{choice}} selected={{eq config.imageDisplayName choice}}>{{choice}}</option>
+            {{/each}}
+          </select>
+        {{else}}
+          <div>{{config.imageDisplayName}}</div>
+        {{/if}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label pt-5 pl-5">{{t "clusterNew.ociocne.nodePublicKeyContents.label"}}{{field-required}}</label>
+      </div>
+      <div class="pb-10">
+        {{input-text-file
+          classNames="box"
+          value=config.nodePublicKeyContents
+          multiple=False
+          canChangeName=false
+          accept="text/plain,.pub"
+          minHeight=40
+          placeholder="clusterNew.ociocne.nodePublicKeyContents.placeholder"
+          shouldChangeName=false
+          concealValue=true
+        }}
+      </div>
+    </div>
+    {{#accordion-list-item title=(t "clusterNew.ociocne.controlplane.title")
+                           detail=(t "clusterNew.ociocne.controlplane.detail")
+                           showExpand=false
+                           expandOnInit=true
+                           expandAll=al.expandAll
+                           expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-4 mb-0">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.version.label'}}
+          </label>
+          {{#if (eq step 2)}}
+            <select class="form-control" onchange={{action (mut config.kubernetesVersion) value="target.value"}}>
+              {{#each kubernetesVersions as |choice|}}
+                <option value={{choice}} selected={{eq config.kubernetesVersion choice}}>{{choice}}</option>
+              {{/each}}
+            </select>
+          {{else}}
+            <div>{{config.kubernetesVersion}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.controlPlaneShape.label'}}{{field-required}}
+          </label>
+          {{#if (eq step 2)}}
+            {{#input-or-display value=config.controlPlaneShape}}
+              {{searchable-select class="form-control"
+                                  content=computeShapes
+                                  value=config.controlPlaneShape
+              }}
+            {{/input-or-display}}
+          {{else}}
+            <div>{{config.controlPlaneShape}}</div>
+          {{/if}}
+        </div>
+        <div class="col span-4 mb-0">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.numControlPlaneNodes.label'}}
+          </label>
+          {{#input-or-display editable=(eq step 2) value=config.numControlPlaneNodes}}
+            {{input-integer min=1 max=maxNodeCount value=config.numControlPlaneNodes classNames="form-control" placeholder=(t 'clusterNew.ociocne.numControlPlaneNodes.placeholder')}}
+            <p class="help-block">
+              {{t 'clusterNew.ociocne.numControlPlaneNodes.help'}}
+            </p>
+          {{/input-or-display}}
+        </div>
+        <div class="col span-4 mb-0">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.bootVolumeSize.label'}}
+          </label>
+          {{#input-or-display editable=(eq step 2) value=config.controlPlaneVolumeGbs}}
+            {{input-integer min=50 max=32000 value=config.controlPlaneVolumeGbs classNames="form-control" placeholder=(t 'clusterNew.ociocne.numWorkerNodes.placeholder')}}
+            <p class="help-block">
+              {{t 'clusterNew.ociocne.bootVolumeSize.help'}}
+            </p>
+          {{/input-or-display}}
+        </div>
+      </div>
+      {{#if isControlPlaneFlex }}
+        <div class="row">
+          <div class="col span-4 mb-0">
+            <label class="acc-label">
+              {{t 'clusterNew.ociocne.controlPlaneOcpus.label'}}
+            </label>
+            {{#input-or-display editable=(eq step 2) value=config.controlPlaneOcpus}}
+              {{input-integer min=1 max=64 value=config.controlPlaneOcpus classNames="form-control" placeholder=(t 'clusterNew.ociocne.controlPlaneOcpus.placeholder')}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.controlPlaneOcpus.help'}}
+              </p>
+            {{/input-or-display}}
+          </div>
+          <div class="col span-4 mb-0">
+            <label class="acc-label">
+              {{t 'clusterNew.ociocne.controlPlaneMemoryGbs.label'}}
+            </label>
+            {{#input-or-display editable=(eq step 2) value=config.controlPlaneMemoryGbs}}
+              {{input-integer min=2 max=1024 value=config.controlPlaneMemoryGbs classNames="form-control" placeholder=(t 'clusterNew.ociocne.controlPlaneMemoryGbs.placeholder')}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.controlPlaneMemoryGbs.help'}}
+              </p>
+            {{/input-or-display}}
+          </div>
+        </div>
+      {{/if}}
+    {{/accordion-list-item}}
+    {{#accordion-list-item title=(t "clusterNew.ociocne.workers.title")
+                           detail=(t "clusterNew.ociocne.workers.detail")
+                           showExpand=false
+                           expandOnInit=true
+                           expandAll=al.expandAll
+                           expand=(action expandFn)
+    }}
+      <div class="row">
+        <button
+          class="btn btn-sm bg-primary inline-block mb-5"
+          style="margin-top: -5px;" type="button" {{action "addNodePool"}}
+        >
+          {{t "clusterNew.ociocne.nodePool.addNew"}}
+        </button>
+      </div>
+      {{#each nodePools as |np|}}
+        {{#accordion-list-item title=np.name
+                               detail="configure node pool"
+                               expandAll=expandAll
+                               expand=(action expandFn)
+                               expandOnInit=false
+        }}
+          <div class="row">
+            <div class="col span-4">
+              <label class="acc-label">
+                {{t 'clusterNew.ociocne.nodeName.label'}}{{field-required}}
+              </label>
+              {{#input-or-display editable=(eq step 2) value=np.name}}
+                {{input type="text" name="np-name" classNames="form-control" value=np.name}}
+                <p class="help-block">
+                  {{t 'clusterNew.ociocne.nodeName.help'}}
+                </p>
+              {{/input-or-display}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col span-4">
+              <label class="acc-label">
+                {{t 'clusterNew.ociocne.nodeShape.label'}}{{field-required}}
+              </label>
+              {{#if (eq step 2)}}
+                {{#input-or-display value=config.nodeShape}}
+                  {{searchable-select class="form-control"
+                                      content=computeShapes
+                                      value=np.shape
+                  }}
+                {{/input-or-display}}
+              {{else}}
+                <div>{{np.shape}}</div>
+              {{/if}}
+            </div>
+            <div class="col span-4 mb-0">
+              <label class="acc-label">
+                {{t 'clusterNew.ociocne.numWorkerNodes.label'}}
+              </label>
+              {{#input-or-display editable=(eq step 2) value=np.replicas}}
+                {{input-integer min=0 max=maxNodeCount value=np.replicas classNames="form-control" placeholder=(t 'clusterNew.ociocne.numWorkerNodes.placeholder')}}
+                <p class="help-block">
+                  {{t 'clusterNew.ociocne.numWorkerNodes.help'}}
+                </p>
+              {{/input-or-display}}
+            </div>
+            <div class="col span-4 mb-0">
+              <label class="acc-label">
+                {{t 'clusterNew.ociocne.bootVolumeSize.label'}}
+              </label>
+              {{#input-or-display editable=(eq step 2) value=np.volumeSize}}
+                {{input-integer min=50 max=32000 value=np.volumeSize classNames="form-control" placeholder=(t 'clusterNew.ociocne.numWorkerNodes.placeholder')}}
+                <p class="help-block">
+                  {{t 'clusterNew.ociocne.bootVolumeSize.help'}}
+                </p>
+              {{/input-or-display}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col span-4 mb-0">
+              <label class="acc-label">
+                {{t 'clusterNew.ociocne.nodeOcpus.label'}}
+              </label>
+              {{#input-or-display editable=(eq step 2) value=np.ocpus}}
+                {{input-integer min=1 max=64 value=np.ocpus classNames="form-control" placeholder=(t 'clusterNew.ociocne.nodeOcpus.placeholder')}}
+                <p class="help-block">
+                  {{t 'clusterNew.ociocne.nodeOcpus.help'}}
+                </p>
+              {{/input-or-display}}
+            </div>
+            <div class="col span-4 mb-0">
+              <label class="acc-label">
+                {{t 'clusterNew.ociocne.nodeMemoryGbs.label'}}
+              </label>
+              {{#input-or-display editable=(eq step 2) value=np.memory}}
+                {{input-integer min=2 max=1024 value=np.memory classNames="form-control" placeholder=(t 'clusterNew.ociocne.nodeMemoryGbs.placeholder')}}
+                <p class="help-block">
+                  {{t 'clusterNew.ociocne.nodeMemoryGbs.help'}}
+                </p>
+              {{/input-or-display}}
+            </div>
+          </div>
+
+          <button
+            class="btn btn-sm bg-primary inline-block mb-5"
+            style="margin-top: -5px;" type="button" {{action "deleteNodePool" np}}
+          >
+            {{t "clusterNew.ociocne.nodePool.delete"}}
+          </button>
+        {{/accordion-list-item}}
+      {{/each}}
+    {{/accordion-list-item}}
+
+    {{!-- exit point for update/upgrade --}}
+    {{save-cancel editing=(eq mode 'edit')
+                  save="upgradeCluster"
+                  cancel=close
+    }}
+
+  {{else}}
+  {{!-- new cluster --}}
+    {{#if (gte step 2)}}
+      {{#accordion-list-item title=(t "clusterNew.ociocne.vcn.title")
+                             detail=(t "clusterNew.ociocne.vcn.detail")
+                             showExpand=false
+                             expandOnInit=true
+                             expandAll=al.expandAll
+                             expand=(action expandFn)
+      }}
+
+
+        <div class="row">
+          <div class="col span-6">
+            {{#input-or-display
+              editable=(not-eq mode "view")
+              value=(if vcnCreationMode (t "generic.enabled") (t "generic.disabled"))
+            }}
+            {{#if canChangeNetworking }}
+              <div class="radio">
+                <label>
+                  {{radio-button
+                    selection=vcnCreationMode
+                    value="Quick"
+                  }}
+                  {{t 'clusterNew.ociocne.vcn.quick'}}
+                  <p class="help-block">
+                    {{t 'clusterNew.ociocne.vcn.quickHelp'}}
+                  </p>
+                </label>
+              </div>
+            {{/if}}
+
+            {{#if (eq vcnCreationMode "Quick")}}
+              <div>
+                <b>{{t 'clusterNew.ociocne.vcn.quickResources.header'}}</b>
+                <ul>
+                  <li>{{t 'clusterNew.ociocne.vcn.quickResources.vcn'}}</li>
+                  <li>{{t 'clusterNew.ociocne.vcn.quickResources.igw'}}</li>
+                  <li>{{t 'clusterNew.ociocne.vcn.quickResources.nat'}}</li>
+                  <li>{{t 'clusterNew.ociocne.vcn.quickResources.sgw'}}</li>
+                </ul>
+              </div>
+            {{/if}}
+            {{#if canChangeNetworking }}
+              <div class="radio">
+                <label>
+                  {{radio-button
+                    selection=vcnCreationMode
+                    value="Existing"
+                  }}
+                  {{t 'clusterNew.ociocne.vcn.existing'}}
+                </label>
+                <p class="help-block">
+                  {{t 'clusterNew.ociocne.vcn.existingHelp'}}
+                </p>
+              </div>
+            {{/if}}
+
+            {{#if (eq vcnCreationMode "Existing")}}
+              <div class="row">
+                <div class="col span-10">
+                  <label class="acc-label">{{t 'clusterNew.ociocne.vcnId.label'}}{{field-required}}</label>
+                  {{#input-or-display editable=(and (eq step 2) isNew) value=config.vcnId}}
+                    {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.ociocne.vcnId.placeholder') value=config.vcnId}}
+                  {{/input-or-display}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col span-10">
+                  <label class="acc-label">{{t 'clusterNew.ociocne.controlPlaneSubnet.label'}}{{field-required}}</label>
+                  {{#input-or-display editable=(and (eq step 2) isNew) value=config.controlPlaneSubnet}}
+                    {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.ociocne.controlPlaneSubnet.placeholder') value=config.controlPlaneSubnet}}
+                  {{/input-or-display}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col span-10">
+                  <label class="acc-label">{{t 'clusterNew.ociocne.loadBalancerSubnet.label'}}{{field-required}}</label>
+                  {{#input-or-display editable=(and (eq step 2) isNew) value=config.loadBalancerSubnet}}
+                    {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.ociocne.loadBalancerSubnet.placeholder') value=config.loadBalancerSubnet}}
+                  {{/input-or-display}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col span-10">
+                  <label class="acc-label">{{t 'clusterNew.ociocne.workerNodeSubnet.label'}}{{field-required}}</label>
+                  {{#input-or-display editable=(and (eq step 2) isNew) value=config.workerNodeSubnet}}
+                    {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.ociocne.workerNodeSubnet.placeholder') value=config.workerNodeSubnet}}
+                  {{/input-or-display}}
+                </div>
+              </div>
+            {{/if}}
+            {{/input-or-display}}
+          </div>
+        </div>
+
+      {{/accordion-list-item}}
+      {{#if (eq step 2)}}
+        {{save-cancel editing=(eq mode 'edit')
+                      save="saveNetworking"
+                      saveDisabled=canSaveNetworking
+                      cancel=close
+                      createLabel="clusterNew.ociocne.vcn.next"
+                      savingLabel="clusterNew.ociocne.vcn.loading"
+        }}
+      {{/if}}
+    {{/if}}
+    {{#if (gte step 3)}}
+      {{#accordion-list-item title=(t "clusterNew.ociocne.cluster.title")
+                             detail=(t "clusterNew.ociocne.cluster.detail")
+                             showExpand=false
+                             expandOnInit=true
+                             expandAll=al.expandAll
+                             expand=(action expandFn)
+      }}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t 'clusterNew.ociocne.imageDisplayName.label'}}{{field-required}}
+            </label>
+            {{#if (eq step 3)}}
+              <select class="form-control" onchange={{action (mut config.nodeImages) value="target.value"}}>
+                {{#each nodeImages as |choice|}}
+                  <option value={{choice}} selected={{eq config.imageDisplayName choice}}>{{choice}}</option>
+                {{/each}}
+              </select>
+            {{else}}
+              <div>{{config.imageDisplayName}}</div>
+            {{/if}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label pt-5 pl-5">{{t "clusterNew.ociocne.nodePublicKeyContents.label"}}{{field-required}}</label>
+          </div>
+          <div class="pb-10">
+            {{input-text-file
+              classNames="box"
+              value=config.nodePublicKeyContents
+              multiple=False
+              canChangeName=false
+              accept="text/plain,.pub"
+              minHeight=40
+              placeholder="clusterNew.ociocne.nodePublicKeyContents.placeholder"
+              shouldChangeName=false
+              concealValue=true
+            }}
+          </div>
+        </div>
+        {{#accordion-list-item title=(t "clusterNew.ociocne.controlplane.title")
+                               detail=(t "clusterNew.ociocne.controlplane.detail")
+                               showExpand=false
+                               expandOnInit=true
+                               expandAll=al.expandAll
+                               expand=(action expandFn)
+        }}
+          <div class="row">
+            <div class="col span-4 mb-0">
+              <label class="acc-label">
+                {{t 'clusterNew.ociocne.version.label'}}
+              </label>
+              {{#if (eq step 3)}}
+                <select class="form-control" onchange={{action (mut config.kubernetesVersion) value="target.value"}}>
+                  {{#each kubernetesVersions as |choice|}}
+                    <option value={{choice}} selected={{eq config.kubernetesVersion choice}}>{{choice}}</option>
+                  {{/each}}
+                </select>
+              {{else}}
+                <div>{{config.kubernetesVersion}}</div>
+              {{/if}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col span-4">
+              <label class="acc-label">
+                {{t 'clusterNew.ociocne.controlPlaneShape.label'}}{{field-required}}
+              </label>
+              {{#if (eq step 3)}}
+                {{#input-or-display value=config.controlPlaneShape}}
+                  {{searchable-select class="form-control"
+                                      content=computeShapes
+                                      value=config.controlPlaneShape
+                  }}
+                {{/input-or-display}}
+              {{else}}
+                <div>{{config.controlPlaneShape}}</div>
+              {{/if}}
+            </div>
+            <div class="col span-4 mb-0">
+              <label class="acc-label">
+                {{t 'clusterNew.ociocne.numControlPlaneNodes.label'}}
+              </label>
+              {{#input-or-display editable=(and (eq step 3) isNew) value=config.numControlPlaneNodes}}
+                {{input-integer min=1 max=maxNodeCount value=config.numControlPlaneNodes classNames="form-control" placeholder=(t 'clusterNew.ociocne.numControlPlaneNodes.placeholder')}}
+                <p class="help-block">
+                  {{t 'clusterNew.ociocne.numControlPlaneNodes.help'}}
+                </p>
+              {{/input-or-display}}
+            </div>
+            <div class="col span-4 mb-0">
+              <label class="acc-label">
+                {{t 'clusterNew.ociocne.bootVolumeSize.label'}}
+              </label>
+              {{#input-or-display editable=(and (eq step 3) isNew) value=config.controlPlaneVolumeGbs}}
+                {{input-integer min=50 max=32000 value=config.controlPlaneVolumeGbs classNames="form-control" placeholder=(t 'clusterNew.ociocne.numWorkerNodes.placeholder')}}
+                <p class="help-block">
+                  {{t 'clusterNew.ociocne.bootVolumeSize.help'}}
+                </p>
+              {{/input-or-display}}
+            </div>
+          </div>
+          {{#if isControlPlaneFlex }}
+            <div class="row">
+              <div class="col span-4 mb-0">
+                <label class="acc-label">
+                  {{t 'clusterNew.ociocne.controlPlaneOcpus.label'}}
+                </label>
+                {{#input-or-display editable=(and (eq step 3) isNew) value=config.controlPlaneOcpus}}
+                  {{input-integer min=1 max=64 value=config.controlPlaneOcpus classNames="form-control" placeholder=(t 'clusterNew.ociocne.controlPlaneOcpus.placeholder')}}
+                  <p class="help-block">
+                    {{t 'clusterNew.ociocne.controlPlaneOcpus.help'}}
+                  </p>
+                {{/input-or-display}}
+              </div>
+              <div class="col span-4 mb-0">
+                <label class="acc-label">
+                  {{t 'clusterNew.ociocne.controlPlaneMemoryGbs.label'}}
+                </label>
+                {{#input-or-display editable=(and (eq step 3) isNew) value=config.controlPlaneMemoryGbs}}
+                  {{input-integer min=2 max=1024 value=config.controlPlaneMemoryGbs classNames="form-control" placeholder=(t 'clusterNew.ociocne.controlPlaneMemoryGbs.placeholder')}}
+                  <p class="help-block">
+                    {{t 'clusterNew.ociocne.controlPlaneMemoryGbs.help'}}
+                  </p>
+                {{/input-or-display}}
+              </div>
+            </div>
+          {{/if}}
+        {{/accordion-list-item}}
+
+        {{#accordion-list-item title=(t "clusterNew.ociocne.workers.title")
+                               detail=(t "clusterNew.ociocne.workers.detail")
+                               showExpand=false
+                               expandOnInit=true
+                               expandAll=al.expandAll
+                               expand=(action expandFn)
+        }}
+          <div class="row">
+            <button
+              class="btn btn-sm bg-primary inline-block mb-5"
+              style="margin-top: -5px;" type="button" {{action "addNodePool"}}
+            >
+              {{t "clusterNew.ociocne.nodePool.addNew"}}
+            </button>
+          </div>
+          {{#each nodePools as |np|}}
+            {{#accordion-list-item title=np.name
+                                   detail="configure node pool"
+                                   expandAll=expandAll
+                                   expand=(action expandFn)
+                                   expandOnInit=false
+            }}
+              <div class="row">
+                <div class="col span-4">
+                  <label class="acc-label">
+                    {{t 'clusterNew.ociocne.nodeName.label'}}{{field-required}}
+                  </label>
+                  {{#input-or-display editable=(and (eq step 3) isNew) value=np.name}}
+                    {{input type="text" name="np-name" classNames="form-control" value=np.name}}
+                    <p class="help-block">
+                      {{t 'clusterNew.ociocne.nodeName.help'}}
+                    </p>
+                  {{/input-or-display}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col span-4">
+                  <label class="acc-label">
+                    {{t 'clusterNew.ociocne.nodeShape.label'}}{{field-required}}
+                  </label>
+                  {{#if (eq step 3)}}
+                    {{#input-or-display value=config.nodeShape}}
+                      {{searchable-select class="form-control"
+                                          content=computeShapes
+                                          value=np.shape
+                      }}
+                    {{/input-or-display}}
+                  {{else}}
+                    <div>{{np.shape}}</div>
+                  {{/if}}
+                </div>
+                <div class="col span-4 mb-0">
+                  <label class="acc-label">
+                    {{t 'clusterNew.ociocne.numWorkerNodes.label'}}
+                  </label>
+                  {{#input-or-display editable=(and (eq step 3) isNew) value=np.replicas}}
+                    {{input-integer min=0 max=maxNodeCount value=np.replicas classNames="form-control" placeholder=(t 'clusterNew.ociocne.numWorkerNodes.placeholder')}}
+                    <p class="help-block">
+                      {{t 'clusterNew.ociocne.numWorkerNodes.help'}}
+                    </p>
+                  {{/input-or-display}}
+                </div>
+                <div class="col span-4 mb-0">
+                  <label class="acc-label">
+                    {{t 'clusterNew.ociocne.bootVolumeSize.label'}}
+                  </label>
+                  {{#input-or-display editable=(and (eq step 3) isNew) value=np.volumeSize}}
+                    {{input-integer min=50 max=32000 value=np.volumeSize classNames="form-control" placeholder=(t 'clusterNew.ociocne.numWorkerNodes.placeholder')}}
+                    <p class="help-block">
+                      {{t 'clusterNew.ociocne.bootVolumeSize.help'}}
+                    </p>
+                  {{/input-or-display}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col span-4 mb-0">
+                  <label class="acc-label">
+                    {{t 'clusterNew.ociocne.nodeOcpus.label'}}
+                  </label>
+                  {{#input-or-display editable=(and (eq step 3) isNew) value=np.ocpus}}
+                    {{input-integer min=1 max=64 value=np.ocpus classNames="form-control" placeholder=(t 'clusterNew.ociocne.nodeOcpus.placeholder')}}
+                    <p class="help-block">
+                      {{t 'clusterNew.ociocne.nodeOcpus.help'}}
+                    </p>
+                  {{/input-or-display}}
+                </div>
+                <div class="col span-4 mb-0">
+                  <label class="acc-label">
+                    {{t 'clusterNew.ociocne.nodeMemoryGbs.label'}}
+                  </label>
+                  {{#input-or-display editable=(and (eq step 3) isNew) value=np.memory}}
+                    {{input-integer min=2 max=1024 value=np.memory classNames="form-control" placeholder=(t 'clusterNew.ociocne.nodeMemoryGbs.placeholder')}}
+                    <p class="help-block">
+                      {{t 'clusterNew.ociocne.nodeMemoryGbs.help'}}
+                    </p>
+                  {{/input-or-display}}
+                </div>
+              </div>
+
+              <button
+                class="btn btn-sm bg-primary inline-block mb-5"
+                style="margin-top: -5px;" type="button" {{action "deleteNodePool" np}}
+              >
+                {{t "clusterNew.ociocne.nodePool.delete"}}
+              </button>
+            {{/accordion-list-item}}
+          {{/each}}
+        {{/accordion-list-item}}
+
+        {{#accordion-list-item title=(t "clusterNew.ociocne.verrazzano.title")
+                               detail=(t "clusterNew.ociocne.verrazzano.detail")
+                               expandAll=expandAll
+                               expand=(action expandFn)
+                               expandOnInit=true}}
+          <div class="row">
+            <div class="col span-2 mb-0">
+              <label for="verrazzano-checkbox">
+                {{t 'clusterNew.ociocne.verrazzano.install'}}
+              </label>
+              {{input type="checkbox" name="verrazzano-checkbox" classNames="form-control" checked=config.installVerrazzano}}
+            </div>
+            <div class="col span-6 mb-0">
+              <label for="verrazzano-image">
+                {{t 'clusterNew.ociocne.verrazzano.image'}}
+              </label>
+              {{input type="text" name="verrazzano-image" classNames="form-control" value=config.verrazzanoImage}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.verrazzano.imageHelp'}}
+              </p>
+            </div>
+          </div>
+          <div class="row pt-10">
+            <label>
+              {{t 'clusterNew.ociocne.verrazzano.resource'}}
+            </label>
+            {{input-yaml
+              showUpload=true
+              showDownload=true
+              canChangeName=false
+              value=config.verrazzanoResource
+              autoResize=true
+              loading=loading
+            }}
+          </div>
+        {{/accordion-list-item}}
+      {{/accordion-list-item}}
+      {{#accordion-list-item title=(t "clusterNew.ociocne.advanced.title")
+                             detail=(t "clusterNew.ociocne.advanced.detail")
+                             expandAll=expandAll
+                             expand=(action expandFn)
+                             expandOnInit=false}}
+        {{#accordion-list-item title=(t "clusterNew.ociocne.networking.title")
+                               detail=(t "clusterNew.ociocne.networking.detail")
+                               expandAll=expandAll
+                               expand=(action expandFn)
+                               expandOnInit=false}}
+          <div class="row">
+            <div class="col span-4 mb-0">
+              <label>
+                {{t 'clusterNew.ociocne.networking.clusterCidr.title'}}{{field-required}}
+              </label>
+              {{input type="text" name="cluster-cidr" classNames="form-control" value=config.clusterCidr}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.networking.clusterCidr.help'}}
+              </p>
+            </div>
+            <div class="col span-4 mb-0">
+              <label for="etcd-tag">
+                {{t 'clusterNew.ociocne.networking.podCidr.title'}}{{field-required}}
+              </label>
+              {{input type="text" name="pod-cidr" classNames="form-control" value=config.podCidr}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.networking.podCidr.help'}}
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col span-4 mb-0">
+              <label>
+                {{t 'clusterNew.ociocne.networking.proxyEndpoint.title'}}
+              </label>
+              {{input type="text" name="proxy-endpoint" classNames="form-control" placeholder=(t 'clusterNew.ociocne.networking.proxyEndpoint.placeholder') value=config.proxyEndpoint}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.networking.proxyEndpoint.help'}}
+              </p>
+            </div>
+          </div>
+        {{/accordion-list-item}}
+        {{#accordion-list-item title=(t "clusterNew.ociocne.controlPlaneImages.title")
+                               detail=(t "clusterNew.ociocne.controlPlaneImages.detail")
+                               expandAll=expandAll
+                               expand=(action expandFn)
+                               expandOnInit=false}}
+          <div class="row">
+            <div class="col span-4 mb-0">
+              <label>
+                {{t 'clusterNew.ociocne.controlPlaneImages.registry'}}{{field-required}}
+              </label>
+              {{input type="text" name="cp-registry" classNames="form-control" value=config.controlPlaneRegistry}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.controlPlaneImages.registryHelp'}}
+              </p>
+            </div>
+          </div>
+        {{/accordion-list-item}}
+        {{#accordion-list-item title=(t "clusterNew.ociocne.addons.title")
+                               detail=(t "clusterNew.ociocne.addons.detail")
+                               expandAll=expandAll
+                               expand=(action expandFn)
+                               expandOnInit=false}}
+          <p class="text-bold">{{t 'clusterNew.ociocne.addons.ccm.title'}}</p>
+          <div class="row">
+            <div class="col span-2 mb-0">
+              <label for="ccm-checkbox">
+                {{t 'clusterNew.ociocne.addons.ccm.install'}}
+              </label>
+              {{input type="checkbox" name="ccm-checkbox" classNames="form-control" checked=config.installCcm}}
+            </div>
+            <div class="col span-4 mb-0">
+              <label for="ccm-image">
+                {{t 'clusterNew.ociocne.addons.ccm.image'}}{{field-required}}
+              </label>
+              {{input type="text" name="ccm-image" classNames="form-control" value=config.ccmImage}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.addons.ccm.imageHelp'}}
+              </p>
+            </div>
+          </div>
+          <p class="text-bold">{{t 'clusterNew.ociocne.addons.csi.title'}}</p>
+          <div class="row">
+            <div class="col span-2 mb-0">
+              <label for="csi-checkbox">
+                {{t 'clusterNew.ociocne.addons.csi.install'}}
+              </label>
+              {{input type="checkbox" name="csi-checkbox" classNames="form-control" checked=config.installCsi}}
+            </div>
+            <div class="col span-4 mb-0">
+              <label for="csi-image">
+                {{t 'clusterNew.ociocne.addons.csi.image'}}{{field-required}}
+              </label>
+              {{input type="text" name="csi-image" classNames="form-control" value=config.ociCsiImage}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.addons.csi.imageHelp'}}
+              </p>
+            </div>
+            <div class="col span-4 mb-0">
+              <label for="csi-registry">
+                {{t 'clusterNew.ociocne.addons.csi.registry'}}{{field-required}}
+              </label>
+              {{input type="text" name="csi-registry" classNames="form-control" value=config.csiRegistry}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.addons.csi.registryHelp'}}
+              </p>
+            </div>
+          </div>
+          <p class="text-bold">{{t 'clusterNew.ociocne.addons.calico.title'}}</p>
+          <div class="row">
+            <div class="col span-2 mb-0">
+              <label for="calico-checkbox">
+                {{t 'clusterNew.ociocne.addons.calico.install'}}
+              </label>
+              {{input type="checkbox" name="calico-checkbox" classNames="form-control" checked=config.installCalico}}
+            </div>
+            <div class="col span-4 mb-0">
+              <label for="calico-registry">
+                {{t 'clusterNew.ociocne.addons.calico.registry'}}{{field-required}}
+              </label>
+              {{input type="text" name="calico-registry" classNames="form-control" value=config.calicoImageRegistry}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.addons.calico.registryHelp'}}
+              </p>
+            </div>
+          </div>
+        {{/accordion-list-item}}
+      {{/accordion-list-item}}
+      {{#if (eq step 3)}}
+        {{save-cancel editing=(eq mode 'edit')
+                      save="save"
+                      saveDisabled=canCreateCluster
+                      cancel=close
+        }}
+      {{/if}}
+    {{/if}}
+  {{/if}}
+  {{top-errors errors=errors}}
+  {{top-errors errors=otherErrors}}
+  {{top-errors errors=clusterErrors}}
+{{/accordion-list}}
