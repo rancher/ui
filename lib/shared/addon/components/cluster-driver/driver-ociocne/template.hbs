@@ -365,34 +365,76 @@
             {{#if (eq vcnCreationMode "Existing")}}
               <div class="row">
                 <div class="col span-10">
-                  <label class="acc-label">{{t 'clusterNew.ociocne.vcnId.label'}}{{field-required}}</label>
-                  {{#input-or-display editable=(and (eq step 2) isNew) value=config.vcnId}}
-                    {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.ociocne.vcnId.placeholder') value=config.vcnId}}
+                  <label class="acc-label">{{t 'clusterNew.ociocne.vcnCompartment.label'}}{{field-required}}</label>
+                  {{#input-or-display editable=(and (eq step 2) isNew) value=vcnCompartment}}
+                    {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.ociocne.vcnCompartment.placeholder') value=vcnCompartment}}
                   {{/input-or-display}}
+                </div>
+                <div class="col span-4">
+                  <label class="acc-label">
+                    {{t 'clusterNew.ociocne.vcnId.label'}}{{field-required}}
+                  </label>
+                  {{#if (eq step 2)}}
+                    {{#input-or-display value=config.vcnId}}
+                      {{searchable-select class="form-control"
+                                          content=vcnOptions
+                                          value=config.vcnId
+                      }}
+                    {{/input-or-display}}
+                  {{else}}
+                    <div>{{config.vcnId}}</div>
+                  {{/if}}
                 </div>
               </div>
               <div class="row">
-                <div class="col span-10">
-                  <label class="acc-label">{{t 'clusterNew.ociocne.controlPlaneSubnet.label'}}{{field-required}}</label>
-                  {{#input-or-display editable=(and (eq step 2) isNew) value=config.controlPlaneSubnet}}
-                    {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.ociocne.controlPlaneSubnet.placeholder') value=config.controlPlaneSubnet}}
-                  {{/input-or-display}}
+                <div class="col span-4">
+                  <label class="acc-label">
+                    {{t 'clusterNew.ociocne.controlPlaneSubnet.label'}}{{field-required}}
+                  </label>
+                  {{#if (eq step 2)}}
+                    {{#input-or-display value=config.controlPlaneSubnet}}
+                      {{searchable-select class="form-control"
+                                          content=subnetOptions
+                                          value=config.controlPlaneSubnet
+                      }}
+                    {{/input-or-display}}
+                  {{else}}
+                    <div>{{config.controlPlaneSubnet}}</div>
+                  {{/if}}
                 </div>
               </div>
               <div class="row">
-                <div class="col span-10">
-                  <label class="acc-label">{{t 'clusterNew.ociocne.loadBalancerSubnet.label'}}{{field-required}}</label>
-                  {{#input-or-display editable=(and (eq step 2) isNew) value=config.loadBalancerSubnet}}
-                    {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.ociocne.loadBalancerSubnet.placeholder') value=config.loadBalancerSubnet}}
-                  {{/input-or-display}}
+                <div class="col span-4">
+                  <label class="acc-label">
+                    {{t 'clusterNew.ociocne.loadBalancerSubnet.label'}}{{field-required}}
+                  </label>
+                  {{#if (eq step 2)}}
+                    {{#input-or-display value=config.loadBalancerSubnet}}
+                      {{searchable-select class="form-control"
+                                          content=subnetOptions
+                                          value=config.loadBalancerSubnet
+                      }}
+                    {{/input-or-display}}
+                  {{else}}
+                    <div>{{config.loadBalancerSubnet}}</div>
+                  {{/if}}
                 </div>
               </div>
               <div class="row">
-                <div class="col span-10">
-                  <label class="acc-label">{{t 'clusterNew.ociocne.workerNodeSubnet.label'}}{{field-required}}</label>
-                  {{#input-or-display editable=(and (eq step 2) isNew) value=config.workerNodeSubnet}}
-                    {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.ociocne.workerNodeSubnet.placeholder') value=config.workerNodeSubnet}}
-                  {{/input-or-display}}
+                <div class="col span-4">
+                  <label class="acc-label">
+                    {{t 'clusterNew.ociocne.workerNodeSubnet.label'}}{{field-required}}
+                  </label>
+                  {{#if (eq step 2)}}
+                    {{#input-or-display value=config.workerNodeSubnet}}
+                      {{searchable-select class="form-control"
+                                          content=subnetOptions
+                                          value=config.workerNodeSubnet
+                      }}
+                    {{/input-or-display}}
+                  {{else}}
+                    <div>{{config.workerNodeSubnet}}</div>
+                  {{/if}}
                 </div>
               </div>
             {{/if}}
