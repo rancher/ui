@@ -322,6 +322,47 @@
         {{/accordion-list-item}}
       {{/each}}
     {{/accordion-list-item}}
+    {{#accordion-list-item title=(t "clusterNew.ociocne.advanced.title")
+                           detail=(t "clusterNew.ociocne.advanced.detail")
+                           expandAll=expandAll
+                           expand=(action expandFn)
+                           expandOnInit=true}}
+      {{#accordion-list-item title=(t "clusterNew.ociocne.addons.yaml.title")
+                             detail=(t "clusterNew.ociocne.addons.yaml.detail")
+                             expandAll=expandAll
+                             expand=(action expandFn)
+                             expandOnInit=false}}
+        <div class="row">
+          <button
+            class="btn btn-sm bg-primary inline-block mb-5"
+            style="margin-top: -5px;" type="button" {{action "addYAML"}}
+          >
+            {{t "clusterNew.ociocne.addons.yaml.addNew"}}
+          </button>
+        </div>
+        {{#each yamls as |yaml|}}
+            <div class="row">
+              <div class="col span-4">
+                {{input-yaml
+                  showUpload=true
+                  showDownload=true
+                  canChangeName=false
+                  value=yaml.body
+                  autoResize=true
+                  loading=loading
+                }}
+              </div>
+            </div>
+
+            <button
+              class="btn btn-sm bg-primary inline-block mb-5"
+              style="margin-top: -5px;" type="button" {{action "deleteYAML" yaml}}
+            >
+              {{t "clusterNew.ociocne.addons.yaml.delete"}}
+            </button>
+        {{/each}}
+      {{/accordion-list-item}}
+    {{/accordion-list-item}}
 
     {{!-- exit point for update/upgrade --}}
     {{save-cancel editing=(eq mode 'edit')
@@ -339,8 +380,6 @@
                              expandAll=al.expandAll
                              expand=(action expandFn)
       }}
-
-
         <div class="row">
           <div class="col span-6">
             {{#input-or-display
@@ -775,11 +814,47 @@
           }}
         </div>
       {{/accordion-list-item}}
+
       {{#accordion-list-item title=(t "clusterNew.ociocne.advanced.title")
                              detail=(t "clusterNew.ociocne.advanced.detail")
                              expandAll=expandAll
                              expand=(action expandFn)
-                             expandOnInit=false}}
+                             expandOnInit=true}}
+        {{#accordion-list-item title=(t "clusterNew.ociocne.addons.yaml.title")
+                               detail=(t "clusterNew.ociocne.addons.yaml.detail")
+                               expandAll=expandAll
+                               expand=(action expandFn)
+                               expandOnInit=false}}
+          <div class="row">
+            <button
+              class="btn btn-sm bg-primary inline-block mb-5"
+              style="margin-top: -5px;" type="button" {{action "addYAML"}}
+            >
+              {{t "clusterNew.ociocne.addons.yaml.addNew"}}
+            </button>
+          </div>
+          {{#each yamls as |yaml|}}
+              <div class="row">
+                <div class="col span-4">
+                  {{input-yaml
+                    showUpload=true
+                    showDownload=true
+                    canChangeName=false
+                    value=yaml.body
+                    autoResize=true
+                    loading=loading
+                  }}
+                </div>
+              </div>
+
+              <button
+                class="btn btn-sm bg-primary inline-block mb-5"
+                style="margin-top: -5px;" type="button" {{action "deleteYAML" yaml}}
+              >
+                {{t "clusterNew.ociocne.addons.yaml.delete"}}
+              </button>
+          {{/each}}
+        {{/accordion-list-item}}
         {{#accordion-list-item title=(t "clusterNew.ociocne.networking.title")
                                detail=(t "clusterNew.ociocne.networking.detail")
                                expandAll=expandAll
