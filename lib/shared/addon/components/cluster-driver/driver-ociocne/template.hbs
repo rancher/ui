@@ -138,11 +138,12 @@
             {{t 'clusterNew.ociocne.version.label'}}
           </label>
           {{#if (eq step 2)}}
-            <select class="form-control" onchange={{action (mut config.kubernetesVersion) value="target.value"}}>
-              {{#each kubernetesVersions as |choice|}}
-                <option value={{choice}} selected={{eq config.kubernetesVersion choice}}>{{choice}}</option>
-              {{/each}}
-            </select>
+            {{#input-or-display value=config.kubernetesVersion}}
+              {{searchable-select class="form-control"
+                                  content=kubernetesVersionOptions
+                                  value=config.kubernetesVersion
+              }}
+            {{/input-or-display}}
           {{else}}
             <div>{{config.kubernetesVersion}}</div>
           {{/if}}
@@ -592,11 +593,12 @@
               {{t 'clusterNew.ociocne.version.label'}}
             </label>
             {{#if (eq step 3)}}
-              <select class="form-control" onchange={{action (mut config.kubernetesVersion) value="target.value"}}>
-                {{#each kubernetesVersions as |choice|}}
-                  <option value={{choice}} selected={{eq config.kubernetesVersion choice}}>{{choice}}</option>
-                {{/each}}
-              </select>
+              {{#input-or-display value=config.kubernetesVersion}}
+                {{searchable-select class="form-control"
+                                    content=kubernetesVersionOptions
+                                    value=config.kubernetesVersion
+                }}
+              {{/input-or-display}}
             {{else}}
               <div>{{config.kubernetesVersion}}</div>
             {{/if}}
