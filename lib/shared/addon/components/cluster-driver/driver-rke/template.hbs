@@ -1342,6 +1342,32 @@
             @applyClusterTemplate={{applyClusterTemplate}}
           />
         {{/accordion-list-item}}
+        {{#accordion-list-item
+           title=(t "clusterNew.agentConfig.title.cluster")
+           detail=(t "clusterNew.agentConfig.accordionDetail.cluster")
+           expandOnInit=false
+           expandAll=al.expandAll
+           expand=(action expandFn)
+        }}
+          <FormAgentConfig
+            @mode={{mode}}
+            @cluster={{cluster}}
+            @type="cluster"
+          />
+        {{/accordion-list-item}}
+        {{#accordion-list-item
+           title=(t "clusterNew.agentConfig.title.fleet")
+           detail=(t "clusterNew.agentConfig.accordionDetail.fleet")
+           expandOnInit=false
+           expandAll=al.expandAll
+           expand=(action expandFn)
+        }}
+          <FormAgentConfig
+            @mode={{mode}}
+            @cluster={{cluster}}
+            @type="fleet"
+          />
+        {{/accordion-list-item}}
 
       {{/if}}
     {{/accordion-list}}

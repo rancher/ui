@@ -1,0 +1,44 @@
+<div class="row">
+ <div class="col span-6">
+  <label class="acc-label">
+    {{t "clusterNew.agentConfig.resourceRequirements.cpu" type=type}}
+  </label>
+      <div class="input-group">
+      {{#input-or-display
+        editable=editing
+        value=cpu
+      }}
+        {{input-integer
+          step="100"
+          value=cpu
+          classNames="form-control"
+          placeholder=(t "formSecurity.milliCpuReservation.placeholder")
+        }}
+      {{/input-or-display}}
+        <div class="input-group-addon bg-default">
+          {{t "generic.mCPU"}}
+        </div>
+      </div>
+    </div>
+  <div class="col span-6">
+    <label class="acc-label" for="input-milli-limit-memory">
+      {{t "clusterNew.agentConfig.resourceRequirements.memory" type=type}}
+    </label>
+    <div class="input-group">
+      {{#input-or-display
+        editable=editing
+        value=memory
+      }}
+        {{input-integer
+          step="1"
+          value=memory
+          classNames="form-control"
+          placeholder=(t "formSecurity.memoryReservation.placeholder")
+        }}
+      {{/input-or-display}}
+      <div class="input-group-addon bg-default">
+        {{t "generic.mibibyte"}}
+      </div>
+    </div>
+  </div>
+</div>

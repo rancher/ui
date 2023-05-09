@@ -1,0 +1,68 @@
+<div class="agent-config">
+  <BannerMessage
+    @color="bg-warning mb-10"
+    @message={{t "clusterNew.agentConfig.banners.advanced" type=type}}
+    @icon="icon icon-alert"
+  />
+  <div class ="mb-10 box">
+    <BannerMessage
+      @color="bg-info mb-10"
+      @message={{t "clusterNew.agentConfig.banners.resourceRequests"}}
+    />
+    <div class="row">
+      <ResourceList
+        @editing={{editing}}
+        @type={{t "clusterNew.agentConfig.resourceRequirements.requests"}}
+        @value={{requests}}
+        @update={{action "updateRequests" }}
+      />
+    </div>
+      <div class="row">
+      <ResourceList
+        @editing={{editing}}
+        @type={{t "clusterNew.agentConfig.resourceRequirements.limits"}}
+        @value={{limits}}
+        @update={{action "updateLimits"}}
+      />
+    </div>
+  </div>
+  <div class="mb-10">
+    <div class="row">
+      <div class="col span-12 box">
+        <BannerMessage
+          @color="bg-info mb-10"
+          @message={{t "clusterNew.agentConfig.banners.tolerations"}}
+        />
+        {{scheduling-toleration editing=editing tolerate=appendTolerations}}
+      </div>
+    </div>
+  </div>
+    <div class="row">
+      <div class="col span-12 mb-0">
+        <div class="radio">
+          <label>
+            {{radio-button
+              selection=useDefaultAffinity
+              value=true
+              disabled=(not editing)
+            }} {{t "clusterNew.agentConfig.overrideAffinity.useDefault"}}
+          </label>
+        </div> 
+        <div class="radio">
+          <label>
+            {{radio-button
+              selection=useDefaultAffinity
+              value=false
+              disabled=(not editing)
+            }} {{t "clusterNew.agentConfig.overrideAffinity.customize"}}
+          </label>
+        </div>
+      </div>
+    </div>
+  {{#if (and (or (not useDefaultAffinity) (not editing) ) overrideAffinity) }}
+    <FormAffinityK8s
+    @editing={{editing}}
+    @value={{overrideAffinity}}
+  />
+  {{/if}}
+</div>

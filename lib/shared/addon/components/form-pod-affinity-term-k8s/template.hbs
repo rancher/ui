@@ -1,0 +1,127 @@
+<div class="box mb-10 affinity-term">
+  {{#if editing}}
+    <div class="affinity-remove">
+      <button class="btn btn-sm " type="button" {{action "removeTerm"}}>
+          <i class="icon icon-x"/>
+      </button>
+    </div>
+  {{/if }}
+  <div class="row mt-10">
+    <div class="col span-6">
+      {{#input-or-display
+        editable=editing
+        value=priority
+      }}
+        <NewSelect 
+          @class="form-control"
+          @value={{priority}}
+          @optionLabelPath="label"
+          @optionValuePath="value"
+          @localizedLabel={{true}}
+          @content={{priorityOptions}}
+          @disabled={{not editing}}
+        />
+      {{/input-or-display}}
+    </div>
+    <div class="col span-6"> 
+      {{#if editing}}
+        <NewSelect 
+          @class="form-control"
+          @value={{anti}}
+          @optionLabelPath="label"
+          @optionValuePath="value"
+          @localizedLabel={{true}}
+          @content={{affinityOptions}}
+          @disabled={{not editing}}
+        />
+      {{else if anti}}
+        <span>{{ t "clusterNew.agentConfig.overrideAffinity.podAffinity.typeOptions.antiAffinity" }}</span>
+      {{else}}
+        <span>{{ t "clusterNew.agentConfig.overrideAffinity.podAffinity.typeOptions.affinity" }}</span>
+      {{/if}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col span-12 mb-0">
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=namespaceMode
+            value=namespaceModes.THIS_POD
+            disabled=(not editing)
+          }} {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.namespaces.radioOptions.thisPod"}}
+        </label>
+      </div> 
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=namespaceMode
+            value=namespaceModes.ALL
+            disabled=(not editing)
+          }} {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.namespaces.radioOptions.all"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button
+            selection=namespaceMode
+            value=namespaceModes.IN_LIST
+            disabled=(not editing)
+          }} {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.namespaces.radioOptions.inList"}}
+        </label>
+      </div>
+    </div>
+    {{#if (eq namespaceMode namespaceModes.IN_LIST) }}
+    <div class="col span-6 mt-0">
+      {{#input-or-display
+        editable=editing
+        value=namespaces
+      }}
+      {{input-array-as-string
+        type="text"
+        inputClass="form-control input-sm"
+        value=namespaces
+      }}
+      {{/input-or-display}}
+    </div>
+    {{/if}}
+  </div>
+  <div class="row">
+    <FormMatchExpressionsK8s
+      @editing={{editing}}
+      @labelSelector={{labelSelector}}
+    />
+  </div>
+  <div class="row">
+    <div class="col span-6">
+      <label class="acc-label">{{t "clusterNew.agentConfig.overrideAffinity.podAffinity.topologyKey.label"}}</label>
+      {{#input-or-display
+        editable=editing
+        value=podAffintyTerm.topologyKey
+      }}
+      {{input
+        type="text"
+        class="form-control input-sm"
+        value=podAffintyTerm.topologyKey
+        placeholder=(t "clusterNew.agentConfig.overrideAffinity.podAffinity.topologyKey.placeholder")
+      }}
+      {{/input-or-display}}
+    </div>
+    {{#if (eq value.priority TERM_PRIORITY.PREFERRED)}}
+      <div class="col span-6">
+        <label class="acc-label">{{t "clusterNew.agentConfig.overrideAffinity.podAffinity.weight.label"}}</label>
+        {{#input-or-display
+          editable=editing
+          value=weight
+        }}
+        {{input
+          type="number"
+          class="form-control input-sm"
+          value=weight
+          placeholder=(t "clusterNew.agentConfig.overrideAffinity.podAffinity.weight.placeholder")
+        }}
+        {{/input-or-display}}
+      </div>
+    {{/if}}
+  </div>
+</div>

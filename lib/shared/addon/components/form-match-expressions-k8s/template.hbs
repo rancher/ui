@@ -1,0 +1,126 @@
+<table class="table fixed no-lines mb-20">
+  <thead>
+    <tr>
+      {{#if (not labelSelector)}}
+        <th class="acc-label">
+          {{t "clusterNew.agentConfig.overrideAffinity.nodeAffinity.nodeSelectorTerm.type"}}
+        </th>
+        <th width="40"></th>
+      {{/if}}
+      <th class="acc-label">
+        {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.matchExpressions.key"}}
+      </th>
+      <th width="40"></th>
+      <th class="acc-label">
+        {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.matchExpressions.operator"}}
+      </th>
+      <th width="40"></th>
+      <th class="acc-label">
+        {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.matchExpressions.value"}}
+      </th>
+      <th width="10">&nbsp;</th>
+      <th width="40"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each allMatches as |match|}}
+      <tr>
+        {{#if (not labelSelector)}}
+          <td>
+          {{#input-or-display
+              editable=editing
+              value=match.type
+          }}
+          <NewSelect
+              class="form-control input-sm"
+              @value={{match.type}}
+              @content={{typeOpts}}
+              @optionValuePath="value"
+              @optionLabelPath="label"
+              @localizedLabel={{true}}
+              @action={{action "typeChanged" match}}
+              @disabled={{not editing}}
+          />
+          {{/input-or-display}}
+          </td>
+          <td>
+            &nbsp;
+          </td>
+        {{/if}}
+        <td>
+          {{#input-or-display
+              editable=editing
+              value=match.match.key
+          }}
+            {{input
+              type="text"
+              class="form-control input-sm"
+              value=match.match.key
+            }}
+          {{/input-or-display}}
+        </td>
+        <td>
+          &nbsp;
+        </td>
+        <td>
+          {{#input-or-display
+            editable=editing
+            value=match.match.operator
+          }}
+            <NewSelect
+              class="form-control input-sm"
+              @value={{match.match.operator}}
+              @content={{operatorOpts}}
+              optionValuePath="value"
+              optionLabelPath="label"
+              @localizedLabel={{true}}
+              @action={{action "operatorChanged" match}}
+            />
+          {{/input-or-display}}
+        </td>
+        <td>
+          &nbsp;
+        </td>
+        <td>
+          {{#input-or-display
+              editable=editing
+              value=match.match.value
+          }}
+          {{#if (or (eq match.match.operator "In") (eq match.match.operator "NotIn"))}}
+            {{input-array-as-string
+              value=match.match.value
+              inputClass='form-control input-sm'
+            }}
+            {{else if (or (eq match.match.operator "Gt") (eq match.match.operator "Lt"))}}
+              {{input-array-as-string
+                type="number"
+                inputClass="form-control input-sm"
+                value=match.match.value
+              }}
+            {{else}}
+            {{t "generic.na"}}
+            {{/if}}
+          {{/input-or-display}}
+        </td>
+        <td>
+          &nbsp;
+        </td>
+        {{#if editing}}
+          <div class="input-group-btn">
+            <button class="btn bg-primary btn-sm" type="button" {{action "removeMatchAction" match}}>
+              <i class="icon icon-minus"/>
+            </button>
+          </div>
+        {{/if }}
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+{{#if editing}}
+  <button class="btn bg-link icon-btn" type="button" {{action "addMatch"}}>
+    <i class="icon icon-plus text-small"/>
+    <span>
+      {{t "clusterNew.agentConfig.overrideAffinity.podAffinity.matchExpressions.add"}}
+    </span>
+  </button>
+{{/if}}

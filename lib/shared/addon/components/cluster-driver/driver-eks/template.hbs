@@ -241,6 +241,32 @@
           </div>
         </div>
       </AccordionListItem>
+      <AccordionListItem
+          @title={{t "clusterNew.agentConfig.title.cluster"}}
+          @detail={{t "clusterNew.agentConfig.accordionDetail.cluster"}}
+          @expandOnInit={{false}}
+          @expandAll={{expandAll}}
+          @expand={{action expandFn}}
+        >
+        <FormAgentConfig
+          @mode={{mode}}
+          @cluster={{cluster}}
+          @type="cluster"
+        />
+      </AccordionListItem>
+      <AccordionListItem
+          @title={{t "clusterNew.agentConfig.title.fleet"}}
+          @detail={{t "clusterNew.agentConfig.accordionDetail.fleet"}}
+          @expandOnInit={{false}}
+          @expandAll={{expandAll}}
+          @expand={{action expandFn}}
+      >
+        <FormAgentConfig
+          @mode={{mode}}
+          @cluster={{cluster}}
+          @type="fleet"
+        />
+      </AccordionListItem>
       {{#if (eq step 2)}}
         <SaveCancel
           @editing={{eq mode "edit"}}

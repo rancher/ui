@@ -86,6 +86,7 @@ generic:
   noRating: No Rating
   node: Node
   none: None
+  mCPU: mCPU
   completedOf: "{completed} of {total}"
   owner: Owner
   paste: Paste
@@ -3347,6 +3348,68 @@ clusterNew:
     viewCancel: View as a Form
     viewYaml: View as YAML
     yaml: Edit as YAML
+  agentConfig:
+    title:
+      cluster: Cluster Agent Configuration
+      fleet: Fleet Agent Configuration
+    accordionDetail:
+      cluster: Customize scheduling fields and resource limits for the Rancher cluster agent
+      fleet: Customize scheduling fields and resource limits for the Rancher fleet agent  
+    banners:
+      advanced: This is the advanced configuration for the {type} agent deployment. You should generally leave this as is.
+      resourceRequests: Pod requests and limits do not make use of a default configuration.
+      tolerations: Tolerations added here will be appended to the default tolerations dynamically configured by Rancher.
+    resourceRequirements:
+      label: Resource Requirements
+      cpu: CPU {type}
+      memory: Memory {type}
+      requests: Requests
+      limits: Limits
+    overrideAffinity:
+      customize: Customize affinity rules
+      useDefault: Use default affinity rules defined by Rancher
+      podAntiAffinity:
+        title: Pod AntiAffinity
+      podAffinity:
+        title: Pod Affinity
+        addTerm: Add Pod Affinity Term
+        topologyKey:
+          label: Topology Key
+          placeholder: e.g. failure-domain.beta.kubernetes.io/zone
+        typeOptions:
+          affinity: Affinity
+          antiAffinity: AntiAffinity
+          preferred: Preferred
+          required: Required
+        namespaces:
+          radioOptions:
+            all: All namespaces
+            thisPod: This pod's namespace
+            inList: Pods in specific namespaces
+        weight:
+          placeholder: e.g. 1
+          label: Weight
+        priority: Priority
+        matchExpressions:
+          add: Add Match Expression
+          operator: Operator
+          value: Value
+          key: Key
+          operatorOptions:
+            in: In list
+            notIn: Not in list
+            exists: Exists
+            doesNotExist: Does not exist
+            lt: Less than
+            gt: Greater than
+      nodeAffinity:
+        title: Node Affinity
+        addTerm: Add Node Selector
+        nodeSelectorTerm:
+          typeOptions:
+            matchExpression: Expression
+            matchField: Field
+          type: Match Type
   aliyunack:
     shortLabel: Alibaba ACK
   amazoneks:
