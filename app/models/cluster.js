@@ -183,7 +183,7 @@ export const DEFAULT_AKS_NODE_POOL_CONFIG = {
   count:               1,
   enableAutoScaling:   false,
   maxPods:             110,
-  maxSurge:            '',
+  maxSurge:            '1',
   mode:                'System',
   name:                '',
   nodeLabels:          {},
