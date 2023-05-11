@@ -1,8 +1,8 @@
 <div class="agent-config">
   <BannerMessage
-    @color="bg-warning mb-10"
+    @color="bg-info mb-10"
     @message={{t "clusterNew.agentConfig.banners.advanced" type=type}}
-    @icon="icon icon-alert"
+    @icon="icon icon-info"
   />
   <div class ="mb-10 box">
     <BannerMessage
@@ -60,6 +60,10 @@
       </div>
     </div>
   {{#if (and (or (not useDefaultAffinity) (not editing) ) overrideAffinity) }}
+    <BannerMessage
+      @color="bg-warning mb-10"
+      @message={{t "clusterNew.agentConfig.banners.affinity"}}
+    />
     <FormAffinityK8s
     @editing={{editing}}
     @value={{overrideAffinity}}
