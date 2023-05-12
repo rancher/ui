@@ -145,9 +145,16 @@ export default Route.extend({
     logout(transition, errorMsg) {
       let session = get(this, 'session');
       let access = get(this, 'access');
+<<<<<<< HEAD
 
       if ( isEmbedded() ) {
         dashboardWindow().postMessage({ action: 'logout' });
+=======
+      const isEmbedded = !!window.frameElement;
+
+      if ( isEmbedded ) {
+        window.parent.postMessage({ action: 'logout' });
+>>>>>>> update window.top and window.postMessage to work with e2e tests for iFramed pages
 
         return;
       }
