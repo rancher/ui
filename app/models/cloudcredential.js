@@ -4,6 +4,7 @@ import { notEmpty } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import { hasMany } from '@rancher/ember-api-store/utils/denormalize';
 import { get } from '@ember/object';
+import { requiredError } from 'shared/utils/util';
 
 const cloudCredential = Resource.extend({
   modal:         service(),
@@ -73,6 +74,37 @@ const cloudCredential = Resource.extend({
         mode:            'edit',
       });
     }
+  },
+  validationErrors() {
+    let errors = [];
+
+    if (this.isOCI) {
+      if (!this.get('ocicredentialConfig.tenancyId')) {
+        errors.push(requiredError('modalAddCloudKey.oci.tenancyOcid.label'));
+      }
+
+      if (!this.get('ocicredentialConfig.region')) {
+        errors.push(requiredError('modalAddCloudKey.oci.authRegion.label'));
+      }
+
+      if (!this.get('ocicredentialConfig.userId')) {
+        errors.push(requiredError('modalAddCloudKey.oci.userOcid.label'));
+      }
+
+      if (!this.get('ocicredentialConfig.fingerprint')) {
+        errors.push(requiredError(`modalAddCloudKey.oci.userFingerprint.label`));
+      }
+
+      if (!this.get('ocicredentialConfig.privateKeyContents')) {
+        errors.push(requiredError('modalAddCloudKey.oci.secretKey.label'));
+      }
+
+      return errors;
+    }
+
+    errors = this._super(...arguments);
+
+    return errors;
   },
 });
 
