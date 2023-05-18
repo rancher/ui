@@ -1,9 +1,3 @@
-<script>
-  $(document).click(function(e) {
-    $('#compartmentTree').hide();
-    $('#vcnCompartmentTree').hide();
-  });
-</script>
 {{#accordion-list showExpandAll=false as |al expandFn|}}
 
 {{!-- Only allow edits to tenancy, compartment, and region configuration for new cluster --}}
@@ -45,53 +39,19 @@
       </div>
       <div class="col span-10">
         <label class="acc-label">
-          {{t 'clusterNew.ociocne.compartment.label'}}{{field-required}}
+          {{t 'clusterNew.ociocne.compartmentId.label'}}{{field-required}}
         </label>
-        {{#input-or-display editable=(and (eq step 1) isNew) value=config.compartmentName}}
-          {{#if this.fetchCompartmentsTask.isIdle}}
-            <div class="row">
-              <table class="table fixed no-lines js-label-table">
-                <tbody>
-                  <tr>
-                    <select class="form-control" value={{config.compartmentId}} onclick="event.stopPropagation(); $('#compartmentTree').toggle();">
-                      <option value="" hidden="true"></option>
-                        {{#each [flatCompartments] as |choice|}}
-                          <option value="{{choice.id}}" hidden="true">{{choice.name}}</option>
-                        {{/each}}
-                      </select>
-                      <div id="compartmentTree" style="display: none; overflow-y: auto; height: 200px;">
-                        {{#x-tree 
-                          model=compartmentTree
-                          onSelect=(action 'onCompartmentSelect') 
-                          expandDepth=1 
-                          chosenId=config.compartmentId
-                          as |node| 
-                        }}
-                          {{node.toggle}}
-                          <span style={{node-style node config.compartmentId }}>
-                            {{node.model.name}}
-                          </span>
-                        {{/x-tree}}
-                      </div>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            {{else}}
-          <div class="text-muted no-match">
-            <i class="icon icon-spinner icon-spin"></i>
-            {{t "generic.loading"}}
-          </div>
-        {{/if}}
-        <p class="help-block">
-        {{t 'clusterNew.ociocne.compartment.placeholder'}}
-        </p>
-      {{/input-or-display}} 
-
+        {{#input-or-display editable=(and (eq step 1) isNew) value=config.compartmentId}}
+          {{input type="text" name="compartment" classNames="form-control" value=config.compartmentId}}
+          <p class="help-block">
+            {{t 'clusterNew.ociocne.compartmentId.placeholder'}}
+          </p>
+        {{/input-or-display}}
+      </div>
     </div>
-  </div>
 
   {{/accordion-list-item}}
+
   {{!-- authenticate to OCI --}}
   {{#if (eq step 1)}}
     {{save-cancel editing=false
@@ -472,42 +432,8 @@
               <div class="row">
                 <div class="col span-10">
                   <label class="acc-label">{{t 'clusterNew.ociocne.vcnCompartment.label'}}{{field-required}}</label>
-                  {{#input-or-display editable=(and (eq step 2) isNew) value=vcnCompartmentName}}
-                    {{#if this.fetchCompartmentsTask.isIdle}}
-                      <div class="row">
-                        <table class="table fixed no-lines js-label-table">
-                          <tbody>
-                            <tr>
-                              <select class="form-control" value={{vcnCompartment}} onclick="event.stopPropagation(); $('#vcnCompartmentTree').toggle();">
-                                <option value="" hidden="true"></option>
-                                  {{#each [flatCompartments] as |choice|}}
-                                    <option value="{{choice.id}}" hidden="true">{{choice.name}}</option>
-                                  {{/each}}
-                              </select>
-                              <div id="vcnCompartmentTree" style="display: none; overflow-y: auto; height: 200px;">
-                                {{#x-tree 
-                                  model=vcnCompartmentTree
-                                  onSelect=(action 'onVcnCompartmentSelect') 
-                                  expandDepth=1 
-                                  chosenId=vcnCompartment
-                                  as |node| 
-                                }}
-                                  {{node.toggle}}
-                                  <span style={{node-style node vcnCompartment}}>
-                                    {{node.model.name}}
-                                  </span>
-                                {{/x-tree}}
-                              </div>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    {{else}}
-                      <div class="text-muted no-match">
-                        <i class="icon icon-spinner icon-spin"></i>
-                        {{t "generic.loading"}}
-                      </div>
-                    {{/if}}
+                  {{#input-or-display editable=(and (eq step 2) isNew) value=vcnCompartment}}
+                    {{input type="text" classNames="form-control" placeholder=(t 'clusterNew.ociocne.vcnCompartment.placeholder') value=vcnCompartment}}
                   {{/input-or-display}}
                 </div>
                 <div class="col span-4">
