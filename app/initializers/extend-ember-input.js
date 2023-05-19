@@ -12,7 +12,7 @@ export function initialize(/* application */) {
   // Disable iOS auto-capitalization
   //
   TextField.reopen({
-    attributeBindings: ['autocapitalize', 'spellcheck', 'autocomplete'],
+    attributeBindings: ['autocapitalize', 'spellcheck', 'autocomplete', 'data-testid'],
     autocomplete:      'off',
     autocapitalize:    'none',
   });
