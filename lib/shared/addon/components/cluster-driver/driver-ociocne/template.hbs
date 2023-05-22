@@ -56,19 +56,19 @@
                         {{/each}}
             </select>
             <div id="compartmentTree" style="display: none; overflow-y: auto; height: 200px;">
-              {{#x-tree 
+              {{#x-tree
                 model=compartmentTree
-                onSelect=(action 'onCompartmentSelect') 
-                expandDepth=1 
+                onSelect=(action 'onCompartmentSelect')
+                expandDepth=1
                 chosenId=config.compartmentId
-                as |node| 
+                as |node|
               }}
                 {{node.toggle}}
                   <span style={{node-style node config.compartmentId }}>
                     {{node.model.name}}
                   </span>
               {{/x-tree}}
-            </div>   
+            </div>
         {{else}}
           <div class="text-muted no-match">
             <i class="icon icon-spinner icon-spin"></i>
@@ -78,7 +78,7 @@
         <p class="help-block">
         {{t 'clusterNew.ociocne.compartment.placeholder'}}
         </p>
-      {{/input-or-display}} 
+      {{/input-or-display}}
 
     </div>
   </div>
@@ -167,17 +167,79 @@
       <div class="row">
         <div class="col span-4 mb-0">
           <label class="acc-label">
-            {{t 'clusterNew.ociocne.version.label'}}
+            {{t 'clusterNew.ociocne.version.ocne'}}{{field-required}}
+          </label>
+          {{#if (eq step 2)}}
+            {{#input-or-display value=config.ocneVersion}}
+              {{searchable-select class="form-control"
+                                  content=ocneVersionOptions
+                                  value=config.ocneVersion
+              }}
+            {{/input-or-display}}
+          {{else}}
+            <div>{{config.ocneVersion}}</div>
+          {{/if}}
+        </div>
+        <div class="col span-4 mb-0">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.version.label'}}{{field-required}}
           </label>
           {{#if (eq step 2)}}
             {{#input-or-display value=config.kubernetesVersion}}
               {{searchable-select class="form-control"
-                                  content=kubernetesVersionOptions
+                                  content=kubernetesVersions
                                   value=config.kubernetesVersion
               }}
             {{/input-or-display}}
           {{else}}
             <div>{{config.kubernetesVersion}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-4 mb-0">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.version.etcd'}}{{field-required}}
+          </label>
+          {{#if (eq step 2)}}
+            {{#input-or-display value=config.etcdImageTag}}
+              {{searchable-select class="form-control"
+                                  content=etcdTags
+                                  value=config.etcdImageTag
+              }}
+            {{/input-or-display}}
+          {{else}}
+            <div>{{config.etcdImageTag}}</div>
+          {{/if}}
+        </div>
+        <div class="col span-4 mb-0">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.version.coredns'}}{{field-required}}
+          </label>
+          {{#if (eq step 2)}}
+            {{#input-or-display value=config.corednsImageTag}}
+              {{searchable-select class="form-control"
+                                  content=coreDNSTags
+                                  value=config.corednsImageTag
+              }}
+            {{/input-or-display}}
+          {{else}}
+            <div>{{config.corednsImageTag}}</div>
+          {{/if}}
+        </div>
+        <div class="col span-4 mb-0">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.version.tigera'}}{{field-required}}
+          </label>
+          {{#if (eq step 2)}}
+            {{#input-or-display value=config.tigeraImageTag}}
+              {{searchable-select class="form-control"
+                                  content=tigeraOperatorTags
+                                  value=config.tigeraImageTag
+              }}
+            {{/input-or-display}}
+          {{else}}
+            <div>{{config.tigeraImageTag}}</div>
           {{/if}}
         </div>
       </div>
@@ -477,12 +539,12 @@
                                   {{/each}}
                               </select>
                               <div id="vcnCompartmentTree" style="display: none; overflow-y: auto; height: 200px;">
-                                {{#x-tree 
+                                {{#x-tree
                                   model=vcnCompartmentTree
-                                  onSelect=(action 'onVcnCompartmentSelect') 
-                                  expandDepth=1 
+                                  onSelect=(action 'onVcnCompartmentSelect')
+                                  expandDepth=1
                                   chosenId=vcnCompartment
-                                  as |node| 
+                                  as |node|
                                 }}
                                   {{node.toggle}}
                                   <span style={{node-style node vcnCompartment}}>
@@ -656,17 +718,79 @@
         <div class="row">
           <div class="col span-4 mb-0">
             <label class="acc-label">
-              {{t 'clusterNew.ociocne.version.label'}}
+              {{t 'clusterNew.ociocne.version.ocne'}}{{field-required}}
+            </label>
+            {{#if (eq step 3)}}
+              {{#input-or-display value=config.ocneVersion}}
+                {{searchable-select class="form-control"
+                                    content=ocneVersionOptions
+                                    value=config.ocneVersion
+                }}
+              {{/input-or-display}}
+            {{else}}
+              <div>{{config.ocneVersion}}</div>
+            {{/if}}
+          </div>
+          <div class="col span-4 mb-0">
+            <label class="acc-label">
+              {{t 'clusterNew.ociocne.version.label'}}{{field-required}}
             </label>
             {{#if (eq step 3)}}
               {{#input-or-display value=config.kubernetesVersion}}
                 {{searchable-select class="form-control"
-                                    content=kubernetesVersionOptions
+                                    content=kubernetesVersions
                                     value=config.kubernetesVersion
                 }}
               {{/input-or-display}}
             {{else}}
               <div>{{config.kubernetesVersion}}</div>
+            {{/if}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col span-4 mb-0">
+            <label class="acc-label">
+              {{t 'clusterNew.ociocne.version.etcd'}}{{field-required}}
+            </label>
+            {{#if (eq step 3)}}
+              {{#input-or-display value=config.etcdImageTag}}
+                {{searchable-select class="form-control"
+                                    content=etcdTags
+                                    value=config.etcdImageTag
+                }}
+              {{/input-or-display}}
+            {{else}}
+              <div>{{config.etcdImageTag}}</div>
+            {{/if}}
+          </div>
+          <div class="col span-4 mb-0">
+            <label class="acc-label">
+              {{t 'clusterNew.ociocne.version.coredns'}}{{field-required}}
+            </label>
+            {{#if (eq step 3)}}
+              {{#input-or-display value=config.corednsImageTag}}
+                {{searchable-select class="form-control"
+                                    content=coreDNSTags
+                                    value=config.corednsImageTag
+                }}
+              {{/input-or-display}}
+            {{else}}
+              <div>{{config.corednsImageTag}}</div>
+            {{/if}}
+          </div>
+          <div class="col span-4 mb-0">
+            <label class="acc-label">
+              {{t 'clusterNew.ociocne.version.tigera'}}{{field-required}}
+            </label>
+            {{#if (eq step 3)}}
+              {{#input-or-display value=config.tigeraImageTag}}
+                {{searchable-select class="form-control"
+                                    content=tigeraOperatorTags
+                                    value=config.tigeraImageTag
+                }}
+              {{/input-or-display}}
+            {{else}}
+              <div>{{config.tigeraImageTag}}</div>
             {{/if}}
           </div>
         </div>
