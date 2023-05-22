@@ -1121,6 +1121,18 @@ export default Resource.extend(Grafana, ResourceUsage, {
         if (this.compareStringArrays(originalModel.model.originalCluster.annotations, this.annotations)) {
           options.data.annotations = this.annotations;
         }
+
+        const { clusterAgentDeploymentCustomization = {}, fleetAgentDeploymentCustomization = {} } = originalModel.model.originalCluster
+
+        const { clusterAgentDeploymentCustomization:newClusterAgentDeploymentCustomization = {}, fleetAgentDeploymentCustomization: newFleetAgentDeploymentCustomization = {} } = this;
+
+        if (JSON.stringify(clusterAgentDeploymentCustomization) !== JSON.stringify(newClusterAgentDeploymentCustomization)){
+          options.data.clusterAgentDeploymentCustomization = newClusterAgentDeploymentCustomization
+        }
+
+        if (JSON.stringify(fleetAgentDeploymentCustomization) !== JSON.stringify(newFleetAgentDeploymentCustomization)){
+          options.data.fleetAgentDeploymentCustomization = newFleetAgentDeploymentCustomization
+        }
       }
 
       return this._super(options);
