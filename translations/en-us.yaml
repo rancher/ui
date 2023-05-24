@@ -4363,31 +4363,32 @@ clusterNew:
       image: Verrazzano Platform Operator Image
       imageHelp: image to use when installing Verrazzano Platform Operator
     addons:
+      install: Addons
+      registry:
+        heading: Private Registry Configuration (Optional)
+        title: Private Registry
+        detail: Container registry URL to use for private registry
+        placeholder: 'my-container-registry.com'
+      pullSecretName:
+        title: Image Pull Secret Name
+        detail: Name of existing secret on admin cluster for private registry
+        placeholder: name
+      pullSecretNamespace:
+        title: Image Pull Secret Name
+        detail: Namespace of existing secret on admin cluster for private registry
+        placeholder: namespace
       yaml:
         title: YAML Manifests
         detail: Deploy additional manifests on the managed cluster
         addNew: New Manifest
         delete: Delete Manifest
         label: Manifest YAML
-      title: Cluster Addons
-      detail: Configure addon services for your cluster
+      title: Container Registry and Addons
+      detail: Configure the container registry and services for your cluster
       calico:
-        title: Container Networking Interface
         install: Install Calico
-        registry: Calico Registry
-        registryHelp: Registry to download Calico images from
-      csi:
-        title: Container Storage Interface
-        install: Install CSI
-        image: OCI CSI Provider Image
-        imageHelp: Install image for Oracle Cloud Container Storage Interface
-        registry: CSI Registry
-        registryHelp: Registry to download CSI images from
       ccm:
-        title: Cloud Controller Manager
-        install: Install CCM
-        image: CCM Image
-        imageHelp: Install image for Oracle Cloud Controller Manager
+        install: Install OCI CCM/CSI
     advanced:
       title: Advanced Settings
       detail: Advanced Cluster Configuration
