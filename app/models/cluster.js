@@ -1131,7 +1131,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         }
 
         if (JSON.stringify(fleetAgentDeploymentCustomization) !== JSON.stringify(newFleetAgentDeploymentCustomization)){
-          options.data.clusterAgentDeploymentCustomization = this.addDeletedKeysAsNull(fleetAgentDeploymentCustomization, newFleetAgentDeploymentCustomization)
+          options.data.fleetAgentDeploymentCustomization = this.addDeletedKeysAsNull(fleetAgentDeploymentCustomization, newFleetAgentDeploymentCustomization)
         }
       }
 
