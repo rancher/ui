@@ -457,6 +457,39 @@
             </button>
         {{/each}}
       {{/accordion-list-item}}
+      {{#accordion-list-item title=(t "clusterNew.ociocne.addons.title")
+                             detail=(t "clusterNew.ociocne.addons.detail")
+                             expandAll=expandAll
+                             expand=(action expandFn)
+                             expandOnInit=false}}
+        <p class="text-bold">{{t 'clusterNew.ociocne.addons.registry.heading'}}</p>
+        <div class="row">
+          <div class="col span-4 mb-0">
+            <label>
+              {{t 'clusterNew.ociocne.addons.registry.title'}}
+            </label>
+            {{input type="text" name="private-registry" classNames="form-control" placeholder=(t 'clusterNew.ociocne.addons.registry.placeholder') value=config.privateRegistry}}
+            <p class="help-block">
+              {{t 'clusterNew.ociocne.addons.registry.detail'}}
+            </p>
+          </div>
+        </div>
+        <p class="text-bold">{{t 'clusterNew.ociocne.addons.install'}}</p>
+        <div class="row">
+          <div class="col span-2 mb-0">
+            <label for="ccm-checkbox">
+              {{t 'clusterNew.ociocne.addons.ccm.install'}}
+            </label>
+            {{input type="checkbox" name="ccm-checkbox" classNames="form-control" checked=config.installCcm}}
+          </div>
+          <div class="col span-2 mb-0">
+            <label for="calico-checkbox">
+              {{t 'clusterNew.ociocne.addons.calico.install'}}
+            </label>
+            {{input type="checkbox" name="calico-checkbox" classNames="form-control" checked=config.installCalico}}
+          </div>
+        </div>
+      {{/accordion-list-item}}
     {{/accordion-list-item}}
 
     {{!-- exit point for update/upgrade --}}
@@ -1084,29 +1117,24 @@
             </div>
           </div>
         {{/accordion-list-item}}
-        {{#accordion-list-item title=(t "clusterNew.ociocne.controlPlaneImages.title")
-                               detail=(t "clusterNew.ociocne.controlPlaneImages.detail")
-                               expandAll=expandAll
-                               expand=(action expandFn)
-                               expandOnInit=false}}
-          <div class="row">
-            <div class="col span-4 mb-0">
-              <label>
-                {{t 'clusterNew.ociocne.controlPlaneImages.registry'}}{{field-required}}
-              </label>
-              {{input type="text" name="cp-registry" classNames="form-control" value=config.controlPlaneRegistry}}
-              <p class="help-block">
-                {{t 'clusterNew.ociocne.controlPlaneImages.registryHelp'}}
-              </p>
-            </div>
-          </div>
-        {{/accordion-list-item}}
         {{#accordion-list-item title=(t "clusterNew.ociocne.addons.title")
                                detail=(t "clusterNew.ociocne.addons.detail")
                                expandAll=expandAll
                                expand=(action expandFn)
                                expandOnInit=false}}
-          <p class="text-bold">{{t 'clusterNew.ociocne.addons.ccm.title'}}</p>
+          <p class="text-bold">{{t 'clusterNew.ociocne.addons.registry.heading'}}</p>
+          <div class="row">
+            <div class="col span-4 mb-0">
+              <label>
+                {{t 'clusterNew.ociocne.addons.registry.title'}}
+              </label>
+              {{input type="text" name="private-registry" classNames="form-control" placeholder=(t 'clusterNew.ociocne.addons.registry.placeholder') value=config.privateRegistry}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.addons.registry.detail'}}
+              </p>
+            </div>
+          </div>
+          <p class="text-bold">{{t 'clusterNew.ociocne.addons.install'}}</p>
           <div class="row">
             <div class="col span-2 mb-0">
               <label for="ccm-checkbox">
@@ -1114,59 +1142,11 @@
               </label>
               {{input type="checkbox" name="ccm-checkbox" classNames="form-control" checked=config.installCcm}}
             </div>
-            <div class="col span-4 mb-0">
-              <label for="ccm-image">
-                {{t 'clusterNew.ociocne.addons.ccm.image'}}{{field-required}}
-              </label>
-              {{input type="text" name="ccm-image" classNames="form-control" value=config.ccmImage}}
-              <p class="help-block">
-                {{t 'clusterNew.ociocne.addons.ccm.imageHelp'}}
-              </p>
-            </div>
-          </div>
-          <p class="text-bold">{{t 'clusterNew.ociocne.addons.csi.title'}}</p>
-          <div class="row">
-            <div class="col span-2 mb-0">
-              <label for="csi-checkbox">
-                {{t 'clusterNew.ociocne.addons.csi.install'}}
-              </label>
-              {{input type="checkbox" name="csi-checkbox" classNames="form-control" checked=config.installCsi}}
-            </div>
-            <div class="col span-4 mb-0">
-              <label for="csi-image">
-                {{t 'clusterNew.ociocne.addons.csi.image'}}{{field-required}}
-              </label>
-              {{input type="text" name="csi-image" classNames="form-control" value=config.ociCsiImage}}
-              <p class="help-block">
-                {{t 'clusterNew.ociocne.addons.csi.imageHelp'}}
-              </p>
-            </div>
-            <div class="col span-4 mb-0">
-              <label for="csi-registry">
-                {{t 'clusterNew.ociocne.addons.csi.registry'}}{{field-required}}
-              </label>
-              {{input type="text" name="csi-registry" classNames="form-control" value=config.csiRegistry}}
-              <p class="help-block">
-                {{t 'clusterNew.ociocne.addons.csi.registryHelp'}}
-              </p>
-            </div>
-          </div>
-          <p class="text-bold">{{t 'clusterNew.ociocne.addons.calico.title'}}</p>
-          <div class="row">
             <div class="col span-2 mb-0">
               <label for="calico-checkbox">
                 {{t 'clusterNew.ociocne.addons.calico.install'}}
               </label>
               {{input type="checkbox" name="calico-checkbox" classNames="form-control" checked=config.installCalico}}
-            </div>
-            <div class="col span-4 mb-0">
-              <label for="calico-registry">
-                {{t 'clusterNew.ociocne.addons.calico.registry'}}{{field-required}}
-              </label>
-              {{input type="text" name="calico-registry" classNames="form-control" value=config.calicoImageRegistry}}
-              <p class="help-block">
-                {{t 'clusterNew.ociocne.addons.calico.registryHelp'}}
-              </p>
             </div>
           </div>
         {{/accordion-list-item}}
