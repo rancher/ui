@@ -29,14 +29,14 @@
       <button
         class="btn btn-sm bg-default inline-block"
         style="margin-top: -5px;"
-        disabled={{if showAddCloudCredential true}} type="button" {{action "addCloudCredential"}}
+        type="button" {{action "addCloudCredential"}}
       >
         {{t "formAuthCloudCredential.add"}}
       </button>
     </div>
   </div>
 </div>
-{{#if showAddCloudCredential}}
+{{#if (or (not cloudCredentialSelected) showAddCloudCredential)}}
   <div class="row">
     {{cru-cloud-credential
       mode=mode
