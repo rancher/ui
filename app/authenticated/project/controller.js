@@ -3,6 +3,7 @@ import { computed, observer } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import C from 'ui/utils/constants';
+import { isEmbedded } from 'shared/utils/util';
 
 // const NONE = 'none';
 // const WORKLOAD = 'workload';
@@ -29,10 +30,7 @@ export default Controller.extend({
     this._super(...arguments);
     this.set('nodes', this.get('store').all('node'));
     this.set('expandedInstances', []);
-
-    const notEmbedded = window.top === window;
-
-    this.set('notEmbedded', notEmbedded);
+    this.set('notEmbedded', !isEmbedded());
   },
 
   actions: {

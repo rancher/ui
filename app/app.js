@@ -2,6 +2,7 @@ import Application from '@ember/application';
 import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
+import { isEmbedded, dashboardWindow } from 'shared/utils/util';
 
 export default class App extends Application {
   modulePrefix = config.modulePrefix;
@@ -11,9 +12,7 @@ export default class App extends Application {
   Resolver = Resolver;
 
   ready = function() {
-    const isEmbedded = window.top !== window;
-
-    if (isEmbedded) {
+    if (isEmbedded()) {
       // Add a class 'hide-when-embedded' which can be used to hide elements
       // that we don't want to show up when embedded
       const head = document.getElementsByTagName('head')[0];
@@ -29,7 +28,7 @@ export default class App extends Application {
       head.appendChild(styl);
 
       // Notify outer window that the app has loaded when we are embedded
-      window.top.postMessage({ action: 'ready' });
+      dashboardWindow().postMessage({ action: 'ready' });
     }
   };
 

@@ -3,6 +3,7 @@ import Route from '@ember/routing/route';
 import { cancel, next, schedule } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import C from 'ui/utils/constants';
+import { isEmbedded, dashboardWindow } from 'shared/utils/util';
 
 export default Route.extend({
   access:   service(),
@@ -144,10 +145,9 @@ export default Route.extend({
     logout(transition, errorMsg) {
       let session = get(this, 'session');
       let access = get(this, 'access');
-      const isEmbedded = window.top !== window;
 
-      if ( isEmbedded ) {
-        window.top.postMessage({ action: 'logout' });
+      if ( isEmbedded() ) {
+        dashboardWindow().postMessage({ action: 'logout' });
 
         return;
       }
@@ -221,10 +221,8 @@ export default Route.extend({
 
   notifyAction(action, state) {
     // If embedded, notify outer frame
-    const isEmbedded = window !== window.top;
-
-    if (isEmbedded) {
-      window.top.postMessage({
+    if (isEmbedded()) {
+      dashboardWindow().postMessage({
         action,
         state
       });

@@ -1,21 +1,20 @@
 import Router from '@ember/routing/router';
+import { isEmbedded, dashboardWindow } from 'shared/utils/util';
 
 export function initialize() {
-  const isEmbedded = window !== window.top;
-
   let stylesheet = null;
 
-  if (isEmbedded) {
+  if (isEmbedded()) {
     Router.reopen({
       notifyTopFrame: function() {
-        window.top.postMessage({
+        dashboardWindow().postMessage({
           action: 'did-transition',
           url:    this.currentURL
         })
       }.on('didTransition'),
 
       willTranstionNotify: function(transition) {
-        window.top.postMessage({
+        dashboardWindow().postMessage({
           action: 'before-navigation',
           target: transition.targetName,
         })
@@ -32,7 +31,7 @@ export function initialize() {
 
         // If the route being asked for is already loaded, send a did-transition event
         if (router.currentRouteName === msg.name) {
-          window.top.postMessage({
+          dashboardWindow().postMessage({
             action: 'did-transition',
             url:    router.urlFor(msg.name)
           })
