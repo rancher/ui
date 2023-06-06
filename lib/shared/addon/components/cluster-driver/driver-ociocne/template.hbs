@@ -31,11 +31,11 @@
           {{t 'clusterNew.ociocne.region.label'}}{{field-required}}
         </label>
         {{#if (and (eq step 1) isNew)}}
-          <select class="form-control" onchange={{action (mut config.region) value="target.value"}}>
-            {{#each authRegionChoices as |choice|}}
-              <option value={{choice}} selected={{eq config.region choice}}>{{choice}}</option>
-            {{/each}}
-          </select>
+          {{searchable-select class="form-control"
+                                  content=authRegionChoices
+                                  value=config.region
+
+          }}
           <p class="help-block">
             {{t 'clusterNew.ociocne.region.help'}}
           </p>
@@ -49,7 +49,10 @@
         </label>
         {{#input-or-display editable=(and (eq step 1) isNew) value=compartmentName}}
           {{#if this.fetchCompartmentsTask.isIdle}}
-            <select class="form-control" style="width: 40%" value={{config.compartmentId}} onclick="event.stopPropagation(); $('#compartmentTree').toggle();">
+            <div class="searchable-select show-dropdown-arrow">
+              <input readonly type="text" class="input-search" onclick="event.stopPropagation(); $('#compartmentTree').toggle();" value="{{ compartmentName }}"/>
+            </div>
+            <select hidden class="form-control" style="width: 40%" value={{config.compartmentId}}>
                       <option value="" hidden="true"></option>
                         {{#each [flatCompartments] as |choice|}}
                           <option value="{{choice.id}}" hidden="true">{{choice.name}}</option>
@@ -565,7 +568,10 @@
                         <table class="table fixed no-lines js-label-table">
                           <tbody>
                             <tr>
-                              <select class="form-control" value={{vcnCompartment}} onclick="event.stopPropagation(); $('#vcnCompartmentTree').toggle();">
+                              <div class="searchable-select show-dropdown-arrow">
+                                <input readonly type="text" class="input-search" onclick="event.stopPropagation(); $('#vcnCompartmentTree').toggle();" value="{{ vcnCompartmentName }}"/>
+                              </div>
+                              <select hidden class="form-control" value={{vcnCompartment}} onclick="javascript:event.stopPropagation(); $('#vcnCompartmentTree').toggle();">
                                 <option value="" hidden="true"></option>
                                   {{#each [flatCompartments] as |choice|}}
                                     <option value="{{choice.id}}" hidden="true">{{choice.name}}</option>
