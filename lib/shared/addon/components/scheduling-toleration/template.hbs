@@ -35,8 +35,8 @@
       </tr>
     </thead>
     <tbody>
-      {{#each tolerationArray as |toleration|}}
-        <tr>
+      {{#each tolerationArray as |toleration idx|}}
+        <tr data-testid="toleration-row">
           <td>
             {{#input-or-display
                editable=editing
@@ -46,6 +46,7 @@
                 type="text"
                 class="form-control input-sm"
                 value=toleration.key
+                data-testid='input-toleration-key'
               }}
             {{/input-or-display}}
           </td>
@@ -61,6 +62,7 @@
                 class="form-control input-sm"
                 content=operatorChoices
                 value=toleration.operator
+                data-testid='input-toleration-operator'
               }}
             {{/input-or-display}}
           </td>
@@ -77,6 +79,7 @@
                 type="text"
                 class="form-control input-sm"
                 value=toleration.value
+                data-testid='input-toleration-value'
               }}
               {{/input-or-display}}
             {{else}}
@@ -95,6 +98,7 @@
                 class="form-control input-sm"
                 content=effectChoices
                 value=toleration.effect
+                data-testid='input-toleration-effect'
               }}
             {{/input-or-display}}
           </td>
@@ -111,6 +115,7 @@
                   {{input-integer
                     classNames="form-control input-sm"
                     value=toleration.tolerationSeconds
+                    data-testid='input-toleration-seconds'
                   }}
                   <span class="input-group-addon bg-default">
                     {{t "generic.seconds"}}
@@ -126,7 +131,7 @@
           </td>
           {{#if editing}}
             <div class="input-group-btn">
-              <button class="btn bg-primary btn-sm" type="button" {{action "removeToleration" toleration}}>
+              <button data-testid="button-toleration-remove" class="btn bg-primary btn-sm" type="button" {{action "removeToleration" toleration}}>
                 <i class="icon icon-minus"/>
               </button>
             </div>
@@ -144,7 +149,7 @@
 {{/if}}
 
 {{#if editing}}
-  <button class="btn bg-link icon-btn" type="button" {{action "addToleration"}}>
+  <button data-testid="button-add-toleration" class="btn bg-link icon-btn" type="button" {{action "addToleration"}}>
     <i class="icon icon-plus text-small"/>
     <span>
       {{t "formScheduling.toleration.add"}}
