@@ -138,6 +138,10 @@ module.exports = function(environment) {
     ENV.APP.autoboot = false;
   }
 
+  if (process.env.VERRAZZANO_DEV_MODE) {
+    ENV.APP.verrazzanoDevMode = true;
+  }
+
   if (process.env.FINGERPRINT) {
     ENV.APP.fingerprint = process.env.FINGERPRINT;
   }
