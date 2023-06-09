@@ -28,7 +28,7 @@
       <div class="col span-4 text-right mt-0">
         <button class="btn bg-link icon-btn" type="button" {{action "remove" }}>
           <i class="icon icon-minus text-small" />
-          <span>{{t "formNodeAffinity.removeRuleLabel"}}</span>
+          <span>{{t "nodeDriver.harvester.scheduling.pod.removeRuleLabel"}}</span>
         </button>
       </div>
     {{/if}}
@@ -40,6 +40,11 @@
         <div class="radio">
           <label>
             {{radio-button selection=showNamespace value="false"}} {{t "nodeDriver.harvester.scheduling.pod.namespace.podsNs" htmlSafe=true}}
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            {{radio-button selection=showNamespace value="all"}} {{t "nodeDriver.harvester.scheduling.pod.namespace.allNamespaces" htmlSafe=true}}
           </label>
         </div>
         <div class="radio">
@@ -79,14 +84,14 @@
         {{searchable-select
           content=topologyChoices
           value=model.topologyKey
-          placeholder=(t "nodeDriver.harvester.scheduling.input.topology.placeholder")
+          placeholder=(t "nodeDriver.harvester.scheduling.pod.topologyKey.placeholder")
         }}
       {{else}}
         {{input
           type="text"
           value=model.topologyKey
           classNames="form-control"
-          placeholder=(t "nodeDriver.harvester.scheduling.input.topology.placeholder")
+          placeholder=(t "nodeDriver.harvester.scheduling.pod.topologyKey.placeholder")
         }}
       {{/if}}
     </div>

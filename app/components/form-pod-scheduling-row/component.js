@@ -13,6 +13,7 @@ export default Component.extend({
   priorityChoices:  [],
   typeChoices:      [],
   topologyChoices:  [],
+  namespaces:       null,
   _namespaces:      null,
 
   init() {
@@ -20,6 +21,7 @@ export default Component.extend({
     this.initTypeChoices();
     this.initPriorityChoices();
     this.initTopologyChoices();
+    this.initShowNamespace();
 
     if (!!get(this, 'model.namespaces')) {
       set(this, '_namespaces', get(this, 'model.namespaces').toString());
@@ -44,7 +46,7 @@ export default Component.extend({
 
   },
 
-  termsChanged: observer('model.labelSelector.matchExpressions.@each.{key,operater,values}', 'model.{priority,type,topologyKey,weight}', 'model.namespaces.[]', function() {
+  termsChanged: observer('model.labelSelector.matchExpressions.@each.{key,operater,values}', 'model.{priority,type,topologyKey,weight,namespaceSelector}', 'model.namespaces.[]', 'showNamespace', function() {
     if (this.update) {
       this.update();
     }
@@ -52,7 +54,7 @@ export default Component.extend({
 
   namepsacesChanged: observer('_namespaces', function() {
     if (!get(this, '_namespaces')) {
-      set(this, 'model.namespaces', []);
+      set(this, 'model.namespaces', null);
     } else {
       set(this, 'model.namespaces', get(this, '_namespaces').split(','));
     }
@@ -85,7 +87,13 @@ export default Component.extend({
     if (get(this, 'showNamespace') === 'true') {
       set(this, 'model.namespaces', []);
       set(this, '_namespaces', null);
+      set(this, 'model.namespaceSelector', null);
+    } else if (get(this, 'showNamespace') === 'all') {
+      set(this, 'model.namespaceSelector', {});
+      set(this, 'model.namespaces', null);
+      set(this, '_namespaces', null);
     } else {
+      set(this, 'model.namespaceSelector', null);
       set(this, 'model.namespaces', null);
       set(this, '_namespaces', '');
     }
@@ -107,6 +115,19 @@ export default Component.extend({
         value:          k,
       };
     }));
+  },
+
+  initShowNamespace() {
+    let out = 'false';
+    const namespaceSelector = this.model.namespaceSelector;
+
+    if (namespaceSelector && typeof namespaceSelector === 'object' && !Object.keys(namespaceSelector).length){
+      out = 'all';
+    } else if (this.model.namespaces){
+      out = 'true';
+    }
+
+    set(this, 'showNamespace', out);
   },
 
 });
