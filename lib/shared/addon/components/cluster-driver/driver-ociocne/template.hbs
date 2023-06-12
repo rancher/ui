@@ -99,6 +99,47 @@
   {{/if}}
 
   {{#if (and (gte step 2) editing)}}
+    {{#accordion-list-item title=(t "clusterNew.ociocne.vcn.title")
+                           detail=(t "clusterNew.ociocne.vcn.detailEdit")
+                           showExpand=true
+                           expandOnInit=false
+                           expandAll=al.expandAll
+                           expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.vcnId.label'}}
+          </label>
+          <div>{{config.vcnId}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.controlPlaneSubnet.label'}}
+          </label>
+          <div>{{config.controlPlaneSubnet}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.loadBalancerSubnet.label'}}
+          </label>
+          <div>{{config.loadBalancerSubnet}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.workerNodeSubnet.label'}}
+          </label>
+          <div>{{config.workerNodeSubnet}}</div>
+        </div>
+      </div>
+
+    {{/accordion-list-item}}
   {{!-- edit cluster --}}
     <div class="row">
       <div class="col span-6">
@@ -594,7 +635,7 @@
               editable=(not-eq mode "view")
               value=(if vcnCreationMode (t "generic.enabled") (t "generic.disabled"))
             }}
-            {{#if canChangeNetworking }}
+            {{#if (and canChangeNetworking)}}
               <div class="radio">
                 <label>
                   {{radio-button
