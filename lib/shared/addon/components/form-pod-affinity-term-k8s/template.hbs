@@ -1,7 +1,7 @@
 <div class="box mb-10 affinity-term">
   {{#if editing}}
     <div class="affinity-remove">
-      <button class="btn btn-sm " type="button" {{action "removeTerm"}}>
+      <button data-testid="button-pod-affinity-remove" class="btn btn-sm " type="button" {{action "removeTerm"}}>
           <i class="icon icon-x"/>
       </button>
     </div>
@@ -20,6 +20,7 @@
           @localizedLabel={{true}}
           @content={{priorityOptions}}
           @disabled={{not editing}}
+          data-testid="select-pod-affinity-priority"
         />
       {{/input-or-display}}
     </div>
@@ -33,6 +34,7 @@
           @localizedLabel={{true}}
           @content={{affinityOptions}}
           @disabled={{not editing}}
+          data-testid="select-pod-affinity-type"
         />
       {{else if anti}}
         <span>{{ t "clusterNew.agentConfig.overrideAffinity.podAffinity.typeOptions.antiAffinity" }}</span>
@@ -42,8 +44,8 @@
     </div>
   </div>
   <div class="row">
-    <div class="col span-12 mb-0">
-      <div class="radio">
+    <div data-testid="radio-pod-affinity-namespace-type" class="col span-12 mb-0">
+      <div  class="radio">
         <label>
           {{radio-button
             selection=namespaceMode
@@ -81,6 +83,7 @@
         type="text"
         inputClass="form-control input-sm"
         value=namespaces
+        data-testid="input-pod-affinity-namespaces"
       }}
       {{/input-or-display}}
     </div>
@@ -91,6 +94,7 @@
       @editing={{editing}}
       @matchExpressions={{matchExpressions}}
       @isPod={{true}}
+      data-testid="match-expressions"
     />
   </div>
   <div class="row">
@@ -105,6 +109,7 @@
         class="form-control input-sm"
         value=podAffintyTerm.topologyKey
         placeholder=(t "clusterNew.agentConfig.overrideAffinity.podAffinity.topologyKey.placeholder")
+        data-testid="input-pod-affinity-topology"
       }}
       {{/input-or-display}}
     </div>
@@ -120,6 +125,7 @@
           class="form-control input-sm"
           value=weight
           placeholder=(t "clusterNew.agentConfig.overrideAffinity.podAffinity.weight.placeholder")
+          data-testid='input-pod-affinity-weight'
         }}
         {{/input-or-display}}
       </div>
