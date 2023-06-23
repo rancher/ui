@@ -187,7 +187,6 @@ export const DEFAULT_AKS_NODE_POOL_CONFIG = {
   mode:                'System',
   name:                '',
   nodeLabels:          {},
-  nodeTaints:          [],
   orchestratorVersion: '',
   osDiskSizeGB:        128,
   osDiskType:          'Managed',
