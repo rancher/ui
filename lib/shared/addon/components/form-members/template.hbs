@@ -10,14 +10,14 @@
     </thead>
     <tbody>
       {{#if isNew}}
-        {{#each defaultRoles as |defRole|}}
-          <ProjectMemberRow @principal={{creator}} @roleTemplate={{defRole}} @pageType={{primaryResource.type}}
+        {{#each defaultRoles as |defRole index|}}
+          <ProjectMemberRow data-testid="form-members__default__{{index}}" @principal={{creator}} @roleTemplate={{defRole}} @pageType={{primaryResource.type}}
             @noUpdate={{true}} @isCreatorMember={{true}} />
         {{/each}}
       {{/if}}
-      {{#each memberArray as |member|}}
+      {{#each memberArray as |member index|}}
         {{#unless member.pendingDelete}}
-          <ProjectMemberRow @member={{member}} @editing={{editing}} @resource={{primaryResource}}
+          <ProjectMemberRow data-testid="form-members__pending__{{index}}" @member={{member}} @editing={{editing}} @resource={{primaryResource}}
             @roles={{filteredRoles}} @users={{filteredUsers}} @pageType={{primaryResource.type}}
             @remove={{action "removeMember" }} />
         {{/unless}}

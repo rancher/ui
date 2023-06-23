@@ -7,6 +7,7 @@ import { all as PromiseAll, resolve } from 'rsvp';
 import { compare, isDevBuild } from 'shared/utils/parse-version';
 import Preload from 'ui/mixins/preload';
 import C from 'ui/utils/constants';
+import { isEmbedded } from 'shared/utils/util';
 
 const CHECK_AUTH_TIMER = 60 * 10 * 1000;
 
@@ -150,7 +151,6 @@ export default Route.extend(Preload, {
     }
 
     // Don't show any modals when embedded
-    const isEmbedded = window.top !== window;
 
     if ( !get(this, `cookies.${ C.COOKIE.REDIRECTED }`) ) {
       // Send users to dashboard, if there's no redirect cookie, and not embedded
@@ -158,7 +158,7 @@ export default Route.extend(Preload, {
       this.cookies.set(C.COOKIE.REDIRECTED, true);
 
       // If isEmbedded then you're already in Dashboard, so just set the cookie.
-      if ( !isEmbedded ) {
+      if ( !isEmbedded() ) {
         window.location.href = get(this, 'scope.dashboardBase');
 
         return;
