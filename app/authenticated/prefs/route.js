@@ -12,9 +12,6 @@ export default Route.extend({
     return get(this, 'globalStore').find('user', null, {
       forceReload: true,
       filter:      { me: true }
-    })
-      .then((user) => EmberObject.create({
-        account: get(user, 'firstObject'), // dont like this
-      }));
+    }).then((user) => EmberObject.create({ account: get(user, 'firstObject'), /* dont like this */ }));
   },
 });
