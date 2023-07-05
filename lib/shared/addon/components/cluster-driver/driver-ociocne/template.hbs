@@ -30,7 +30,7 @@
         <label class="acc-label">
           {{t 'clusterNew.ociocne.region.label'}}{{field-required}}
         </label>
-        {{#if (and (eq step 1) isNew)}}
+        {{#if isNew}}
           {{searchable-select class="form-control"
                                   content=authRegionChoices
                                   value=config.region
@@ -47,7 +47,7 @@
         <label class="acc-label">
           {{t 'clusterNew.ociocne.compartment.label'}}{{field-required}}
         </label>
-        {{#input-or-display editable=(and (eq step 1) isNew) value=compartmentName}}
+        {{#input-or-display editable=isNew value=compartmentName}}
           {{#if this.fetchCompartmentsTask.isIdle}}
             <div class="searchable-select show-dropdown-arrow">
               <input readonly type="text" class="input-search" onclick="event.stopPropagation(); $('#compartmentTree').toggle();" value="{{ compartmentName }}"/>
@@ -279,7 +279,7 @@
           {{/input-or-display}}
         </div>
       </div>
-      {{#if isControlPlaneFlex }}
+      {{#if (is-flex config.controlPlaneShape)}}
         <div class="row pb-10">
           <div class="col span-4 mb-0">
             <label class="acc-label">
@@ -447,30 +447,32 @@
               {{/input-or-display}}
             </div>
           </div>
-          <div class="row">
-            <div class="col span-4 mb-0">
-              <label class="acc-label">
-                {{t 'clusterNew.ociocne.nodeOcpus.label'}}
-              </label>
-              {{#input-or-display editable=(eq step 2) value=np.ocpus}}
-                {{input-integer min=1 max=64 value=np.ocpus classNames="form-control" placeholder=(t 'clusterNew.ociocne.nodeOcpus.placeholder')}}
-                <p class="help-block">
-                  {{t 'clusterNew.ociocne.nodeOcpus.help'}}
-                </p>
-              {{/input-or-display}}
+          {{#if (is-flex np.shape)}}
+            <div class="row">
+              <div class="col span-4 mb-0">
+                <label class="acc-label">
+                  {{t 'clusterNew.ociocne.nodeOcpus.label'}}
+                </label>
+                {{#input-or-display editable=(eq step 2) value=np.ocpus}}
+                  {{input-integer min=1 max=64 value=np.ocpus classNames="form-control" placeholder=(t 'clusterNew.ociocne.nodeOcpus.placeholder')}}
+                  <p class="help-block">
+                    {{t 'clusterNew.ociocne.nodeOcpus.help'}}
+                  </p>
+                {{/input-or-display}}
+              </div>
+              <div class="col span-4 mb-0">
+                <label class="acc-label">
+                  {{t 'clusterNew.ociocne.nodeMemoryGbs.label'}}
+                </label>
+                {{#input-or-display editable=(eq step 2) value=np.memory}}
+                  {{input-integer min=2 max=1024 value=np.memory classNames="form-control" placeholder=(t 'clusterNew.ociocne.nodeMemoryGbs.placeholder')}}
+                  <p class="help-block">
+                    {{t 'clusterNew.ociocne.nodeMemoryGbs.help'}}
+                  </p>
+                {{/input-or-display}}
+              </div>
             </div>
-            <div class="col span-4 mb-0">
-              <label class="acc-label">
-                {{t 'clusterNew.ociocne.nodeMemoryGbs.label'}}
-              </label>
-              {{#input-or-display editable=(eq step 2) value=np.memory}}
-                {{input-integer min=2 max=1024 value=np.memory classNames="form-control" placeholder=(t 'clusterNew.ociocne.nodeMemoryGbs.placeholder')}}
-                <p class="help-block">
-                  {{t 'clusterNew.ociocne.nodeMemoryGbs.help'}}
-                </p>
-              {{/input-or-display}}
-            </div>
-          </div>
+          {{/if}}
           <div class="row">
             <div class="col span-2 mb-0">
               <button
@@ -680,7 +682,7 @@
               <div class="row">
                 <div class="col span-10">
                   <label class="acc-label">{{t 'clusterNew.ociocne.vcnCompartment.label'}}{{field-required}}</label>
-                  {{#input-or-display editable=(and (eq step 2) isNew) value=vcnCompartmentName}}
+                  {{#input-or-display editable=isNew value=vcnCompartmentName}}
                     {{#if this.fetchCompartmentsTask.isIdle}}
                       <div class="row">
                         <table class="table fixed no-lines js-label-table">
@@ -721,71 +723,55 @@
                     {{/if}}
                   {{/input-or-display}}
                 </div>
-                <div class="col span-4">
+                <div class="col span-10">
                   <label class="acc-label">
                     {{t 'clusterNew.ociocne.vcnId.label'}}{{field-required}}
                   </label>
-                  {{#if (eq step 2)}}
-                    {{#input-or-display value=config.vcnId}}
-                      {{searchable-select class="form-control"
-                                          content=vcnOptions
-                                          value=config.vcnId
-                      }}
-                    {{/input-or-display}}
-                  {{else}}
-                    <div>{{config.vcnId}}</div>
-                  {{/if}}
+                  {{#input-or-display value=config.vcnId}}
+                    {{searchable-select class="form-control"
+                                        content=vcnOptions
+                                        value=config.vcnId
+                    }}
+                  {{/input-or-display}}
                 </div>
               </div>
               <div class="row">
-                <div class="col span-4">
+                <div class="col span-10">
                   <label class="acc-label">
                     {{t 'clusterNew.ociocne.controlPlaneSubnet.label'}}{{field-required}}
                   </label>
-                  {{#if (eq step 2)}}
-                    {{#input-or-display value=config.controlPlaneSubnet}}
-                      {{searchable-select class="form-control"
-                                          content=subnetOptions
-                                          value=config.controlPlaneSubnet
-                      }}
-                    {{/input-or-display}}
-                  {{else}}
-                    <div>{{config.controlPlaneSubnet}}</div>
-                  {{/if}}
+                  {{#input-or-display value=config.controlPlaneSubnet}}
+                    {{searchable-select class="form-control"
+                                        content=subnetOptions
+                                        value=config.controlPlaneSubnet
+                    }}
+                  {{/input-or-display}}
                 </div>
               </div>
               <div class="row">
-                <div class="col span-4">
+                <div class="col span-10">
                   <label class="acc-label">
                     {{t 'clusterNew.ociocne.loadBalancerSubnet.label'}}{{field-required}}
                   </label>
-                  {{#if (eq step 2)}}
-                    {{#input-or-display value=config.loadBalancerSubnet}}
-                      {{searchable-select class="form-control"
-                                          content=subnetOptions
-                                          value=config.loadBalancerSubnet
-                      }}
-                    {{/input-or-display}}
-                  {{else}}
-                    <div>{{config.loadBalancerSubnet}}</div>
-                  {{/if}}
+                  {{#input-or-display value=config.loadBalancerSubnet}}
+                    {{searchable-select class="form-control"
+                                        content=subnetOptions
+                                        value=config.loadBalancerSubnet
+                    }}
+                  {{/input-or-display}}
                 </div>
               </div>
               <div class="row">
-                <div class="col span-4">
+                <div class="col span-10">
                   <label class="acc-label">
                     {{t 'clusterNew.ociocne.workerNodeSubnet.label'}}{{field-required}}
                   </label>
-                  {{#if (eq step 2)}}
-                    {{#input-or-display value=config.workerNodeSubnet}}
-                      {{searchable-select class="form-control"
-                                          content=subnetOptions
-                                          value=config.workerNodeSubnet
-                      }}
-                    {{/input-or-display}}
-                  {{else}}
-                    <div>{{config.workerNodeSubnet}}</div>
-                  {{/if}}
+                  {{#input-or-display value=config.workerNodeSubnet}}
+                    {{searchable-select class="form-control"
+                                        content=subnetOptions
+                                        value=config.workerNodeSubnet
+                    }}
+                  {{/input-or-display}}
                 </div>
               </div>
             {{/if}}
@@ -943,7 +929,7 @@
             {{/input-or-display}}
           </div>
         </div>
-        {{#if isControlPlaneFlex }}
+        {{#if (is-flex config.controlPlaneShape)}}
           <div class="row pb-10">
             <div class="col span-4 mb-0">
               <label class="acc-label">
@@ -1112,31 +1098,32 @@
                 {{/input-or-display}}
               </div>
             </div>
-            <div class="row">
-              <div class="col span-4 mb-0">
-                <label class="acc-label">
-                  {{t 'clusterNew.ociocne.nodeOcpus.label'}}
-                </label>
-                {{#input-or-display editable=(and (eq step 3) isNew) value=np.ocpus}}
-                  {{input-integer min=1 max=64 value=np.ocpus classNames="form-control" placeholder=(t 'clusterNew.ociocne.nodeOcpus.placeholder')}}
-                  <p class="help-block">
-                    {{t 'clusterNew.ociocne.nodeOcpus.help'}}
-                  </p>
-                {{/input-or-display}}
+            {{#if (is-flex np.shape)}}
+              <div class="row">
+                <div class="col span-4 mb-0">
+                  <label class="acc-label">
+                    {{t 'clusterNew.ociocne.nodeOcpus.label'}}
+                  </label>
+                  {{#input-or-display editable=(and (eq step 3) isNew) value=np.ocpus}}
+                    {{input-integer min=1 max=64 value=np.ocpus classNames="form-control" placeholder=(t 'clusterNew.ociocne.nodeOcpus.placeholder')}}
+                    <p class="help-block">
+                      {{t 'clusterNew.ociocne.nodeOcpus.help'}}
+                    </p>
+                  {{/input-or-display}}
+                </div>
+                <div class="col span-4 mb-0">
+                  <label class="acc-label">
+                    {{t 'clusterNew.ociocne.nodeMemoryGbs.label'}}
+                  </label>
+                  {{#input-or-display editable=(and (eq step 3) isNew) value=np.memory}}
+                    {{input-integer min=2 max=1024 value=np.memory classNames="form-control" placeholder=(t 'clusterNew.ociocne.nodeMemoryGbs.placeholder')}}
+                    <p class="help-block">
+                      {{t 'clusterNew.ociocne.nodeMemoryGbs.help'}}
+                    </p>
+                  {{/input-or-display}}
+                </div>
               </div>
-              <div class="col span-4 mb-0">
-                <label class="acc-label">
-                  {{t 'clusterNew.ociocne.nodeMemoryGbs.label'}}
-                </label>
-                {{#input-or-display editable=(and (eq step 3) isNew) value=np.memory}}
-                  {{input-integer min=2 max=1024 value=np.memory classNames="form-control" placeholder=(t 'clusterNew.ociocne.nodeMemoryGbs.placeholder')}}
-                  <p class="help-block">
-                    {{t 'clusterNew.ociocne.nodeMemoryGbs.help'}}
-                  </p>
-                {{/input-or-display}}
-              </div>
-            </div>
-
+            {{/if}}
             <div class="row">
               <div class="col span-2 mb-0">
                 <button
