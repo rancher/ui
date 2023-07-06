@@ -496,10 +496,15 @@
                            expandOnInit=true}}
       <div class="row" >
         <div class="col span-2 mb-0">
-          <label for="verrazzano-checkbox">
-            {{t 'clusterNew.ociocne.verrazzano.install'}}
-          </label>
+            <label for="verrazzano-checkbox">
+              {{t 'clusterNew.ociocne.verrazzano.install'}}
+            </label>
           {{input type="checkbox" name="verrazzano-checkbox" classNames="form-control" checked=config.installVerrazzano}}
+          {{#if config.installVerrazzano}}
+            <p class="help-block">
+              {{t 'clusterNew.ociocne.verrazzano.uninstallHelp'}}
+            </p>
+          {{/if}}
         </div>
       </div>
       <div class="row pb-10">
