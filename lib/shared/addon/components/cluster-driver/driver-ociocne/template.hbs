@@ -1253,26 +1253,28 @@
                                expandAll=expandAll
                                expand=(action expandFn)
                                expandOnInit=false}}
-          <div class="row">
-            <div class="col span-4 mb-0">
-              <label>
-                {{t 'clusterNew.ociocne.networking.clusterCidr.title'}}{{field-required}}
-              </label>
-              {{input type="text" name="cluster-cidr" classNames="form-control" value=config.clusterCidr}}
-              <p class="help-block">
-                {{t 'clusterNew.ociocne.networking.clusterCidr.help'}}
-              </p>
+          {{#if (eq vcnCreationMode "Existing")}}
+            <div class="row">
+              <div class="col span-4 mb-0">
+                <label>
+                  {{t 'clusterNew.ociocne.networking.clusterCidr.title'}}{{field-required}}
+                </label>
+                {{input type="text" name="cluster-cidr" classNames="form-control" value=config.clusterCidr}}
+                <p class="help-block">
+                  {{t 'clusterNew.ociocne.networking.clusterCidr.help'}}
+                </p>
+              </div>
+              <div class="col span-4 mb-0">
+                <label for="etcd-tag">
+                  {{t 'clusterNew.ociocne.networking.podCidr.title'}}{{field-required}}
+                </label>
+                {{input type="text" name="pod-cidr" classNames="form-control" value=config.podCidr}}
+                <p class="help-block">
+                  {{t 'clusterNew.ociocne.networking.podCidr.help'}}
+                </p>
+              </div>
             </div>
-            <div class="col span-4 mb-0">
-              <label for="etcd-tag">
-                {{t 'clusterNew.ociocne.networking.podCidr.title'}}{{field-required}}
-              </label>
-              {{input type="text" name="pod-cidr" classNames="form-control" value=config.podCidr}}
-              <p class="help-block">
-                {{t 'clusterNew.ociocne.networking.podCidr.help'}}
-              </p>
-            </div>
-          </div>
+          {{/if}}
           <div class="row">
             <div class="col span-4 mb-0">
               <label>
