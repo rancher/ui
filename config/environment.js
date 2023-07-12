@@ -112,9 +112,6 @@ module.exports = function(environment) {
       needIntlPolyfill: false,
 
       locales: readLocales(environment),
-      stripe: {
-        publishableKey: 'pk_test_g925RcuVORh2KgHWfFbE80by'
-      },
     },
   };
 
