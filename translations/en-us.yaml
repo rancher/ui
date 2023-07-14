@@ -3612,6 +3612,7 @@ clusterNew:
         parsedDockerBridgeCidr: Docker bridge address can not overlap with the selected Virtual Network or the Kubernetes service address range
         parsedServiceCidr: Kubernetes service address range must fall within the selected Virtual Network range.
         serviceCidr: Kubernetes service address range must be valid CIDR format.
+      nodeResourceGroup: Node resource group name cannot exceed 80 characters.
     image:
       label: Image
       placeholder: canonical:UbuntuServer:18.04-LTS:latest
@@ -3722,6 +3723,10 @@ clusterNew:
         primary: Primary Pool - System
         system: System
         user: User
+    nodeResourceGroup:
+      helpText: The cluster resource group contains the Kubernetes Service resource. The node resource group contains all infrastructure resources associated with the cluster. If left blank, Azure will automatically create a name in the format MC_<resource-group1>_<cluster-name>_<location>. This value cannot exceed 80 characters.
+      label: Node Resource Group
+      placeholder: aks-node-resource-group
     openPort:
       label: Open Port
       placeholder: Comma-separated, e.g. 80,443
