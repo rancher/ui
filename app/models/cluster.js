@@ -1126,7 +1126,6 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
         const { clusterAgentDeploymentCustomization:newClusterAgentDeploymentCustomization = {}, fleetAgentDeploymentCustomization: newFleetAgentDeploymentCustomization = {} } = this;
 
-        debugger
         if (JSON.stringify(clusterAgentDeploymentCustomization) !== JSON.stringify(newClusterAgentDeploymentCustomization)){
           options.data.clusterAgentDeploymentCustomization = this.addDeletedKeysAsNull(clusterAgentDeploymentCustomization, newClusterAgentDeploymentCustomization)
         }
