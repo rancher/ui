@@ -1,7 +1,7 @@
 <table class="table fixed no-lines mb-20">
   <thead>
     <tr>
-      {{#if (not labelSelector)}}
+      {{#if (not isPod)}}
         <th class="acc-label">
           {{t "clusterNew.agentConfig.overrideAffinity.nodeAffinity.nodeSelectorTerm.type"}}
         </th>
@@ -25,7 +25,7 @@
   <tbody>
     {{#each allMatches as |match|}}
       <tr>
-        {{#if (not labelSelector)}}
+        {{#if (not isPod)}}
           <td>
           {{#input-or-display
               editable=editing
@@ -98,7 +98,7 @@
                 value=match.match.values
               }}
             {{else}}
-            {{t "generic.na"}}
+              {{t "generic.na"}}
             {{/if}}
           {{/input-or-display}}
         </td>
