@@ -1348,11 +1348,13 @@
            expandOnInit=false
            expandAll=al.expandAll
            expand=(action expandFn)
+           componentId="cluster-driver__cluster-agent"
         }}
           <FormAgentConfig
             @mode={{mode}}
             @cluster={{cluster}}
             @type="cluster"
+            data-testid="form-cluster-agent"
           />
         {{/accordion-list-item}}
         {{#accordion-list-item
@@ -1361,11 +1363,14 @@
            expandOnInit=false
            expandAll=al.expandAll
            expand=(action expandFn)
+           componentId="cluster-driver__fleet-agent"
+
         }}
           <FormAgentConfig
             @mode={{mode}}
             @cluster={{cluster}}
             @type="fleet"
+            data-testid="form-fleet-agent"
           />
         {{/accordion-list-item}}
 
@@ -1476,6 +1481,7 @@
       editing=isEdit
       save=(action "driverSave")
       cancel=(action "close")
+      data-testid='save-cancel-rke1'
     }}
   {{/if}}
 {{else}}

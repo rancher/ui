@@ -15,6 +15,7 @@
         @type={{t "clusterNew.agentConfig.resourceRequirements.requests"}}
         @value={{requests}}
         @update={{action "updateRequests" }}
+        data-testid="resources-requests"
       />
     </div>
       <div class="row">
@@ -23,6 +24,7 @@
         @type={{t "clusterNew.agentConfig.resourceRequirements.limits"}}
         @value={{limits}}
         @update={{action "updateLimits"}}
+        data-testid="resources-limits"
       />
     </div>
   </div>
@@ -33,12 +35,12 @@
           @color="bg-info mb-10"
           @message={{t "clusterNew.agentConfig.banners.tolerations"}}
         />
-        {{scheduling-toleration editing=editing tolerate=appendTolerations}}
+        {{scheduling-toleration editing=editing tolerate=appendTolerations data-testid="tolerations"}}
       </div>
     </div>
   </div>
     <div class="row">
-      <div class="col span-12 mb-0">
+      <div data-testid="radio-group-affinity-default" class="col span-12 mb-0">
         <div class="radio">
           <label>
             {{radio-button

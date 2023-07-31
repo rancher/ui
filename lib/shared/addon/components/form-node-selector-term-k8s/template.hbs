@@ -1,7 +1,7 @@
 <div class="box mb-10 affinity-term">
   {{#if editing}}
     <div class="affinity-remove">
-      <button class="btn btn-sm " type="button" {{action "removeTerm"}}>
+      <button data-testid="button-node-selector-remove" class="btn btn-sm " type="button" {{action "removeTerm"}}>
           <i class="icon icon-x"/>
       </button>
     </div>
@@ -20,6 +20,7 @@
           @localizedLabel={{true}}
           @content={{priorityOptions}}
           @disabled={{not editing}}
+          data-testid="select-node-selector-priority"
         />
       {{/input-or-display}}
     </div>
@@ -29,6 +30,7 @@
       @matchExpressions={{matchExpressions}}
       @matchFields={{matchFields}}
       @editing={{editing}}
+      data-testid="match-expressions"
     />
   </div>
   <div class="row">
@@ -44,6 +46,7 @@
           class="form-control input-sm"
           value=weight
           placeholder=(t "clusterNew.agentConfig.overrideAffinity.podAffinity.weight.placeholder")
+          data-testid='input-node-selector-weight'
         }}
         {{/input-or-display}}
       </div>
