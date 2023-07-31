@@ -6,8 +6,9 @@ Perhaps you like managing Cattle.
 ## Usage
 
 Prerequisites:
+* [Python](https://www.python.org/downloads) v3.8 - 3.10
 * [Git](http://git-scm.com/)
-* [Node.js](http://nodejs.org/) 8.x+ (with NPM)
+* [Node.js](http://nodejs.org/) 8.x - 14.x (with NPM)
 * [Yarn](https://yarnpkg.com/en/docs/install) (Note Path Setup)
 
 If you're on a Mac and use Homebrew, you can follow these steps:
