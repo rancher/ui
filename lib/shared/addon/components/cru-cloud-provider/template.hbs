@@ -171,6 +171,15 @@
       </div>
     {{/input-or-display}}
   </CheckComputedOverride>
+  {{#if showDeprecationWarning}}
+    <div class="col span-12">
+      <BannerMessage
+        @color="bg-info mt-0 mb-0"
+        @icon="icon-alert"
+        @message={{t "cloudProvider.unsupported"}}
+      />
+    </div>
+  {{/if}}
   {{#if (and (not-eq selectedCloudProvider "none") (eq mode "new"))}}
     <div class="col span-6">
       <BannerMessage
