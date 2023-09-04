@@ -68,14 +68,16 @@
               </label>
             </div>
           {{else if isCreateClusterOrClusterTemplate}}
-            <div class="radio">
-              <label>
-                {{radio-button
-                  selection=selectedCloudProvider
-                  value="amazonec2"
-                }} {{t "cloudProvider.amazon"}}
-              </label>
-            </div>
+            {{#if awsSupported}}
+              <div class="radio">
+                <label>
+                  {{radio-button
+                    selection=selectedCloudProvider
+                    value="amazonec2"
+                  }} {{t "cloudProvider.amazon"}}
+                </label>
+              </div>
+            {{/if}}
           {{/if}}
         {{/if}}
         {{#if (or (eq driver "azure") (eq driver "custom"))}}
@@ -181,7 +183,7 @@
     </div>
   {{/if}}
   {{#if (and (not-eq selectedCloudProvider "none") (eq mode "new"))}}
-    <div class="col span-6">
+    <div class="col span-12">
       <BannerMessage
         @color="bg-info mt-0 mb-0"
         @icon="icon-alert"
