@@ -40,7 +40,7 @@
     @computedState={{not (eq selectedCloudProvider "none")}}
   >
     {{#input-or-display
-       editable=(or (and (eq mode "new") (or (not applyClusterTemplate) (and (eq mode "new") selectedCloudProviderOverrideAvailable))) clusterTemplateCreate)
+       editable=(or (and (eq mode "new") (or (not applyClusterTemplate) (and (eq mode "new") selectedCloudProviderOverrideAvailable))) canEditProvider)
        value=selectedCloudProvider
     }}
       <div class="col span-6">
@@ -173,7 +173,7 @@
       </div>
     {{/input-or-display}}
   </CheckComputedOverride>
-  {{#if showDeprecationWarning}}
+  {{#if unsupportedProviderSelected}}
     <div class="col span-12">
       <BannerMessage
         @color="bg-info mt-0 mb-0"
