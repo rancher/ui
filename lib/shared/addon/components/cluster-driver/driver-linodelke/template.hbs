@@ -191,13 +191,13 @@
             <div class="acc-label pb-15">
               {{t "clusterNew.linodelke.nodePoolConfig.monthly"}}:
             </div>
-            {{format-number this.selectedNodePoolObj.price.monthly style='currency' currency='USD' allowEmpty=true}}
+            {{format-number this.selectedNodePoolObj.effectiveMonthly style='currency' currency='USD' allowEmpty=true}}
           </div>
           <div class="col span-1">
             <div class="acc-label pb-15">
               {{t "clusterNew.linodelke.nodePoolConfig.hourly"}}:
             </div>
-            {{format-number this.selectedNodePoolObj.price.hourly style='currency' currency='USD' allowEmpty=true}}
+            {{format-number this.selectedNodePoolObj.effectiveHourly style='currency' currency='USD' allowEmpty=true}}
           </div>
           <div class="col span-1">
             <div class="acc-label pb-15">
@@ -255,6 +255,13 @@
               </h2>
             </div>
           </div>
+          {{# if this.configHasRegionException}}
+            {{banner-message
+              icon="icon-alert"
+              color="bg-warning mb-10"
+              message=(t "clusterNew.linodelke.selectedNodePoolType.regionPriceWarning")
+            }}
+          {{/if}}
           {{#sortable-table
             classNames="grid fixed mb-0 sortable-table"
             sortBy=sortBy
@@ -274,10 +281,10 @@
                   {{member.label}}
                 </td>
                 <td data-title="{{dt.priceMonthly}}">
-                  {{format-number member.price.monthly style='currency' currency='USD' allowEmpty=true}}
+                  {{format-number member.effectiveMonthly style='currency' currency='USD' allowEmpty=true}}
                 </td>
                 <td data-title="{{dt.priceHourly}}">
-                  {{format-number member.price.hourly style='currency' currency='USD' allowEmpty=true}}
+                  {{format-number member.effectiveHourly style='currency' currency='USD' allowEmpty=true}}
                 </td>
                 <td data-title="{{dt.ram}}">
                   {{member.memoryGb}} {{t "generic.gigabyte"}}
