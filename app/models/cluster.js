@@ -514,6 +514,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return 'oracleoke';
     case 'ociocneEngineConfig':
       return 'ociocne';
+    case 'okecapiEngineConfig':
+      return 'okecapi';
     case 'lkeEngineConfig':
       return 'linodelke';
     case 'rke2Config':
@@ -558,6 +560,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
       return intl.t('clusterNew.oracleoke.shortLabel');
     case 'ociocneEngineConfig':
       return intl.t('clusterNew.ociocne.shortLabel');
+    case 'okecapiEngineConfig':
+      return intl.t('clusterNew.okecapi.shortLabel');
     case 'otccceEngineConfig':
       return intl.t('clusterNew.otccce.shortLabel');
     case 'lkeEngineConfig':
