@@ -97,6 +97,254 @@
                   savingLabel="clusterNew.ociocne.access.loading"
     }}
   {{/if}}
+  {{#if (and (gte step 2) editing)}}
+    {{#accordion-list-item title=(t "clusterNew.ociocne.vcn.title")
+                           detail=(t "clusterNew.ociocne.vcn.detailEdit")
+                           showExpand=true
+                           expandOnInit=false
+                           expandAll=al.expandAll
+                           expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">
+            {{t 'clusterNew.okecapi.network.cniType.label'}}
+          </label>
+          <div>{{config.cniType}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.vcnId.label'}}
+          </label>
+          <div>{{config.vcnId}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">
+            {{t 'clusterNew.okecapi.network.apiEndpoint.label'}}
+          </label>
+          <div>{{config.controlPlaneSubnet}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.loadBalancerSubnet.label'}}
+          </label>
+          <div>{{config.loadBalancerSubnet}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.workerNodeSubnet.label'}}
+          </label>
+          <div>{{config.workerNodeSubnet}}</div>
+        </div>
+      </div>
+
+    {{/accordion-list-item}}
+    {{!-- edit cluster --}}
+
+    {{!-- exit point for update/upgrade --}}
+    {{save-cancel editing=(eq mode 'edit')
+                  save="upgradeCluster"
+                  cancel=close
+    }}
+
+  {{else}}
+  {{!-- new cluster --}}
+    {{#if (gte step 2)}}
+      {{#accordion-list-item title=(t "clusterNew.ociocne.vcn.title")
+                             detail=(t "clusterNew.ociocne.vcn.detail")
+                             showExpand=false
+                             expandOnInit=true
+                             expandAll=al.expandAll
+                             expand=(action expandFn)
+      }}
+        <div class="row">
+          <div class="col span-6">
+            {{#input-or-display
+              editable=(not-eq mode "view")
+              value=(if vcnCreationMode (t "generic.enabled") (t "generic.disabled"))
+            }}
+              {{#if (and canChangeNetworking)}}
+                <div class="radio">
+                  <label>
+                    {{radio-button
+                      selection=vcnCreationMode
+                      value="Quick"
+                    }}
+                    {{t 'clusterNew.ociocne.vcn.quick'}}
+                    <p class="help-block">
+                      {{t 'clusterNew.ociocne.vcn.quickHelp'}}
+                    </p>
+                  </label>
+                </div>
+              {{/if}}
+
+              {{#if (eq vcnCreationMode "Quick")}}
+                <div>
+                  <b>{{t 'clusterNew.ociocne.vcn.quickResources.header'}}</b>
+                  <ul>
+                    <li>{{t 'clusterNew.ociocne.vcn.quickResources.vcn'}}</li>
+                    <li>{{t 'clusterNew.ociocne.vcn.quickResources.igw'}}</li>
+                    <li>{{t 'clusterNew.ociocne.vcn.quickResources.nat'}}</li>
+                    <li>{{t 'clusterNew.ociocne.vcn.quickResources.sgw'}}</li>
+                  </ul>
+                </div>
+              {{/if}}
+              {{#if canChangeNetworking }}
+                <div class="radio">
+                  <label>
+                    {{radio-button
+                      selection=vcnCreationMode
+                      value="Existing"
+                    }}
+                    {{t 'clusterNew.ociocne.vcn.existing'}}
+                  </label>
+                  <p class="help-block">
+                    {{t 'clusterNew.ociocne.vcn.existingHelp'}}
+                  </p>
+                </div>
+              {{/if}}
+
+              {{#if (eq vcnCreationMode "Existing")}}
+                <div class="row">
+                  <div class="col span-10">
+                    <label class="acc-label">{{t 'clusterNew.okecapi.network.cniType.label'}}{{field-required}}</label>
+                    {{#input-or-display value=config.vcnId}}
+                      {{searchable-select class="form-control"
+                                          content=cniOptions
+                                          value=config.cniType
+                      }}
+                    {{/input-or-display}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col span-10">
+                    <label class="acc-label">{{t 'clusterNew.ociocne.vcnCompartment.label'}}{{field-required}}</label>
+                    {{#input-or-display editable=isNew value=vcnCompartmentName}}
+                      {{#if this.fetchCompartmentsTask.isIdle}}
+                        <div class="row">
+                          <table class="table fixed no-lines js-label-table">
+                            <tbody>
+                            <tr>
+                              <div class="searchable-select show-dropdown-arrow">
+                                <input readonly type="text" class="input-search" onclick="event.stopPropagation(); $('#vcnCompartmentTree').toggle();" value="{{ vcnCompartmentName }}"/>
+                              </div>
+                              <select hidden class="form-control" value={{vcnCompartment}} onclick="javascript:event.stopPropagation(); $('#vcnCompartmentTree').toggle();">
+                                <option value="" hidden="true"></option>
+                                {{#each [flatCompartments] as |choice|}}
+                                  <option value="{{choice.id}}" hidden="true">{{choice.name}}</option>
+                                {{/each}}
+                              </select>
+                              <div id="vcnCompartmentTree" style="display: none; overflow-y: auto; height: 200px;">
+                                {{#x-tree
+                                  model=vcnCompartmentTree
+                                  onSelect=(action 'onVcnCompartmentSelect')
+                                  expandDepth=1
+                                  chosenId=vcnCompartment
+                                as |node|
+                                }}
+                                  {{node.toggle}}
+                                  <span style={{node-style node vcnCompartment}}>
+                                    {{node.model.name}}
+                                  </span>
+                                {{/x-tree}}
+                              </div>
+                            </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      {{else}}
+                        <div class="text-muted no-match">
+                          <i class="icon icon-spinner icon-spin"></i>
+                          {{t "generic.loading"}}
+                        </div>
+                      {{/if}}
+                    {{/input-or-display}}
+                  </div>
+                  <div class="col span-10">
+                    <label class="acc-label">
+                      {{t 'clusterNew.ociocne.vcnId.label'}}{{field-required}}
+                    </label>
+                    {{#input-or-display value=config.vcnId}}
+                      {{searchable-select class="form-control"
+                                          content=vcnOptions
+                                          value=config.vcnId
+                      }}
+                    {{/input-or-display}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col span-10">
+                    <label class="acc-label">
+                      {{t 'clusterNew.okecapi.network.apiEndpoint.label'}}{{field-required}}
+                    </label>
+                    {{#input-or-display value=config.controlPlaneSubnet}}
+                      {{searchable-select class="form-control"
+                                          content=subnetOptions
+                                          value=config.controlPlaneSubnet
+                      }}
+                    {{/input-or-display}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col span-10">
+                    <label class="acc-label">
+                      {{t 'clusterNew.ociocne.loadBalancerSubnet.label'}}{{field-required}}
+                    </label>
+                    {{#input-or-display value=config.loadBalancerSubnet}}
+                      {{searchable-select class="form-control"
+                                          content=subnetOptions
+                                          value=config.loadBalancerSubnet
+                      }}
+                    {{/input-or-display}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col span-10">
+                    <label class="acc-label">
+                      {{t 'clusterNew.ociocne.workerNodeSubnet.label'}}{{field-required}}
+                    </label>
+                    {{#input-or-display value=config.workerNodeSubnet}}
+                      {{searchable-select class="form-control"
+                                          content=subnetOptions
+                                          value=config.workerNodeSubnet
+                      }}
+                    {{/input-or-display}}
+                  </div>
+                </div>
+              {{/if}}
+            {{/input-or-display}}
+          </div>
+        </div>
+
+      {{/accordion-list-item}}
+      {{#if (eq step 2)}}
+        {{save-cancel editing=(eq mode 'edit')
+                      save="saveNetworking"
+                      saveDisabled=canSaveNetworking
+                      cancel=close
+                      createLabel="clusterNew.ociocne.vcn.next"
+                      savingLabel="clusterNew.ociocne.vcn.loading"
+        }}
+      {{/if}}
+    {{/if}}
+    {{#if (gte step 3)}}
+      {{#if (eq step 3)}}
+        {{save-cancel editing=(eq mode 'edit')
+                      save="save"
+                      saveDisabled=canCreateCluster
+                      cancel=close
+        }}
+      {{/if}}
+    {{/if}}
+  {{/if}}
   {{top-errors errors=errors}}
   {{top-errors errors=otherErrors}}
   {{top-errors errors=clusterErrors}}
