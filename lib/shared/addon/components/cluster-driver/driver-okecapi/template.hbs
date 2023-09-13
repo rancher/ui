@@ -1,0 +1,103 @@
+<script>
+  $(document).click(function(e) {
+    $('#compartmentTree').hide();
+    $('#vcnCompartmentTree').hide();
+  });
+</script>
+{{#accordion-list showExpandAll=false as |al expandFn|}}
+
+{{!-- Only allow edits to tenancy, compartment, and region configuration for new cluster --}}
+  {{#accordion-list-item title=(t "clusterNew.ociocne.access.title")
+                         detail=(t "clusterNew.ociocne.access.detail")
+                         expandAll=expandAll
+                         expand=(action expandFn)
+                         expandOnInit=true
+  }}
+    <div class="row">
+      {{form-auth-cloud-credential
+        driverName="oci"
+        parseAndCollectErrors=(action "errorHandler")
+        primaryResource=primaryResource
+        cloudCredentials=cloudCredentials
+        finishAndSelectCloudCredential=(action "finishAndSelectCloudCredential")
+        progressStep=(action "finishAndSelectCloudCredential")
+        cancel=(action "cancel")
+        hideSave=true
+      }}
+    </div>
+    <div class="row">
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t 'clusterNew.ociocne.region.label'}}{{field-required}}
+        </label>
+        {{#if isNew}}
+          {{searchable-select class="form-control"
+                              content=authRegionChoices
+                              value=config.region
+
+          }}
+          <p class="help-block">
+            {{t 'clusterNew.ociocne.region.help'}}
+          </p>
+        {{else}}
+          <div>{{config.region}}</div>
+        {{/if}}
+      </div>
+      <div class="col span-9">
+        <label class="acc-label">
+          {{t 'clusterNew.ociocne.compartment.label'}}{{field-required}}
+        </label>
+        {{#input-or-display editable=isNew value=compartmentName}}
+          {{#if this.fetchCompartmentsTask.isIdle}}
+            <div class="searchable-select show-dropdown-arrow">
+              <input readonly type="text" class="input-search" onclick="event.stopPropagation(); $('#compartmentTree').toggle();" value="{{ compartmentName }}"/>
+            </div>
+            <select hidden class="form-control" style="width: 40%" value={{config.compartmentId}}>
+              <option value="" hidden="true"></option>
+              {{#each [flatCompartments] as |choice|}}
+                <option value="{{choice.id}}" hidden="true">{{choice.name}}</option>
+              {{/each}}
+            </select>
+            <div id="compartmentTree" style="display: none; overflow-y: auto; height: 200px;">
+              {{#x-tree
+                model=compartmentTree
+                onSelect=(action 'onCompartmentSelect')
+                expandDepth=1
+                chosenId=config.compartmentId
+              as |node|
+              }}
+                {{node.toggle}}
+                <span style={{node-style node config.compartmentId }}>
+                  {{node.model.name}}
+                </span>
+              {{/x-tree}}
+            </div>
+          {{else}}
+            <div class="text-muted no-match">
+              <i class="icon icon-spinner icon-spin"></i>
+              {{t "generic.loading"}}
+            </div>
+          {{/if}}
+          <p class="help-block">
+            {{t 'clusterNew.ociocne.compartment.placeholder'}}
+          </p>
+        {{/input-or-display}}
+
+      </div>
+    </div>
+  {{/accordion-list-item}}
+
+  {{!-- authenticate to OCI --}}
+  {{#if (eq step 1)}}
+    {{save-cancel editing=false
+                  save="saveStep1"
+                  cancel=close
+                  saveDisabled=canAuthenticate
+                  createLabel="clusterNew.ociocne.access.next"
+                  savingLabel="clusterNew.ociocne.access.loading"
+    }}
+  {{/if}}
+  {{top-errors errors=errors}}
+  {{top-errors errors=otherErrors}}
+  {{top-errors errors=clusterErrors}}
+{{/accordion-list}}
