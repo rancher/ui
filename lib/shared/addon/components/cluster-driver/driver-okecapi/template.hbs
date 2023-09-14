@@ -148,6 +148,62 @@
 
     {{/accordion-list-item}}
     {{!-- edit cluster --}}
+    {{#accordion-list-item title=(t "clusterNew.ociocne.controlplane.title")
+                           detail=(t "clusterNew.ociocne.controlplane.detail")
+                           showExpand=false
+                           expandOnInit=true
+                           expandAll=al.expandAll
+                           expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-4">
+          <label class="acc-label">
+            {{t 'clusterNew.okecapi.version.label'}}{{field-required}}
+          </label>
+          {{#input-or-display value=config.kubernetesVersion}}
+            {{searchable-select class="form-control"
+                                content=kubernetesVersionOptions
+                                value=config.kubernetesVersion
+            }}
+          {{/input-or-display}}
+        </div>
+      </div>
+    {{/accordion-list-item}}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t 'clusterNew.ociocne.imageDisplayName.label'}}{{field-required}}
+        </label>
+        {{#if (eq step 2)}}
+          {{#input-or-display value=config.imageDisplayName}}
+            {{searchable-select class="form-control"
+                                content=nodeImageOptions
+                                value=config.imageDisplayName
+            }}
+          {{/input-or-display}}
+        {{else}}
+          <div>{{config.imageDisplayName}}</div>
+        {{/if}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label pt-5 pl-5">{{t "clusterNew.ociocne.nodePublicKeyContents.label"}}</label>
+      </div>
+      <div class="pb-10">
+        {{input-text-file
+          classNames="box"
+          value=config.nodePublicKeyContents
+          multiple=False
+          canChangeName=false
+          accept="text/plain,.pub"
+          minHeight=40
+          placeholder="clusterNew.ociocne.nodePublicKeyContents.placeholder"
+          shouldChangeName=false
+          concealValue=true
+        }}
+      </div>
+    </div>
     {{#accordion-list-item title=(t "clusterNew.ociocne.advanced.title")
                            detail=(t "clusterNew.ociocne.advanced.detail")
                            expandAll=expandAll
@@ -207,7 +263,6 @@
         </div>
       {{/accordion-list-item}}
     {{/accordion-list-item}}
-
     {{!-- exit point for update/upgrade --}}
     {{save-cancel editing=(eq mode 'edit')
                   save="upgradeCluster"
@@ -275,7 +330,7 @@
                 <div class="row">
                   <div class="col span-10">
                     <label class="acc-label">{{t 'clusterNew.okecapi.network.cniType.label'}}{{field-required}}</label>
-                    {{#input-or-display value=config.vcnId}}
+                    {{#input-or-display value=config.cniType}}
                       {{searchable-select class="form-control"
                                           content=cniOptions
                                           value=config.cniType
@@ -395,6 +450,63 @@
       {{/if}}
     {{/if}}
     {{#if (gte step 3)}}
+      {{#accordion-list-item title=(t "clusterNew.ociocne.controlplane.title")
+                             detail=(t "clusterNew.ociocne.controlplane.detail")
+                             showExpand=false
+                             expandOnInit=true
+                             expandAll=al.expandAll
+                             expand=(action expandFn)
+      }}
+        <div class="row">
+          <div class="col span-4">
+            <label class="acc-label">
+              {{t 'clusterNew.okecapi.version.label'}}{{field-required}}
+            </label>
+            {{#input-or-display value=config.kubernetesVersion}}
+              {{searchable-select class="form-control"
+                                  content=kubernetesVersionOptions
+                                  value=config.kubernetesVersion
+              }}
+            {{/input-or-display}}
+          </div>
+        </div>
+
+      {{/accordion-list-item}}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t 'clusterNew.ociocne.imageDisplayName.label'}}{{field-required}}
+          </label>
+          {{#if (eq step 3)}}
+            {{#input-or-display value=config.imageDisplayName}}
+              {{searchable-select class="form-control"
+                                  content=nodeImageOptions
+                                  value=config.imageDisplayName
+              }}
+            {{/input-or-display}}
+          {{else}}
+            <div>{{config.imageDisplayName}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label pt-5 pl-5">{{t "clusterNew.ociocne.nodePublicKeyContents.label"}}</label>
+        </div>
+        <div class="pb-10">
+          {{input-text-file
+            classNames="box"
+            value=config.nodePublicKeyContents
+            multiple=False
+            canChangeName=false
+            accept="text/plain,.pub"
+            minHeight=40
+            placeholder="clusterNew.ociocne.nodePublicKeyContents.placeholder"
+            shouldChangeName=false
+            concealValue=true
+          }}
+        </div>
+      </div>
       {{#accordion-list-item title=(t "clusterNew.ociocne.advanced.title")
                              detail=(t "clusterNew.ociocne.advanced.detail")
                              expandAll=expandAll
