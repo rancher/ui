@@ -145,6 +145,17 @@
           <div>{{config.workerNodeSubnet}}</div>
         </div>
       </div>
+      {{#if config.podSubnet}}
+        <div class="row">
+          <div class="col span-4">
+            <label class="acc-label">
+              {{t 'clusterNew.okecapi.network.podSubnet.labelEdit'}}
+            </label>
+            <div>{{config.podSubnet}}</div>
+          </div>
+        </div>
+      {{/if}}
+
 
     {{/accordion-list-item}}
     {{!-- edit cluster --}}
@@ -433,6 +444,21 @@
                     {{/input-or-display}}
                   </div>
                 </div>
+              {{#if (eq config.cniType "OCI_VCN_IP_NATIVE")}}
+                <div class="row">
+                  <div class="col span-10">
+                    <label class="acc-label">
+                      {{t 'clusterNew.okecapi.network.podSubnet.label'}}
+                    </label>
+                    {{#input-or-display value=config.podSubnet}}
+                      {{searchable-select class="form-control"
+                                          content=subnetOptions
+                                          value=config.podSubnet
+                      }}
+                    {{/input-or-display}}
+                  </div>
+                </div>
+              {{/if}}
               {{/if}}
             {{/input-or-display}}
           </div>
