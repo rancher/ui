@@ -148,6 +148,65 @@
 
     {{/accordion-list-item}}
     {{!-- edit cluster --}}
+    {{#accordion-list-item title=(t "clusterNew.ociocne.advanced.title")
+                           detail=(t "clusterNew.ociocne.advanced.detail")
+                           expandAll=expandAll
+                           expand=(action expandFn)
+                           expandOnInit=true}}
+      {{#accordion-list-item title=(t "clusterNew.ociocne.addons.yaml.title")
+                             detail=(t "clusterNew.ociocne.addons.yaml.detail")
+                             expandAll=expandAll
+                             expand=(action expandFn)
+                             expandOnInit=false}}
+        <div class="row">
+          <button
+            class="btn btn-sm bg-primary inline-block mb-5"
+            style="margin-top: -5px;" type="button" {{action "addYAML"}}
+          >
+            {{t "clusterNew.ociocne.addons.yaml.addNew"}}
+          </button>
+        </div>
+        {{#each yamls as |yaml|}}
+          <div class="row">
+            <div class="col span-4">
+              {{input-yaml
+                showUpload=true
+                showDownload=true
+                canChangeName=false
+                value=yaml.body
+                autoResize=true
+                loading=loading
+              }}
+            </div>
+          </div>
+
+          <button
+            class="btn btn-sm bg-primary inline-block mb-5"
+            style="margin-top: -5px;" type="button" {{action "deleteYAML" yaml}}
+          >
+            {{t "clusterNew.ociocne.addons.yaml.delete"}}
+          </button>
+        {{/each}}
+      {{/accordion-list-item}}
+      {{#accordion-list-item title=(t "clusterNew.ociocne.addons.title")
+                             detail=(t "clusterNew.ociocne.addons.detail")
+                             expandAll=expandAll
+                             expand=(action expandFn)
+                             expandOnInit=false}}
+        <p class="text-bold">{{t 'clusterNew.ociocne.addons.registry.heading'}}</p>
+        <div class="row">
+          <div class="col span-4 mb-0">
+            <label>
+              {{t 'clusterNew.ociocne.addons.registry.title'}}
+            </label>
+            {{input type="text" name="private-registry" classNames="form-control" placeholder=(t 'clusterNew.ociocne.addons.registry.placeholder') value=config.privateRegistry}}
+            <p class="help-block">
+              {{t 'clusterNew.ociocne.addons.registry.detail'}}
+            </p>
+          </div>
+        </div>
+      {{/accordion-list-item}}
+    {{/accordion-list-item}}
 
     {{!-- exit point for update/upgrade --}}
     {{save-cancel editing=(eq mode 'edit')
@@ -336,6 +395,146 @@
       {{/if}}
     {{/if}}
     {{#if (gte step 3)}}
+      {{#accordion-list-item title=(t "clusterNew.ociocne.advanced.title")
+                             detail=(t "clusterNew.ociocne.advanced.detail")
+                             expandAll=expandAll
+                             expand=(action expandFn)
+                             expandOnInit=true}}
+        {{#accordion-list-item title=(t "clusterNew.ociocne.addons.yaml.title")
+                               detail=(t "clusterNew.ociocne.addons.yaml.detail")
+                               expandAll=expandAll
+                               expand=(action expandFn)
+                               expandOnInit=false}}
+          <div class="row">
+            <button
+              class="btn btn-sm bg-primary inline-block mb-5"
+              style="margin-top: -5px;" type="button" {{action "addYAML"}}
+            >
+              {{t "clusterNew.ociocne.addons.yaml.addNew"}}
+            </button>
+          </div>
+          {{#each yamls as |yaml|}}
+            <div class="row">
+              <div class="col span-4">
+                {{input-yaml
+                  showUpload=true
+                  showDownload=true
+                  canChangeName=false
+                  value=yaml.body
+                  autoResize=true
+                  loading=loading
+                }}
+              </div>
+            </div>
+
+            <button
+              class="btn btn-sm bg-primary inline-block mb-5"
+              style="margin-top: -5px;" type="button" {{action "deleteYAML" yaml}}
+            >
+              {{t "clusterNew.ociocne.addons.yaml.delete"}}
+            </button>
+          {{/each}}
+        {{/accordion-list-item}}
+        {{#accordion-list-item title=(t "clusterNew.ociocne.networking.title")
+                               detail=(t "clusterNew.ociocne.networking.detail")
+                               expandAll=expandAll
+                               expand=(action expandFn)
+                               expandOnInit=false}}
+          {{#if (eq vcnCreationMode "Existing")}}
+            <div class="row">
+              <div class="col span-4 mb-0">
+                <label>
+                  {{t 'clusterNew.ociocne.networking.clusterCidr.title'}}{{field-required}}
+                </label>
+                {{input type="text" name="cluster-cidr" classNames="form-control" value=config.clusterCidr}}
+                <p class="help-block">
+                  {{t 'clusterNew.ociocne.networking.clusterCidr.help'}}
+                </p>
+              </div>
+              <div class="col span-4 mb-0">
+                <label for="etcd-tag">
+                  {{t 'clusterNew.ociocne.networking.podCidr.title'}}{{field-required}}
+                </label>
+                {{input type="text" name="pod-cidr" classNames="form-control" value=config.podCidr}}
+                <p class="help-block">
+                  {{t 'clusterNew.ociocne.networking.podCidr.help'}}
+                </p>
+              </div>
+            </div>
+          {{/if}}
+          <div class="row">
+            <div class="col span-4 mb-0">
+              <label>
+                {{t 'clusterNew.ociocne.networking.proxyEndpoint.title'}}
+              </label>
+              {{input type="text" name="proxy-endpoint" classNames="form-control" placeholder=(t 'clusterNew.ociocne.networking.proxyEndpoint.placeholder') value=config.proxyEndpoint}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.networking.proxyEndpoint.help'}}
+              </p>
+            </div>
+          </div>
+        {{/accordion-list-item}}
+        {{#accordion-list-item title=(t "clusterNew.ociocne.addons.title")
+                               detail=(t "clusterNew.ociocne.addons.detail")
+                               expandAll=expandAll
+                               expand=(action expandFn)
+                               expandOnInit=false}}
+          <p class="text-bold">{{t 'clusterNew.ociocne.addons.registry.heading'}}</p>
+          <div class="row">
+            <div class="col span-4 mb-0">
+              <label>
+                {{t 'clusterNew.ociocne.addons.registry.title'}}
+              </label>
+              {{input type="text" name="private-registry" classNames="form-control" placeholder=(t 'clusterNew.ociocne.addons.registry.placeholder') value=config.privateRegistry}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.addons.registry.detail'}}
+              </p>
+            </div>
+          </div>
+          <p></p>
+          <div>
+            <label class="acc-label">
+              {{t 'clusterNew.ociocne.imagePull.create'}}
+            </label>
+            {{input type="checkbox" name="image-pull-checkbox" classNames="form-control" checked=config.createImagePullSecrets}}
+          </div>
+          <p class="help-block">
+            {{t 'clusterNew.ociocne.imagePull.detail'}}
+          </p>
+          <div class="row">
+            <div class="col span-4 mb-0">
+
+              <label for="image-pull-secret-username" class="acc-label">
+                {{t 'clusterNew.ociocne.imagePull.user'}}
+              </label>
+              {{input type="text" name="image-pull-secret-username" classNames="form-control" disabled=(not config.createImagePullSecrets) value=config.imagePullSecretUsername}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.imagePull.userHelp'}}
+              </p>
+            </div>
+            <div class="col span-4 mb-0">
+              <label for="image-pull-secret-password" class="acc-label">
+                {{t 'clusterNew.ociocne.imagePull.password'}}
+              </label>
+              {{input type="password" name="image-pull-secret-password" classNames="form-control" disabled=(not config.createImagePullSecrets) value=config.imagePullSecretPassword}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.imagePull.passwordHelp'}}
+              </p>
+            </div>
+            <div class="col span-4 mb-0">
+
+              <label for="image-pull-secret-email" class="acc-label">
+                {{t 'clusterNew.ociocne.imagePull.email'}}
+              </label>
+              {{input type="text" name="image-pull-secret-email" classNames="form-control" disabled=(not config.createImagePullSecrets) value=config.imagePullSecretEmail}}
+              <p class="help-block">
+                {{t 'clusterNew.ociocne.imagePull.emailHelp'}}
+              </p>
+            </div>
+
+          </div>
+        {{/accordion-list-item}}
+      {{/accordion-list-item}}
       {{#if (eq step 3)}}
         {{save-cancel editing=(eq mode 'edit')
                       save="save"
