@@ -533,19 +533,7 @@
                   </p>
                 </div>
               {{/if}}
-
               {{#if (eq vcnCreationMode "Existing")}}
-                <div class="row">
-                  <div class="col span-10">
-                    <label class="acc-label">{{t 'clusterNew.okecapi.network.cniType.label'}}{{field-required}}</label>
-                    {{#input-or-display value=config.cniType}}
-                      {{searchable-select class="form-control"
-                                          content=cniOptions
-                                          value=config.cniType
-                      }}
-                    {{/input-or-display}}
-                  </div>
-                </div>
                 <div class="row">
                   <div class="col span-10">
                     <label class="acc-label">{{t 'clusterNew.ociocne.vcnCompartment.label'}}{{field-required}}</label>
@@ -689,6 +677,15 @@
               {{searchable-select class="form-control"
                                   content=kubernetesVersionOptions
                                   value=config.kubernetesVersion
+              }}
+            {{/input-or-display}}
+          </div>
+          <div class="col span-4">
+            <label class="acc-label">{{t 'clusterNew.okecapi.network.cniType.label'}}{{field-required}}</label>
+            {{#input-or-display value=config.cniType}}
+              {{searchable-select class="form-control"
+                                  content=cniOptions
+                                  value=config.cniType
               }}
             {{/input-or-display}}
           </div>
