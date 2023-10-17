@@ -154,6 +154,26 @@
           {{/if}}
         {{/if}}
 
+        {{#if (or (eq driver "amazonec2") (eq driver "custom"))}}
+          {{#if (and applyClusterTemplate (eq selectedCloudProvider "external-aws"))}}
+            <div class="radio">
+              <label>
+                {{t "cloudProvider.externalAmazon.label"}}
+              </label>
+            </div>
+          {{else if isCreateClusterOrClusterTemplate}}
+              <div class="radio">
+                <label>
+                  {{radio-button
+                    selection=selectedCloudProvider
+                    value="external-aws"
+                  }} {{t "cloudProvider.externalAmazon.label"}}
+                </label>
+              </div>
+          {{/if}}
+        {{/if}}
+
+
         {{#if (and applyClusterTemplate (eq selectedCloudProvider "external"))}}
           <div class="radio">
             <label>
@@ -183,13 +203,23 @@
     </div>
   {{/if}}
   {{#if (and (not-eq selectedCloudProvider "none") (eq mode "new"))}}
-    <div class="col span-12">
-      <BannerMessage
-        @color="bg-info mt-0 mb-0"
-        @icon="icon-alert"
-        @message={{t "cloudProvider.warning"}}
-      />
-    </div>
+    {{#if (eq selectedCloudProvider "external-aws")}}
+      <div class="col span-12">
+        <BannerMessage
+          @color="bg-info mt-0 mb-0"
+          @icon="icon-alert"
+          @message={{t "cloudProvider.externalAmazon.helpText"}}
+        />
+      </div>
+    {{else }}
+      <div class="col span-12">
+        <BannerMessage
+          @color="bg-info mt-0 mb-0"
+          @icon="icon-alert"
+          @message={{t "cloudProvider.warning"}}
+        />
+      </div>
+    {{/if}}
   {{/if}}
 </div>
 
