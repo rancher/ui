@@ -3182,7 +3182,7 @@ cloudProvider:
 
   helpText: |
      Read more about the state of the <a href="https://kubernetes.io/blog/2019/04/17/the-future-of-cloud-providers-in-kubernetes/" target="_blank" rel="nofollow noopener noreferrer">Kubernetes in-tree cloud providers</a>
-  unsupported: The current Cloud Provider is not supported by this version of Kubernetes. The Cloud Provider has been changed to External Amazon. Please use the Cloud Provider Config to supply an out-of-tree configuration as needed.
+  unsupported: The current Cloud Provider is not supported by this version of Kubernetes. The Cloud Provider has been changed to External Amazon.
   warning:
     Configuring a Cloud Provider in your cluster without configuring the prerequisites will cause your cluster to not provision correctly. Prerequisites needed for supported cloud providers can be found in the documentation.
   azureCloudConfig:
@@ -9531,6 +9531,10 @@ nodeDriver:
       label: Host
       placeholder: "e.g. cluster_name/host_name"
       help: "Specific host to create VM on (leave blank for standalone ESXi or for cluster with DRS)"
+    gracefulShutdownTimeout:
+      label: Graceful Shutdown Timeout
+      help: The time in seconds to wait before forcing deleting VMs in the infrastructure. Zero means disable graceful shutdown.
+      unit: Seconds
     network:
       addActionLabel: "Add Network"
       valueLabel: "Networks"
