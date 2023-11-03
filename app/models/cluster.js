@@ -220,6 +220,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
   isAKS:                       equal('driver', 'azureKubernetesService'),
   isGKE:                       equal('driver', 'googleKubernetesEngine'),
+  canHaveLabels:               true,
 
   runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
 
