@@ -27,6 +27,8 @@ export default Component.extend(ModalBase, {
   layout,
   classNames: ['modal-container', 'large-modal', 'large-height', 'alert'],
   diff:       '',
+  leftName:   '',
+  rightName:  '',
 
   didReceiveAttrs() {
     const templates = get(this, 'modalService.modalOpts');
@@ -39,6 +41,9 @@ export default Component.extend(ModalBase, {
       const diff = jsondiffpatch.formatters.html.format(delta, templates[0]).htmlSafe();
 
       set(this, 'diff', diff);
+
+      set(this, 'leftName', templates[0].name);
+      set(this, 'rightName', templates[1].name);
     } else {
       set(this, 'diff', this.intl.t('clusterTemplatesPage.compare.error'));
     }
