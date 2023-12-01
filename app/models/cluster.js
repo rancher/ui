@@ -214,13 +214,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
   grafanaDashboardName:        'Cluster',
   isMonitoringReady:           false,
   _cachedConfig:               null,
+  canHaveLabels:               true,
   clusterTemplate:             reference('clusterTemplateId'),
   clusterTemplateRevision:     reference('clusterTemplateRevisionId'),
   machines:                    alias('nodes'),
   roleTemplateBindings:        alias('clusterRoleTemplateBindings'),
   isAKS:                       equal('driver', 'azureKubernetesService'),
   isGKE:                       equal('driver', 'googleKubernetesEngine'),
-  canHaveLabels:               true,
 
   runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
 
