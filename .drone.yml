@@ -11,10 +11,10 @@ steps:
   pull: default
   image: rancher/dapper:v0.6.0
   environment:
-  KEY:
-    from_secret: _key
+    KEY:
+      from_secret: _key
   commands:
-  - echo $KEY
+    - 'if [ -z "$KEY" ]; then echo "Secret not set"; else echo "Secret is set"; fi'
   privileged: true
   volumes:
   - name: docker
