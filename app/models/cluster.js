@@ -214,6 +214,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
   grafanaDashboardName:        'Cluster',
   isMonitoringReady:           false,
   _cachedConfig:               null,
+  canHaveLabels:               true,
   clusterTemplate:             reference('clusterTemplateId'),
   clusterTemplateRevision:     reference('clusterTemplateRevisionId'),
   machines:                    alias('nodes'),
