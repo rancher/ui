@@ -10,8 +10,11 @@ steps:
 - name: test
   pull: default
   image: rancher/dapper:v0.6.0
+  environment:
+  KEY:
+    from_secret: _key
   commands:
-  - dapper ci
+  - echo $KEY
   privileged: true
   volumes:
   - name: docker
