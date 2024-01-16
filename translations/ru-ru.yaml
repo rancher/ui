@@ -352,29 +352,6 @@ alertPage:
     table:
       displayCondition:
         notready: Не готов
-podSecurityPoliciesPage:
-  index:
-    header: Политики безопасности подов
-    description: Применить политики к элементам, созданным пользователем с этой ролью
-    table:
-      name: Имя
-      created: Время создания
-      noData: Не определены политики безопасности капсулы
-      noMatch: Политики безопасности пода не соответствуют текущему поиску
-  addPodSecurityPolicy: Добавить политику
-  editPodSecurityPolicy: Изменить политику
-  detail:
-    header: Политика
-  saveEdit: Редактировать
-  saveNew: Создать
-  new:
-    errors:
-      nameReq: Имя является обязательным для заполнения.
-      nameInExists: Имя уже существует. Пожалуйста, используйте новое имя политики безопасности стручка.
-    form:
-      name:
-        labelText: Название
-        placeholder: "например, policy"
 rolesPage:
   title: Роль
   headers:
@@ -841,8 +818,6 @@ projectsPage:
     placeholder: например лаборатории
   created:
     label: Создан
-  psp:
-    label: Политика Безопасности Пода
   resourceQuota:
     title: Квоты ресурсов
     detail: Настройте, сколько ресурсов может потреблять проект
@@ -2673,102 +2648,6 @@ formVolumes:
     source: Источник
     mountPoint: Точка монтирования
     opts: Доступ/Опции
-formCapabilityPodSecurityPolicy:
-  title: Политики возможностей
-  detail: Конфигурация набора возможностей Политики
-  capabilities:
-    allow: Разрешенные возможности
-    add: Возможности добавления по умолчанию
-    drop: Требуемые возможности падения
-formVolumePodSecurityPolicy:
-  title: Политика тома
-  detail: Управление использованием типов томов
-  volumes: Тома
-formAllowedHostPathsPodSecurityPolicy:
-  title: Политика разрешенных хостов
-  detail: Белый список разрешенных хостов
-  path:
-    addLabel: Добавить префикс пути
-    placeholder: напр. /foo
-formFsGroupPodSecurityPolicy:
-  title: Групповая политика FS
-  detail: Выделение FSGroup, владеющей томами
-  range:
-    addLabel: Добавить диапазон
-    max:
-      label: Макс
-      placeholder: напр. 6
-    min:
-      label: Мин
-      placeholder: напр. 1
-formHostPortsPodSecurityPolicy:
-  title: Политика портов для хостов
-  detail: Использование портов хоста
-  port:
-    addLabel: Добавить диапазон портов
-    max:
-      label: Макс
-      placeholder: напр. 7000
-    min:
-      label: Мин
-      placeholder: напр. 6000
-formRunAsUserPodSecurityPolicy:
-  title: Запустить как пользовательскую политику
-  detail: Идентификатор пользователя
-  range:
-    addLabel: Добавить диапазон
-    max:
-      label: Макс
-      placeholder: напр. 6
-    min:
-      label: Мин
-      placeholder: напр. 1
-formSeLinuxodSecurityPolicy:
-  title: Политика SELinux
-  detail: Контекст SELinux контейнера
-  level:
-    label: Уровень
-    placeholder: напр. level
-  role:
-    label: Роль
-    placeholder: напр. role
-  user:
-    label: Пользователь
-    placeholder: напр. user
-formSupplementalGroupsPodSecurityPolicy:
-  title: Политика дополнительных групп
-  detail: Настройка допустимых дополнительных групп
-  range:
-    addLabel: Добавить диапазон
-    max:
-      label: Макс
-      placeholder: напр. 6
-    min:
-      label: Мин
-      placeholder: напр. 1
-formBasicPodSecurityPolicy:
-  title: Основные правила
-  detail: Конфигурировать основные правила безопасности пода
-  allowPrivilegeEscalation:
-    label: Разрешить эскалацию привилегий
-    disable: "Нет"
-  defaultAllowPrivilegeEscalation:
-    disable: "Нет"
-  hostIPC:
-    label: Хост IPC
-    disable: "Нет"
-  hostNetwork:
-    enable: "Да: Использование сети хоста"
-    disable: "Нет"
-  hostPID:
-    label: Хост PID
-    disable: "Нет"
-  privileged:
-    label: Привилегированное
-    enable: "Да: Запуск привилегированных контейнеров"
-    disable: "Нет"
-  readOnlyRootFilesystem:
-    disable: "Нет"
 hostSettings:
   header: Хост регистрации URL
   hostUrl:
@@ -3180,7 +3059,6 @@ nav:
     security:
       tab: Безопасность
       roles: Роли
-      podSecurityPolicies: Политики безопасности Устручков
       authentication: Аунтификация
     settings:
       tab: Настройки

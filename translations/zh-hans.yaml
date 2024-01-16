@@ -428,30 +428,6 @@ alertPage:
     less-or-equal: 小于或等于
     has-value: 不为空
 
-podSecurityPoliciesPage:
-  index:
-    header: Pod 安全策略
-    description: 将策略应用于由具有此角色的用户创建的 Pod。
-    table:
-      name: 名称
-      created: 创建时间
-      noData: 未配置 Pod 安全策略
-      noMatch: 没有与当前搜索匹配的 Pod 安全策略。
-  addPodSecurityPolicy: 添加策略
-  editPodSecurityPolicy: 编辑策略
-  detail:
-    header: 策略
-  saveEdit: 编辑
-  saveNew: 创建
-  new:
-    errors:
-      nameReq: 名称(必填)
-      nameInExists: 名称已存在，请使用新的 Pod 安全策略名称。
-    form:
-      name:
-        labelText: 名称
-        placeholder: '例如: 策略'
-
 rolesPage:
   title: 角色
   headers:
@@ -1318,8 +1294,6 @@ projectsPage:
     placeholder: '例如: lab'
   created:
     label: 创建时间
-  psp:
-    label: Pod 安全策略
   resourceQuota:
     title: 资源配额
     detail: 配置整个项目可以使用多少资源。
@@ -3306,11 +3280,6 @@ clusterNew:
   security:
     title: 安全
     detail: 自定义 GKE 服务账号和访问权限
-  psp:
-    label: 默认的 Pod 安全策略
-    prompt: 选择 Pod 安全策略...
-    none: 没有配置策略
-    required: 启用时需要设置默认 Pod 安全策略
   amazoneks:
     label: AWS 的基于 Kubernetes 的弹性容器服务
     shortLabel: Amazon EKS
@@ -4343,8 +4312,6 @@ clusterNew:
       label: 主机 Docker 版本
       enabled: 允许不受支持的版本
       disabled: 需要支持的版本
-    podSecurityPolicy:
-      label: Pod 安全策略(需先在全局下创建 Pod 策略)
     role:
       pageheader: 添加主机命令
       sectionheader: 主机选项
@@ -4363,7 +4330,6 @@ clusterNew:
     kubeApi:
       label: Kube API
       ipRange: 服务集群 IP 范围
-      podSecurityPolicy: Pod 安全策略
     kubeController:
       label: Kube 控制器
       cidr: 集群 CIDR
@@ -4612,7 +4578,6 @@ clusterTemplateQuestions:
     noData: '没有默认参数'
   schemaLabels:
     defaultClusterRoleForProjectMembers: '项目成员的默认集群角色'
-    defaultPodSecurityPolicyTemplateId: '默认 Pod 安全策略模板 Id'
     desiredAgentImage: '需要的 Agent 镜像'
     desiredAuthImage: '需要的 Auth 镜像'
     dockerRootDir: 'Docker 根目录'
@@ -6334,9 +6299,6 @@ formGlobalRoles:
     nodetemplates-manage:
       label: 管理主机模板
       detail: 允许用户配置，编辑和删除主机模板。
-    podsecuritypolicytemplates-manage:
-      label: 管理 Pod 安全策略(PSPs)
-      detail: 允许用户定义、编辑和删除 psp。
     roles-manage:
       label: 管理角色
       detail: 允许用户配置，编辑和删除角色。
@@ -7146,148 +7108,6 @@ formVolumes:
     source: 源
     mountPoint: 挂载点
     opts: '权限/选项'
-
-formCapabilityPodSecurityPolicy:
-  title: 内核安全策略
-  detail: 配置一组功能策略
-  capabilities:
-    allow: 启用的功能
-    add: 默认添加的能力
-    drop: 必须禁用的内核能力
-
-formVolumePodSecurityPolicy:
-  title: 卷策略
-  detail: 控制卷类型的使用
-  volumes: 数据卷
-
-formAllowedHostPathsPodSecurityPolicy:
-  title: 允许主机路径策略
-  detail: 允许的主机路径的白名单
-  path:
-    addLabel: 添加路径前缀
-    placeholder: '例如: /foo'
-
-formFsGroupPodSecurityPolicy:
-  title: FS 组策略
-  detail: 分配拥有 Pod 卷的 FSGroup
-  rule:
-    mustRunAs: MustRunAs - 至少需要指定一个范围，使用第一个范围的最小值作为默认值，对照第一个范围中的第一个 ID 进行验证。
-    runAsAny: RunAsAny - 没有默认值，允许指定任何 fsGroup ID。
-  range:
-    addLabel: 添加范围
-    max:
-      label: 最大值
-      placeholder: '例如: 6'
-    min:
-      label: 最小值
-      placeholder: '例如: 1'
-
-formHostPortsPodSecurityPolicy:
-  title: 主机端口策略
-  detail: 使用主机端口
-  port:
-    addLabel: 添加端口范围
-    max:
-      label: 最大值
-      placeholder: '例如: 7000'
-    min:
-      label: 最小值
-      placeholder: '例如: 6000'
-
-formRunAsGroupPodSecurityPolicy:
-  title: 作为组策略运行
-  detail: Controls which primary group ID the containers are run with.
-  rule:
-    mustRunAs: MustRunAs - Requires a range to be configured. Uses the first value of the range as the default. Validates against the configured range.
-    mayRunAs: MayRunAs - Does not require that RunAsGroup be specified. However, when RunAsGroup is specified, they have to fall in the defined range.
-    runAsAny: RunAsAny - No default provided. Allows any runAsGroup to be specified.
-  range:
-    addLabel: Add Range
-    max:
-      label: Max
-      placeholder: e.g. 65535
-    min:
-      label: Min
-      placeholder: e.g. 1
-
-formRunAsUserPodSecurityPolicy:
-  title: Run As User Policy
-  detail: Controls which user ID the containers are run with.
-  rule:
-    mustRunAs: MustRunAs - 需要配置范围，使用范围的第一个值作为默认值。根据配置的范围进行验证。
-    mustRunAsNonRoot: MustRunAsNonRoot - 要求使用非零 runAsUser 启动 Pod，或者在镜像中配置 USER 指令，不提供默认值。
-    runAsAny: RunAsAny - 无默认值，允许任何 runAsUser 来指定。
-  range:
-    addLabel: 添加范围
-    max:
-      label: 最大值
-      placeholder: '例如: 6'
-    min:
-      label: 最小值
-      placeholder: '例如: 1'
-
-formSeLinuxodSecurityPolicy:
-  title: SELinux 策略
-  detail: 容器的 SELinux 上下文
-  rule:
-    mustRunAs: MustRunAs - 使用 seLinuxOptions 作为默认值，根据 seLinuxOptions 进行验证。
-    runAsAny: RunAsAny - 允许指定任何 seLinuxOptions 设置。
-  level:
-    label: 等级
-    placeholder: '例如: dev1'
-  role:
-    label: 角色
-    placeholder: '例如: node'
-  user:
-    label: 用户
-    placeholder: '例如: master'
-
-formSupplementalGroupsPodSecurityPolicy:
-  title: 补充组策略
-  detail: 配置允许的补充组
-  rule:
-    mustRunAs: MustRunAs - 需要至少指定一个范围，使用第一个范围的最小值作为默认值，针对所有范围进行验证。
-    runAsAny: RunAsAny - 无默认值。允许指定任何补充组。
-  range:
-    addLabel: 添加范围
-    max:
-      label: 最大值
-      placeholder: '例如: 6'
-    min:
-      label: 最小值
-      placeholder: '例如: 1'
-
-formBasicPodSecurityPolicy:
-  title: 基本策略
-  detail: 配置基本的 Pod 安全策略
-  allowPrivilegeEscalation:
-    label: 允许提升特权
-    enable: '是: 运行允许从其父级升级特权的容器'
-    disable: "否"
-  defaultAllowPrivilegeEscalation:
-    label: 默认允许提升特权
-    enable: '是: 控制进程可以获得父进程获得更多特权'
-    disable: "否"
-  hostIPC:
-    label: 主机 IPC
-    enable: "是: 主机 IPC 命名空间"
-    disable: "否"
-  hostNetwork:
-    label: 主机网络
-    enable: "是: 使用主机网络"
-    disable: "否"
-  hostPID:
-    label: 主机 PID
-    enable: "是: 主机 PID 名称空间"
-    disable: "否"
-  privileged:
-    label: 特权
-    enable: "是: 运行特权容器"
-    disable: "否"
-  readOnlyRootFilesystem:
-    label: 只读根文件系统
-    enable: "是: 需要采用只读根文件系统"
-    disable: "否"
 
 formReservation:
   limitCpu:
@@ -9874,7 +9694,6 @@ nav:
       tab: 安全
       roles: 角色
       members: 成员
-      podSecurityPolicies: Pod 安全策略
       authentication: 认证
     settings:
       tab: 系统设置

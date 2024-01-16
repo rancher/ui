@@ -266,29 +266,6 @@ appDetailPage:
     title: Secretos
     detail: Secretos asociados con esta aplicación
     nodata: Esta aplicación no tiene secretos
-podSecurityPoliciesPage:
-  index:
-    header: Políticas de Seguridad de Pod
-    description: Aplicar políticas a Pods creados por un usuario con este rol
-    table:
-      name: Nombre
-      created: Momento de creación
-      noData: No hay políticas de seguridad de pod definidas
-      noMatch: Ninguna política de seguridad de pod coincide con la búsqueda actual
-  addPodSecurityPolicy: Agregar política
-  editPodSecurityPolicy: Editar política
-  detail:
-    header: Política
-  saveEdit: Editar
-  saveNew: Crear
-  new:
-    errors:
-      nameReq: Se requiere nombre.
-      nameInExists: El nombre ya existe. Utilice un nuevo nombre para el Pod de política de seguridad.
-    form:
-      name:
-        labelText: Nombre
-        placeholder: "ej. politica"
 rolesPage:
   title: Rol
   index:
@@ -738,8 +715,6 @@ projectsPage:
     placeholder: ej. lab
   created:
     label: Fecha de Creacion
-  psp:
-    label: Política de seguridad del Pod
   resourceQuota:
     title: Cuotas de recursos
     detail: Configure la cantidad de recursos que el proyecto puede consumir
@@ -1770,11 +1745,6 @@ clusterNew:
     detail: Personaliza los nodos que se crearán
   customize:
     title: Opciones del Clúster
-  psp:
-    label: Política de seguridad del Pod
-    prompt: Seleccione una Política de Seguridad de Pod ...
-    none: No hay roles definidos
-    required: Se requiere una Política de Seguridad de Pod predeterminada cuando la compatibilidad está habilitada.
   amazoneks:
     label: Servicio de Amazon Elastic Container para Kubernetes
     shortLabel: Amazon EKS
@@ -2053,8 +2023,6 @@ clusterNew:
       label: Versión de Docker en los nodos
       enabled: Permitir versiones no compatibles
       disabled: Versión de Docker Incompatible
-    podSecurityPolicy:
-      label: Soporte de políticas de seguridad de Pod
     role:
       pageheader: Personalizar comando de ejecución de nodo
       sectionheader: Opciones de nodo
@@ -2072,7 +2040,6 @@ clusterNew:
     kubeApi:
       label: Kube API
       ipRange: Rango de IP del clúster de servicios
-      podSecurityPolicy: Política de seguridad del Pod
     kubeController:
       label: Controlador Kube
       cidr: IP del Clúster
@@ -3898,123 +3865,6 @@ formVolumes:
     source: Fuente
     mountPoint: Punto de Montaje
     opts: Acceso / Opciones
-formCapabilityPodSecurityPolicy:
-  title: Políticas de capacidad
-  detail: Configuración de conjunto de capacidad de las políticas
-  capabilities:
-    allow: Capacidades permitidas
-    add: Capacidades de adición predeterminadas
-    drop: Capacidades de caída requeridas
-formVolumePodSecurityPolicy:
-  title: Política de volumen
-  detail: Controle el uso de los tipos de volumen
-  volumes: Volúmenes
-formAllowedHostPathsPodSecurityPolicy:
-  title: Política de rutas de host permitidas
-  detail: Lista blanca de rutas de host permitidas
-  path:
-    addLabel: Agregar el prefijo de ruta
-    placeholder: ej. /foo
-formFsGroupPodSecurityPolicy:
-  title: Política de grupo FS
-  detail: Asignación de un FSGroup que posee los volúmenes del pod
-  rule:
-    mustRunAs: MustRunAs - Requiere al menos un rango para ser especificado. Utiliza el valor mínimo del primer rango como valor predeterminado. Valida contra la primera ID en el primer rango.
-    runAsAny: 'RunAsAny: no se proporciona ningún valor predeterminado. Permite especificar cualquier ID de grupo fs.'
-  range:
-    addLabel: Añadir Rango
-    max:
-      label: Máximo
-      placeholder: ej. 6
-    min:
-      label: Mínimo
-      placeholder: ej. 1
-formHostPortsPodSecurityPolicy:
-  title: Política de puertos host
-  detail: El uso de puertos de host
-  port:
-    addLabel: Agregar rango de puertos
-    max:
-      label: Máximo
-      placeholder: ej. 7000
-    min:
-      label: Mínimo
-      placeholder: ej. 6000
-formRunAsUserPodSecurityPolicy:
-  title: Ejecutar como política de usuario
-  detail: El ID de usuario
-  rule:
-    mustRunAs: MustRunAs - Requiere al menos un rango para ser especificado. Utiliza el valor mínimo del primer rango como valor predeterminado. Valida contra la primera Id en el primer rango.
-    mustRunAsNonRoot: 'MustRunAsNonRoot: requiere que el pod se envíe con un runAsUser distinto de cero o que la directiva USER esté definida en la imagen. No se proporciona un valor predeterminado.'
-    runAsAny: 'RunAsAny: no se proporciona ningún valor predeterminado. Permite cualquier runAsUser para ser especificado.'
-  range:
-    addLabel: Añadir rango
-    max:
-      label: Máximo
-      placeholder: ej. 6
-    min:
-      label: Mínimo
-      placeholder: ej. 1
-formSeLinuxodSecurityPolicy:
-  title: La Política De SELinux
-  detail: El contexto de SELinux del contenedor
-  rule:
-    mustRunAs: 'MustRunAs: utiliza seLinuxOptions como valor predeterminado. Valida contra seLinuxOptions.'
-    runAsAny: RunAsAny - Permite cualquier seLinuxOptions para ser especificado
-  level:
-    label: Nivel
-    placeholder: ej. nivel
-  role:
-    label: Rol
-    placeholder: ej. rol
-  user:
-    label: Usuario
-    placeholder: ej. usuario
-formSupplementalGroupsPodSecurityPolicy:
-  title: Política de Grupos Suplementarios
-  detail: Configurando grupos suplementarios permitidos
-  rule:
-    mustRunAs: MustRunAs - Requiere al menos un rango para ser especificado. Utiliza el valor mínimo del primer rango como valor predeterminado. Valida contra todos los rangos.
-    runAsAny: 'RunAsAny: no se proporciona ningún valor predeterminado. Permite especificar cualquier Grupo suplementario.'
-  range:
-    addLabel: Añadir rango
-    max:
-      label: Máximo
-      placeholder: ej. 6
-    min:
-      label: Mínimo
-      placeholder: ej. 1
-formBasicPodSecurityPolicy:
-  title: Políticas básicas
-  detail: Políticas de seguridad de configuración pod básica
-  allowPrivilegeEscalation:
-    label: Permitir escalada de privilegios
-    enable: "Sí: se está ejecutando un contenedor que permite la escalada de privilegios desde su padre"
-    disable: "No"
-  defaultAllowPrivilegeEscalation:
-    label: Predeterminado Permitir escalada de privilegios
-    enable: "Sí: controle si un proceso puede obtener más privilegios que su proceso principal"
-    disable: "No"
-  hostIPC:
-    label: Host IPC
-    enable: "Sí: el uso del espacio de nombres IPC del host"
-    disable: "No"
-  hostNetwork:
-    label: Red de host
-    enable: "Sí: el uso de la red de host"
-    disable: "No"
-  hostPID:
-    label: PID de host
-    enable: "Sí: el uso del espacio de nombres PID del host"
-    disable: "No"
-  privileged:
-    label: Con privilegios
-    enable: "Sí: funcionamiento de contenedores privilegiados"
-    disable: "No"
-  readOnlyRootFilesystem:
-    label: Sistema de archivos de solo lectura de Root
-    enable: "Sí: se requiere el uso de un sistema de archivos raíz de solo lectura"
-    disable: "No"
 hostSettings:
   header: URL para Registración de Hosts
   subtext: '¿Qué URL de base deben utilizar los hosts para conectarse a la API de {appName}?'
@@ -5451,7 +5301,6 @@ nav:
       tab: Seguridad
       roles: Roles
       members: Miembros
-      podSecurityPolicies: Políticas de Seguridad de Pod
       authentication: Autenticación
     settings:
       tab: Ajustes

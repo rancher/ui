@@ -430,30 +430,6 @@ alertPage:
     less-or-equal: Less Or Equal
     has-value: Not Null
 
-podSecurityPoliciesPage:
-  index:
-    header: Pod Security Policy Templates
-    description: Apply Policies to Pods created by a user with this Role
-    table:
-      name: Name
-      created: Created Time
-      noData: There are no pod security policy templates defined
-      noMatch: No pod security policy templates match the current search
-  addPodSecurityPolicy: Add Policy Template
-  editPodSecurityPolicy: Edit Policy Template
-  detail:
-    header: Policy Template
-  saveEdit: Edit
-  saveNew: Create
-  new:
-    errors:
-      nameReq: Name is required.
-      nameInExists: Name is already exists. Please use a new pod security policy template name.
-    form:
-      name:
-        labelText: Name
-        placeholder: "e.g. policy"
-
 rolesPage:
   title: Role
   headers:
@@ -1349,8 +1325,6 @@ projectsPage:
     placeholder: e.g. lab
   created:
     label: Created
-  psp:
-    label: Pod Security Policy
   resourceQuota:
     title: Resource Quotas
     detail: Configure how much of the resources the project can consume
@@ -3745,8 +3719,6 @@ clusterNew:
       prompt: Select VM OS
     placement:
       label: Placement
-    pod:
-      label: Pod Security Policies
     privateCluster:
       label: Enable Private Cluster
       warning: AKS private clusters is an advanced  use case which requires {appName} to be running on the same NAT as the AKS nodes. Before enabling private clusters ensure you have read through the <a href="{docsBase}/cluster-provisioning/hosted-kubernetes-clusters/aks/" target="_blank" rel="nofollow noopener noreferrer">AKS cluster provisioning docs</a> for instructions on configuring AKS so nodes may communicate with {appName}.
@@ -4545,14 +4517,6 @@ clusterNew:
     shortLabel: Open Telekom Cloud CCE
   psa:
     label: Pod Security Admission Configuration Template
-  psp:
-    label: Default Pod Security Policy
-    none: No policies are defined
-    prompt: Select a Pod Security Policy...
-    required: A Default Pod Security Policy is required when support is enabled.
-    unsupported: Pod security policies are not supported in the version selected; please disable PSP support and use PodSecurity Admission instead.
-    deprecatedInfoBanner: Pod Security Policies are deprecated as of Kubernetes v1.21, and have been removed in Kubernetes v1.25.
-    removedInfoBanner: Pod Security Policies have been removed in Kubernetes v1.25, use PodSecurity Admission instead.
   rancherd:
     shortLabel: RancherD
   register:
@@ -4695,7 +4659,6 @@ clusterNew:
     kubeApi:
       ipRange: Service Cluster IP Range
       label: Kube API
-      podSecurityPolicy: Pod Security Policy
     kubeController:
       cidr: Cluster CIDR
       ipRange: Service Cluster IP Range
@@ -4764,8 +4727,6 @@ clusterNew:
       template: Template
       templatePrompt: Choose a Template...
       title: Node Pools
-    podSecurityPolicy:
-      label: Pod Security Policy Support
     registry:
       custom: 'A custom registry:'
       default: The default registry (DockerHub)
@@ -5107,7 +5068,6 @@ clusterTemplateQuestions:
     noData: 'No overrides'
   schemaLabels:
     defaultClusterRoleForProjectMembers: 'Default Cluster Role For Project Members'
-    defaultPodSecurityPolicyTemplateId: 'Default Pod Security Policy Template Id'
     desiredAgentImage: 'Desired Agent Image'
     desiredAuthImage: 'Desired Auth Image'
     dockerRootDir: 'Docker Root Directory'
@@ -6882,9 +6842,6 @@ formGlobalRoles:
     nodetemplates-manage:
       label: Manage Node Templates
       detail: Allows the user to define, edit, and remove Node Templates.
-    podsecuritypolicytemplates-manage:
-      label: Manage Pod Security Policies (PSPs)
-      detail: Allows the user to define, edit, and remove PSPs.
     roles-manage:
       label: Manage Roles
       detail: Allows the user to define, edit, and remove Role definitions.
@@ -7696,148 +7653,6 @@ formVolumes:
     mountPoint: Mount Point
     opts: Access/Options
 
-formCapabilityPodSecurityPolicy:
-  title: Capability Policies
-  detail: Config set of capability Policies
-  capabilities:
-    allow: Allowed Capabilities
-    add: Default Add Capabilities
-    drop: Required Drop Capabilities
-
-formVolumePodSecurityPolicy:
-  title: Volume Policy
-  detail: Control the usage of volume types
-  volumes: Volumes
-
-formAllowedHostPathsPodSecurityPolicy:
-  title: Allowed Host Paths Policy
-  detail: Whitelist of allowed host paths
-  path:
-    addLabel: Add Path Prefix
-    placeholder: e.g. /foo
-
-formFsGroupPodSecurityPolicy:
-  title: FS Group Policy
-  detail: Allocating an FSGroup that owns the pod’s volumes
-  rule:
-    mustRunAs: MustRunAs - Requires at least one range to be specified. Uses the minimum value of the first range as the default. Validates against the first ID in the first range.
-    runAsAny: RunAsAny - No default provided. Allows any fsGroup ID to be specified.
-  range:
-    addLabel: Add Range
-    max:
-      label: Max
-      placeholder: e.g. 6
-    min:
-      label: Min
-      placeholder: e.g. 1
-
-formHostPortsPodSecurityPolicy:
-  title: Host Ports Policy
-  detail: The use of host ports
-  port:
-    addLabel: Add Port Range
-    max:
-      label: Max
-      placeholder: e.g. 7000
-    min:
-      label: Min
-      placeholder: e.g. 6000
-
-formRunAsGroupPodSecurityPolicy:
-  title: Run As Group Policy
-  detail: Controls which primary group ID the containers are run with.
-  rule:
-    mustRunAs: MustRunAs - Requires a range to be configured. Uses the first value of the range as the default. Validates against the configured range.
-    mayRunAs: MayRunAs - Does not require that RunAsGroup be specified. However, when RunAsGroup is specified, they have to fall in the defined range.
-    runAsAny: RunAsAny - No default provided. Allows any runAsGroup to be specified.
-  range:
-    addLabel: Add Range
-    max:
-      label: Max
-      placeholder: e.g. 65535
-    min:
-      label: Min
-      placeholder: e.g. 1
-
-formRunAsUserPodSecurityPolicy:
-  title: Run As User Policy
-  detail: Controls which user ID the containers are run with.
-  rule:
-    mustRunAs: MustRunAs - Requires a range to be configured. Uses the first value of the range as the default. Validates against the configured range.
-    mustRunAsNonRoot: MustRunAsNonRoot - Requires that the pod be submitted with a non-zero runAsUser or have the USER directive defined in the image. No default provided.
-    runAsAny: RunAsAny - No default provided. Allows any runAsUser to be specified.
-  range:
-    addLabel: Add Range
-    max:
-      label: Max
-      placeholder: e.g. 6
-    min:
-      label: Min
-      placeholder: e.g. 1
-
-formSeLinuxodSecurityPolicy:
-  title: SELinux Policy
-  detail: The SELinux context of the container
-  rule:
-    mustRunAs: MustRunAs - Uses seLinuxOptions as the default. Validates against seLinuxOptions.
-    runAsAny: RunAsAny - Allows any seLinuxOptions to be specified
-  level:
-    label: Level
-    placeholder: e.g. level
-  role:
-    label: Role
-    placeholder: e.g. role
-  user:
-    label: User
-    placeholder: e.g. user
-
-formSupplementalGroupsPodSecurityPolicy:
-  title: Supplemental Groups Policy
-  detail: Configuring allowable supplemental groups
-  rule:
-    mustRunAs: MustRunAs - Requires at least one range to be specified. Uses the minimum value of the first range as the default. Validates against all ranges.
-    runAsAny: RunAsAny - No default provided. Allows any supplementalGroups to be specified.
-  range:
-    addLabel: Add Range
-    max:
-      label: Max
-      placeholder: e.g. 6
-    min:
-      label: Min
-      placeholder: e.g. 1
-
-formBasicPodSecurityPolicy:
-  title: Basic Policies
-  detail: Config basic pod security policies
-  allowPrivilegeEscalation:
-    label: Allow Privilege Escalation
-    enable: "Yes: Running of a container that allow privilege escalation from its parent"
-    disable: "No"
-  defaultAllowPrivilegeEscalation:
-    label: Default Allow Privilege Escalation
-    enable: "Yes: Control whether a process can gain more privileges than its parent process"
-    disable: "No"
-  hostIPC:
-    label: Host IPC
-    enable: "Yes: The use of host’s IPC namespace"
-    disable: "No"
-  hostNetwork:
-    label: Host Network
-    enable: "Yes: The use of host networking"
-    disable: "No"
-  hostPID:
-    label: Host PID
-    enable: "Yes: The use of host’s PID namespace"
-    disable: "No"
-  privileged:
-    label: Privileged
-    enable: "Yes: Running of privileged containers"
-    disable: "No"
-  readOnlyRootFilesystem:
-    label: Read Only Root Filesystem
-    enable: "Yes: Requiring the use of a read only root file system"
-    disable: "No"
-
 formReservation:
   limitCpu:
     label: '{component} CPU Limit'
@@ -7999,11 +7814,6 @@ managedImportClusterInfo:
   drainWorkerNodes: Drain Worker Nodes
   error:
     int: Concurrency values must be integer values
-  pspUpgradeWarning:
-    modalTitle: 'Are you sure?'
-    k3sWarning: 'Kubernetes has removed support for Pod Security Policies (PSPs) starting with version 1.25. If you proceed with the upgrade, any PSPs that may be present in the cluster will no longer be available/enforced. If this is a hardened k3s cluster (or PodSecurityPolicy admission controller is enabled), please follow the instructions <a aria-label="documentation for hardened k3s cluster upgrades" href="https://docs.k3s.io/known-issues#hardened-125" target="_blank" rel="nofollow noreferrer noopener">here</a> before you proceed with saving the changes to the cluster.'
-    rke2Warning: 'Kubernetes has removed support for Pod Security Policies (PSPs) starting with version 1.25. Please follow the instructions <a aria-label="documentation for hardened rke2 cluster upgrades" href="https://docs.rke2.io/known_issues#hardened-125" target="_blank" rel="nofollow noreferrer noopener">here</a> to manually prepare the cluster for the upgrade before you proceed with saving the changes to the cluster.'
-    proceed: Proceed
 
 k3sNodeEnvVarSection:
   title: K3S Node Environment Variables
@@ -10613,7 +10423,6 @@ nav:
       tab: Security
       roles: Roles
       members: Members
-      podSecurityPolicies: Pod Security Policies
       authentication: Authentication
     settings:
       tab: Settings

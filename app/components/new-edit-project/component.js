@@ -2,9 +2,7 @@ import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import layout from './template';
-import {
-  get, set, computed, observer, setProperties
-} from '@ember/object';
+import { get, set, computed, setProperties } from '@ember/object';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import ChildHook from 'shared/mixins/child-hook';
 import { isEmpty } from '@ember/utils';
@@ -24,11 +22,9 @@ export default Component.extend(NewOrEdit, ChildHook, {
   layout,
   memberConfig:                M_CONFIG,
   model:                       null,
-  podSecurityPolicyTemplateId: null,
   isNew:                       false,
 
   primaryResource:             alias('model.project'),
-  secPolicy:                   alias('model.project.defaultPodSecurityPolicyTemplateId'),
   policies:                    alias('model.policies'),
   init() {
     this._super(...arguments);
@@ -36,7 +32,6 @@ export default Component.extend(NewOrEdit, ChildHook, {
 
     bindings = bindings.filter((x) => get(x, 'name') !== 'creator');
     set(this, 'memberArray', bindings);
-    set(this, 'podSecurityPolicyTemplateId', get(this, 'model.project.podSecurityPolicyTemplateId'));
     if (isEmpty(get(this, 'primaryResource.id'))) {
       set(this, 'isNew', true);
     }
@@ -70,9 +65,6 @@ export default Component.extend(NewOrEdit, ChildHook, {
     },
   },
 
-  pspDidChange: observer('podSecurityPolicyTemplateId', function() {
-    set(this, 'model.project.podSecurityPolicyTemplateId', get(this, 'podSecurityPolicyTemplateId'));
-  }),
   creator:         computed('editing', 'model.{me,users}', 'primaryResource.creatorId', function() {
     let cid = get(this, 'primaryResource.creatorId');
     let creator = null;
@@ -117,15 +109,6 @@ export default Component.extend(NewOrEdit, ChildHook, {
     set(this, 'errors', errors);
 
     return get(this, 'errors.length') === 0;
-  },
-
-  didSave() {
-    const pr = get(this, 'primaryResource');
-    const podSecurityPolicyTemplateId = get(this, 'podSecurityPolicyTemplateId') ? get(this, 'podSecurityPolicyTemplateId') : null;
-
-    return pr.waitForCondition('BackingNamespaceCreated').then(() => this.applyHooks().then(() => {
-      pr.doAction('setpodsecuritypolicytemplate', { podSecurityPolicyTemplateId, }).then(() => pr);
-    }));
   },
 
   doneSaving() {
