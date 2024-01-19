@@ -1,0 +1,202 @@
+#!/usr/bin/env node
+
+/**
+ * This script reads the AWS region data from GitHub (the AWS SDK project) and
+ * checks the regions against the amazon.js file.
+ *
+ * It will update this file with the latest regions if there are changes (regions added or removed)
+ *
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+console.log('Updating EC2 and EKS region lists');
+console.log('=================================');
+console.log('');
+
+const SCRIPT = process.argv[1];
+const DIR = path.resolve(SCRIPT, '../../..');
+const PARTITIONS = ['aws', 'aws-us-gov', 'aws-cn'];
+const ENDPOINTS_URL = 'https://raw.githubusercontent.com/boto/botocore/develop/botocore/data/endpoints.json';
+const JS_FILE = path.resolve(DIR, 'lib/shared/addon/utils/amazon.js');
+
+const request = require('request');
+
+function cleanArrayItem(item) {
+  item = item.trim();
+
+  if (item.startsWith('\'')) {
+    item = item.substr(1);
+  }
+  if (item.endsWith(',')) {
+    item = item.slice(0, -1);
+  }
+  if (item.endsWith('\'')) {
+    item = item.slice(0, -1);
+  }
+  return item;
+}
+
+function readExisting(name) {
+  const data = fs.readFileSync(JS_FILE).toString();
+
+  const items = [];
+
+  let processing = false;
+  let done = false;
+
+  data.split(/\r?\n/).forEach(line =>  {
+    if (!done) {
+      if (!processing) {
+        if (line.includes(`export const ${ name } = [`)) {
+          processing = true;
+        }
+      } else {
+        if (line === '];') {
+          processing = false;
+          done = true;
+        } else {
+          items.push(cleanArrayItem(line.trim()));
+        }
+      }
+    }
+  });
+
+  return items;
+}
+
+function patchRegions(key, latest) {
+  const data = fs.readFileSync(JS_FILE).toString();
+
+  const items = [];
+  const out = [];
+
+  let processing = false;
+  let done = false;
+
+  data.split(/\r?\n/).forEach(line =>  {
+    if (!done) {
+      if (!processing) {
+        if (line.includes(`export const ${ key } = [`)) {
+          processing = true;
+        }
+        out.push(line);
+      } else {
+        if (line === '];') {
+          processing = false;
+          done = true;
+
+          // We've skipped the existing list - now write the new list
+          latest.forEach((r) => {
+            out.push(`  '${ r }',`);
+          });
+
+          out.push(line);
+        } else {
+          items.push(cleanArrayItem(line.trim()));
+        }
+      }
+    } else {
+      out.push(line);
+    }
+  });
+
+  // Write the file back out;
+  fs.writeFileSync(JS_FILE, out.join('\n'));
+}
+
+// List regions in a partition
+function listRegions(endpoints, partition, svc) {
+  const p = endpoints.partitions.find((p => p.partition === partition));
+
+  if (!p) {
+    console.error(`Can not find partition ${ partition }`);
+    return;
+  }
+
+  const regions = [];
+
+  Object.keys(p.services?.[svc]?.endpoints || {}).forEach((r) => {
+    const v = p.services[svc].endpoints[r];
+
+    if (!v.deprecated) {
+      regions.push(r);
+      // console.log(`    ${ r }`);
+    }
+  });
+
+  regions.sort();
+
+  return regions;
+}
+
+function checkService(endpoints, svc, key) {
+  const latest = [];
+
+  console.log(`Checking regions for ${ svc }`);
+
+  PARTITIONS.forEach((p) => latest.push(...listRegions(endpoints, p, svc)));
+
+  const existing = readExisting(key);
+
+  const latestMap = {};
+  const existingMap = {};
+
+  latest.forEach((r) => latestMap[r] = true);
+  existing.forEach((r) => existingMap[r] = true);
+
+  let changes = false;
+
+  latest.forEach((r) => {
+    if (!existingMap[r]) {
+      console.log('  + new region ' + r);
+      changes = true;
+    }
+  });
+
+  existing.forEach((r) => {
+    if (!latestMap[r]) {
+      console.log('  - removed region ' + r);
+      changes = true;
+    }
+  });
+
+  // Patch the changes
+
+  if (changes) {
+    patchRegions(key, latest);
+  } else {
+    console.log('  No region changes');
+  }
+
+  console.log('');
+
+  return changes;
+}
+
+request(ENDPOINTS_URL, function (error, res, body) {
+  if (error) {
+    console.error('Could not fetch endpoints data');
+
+    process.exit(1);
+  }
+
+  if (res.statusCode !== 200) {
+    console.error(`Could not fetch endpoints data - status ${ res.statusCode } ${ res.statusMessage }`);
+
+    process.exit(2);
+  }
+
+  try {
+    const endpoints = JSON.parse(body);
+
+    checkService(endpoints, 'eks', 'EKS_REGIONS');
+    checkService(endpoints, 'ec2', 'REGIONS');
+  } catch (e) {
+    console.error('Error parsing and processing data');
+    console.error(e);
+
+    process.exit(3);
+  }
+});
