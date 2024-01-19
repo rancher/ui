@@ -40,7 +40,7 @@
     @computedState={{not (eq selectedCloudProvider "none")}}
   >
     {{#input-or-display
-       editable=(or (and (eq mode "new") (or (not applyClusterTemplate) (and (eq mode "new") selectedCloudProviderOverrideAvailable))) clusterTemplateCreate)
+       editable=(or (and (eq mode "new") (or (not applyClusterTemplate) (and (eq mode "new") selectedCloudProviderOverrideAvailable))) canEditProvider)
        value=selectedCloudProvider
     }}
       <div class="col span-6">
@@ -56,6 +56,7 @@
               {{radio-button
                 selection=selectedCloudProvider
                 value="none"
+                chosen=(action cloudProviderUserChange)
               }} {{t "generic.none"}}
             </label>
           </div>
@@ -68,14 +69,17 @@
               </label>
             </div>
           {{else if isCreateClusterOrClusterTemplate}}
-            <div class="radio">
-              <label>
-                {{radio-button
-                  selection=selectedCloudProvider
-                  value="amazonec2"
-                }} {{t "cloudProvider.amazon"}}
-              </label>
-            </div>
+            {{#if awsSupported}}
+              <div class="radio">
+                <label>
+                  {{radio-button
+                    selection=selectedCloudProvider
+                    value="amazonec2"
+                    chosen=(action cloudProviderUserChange)
+                  }} {{t "cloudProvider.amazon"}}
+                </label>
+              </div>
+            {{/if}}
           {{/if}}
         {{/if}}
         {{#if (or (eq driver "azure") (eq driver "custom"))}}
@@ -152,6 +156,27 @@
           {{/if}}
         {{/if}}
 
+        {{#if (or (eq driver "amazonec2") (eq driver "custom"))}}
+          {{#if (and applyClusterTemplate (eq selectedCloudProvider "external-aws"))}}
+            <div class="radio">
+              <label>
+                {{t "cloudProvider.externalAmazon.label"}}
+              </label>
+            </div>
+          {{else if isCreateClusterOrClusterTemplate}}
+              <div class="radio">
+                <label>
+                  {{radio-button
+                    selection=selectedCloudProvider
+                    value="external-aws"
+                    chosen=(action cloudProviderUserChange)
+                  }} {{t "cloudProvider.externalAmazon.label"}}
+                </label>
+              </div>
+          {{/if}}
+        {{/if}}
+
+
         {{#if (and applyClusterTemplate (eq selectedCloudProvider "external"))}}
           <div class="radio">
             <label>
@@ -164,6 +189,7 @@
               {{radio-button
                 selection=selectedCloudProvider
                 value="external"
+                chosen=(action cloudProviderUserChange)
               }} {{t "cloudProvider.external.label"}}
             </label>
           </div>
@@ -171,14 +197,33 @@
       </div>
     {{/input-or-display}}
   </CheckComputedOverride>
-  {{#if (and (not-eq selectedCloudProvider "none") (eq mode "new"))}}
-    <div class="col span-6">
+  {{#if showChangedToAmazonExternal}}
+    <div class="col span-12">
       <BannerMessage
         @color="bg-info mt-0 mb-0"
         @icon="icon-alert"
-        @message={{t "cloudProvider.warning"}}
+        @message={{t "cloudProvider.unsupported"}}
       />
     </div>
+  {{/if}}
+  {{#if (not-eq selectedCloudProvider "none")}}
+    {{#if (eq selectedCloudProvider "external-aws")}}
+      <div class="col span-12">
+        <BannerMessage
+          @color="bg-info mt-0 mb-0"
+          @icon="icon-alert"
+          @message={{t "cloudProvider.externalAmazon.helpText"}}
+        />
+      </div>
+    {{else }}
+      <div class="col span-12">
+        <BannerMessage
+          @color="bg-info mt-0 mb-0"
+          @icon="icon-alert"
+          @message={{t "cloudProvider.warning"}}
+        />
+      </div>
+    {{/if}}
   {{/if}}
 </div>
 
