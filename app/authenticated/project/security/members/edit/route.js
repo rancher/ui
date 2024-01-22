@@ -17,7 +17,6 @@ export default Route.extend({
           context: 'cluster'
         }
       }),
-      policies: store.find('podsecuritypolicytemplate'),
     });
   },
 });

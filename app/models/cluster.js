@@ -1001,13 +1001,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
   clearConfigFieldsForClusterTemplate() {
     let clearedNull   = ['localClusterAuthEndpoint', 'rancherKubernetesEngineConfig', 'enableNetworkPolicy'];
-    let clearedDelete = ['defaultClusterRoleForProjectMembers', 'defaultPodSecurityPolicyTemplateId'];
+    let clearedDelete = ['defaultClusterRoleForProjectMembers'];
     let {
       localClusterAuthEndpoint,
       rancherKubernetesEngineConfig,
       enableNetworkPolicy,
       defaultClusterRoleForProjectMembers,
-      defaultPodSecurityPolicyTemplateId,
     } = this;
 
     let cachedConfig = {
@@ -1015,7 +1014,6 @@ export default Resource.extend(Grafana, ResourceUsage, {
       rancherKubernetesEngineConfig,
       enableNetworkPolicy,
       defaultClusterRoleForProjectMembers,
-      defaultPodSecurityPolicyTemplateId,
     };
 
     // set this incase we fail to save the cluster;

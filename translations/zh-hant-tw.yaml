@@ -428,30 +428,6 @@ alertPage:
     less-or-equal: 小於或等於
     has-value: 不為空
 
-podSecurityPoliciesPage:
-  index:
-    header: Pod安全策略
-    description: 將策略應用於由具有此角色的用戶創建的Pod。
-    table:
-      name: 名稱
-      created: 創建時間
-      noData: 未定義Pod安全策略
-      noMatch: 沒有與當前搜索匹配的Pod安全策略
-  addPodSecurityPolicy: 新增策略
-  editPodSecurityPolicy: 編輯策略
-  detail:
-    header: 策略
-  saveEdit: 編輯
-  saveNew: 創建
-  new:
-    errors:
-      nameReq: 名稱(必填)
-      nameInExists: 名稱已存在， 請使用新的Pod安全策略名稱。
-    form:
-      name:
-        labelText: 名稱
-        placeholder: '例如: 策略'
-
 rolesPage:
   title: 角色
   headers:
@@ -1317,8 +1293,6 @@ projectsPage:
     placeholder: '例如: lab'
   created:
     label: 創建時間
-  psp:
-    label: Pod安全策略
   resourceQuota:
     title: 資源配額
     detail: 設定整個專案可以使用多少資源。
@@ -3287,11 +3261,6 @@ clusterNew:
   security:
     title: 安全
     detail: 自定義GKE服務帳號和訪問權限
-  psp:
-    label: 默認的Pod安全策略
-    prompt: 選擇一個Pod安全策略...
-    none: 沒有定義策略
-    required: 啟用時需要設置一個默認Pod安全策略
   amazoneks:
     label: AWS的基於Kubernetes的彈性容器服務
     shortLabel: 亞馬遜EKS
@@ -4087,8 +4056,6 @@ clusterNew:
       label: 主機Docker版本
       enabled: 允許不受支持的版本
       disabled: 需要支持的版本
-    podSecurityPolicy:
-      label: Pod安全策略(需先在全域下創建Pod策略)
     role:
       pageheader: 自定義主機運行命令
       sectionheader: 主機選項
@@ -4107,7 +4074,6 @@ clusterNew:
     kubeApi:
       label: Kube API
       ipRange: 服務叢集IP範圍
-      podSecurityPolicy: Pod安全策略
     kubeController:
       label: Kube控制器
       cidr: 叢集CIDR
@@ -4337,7 +4303,6 @@ clusterTemplateQuestions:
     noData: '沒有默認參數'
   schemaLabels:
     defaultClusterRoleForProjectMembers: '項目成員的默認叢集角色'
-    defaultPodSecurityPolicyTemplateId: '默認Pod安全策略模板Id'
     desiredAgentImage: '需要的Agent鏡像'
     desiredAuthImage: '需要的Auth鏡像'
     dockerRootDir: 'Docker根目錄'
@@ -6057,9 +6022,6 @@ role:
     nodetemplates-manage:
       label: 管理主機模板
       detail: 允許用戶配置，編輯和刪除主機模板。
-    podsecuritypolicytemplates-manage:
-      label: 管理Pod安全策略(PSPs)
-      detail: 允許用戶定義、編輯和刪除psp。
     roles-manage:
       label: 管理角色
       detail: 允許用戶配置，編輯和刪除角色。
@@ -6859,132 +6821,6 @@ form volumes:
     source: 源
     mountPoint: 掛載點
     opts: 權限/選項
-
-formCapabilityPodSecurityPolicy:
-  title: 核心安全策略
-  detail: 設定一組功能策略
-  capabilities:
-    allow: 啟用的功能
-    add: 默認新增的能力
-    drop: 必須禁用的核心能力
-
-formVolumePodSecurityPolicy:
-  title: volumes 策略
-  detail: 控制 volumes 類型的使用
-  volumes: 數據 volumes
-
-formAllowedHostPathsPodSecurityPolicy:
-  title: 允許主機路徑策略
-  detail: 允許的主機路徑的白名單
-  path:
-    addLabel: 新增路徑前綴
-    placeholder: '例如: /foo'
-
-formFsGroupPodSecurityPolicy:
-  title: FS組策略
-  detail: 分配擁有Pod volumes 的FSGroup
-  rule:
-    mustRunAs: MustRunAs-至少需要指定一個範圍，使用第一個範圍的最小值作為默認值，對照第一個範圍中的第一個ID進行驗證。
-    runAsAny: RunAsAny - 沒有默認值，允許指定任何fsGroup ID。
-  range:
-    addLabel: 新增一個範圍
-    max:
-      label: 最大值
-      placeholder: '例如: 6'
-    min:
-      label: 最小值
-      placeholder: '例如: 1'
-
-formHostPortsPodSecurityPolicy:
-  title: 主機埠策略
-  detail: 使用主機埠
-  port:
-    addLabel: 新增埠範圍
-    max:
-      label: 最大值
-      placeholder: '例如: 7000'
-    min:
-      label: 最小值
-      placeholder: '例如: 6000'
-
-formRunAsUserPodSecurityPolicy:
-  title: 用戶運行策略
-  detail: User ID
-  rule:
-    mustRunAs: MustRunAs - 需要設定一個範圍，使用範圍的第一個值作為默認值。根據設定的範圍進行驗證。
-    mustRunAsNonRoot: MustRunAsNonRoot - 要求使用非零runAsUser啟動Pod，或者在鏡像中定義USER指令，不提供默認值。
-    runAsAny: RunAsAny - 無默認值，允許任何runAsUser來指定。
-  range:
-    addLabel: 新增一個範圍
-    max:
-      label: 最大值
-      placeholder: '例如: 6'
-    min:
-      label: 最小值
-      placeholder: '例如: 1'
-
-formSeLinuxodSecurityPolicy:
-  title: SELinux策略
-  detail: 容器的SELinux上下文
-  rule:
-    mustRunAs: MustRunAs - 使用seLinuxOptions作為默認值，根據seLinuxOptions進行驗證。
-    runAsAny: RunAsAny - 允許指定任何seLinuxOptions設置
-  level:
-    label: 等級
-    placeholder: '例如: dev1'
-  role:
-    label: 角色
-    placeholder: '例如: node'
-  user:
-    label: 用戶
-    placeholder: '例如: master'
-
-formSupplementalGroupsPodSecurityPolicy:
-  title: 補充組策略
-  detail: 設定允許的補充組
-  rule:
-    mustRunAs: MustRunAs - 需要至少指定一個範圍，使用第一個範圍的最小值作為默認值，針對所有範圍進行驗證。
-    runAsAny: RunAsAny - 無默認值。允許指定任何補充組。
-  range:
-    addLabel: 新增一個範圍
-    max:
-      label: 最大值
-      placeholder: '例如: 6'
-    min:
-      label: 最小值
-      placeholder: '例如: 1'
-
-formBasicPodSecurityPolicy:
-  title: 基本策略
-  detail: 設定基本的Pod安全策略
-  allowPrivilegeEscalation:
-    label: 允許提升特權
-    enable: '是: 運行允許從其父級升級特權的容器'
-    disable: "否"
-  defaultAllowPrivilegeEscalation:
-    label: 默認允許提升特權
-    enable: '是: 控制進程可以獲得父進程獲得更多特權'
-    disable: "否"
-  hostIPC:
-    label: 主機IPC
-    enable: "是: 主機IPC命名空間"
-    disable: "否"
-  hostNetwork:
-    label: 主機網路
-    enable: "是: 使用主機網路"
-    disable: "否"
-  hostPID:
-    label: 主機PID
-    enable: "是: 主機PID名稱空間"
-    disable: "否"
-  privileged:
-    label: 特權
-    enable: "是: 運行特權容器"
-    disable: "否"
-  readOnlyRootFilesystem:
-    label: 唯讀根文件系統
-    enable: "是: 需要採用一個唯讀根文件系統"
-    disable: "否"
 
 formReservation:
   limitCpu:
@@ -9366,7 +9202,6 @@ nav:
       tab: 安全
       roles: 角色
       members: 成員
-      podSecurityPolicies: Pod安全策略
       authentication: 認證
     settings:
       tab: 系統設置
