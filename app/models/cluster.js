@@ -54,6 +54,7 @@ export const DEFAULT_NODE_GROUP_CONFIG = {
 export const DEFAULT_EKS_CONFIG = {
   amazonCredentialSecret: '',
   displayName:            '',
+  ebsCSIDriver:           false,
   imported:               false,
   kmsKey:                 '',
   kubernetesVersion:      '',
