@@ -1,6 +1,7 @@
 import { alias } from '@ember/object/computed';
 import { get, computed } from '@ember/object';
 import Controller, { inject as controller } from '@ember/controller';
+import { isEmbedded } from 'shared/utils/util';
 
 export const headers = [
   {
@@ -47,6 +48,7 @@ export default Controller.extend({
   resource:    ['configmap'],
 
   headers,
+  showLegacyMessage: isEmbedded(),
 
   group:        alias('projectController.group'),
   groupTableBy: alias('projectController.groupTableBy'),
