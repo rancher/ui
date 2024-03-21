@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import layout from './template';
 import { get, computed } from '@ember/object';
+import { dasherize } from '@ember/string';
 
 export default Component.extend({
   layout,
@@ -27,6 +28,6 @@ export default Component.extend({
   }),
 
   componentName: computed('scaleMode', function() {
-    return `container/form-upgrade-${  get(this, 'scaleMode').dasherize() }`;
+    return `container/form-upgrade-${ dasherize(get(this, 'scaleMode')) }`;
   }),
 });

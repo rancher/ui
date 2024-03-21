@@ -1,5 +1,6 @@
 import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { capitalize } from '@ember/string';
 import Resource from '@rancher/ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
@@ -53,7 +54,7 @@ export default Resource.extend({
     if ( name && intl.exists(key) ) {
       return intl.t(key);
     } else if ( name ) {
-      return name.capitalize();
+      return capitalize(name);
     } else {
       return `(${  get(this, 'id')  })`;
     }

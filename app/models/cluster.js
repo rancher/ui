@@ -13,6 +13,7 @@ import moment from 'moment';
 import jsondiffpatch from 'jsondiffpatch';
 import { isArray } from '@ember/array';
 import Semver from 'semver';
+import { capitalize } from '@ember/string';
 
 const TRUE = 'True';
 const CLUSTER_TEMPLATE_ID_PREFIX = 'cattle-global-data:';
@@ -597,7 +598,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
         case 'rancherd':
           return intl.t('clusterNew.rancherd.shortLabel');
         default:
-          return driverName.capitalize();
+          return capitalize(driverName);
         }
       } else {
         return intl.t('clusterNew.import.shortLabel');

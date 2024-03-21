@@ -3,6 +3,7 @@ import { get, set } from '@ember/object';
 import { inject as service } from '@ember/service';
 import jsondiffpatch from 'jsondiffpatch';
 import ModalBase from 'shared/mixins/modal-base';
+import { htmlSafe } from '@ember/string';
 
 import layout from './template';
 
@@ -38,7 +39,7 @@ export default Component.extend(ModalBase, {
 
       jsondiffpatch.formatters.html.hideUnchanged();
 
-      const diff = jsondiffpatch.formatters.html.format(delta, templates[0]).htmlSafe();
+      const diff = htmlSafe(jsondiffpatch.formatters.html.format(delta, templates[0]));
 
       set(this, 'diff', diff);
 
