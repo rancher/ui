@@ -1,0 +1,50 @@
+name: Tests
+on:
+  push:
+    branches:
+      - master
+      - 'release-*'
+  pull_request:
+      branches:
+        - master
+        - 'release-*'
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14.x'
+
+      - name: Install Python for node-sass
+        run: |
+          DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends python2
+      
+      - name: Install packages
+        run: ./scripts/bootstrap
+      
+      - name: Run tests
+        run: yarn test
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14.x'
+
+      - name: Install Python for node-sass
+        run: |
+          DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends python2
+        
+      - name: Install packages
+        run: ./scripts/bootstrap
+      
+      - name: Run linter
+        run: yarn lint:js
