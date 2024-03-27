@@ -1,0 +1,42 @@
+name: Tests
+on:
+  push:
+    branches:
+      - master
+      - 'release-*'
+  pull_request:
+      branches:
+        - master
+        - 'release-*'
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      
+      - name: Install packages
+        run: ./scripts/bootstrap
+      
+      - name: Run tests
+        run: yarn test
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      
+      - name: Install packages
+        run: ./scripts/bootstrap
+      
+      - name: Run linter
+        run: yarn lint:js
