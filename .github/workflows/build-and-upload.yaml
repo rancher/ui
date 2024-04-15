@@ -1,62 +1,50 @@
-name: Build
+name: Build and Upload
+
 on:
-  push:
-    branches:
-      # - master
-      # - 'release-*'
-      - richard-dev
-    tags:
-      # - 'v*'
-      - 'richard-dev-v*'
+  workflow_call:
+    inputs:
+      CI_BRANCH:
+        required: false
+        type: string
+      CI_BUILD_TAG:
+        required: false
+        type: string
+
 env:
-  BUILD_DEBUG:
-  CI_BRANCH:
-  CI_BUILD_TAG:
+  CI_BRANCH: ${{inputs.CI_BRANCH || ''}}
+  CI_BUILD_TAG: ${{inputs.CI_BUILD_TAG || ''}}
+
 jobs:
-  set-envs:
-    name: Set Env Variables
+  build:
     runs-on: ubuntu-latest
+    # needs: [set-envs, test]
     steps:
-      - name: debug
-        run: echo `${{github.ref_name}}` + `${{github.event.action}}`
-      - if: ${{ github.event.action == 'branches' }}
-        name: Set Branch Env
-        run: echo "CI_BRANCH=$(github.ref_name)" >> $GITHUB_ENV
-      - if: ${{ github.event.action == 'tags' }}
-        name: Set Tag Env
-        run: echo "CI_BUILD_TAG=$(github.ref_name)" >> $GITHUB_ENV
-  # test:
-  #   uses: ./.github/workflows/test.yaml
-  # build:
-  #   runs-on: ubuntu-latest
-  #   needs: [set-envs]
-  #   # needs: [set-envs, test]
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 1
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
 
-  #     - name: Run Setup
-  #       uses: ./.github/actions/setup
+      - name: Run Setup
+        uses: ./.github/actions/setup
 
-  #     - id: build
-  #       name: Build
-  #       # -l -v latest2
-  #       run: ./scripts/build-static
+      - id: build
+        name: Build
+        # -l -v latest2
+        run: ./scripts/build-static
 
-  #     - name: Archive build
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: BUILD_DIR
-  #         path: ${{ steps.build.outputs.BUILD_DIR }}
-  #         retention-days: 1
+      - name: Stash build
+        uses: actions/upload-artifact@v4
+        with:
+          name: BUILD_DIR
+          path: ${{ steps.build.outputs.BUILD_DIR }}
+          retention-days: 1
 
-  #     - name: Archive build
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: BUILD_TGZ
-  #         path: ${{ steps.build.outputs.BUILD_TGZ }}
-  #         retention-days: 1
+      - name: Stash Archive
+        if: ${{ env.CI_BUILD_TAG != ''}}
+        uses: actions/upload-artifact@v4
+        with:
+          name: BUILD_TGZ
+          path: ${{ steps.build.outputs.BUILD_TGZ }}
+          retention-days: 1
   # upload:
   #   runs-on: ubuntu-latest
   #   needs: build
@@ -107,3 +95,6 @@ jobs:
 # CDN="releases.rancher.com/ui"
 # GS_URL="${GS_URL:-gs://${CDN}}"
 # https://releases.rancher.com/ui/latest2/index.html
+
+
+# https://stackoverflow.com/questions/59874409/trigger-github-workflow-only-if-pushed-to-specific-branch-and-tag-exists
