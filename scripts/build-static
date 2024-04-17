@@ -126,7 +126,8 @@ fi
 
 # UPLOAD_LATEST=true is set by Drone for auto upload to CDN
 # && [[ "${UPLOAD_LATEST}" == "true" ]]
-if [[ "${BRANCH}" == "master" ]]; then
+# If we're building a branch and it's master... we're building latest
+if [[ "${BRANCH}" == "master" ]] && [[ "${CI_BRANCH}" != "" ]]; then
   # UPLOAD=2
   LATEST=1
 fi

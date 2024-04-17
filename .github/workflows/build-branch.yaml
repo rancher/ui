@@ -1,19 +1,29 @@
-name: Build
+name: Build (Branch)
 on:
   push:
     branches:
+      # TODO RC - uncomment
       # - master
       # - 'release-*'
       - richard-dev
 # env:
 #   CI_BRANCH: ${{github.ref_name}}
 jobs:
+  # TODO RC - uncomment
   # test:
   #   uses: ./.github/workflows/test.yaml
   build-and-upload:
-    uses: ./.github/actions/build-and-upload
+    uses: ./.github/workflows/build-and-upload.yaml
     with:
       CI_BRANCH: ${{github.ref_name}}
+
+      # runs-on: ubuntu-latest
+      # steps:
+      #   - uses: ./.github/actions/build-and-upload
+      #     with:
+      #       CI_BRANCH: ${{github.ref_name}}
+
+
   # build-and-uload:
   #   name: Build and upload
   #   # needs: [test]

@@ -1,0 +1,16 @@
+name: Build (Release)
+on:
+  push:
+    tags:
+      - v*
+env:
+  ENVIRONMENT: production
+
+jobs:
+  # TODO RC - uncomment
+  # test:
+  #   uses: ./.github/workflows/test.yaml
+  build-and-upload:
+    uses: ./.github/workflows/build-and-upload.yaml
+    with:
+      CI_BUILD_TAG: ${{github.ref_name}}
