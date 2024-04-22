@@ -91,28 +91,12 @@ const rootNav = [
     resourceScope:  'global',
     submenu:        [
       {
-        id:             'tools-alerts',
-        localizedLabel: 'nav.tools.alerts',
-        route:          'authenticated.project.alert',
-        resource:       [],
-        ctx:            [getProjectId],
-        resourceScope:  'global',
-      },
-      {
         id:             'manage-catalogs',
         localizedLabel: 'nav.tools.catalogs',
         route:          'authenticated.project.project-catalogs',
         ctx:            [getProjectId],
         resource:       ['catalog', 'project-catalog'],
         resourceScope:  'global',
-      },
-      {
-        id:             'tools-monitoring',
-        localizedLabel: 'nav.tools.monitoring',
-        route:          'authenticated.project.monitoring.project-setting',
-        resourceScope:  'global',
-        resource:       [],
-        ctx:            [getProjectId],
       },
       {
         id:             'tools-pipeline',
@@ -198,14 +182,6 @@ const rootNav = [
     resourceScope:  'global',
     submenu:        [
       {
-        id:             'cluster-tools-alert',
-        localizedLabel: 'nav.tools.alerts',
-        route:          'authenticated.cluster.alert',
-        resourceScope:  'global',
-        resource:       [],
-        ctx:            [getClusterId],
-      },
-      {
         id:             'cluster-tools-backups',
         localizedLabel: 'nav.tools.backups',
         route:          'authenticated.cluster.backups',
@@ -224,25 +200,6 @@ const rootNav = [
         ctx:            [getClusterId],
         resource:       ['catalog', 'cluster-catalog'],
         resourceScope:  'global',
-      },
-      {
-        id:             'cluster-tools-notifiers',
-        localizedLabel: 'nav.tools.notifiers',
-        route:          'authenticated.cluster.notifier',
-        resourceScope:  'global',
-        resource:       [],
-        ctx:            [getClusterId],
-      },
-      {
-        id:             'cluster-tools-monitoring',
-        localizedLabel: 'nav.tools.monitoring',
-        route:          'authenticated.cluster.monitoring.cluster-setting',
-        resourceScope:  'global',
-        resource:       [],
-        ctx:            [getClusterId],
-        condition() {
-          return get(this, 'cluster.isActive')
-        },
       },
       { divider: true },
       {
