@@ -11,6 +11,9 @@ jobs:
     uses: ./.github/workflows/test.yaml
   build-and-upload:
     uses: ./.github/workflows/build-and-upload.yaml
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     with:
       CI_BRANCH: ${{github.ref_name}}
       REPO: ui
