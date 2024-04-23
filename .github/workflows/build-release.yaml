@@ -3,7 +3,7 @@ on:
   push:
     tags:
       # TODO: RC
-      - richard-dev-v*
+      - richard-drone-ui-v*
 env:
   ENVIRONMENT: production
 
@@ -11,6 +11,7 @@ jobs:
   test:
     uses: ./.github/workflows/test.yaml
   build-and-upload:
+    needs: test
     uses: ./.github/workflows/build-and-upload.yaml
     with:
       CI_BUILD_TAG: ${{github.ref_name}}

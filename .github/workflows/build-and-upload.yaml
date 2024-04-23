@@ -9,20 +9,15 @@ on:
       CI_BUILD_TAG:
         required: false
         type: string
-      REPO:
-        required: true
-        type: string
 
 env:
   CI_BRANCH: ${{inputs.CI_BRANCH || ''}}
   CI_BUILD_TAG: ${{inputs.CI_BUILD_TAG || ''}}
-  REPO: ${{inputs.REPO || ''}}
+  REPO: ${{github.event.repository.name || ''}}
 
 jobs:
-  build:
+  build-and-upload:
     runs-on: ubuntu-latest
-    outputs:
-      VERSION: ${{ steps.build.outputs.VERSION }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -33,77 +28,113 @@ jobs:
 
       - id: build
         name: Build
-        # -l -v latest2
         run: ./scripts/build-static
 
-        # TODO RC if we can use upload permissions in a single job with build then these aren't needed
-      - name: Stash build (files)
-        uses: actions/upload-artifact@v4
-        with:
-          name: BUILD_DIR
-          path: ${{ steps.build.outputs.BUILD_DIR }}
-          retention-days: 1
-
-      - name: Stash build (archive file)
-        if: ${{ env.CI_BUILD_TAG != ''}}
-        uses: actions/upload-artifact@v4
-        with:
-          name: BUILD_TGZ
-          path: ${{ steps.build.outputs.BUILD_TGZ }}
-          retention-days: 1
-
-      # - name: Stash VERSION
-      #   run: echo "VERSION=${{ steps.build.outputs.VERSION }}" >> "$GITHUB_OUTPUT"
-  upload:
-    runs-on: ubuntu-latest
-    needs: build
-  #   env:
-  #     GS_BUCKET_NAME:
-    steps:
-      - name: Download build directory
-        uses: actions/download-artifact@v4
-        with:
-          name: BUILD_DIR
-          path: build_dir
-      - name: Download build tar
-        if: ${{ env.CI_BUILD_TAG != ''}}
-        uses: actions/download-artifact@v4
-        with:
-          name: BUILD_TGZ
-          path: build_tgz
-      # - name: version (TODO RC remove)
-      #   run: echo ${{needs.build.outputs.VERSION}}
-      # - name: build_dir output (TODO RC remove)
-      #   run: ls -l build_dir
-      - name: build_tgz output (TODO RC remove)
-        if: ${{ env.CI_BUILD_TAG != ''}}
-        run: ls -l build_tgz
-      - uses: rancher-eio/read-vault-secrets@main
+      - name: fFetch gcs auth
+        uses: rancher-eio/read-vault-secrets@main
         with:
           secrets: |
             secret/data/github/repo/${{ github.repository }}/google-auth/rancher/credentials token | GOOGLE_AUTH
+
       # https://github.com/google-github-actions/auth
-      - name: auth
+      - name: auth with gcs
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: "${{ env.GOOGLE_AUTH }}"
+
       # https://github.com/google-github-actions/upload-cloud-storage
       - name: upload build
         uses: 'google-github-actions/upload-cloud-storage@v2'
         with:
-          path: build_dir
+          path: ${{steps.build.outputs.BUILD_DIR}}
           # Example - https://releases.rancher.com/ui/2.8.0/...
-          destination: releases.rancher.com/${{ env.REPO }}/${{ needs.build.outputs.VERSION }}
+          destination: releases.rancher.com/${{ env.REPO }}/${{ steps.build.outputs.VERSION }}
           parent: false
           headers: |-
             cache-control: no-cache,must-revalidate
+
       - name: upload tar
         if: ${{ env.CI_BUILD_TAG != ''}}
         uses: 'google-github-actions/upload-cloud-storage@v2'
         with:
-          path: build_tgz
+          path: ${{steps.build.outputs.BUILD_TGZ}}
           # Example - https://releases.rancher.com/ui/2.8.0.tar.gz
           destination: releases.rancher.com/${{ env.REPO }}
           parent: false
           headers: |-
             cache-control: no-cache,must-revalidate
+
+
+
+
+      #   # TODO RC if we can use upload permissions in a single job with build then these aren't needed
+      # - name: Stash build (files)
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: BUILD_DIR
+      #     path: ${{ steps.build.outputs.BUILD_DIR }}
+      #     retention-days: 1
+
+      # - name: Stash build (archive file)
+      #   if: ${{ env.CI_BUILD_TAG != ''}}
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: BUILD_TGZ
+      #     path: ${{ steps.build.outputs.BUILD_TGZ }}
+      #     retention-days: 1
+
+      # - name: Stash VERSION
+      #   run: echo "VERSION=${{ steps.build.outputs.VERSION }}" >> "$GITHUB_OUTPUT"
+  # upload:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  # #   env:
+  # #     GS_BUCKET_NAME:
+  #   steps:
+  #     - name: Download build directory
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: BUILD_DIR
+  #         path: build_dir
+  #     - name: Download build tar
+  #       if: ${{ env.CI_BUILD_TAG != ''}}
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: BUILD_TGZ
+  #         path: build_tgz
+  #     # - name: version (TODO RC remove)
+  #     #   run: echo ${{needs.build.outputs.VERSION}}
+  #     # - name: build_dir output (TODO RC remove)
+  #     #   run: ls -l build_dir
+  #     - name: build_tgz output (TODO RC remove)
+  #       if: ${{ env.CI_BUILD_TAG != ''}}
+  #       run: ls -l build_tgz
+  #     - uses: rancher-eio/read-vault-secrets@main
+  #       with:
+  #         secrets: |
+  #           secret/data/github/repo/${{ github.repository }}/google-auth/rancher/credentials token | GOOGLE_AUTH
+  #     # https://github.com/google-github-actions/auth
+  #     - name: auth
+  #       uses: 'google-github-actions/auth@v2'
+  #       with:
+  #         credentials_json: "${{ env.GOOGLE_AUTH }}"
+  #     # https://github.com/google-github-actions/upload-cloud-storage
+  #     - name: upload build
+  #       uses: 'google-github-actions/upload-cloud-storage@v2'
+  #       with:
+  #         path: build_dir
+  #         # Example - https://releases.rancher.com/ui/2.8.0/...
+  #         destination: releases.rancher.com/${{ env.REPO }}/${{ needs.build.outputs.VERSION }}
+  #         parent: false
+  #         headers: |-
+  #           cache-control: no-cache,must-revalidate
+  #     - name: upload tar
+  #       if: ${{ env.CI_BUILD_TAG != ''}}
+  #       uses: 'google-github-actions/upload-cloud-storage@v2'
+  #       with:
+  #         path: build_tgz
+  #         # Example - https://releases.rancher.com/ui/2.8.0.tar.gz
+  #         destination: releases.rancher.com/${{ env.REPO }}
+  #         parent: false
+  #         headers: |-
+  #           cache-control: no-cache,must-revalidate
