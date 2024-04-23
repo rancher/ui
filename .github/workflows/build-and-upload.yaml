@@ -9,15 +9,18 @@ on:
       CI_BUILD_TAG:
         required: false
         type: string
+      REPO:
+        required: true
+        type: string
 
 env:
   CI_BRANCH: ${{inputs.CI_BRANCH || ''}}
   CI_BUILD_TAG: ${{inputs.CI_BUILD_TAG || ''}}
+  REPO: ${{inputs.REPO || ''}}
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # needs: [set-envs, test]
     outputs:
       VERSION: ${{ steps.build.outputs.VERSION }}
     steps:
@@ -54,9 +57,9 @@ jobs:
   upload:
     runs-on: ubuntu-latest
     needs: build
-  #   permissions:
-  #     contents: 'read'
-  #     id-token: 'write'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
   #   env:
   #     GS_BUCKET_NAME:
     steps:
@@ -71,46 +74,39 @@ jobs:
         with:
           name: BUILD_TGZ
           path: build_tgz
-      - name: version (TODO RC remove)
-        run: echo ${{needs.build.outputs.VERSION}}
+      # - name: version (TODO RC remove)
+      #   run: echo ${{needs.build.outputs.VERSION}}
       # - name: build_dir output (TODO RC remove)
       #   run: ls -l build_dir
       - name: build_tgz output (TODO RC remove)
         if: ${{ env.CI_BUILD_TAG != ''}}
         run: ls -l build_tgz
+      - uses: rancher-eio/read-vault-secrets@main
+        with:
+          secrets: |
+            secret/data/github/repo/${{ github.repository }}/google-auth/rancher/credentials token | GOOGLE_AUTH
       # https://github.com/google-github-actions/auth
-      # - name: auth
-      #   uses: 'google-github-actions/auth@v2'
-      #   with:
-      #     credentials_json: ''
-      #     # workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-      #     # service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
-      # # https://github.com/google-github-actions/upload-cloud-storage
-      # - name: upload build
-      #   uses: 'google-github-actions/upload-cloud-storage@v2'
-      #   with:
-      #     path: build_dir
-      #     # https://releases.rancher.com/ui/2.8.0/...
-      #     destination: releases.rancher.com/ui/${{ needs.build.outputs.VERSION }}
-      #     parent: false
-      #     headers: |-
-      #       cache-control: no-cache,must-revalidate
-      # - name: upload tar
-      #   uses: 'google-github-actions/upload-cloud-storage@v2'
-      #   with:
-      #     path: build_tgz
-      #     # https://releases.rancher.com/ui/2.8.0.tar.gz
-      #     destination: releases.rancher.com/ui
-      #     parent: false
-      #     headers: |-
-      #       cache-control: no-cache,must-revalidate
-
-#project_id
-# GS_PROJECT_NAME 'Rancher'
-# VERSION
-# CDN="releases.rancher.com/ui"
-# GS_URL="${GS_URL:-gs://${CDN}}"
-# https://releases.rancher.com/ui/latest2/index.html
-
-
-# https://stackoverflow.com/questions/59874409/trigger-github-workflow-only-if-pushed-to-specific-branch-and-tag-exists
+      - name: auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: "${{ env.GOOGLE_AUTH }}"
+      # https://github.com/google-github-actions/upload-cloud-storage
+      - name: upload build
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: build_dir
+          # Example - https://releases.rancher.com/ui/2.8.0/...
+          destination: releases.rancher.com/${{ env.REPO }}/${{ needs.build.outputs.VERSION }}
+          parent: false
+          headers: |-
+            cache-control: no-cache,must-revalidate
+      - name: upload tar
+        if: ${{ env.CI_BUILD_TAG != ''}}
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: build_tgz
+          # Example - https://releases.rancher.com/ui/2.8.0.tar.gz
+          destination: releases.rancher.com/${{ env.REPO }}
+          parent: false
+          headers: |-
+            cache-control: no-cache,must-revalidate
