@@ -5,9 +5,10 @@ on:
       - master
       - 'release-*'
   pull_request:
-      branches:
-        - master
-        - 'release-*'
+    branches:
+      - master
+      - 'release-*'
+  workflow_call:
 
 jobs:
   unit-test:
@@ -16,17 +17,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 1
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14.x'
 
-      - name: Install Python for node-sass
-        run: |
-          DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends python2
-      
-      - name: Install packages
-        run: ./scripts/bootstrap
-      
+      - name: Run Setup
+        uses: ./.github/actions/setup
+
       - name: Run tests
         run: yarn test
   lint:
@@ -35,16 +29,9 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 1
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14.x'
 
-      - name: Install Python for node-sass
-        run: |
-          DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends python2
-        
-      - name: Install packages
-        run: ./scripts/bootstrap
-      
+      - name: Run Setup
+        uses: ./.github/actions/setup
+
       - name: Run linter
         run: yarn lint:js
