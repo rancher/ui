@@ -2,17 +2,16 @@ name: Build (Release)
 on:
   push:
     tags:
-      # TODO: RC
-      - richard-drone-ui-v*
-env:
-  ENVIRONMENT: production
+      # TODO RC
+      # - v*
+      - v1.2.3-richard-drone-ui
 
 jobs:
-  # test:
-  #   uses: ./.github/workflows/test.yaml
-  build-and-upload:
+  test:
+    uses: ./.github/workflows/test.yaml
+  build-tag-and-upload:
     uses: ./.github/workflows/build-and-upload.yaml
-    # needs: test
+    needs: test
     permissions:
       contents: 'read'
       id-token: 'write'

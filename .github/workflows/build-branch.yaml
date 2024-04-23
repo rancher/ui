@@ -2,16 +2,16 @@ name: Build (Branch)
 on:
   push:
     branches:
-      # TODO RC - uncomment
+      # TODO RC
       # - master
       # - 'release-*'
-      - richard-drone-ui-sjdkfldsgfdsf
+      - richard-drone-ui
 jobs:
-  # test:
-  #   uses: ./.github/workflows/test.yaml
-  build-and-upload:
+  test:
+    uses: ./.github/workflows/test.yaml
+  build-branch-and-upload:
     uses: ./.github/workflows/build-and-upload.yaml
-    # needs: test
+    needs: test
     permissions:
       contents: 'read'
       id-token: 'write'
