@@ -26,7 +26,6 @@ export default Route.extend({
       kontainerDrivers:           globalStore.findAll('kontainerDriver'),
       nodeTemplates:              globalStore.findAll('nodeTemplate'),
       nodeDrivers:                globalStore.findAll('nodeDriver'),
-      psps:                       globalStore.findAll('podSecurityPolicyTemplate'),
       psacs:                      globalStore.findAll('podSecurityAdmissionConfigurationTemplate'),
       roleTemplates:              get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
       users:                      globalStore.findAll('user'),

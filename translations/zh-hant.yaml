@@ -332,30 +332,6 @@ alertPage:
     addHeader: 添加告警
     editHeader: 編輯告警
 
-podSecurityPoliciesPage:
-  index:
-    header: Pod安全策略
-    description: 將策略應用於由具有此角色的用戶創建的Pod。
-    table:
-      name: 名稱
-      created: 創建時間
-      noData: 未定義Pod安全策略
-      noMatch: 沒有與當前搜索匹配的Pod安全策略
-  addPodSecurityPolicy: 添加策略
-  editPodSecurityPolicy: 編輯策略
-  detail:
-    header: 策略
-  saveEdit: 編輯
-  saveNew: 創建
-  new:
-    errors:
-      nameReq: 名稱(必填)
-      nameInExists: 名稱已存在， 請使用新的Pod安全策略名稱。
-    form:
-      name:
-        labelText: 名稱
-        placeholder: '例如: 策略'
-
 rolesPage:
   title: 角色
   index:
@@ -890,8 +866,6 @@ projectsPage:
     placeholder: '例如: lab'
   created:
     label: 創建時間
-  psp:
-    label: Pod安全策略
   resourceQuota:
     title: 資源配額
     detail: 配置整個項目可以使用多少資源。
@@ -2047,11 +2021,6 @@ clusterNew:
   customize:
     title: 集群選項
     detail: 自定義將要創建的集群
-  psp:
-    label: 默認的Pod安全策略
-    prompt: 選擇一個Pod安全策略...
-    none: 沒有定義策略
-    required: 啟用時需要設置一個默認Pod安全策略
   amazoneks:
     label: AWS的基於Kubernetes的彈性容器服務
     shortLabel: 亞馬遜EKS
@@ -2348,8 +2317,6 @@ clusterNew:
       label: 主機Docker版本
       enabled: 允許不受支持的版本
       disabled: 需要支持的版本
-    podSecurityPolicy:
-      label: Pod安全策略(需先在全局下創建Pod策略)
     role:
       pageheader: 自定義主機運行命令
       sectionheader: 主機選項
@@ -2367,7 +2334,6 @@ clusterNew:
     kubeApi:
       label: Kube API
       ipRange: 服務集群IP範圍
-      podSecurityPolicy: Pod安全策略
     kubeController:
       label: Kube控制器
       cidr: 集群CIDR
@@ -4378,132 +4344,6 @@ formVolumes:
     mountPoint: 掛載點
     opts: 權限/選項
 
-formCapabilityPodSecurityPolicy:
-  title: 內核安全策略
-  detail: 配置一組功能策略
-  capabilities:
-    allow: 啟用的功能
-    add: 默認添加的能力
-    drop: 必須禁用的內核能力
-
-formVolumePodSecurityPolicy:
-  title: 卷策略
-  detail: 控制卷類型的使用
-  volumes: 數據卷
-
-formAllowedHostPathsPodSecurityPolicy:
-  title: 允許主機路徑策略
-  detail: 允許的主機路徑的白名單
-  path:
-    addLabel: 添加路徑前綴
-    placeholder: '例如: /foo'
-
-formFsGroupPodSecurityPolicy:
-  title: FS組策略
-  detail: 分配擁有Pod卷的FSGroup
-  rule:
-    mustRunAs: MustRunAs-至少需要指定一個範圍，使用第一個範圍的最小值作為默認值，對照第一個範圍中的第一個ID進行驗證。
-    runAsAny: RunAsAny - 沒有默認值，允許指定任何fsGroup ID。
-  range:
-    addLabel: 添加一個範圍
-    max:
-      label: 最大值
-      placeholder: '例如: 6'
-    min:
-      label: 最小值
-      placeholder: '例如: 1'
-
-formHostPortsPodSecurityPolicy:
-  title: 主機端口策略
-  detail: 使用主機端口
-  port:
-    addLabel: 添加端口範圍
-    max:
-      label: 最大值
-      placeholder: '例如: 7000'
-    min:
-      label: 最小值
-      placeholder: '例如: 6000'
-
-formRunAsUserPodSecurityPolicy:
-  title: 用戶運行策略
-  detail: User ID
-  rule:
-    mustRunAs: MustRunAs - 需要配置一個範圍，使用範圍的第一個值作為默認值。根據配置的範圍進行驗證。
-    mustRunAsNonRoot: MustRunAsNonRoot - 要求使用非零runAsUser啟動Pod，或者在鏡像中定義USER指令，不提供默認值。
-    runAsAny: RunAsAny - 無默認值，允許任何runAsUser來指定。
-  range:
-    addLabel: 添加一個範圍
-    max:
-      label: 最大值
-      placeholder: '例如: 6'
-    min:
-      label: 最小值
-      placeholder: '例如: 1'
-
-formSeLinuxodSecurityPolicy:
-  title: SELinux策略
-  detail: 容器的SELinux上下文
-  rule:
-    mustRunAs: MustRunAs - 使用seLinuxOptions作為默認值，根據seLinuxOptions進行驗證。
-    runAsAny: RunAsAny - 允許指定任何seLinuxOptions設置
-  level:
-    label: 等級
-    placeholder: '例如: dev1'
-  role:
-    label: 角色
-    placeholder: '例如: node'
-  user:
-    label: 用戶
-    placeholder: '例如: master'
-
-formSupplementalGroupsPodSecurityPolicy:
-  title: 補充組策略
-  detail: 配置允許的補充組
-  rule:
-    mustRunAs: MustRunAs - 需要至少指定一個範圍，使用第一個範圍的最小值作為默認值，針對所有範圍進行驗證。
-    runAsAny: RunAsAny - 無默認值。允許指定任何補充組。
-  range:
-    addLabel: 添加一個範圍
-    max:
-      label: 最大值
-      placeholder: '例如: 6'
-    min:
-      label: 最小值
-      placeholder: '例如: 1'
-
-formBasicPodSecurityPolicy:
-  title: 基本策略
-  detail: 配置基本的Pod安全策略
-  allowPrivilegeEscalation:
-    label: 允許提升特權
-    enable: '是: 運行允許從其父級升級特權的容器'
-    disable: "否"
-  defaultAllowPrivilegeEscalation:
-    label: 默認允許提升特權
-    enable: '是: 控制進程可以獲得父進程獲得更多特權'
-    disable: "否"
-  hostIPC:
-    label: 主機IPC
-    enable: "是: 主機IPC命名空間"
-    disable: "否"
-  hostNetwork:
-    label: 主機網絡
-    enable: "是: 使用主機網絡"
-    disable: "否"
-  hostPID:
-    label: 主機PID
-    enable: "是: 主機PID名稱空間"
-    disable: "否"
-  privileged:
-    label: 特權
-    enable: "是: 運行特權容器"
-    disable: "否"
-  readOnlyRootFilesystem:
-    label: 只讀根文件系統
-    enable: "是: 需要採用一個只讀根文件系統"
-    disable: "否"
-
 hostSettings:
   header: 主機註冊URL
   subtext: 主機連接{appName}API的Base URL是？
@@ -6309,7 +6149,6 @@ nav:
       tab: 安全
       roles: 角色
       members: 成員
-      podSecurityPolicies: Pod安全策略
       authentication: 認證
       authWarning: "注意:除本地身份驗證之外，在任何時候只能啟用單個身份驗證提供者。如果在2.1之前啟用了多個身份驗證提供者，則仍然可以編輯或禁用這些提供者，但不能啟用其他提供者。您也不能重新啟用以前禁用的提供者。禁用時要小心，禁用後配置無法恢復。"
     settings:

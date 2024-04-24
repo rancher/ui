@@ -306,13 +306,6 @@ const rootNav = [
         resourceScope:  'global',
       },
       {
-        id:             'global-security-roles',
-        localizedLabel: 'nav.admin.security.podSecurityPolicies',
-        route:          'global-admin.security.policies',
-        resource:       ['podsecuritypolicytemplate'],
-        resourceScope:  'global',
-      },
-      {
         id:             'global-security-authentication',
         localizedLabel: 'nav.admin.security.authentication',
         route:          'global-admin.security.authentication',

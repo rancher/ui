@@ -339,29 +339,6 @@ alertPage:
     editHeader: アラートグループの編集
     addRuleHeader: アラートルールを追加
     editRuleHeader: アラートルールを編集
-podSecurityPoliciesPage:
-  index:
-    header: ポッドセキュリティポリシー
-    description: このロールを持つユーザーが作成したポッドにポリシーを適用する
-    table:
-      name: 名前
-      created: 作成日
-      noData: まだポッドセキュリティポリシーは定義されていません
-      noMatch: 検索条件に一致するポッドセキュリティポリシーがありません
-  addPodSecurityPolicy: ポリシーを追加
-  editPodSecurityPolicy: ポリシーを編集
-  detail:
-    header: ポリシー
-  saveEdit: 編集
-  saveNew: 作成
-  new:
-    errors:
-      nameReq: 名前が必要です
-      nameInExists: 名前は既に存在します。新しいポッドセキュリティポリシー名を使用してください。
-    form:
-      name:
-        labelText: 名前
-        placeholder: "例: policy"
 rolesPage:
   title: ロール
   headers:
@@ -947,8 +924,6 @@ projectsPage:
     placeholder: '例: lab'
   created:
     label: 作成日
-  psp:
-    label: ポッドセキュリティポリシー
   resourceQuota:
     title: リソース制限
   members:
@@ -2167,11 +2142,6 @@ clusterNew:
     detail: 作成されるノードをカスタマイズする
   customize:
     title: クラスターオプション
-  psp:
-    label: 既定のPodセキュリティポリシー
-    prompt: ポッドセキュリティポリシーを選択...
-    none: ポリシーが定義されていません。
-    required: サポートが有効になっている場合、デフォルトのポッドセキュリティポリシーが必要です。
   amazoneks:
     label: Amazon Elastic Container Service for Kubernetes
     shortLabel: Amazon EKS
@@ -2718,8 +2688,6 @@ clusterNew:
       label: ノードの Docker バージョン
       enabled: 未サポートのバージョンを許可
       disabled: サポートされている Docker バージョンを要求
-    podSecurityPolicy:
-      label: ポッドセキュリティポリシー サポート
     role:
       sectionheader: ノードオプション
       title: ノードロール
@@ -2736,7 +2704,6 @@ clusterNew:
     kubeApi:
       label: Kube API
       ipRange: サービスクラスターの IP 範囲
-      podSecurityPolicy: ポッドセキュリティポリシー
     kubeController:
       label: Kube Controller
       cidr: クラスター CIDR
@@ -4596,132 +4563,6 @@ formVolumes:
     source: ソース
     mountPoint: マウントポイント
     opts: アクセス/オプション
-formCapabilityPodSecurityPolicy:
-  title: ケーパビリティポリシー
-  detail: ケーパビリティポリシーに関する設定です
-  capabilities:
-    allow: 許可されたケーパビリティ
-    add: デフォルトで追加されるケーパビリティ
-    drop: ドロップされるべきケーパビリティ
-formVolumePodSecurityPolicy:
-  title: ボリュームポリシー
-  detail: 利用可能なボリュームタイプを制御します
-  volumes: ボリューム
-formAllowedHostPathsPodSecurityPolicy:
-  title: 許可されたホストパスポリシー
-  detail: 許可されたホストパスのホワイトリストです
-  path:
-    addLabel: パスプリフィックスを追加
-    placeholder: '例: /foo'
-formFsGroupPodSecurityPolicy:
-  title: FS グループポリシー
-  detail: ポッドのボリュームを所有する FS グループを割り当てます
-  rule:
-    mustRunAs: MustRunAs  - 少なくとも1つの範囲を指定する必要があります。最初の範囲の最小値をデフォルト値として使用します。最初の範囲の最初のIDに対して検証します。
-    runAsAny: RunAsAny  - デフォルトはありません。任意の fsGroup ID を指定できます。
-  range:
-    addLabel: 範囲を追加
-    max:
-      label: 最大
-      placeholder: '例: 6'
-    min:
-      label: 最小
-      placeholder: '例: 1'
-formHostPortsPodSecurityPolicy:
-  title: ホストポートポリシー
-  detail: 使用するホストポートを設定します
-  port:
-    addLabel: ポート範囲を追加
-    max:
-      label: 最大
-      placeholder: '例: 7000'
-    min:
-      label: 最小
-      placeholder: '例: 6000'
-formRunAsUserPodSecurityPolicy:
-  title: ユーザー実行ポリシー
-  detail: ユーザーID
-  rule:
-    mustRunAs: MustRunAs - 少なくとも1つの範囲を設定する必要があります。範囲の最初の値をデフォルト値として使用します。検証は設定された範囲に対して行われます。
-    mustRunAsNonRoot: MustRunAsNonRoot - ポッドにrunAsUserが0以外で提出されるか、USERディレクティブがイメージ内で定義されている必要があります。デフォルトは提供されていません。
-    runAsAny: RunAsAny - デフォルトはありません。任意の runAsUser を指定できます。
-  range:
-    addLabel: 範囲を追加
-    max:
-      label: 最大
-      placeholder: '例: 6'
-    min:
-      label: 最小
-      placeholder: '例: 1'
-formSeLinuxodSecurityPolicy:
-  title: SELinux ポリシー
-  detail: コンテナに対する SELinux コンテキストを設定します
-  rule:
-    mustRunAs: MustRunAs - デフォルトとしてseLinuxOptionsを使用します。検証は seLinuxOptions に対して行います。
-    runAsAny: RunAsAny - 任意の seLinuxOptions を指定できるようにする
-  level:
-    label: レベル
-    placeholder: '例: level'
-  role:
-    label: ロール
-    placeholder: '例: role'
-  user:
-    label: ユーザー
-    placeholder: '例: user'
-formSupplementalGroupsPodSecurityPolicy:
-  title: 補足のグループポリシー
-  detail: 許容される補足的なグループポリシーを設定します
-  rule:
-    mustRunAs: MustRunAs - 少なくとも1つの範囲を指定する必要があります。最初の範囲の最小値をデフォルト値として使用します。すべての範囲のIDに対して検証します。
-    runAsAny: RunAsAny - デフォルトはありません。任意の supplementalGroups を指定できます。
-  range:
-    addLabel: 範囲を追加
-    max:
-      label: 最大
-      placeholder: '例: 6'
-    min:
-      label: 最小
-      placeholder: '例: 1'
-formBasicPodSecurityPolicy:
-  title: 基本ポリシー
-  detail: 基本的なポッドセキュリティポリシーに関する設定です
-  allowPrivilegeEscalation:
-    label: 権限昇格を許可する
-    enable: "はい: コンテナの実行時に親からの権限昇格を許可します"
-    disable: "いいえ"
-  defaultAllowPrivilegeEscalation:
-    label: デフォルトの権限昇格を許可する
-    enable: "はい: プロセスが親プロセスより多くの権限を取得できるかどうかを制御します"
-    disable: "いいえ"
-  hostIPC:
-    label: ホスト IPC
-    enable: "はい: ホストの IPC 名前空間を使用します"
-    disable: "いいえ"
-  hostNetwork:
-    label: ホストネットワーク
-    enable: "はい: ホストネットワーキングを使用します"
-    disable: "いいえ"
-  hostPID:
-    label: ホスト PID
-    enable: "はい: ホストの PID 名前空間を使用します"
-    disable: "いいえ"
-  privileged:
-    label: 特権モード
-    enable: "はい: 特権付きコンテナを実行します"
-    disable: "いいえ"
-  readOnlyRootFilesystem:
-    label: 読み取り専用ルートファイルシステム
-    enable: "はい：読み取り専用のルートファイルシステムを使用する必要があります"
-    disable: "いいえ"
-formReservation:
-  limitCpu:
-    placeholder: '例: 1000'
-  limitMemory:
-    placeholder: '例: 1000'
-  requestCpu:
-    placeholder: '例: 1000'
-  requestMemory:
-    placeholder: '例: 1000'
 hostSettings:
   header: ホスト登録 URL
   subtext: '{appName} API に接続するための URL は何にしますか?'
@@ -6309,7 +6150,6 @@ nav:
       tab: セキュリティ
       roles: ロール
       members: メンバー
-      podSecurityPolicies: ポッドセキュリティポリシー
       authentication: 認証
     settings:
       tab: 設定

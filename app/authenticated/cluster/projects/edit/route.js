@@ -16,7 +16,6 @@ export default Route.extend({
       project:                     store.find('project', params.project_id),
       projectRoleTemplateBindings: store.find('projectRoleTemplateBinding'),
       projects:                    store.findAll('project'),
-      psps:                        store.find('podSecurityPolicyTemplate'),
       roles:                       get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
       users:                       store.find('user', null, { forceReload: true }),
     }).then((hash) => {
