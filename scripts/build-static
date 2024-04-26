@@ -115,9 +115,10 @@ BUILD_DIR="${BUILD_PAR}/${VERSION}"
 BUILD_TGZ="${BUILD_PAR}/${VERSION}.tar.gz"
 
 # Outputs for gh actions
-echo "BUILD_DIR=${BUILD_DIR}" >> "$GITHUB_OUTPUT"
-echo "BUILD_TGZ=${BUILD_TGZ}" >> "$GITHUB_OUTPUT"
-echo "VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
+ENV_OUTPUT="${GITHUB_OUTPUT:-"temp-env"}"
+echo "BUILD_DIR=${BUILD_DIR}" >> "$ENV_OUTPUT"
+echo "BUILD_TGZ=${BUILD_TGZ}" >> "$ENV_OUTPUT"
+echo "VERSION=${VERSION}" >> "$ENV_OUTPUT"
 
 # Print settings
 echo "Branch: ${BRANCH}"
