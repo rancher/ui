@@ -1,0 +1,17 @@
+name: Build (Release)
+on:
+  push:
+    tags:
+      - v[2-9].*
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yaml
+  build-tag-and-upload:
+    uses: ./.github/workflows/build-and-upload.yaml
+    needs: test
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    with:
+      CI_BUILD_TAG: ${{github.ref_name}}

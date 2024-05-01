@@ -1,0 +1,19 @@
+name: Build (Branch)
+on:
+  push:
+    branches:
+      - master
+      - 'release-*'
+      - '*-dev'
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yaml
+  build-branch-and-upload:
+    uses: ./.github/workflows/build-and-upload.yaml
+    needs: test
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    with:
+      CI_BRANCH: ${{github.ref_name}}
