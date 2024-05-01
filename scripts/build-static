@@ -7,12 +7,6 @@ if [[ -n "${BUILD_DEBUG}" ]]; then
     set -x
 fi
 
-# Initialize empty variables
-: ${CI_BRANCH=""}
-: ${UPLOAD_LATEST=""}
-# Drone will set this on tag
-: ${CI_BUILD_TAG="${DRONE_TAG:-}"}
-
 # cd to app root
 CWD=$(dirname $0)
 if [[ `basename $(pwd)` = 'scripts' ]]; then
@@ -30,13 +24,8 @@ function printHelp() {
 build-static Usage:
   -d - Build debug instead of production build
   -f - Force: Turn off checks that prevent you from doing bad things
-  -l - Build as "release-2.7" instead of the version in package.json
-  -t - Tag and push tag
-  -u - Upload to GCE
-  -s - Skip tests
   -c=CDN - Force a CDN path for static asset delivery. Default <releases.rancher.com/ui>
   -v=VERSION - Force version to be VERSION instead of what is in package.json
-  -p=PROJECT_NAME - name of the Google Cloud project hosting the storage bucket
 EOF
   exit 1;
 }
@@ -48,11 +37,6 @@ BRANCH=$CI_BRANCH
 BUILD_TAG="${CI_BUILD_TAG#v}"
 CDN="releases.rancher.com/ui"
 
-# Parse branch argument and set to current branch name if empty
-if [[ -z "$BRANCH" ]]; then
-  BRANCH=$(git symbolic-ref HEAD | sed -e "s/^refs\/heads\///")
-fi
-
 if [[ -z "$BUILD_TAG" ]]; then
   PKG_VERSION=$(cat package.json | grep version | head -n 1 | cut -f4 -d'"')
 else
@@ -62,13 +46,9 @@ fi
 FORCE=0
 LATEST=0
 MODE=""
-UPLOAD=0
-TAG=0
-TEST=1
 ENVIRONMENT="production"
 FINGERPRINT="yes"
 : ${FORCE_VERSION:=""}
-GS_PROJECT_NAME="${GS_PROJECT_NAME:-Rancher}"
 
 while getopts ":dlustfv:c:p:m:" opt;do
     case $opt in
@@ -78,29 +58,14 @@ while getopts ":dlustfv:c:p:m:" opt;do
     f)
         FORCE=1
         ;;
-    l)
-        LATEST=1
-        ;;
     m)
         MODE=$OPTARG
-        ;;
-    s)
-        TEST=0
-        ;;
-    t)
-        TAG=1
-        ;;
-    u)
-        UPLOAD=1
         ;;
     v)
         FORCE_VERSION=$OPTARG
         ;;
     c)
         CDN=$OPTARG
-        ;;
-    p)
-        GS_PROJECT_NAME=$OPTARG
         ;;
     \?)
         echo "Invalid arguemnt: ${OPTARG}"
@@ -124,33 +89,9 @@ if [[ `git status --porcelain` ]]; then
   fi
 fi
 
-# UPLOAD_LATEST=true is set by Drone for auto upload to CDN
-if [[ "${BRANCH}" == "release-2.7" ]] && [[ "${UPLOAD_LATEST}" == "true" ]]; then
-  UPLOAD=2
+# If we're on master and building from branch ... we're building latest
+if [[ "${CI_BRANCH}" == "release-2.7" ]] ; then
   LATEST=1
-fi
-
-# Sanity checking
-if [[ $LATEST -eq 1 ]] && [[ $TAG -eq 1 ]]; then
-  echo "You can't tag latest."
-  if [[ $FORCE -ne 1 ]]; then
-    exit 1;
-  fi
-fi
-
-if ( [[ $TAG -eq 1 ]] || [[ $UPLOAD -ne 0 ]] ) && [[ "${BRANCH}" != "release-2.7" ]]; then
-  echo "You can only tag or upload the release-2.7 branch (you are on '${BRANCH}')."
-  if [[ $FORCE -ne 1 ]]; then
-    exit 1;
-  fi
-fi
-
-REMOTE=$(git config --get remote.origin.url)
-if [[ $TAG -eq 1 ]] && [[ ! "${REMOTE}" =~ .*rancher/ui.* ]]; then
-  echo "You can only tag when origin is the main rancher/ui repo (you are on '${REMOTE}')."
-  if [[ $FORCE -ne 1 ]]; then
-    exit 1;
-  fi
 fi
 
 if [[ "${FORCE_VERSION}" != "" ]]; then
@@ -158,6 +99,8 @@ if [[ "${FORCE_VERSION}" != "" ]]; then
 else
   if [[ $LATEST -eq 1 ]]; then
     VERSION="release-2.7"
+  elif [[ "${CI_BRANCH}" != "" ]]; then
+    VERSION=${CI_BRANCH}
   else
     VERSION=${PKG_VERSION}
   fi
@@ -167,37 +110,23 @@ if [[ $LATEST -eq 1 ]]; then
   FINGERPRINT="no"
 fi
 
-EXISTING=$(git tag -l "v${VERSION}")
-if [[ $TAG -eq 1 ]] && [[ "${EXISTING}" = "v${VERSION}" ]]; then
-  echo "There is already an existing tag v${VERSION}"
-  if [[ $FORCE -ne 1 ]]; then
-    exit 1;
-  fi
-fi
-
 BUILD_PAR="dist/static"
 BUILD_DIR="${BUILD_PAR}/${VERSION}"
 BUILD_TGZ="${BUILD_PAR}/${VERSION}.tar.gz"
-GS_URL="${GS_URL:-gs://${CDN}}"
 
-GCLOUD_UUID="google/cloud-sdk@sha256:506775439bd4f44d90a3f6784f2b625e55c43635f9f2c4cae24ac4b3dea0277a"
+# Outputs for gh actions
+ENV_OUTPUT="${GITHUB_OUTPUT:-"temp-env"}"
+echo "BUILD_DIR=${BUILD_DIR}" >> "$ENV_OUTPUT"
+echo "BUILD_TGZ=${BUILD_TGZ}" >> "$ENV_OUTPUT"
+echo "VERSION=${VERSION}" >> "$ENV_OUTPUT"
 
+# Print settings
 echo "Branch: ${BRANCH}"
-if [[ "${VERSION}" != "${PKG_VERSION}" ]]; then
-  echo "Package Version: ${PKG_VERSION}"
-fi
+echo "Package Version: ${PKG_VERSION}"
 echo "Version: ${VERSION}"
 echo "Build Dir: ${BUILD_DIR}"
-echo "Options: Force=${FORCE}, Mode=${MODE}, Latest=${LATEST}, Test=${TEST}, Upload=${UPLOAD}, Tag=${TAG}"
+echo "Options: Force=${FORCE}, Mode=${MODE}, Latest=${LATEST}"
 echo "Current Directory: $(pwd)"
-
-if [[ $TEST -eq 1 ]]; then
-  echo "Testing..."
-  runCmd ./node_modules/.bin/ember test
-  echo "Done Testing."
-else
-  echo "Skipping Tests"
-fi
 
 if [[ $LATEST -ne 1 ]]; then
   echo "Building Static Tarball..."
@@ -218,41 +147,3 @@ UI_MODE="${MODE}" FINGERPRINT="${FINGERPRINT}" RANCHER="" CATALOG="" BASE_ASSETS
 
 # Create a file containing the version
 echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
-
-if [[ $TAG -eq 1 ]]; then
-  runCmd git tag v${VERSION}
-  runCmd git push --tags
-fi
-
-# Upload asset, either from laptop or from CI pipeline
-if [[ -n "$UPLOAD" ]]; then
-  echo "Uploading..."
-
-  ABS_BUILD_DIR="$(pwd)/${BUILD_DIR}"
-  GS_UPLOAD_COMMAND="gcs_upload_asset project_name=${GS_PROJECT_NAME} version=${VERSION} upload_target=${GS_URL}"
-
-  if [[ $LATEST -ne 1 ]]; then
-    GS_UPLOAD_COMMAND+=" tgz_file=${BUILD_TGZ}"
-  else
-    GS_UPLOAD_COMMAND+=" is_latest=true"
-  fi
-
-  if [[ $UPLOAD -eq 1 ]]; then
-    runCmd "${GS_UPLOAD_COMMAND} upload_source=${BUILD_DIR} disable_svcacct_auth=true"
-  fi
-
-  if [[ $UPLOAD -eq 2 ]]; then
-    GS_SERVICE_ACCOUNT_KEYFILE="$(TMPDIR=$(pwd) && mktemp -t gs_service_account_keyfile.XXXXXXX)"
-    echo "${GS_SERVICE_ACCOUNT_KEY}" > "${GS_SERVICE_ACCOUNT_KEYFILE}"
-
-    GS_UPLOAD_COMMAND+=" service_account_id=${GS_SERVICE_ACCOUNT_ID}"
-    runCmd "docker run --rm --name gcloud-config \
-            -v ${GS_SERVICE_ACCOUNT_KEYFILE}:/tmp/keyfile.json \
-            -v $(pwd)/scripts:/opt/rancher/scripts \
-            -v ${ABS_BUILD_DIR}:/upload \
-            ${GCLOUD_UUID} \
-            /opt/rancher/scripts/${GS_UPLOAD_COMMAND}"
-
-    rm "${GS_SERVICE_ACCOUNT_KEYFILE}"
-  fi
-fi
