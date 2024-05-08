@@ -20,6 +20,22 @@ runs:
       run: |
         DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends python2
 
+    # TODO RC remove
+    # - name: DEBUG2
+    #   if: ${{ inputs.runner != 'github'}}
+    #   shell: bash
+    #   run: |
+    #     set -e
+    #     echo "!!!!! which"
+    #     which python # this just exits with non-zero
+
+    # - name: DEBUG1
+    #   if: ${{ inputs.runner != 'github'}}
+    #   shell: bash
+    #   run: |
+    #     echo "!!!!! apt search"
+    #     DEBIAN_FRONTEND=noninteractive apt-get search python
+
     - name: Install Python for node-sass
       if: ${{ inputs.runner != 'github'}}
       shell: bash
