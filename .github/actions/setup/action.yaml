@@ -1,5 +1,11 @@
 name: Setup UI Env
 description: Setup node, python and call bootstrap script
+inputs:
+  runner:
+    description: "Is this a gh runner, or org or repo runner?"
+    type: string
+    required: false
+    default: "github"
 
 runs:
   using: 'composite'
@@ -9,6 +15,13 @@ runs:
         node-version: '14.x'
 
     - name: Install Python for node-sass
+      if: ${{ inputs.runner == 'github'}}
+      shell: bash
+      run: |
+        DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends python2
+
+    - name: Install Python for node-sass
+      if: ${{ inputs.runner != 'github'}}
       shell: bash
       run: |
         DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python2
