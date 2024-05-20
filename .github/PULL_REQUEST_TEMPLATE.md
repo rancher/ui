@@ -22,7 +22,7 @@ Linked Issues
 ======
 <!--
 
-Link any related issues, pull-requests, or commit hashes that are relavent to this pull-request.
+Link any related issues, pull-requests, or commit hashes that are relevant to this pull-request.
 
 If you are opening a PR without a corresponding issue create an issue before you do. This will help QA massively. PR's opened without linked issues will not be merged until an issue is created and linked here. 
 
