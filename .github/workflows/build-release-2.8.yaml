@@ -1,0 +1,17 @@
+name: Build 2.8 (Release)
+on:
+  push:
+    tags:
+      - v2.8.*
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yaml
+  build-tag-and-upload:
+    uses: ./.github/workflows/build-and-upload.yaml
+    needs: test
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    with:
+      CI_BUILD_TAG: ${{github.ref_name}}

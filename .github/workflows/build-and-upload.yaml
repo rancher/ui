@@ -1,0 +1,67 @@
+name: Build and Upload
+
+on:
+  workflow_call:
+    inputs:
+      CI_BRANCH:
+        required: false
+        type: string
+      CI_BUILD_TAG:
+        required: false
+        type: string
+
+env:
+  CI_BRANCH: ${{inputs.CI_BRANCH || ''}}
+  CI_BUILD_TAG: ${{inputs.CI_BUILD_TAG || ''}}
+  REPO: ${{github.event.repository.name || ''}}
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Setup env
+        uses: ./.github/actions/setup
+
+      - id: build
+        name: Build
+        run: ./scripts/build-static
+
+      - name: Get gcs auth
+        uses: rancher-eio/read-vault-secrets@main
+        with:
+          secrets: |
+            secret/data/github/repo/${{ github.repository }}/google-auth/rancher/credentials token | GOOGLE_AUTH
+
+      - name: Apply gcs auth
+        # https://github.com/google-github-actions/auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: "${{ env.GOOGLE_AUTH }}"
+
+      - name: Upload build
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        # https://github.com/google-github-actions/upload-cloud-storage
+        with:
+          path: ${{steps.build.outputs.BUILD_DIR}}
+          # Example - https://releases.rancher.com/ui/2.8.0/...
+          destination: releases.rancher.com/${{ env.REPO }}/${{ steps.build.outputs.VERSION }}
+          parent: false
+          headers: |-
+            cache-control: no-cache,must-revalidate
+          process_gcloudignore: false
+
+      - name: Upload tar
+        if: ${{ env.CI_BUILD_TAG != ''}}
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: ${{steps.build.outputs.BUILD_TGZ}}
+          # Example - https://releases.rancher.com/ui/2.8.0.tar.gz
+          destination: releases.rancher.com/${{ env.REPO }}
+          parent: false
+          headers: |-
+            cache-control: no-cache,must-revalidate
+          process_gcloudignore: false
