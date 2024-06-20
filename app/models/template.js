@@ -1,4 +1,4 @@
-import { htmlSafe } from '@ember/string';
+import { htmlSafe, underscore } from '@ember/string';
 import { computed, get } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Resource from '@rancher/ember-api-store/models/resource';
@@ -93,7 +93,7 @@ const Template = Resource.extend({
   }),
 
   categoryLowerArray: computed('categoryArray.[]', function() {
-    return get(this, 'categoryArray').map((x) => (x || '').underscore().toLowerCase());
+    return get(this, 'categoryArray').map((x) => underscore(x || '').toLowerCase());
   }),
 
   certifiedType: computed('catalogId', 'labels', function() {

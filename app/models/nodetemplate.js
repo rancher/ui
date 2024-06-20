@@ -125,7 +125,7 @@ export default Resource.extend({
 
       this.registerDynamicComputedProperty('displaySize', computedKeys, size.getDisplayProperty);
     } else {
-      set(this, 'displaySize', get(this, 'config.size') || 'N/A');
+      // set(this, 'displaySize', get(this, 'config.size') || 'N/A');
     }
   },
 

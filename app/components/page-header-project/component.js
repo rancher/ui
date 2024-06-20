@@ -9,6 +9,7 @@ import { next } from '@ember/runloop';
 import { escapeRegex, escapeHtml } from 'shared/utils/util';
 import $ from 'jquery';
 import { isEmpty } from '@ember/utils';
+import { htmlSafe } from '@ember/string';
 
 const ITEM_HEIGHT      = 50;
 const BUFFER_HEIGHT    = 150;
@@ -563,7 +564,7 @@ export default Component.extend(ThrottledResize, {
     const rows    = Math.max(3, Math.min(want, roomFor));
     const height  = rows * ITEM_HEIGHT;
 
-    set(this, 'columnStyle', `height: ${ height }px`.htmlSafe());
+    set(this, 'columnStyle', htmlSafe(`height: ${ height }px`));
 
     let cw = Math.max(MIN_COLUMN_WIDTH, get(this, 'clustersWidth') + 60); // 20px icon, 20px padding, 20px scrollbar
     let pw = Math.max(MIN_COLUMN_WIDTH, get(this, 'projectsWidth') + 60);
@@ -576,7 +577,7 @@ export default Component.extend(ThrottledResize, {
       pw = roomFor - cw;
     }
 
-    set(this, 'menuStyle', `grid-template-columns: ${ cw }px ${ pw }px`.htmlSafe());
+    set(this, 'menuStyle', htmlSafe(`grid-template-columns: ${ cw }px ${ pw }px`));
   },
 
   isTransitioning() {
@@ -634,7 +635,7 @@ function highlightMatches(needle, haystack) {
   // 5. Return as a safe string
   return {
     found,
-    match: haystack.htmlSafe()
+    match: htmlSafe(haystack)
   }
 }
 
