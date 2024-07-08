@@ -19,11 +19,6 @@
       <label class="acc-label">
         {{t "clusterNew.googlegke.masterVersion.label"}}
       </label>
-      {{!-- <NewSelect
-        @classNames="form-control"
-        @content={{versionChoices}}
-        @value={{mut nodePool.version}}
-      /> --}}
       {{#if upgradeAvailable}}
         <div class="checkbox form-control-static">
           <label class="acc-label">
@@ -34,8 +29,8 @@
             />
             {{t
               "nodeGroupRow.version.upgrade"
-              from=nodePool.version
-              version=clusterVersion
+              from=originalPoolVersion
+              version=maxAvailableVersion
             }}
           </label>
         </div>
