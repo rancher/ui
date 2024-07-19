@@ -10,7 +10,7 @@ export default Route.extend({
   scope:        service(),
 
   model(/* params, transition */) {
-    const cs = get(this, 'globalStore');
+    const cs = this.globalStore;
     const clusterId = get(this.scope, 'currentCluster.id');
 
     return hash({ notifiers: cs.find('notifier', null, { filter: { clusterId } }).then(() => cs.all('notifier')) });

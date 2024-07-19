@@ -23,8 +23,8 @@ export default Component.extend(ModalBase, {
 
   actions: {
     drain() {
-      const nodeDrainInput = { ...get(this, 'selection') };
-      const resources = get(this, 'resources').slice();
+      const nodeDrainInput = { ...this.selection };
+      const resources = this.resources.slice();
 
       eachLimit(resources, 5, (resource, cb) => {
         if ( !resource ) {

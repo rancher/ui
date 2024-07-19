@@ -11,10 +11,10 @@ export default DockerCredential.extend({
   namespace:    reference('namespaceId', 'namespace', 'clusterStore'),
   actions:   {
     clone() {
-      get(this, 'router').transitionTo('authenticated.project.registries.new', {
+      this.router.transitionTo('authenticated.project.registries.new', {
         queryParams: {
-          id:   get(this, 'id'),
-          type: get(this, 'type')
+          id:   this.id,
+          type: this.type
         }
       });
     }

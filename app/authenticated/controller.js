@@ -1,5 +1,5 @@
 import { schedule } from '@ember/runloop';
-import { alias } from '@ember/object/computed';
+import { alias, gt } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
@@ -17,11 +17,11 @@ export default Controller.extend({
   isPopup:     alias('application.isPopup'),
   pageScope:   alias('scope.currentPageScope'),
 
-  hasHosts: computed.gt('model.hosts.length', 0),
+  hasHosts: gt('model.hosts.length', 0),
 
   bootstrap: on('init', function() {
     schedule('afterRender', this, () => {
-      this.get('application').setProperties({
+      this.application.setProperties({
         error:             null,
         error_description: null,
         state:             null,

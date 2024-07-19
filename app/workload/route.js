@@ -28,7 +28,7 @@ export default Route.extend({
   },
 
   model(params) {
-    return hash({ workload: this.get('store').find('workload', params.workload_id), }).then((hash) => EmberObject.create(hash));
+    return hash({ workload: this.store.find('workload', params.workload_id), }).then((hash) => EmberObject.create(hash));
   },
 
   setupController(controller, model) {

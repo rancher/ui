@@ -45,7 +45,7 @@ export default Component.extend(ModalBase, {
   },
 
   updateRestoreRkeConfig: observer('backupId', function() {
-    const value = get(this, 'backupId') ? 'etcd' : '';
+    const value = this.backupId ? 'etcd' : '';
 
     set(this, 'restoreRkeConfig', value);
   }),
@@ -67,7 +67,7 @@ export default Component.extend(ModalBase, {
   }),
 
   selectedBackup: computed('modalOpts.cluster.etcdbackups.[]', 'backupId', function() {
-    const backupId = get(this, 'backupId');
+    const backupId = this.backupId;
 
     return !backupId ? null : get(this, 'modalOpts.cluster.etcdbackups').findBy('id', backupId);
   }),
@@ -77,15 +77,15 @@ export default Component.extend(ModalBase, {
   }),
 
   k8sVersionDisabled: computed('selectedVersion', 'restorationTypeDisabled', function() {
-    return !get(this, 'restorationTypeDisabled') && get(this, 'selectedVersion') === this.intl.t('modalRestoreBackup.type.versionUnknown');
+    return !this.restorationTypeDisabled && this.selectedVersion === this.intl.t('modalRestoreBackup.type.versionUnknown');
   }),
 
   k8sVersionRadioDisabled: computed('k8sVersionDisabled', 'restorationTypeDisabled', function() {
-    return get(this, 'k8sVersionDisabled') || get(this, 'restorationTypeDisabled');
+    return this.k8sVersionDisabled || this.restorationTypeDisabled;
   }),
 
   restorationTypeDisabled: computed('selectedBackup', function() {
-    return !get(this, 'selectedBackup');
+    return !this.selectedBackup;
   }),
 
   initOwnProperties() {

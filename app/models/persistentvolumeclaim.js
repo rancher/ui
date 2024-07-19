@@ -39,7 +39,7 @@ var PersistentVolumeClaim = Resource.extend({
   }),
 
   workloads: computed('id', 'namespace.workloads.@each.volumes', function() {
-    return (get(this, 'namespace.workloads') || []).filter((workload) => (get(workload, 'volumes') || []).find((volume) => get(volume, 'persistentVolumeClaim.persistentVolumeClaimId') === get(this, 'id')));
+    return (get(this, 'namespace.workloads') || []).filter((workload) => (get(workload, 'volumes') || []).find((volume) => get(volume, 'persistentVolumeClaim.persistentVolumeClaimId') === this.id));
   }),
 
   sizeBytes: computed('status.capacity.storage', function() {
@@ -53,7 +53,7 @@ var PersistentVolumeClaim = Resource.extend({
   }),
 
   displaySize: computed('sizeBytes', function() {
-    const bytes = get(this, 'sizeBytes');
+    const bytes = this.sizeBytes;
 
     if ( bytes ) {
       return formatSi(bytes, 1024, 'iB', 'B');
@@ -64,7 +64,7 @@ var PersistentVolumeClaim = Resource.extend({
 
   actions: {
     resize() {
-      get(this, 'modalService').toggleModal('modal-resize-pvc', { model: this, });
+      this.modalService.toggleModal('modal-resize-pvc', { model: this, });
     }
   },
 

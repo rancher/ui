@@ -6,7 +6,7 @@ import C from 'ui/utils/constants';
 
 export default Route.extend({
   model() {
-    let store = get(this, 'store');
+    let store = this.store;
 
     return hash({ persistentVolumeClaims: store.findAll('persistentVolumeClaim'), });
   },

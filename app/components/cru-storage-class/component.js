@@ -62,7 +62,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   }),
 
   provisionerChoices: computed('intl.locale', function() {
-    const intl = get(this, 'intl');
+    const intl = this.intl;
     const out = getProvisioners().map((p) => {
       const entry = Object.assign({}, p);
       const key = `storageClass.${ entry.name }.title`;
@@ -82,9 +82,9 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   }),
 
   supportedProvisionerChoices: computed('provisionerChoices', function() {
-    const showUnsupported = get(this, 'features').isFeatureEnabled(C.FEATURES.UNSUPPORTED_STORAGE_DRIVERS);
+    const showUnsupported = this.features.isFeatureEnabled(C.FEATURES.UNSUPPORTED_STORAGE_DRIVERS);
 
-    return get(this, 'provisionerChoices').filter((choice) => showUnsupported || choice.supported)
+    return this.provisionerChoices.filter((choice) => showUnsupported || choice.supported);
   }),
 
   willSave() {

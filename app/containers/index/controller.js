@@ -1,7 +1,9 @@
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
-import { searchFields as containerSearchFields } from 'ui/components/pod-dots/component';
+import {
+  searchFields as containerSearchFields
+} from 'ui/components/pod-dots/component';
 import { computed } from '@ember/object';
 
 export const headers = [
@@ -59,12 +61,12 @@ export default Controller.extend({
 
   actions: {
     toggleExpand() {
-      this.get('projectController').send('toggleExpand', ...arguments);
+      this.projectController.send('toggleExpand', ...arguments);
     },
   },
 
   rows: computed('group', 'model.workloads.@each.{namespaceId,isBalancer}', 'model.pods.@each.{workloadId,namespaceId}', function() {
-    const groupBy = this.get('group');
+    const groupBy = this.group;
     let out = [];
 
     switch (groupBy) {
@@ -82,7 +84,7 @@ export default Controller.extend({
   }),
 
   groupByRef: computed('group', function() {
-    const group = this.get('group');
+    const group = this.group;
 
     if (group === 'node') {
       return 'node';

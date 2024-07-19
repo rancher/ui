@@ -1,5 +1,5 @@
 import C from 'ui/utils/constants';
-import {  get, set, observer } from '@ember/object';
+import { get, set, observer } from '@ember/object';
 import Component from '@ember/component';
 import { next } from '@ember/runloop';
 import layout from './template';
@@ -16,11 +16,11 @@ export default Component.extend({
   },
 
   currentQuotaDidChange: observer('currentQuota.@each.key', function() {
-    set(this, 'resourceChoices', get(this, 'allResourceChoices').filter((choice) => this.doesExist(choice)));
+    set(this, 'resourceChoices', this.allResourceChoices.filter((choice) => this.doesExist(choice)));
   }),
 
   doesExist(choice) {
-    return get(choice, 'value') === get(this, 'quota.key') || !(get(this, 'currentQuota') || []).findBy('key', get(choice, 'value'));
+    return get(choice, 'value') === get(this, 'quota.key') || !(this.currentQuota || []).findBy('key', get(choice, 'value'));
   },
 
   initResourceChoices() {

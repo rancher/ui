@@ -1,3 +1,4 @@
+import { filterBy, alias } from '@ember/object/computed';
 import Controller from '@ember/controller';
 import { downloadFile, generateZip } from 'shared/utils/download-files';
 import { get, computed } from '@ember/object';
@@ -62,9 +63,9 @@ export default Controller.extend({
   sortBy:     'date',
   descending: true,
 
-  runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
+  runningClusterScans: filterBy('clusterScans', 'isRunning', true),
 
-  isRKE:   computed.alias('scope.currentCluster.isRKE'),
+  isRKE:   alias('scope.currentCluster.isRKE'),
   actions: {
     runScan() {
       get(this, 'scope.currentCluster').send('runCISScan');
@@ -73,7 +74,7 @@ export default Controller.extend({
       get(this, 'scope.currentCluster').send('edit', { scrollTo: 'security-scan' });
     },
     setAlert() {
-      get(this, 'router').transitionTo('authenticated.cluster.alert.new', { queryParams: { for: 'security-scan' } });
+      this.router.transitionTo('authenticated.cluster.alert.new', { queryParams: { for: 'security-scan' } });
     }
   },
   bulkActionHandler: computed(function() {
@@ -87,7 +88,7 @@ export default Controller.extend({
         await downloadFile(`cis-scans.zip`, zip, get(zip, 'type'));
       },
       promptDelete: async(scans) => {
-        get(this, 'modalService').toggleModal('confirm-delete', {
+        this.modalService.toggleModal('confirm-delete', {
           escToClose: true,
           resources:  scans
         });

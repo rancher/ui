@@ -38,18 +38,18 @@ const clusterAlertRule = Resource.extend(Alert, {
   }),
 
   displayTargetType: computed('targetType', function() {
-    return get(this, 'intl').t(`alertPage.targetTypes.${ get(this, 'targetType') }`);
+    return this.intl.t(`alertPage.targetTypes.${ this.targetType }`);
   }),
 
   displayCondition: computed('clusterScanRule', 'metricRule.{comparison,expression,thresholdValue}', 'nodeRule.{condition,cpuThreshold,memThreshold}', 'targetType', function() {
-    const t = get(this, 'targetType');
-    const intl = get(this, 'intl');
+    const t = this.targetType;
+    const intl = this.intl;
     let out = intl.t('alertPage.na');
     const c = get(this, 'nodeRule.condition')
     const cpuThreshold = get(this, 'nodeRule.cpuThreshold');
     const memThreshold = get(this, 'nodeRule.memThreshold');
-    const metricRule = get(this, 'metricRule');
-    const clusterScanRule = get(this, 'clusterScanRule');
+    const metricRule = this.metricRule;
+    const clusterScanRule = this.clusterScanRule;
 
     switch (t) {
     case 'systemService':
@@ -86,7 +86,7 @@ const clusterAlertRule = Resource.extend(Alert, {
   }),
 
   threshold: computed('targetType', 'nodeRule.{memThreshold,cpuThreshold,condition}', function() {
-    const t = get(this, 'targetType');
+    const t = this.targetType;
     const c = get(this, 'nodeRule.condition');
 
     if (t === 'node' || t === 'nodeSelector') {
@@ -103,10 +103,10 @@ const clusterAlertRule = Resource.extend(Alert, {
 
   actions: {
     clone() {
-      get(this, 'router').transitionTo('authenticated.cluster.alert.new-rule', get(this, 'groupId'), { queryParams: { id: get(this, 'id'),  } });
+      this.router.transitionTo('authenticated.cluster.alert.new-rule', this.groupId, { queryParams: { id: this.id,  } });
     },
     edit() {
-      get(this, 'router').transitionTo('authenticated.cluster.alert.edit-rule', get(this, 'groupId'), get(this, 'id'));
+      this.router.transitionTo('authenticated.cluster.alert.edit-rule', this.groupId, this.id);
     },
   },
 

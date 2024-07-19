@@ -26,14 +26,14 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    if ( !get(this, 'ports') ) {
+    if ( !this.ports ) {
       set(this, 'model.ports', []);
     }
   },
 
   actions: {
     addPort() {
-      get(this, 'ports').pushObject(get(this, 'store').createRecord({
+      this.ports.pushObject(this.store.createRecord({
         type:          'servicePort',
         protocol:      'TCP',
       }));
@@ -48,7 +48,7 @@ export default Component.extend({
     },
 
     removePort(obj) {
-      get(this, 'ports').removeObject(obj);
+      this.ports.removeObject(obj);
     },
   },
 });

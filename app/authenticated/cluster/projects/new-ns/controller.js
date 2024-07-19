@@ -20,10 +20,10 @@ export default Controller.extend(NewOrEdit, {
   primaryResource: alias('model.namespace'),
   actions:         {
     cancel() {
-      let backTo = get(this, 'session').get(C.SESSION.BACK_TO)
+      let backTo = this.session.get(C.SESSION.BACK_TO)
 
       if (backTo) {
-        this.transitionToRoute('authenticated.project.ns.index', get(this, 'addTo'));
+        this.transitionToRoute('authenticated.project.ns.index', this.addTo);
       } else {
         this.transitionToRoute('authenticated.cluster.projects.index');
       }
@@ -42,7 +42,7 @@ export default Controller.extend(NewOrEdit, {
     },
 
     toggleAutoInject() {
-      set(this, 'istioInjection', !get(this, 'istioInjection'));
+      set(this, 'istioInjection', !this.istioInjection);
     },
 
     setLabels(labels) {
@@ -73,21 +73,21 @@ export default Controller.extend(NewOrEdit, {
 
   projectLimit: computed('allProjects', 'primaryResource.projectId', 'primaryResource.resourceQuota.limit', function() {
     const projectId = get(this, 'primaryResource.projectId');
-    const project   = get(this, 'allProjects').findBy('id', projectId);
+    const project   = this.allProjects.findBy('id', projectId);
 
     return get(project, 'resourceQuota.limit');
   }),
 
   projectUsedLimit: computed('allProjects', 'primaryResource.projectId', 'primaryResource.resourceQuota.limit', function() {
     const projectId = get(this, 'primaryResource.projectId');
-    const project   = get(this, 'allProjects').findBy('id', projectId);
+    const project   = this.allProjects.findBy('id', projectId);
 
     return get(project, 'resourceQuota.usedLimit');
   }),
 
   nsDefaultQuota: computed('allProjects', 'primaryResource.projectId', 'primaryResource.resourceQuota.limit', function() {
     const projectId = get(this, 'primaryResource.projectId');
-    const project   = get(this, 'allProjects').findBy('id', projectId);
+    const project   = this.allProjects.findBy('id', projectId);
 
     return get(project, 'namespaceDefaultResourceQuota.limit');
   }),
@@ -105,7 +105,7 @@ export default Controller.extend(NewOrEdit, {
   }),
 
   willSave() {
-    const isEnabled = get(this, 'istioInjection');
+    const isEnabled = this.istioInjection;
     const labels = { ...get(this, 'primaryResource.labels') };
 
     if ( isEnabled ) {
@@ -120,8 +120,8 @@ export default Controller.extend(NewOrEdit, {
   validate() {
     this._super();
 
-    const errors = get(this, 'errors') || [];
-    const quotaErrors = get(this, 'primaryResource').validateResourceQuota();
+    const errors = this.errors || [];
+    const quotaErrors = this.primaryResource.validateResourceQuota();
 
     if ( quotaErrors.length > 0 ) {
       errors.pushObjects(quotaErrors);

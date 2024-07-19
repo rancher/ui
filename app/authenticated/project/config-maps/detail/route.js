@@ -11,6 +11,6 @@ export default Route.extend({
       return configMaps;
     }
 
-    return get(this, 'store').find('configMap', params.config_map_id);
+    return this.store.find('configMap', params.config_map_id);
   },
 });

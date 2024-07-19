@@ -17,7 +17,7 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    if (get(this, 'value')) {
+    if (this.value) {
       set(this, 'showEdit', true);
     }
   },

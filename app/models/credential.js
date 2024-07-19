@@ -9,7 +9,7 @@ export default Resource.extend({
 
   actions: {
     clone() {
-      get(this, 'router').transitionTo('authenticated.project.registries.new', null, { queryParams: { id: get(this, 'id') } } );
+      this.router.transitionTo('authenticated.project.registries.new', null, { queryParams: { id: this.id } } );
     }
   }
 });

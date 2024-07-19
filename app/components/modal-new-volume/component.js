@@ -13,17 +13,17 @@ export default Component.extend(ModalBase, {
   model:    alias('modalService.modalOpts.model'),
   init() {
     this._super(...arguments);
-    if ( !this.get('model') ) {
+    if ( !this.model ) {
       this.set('model', {});
     }
   },
 
   actions: {
     doSave() {
-      let callback = this.get('callback');
+      let callback = this.callback;
 
       if ( callback ) {
-        callback(this.get('model'));
+        callback(this.model);
       }
 
       this.send('cancel');

@@ -12,7 +12,7 @@ export default Component.extend({
   layout,
   actions: {
     changeTheme(theme) {
-      var userTheme = this.get('userTheme');
+      var userTheme = this.userTheme;
       var currentTheme  = userTheme.getTheme();
 
       if (theme !== currentTheme) {

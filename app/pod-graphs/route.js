@@ -14,7 +14,7 @@ export default Route.extend({
     }
   },
   model(params) {
-    const pod = get(this, 'store').find('pod', params.pod_id);
+    const pod = this.store.find('pod', params.pod_id);
 
     if ( !pod ) {
       this.replaceWith('authenticated.project.index');

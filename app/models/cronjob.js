@@ -3,7 +3,7 @@ import { get, set, computed } from '@ember/object';
 
 const CronJob = Workload.extend({
   combinedState: computed('state', 'cronJobConfig.suspend', function() {
-    var service = get(this, 'state');
+    var service = this.state;
 
     if (service === 'active' && get(this, 'cronJobConfig.suspend')) {
       return 'suspended';
@@ -14,7 +14,7 @@ const CronJob = Workload.extend({
 
   availableActions: computed('actionLinks.{activate,deactivate,garbagecollect,pause,restart,rollback}', 'canEdit', 'cronJobConfig.suspend', 'isPaused', 'links.{remove,update}', 'podForShell', function() {
     const actions = this._super();
-    const canEdit = get(this, 'canEdit');
+    const canEdit = this.canEdit;
     const suspend = get(this, 'cronJobConfig.suspend');
 
     actions.pushObjects([

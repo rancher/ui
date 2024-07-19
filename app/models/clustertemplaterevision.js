@@ -16,7 +16,7 @@ export default Resource.extend({
   canRemove:        alias('canMakeDefault'),
 
   combinedState: computed('enabled', function() {
-    if ( get(this, 'enabled') ) {
+    if ( this.enabled ) {
       return 'active';
     }
 
@@ -34,7 +34,7 @@ export default Resource.extend({
   }),
 
   availableActions: computed('actionLinks.[]', 'canMakeDefault', 'clusterTemplate.defaultRevisionId', 'enabled', function() {
-    const a = get(this, 'actionLinks') || {};
+    const a = this.actionLinks || {};
 
     return [
       {
@@ -112,7 +112,7 @@ export default Resource.extend({
   validationErrors() {
     let errors = [];
 
-    if (!get(this, 'name')) {
+    if (!this.name) {
       errors.push('Revision name is required');
     }
 

@@ -16,6 +16,6 @@ export default Route.extend({
       return cert;
     }
 
-    return get(this, 'store').find('certificate', params.certificate_id);
+    return this.store.find('certificate', params.certificate_id);
   },
 });

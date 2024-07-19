@@ -39,7 +39,7 @@ export default Component.extend({
   scaleModeDidChange: observer('scaleMode', function() {
     const restartPolicy = get(this, 'service.restartPolicy');
 
-    if ( get(this, 'isJob') ) {
+    if ( this.isJob ) {
       if ( restartPolicy === 'Always' ) {
         set(this, 'service.restartPolicy', 'Never');
       }
@@ -49,34 +49,34 @@ export default Component.extend({
   }),
 
   isJob: computed('scaleMode', function() {
-    return get(this, 'scaleMode') === 'job' || get(this, 'scaleMode') === 'cronJob';
+    return this.scaleMode === 'job' || this.scaleMode === 'cronJob';
   }),
 
   // ----------------------------------
   // Terminal
   // 'both',
   initTerminal() {
-    var instance = get(this, 'instance');
+    var instance = this.instance;
     var tty = get(instance, 'tty');
     var stdin = get(instance, 'stdin');
     var out = {
       type: 'both',
-      name: get(this, 'intl').t('formCommand.console.both', { htmlSafe: true }),
+      name: this.intl.t('formCommand.console.both', { htmlSafe: true }),
     };
 
     if ( tty !== undefined || stdin !== undefined ) {
       if ( tty && stdin ) {
         out.type = 'both';
-        out.name = get(this, 'intl').t('formCommand.console.both', { htmlSafe: true });
+        out.name = this.intl.t('formCommand.console.both', { htmlSafe: true });
       } else if ( tty ) {
         out.type = 'terminal';
-        out.name = get(this, 'intl').t('formCommand.console.terminal', { htmlSafe: true });
+        out.name = this.intl.t('formCommand.console.terminal', { htmlSafe: true });
       } else if ( stdin ) {
         out.type = 'interactive';
-        out.name = get(this, 'intl').t('formCommand.console.interactive', { htmlSafe: true });
+        out.name = this.intl.t('formCommand.console.interactive', { htmlSafe: true });
       } else {
         out.type = 'none';
-        out.name = get(this, 'intl').t('formCommand.console.none', { htmlSafe: true });
+        out.name = this.intl.t('formCommand.console.none', { htmlSafe: true });
       }
     }
 

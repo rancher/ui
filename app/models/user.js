@@ -16,56 +16,56 @@ export default Resource.extend({
   projectRoleBindings: hasMany('id', 'projectRoleTemplateBinding', 'userId'),
 
   combinedState: computed('enabled', 'state', function() {
-    if ( get(this, 'enabled') === false ) {
+    if ( this.enabled === false ) {
       return 'inactive';
     } else {
-      return get(this, 'state');
+      return this.state;
     }
   }),
 
   displayName: computed('name', 'username', 'id', function() {
-    let name = get(this, 'name');
+    let name = this.name;
 
     if ( name ) {
       return name;
     }
 
-    name = get(this, 'username');
+    name = this.username;
     if ( name ) {
       return name;
     }
 
-    return `(${  get(this, 'id')  })`;
+    return `(${  this.id  })`;
   }),
 
   avatarSrc: computed('id', function() {
-    return `data:image/png;base64,${  new Identicon(AWS.util.crypto.md5(this.get('id') || 'Unknown', 'hex'), 80, 0.01).toString() }`;
+    return `data:image/png;base64,${  new Identicon(AWS.util.crypto.md5(this.id || 'Unknown', 'hex'), 80, 0.01).toString() }`;
   }),
 
   hasAdmin: computed('globalRoleBindings.[]', function() {
-    return get(this, 'globalRoleBindings').findBy('globalRole.isAdmin', true);
+    return this.globalRoleBindings.findBy('globalRole.isAdmin', true);
   }),
 
   hasCustom: computed('globalRoleBindings.[]', function() {
-    return get(this, 'globalRoleBindings').findBy('globalRole.isCustom', true);
+    return this.globalRoleBindings.findBy('globalRole.isCustom', true);
   }),
 
   hasUser: computed('globalRoleBindings.[]', function() {
-    return get(this, 'globalRoleBindings').findBy('globalRole.isUser', true);
+    return this.globalRoleBindings.findBy('globalRole.isUser', true);
   }),
 
   hasBase: computed('globalRoleBindings.[]', function() {
-    return get(this, 'globalRoleBindings').findBy('globalRole.isBase', true);
+    return this.globalRoleBindings.findBy('globalRole.isBase', true);
   }),
 
   isMe: computed('access.principal.id', 'id', function() {
-    return get(this, 'access.principal.id') === get(this, 'id');
+    return get(this, 'access.principal.id') === this.id;
   }),
 
   availableActions: computed('access.providers.[]', 'actionLinks', 'enabled', function() {
-    const on         = get(this, 'enabled') !== false;
+    const on         = this.enabled !== false;
     const { access } = this;
-    const a = get(this, 'actionLinks') || {};
+    const a = this.actionLinks || {};
 
     return [
       {
@@ -109,7 +109,7 @@ export default Resource.extend({
         set(this, 'enabled', false);
         this.save().catch((err) => {
           set(this, 'enabled', true);
-          get(this, 'growl').fromError('Error deactivating user', err)
+          this.growl.fromError('Error deactivating user', err)
         });
       });
     },
@@ -119,7 +119,7 @@ export default Resource.extend({
         set(this, 'enabled', true);
         this.save().catch((err) => {
           set(this, 'enabled', false);
-          get(this, 'growl').fromError('Error activating user', err)
+          this.growl.fromError('Error activating user', err)
         });
       });
     },

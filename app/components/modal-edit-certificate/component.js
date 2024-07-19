@@ -15,12 +15,12 @@ export default Component.extend(ModalBase, NewOrEdit, {
   originalModel: alias('modalService.modalOpts'),
   init() {
     this._super(...arguments);
-    this.set('model', this.get('originalModel').clone());
+    this.set('model', this.originalModel.clone());
   },
 
   manageModel() {
-    let clone = this.get('originalModel');
-    let model = this.get('model');
+    let clone = this.originalModel;
+    let model = this.model;
 
     if (clone.get('key') === model.get('key')) {
       delete model.key;
@@ -28,9 +28,9 @@ export default Component.extend(ModalBase, NewOrEdit, {
   },
 
   validate() {
-    var model = this.get('model');
-    var errors = this.get('errors') || [];
-    var intl = this.get('intl');
+    var model = this.model;
+    var errors = this.errors || [];
+    var intl = this.intl;
 
     // key is the only node that can be deleted safely
     this.manageModel();

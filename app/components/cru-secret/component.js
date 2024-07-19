@@ -28,7 +28,7 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   },
 
   willSave() {
-    let pr = get(this, 'primaryResource');
+    let pr = this.primaryResource;
 
     // Namespace is required, but doesn't exist yet... so lie to the validator
     let nsId = get(pr, 'namespaceId');
@@ -46,10 +46,10 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   validate() {
     this._super();
 
-    const errors = get(this, 'errors') || [];
+    const errors = this.errors || [];
 
-    if ( get(this, 'scope') !== 'project' ) {
-      errors.pushObjects(get(this, 'namespaceErrors') || []);
+    if ( this.scope !== 'project' ) {
+      errors.pushObjects(this.namespaceErrors || []);
     }
     set(this, 'errors', errors);
 

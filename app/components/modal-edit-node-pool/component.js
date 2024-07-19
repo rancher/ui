@@ -13,7 +13,7 @@ export default Component.extend(ModalBase, {
   init() {
     this._super(...arguments);
 
-    set(this, 'model', get(this, 'originalModel').clone());
+    set(this, 'model', this.originalModel.clone());
   },
 
   actions: {

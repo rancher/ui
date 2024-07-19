@@ -13,8 +13,8 @@ export default Route.extend({
     let promises = [];
 
     if ( get(this, 'access.firstLogin') ) {
-      promises.push(get(this, 'globalStore').find('preference'));
-      promises.push(get(this, 'settings').loadAll());
+      promises.push(this.globalStore.find('preference'));
+      promises.push(this.settings.loadAll());
     }
 
     return Promise.all(promises).then(() => {

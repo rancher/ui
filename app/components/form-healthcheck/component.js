@@ -42,7 +42,7 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    const initial = get(this, 'initialCheck');
+    const initial = this.initialCheck;
     let check;
     let type = NONE;
 
@@ -80,7 +80,7 @@ export default Component.extend({
         set(this, 'headers', headers);
       }
     } else {
-      check = get(this, 'store').createRecord({
+      check = this.store.createRecord({
         type:                'probe',
         failureThreshold:    3,
         initialDelaySeconds: 10,
@@ -91,7 +91,7 @@ export default Component.extend({
       });
     }
 
-    if ( get(this, 'successMustBeOne') ) {
+    if ( this.successMustBeOne ) {
       set(check, 'successThreshold', 1);
     }
 
@@ -103,9 +103,9 @@ export default Component.extend({
   },
 
   checkChanged: observer('path', 'host', 'headers', 'checkType', 'command', function() {
-    const check = get(this, 'healthCheck');
+    const check = this.healthCheck;
 
-    if ( get(this, 'isNone') ) {
+    if ( this.isNone ) {
       if (this.changed) {
         this.changed(null);
       }
@@ -113,10 +113,10 @@ export default Component.extend({
       return;
     }
 
-    setProperties(check, { tcp: get(this, 'isTcp') });
+    setProperties(check, { tcp: this.isTcp });
 
-    if ( get(this, 'isHttpish') ) {
-      const host = get(this, 'host');
+    if ( this.isHttpish ) {
+      const host = this.host;
       const httpHeaders = [];
 
       if ( host ) {
@@ -126,7 +126,7 @@ export default Component.extend({
         })
       }
 
-      const headers = get(this, 'headers') || {};
+      const headers = this.headers || {};
 
       Object.keys(headers).forEach((header) => {
         httpHeaders.push({
@@ -137,8 +137,8 @@ export default Component.extend({
 
       setProperties(check, {
         httpHeaders,
-        path:        get(this, 'path') || '/',
-        scheme:      get(this, 'isHttps') ? 'HTTPS' : 'HTTP'
+        path:        this.path || '/',
+        scheme:      this.isHttps ? 'HTTPS' : 'HTTP'
       });
     } else {
       setProperties(check, {
@@ -147,8 +147,8 @@ export default Component.extend({
       });
     }
 
-    if ( get(this, 'isCommand') ) {
-      set(check, 'command', get(this, 'command') );
+    if ( this.isCommand ) {
+      set(check, 'command', this.command );
     } else {
       set(check, 'command', null);
     }
@@ -163,11 +163,11 @@ export default Component.extend({
 
     set(this, 'errors', errors);
 
-    if ( get(this, 'isNone') ) {
+    if ( this.isNone ) {
       return;
     }
 
-    if ( get(this, 'isCommand') ) {
+    if ( this.isCommand ) {
       if ( !get(this, 'healthCheck.command.length') ) {
         errors.push('Health Check command is required');
       }

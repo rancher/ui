@@ -56,14 +56,14 @@ export default Resource.extend({
   state: 'active',
 
   isDefault: computed('annotations', function() {
-    const annotations = get(this, 'annotations') || {};
+    const annotations = this.annotations || {};
 
     return annotations[DEFAULT_ANNOTATION] === 'true' ||
       annotations[BETA_ANNOTATION] === 'true';
   }),
 
   availableActions: computed('isDefault', function() {
-    const isDefault = get(this, 'isDefault');
+    const isDefault = this.isDefault;
 
     let out = [
       {
@@ -84,8 +84,8 @@ export default Resource.extend({
   }),
 
   displayProvisioner: computed('provisioner', 'intl.locale', function() {
-    const intl = get(this, 'intl');
-    const provisioner = get(this, 'provisioner');
+    const intl = this.intl;
+    const provisioner = this.provisioner;
     const entry = PROVISIONERS.findBy('value', provisioner)
 
     if ( provisioner && entry ) {
@@ -100,7 +100,7 @@ export default Resource.extend({
   }),
   actions: {
     makeDefault() {
-      const cur = get(this, 'clusterStore').all('storageClass')
+      const cur = this.clusterStore.all('storageClass')
         .filterBy('isDefault', true);
       const promises = [];
 
@@ -118,12 +118,12 @@ export default Resource.extend({
     },
 
     edit() {
-      get(this, 'router').transitionTo('authenticated.cluster.storage.classes.detail.edit', get(this, 'id'));
+      this.router.transitionTo('authenticated.cluster.storage.classes.detail.edit', this.id);
     },
   },
 
   setDefault(on) {
-    let annotations = get(this, 'annotations');
+    let annotations = this.annotations;
 
     if ( !annotations ) {
       annotations = {};

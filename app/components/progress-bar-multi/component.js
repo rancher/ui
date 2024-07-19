@@ -1,4 +1,9 @@
-import { defineProperty, computed, get, observer } from '@ember/object';
+import {
+  defineProperty,
+  computed,
+  get,
+  observer
+} from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
 import $ from 'jquery';
@@ -31,19 +36,19 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    let colorKey = get(this, 'colorKey');
-    let labelKey = get(this, 'labelKey');
-    let valueKey = get(this, 'valueKey');
+    let colorKey = this.colorKey;
+    let labelKey = this.labelKey;
+    let valueKey = this.valueKey;
 
     let valueDep = `values.@each.{${ colorKey },${ labelKey },${ valueKey }}`;
 
     defineProperty(this, 'pieces', computed(valueDep, 'max', 'min', 'minPercent', 'values', () => {
-      let min = get(this, 'min');
-      let max = get(this, 'max');
+      let min = this.min;
+      let max = this.max;
 
       var out = [];
 
-      (get(this, 'values') || []).forEach((obj) => {
+      (this.values || []).forEach((obj) => {
         out.push({
           color: get(obj, colorKey),
           label: get(obj, labelKey),
@@ -59,7 +64,7 @@ export default Component.extend({
       }
 
       let sum = 0;
-      let minPercent = get(this, 'minPercent');
+      let minPercent = this.minPercent;
 
       out.forEach((obj) => {
         let per = Math.max(minPercent, toPercent(obj.value, min, max));
@@ -82,13 +87,13 @@ export default Component.extend({
 
     valueDep = `tooltipValues.@each.{${ labelKey },${ valueKey }}`;
     defineProperty(this, 'tooltipContent', computed(valueDep, 'labelKey', 'tooltipArrayOrString', 'tooltipValues', 'valueKey', () => {
-      let labelKey = get(this, 'labelKey');
-      let valueKey = get(this, 'valueKey');
+      let labelKey = this.labelKey;
+      let valueKey = this.valueKey;
 
       var out = [];
 
-      (get(this, 'tooltipValues') || []).forEach((obj) => {
-        if (get(this, 'tooltipArrayOrString') === 'string') {
+      (this.tooltipValues || []).forEach((obj) => {
+        if (this.tooltipArrayOrString === 'string') {
           out.push(`${ get(obj, labelKey) }: ${  get(obj, valueKey) }`);
         } else {
           out.push({
@@ -99,7 +104,7 @@ export default Component.extend({
       });
 
 
-      return get(this, 'tooltipArrayOrString') === 'string' ?  out.join('\n') : out;
+      return this.tooltipArrayOrString === 'string' ?  out.join('\n') : out;
     }));
   },
 
@@ -108,7 +113,7 @@ export default Component.extend({
   },
 
   zIndexDidChange: observer('zIndex', function() {
-    $().css('zIndex', get(this, 'zIndex') || 'inherit');
+    $().css('zIndex', this.zIndex || 'inherit');
   }),
 
 });

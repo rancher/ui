@@ -5,7 +5,7 @@ import C from 'ui/utils/constants';
 
 export default Route.extend({
   model() {
-    var store = get(this, 'store');
+    var store = this.store;
 
     return store.findAll('horizontalpodautoscaler')
       .then((hpas) => {

@@ -1,4 +1,8 @@
-import { getProjectId, getClusterId, bulkAdd } from 'ui/utils/navigation-tree';
+import {
+  getProjectId,
+  getClusterId,
+  bulkAdd
+} from 'ui/utils/navigation-tree';
 import { get } from '@ember/object';
 
 const rootNav = [
@@ -267,7 +271,7 @@ const rootNav = [
         localizedLabel: 'nav.admin.security.authentication',
         route:          'global-admin.security.authentication',
         condition() {
-          const authConfigs = this.get('globalStore').all('authConfig');
+          const authConfigs = this.globalStore.all('authConfig');
 
           return authConfigs.get('length') > 0;
         }

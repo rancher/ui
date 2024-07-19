@@ -29,15 +29,15 @@ export default Component.extend(NewOrEdit, {
   init() {
     this._super(...arguments);
 
-    let model = { type: `${ get(this, 'type') }RoleTemplateBinding`, };
+    let model = { type: `${ this.type }RoleTemplateBinding`, };
 
-    set(model, `${ get(this, 'type') }Id`, get(this, `model.${ get(this, 'type') }.id`))
+    set(model, `${ this.type }Id`, get(this, `model.${ this.type }.id`))
 
     setProperties(this, {
       primaryResource: this.make(model),
-      stdUser:         `${ get(this, 'type') }-member`,
-      admin:           `${ get(this, 'type') }-owner`,
-      cTyped:          get(this, 'type').capitalize(),
+      stdUser:         `${ this.type }-member`,
+      admin:           `${ this.type }-owner`,
+      cTyped:          this.type.capitalize(),
     });
   },
 
@@ -71,11 +71,11 @@ export default Component.extend(NewOrEdit, {
     },
     save(cb) {
       set(this, 'errors', null);
-      let mode = get(this, 'mode');
+      let mode = this.mode;
       let add = [];
-      let pr = get(this, 'primaryResource');
-      const userRoles = get(this, 'userRoles');
-      let principal = get(this, 'principal');
+      let pr = this.primaryResource;
+      const userRoles = this.userRoles;
+      let principal = this.principal;
 
       if (principal) {
         if (get(principal, 'principalType') === 'user') {
@@ -86,15 +86,15 @@ export default Component.extend(NewOrEdit, {
       }
 
       switch ( mode ) {
-      case `${ get(this, 'type') }-owner`:
-      case `${ get(this, 'type') }-member`:
+      case `${ this.type }-owner`:
+      case `${ this.type }-member`:
       case 'read-only':
         set(pr, 'roleTemplateId', mode);
         add = [pr];
         break;
       case CUSTOM:
-        add = get(this, 'customToAdd').map((x) => {
-          let neu = get(this, 'primaryResource').clone();
+        add = this.customToAdd.map((x) => {
+          let neu = this.primaryResource.clone();
 
           set(neu, 'roleTemplateId', get(x, 'role.id'));
 
@@ -132,10 +132,10 @@ export default Component.extend(NewOrEdit, {
   },
 
   showAdmin: computed('mode', 'model.roles.@each.id', 'type', function() {
-    const id = `${ get(this, 'type') }-owner`;
+    const id = `${ this.type }-owner`;
     const role = get(this, 'model.roles').findBy('id', id);
 
-    if ( get(this, 'mode') === id ) {
+    if ( this.mode === id ) {
       return true;
     }
 
@@ -147,10 +147,10 @@ export default Component.extend(NewOrEdit, {
   }),
 
   showStdUser: computed('mode', 'model.roles.@each.id', 'type', function() {
-    const id = `${ get(this, 'type') }-member`;
+    const id = `${ this.type }-member`;
     const role = get(this, 'model.roles').findBy('id', id);
 
-    if ( get(this, 'mode') === id ) {
+    if ( this.mode === id ) {
       return true;
     }
 
@@ -165,7 +165,7 @@ export default Component.extend(NewOrEdit, {
     const id = 'read-only';
     const role = get(this, 'model.roles').findBy('id', id);
 
-    if ( get(this, 'mode') === id ) {
+    if ( this.mode === id ) {
       return true;
     }
 
@@ -179,9 +179,9 @@ export default Component.extend(NewOrEdit, {
 
   baseRoles: computed('type', function() {
     return [
-      `${ get(this, 'type') }-admin`,
-      `${ get(this, 'type') }-owner`,
-      `${ get(this, 'type') }-member`,
+      `${ this.type }-admin`,
+      `${ this.type }-owner`,
+      `${ this.type }-member`,
       'read-only'
     ];
   }),
@@ -191,7 +191,7 @@ export default Component.extend(NewOrEdit, {
     let userDef = roles.filter((role) => !get(role, 'builtin')
         && !get(role, 'external')
         && !get(role, 'hidden')
-        && (get(role, 'context') === get(this, 'type') || !get(role, 'context')));
+        && (get(role, 'context') === this.type || !get(role, 'context')));
 
     return userDef.map((role) => {
       return {
@@ -204,8 +204,8 @@ export default Component.extend(NewOrEdit, {
   custom: computed('baseRoles', 'model.roles.[]', 'type', function() {
     // built in
     let roles  = get(this, 'model.roles').filterBy('hidden', false);
-    let excludes = get(this, 'baseRoles');
-    let context = `${ get(this, 'type') }`;
+    let excludes = this.baseRoles;
+    let context = `${ this.type }`;
 
     return roles.filter((role) => !excludes.includes(role.id)
         && get(role, 'builtin')
@@ -221,9 +221,9 @@ export default Component.extend(NewOrEdit, {
     get() {
       let mode = null;
 
-      const memberId = `${ get(this, 'type') }-member`;
+      const memberId = `${ this.type }-member`;
       const memberRole = get(this, 'model.roles').findBy('id', memberId);
-      const ownerId = `${ get(this, 'type') }-owner`;
+      const ownerId = `${ this.type }-owner`;
       const onwerRole = get(this, 'model.roles').findBy('id', ownerId);
 
       if ( memberRole ) {
@@ -243,7 +243,7 @@ export default Component.extend(NewOrEdit, {
     },
     set(key, value) {
       if (typeof value === 'object') {
-        const ur = get(this, 'userRoles').findBy('active', true);
+        const ur = this.userRoles.findBy('active', true);
 
         if ( ur ) {
           set(ur, 'active', false);
@@ -252,7 +252,7 @@ export default Component.extend(NewOrEdit, {
         // value = get(value, 'role.id');
         // return get(value, 'role.id');
       } else {
-        let ur = get(this, 'userRoles').findBy('active', true);
+        let ur = this.userRoles.findBy('active', true);
 
         if (ur) {
           next(() => {
@@ -266,20 +266,20 @@ export default Component.extend(NewOrEdit, {
   }),
 
   customToAdd: computed('custom.@each.active', function() {
-    return get(this, 'custom').filter( (role) => get(role, 'active') );
+    return this.custom.filter( (role) => get(role, 'active') );
   }),
 
   make(role) {
-    return get(this, 'globalStore').createRecord(role);
+    return this.globalStore.createRecord(role);
   },
 
   validate() {
     var errors = this.get('errors', errors) || [];
 
-    let principal = get(this, 'principal');
+    let principal = this.principal;
 
     if ( !principal ) {
-      errors.push(this.get('intl').t('rolesPage.new.errors.memberReq'));
+      errors.push(this.intl.t('rolesPage.new.errors.memberReq'));
       set(this, 'errors', errors);
 
       return false;
@@ -288,26 +288,26 @@ export default Component.extend(NewOrEdit, {
     const current = (get(this, 'model.roleBindings') || []).filter((role) => {
       let id;
 
-      if ( get(this, 'type') === 'project' ) {
+      if ( this.type === 'project' ) {
         id = get(this, 'scope.currentProject.id');
       } else {
         id = get(this, 'scope.currentCluster.id');
       }
 
-      return id === get(role, `${ get(this, 'type') }Id`) && get(role, 'userPrincipalId') === get(principal, 'id');
+      return id === get(role, `${ this.type }Id`) && get(role, 'userPrincipalId') === get(principal, 'id');
     });
 
-    if (get(this, 'mode') === 'custom') {
+    if (this.mode === 'custom') {
       if (get(this, 'customToAdd.length') < 1) {
-        errors.push(this.get('intl').t('rolesPage.new.errors.noSelectedRoles'));
+        errors.push(this.intl.t('rolesPage.new.errors.noSelectedRoles'));
       }
-      (get(this, 'customToAdd') || []).forEach((add) => {
+      (this.customToAdd || []).forEach((add) => {
         if ( current.findBy('roleTemplateId', get(add, 'role.id')) ) {
-          errors.push(this.get('intl').t('rolesPage.new.errors.roleAlreadyExists', { key: get(add, 'role.displayName') }));
+          errors.push(this.intl.t('rolesPage.new.errors.roleAlreadyExists', { key: get(add, 'role.displayName') }));
         }
       });
     } else if ( current.findBy('roleTemplateId', get(this, 'primaryResource.roleTemplateId')) ) {
-      errors.push(this.get('intl').t('rolesPage.new.errors.roleAlreadyExists', { key: get(this, 'primaryResource.roleTemplate.displayName') }));
+      errors.push(this.intl.t('rolesPage.new.errors.roleAlreadyExists', { key: get(this, 'primaryResource.roleTemplate.displayName') }));
     }
 
     set(this, 'errors', errors);

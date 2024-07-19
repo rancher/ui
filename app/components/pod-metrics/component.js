@@ -12,6 +12,6 @@ export default Component.extend(Metrics, {
 
   init() {
     this._super(...arguments);
-    set(this, 'metricParams', { podName: get(this, 'resourceId') });
+    set(this, 'metricParams', { podName: this.resourceId });
   },
 });

@@ -41,11 +41,11 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    if (!get(this, 'sources') ) {
+    if (!this.sources ) {
       set(this, 'sources', [])
     }
 
-    get(this, 'sources').forEach((source) => {
+    this.sources.forEach((source) => {
       if ( source.sourceKey === undefined ) {
         set(source, 'sourceKey', null);
       }
@@ -58,10 +58,10 @@ export default Component.extend({
         sourceKey: null
       };
 
-      get(this, 'sources').addObject(source);
+      this.sources.addObject(source);
     },
     removeSource(source) {
-      get(this, 'sources').removeObject(source);
+      this.sources.removeObject(source);
     },
   },
 

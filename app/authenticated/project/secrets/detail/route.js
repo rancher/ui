@@ -16,6 +16,6 @@ export default Route.extend({
       return secret;
     }
 
-    return get(this, 'store').find('secret', params.secret_id);
+    return this.store.find('secret', params.secret_id);
   },
 });

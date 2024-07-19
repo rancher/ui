@@ -13,15 +13,15 @@ var Principal = Resource.extend({
   isOrg:  equal('parsedExternalType', C.PROJECT.TYPE_ORG),
 
   parsedExternalType: computed('id', function() {
-    return get(this, 'id').split(':')
+    return this.id.split(':')
       .get('firstObject');
   }),
 
   avatarSrc: computed('isGithub', 'isGoogleOauth', 'id', 'profilePicture', function() {
-    if ( (get(this, 'isGithub') && get(this, 'profilePicture')) || (get(this, 'isGoogleOauth') && get(this, 'profilePicture')) ) {
-      return get(this, 'profilePicture');
+    if ( (this.isGithub && this.profilePicture) || (this.isGoogleOauth && this.profilePicture) ) {
+      return this.profilePicture;
     } else {
-      let id = get(this, 'id') || 'Unknown';
+      let id = this.id || 'Unknown';
 
       id = id.replace('local://', '');
 
@@ -31,15 +31,15 @@ var Principal = Resource.extend({
 
   isGithub: computed('parsedExternalType', 'provider', function() {
     // console.log('is github?', get(this, 'provider'));
-    return (get(this, 'provider') || '').toLowerCase() === 'github';
+    return (this.provider || '').toLowerCase() === 'github';
   }),
 
   isGoogleOauth: computed('parsedExternalType', 'provider', function() {
-    return (get(this, 'provider') || '').toLowerCase() === 'googleoauth';
+    return (this.provider || '').toLowerCase() === 'googleoauth';
   }),
 
   logicalType: computed('parsedExternalType', function() {
-    switch ( get(this, 'parsedExternalType') ) {
+    switch ( this.parsedExternalType ) {
     case C.PROJECT.TYPE_ACTIVE_DIRECTORY_USER:
     case C.PROJECT.TYPE_ADFS_USER:
     case C.PROJECT.TYPE_AZURE_USER:
@@ -74,7 +74,7 @@ var Principal = Resource.extend({
   }),
 
   logicalTypeSort: computed('logicalType', function() {
-    switch (get(this, 'logicalType') ) {
+    switch (this.logicalType ) {
     case C.PROJECT.ORG: return 1;
     case C.PROJECT.TEAM: return 2;
     case C.PROJECT.PERSON: return 3;
@@ -84,7 +84,7 @@ var Principal = Resource.extend({
 
   displayType: computed('parsedExternalType', 'intl.locale', function() {
     let key = 'model.identity.displayType.unknown';
-    let type = get(this, 'parsedExternalType');
+    let type = this.parsedExternalType;
 
     switch ( type ) {
     case C.PROJECT.TYPE_ACTIVE_DIRECTORY_USER:
@@ -129,7 +129,7 @@ var Principal = Resource.extend({
       break;
     }
 
-    return get(this, 'intl').t(key, { type });
+    return this.intl.t(key, { type });
   }),
 });
 

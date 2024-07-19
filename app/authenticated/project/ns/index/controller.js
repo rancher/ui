@@ -41,8 +41,8 @@ export default Controller.extend({
 
   actions: {
     newNs() {
-      get(this, 'session').set(C.SESSION.BACK_TO, window.location.href);
-      get(this, 'router').transitionTo('authenticated.cluster.projects.new-ns', get(this, 'scope.currentCluster.id'), {
+      this.session.set(C.SESSION.BACK_TO, window.location.href);
+      this.router.transitionTo('authenticated.cluster.projects.new-ns', get(this, 'scope.currentCluster.id'), {
         queryParams: {
           addTo: get(this, 'scope.currentProject.id'),
           from:  'project'

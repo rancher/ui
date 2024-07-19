@@ -16,15 +16,15 @@ export default Component.extend(ModalBase, {
     complete(success) {
       if (success) {
         // get(this, 'router').replaceWith('authenticated');
-        get(this, 'modalService').toggleModal();
+        this.modalService.toggleModal();
       }
     },
     cancel() {
-      get(this, 'modalService').toggleModal();
+      this.modalService.toggleModal();
     },
 
     goBack() {
-      get(this, 'modalService').toggleModal();
+      this.modalService.toggleModal();
     },
 
   },

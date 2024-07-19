@@ -12,15 +12,15 @@ export default Resource.extend({
   canRemove:    false,
 
   isDefault: computed('value', 'default', function() {
-    return get(this, 'default') === get(this, 'value');
+    return this['default'] === this.value;
   }),
 
   canRevert: computed('default', 'isDefault', function() {
-    return !isEmpty(get(this, 'default')) && !get(this, 'isDefault');
+    return !isEmpty(this['default']) && !this.isDefault;
   }),
 
   canEdit: computed('links.update', 'id', function() {
-    const id = get(this, 'id');
+    const id = this.id;
 
     return !!get(this, 'links.update') && id !== 'cacerts';
   }),
@@ -31,7 +31,7 @@ export default Resource.extend({
         label:     'action.revert',
         icon:      'icon icon-history',
         action:    'revert',
-        enabled:   get(this, 'canRevert'),
+        enabled:   this.canRevert,
         altAction: 'bypassRevert'
       },
     ];
@@ -39,13 +39,13 @@ export default Resource.extend({
   allowed:      C.SETTING.ALLOWED,
   actions: {
     edit() {
-      let key = get(this, 'id');
-      let obj =  this.get('settings').findByName(key);
-      let details = this.get('allowed')[key];
+      let key = this.id;
+      let obj =  this.settings.findByName(key);
+      let details = this.allowed[key];
 
-      this.get('modalService').toggleModal('modal-edit-setting', {
+      this.modalService.toggleModal('modal-edit-setting', {
         key,
-        descriptionKey: `dangerZone.description.${ get(this, 'id') }`,
+        descriptionKey: `dangerZone.description.${ this.id }`,
         kind:           details.kind,
         options:        details.options,
         canDelete:      obj && !obj.get('isDefault'),
@@ -54,16 +54,16 @@ export default Resource.extend({
     },
 
     revert() {
-      let key = get(this, 'id');
-      let details = this.get('allowed')[key];
+      let key = this.id;
+      let details = this.allowed[key];
 
-      this.get('modalService').toggleModal('modal-revert-setting', {
+      this.modalService.toggleModal('modal-revert-setting', {
         setting: this,
         kind:    details.kind,
       });
     },
     bypassRevert() {
-      set(this, 'value', get(this, 'default') || '');
+      set(this, 'value', this['default'] || '');
 
       this.save();
     },

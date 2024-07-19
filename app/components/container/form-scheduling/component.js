@@ -32,16 +32,16 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    set(this, '_allNodes', get(this, 'globalStore').all('node'));
-    set(this, 'advanced', !get(this, 'editing'));
-    if ( get(this, 'initialHostId') ) {
+    set(this, '_allNodes', this.globalStore.all('node'));
+    set(this, 'advanced', !this.editing);
+    if ( this.initialHostId ) {
       set(this, 'isRequestedHost', true);
-      set(this, 'requestedHostId', get(this, 'initialHostId'));
+      set(this, 'requestedHostId', this.initialHostId);
     }
   },
 
   didReceiveAttrs() {
-    if ( !get(this, 'expandFn') ) {
+    if ( !this.expandFn ) {
       set(this, 'expandFn', (item) => {
         item.toggleProperty('expanded');
       });
@@ -49,10 +49,10 @@ export default Component.extend({
   },
 
   isRequestedHostDidChange: observer('isRequestedHost', function() {
-    const scheduling = get(this, 'scheduling');
+    const scheduling = this.scheduling;
 
-    if ( get(this, 'isRequestedHost') ) {
-      const hostId = get(this, 'requestedHostId') || get(this, 'hostChoices.firstObject.id');
+    if ( this.isRequestedHost ) {
+      const hostId = this.requestedHostId || get(this, 'hostChoices.firstObject.id');
 
       Object.keys(scheduling).forEach((key) => {
         if ( scheduling.node ) {
@@ -67,7 +67,7 @@ export default Component.extend({
   }),
 
   requestedHostIdDidChange: observer('requestedHostId', function() {
-    const hostId = get(this, 'requestedHostId');
+    const hostId = this.requestedHostId;
 
     if ( get(this, 'scheduling.node') ) {
       set(this, 'scheduling.node.nodeId', hostId);
@@ -77,11 +77,11 @@ export default Component.extend({
   }),
 
   selectedChoice: computed('_allNodes.@each.{clusterId,id,name,state}', 'hostChoices', 'initialHostId', function() {
-    return get(this, 'hostChoices').findBy('id', get(this, 'initialHostId'));
+    return this.hostChoices.findBy('id', this.initialHostId);
   }),
 
   hostChoices: computed('_allNodes.@each.{clusterId,id,name,state}', 'scope.currentCluster.id', function() {
-    const list = get(this, '_allNodes').filter((node) => !get(node, 'isUnschedulable'))
+    const list = this._allNodes.filter((node) => !get(node, 'isUnschedulable'))
       .filterBy('clusterId', get(this, 'scope.currentCluster.id'))
       .map((host) => {
         let hostLabel = get(host, 'displayName');

@@ -1,7 +1,9 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
-import { searchFields as containerSearchFields } from 'ui/components/pod-dots/component';
+import {
+  searchFields as containerSearchFields
+} from 'ui/components/pod-dots/component';
 import { headers as configMapsHeaders } from 'ui/authenticated/project/config-maps/index/controller';
 
 const podsHeaders = [
@@ -196,7 +198,7 @@ export default Controller.extend({
 
   actions: {
     toggleExpand(instId) {
-      let list = this.get('expandedInstances');
+      let list = this.expandedInstances;
 
       if ( list.includes(instId) ) {
         list.removeObject(instId);

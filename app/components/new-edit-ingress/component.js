@@ -24,7 +24,7 @@ export default Component.extend(NewOrEdit, {
   init() {
     this._super(...arguments);
 
-    if ( get(this, 'existing')) {
+    if ( this.existing) {
       set(this, 'namespace', get(this, 'existing.namespace'));
     }
   },
@@ -54,17 +54,17 @@ export default Component.extend(NewOrEdit, {
   headerLabel: computed('intl.locale', 'existing', function() {
     let k;
 
-    if (get(this, 'existing')) {
+    if (this.existing) {
       k = 'newIngress.header.edit';
     } else {
       k = 'newIngress.header.add';
     }
 
-    return get(this, 'intl').t(k);
+    return this.intl.t(k);
   }),
 
   willSave() {
-    let pr = get(this, 'primaryResource');
+    let pr = this.primaryResource;
 
     // Namespace is required, but doesn't exist yet... so lie to the validator
     let nsId = get(pr, 'namespaceId');
@@ -78,16 +78,16 @@ export default Component.extend(NewOrEdit, {
   },
 
   doSave() {
-    let pr = get(this, 'primaryResource');
+    let pr = this.primaryResource;
 
     let namespacePromise = resolve();
 
-    if (!get(this, 'existing')) {
+    if (!this.existing) {
       // Set the namespace ID
       if (get(this, 'namespace.id')) {
         set(pr, 'namespaceId', get(this, 'namespace.id'));
-      } else if (get(this, 'namespace')) {
-        namespacePromise = get(this, 'namespace').save()
+      } else if (this.namespace) {
+        namespacePromise = this.namespace.save()
           .then((newNamespace) => {
             set(pr, 'namespaceId', get(newNamespace, 'id'));
 
@@ -103,13 +103,13 @@ export default Component.extend(NewOrEdit, {
   },
 
   validate() {
-    let intl = get(this, 'intl');
+    let intl = this.intl;
 
-    let pr = get(this, 'primaryResource');
+    let pr = this.primaryResource;
     let errors = pr.validationErrors() || [];
 
-    errors.pushObjects(get(this, 'namespaceErrors') || []);
-    errors.pushObjects(get(this, 'certErrors') || []);
+    errors.pushObjects(this.namespaceErrors || []);
+    errors.pushObjects(this.certErrors || []);
 
     if (!get(this, 'ingress.rules.length') && !get(this, 'ingress.defaultBackend')) {
       errors.push(intl.t('newIngress.error.noRules'));

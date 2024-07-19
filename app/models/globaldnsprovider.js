@@ -16,21 +16,21 @@ export default Resource.extend({
   init() {
     this._super(...arguments);
 
-    if (get(this, 'route53ProviderConfig')) {
+    if (this.route53ProviderConfig) {
       setProperties(this, {
         config:   alias('route53ProviderConfig'),
         provider: 'route53'
       });
     }
 
-    if (get(this, 'cloudflareProviderConfig')) {
+    if (this.cloudflareProviderConfig) {
       setProperties(this, {
         config:   alias('cloudflareProviderConfig'),
         provider: 'cloudflare'
       });
     }
 
-    if (get(this, 'alidnsProviderConfig')) {
+    if (this.alidnsProviderConfig) {
       setProperties(this, {
         config:   alias('alidnsProviderConfig'),
         provider: 'alidns'
