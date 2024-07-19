@@ -1,4 +1,4 @@
-import {  get, set, observer, setProperties } from '@ember/object';
+import { get, set, observer, setProperties } from '@ember/object';
 import Component from '@ember/component';
 import { convertToMillis } from 'shared/utils/util';
 import { parseSi } from 'shared/utils/parse-unit';
@@ -27,10 +27,10 @@ export default Component.extend({
   },
 
   limitChanged: observer('requestsCpu', 'limitsCpu', 'requestsMemory', 'limitsMemory', function() {
-    const requestsCpu    = get(this, 'requestsCpu');
-    const limitsCpu      = get(this, 'limitsCpu');
-    const requestsMemory = get(this, 'requestsMemory');
-    const limitsMemory   = get(this, 'limitsMemory');
+    const requestsCpu    = this.requestsCpu;
+    const limitsCpu      = this.limitsCpu;
+    const requestsMemory = this.requestsMemory;
+    const limitsMemory   = this.limitsMemory;
     const out            = {};
 
     if ( requestsCpu ) {

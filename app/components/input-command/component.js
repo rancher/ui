@@ -44,7 +44,7 @@ export default TextField.extend({
   init() {
     this._super(...arguments);
 
-    let initial = get(this, 'initialValue') || '';
+    let initial = this.initialValue || '';
 
     if ( isArray(initial) ) {
       set(this, 'value', unparse(reop(initial)));
@@ -54,7 +54,7 @@ export default TextField.extend({
   },
 
   valueChanged: observer('value', function() {
-    let out = ShellQuote.parse(get(this, 'value') || '').map((piece) => {
+    let out = ShellQuote.parse(this.value || '').map((piece) => {
       if ( typeof piece === 'object' && piece ) {
         if ( piece.pattern ) {
           return piece.pattern;

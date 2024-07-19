@@ -109,7 +109,7 @@ export default Component.extend(ModalBase, {
       };
     case 'single':
       return {
-        services:       get(this, 'selectedServices'),
+        services:       this.selectedServices,
         caCertificates: false,
       };
     case 'service':

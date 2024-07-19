@@ -13,14 +13,14 @@ export default Secret.extend({
 
   actions: {
     edit() {
-      get(this, 'router').transitionTo('authenticated.project.secrets.detail.edit', get(this, 'id'));
+      this.router.transitionTo('authenticated.project.secrets.detail.edit', this.id);
     },
 
     clone() {
-      get(this, 'router').transitionTo('authenticated.project.secrets.new', {
+      this.router.transitionTo('authenticated.project.secrets.new', {
         queryParams: {
-          id:   get(this, 'id'),
-          type: get(this, 'type')
+          id:   this.id,
+          type: this.type
         }
       });
     }

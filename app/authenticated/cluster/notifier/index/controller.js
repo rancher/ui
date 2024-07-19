@@ -14,10 +14,10 @@ export default Controller.extend({
   notifiers: alias('model.notifiers'),
   actions:   {
     showNewEditModal() {
-      get(this, 'modalService').toggleModal('notifier/modal-new-edit', {
+      this.modalService.toggleModal('notifier/modal-new-edit', {
         closeWithOutsideClick: false,
         controller:            this,
-        currentType:           get(this, 'currentType'),
+        currentType:           this.currentType,
         mode:                  'add',
       });
     },

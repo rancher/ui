@@ -1,3 +1,4 @@
+import { filterBy } from '@ember/object/computed';
 import Controller from '@ember/controller';
 import { computed, get, set } from '@ember/object';
 import { inject as service } from '@ember/service';
@@ -36,20 +37,20 @@ export default Controller.extend({
   ],
   sortBy: 'state',
 
-  runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
+  runningClusterScans: filterBy('clusterScans', 'isRunning', true),
 
   actions: {
     async runScan() {
-      get(this, 'scope.currentCluster').send('runCISScan', { onRun: () => get(this, 'router').replaceWith('authenticated.cluster.cis/scan') });
+      get(this, 'scope.currentCluster').send('runCISScan', { onRun: () => this.router.replaceWith('authenticated.cluster.cis/scan') });
     },
     download() {
       get(this, 'model.scan').send('download');
     },
     async delete() {
-      await get(this, 'modalService').toggleModal('confirm-delete', {
+      await this.modalService.toggleModal('confirm-delete', {
         escToClose:       true,
         resources:        [get(this, 'model.scan')],
-        onDeleteFinished: () => get(this, 'router').replaceWith('authenticated.cluster.cis/scan')
+        onDeleteFinished: () => this.router.replaceWith('authenticated.cluster.cis/scan')
       });
     },
     clearSearchText() {

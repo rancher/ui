@@ -4,7 +4,7 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   model(params/* , transition*/) {
-    const store = get(this, 'store');
+    const store = this.store;
 
     const deps = {
       dnsRecords: store.findAll('service'),

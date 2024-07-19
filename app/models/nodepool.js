@@ -11,8 +11,8 @@ const NodePool = Resource.extend({
   nodeTemplate: reference('nodeTemplateId'),
 
   displayProvider: computed('driver', 'nodeTemplate.driver', 'intl.locale', function() {
-    const intl = get(this, 'intl');
-    const driver = get(this, 'driver');
+    const intl = this.intl;
+    const driver = this.driver;
     const key = `nodeDriver.displayName.${ driver }`;
 
     if ( intl.exists(key) ) {
@@ -23,20 +23,20 @@ const NodePool = Resource.extend({
   }),
 
   incrementQuantity(by) {
-    let quantity = get(this, 'quantity');
+    let quantity = this.quantity;
 
     quantity += by;
     quantity = Math.max(0, quantity);
 
     set(this, 'quantity', quantity);
 
-    if ( get(this, 'quantityTimer') ) {
-      cancel(get(this, 'quantityTimer'));
+    if ( this.quantityTimer ) {
+      cancel(this.quantityTimer);
     }
 
     var timer = later(this, function() {
       this.save().catch((err) => {
-        get(this, 'growl').fromError('Error updating node pool scale', err);
+        this.growl.fromError('Error updating node pool scale', err);
       });
     }, 500);
 

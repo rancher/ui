@@ -25,11 +25,11 @@ export default Component.extend({
     this._super(...arguments);
 
     const ary = [];
-    const items = get(this, 'initialItems');
+    const items = this.initialItems;
 
-    if ( get(this, 'mode') === SECRET ) {
-      const allSecrets = get(this, 'store').all('secret');
-      const namespacedSecrets = get(this, 'store').all('namespacedSecret')
+    if ( this.mode === SECRET ) {
+      const allSecrets = this.store.all('secret');
+      const namespacedSecrets = this.store.all('namespacedSecret')
         .filterBy('type', 'namespacedSecret');
 
       allSecrets.pushObjects(namespacedSecrets);
@@ -37,8 +37,8 @@ export default Component.extend({
       this.updateSecretKeys();
     }
 
-    if ( get(this, 'mode') === CONFIG_MAP ) {
-      const allConfigMaps = get(this, 'store').all('configmap');
+    if ( this.mode === CONFIG_MAP ) {
+      const allConfigMaps = this.store.all('configmap');
 
       set(this, 'allConfigMaps', allConfigMaps);
       this.updateConfigMapKeys();
@@ -62,7 +62,7 @@ export default Component.extend({
 
   actions: {
     add() {
-      let ary = get(this, 'ary');
+      let ary = this.ary;
 
       ary.pushObject(EmberObject.create({
         key:  '',
@@ -84,19 +84,19 @@ export default Component.extend({
     },
 
     remove(obj) {
-      get(this, 'ary').removeObject(obj);
+      this.ary.removeObject(obj);
     },
   },
 
   secretDidChange: observer('secretName', function() {
-    if ( get(this, 'mode') === SECRET ) {
+    if ( this.mode === SECRET ) {
       this.updateSecretKeys();
       set(this, 'ary', []);
     }
   }),
 
   configMapDidChange: observer('configMapName', function() {
-    if ( get(this, 'mode') === CONFIG_MAP ) {
+    if ( this.mode === CONFIG_MAP ) {
       this.updateConfigMapKeys();
       set(this, 'ary', []);
     }
@@ -108,8 +108,8 @@ export default Component.extend({
 
   // Secret
   updateSecretKeys() {
-    const allSecrets = get(this, 'allSecrets');
-    const secretName = get(this, 'secretName');
+    const allSecrets = this.allSecrets;
+    const secretName = this.secretName;
 
     set(this, 'keys', []);
 
@@ -127,8 +127,8 @@ export default Component.extend({
 
   // Config Map
   updateConfigMapKeys() {
-    const allConfigMaps = get(this, 'allConfigMaps');
-    const configMapName = get(this, 'configMapName');
+    const allConfigMaps = this.allConfigMaps;
+    const configMapName = this.configMapName;
 
     set(this, 'keys', []);
 
@@ -151,7 +151,7 @@ export default Component.extend({
 
     const arr = [];
 
-    get(this, 'ary').forEach((row) => {
+    this.ary.forEach((row) => {
       const k = (row.get('key') || '').trim();
       const p = (row.get('path') || '').trim();
       const m = (row.get('mode') || '').trim();

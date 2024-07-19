@@ -12,7 +12,7 @@ export default Component.extend(Metrics, {
 
   init() {
     this._super(...arguments);
-    set(this, 'metricParams', { workloadName: get(this, 'resourceId') });
+    set(this, 'metricParams', { workloadName: this.resourceId });
   },
 
 });

@@ -43,25 +43,25 @@ var PublicEndpoint = Resource.extend({
   settings:    service(),
 
   portProto: computed('port', 'protocol', function() {
-    let out = `${ get(this, 'port')  }/${  get(this, 'protocol').toLowerCase() }`;
+    let out = `${ this.port  }/${  this.protocol.toLowerCase() }`;
 
     return out;
   }),
 
   // ip:port
   endpoint: computed('addresses', 'allNodes', 'hostname', 'isIngress', 'port', 'scope.currentCluster.id', function() {
-    const addresses = get(this, 'addresses');
-    const allNodes = get(this, 'allNodes');
-    const hostname = get(this, 'hostname') || '';
+    const addresses = this.addresses;
+    const allNodes = this.allNodes;
+    const hostname = this.hostname || '';
 
     let out = '';
 
-    if (get(this, 'isIngress') && hostname !== '' ) {
+    if (this.isIngress && hostname !== '' ) {
       out = hostname;
     } else if ( addresses && addresses.length ) {
       out = addresses[0];
     } else if ( allNodes ) {
-      const globalStore = get(this, 'globalStore');
+      const globalStore = this.globalStore;
       const nodes = globalStore.all('node').filterBy('clusterId', get(this, 'scope.currentCluster.id'));
       let node = nodes.findBy('externalIpAddress');
 
@@ -76,7 +76,7 @@ var PublicEndpoint = Resource.extend({
     }
 
     if (out) {
-      out += `:${  get(this, 'port') }`;
+      out += `:${  this.port }`;
     }
 
     return out;
@@ -84,7 +84,7 @@ var PublicEndpoint = Resource.extend({
 
   // port[/udp]
   displayEndpoint: computed('port', 'protocol', 'path', function() {
-    let path = get(this, 'path') || '';
+    let path = this.path || '';
 
     if ( path && path !== '/' ) {
       return path;
@@ -92,8 +92,8 @@ var PublicEndpoint = Resource.extend({
 
     let out = '';
 
-    out += get(this, 'port');
-    let proto = get(this, 'protocol').toLowerCase();
+    out += this.port;
+    let proto = this.protocol.toLowerCase();
 
     out += `/${  proto }`;
 
@@ -101,18 +101,18 @@ var PublicEndpoint = Resource.extend({
   }),
 
   linkEndpoint: computed('displayEndpoint', 'endpoint', 'isIngress', 'isMaybeSecure', 'isTcpish', 'path', 'port', function() {
-    let path = get(this, 'path') || '';
+    let path = this.path || '';
 
-    if (get(this, 'isTcpish') && get(this, 'port') > 0 ) {
-      let out = get(this, 'endpoint');
+    if (this.isTcpish && this.port > 0 ) {
+      let out = this.endpoint;
 
-      if (get(this, 'isMaybeSecure')) {
+      if (this.isMaybeSecure) {
         out = `https://${  out.replace(/:443$/, '') }`;
       } else {
         out = `http://${  out.replace(/:80$/, '') }`;
       }
 
-      if (get(this, 'isIngress')) {
+      if (this.isIngress) {
         out = out + path;
       }
 
@@ -123,26 +123,26 @@ var PublicEndpoint = Resource.extend({
   }),
 
   isTcpish: computed('protocol', function() {
-    const proto = get(this, 'protocol').toLowerCase();
+    const proto = this.protocol.toLowerCase();
 
     return ( ['tcp', 'http', 'https'].includes(proto) );
   }),
 
   isMaybeSecure: computed('port', 'protocol', function() {
-    const proto = get(this, 'protocol').toLowerCase();
+    const proto = this.protocol.toLowerCase();
 
-    return portMatch([get(this, 'port')], [443, 8443], '443') || proto === 'https';
+    return portMatch([this.port], [443, 8443], '443') || proto === 'https';
   }),
 
   isIngress: computed('ingressId', function(){
-    return get(this, 'ingressId') !== '' && get(this, 'ingressId') !== null;
+    return this.ingressId !== '' && this.ingressId !== null;
   }),
 
   isReady: computed('hostname', 'isIngress', function(){
     const xip = get(this, `settings.${ C.SETTING.INGRESS_IP_DOMAIN }`);
-    const hostname = get(this, 'hostname') || '';
+    const hostname = this.hostname || '';
 
-    if ( get(this, 'isIngress') ){
+    if ( this.isIngress ){
       if ( xip === hostname ){
         return false
       }

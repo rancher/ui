@@ -17,17 +17,17 @@ export default Component.extend(ModalBase, {
   init() {
     this._super(...arguments);
 
-    if ( !get(this, 'model') ) {
+    if ( !this.model ) {
       set(this, 'model', {});
     }
   },
 
   actions: {
     doSave() {
-      let callback = get(this, 'callback');
+      let callback = this.callback;
 
       if ( callback ) {
-        callback(get(this, 'model'));
+        callback(this.model);
       }
 
       this.send('cancel');

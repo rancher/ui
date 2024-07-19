@@ -12,36 +12,36 @@ export default Resource.extend({
   canClone: true,
 
   state: computed('locked', function() {
-    return get(this, 'locked') ? 'locked' : 'active';
+    return this.locked ? 'locked' : 'active';
   }),
 
   isCustom: computed('id', 'roleTemplateId', function() {
-    return !C.BASIC_ROLE_TEMPLATE_ROLES.includes(get(this, 'id'));
+    return !C.BASIC_ROLE_TEMPLATE_ROLES.includes(this.id);
   }),
 
   displayName: computed('name', 'id', function() {
-    let name = get(this, 'name');
+    let name = this.name;
 
     if ( name ) {
       return name;
     }
 
-    return `(${  get(this, 'id')  })`;
+    return `(${  this.id  })`;
   }),
 
   canRemove: computed('links.remove', 'builtin', function() {
-    return !!get(this, 'links.remove') && !get(this, 'builtin');
+    return !!get(this, 'links.remove') && !this.builtin;
   }),
   actions: {
     edit() {
-      get(this, 'router').transitionTo('global-admin.security.roles.edit', get(this, 'id'));
+      this.router.transitionTo('global-admin.security.roles.edit', this.id);
     },
 
     clone() {
-      get(this, 'router').transitionTo('global-admin.security.roles.new', {
+      this.router.transitionTo('global-admin.security.roles.new', {
         queryParams: {
-          id:      get(this, 'id'),
-          context: get(this, 'context')
+          id:      this.id,
+          context: this.context
         }
       });
     }
@@ -50,7 +50,7 @@ export default Resource.extend({
   delete() {
     const self = this;
     const sup = self._super;
-    const roleTemplateService = get(this, 'roleTemplateService')
+    const roleTemplateService = this.roleTemplateService
     let canDelete = true
     const roleNames = []
 
@@ -71,12 +71,12 @@ export default Resource.extend({
       if (canDelete) {
         return sup.apply(self, arguments);
       } else {
-        return get(this, 'growl').error(get(this, 'intl').t('rolesPage.index.errors.inherited', {
-          displayName: get(this, 'displayName'),
+        return this.growl.error(this.intl.t('rolesPage.index.errors.inherited', {
+          displayName: this.displayName,
           roleNames:   roleNames.join(','),
         }));
       }
-    })
+    });
   },
 
 });

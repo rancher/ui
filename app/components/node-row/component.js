@@ -98,14 +98,14 @@ export default Component.extend({
   },
 
   showCluster: computed('view', function() {
-    return !!headersMap[get(this, 'view')].findBy('name', 'cluster');
+    return !!headersMap[this.view].findBy('name', 'cluster');
   }),
 
   showRoles: computed('view', function() {
-    return !!headersMap[get(this, 'view')].findBy('name', 'roles');
+    return !!headersMap[this.view].findBy('name', 'roles');
   }),
 
   labelColspan: computed('fullColspan', function() {
-    return get(this, 'fullColspan') + 1;
+    return this.fullColspan + 1;
   }),
 });

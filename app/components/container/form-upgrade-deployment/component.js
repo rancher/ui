@@ -25,7 +25,7 @@ export default Component.extend({
   batchSize:      null,
 
   didReceiveAttrs() {
-    const config = get(this, 'workloadConfig');
+    const config = this.workloadConfig;
     let  maxSurge = get(config, 'maxSurge');
     let  maxUnavailable = get(config, 'maxUnavailable');
     let  actualStrategy = get(config, 'strategy');
@@ -61,10 +61,10 @@ export default Component.extend({
   },
 
   strategyChanged: observer('_strategy', 'batchSize', function() {
-    const _strategy = get(this, '_strategy');
-    const config    = get(this, 'workloadConfig');
+    const _strategy = this._strategy;
+    const config    = this.workloadConfig;
 
-    let batchSize = maybeInt(get(this, 'batchSize'));
+    let batchSize = maybeInt(this.batchSize);
     let maxSurge = maybeInt(get(config, 'maxSurge'));
     let maxUnavailable = maybeInt(get(config, 'maxUnavailable'));
 

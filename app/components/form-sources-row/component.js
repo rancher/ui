@@ -56,15 +56,15 @@ export default Component.extend({
     };
     let sourceType = get(this, 'source.source');
     let sourceName = get(this, 'source.sourceName');
-    let out = get(this, 'specificKeyOnly') ? [] : [prefix];
+    let out = this.specificKeyOnly ? [] : [prefix];
     let selected;
 
     switch (sourceType) {
     case 'secret':
-      selected = get(this, 'selectedSecret');
+      selected = this.selectedSecret;
       break;
     case 'configMap':
-      selected = get(this, 'selectedConfigMap');
+      selected = this.selectedConfigMap;
       break;
     }
 

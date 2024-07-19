@@ -31,7 +31,7 @@ export default Component.extend(ModalBase, {
     let model = get(this, 'modalService.modalOpts.originalModel').clone();
 
     set(this, 'model', model);
-    get(this, 'store').rawRequest({
+    this.store.rawRequest({
       url:    get(model, 'links.revision'),
       method: 'GET',
     })
@@ -40,7 +40,7 @@ export default Component.extend(ModalBase, {
       })
       .catch((err) => {
         this.send('cancel');
-        get(this, 'growl').fromError(err);
+        this.growl.fromError(err);
       })
       .finally(() => {
         set(this, 'loading', false);
@@ -51,7 +51,7 @@ export default Component.extend(ModalBase, {
     save(cb) {
       const { forceUpgrade, revisionId } = this;
 
-      get(this, 'model').doAction('rollback', {
+      this.model.doAction('rollback', {
         revisionId,
         forceUpgrade,
       })
@@ -65,7 +65,7 @@ export default Component.extend(ModalBase, {
   },
 
   choices: computed('revisions.[]', function() {
-    return (get(this, 'revisions') || [])
+    return (this.revisions || [])
       .sortBy('created')
       .reverse()
       .map((r) => {
@@ -84,11 +84,11 @@ export default Component.extend(ModalBase, {
   }),
 
   selected: computed('revisionId', 'revisions.[]', function() {
-    return get(this, 'revisions').findBy('name', get(this, 'revisionId'));
+    return this.revisions.findBy('name', this.revisionId);
   }),
 
   diff: computed('current.status', 'selected.status', function() {
-    if (get(this, 'current') && get(this, 'selected')) {
+    if (this.current && this.selected) {
       let left = get(this, 'current.status');
       let right = get(this, 'selected.status');
       var delta = jsondiffpatch.diff(sanitize(left), sanitize(right));

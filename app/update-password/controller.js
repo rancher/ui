@@ -30,7 +30,7 @@ export default Controller.extend({
   },
 
   firstLogin: computed('first', 'access.firstLogin', function() {
-    if ( get(this, 'first') !== undefined ) {
+    if ( this.first !== undefined ) {
       return true;
     }
 
@@ -42,21 +42,21 @@ export default Controller.extend({
   }),
 
   complete(success) {
-    const landing = get(this, 'landing');
-    let router = get(this, 'router');
+    const landing = this.landing;
+    let router = this.router;
 
     if (success) {
-      if ( get(this, 'firstLogin') ) {
+      if ( this.firstLogin ) {
         const value = get(this, 'model.optIn') ? 'in' : 'out';
 
-        get(this, 'settings').set(C.SETTING.TELEMETRY, value);
-        get(this, 'settings').set(C.SETTING.EULA_AGREED, (new Date()).toISOString());
-        get(this, 'settings').set(C.SETTING.UI_DEFAULT_LANDING, landing);
-        get(this, 'prefs').set(C.PREFS.LANDING, landing);
+        this.settings.set(C.SETTING.TELEMETRY, value);
+        this.settings.set(C.SETTING.EULA_AGREED, (new Date()).toISOString());
+        this.settings.set(C.SETTING.UI_DEFAULT_LANDING, landing);
+        this.prefs.set(C.PREFS.LANDING, landing);
       }
 
-      get(this, 'access').set('firstLogin', false);
-      get(this, 'access').set('userCode', null);
+      this.access.set('firstLogin', false);
+      this.access.set('userCode', null);
 
       if ( landing === 'vue' ) {
         let link = '/dashboard';

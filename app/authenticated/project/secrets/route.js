@@ -6,7 +6,7 @@ import C from 'ui/utils/constants';
 
 export default Route.extend({
   model() {
-    const store = get(this, 'store');
+    const store = this.store;
 
     return hash({
       projectSecrets:    store.findAll('secret'),

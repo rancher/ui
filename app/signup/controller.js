@@ -16,7 +16,7 @@ export default Controller.extend({
       fetch('/register-new', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(this.get('model'))
+        body:    JSON.stringify(this.model)
       }).then(() => {
         this.set('saving', false);
         this.set('emailSent', true);
@@ -30,7 +30,7 @@ export default Controller.extend({
         });
     },
     cancel() {
-      if (this.get('errors')) {
+      if (this.errors) {
         this.set('errors', []);
       }
       this.transitionToRoute('login');
@@ -38,7 +38,7 @@ export default Controller.extend({
   },
   validate:     observer('model.name', 'model.email', function() {
     if (this.get('model.name') && this.get('model.email')) {
-      if (this.get('errors')) {
+      if (this.errors) {
         this.set('errors', []);
       }
       this.set('saveDisabled', false);

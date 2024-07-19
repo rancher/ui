@@ -60,7 +60,7 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    let initial = get(this, 'initialScale');
+    let initial = this.initialScale;
 
     if ( initial === null ) {
       initial = 1;
@@ -68,18 +68,18 @@ export default Component.extend({
 
     set(this, 'userInput', `${ initial }`);
     this.scaleModeChanged();
-    if ( get(this, 'scaleMode') !== 'deployment' && !get(this, 'isUpgrade') ) {
+    if ( this.scaleMode !== 'deployment' && !this.isUpgrade ) {
       set(this, 'advancedShown', true);
     }
   },
 
   actions: {
     increase() {
-      set(this, 'userInput', Math.min(get(this, 'max'), get(this, 'asInteger') + 1));
+      set(this, 'userInput', Math.min(this.max, this.asInteger + 1));
     },
 
     decrease() {
-      set(this, 'userInput', Math.max(get(this, 'min'), get(this, 'asInteger') - 1));
+      set(this, 'userInput', Math.max(this.min, this.asInteger - 1));
     },
 
     showAdvanced() {
@@ -88,32 +88,32 @@ export default Component.extend({
   },
 
   scaleChanged: observer('asInteger', function() {
-    let cur = get(this, 'asInteger');
+    let cur = this.asInteger;
 
     this.setScale(cur);
   }),
 
   scaleModeChanged: observer('scaleMode', function() {
-    var scaleMode = get(this, 'scaleMode');
+    var scaleMode = this.scaleMode;
 
     if ( !scaleMode || scaleMode === 'sidekick' ) {
       return;
     }
 
     const config = `${ scaleMode }Config`;
-    const workload = get(this, 'workload');
+    const workload = this.workload;
 
     if ( !get(workload, config) ) {
-      set(workload, config, get(this, 'store').createRecord(getDefaultConfig(scaleMode)));
+      set(workload, config, this.store.createRecord(getDefaultConfig(scaleMode)));
     }
   }),
 
   canAdvanced: computed('advancedShown', 'isUpgrade', 'scaleMode', function() {
-    if ( get(this, 'advancedShown') ) {
+    if ( this.advancedShown ) {
       return false;
     }
 
-    if ( get(this, 'isUpgrade') ) {
+    if ( this.isUpgrade ) {
       return false;
     }
 
@@ -121,11 +121,11 @@ export default Component.extend({
   }),
 
   asInteger: computed('userInput', function() {
-    return parseInt(get(this, 'userInput'), 10) || 0;
+    return parseInt(this.userInput, 10) || 0;
   }),
 
   canChangeScale: computed('scaleMode', function() {
-    return ['deployment', 'replicaSet', 'daemonSet', 'replicationController', 'statefulSet'].includes(get(this, 'scaleMode'));
+    return ['deployment', 'replicaSet', 'daemonSet', 'replicationController', 'statefulSet'].includes(this.scaleMode);
   }),
 
   setScale() {

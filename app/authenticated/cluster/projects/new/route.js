@@ -11,7 +11,7 @@ export default Route.extend({
 
 
   model() {
-    const store = get(this, 'globalStore');
+    const store = this.globalStore;
     const cluster = this.modelFor('authenticated.cluster');
 
     const project = store.createRecord({
@@ -24,7 +24,7 @@ export default Route.extend({
       me:       get(this, 'access.principal'),
       project,
       projects: store.findAll('project'),
-      roles:    get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
+      roles:    this.roleTemplateService.get('allFilteredRoleTemplates'),
       users:    store.find('user', null, { forceReload: true }),
     });
   },

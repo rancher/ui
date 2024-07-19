@@ -120,7 +120,7 @@ export default Component.extend({
   }),
 
   metricTypeDidChange: observer('metric.type', function() {
-    const metric = get(this, 'metric');
+    const metric = this.metric;
     const type = get(metric, 'type');
 
     if ( type === RESOURCE  ) {
@@ -209,7 +209,7 @@ export default Component.extend({
     const targetType = get(this, 'metric.target.type');
     const type =  get(this, 'metric.type');
     const name = get(this, 'metric.name');
-    const selectedWorkload = get(this, 'selectedWorkload');
+    const selectedWorkload = this.selectedWorkload;
     const hasCpuReservation = get(this, 'selectedWorkload.launchConfig.hasCpuReservation');
 
     if ( name === CPU && targetType === AVERAGE_UTILIZATION && type === RESOURCE && selectedWorkload ) {
@@ -223,7 +223,7 @@ export default Component.extend({
     const targetType = get(this, 'metric.target.type');
     const type =  get(this, 'metric.type');
     const name = get(this, 'metric.name');
-    const selectedWorkload = get(this, 'selectedWorkload');
+    const selectedWorkload = this.selectedWorkload;
     const hasMemoryReservation = get(this, 'selectedWorkload.launchConfig.hasMemoryReservation');
 
     if ( name === MEMORY && targetType === AVERAGE_UTILIZATION && type === RESOURCE && selectedWorkload ) {

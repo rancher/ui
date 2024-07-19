@@ -40,7 +40,7 @@ export default Component.extend(ModalBase, {
       const { revisionId } = this;
       const neu            = { revisionId };
 
-      if (get(this, 'multiClusterAppHasUpgradeStrategy')) {
+      if (this.multiClusterAppHasUpgradeStrategy) {
         set(neu, 'batch', this.model.upgradeStrategy.rollingUpdate);
       }
 
@@ -51,7 +51,7 @@ export default Component.extend(ModalBase, {
   },
 
   choices: computed('revisions.[]', function() {
-    return (get(this, 'revisions') || [])
+    return (this.revisions || [])
       .sortBy('created')
       .reverse()
       .map((r) => {
@@ -71,13 +71,13 @@ export default Component.extend(ModalBase, {
   }),
 
   selectedMultiClusterAppRevision: computed('choices.[]', 'revisionId', 'currentMultiClusterAppRevision', function() {
-    const match = get(this, 'choices').findBy('value', get(this, 'revisionId'));
+    const match = this.choices.findBy('value', this.revisionId);
 
     return match ? match.data : null;
   }),
 
   answersDiff: computed('currentMultiClusterAppRevision', 'selectedMultiClusterAppRevision', 'revisionId', function() {
-    if (get(this, 'currentMultiClusterAppRevision') && get(this, 'selectedMultiClusterAppRevision')) {
+    if (this.currentMultiClusterAppRevision && this.selectedMultiClusterAppRevision) {
       const { currentMultiClusterAppRevision, selectedMultiClusterAppRevision }  = this;
 
       return this.generateAnswersJsonDiff(currentMultiClusterAppRevision, selectedMultiClusterAppRevision);
@@ -101,7 +101,7 @@ export default Component.extend(ModalBase, {
   getMultiClusterAppRevisions() {
     const revisionsURL = get(this, 'modalService.modalOpts.revisionsLink');
 
-    return get(this, 'store').rawRequest({
+    return this.store.rawRequest({
       url:    revisionsURL,
       method: 'GET',
     })
@@ -109,7 +109,7 @@ export default Component.extend(ModalBase, {
       .catch((err) => {
         this.send('cancel');
 
-        get(this, 'growl').fromError(err);
+        this.growl.fromError(err);
       })
       .finally(() => set(this, 'loading', false));
   }

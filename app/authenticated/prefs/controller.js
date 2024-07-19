@@ -9,7 +9,7 @@ export default Controller.extend({
 
   actions: {
     editPassword() {
-      get(this, 'modal').toggleModal('modal-edit-password', { user: get(this, 'model.account') });
+      this.modal.toggleModal('modal-edit-password', { user: get(this, 'model.account') });
     },
   },
 });

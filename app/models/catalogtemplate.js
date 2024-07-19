@@ -10,7 +10,7 @@ export default Resource.extend({
   type: 'catalogTemplate',
 
   externalId: computed('templateVersionId', 'templateId', function() {
-    let id = this.get('templateVersionId') || this.get('templateId');
+    let id = this.templateVersionId || this.templateId;
 
     if ( id ) {
       return C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + id;
@@ -20,16 +20,16 @@ export default Resource.extend({
   }),
 
   externalIdInfo: computed('externalId', function() {
-    return parseExternalId(this.get('externalId'));
+    return parseExternalId(this.externalId);
   }),
 
   // These only works if the templates have already been loaded elsewhere...
   catalogTemplate: computed('externalIdInfo.templateId', function() {
-    return this.get('catalog').getTemplateFromCache(this.get('externalIdInfo.templateId'));
+    return this.catalog.getTemplateFromCache(this.get('externalIdInfo.templateId'));
   }),
 
   icon: computed('catalogTemplate', function() {
-    let tpl = this.get('catalogTemplate');
+    let tpl = this.catalogTemplate;
 
     if ( tpl ) {
       return tpl.linkFor('icon');
@@ -39,7 +39,7 @@ export default Resource.extend({
   }),
 
   categories: computed('catalogTemplate.categories', function() {
-    let tpl = this.get('catalogTemplate');
+    let tpl = this.catalogTemplate;
 
     if ( tpl ) {
       return tpl.get('categories') || [];

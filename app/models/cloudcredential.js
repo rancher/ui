@@ -63,7 +63,7 @@ const cloudCredential = Resource.extend({
   }),
 
   numberOfNodeTemplateAssociations: computed('nodeTemplates.[]', function() {
-    return get(this, 'nodeTemplates').length;
+    return this.nodeTemplates.length;
   }),
 
   actions: {

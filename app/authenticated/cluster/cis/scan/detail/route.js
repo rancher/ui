@@ -7,13 +7,13 @@ export default Route.extend({
   globalStore:        service(),
   scope:              service(),
   model(params) {
-    const scan = get(this, 'globalStore').find('clusterScan', params.scan_id);
+    const scan = this.globalStore.find('clusterScan', params.scan_id);
     const report = (async() => {
       return (await scan).loadReport('report');
     })();
 
     return hash({
-      clusterScans: get(this, 'globalStore').findAll('clusterScan'),
+      clusterScans: this.globalStore.findAll('clusterScan'),
       scan,
       report,
       nodes:        get(this, 'scope.currentCluster.nodes'),

@@ -13,8 +13,8 @@ export default Component.extend(Metrics, {
   init() {
     this._super(...arguments);
     set(this, 'metricParams', {
-      podName:       get(this, 'podId'),
-      containerName: get(this, 'resourceId')
+      podName:       this.podId,
+      containerName: this.resourceId
     });
   },
 });

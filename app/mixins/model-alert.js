@@ -13,15 +13,15 @@ export default Mixin.create({
   canClone: false,
 
   relevantState: computed('combinedState', 'alertState', 'state', function() {
-    if ( get(this, 'state') === 'removing' ) {
+    if ( this.state === 'removing' ) {
       return 'removing';
     }
 
-    return this.get('combinedState') || this.get('alertState') || 'unknown';
+    return this.combinedState || this.alertState || 'unknown';
   }),
 
   isAlertRule: computed('type', function() {
-    return (get(this, 'type') || '').endsWith('Rule');
+    return (this.type || '').endsWith('Rule');
   }),
 
   init() {
@@ -46,8 +46,8 @@ export default Mixin.create({
   },
 
   displayTargetType: computed('targetType', function() {
-    const t = get(this, 'targetType');
-    const intl = get(this, 'intl');
+    const t = this.targetType;
+    const intl = this.intl;
 
     return intl.t(`alertPage.targetTypes.${ t }`);
   }),
@@ -55,11 +55,11 @@ export default Mixin.create({
   resourceKind: computed('eventRule.resourceKind', function() {
     const rk = get(this, 'eventRule.resourceKind');
 
-    return get(this, 'intl').t(`alertPage.resourceKinds.${ rk }`);
+    return this.intl.t(`alertPage.resourceKinds.${ rk }`);
   }),
 
   firstRecipient: computed('recipients.length', function() {
-    const recipient = (get(this, 'recipients') || []).get('firstObject');
+    const recipient = (this.recipients || []).get('firstObject');
 
     if (recipient && get(recipient, 'notifierId')) {
       const notifierId = get(recipient, 'notifierId');
@@ -68,7 +68,7 @@ export default Mixin.create({
         return null;
       }
 
-      const notifier = get(this, 'globalStore').all('notifier').filterBy('id', notifierId).get('firstObject');
+      const notifier = this.globalStore.all('notifier').filterBy('id', notifierId).get('firstObject');
 
       if (!notifier) {
         return null;
@@ -82,8 +82,8 @@ export default Mixin.create({
 
   displayRecipient: computed('firstRecipient', 'model.recipients.length', 'recipients.length', function() {
     const len = get(this, 'recipients.length');
-    const firstRecipient = get(this, 'firstRecipient');
-    const intl = get(this, 'intl');
+    const firstRecipient = this.firstRecipient;
+    const intl = this.intl;
     let out = intl.t('alertPage.na');
 
     if (len === 0) {
@@ -103,7 +103,7 @@ export default Mixin.create({
     if (!id) {
       return null;
     }
-    const node = get(this, 'globalStore').all('node').filterBy('id', id).get('firstObject');
+    const node = this.globalStore.all('node').filterBy('id', id).get('firstObject');
 
     if (!node) {
       return null;
@@ -114,13 +114,13 @@ export default Mixin.create({
 
   actions: {
     edit() {
-      const ps = get(this, 'pageScope');
-      const id = get(this, 'id');
+      const ps = this.pageScope;
+      const id = this.id;
 
       if (ps === 'cluster') {
-        get(this, 'router').transitionTo('authenticated.cluster.alert.edit', id);
+        this.router.transitionTo('authenticated.cluster.alert.edit', id);
       } else if (ps === 'project') {
-        get(this, 'router').transitionTo('authenticated.project.alert.edit', id);
+        this.router.transitionTo('authenticated.project.alert.edit', id);
       }
     },
     mute() {
@@ -138,8 +138,8 @@ export default Mixin.create({
   },
 
   availableActions: computed('actionLinks.{activate,deactivate,mute,unmute}', 'alertState', 'isAlertRule', function() {
-    const state = this.get('alertState');
-    const isAlertRule = get(this, 'isAlertRule');
+    const state = this.alertState;
+    const isAlertRule = this.isAlertRule;
     let out = [];
 
     if ( isAlertRule ) {

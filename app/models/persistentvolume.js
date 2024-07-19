@@ -11,7 +11,7 @@ export default Volume.extend({
   storageClass: reference('storageClassId'),
 
   canRemove: computed('links.remove', 'state', function() {
-    return !!get(this, 'links.remove') && get(this, 'state') !== 'bound';
+    return !!get(this, 'links.remove') && this.state !== 'bound';
   }),
 
   displayPvc: computed('claimRef.namespace', 'claimRef.name', function() {
@@ -24,7 +24,7 @@ export default Volume.extend({
 
   actions: {
     edit() {
-      get(this, 'router').transitionTo('authenticated.cluster.storage.persistent-volumes.detail.edit', get(this, 'id'));
+      this.router.transitionTo('authenticated.cluster.storage.persistent-volumes.detail.edit', this.id);
     },
   },
 });

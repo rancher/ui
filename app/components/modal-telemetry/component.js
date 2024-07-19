@@ -32,8 +32,8 @@ export default Component.extend(ModalBase, {
 
   actions: {
     cancel() {
-      get(this, 'settings').set(C.SETTING.TELEMETRY, (get(this, 'optIn') ? 'in' : 'out'));
-      get(this, 'modalService').toggleModal();
+      this.settings.set(C.SETTING.TELEMETRY, (this.optIn ? 'in' : 'out'));
+      this.modalService.toggleModal();
     },
   },
 });

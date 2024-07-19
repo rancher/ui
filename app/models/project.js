@@ -31,7 +31,7 @@ export default Resource.extend({
   // 2.0 bug projectId is wrong in the ptrb should be <cluster-id>:<project-id> instead of just <project-id>
   roleTemplateBindings:        alias('projectRoleTemplateBindings'),
   icon:                 computed('active', function() {
-    if (get(this, 'active')) {
+    if (this.active) {
       return 'icon icon-folder-open';
     } else {
       return 'icon icon-folder text-muted';
@@ -39,39 +39,39 @@ export default Resource.extend({
   }),
 
   isDefault: computed(`prefs.${ C.PREFS.PROJECT_DEFAULT }`, 'id', function() {
-    return get(this, `prefs.${ C.PREFS.PROJECT_DEFAULT }`) === get(this, 'id');
+    return get(this, `prefs.${ C.PREFS.PROJECT_DEFAULT }`) === this.id;
   }),
 
   isSystemProject: computed('labels', function() {
-    const labels = get(this, 'labels') || {};
+    const labels = this.labels || {};
 
     return labels[SYSTEM_PROJECT_LABEL] === 'true';
   }),
 
   conditionsDidChange: on('init', observer('enableProjectMonitoring', 'conditions.@each.status', function() {
-    if ( !get(this, 'enableProjectMonitoring') ) {
+    if ( !this.enableProjectMonitoring ) {
       return false;
     }
-    const conditions = get(this, 'conditions') || [];
+    const conditions = this.conditions || [];
 
     const ready = conditions.findBy('type', 'MonitoringEnabled');
 
     const status = ready && get(ready, 'status') === 'True';
 
-    if ( status !== get(this, 'isMonitoringReady') ) {
+    if ( status !== this.isMonitoringReady ) {
       set(this, 'isMonitoringReady', status);
     }
   })),
 
   active: computed('scope.currentProject.id', 'id', function() {
-    return get(this, 'scope.currentProject.id') === get(this, 'id');
+    return get(this, 'scope.currentProject.id') === this.id;
   }),
 
   canSaveMonitor: computed('actionLinks.{editMonitoring,enableMonitoring}', 'enableProjectMonitoring', 'isSystemProject', function() {
-    if ( get(this, 'isSystemProject') ) {
+    if ( this.isSystemProject ) {
       return false;
     }
-    const action = get(this, 'enableProjectMonitoring') ?  'editMonitoring' : 'enableMonitoring';
+    const action = this.enableProjectMonitoring ?  'editMonitoring' : 'enableMonitoring';
 
     return !!this.hasAction(action)
   }),
@@ -81,16 +81,16 @@ export default Resource.extend({
   }),
 
   canSetDefault: computed('combinedState', 'isDefault', function() {
-    return get(this, 'combinedState') === 'active' && !get(this, 'isDefault');
+    return this.combinedState === 'active' && !this.isDefault;
   }),
 
   isReady: computed('relevantState', 'cluster.isReady', function() {
-    return get(this, 'relevantState') === 'active' && get(this, 'cluster.isReady');
+    return this.relevantState === 'active' && get(this, 'cluster.isReady');
   }),
 
   actions: {
     edit() {
-      get(this, 'router').transitionTo('authenticated.cluster.projects.edit', get(this, 'id'));
+      this.router.transitionTo('authenticated.cluster.projects.edit', this.id);
     },
 
     activate() {
@@ -106,11 +106,11 @@ export default Resource.extend({
     },
 
     setAsDefault() {
-      set(get(this, 'prefs'), C.PREFS.PROJECT_DEFAULT, get(this, 'id'));
+      set(this.prefs, C.PREFS.PROJECT_DEFAULT, this.id);
     },
 
     promptStop() {
-      get(this, 'modalService').toggleModal('modal-confirm-deactivate', {
+      this.modalService.toggleModal('modal-confirm-deactivate', {
         originalModel: this,
         action:        'deactivate'
       });
@@ -121,11 +121,11 @@ export default Resource.extend({
     var promise = this._super.apply(this, arguments);
 
     return promise.then(() => {
-      if (get(this, 'active')) {
+      if (this.active) {
         window.location.href = window.location.href; // eslint-disable-line no-self-assign
       }
     }).catch((err) => {
-      get(this, 'growl').fromError('Error deleting', err);
+      this.growl.fromError('Error deleting', err);
     });
   },
 

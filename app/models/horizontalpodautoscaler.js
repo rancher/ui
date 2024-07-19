@@ -16,11 +16,11 @@ export default Resource.extend({
   namespace:      reference('namespaceId', 'namespace', 'clusterStore'),
 
   currentMetrics: computed('metrics.@each.current', function() {
-    return (get(this, 'metrics') || []).map((metric) => get(metric, 'current'));
+    return (this.metrics || []).map((metric) => get(metric, 'current'));
   }),
 
   displayMetrics: computed('currentMetrics.@each.{averageValue,utilization,value}', 'metrics', function() {
-    return (get(this, 'metrics') || [])
+    return (this.metrics || [])
       .map((metric) => {
         const arr = [];
         const averageValue = get(metric, 'current.averageValue');
@@ -55,11 +55,11 @@ export default Resource.extend({
   }),
 
   displayMetricsString: computed('displayMetrics', function() {
-    return (get(this, 'displayMetrics') || []).join(', ');
+    return (this.displayMetrics || []).join(', ');
   }),
 
   hpaName: computed('id', function() {
-    const items = get(this, 'id').split(':');
+    const items = this.id.split(':');
 
     if ( get(items, 'length') > 1 ) {
       return items[1];
@@ -70,11 +70,11 @@ export default Resource.extend({
 
   actions:      {
     edit() {
-      get(this, 'router').transitionTo('authenticated.project.hpa.detail.edit', this.get('id'));
+      this.router.transitionTo('authenticated.project.hpa.detail.edit', this.id);
     },
 
     clone() {
-      get(this, 'router').transitionTo('authenticated.project.hpa.new', this.get('projectId'), { queryParams: { id: this.get('id') } });
+      this.router.transitionTo('authenticated.project.hpa.new', this.projectId, { queryParams: { id: this.id } });
     },
   },
 

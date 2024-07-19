@@ -90,15 +90,15 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
   init(...args) {
     this._super(...args);
-    const mode = get(this, 'mode');
+    const mode = this.mode;
 
     if (mode === 'edit' || mode === 'clone') {
-      const t = get(this, 'currentType');
+      const t = this.currentType;
 
       this.set('types', TYPES.filterBy('type', t));
     } else if (mode === 'add') {
       set(this, 'modelMap', {});
-      this.setModel(get(this, 'currentType'));
+      this.setModel(this.currentType);
       this.set('types', TYPES);
     }
   },
@@ -109,7 +109,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
       this.setModel(type);
     },
     test() {
-      if (get(this, 'testing') || get(this, 'tested')) {
+      if (this.testing || this.tested) {
         return resolve();
       }
       const ok = this.validate();
@@ -117,8 +117,8 @@ export default Component.extend(ModalBase, NewOrEdit, {
       if (!ok) {
         return resolve();
       }
-      const data = get(this, 'model').serialize();
-      const gs = get(this, 'globalStore');
+      const data = this.model.serialize();
+      const gs = this.globalStore;
 
       set(this, 'testing', true);
 
@@ -156,7 +156,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
   }),
 
   addBtnLabel: computed('mode', function() {
-    const mode = get(this, 'mode');
+    const mode = this.mode;
 
     if (mode === 'edit') {
       return 'generic.save';
@@ -170,12 +170,12 @@ export default Component.extend(ModalBase, NewOrEdit, {
   isSelectType: computed('currentType', function() {
     const types = TYPES.map((t) => t.type)
 
-    return types.includes(get(this, 'currentType'))
+    return types.includes(this.currentType);
   }),
   setModel(type) {
     const cachedModel = get(this, `modelMap.${ type }`);
     const clusterId = get(this, 'cluster.id');
-    const gs = get(this, 'globalStore');
+    const gs = this.globalStore;
 
     if (cachedModel) {
       set(this, 'model', cachedModel);
@@ -193,20 +193,20 @@ export default Component.extend(ModalBase, NewOrEdit, {
       clusterId,
       [configType]: gs.createRecord({ type: configType }),
     };
-    const model = get(this, 'globalStore').createRecord(opt);
+    const model = this.globalStore.createRecord(opt);
 
     set(this, 'model', model);
     set(this, `modelMap.${ type }`, model);
   },
 
   doneSaving() {
-    get(this, 'modalService').toggleModal();
+    this.modalService.toggleModal();
   },
 
   validate() {
     this._super(...arguments);
-    const errors = get(this, 'errors') || [];
-    const intl = get(this, 'intl')
+    const errors = this.errors || [];
+    const intl = this.intl
     const preError = '"Default Recipient" is required'
 
     const notifierType = get(this, 'model.notifierType')

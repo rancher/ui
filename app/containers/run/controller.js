@@ -39,7 +39,7 @@ export default Controller.extend({
         displayName: get(slc, 'name'),
       }];
 
-      get(this, 'modalService').toggleModal('confirm-delete', {
+      this.modalService.toggleModal('confirm-delete', {
         resources,
         showProtip: false
       });
@@ -65,7 +65,7 @@ export default Controller.extend({
       set(this, 'deleting', false);
     })
       .catch((err) => {
-        get(this, 'growl').fromError(err);
+        this.growl.fromError(err);
         set(this, 'deleting', false);
       });
   },

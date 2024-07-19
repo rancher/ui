@@ -53,10 +53,10 @@ export default Component.extend({
   }),
 
   namepsacesChanged: observer('_namespaces', function() {
-    if (!get(this, '_namespaces')) {
+    if (!this._namespaces) {
       set(this, 'model.namespaces', null);
     } else {
-      set(this, 'model.namespaces', get(this, '_namespaces').split(','));
+      set(this, 'model.namespaces', this._namespaces.split(','));
     }
   }),
 
@@ -71,7 +71,7 @@ export default Component.extend({
   initTopologyChoices: observer('nodes.[]', function() {
     const uniqueObj = {};
 
-    get(this, 'nodes').forEach((node) => {
+    this.nodes.forEach((node) => {
       Object.keys(node.metadata.labels).forEach((l) => (uniqueObj[l] = true));
     });
 
@@ -84,11 +84,11 @@ export default Component.extend({
   }),
 
   showNamepsaceChanged: observer('showNamespace', function() {
-    if (get(this, 'showNamespace') === 'true') {
+    if (this.showNamespace === 'true') {
       set(this, 'model.namespaces', []);
       set(this, '_namespaces', null);
       set(this, 'model.namespaceSelector', null);
-    } else if (get(this, 'showNamespace') === 'all') {
+    } else if (this.showNamespace === 'all') {
       set(this, 'model.namespaceSelector', {});
       set(this, 'model.namespaces', null);
       set(this, '_namespaces', null);

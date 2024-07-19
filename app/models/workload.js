@@ -59,7 +59,7 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
   restarts: computed('pods.@each.restarts', function() {
     let out = 0;
 
-    (get(this, 'pods') || []).forEach((pod) => {
+    (this.pods || []).forEach((pod) => {
       out += get(pod, 'restarts');
     });
 
@@ -67,22 +67,22 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
   }),
 
   lcType: computed('type', function() {
-    return (get(this, 'type') || '').toLowerCase();
+    return (this.type || '').toLowerCase();
   }),
 
   canEdit: computed('links.update', 'lcType', function() {
-    const lcType = get(this, 'lcType');
+    const lcType = this.lcType;
 
     return !!get(this, 'links.update') && ( lcType !== 'job' );
   }),
 
   availableActions: computed('actionLinks.{activate,deactivate,pause,restart,rollback,garbagecollect}', 'links.{update,remove}', 'podForShell', 'isPaused', 'canEdit', function() {
-    const a = get(this, 'actionLinks') || {};
+    const a = this.actionLinks || {};
 
-    const podForShell = get(this, 'podForShell');
+    const podForShell = this.podForShell;
 
-    const isPaused = get(this, 'isPaused');
-    const canEdit = get(this, 'canEdit');
+    const isPaused = this.isPaused;
+    const canEdit = this.canEdit;
 
     let choices = [
       {
@@ -133,18 +133,18 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
   }),
 
   displayType: computed('type', function() {
-    let type = this.get('type');
+    let type = this.type;
 
-    return get(this, 'intl').t(`servicePage.serviceType.${ type }`);
+    return this.intl.t(`servicePage.serviceType.${ type }`);
   }),
 
   sortName: computed('displayName', function() {
-    return sortableNumericSuffix(get(this, 'displayName'));
+    return sortableNumericSuffix(this.displayName);
   }),
 
   combinedState: computed('state', 'healthState', function() {
-    var service = get(this, 'state');
-    var health = get(this, 'healthState');
+    var service = this.state;
+    var health = this.healthState;
 
     if ( service === 'active' && health ) {
       // Return the health state for active services
@@ -156,25 +156,25 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
   }),
 
   isGlobalScale: computed('lcType', function() {
-    let lcType = get(this, 'lcType');
+    let lcType = this.lcType;
 
     return lcType === 'daemonset';
   }),
 
   canScaleDown: computed('canScale', 'scale', function() {
-    return get(this, 'canScale') && get(this, 'scale') > 0;
+    return this.canScale && this.scale > 0;
   }),
 
   displayScale: computed('scale', 'isGlobalScale', 'lcType', function() {
-    if ( get(this, 'isGlobalScale') ) {
-      return get(this, 'intl').t('servicePage.multistat.daemonSetScale');
+    if ( this.isGlobalScale ) {
+      return this.intl.t('servicePage.multistat.daemonSetScale');
     } else {
-      return get(this, 'scale');
+      return this.scale;
     }
   }),
 
   canScale: computed('lcType', function() {
-    let lcType = get(this, 'lcType');
+    let lcType = this.lcType;
 
     return lcType !== 'cronjob' && lcType !== 'daemonset' && lcType !== 'job';
   }),
@@ -192,15 +192,15 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
   }),
 
   podForShell: computed('pods.@each.canShell', function() {
-    return get(this, 'pods').findBy('canShell', true);
+    return this.pods.findBy('canShell', true);
   }),
 
   secondaryLaunchConfigs: computed('containers.[]', function() {
-    return (get(this, 'containers') || []).slice(1);
+    return (this.containers || []).slice(1);
   }),
 
   isCreatedByRancher: computed('workloadAnnotations', function() {
-    const workloadAnnotations = get(this, 'workloadAnnotations') || {};
+    const workloadAnnotations = this.workloadAnnotations || {};
 
     return !!workloadAnnotations[C.LABEL.CREATOR_ID];
   }),
@@ -233,7 +233,7 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
     },
 
     rollback() {
-      get(this, 'modalService').toggleModal('modal-rollback-service', { originalModel: this });
+      this.modalService.toggleModal('modal-rollback-service', { originalModel: this });
     },
 
     garbageCollect() {
@@ -252,16 +252,16 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
     },
 
     promptStop() {
-      get(this, 'modalService').toggleModal('modal-container-stop', { model: [this] });
+      this.modalService.toggleModal('modal-container-stop', { model: [this] });
     },
 
     scaleUp() {
-      set(this, 'scale', get(this, 'scale') + 1);
+      set(this, 'scale', this.scale + 1);
       this.saveScale();
     },
 
     scaleDown() {
-      let scale = get(this, 'scale');
+      let scale = this.scale;
 
       scale -= 1;
       scale = Math.max(scale, 0);
@@ -272,22 +272,22 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
     edit(upgradeImage = 'false') {
       var route = 'containers.run';
 
-      if ( get(this, 'lcType') === 'loadbalancerservice' ) {
+      if ( this.lcType === 'loadbalancerservice' ) {
         route = 'balancers.run';
       }
 
-      get(this, 'router').transitionTo(route, {
+      this.router.transitionTo(route, {
         queryParams: {
-          workloadId:   get(this, 'id'),
+          workloadId:   this.id,
           upgrade:      true,
           upgradeImage,
-          namespaceId:  get(this, 'namespaceId'),
+          namespaceId:  this.namespaceId,
         }
       });
     },
 
     clone() {
-      get(this, 'router').transitionTo('containers.run', { queryParams: { workloadId: get(this, 'id'), } });
+      this.router.transitionTo('containers.run', { queryParams: { workloadId: this.id, } });
     },
 
     redeploy() {
@@ -300,22 +300,22 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
     },
 
     addSidekick() {
-      get(this, 'router').transitionTo('containers.run', {
+      this.router.transitionTo('containers.run', {
         queryParams: {
-          workloadId:  get(this, 'id'),
+          workloadId:  this.id,
           addSidekick: true,
         }
       });
     },
 
     shell() {
-      get(this, 'modalService').toggleModal('modal-shell', { model: get(this, 'podForShell'), });
+      this.modalService.toggleModal('modal-shell', { model: this.podForShell, });
     },
 
     popoutShell() {
       const projectId = get(this, 'scope.currentProject.id');
       const podId = get(this, 'podForShell.id');
-      const route = get(this, 'router').urlFor('authenticated.project.console', projectId);
+      const route = this.router.urlFor('authenticated.project.console', projectId);
 
       const system = get(this, 'podForShell.node.info.os.operatingSystem') || ''
       let windows = false;
@@ -333,7 +333,7 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
   },
 
   updateTimestamp() {
-    let obj = get(this, 'annotations');
+    let obj = this.annotations;
 
     if ( !obj ) {
       obj = {};
@@ -344,14 +344,14 @@ var Workload = Resource.extend(Grafana, DisplayImage, StateCounts, EndpointPorts
   },
 
   saveScale() {
-    if ( get(this, 'scaleTimer') ) {
-      cancel(get(this, 'scaleTimer'));
+    if ( this.scaleTimer ) {
+      cancel(this.scaleTimer);
     }
-    const scale = get(this, 'scale');
+    const scale = this.scale;
 
     var timer = later(this, function() {
       this.save({ data: { scale } }).catch((err) => {
-        get(this, 'growl').fromError('Error updating scale', err);
+        this.growl.fromError('Error updating scale', err);
       });
     }, 500);
 

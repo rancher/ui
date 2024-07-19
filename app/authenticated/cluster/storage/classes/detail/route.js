@@ -7,7 +7,7 @@ export default Route.extend({
   clusterStore: service(),
 
   model(params) {
-    const clusterStore = get(this, 'clusterStore');
+    const clusterStore = this.clusterStore;
     const storageClassId = params.storage_class_id;
 
     return hash({

@@ -25,7 +25,7 @@ var DockerCredential = Resource.extend({
   registryCount: alias('asArray.length'),
 
   asArray: computed('registries', function() {
-    const all = get(this, 'registries') || {};
+    const all = this.registries || {};
 
     let reg, address, preset;
 
@@ -45,13 +45,13 @@ var DockerCredential = Resource.extend({
   }),
 
   searchAddresses: computed('asArray.@each.address', function() {
-    return get(this, 'asArray').map((x) => get(x, 'address'))
+    return this.asArray.map((x) => get(x, 'address'))
       .sort()
       .uniq();
   }),
 
   searchUsernames: computed('asArray.@each.username', function() {
-    return get(this, 'asArray').map((x) => get(x, 'username'))
+    return this.asArray.map((x) => get(x, 'username'))
       .sort()
       .uniq();
   }),
@@ -59,22 +59,22 @@ var DockerCredential = Resource.extend({
   displayAddress: computed('intl.locale', 'registryCount', 'firstRegistry.address', function() {
     const address = get(this, 'firstRegistry.address');
 
-    if ( get(this, 'registryCount') > 1 ) {
+    if ( this.registryCount > 1 ) {
       return 'cruRegistry.multiple';
     } else if (address === window.location.host) {
       return address;
     } else if ( PRESETS[address] ) {
-      return get(this, 'intl').t(`cruRegistry.address.${  PRESETS[address] }`);
+      return this.intl.t(`cruRegistry.address.${  PRESETS[address] }`);
     } else {
       return address;
     }
   }),
 
   displayUsername: computed('registryCount', 'firstRegistry.username', function() {
-    const intl = get(this, 'intl');
+    const intl = this.intl;
     const username = get(this, 'firstRegistry.username');
 
-    if ( get(this, 'registryCount') > 1 ) {
+    if ( this.registryCount > 1 ) {
       return intl.t('cruRegistry.multiple');
     } else {
       return username;
@@ -82,10 +82,10 @@ var DockerCredential = Resource.extend({
   }),
   actions: {
     clone() {
-      get(this, 'router').transitionTo('authenticated.project.registries.new', {
+      this.router.transitionTo('authenticated.project.registries.new', {
         queryParams: {
-          id:   get(this, 'id'),
-          type: get(this, 'type')
+          id:   this.id,
+          type: this.type
         }
       });
     }

@@ -6,7 +6,7 @@ export default Route.extend({
   catalog: service(),
 
   model() {
-    return get(this, 'catalog').fetchUnScopedCatalogs();
+    return this.catalog.fetchUnScopedCatalogs();
   },
 
   resetController(controller, isExiting /* , transition*/ ) {

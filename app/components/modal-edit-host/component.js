@@ -23,7 +23,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
   init() {
     this._super(...arguments);
-    set(this, 'model', get(this, 'originalModel').clone());
+    set(this, 'model', this.originalModel.clone());
 
     if (get(this, 'model.name')) {
       set(this, 'customName', get(this, 'model.name'))
@@ -31,7 +31,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
   },
 
   customNameObserver: on('init', observer('customName', function() {
-    let cn = get(this, 'customName');
+    let cn = this.customName;
 
     if (cn && cn.length > 0) {
       set(this, 'primaryResource.name', cn);

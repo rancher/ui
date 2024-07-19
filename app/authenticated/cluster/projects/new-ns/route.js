@@ -9,7 +9,7 @@ export default Route.extend({
   scope:        service(),
 
   model(params) {
-    const clusterStore = get(this, 'clusterStore');
+    const clusterStore = this.clusterStore;
 
     const namespace = clusterStore.createRecord({
       type:      'namespace',
@@ -28,8 +28,8 @@ export default Route.extend({
 
     return hash({
       namespace,
-      namespaces:        get(this, 'clusterStore').findAll('namespace'),
-      allProjects:       get(this, 'globalStore').findAll('project'),
+      namespaces:        this.clusterStore.findAll('namespace'),
+      allProjects:       this.globalStore.findAll('project'),
     });
   },
 

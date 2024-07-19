@@ -41,22 +41,22 @@ export default Component.extend(VolumeSource, {
       }
     },
     useCustomRegex() {
-      set(this, 'useCustomRegex', !get(this, 'useCustomRegex'));
+      set(this, 'useCustomRegex', !this.useCustomRegex);
     },
   },
   useCustomRegexChange: observer('useCustomRegex', function() {
-    const useCustomRegex = get(this, 'useCustomRegex');
+    const useCustomRegex = this.useCustomRegex;
 
     if (useCustomRegex) {
       set(this, 'cachedFormat', get(this, 'config.options.format'));
-      set(this, 'config.options.format', get(this, 'initialCustomFormat'));
+      set(this, 'config.options.format', this.initialCustomFormat);
     } else {
-      set(this, 'config.options.format', get(this, 'cachedFormat'));
+      set(this, 'config.options.format', this.cachedFormat);
     }
   }),
 
   firstMount: computed('mounts.[]', function() {
-    return get(this, 'mounts').get('firstObject');
+    return this.mounts.get('firstObject');
   }),
 
 });

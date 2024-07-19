@@ -29,14 +29,14 @@ export default Resource.extend({
   },
 
   config: computed('driver', function() {
-    const driver = get(this, 'driver');
+    const driver = this.driver;
 
     return get(this, `${ driver }Config`);
   }),
 
   displayProvider: computed('driver', 'intl.locale', function() {
-    const intl = get(this, 'intl');
-    const driver = get(this, 'driver');
+    const intl = this.intl;
+    const driver = this.driver;
     const key = `nodeDriver.displayName.${ driver }`;
 
     if ( intl.exists(key) ) {
@@ -56,9 +56,9 @@ export default Resource.extend({
 
   actions: {
     edit() {
-      let driver = get(this, 'driver');
+      let driver = this.driver;
 
-      get(this, 'modalService').toggleModal('modal-edit-node-template', {
+      this.modalService.toggleModal('modal-edit-node-template', {
         driver,
         config:       get(this, `${ driver }Config`),
         nodeTemplate: this,
@@ -69,7 +69,7 @@ export default Resource.extend({
     clone() {
       const { driver } = this;
 
-      get(this, 'modalService').toggleModal('modal-edit-node-template', {
+      this.modalService.toggleModal('modal-edit-node-template', {
         driver,
         config:       get(this, `${ driver }Config`),
         nodeTemplate: this,
@@ -79,7 +79,7 @@ export default Resource.extend({
   },
 
   _displayVar(keyOrFn) {
-    const intl = get(this, 'intl');
+    const intl = this.intl;
 
     if ( keyOrFn ) {
       if ( typeof (keyOrFn) === 'function' ) {

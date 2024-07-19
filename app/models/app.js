@@ -58,7 +58,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       }
 
       if ( item['labels'] ) {
-        const inApp = item['labels']['io.cattle.field/appId'] === get(this, 'name');
+        const inApp = item['labels']['io.cattle.field/appId'] === this.name;
 
         if ( inApp ) {
           return true;
@@ -68,7 +68,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       const workload = get(item, 'workload');
 
       if ( workload ) {
-        const found = get(this, 'workloads').filterBy('id', get(workload, 'id'));
+        const found = this.workloads.filterBy('id', get(workload, 'id'));
 
         return found.length > 0;
       }
@@ -78,7 +78,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   services: computed('name', 'namespace.services.@each.labels', function() {
     return (get(this, 'namespace.services') || []).filter((item) => {
       if ( item['labels'] ) {
-        return item['labels']['io.cattle.field/appId'] === get(this, 'name');
+        return item['labels']['io.cattle.field/appId'] === this.name;
       }
     });
   }),
@@ -86,7 +86,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   dnsRecords: computed('name', 'namespace.services.@each.labels', function() {
     return (get(this, 'namespace.services') || []).filter((item) => {
       if ( item['labels'] ) {
-        return item['labels']['io.cattle.field/appId'] === get(this, 'name');
+        return item['labels']['io.cattle.field/appId'] === this.name;
       }
     });
   }),
@@ -94,7 +94,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   workloads: computed('name', 'namespace.workloads.@each.workloadLabels', function() {
     return (get(this, 'namespace.workloads') || []).filter((item) => {
       if ( item['workloadLabels'] ) {
-        return item['workloadLabels']['io.cattle.field/appId'] === get(this, 'name');
+        return item['workloadLabels']['io.cattle.field/appId'] === this.name;
       }
     });
   }),
@@ -102,7 +102,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   secrets: computed('name', 'namespace.secrets', function() {
     return (get(this, 'namespace.secrets') || []).filter((item) => {
       if ( item['labels'] ) {
-        return item['labels']['io.cattle.field/appId'] === get(this, 'name');
+        return item['labels']['io.cattle.field/appId'] === this.name;
       }
     });
   }),
@@ -110,7 +110,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   configMaps: computed('name', 'namespace.configMaps', function() {
     return (get(this, 'namespace.configMaps') || []).filter((item) => {
       if ( item['labels'] ) {
-        return item['labels']['io.cattle.field/appId'] === get(this, 'name');
+        return item['labels']['io.cattle.field/appId'] === this.name;
       }
     });
   }),
@@ -118,7 +118,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   ingress: computed('name', 'namespace.ingress', function() {
     return (get(this, 'namespace.ingress') || []).filter((item) => {
       if ( item['labels'] ) {
-        return item['labels']['io.cattle.field/appId'] === get(this, 'name');
+        return item['labels']['io.cattle.field/appId'] === this.name;
       }
     });
   }),
@@ -126,7 +126,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   volumes: computed('name', 'namespace.volumes', function() {
     return (get(this, 'namespace.volumes') || []).filter((item) => {
       if ( item['labels'] ) {
-        return item['labels']['io.cattle.field/appId'] === get(this, 'name');
+        return item['labels']['io.cattle.field/appId'] === this.name;
       }
     });
   }),
@@ -134,13 +134,13 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   publicEndpoints: computed('workloads.@each.publicEndpoints', 'services.@each.proxyEndpoints', function() {
     let out = [];
 
-    get(this, 'workloads').forEach((workload) => {
+    this.workloads.forEach((workload) => {
       (get(workload, 'publicEndpoints') || []).forEach((endpoint) => {
         out.push(endpoint);
       });
     });
 
-    get(this, 'services').forEach((service) => {
+    this.services.forEach((service) => {
       (get(service, 'proxyEndpoints') || []).forEach((endpoint) => {
         out.push(endpoint);
       });
@@ -151,7 +151,7 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
 
   displayAnswerStrings: computed('answers', function() {
     let out = [];
-    let answers = get(this, 'answers') || {};
+    let answers = this.answers || {};
 
     Object.keys(answers).forEach((key) => {
       out.push(key + (answers[key] ? `=${ answers[key] }` : ''));
@@ -161,11 +161,11 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
   }),
 
   externalIdInfo: computed('externalId', function() {
-    return parseHelmExternalId(get(this, 'externalId'));
+    return parseHelmExternalId(this.externalId);
   }),
 
   canUpgrade: computed('actionLinks.upgrade', 'catalogTemplate', function() {
-    let a = get(this, 'actionLinks') || {};
+    let a = this.actionLinks || {};
 
     return !!a.upgrade && !isEmpty(this.catalogTemplate);
   }),
@@ -184,30 +184,30 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
         label:   'action.upgrade',
         icon:    'icon icon-edit',
         action:  'upgrade',
-        enabled: get(this, 'canUpgrade')
+        enabled: this.canUpgrade
       },
       {
         label:   'action.rollback',
         icon:    'icon icon-history',
         action:  'rollback',
-        enabled: get(this, 'canRollback')
+        enabled: this.canRollback
       },
       {
         label:   'action.viewYaml',
         icon:    'icon icon-file',
         action:  'viewYaml',
-        enabled: !!get(this, 'isIstio')
+        enabled: !!this.isIstio
       },
     ];
   }),
 
   actions: {
     viewYaml(){
-      get(this, 'modalService').toggleModal('modal-istio-yaml', {
+      this.modalService.toggleModal('modal-istio-yaml', {
         escToClose: true,
-        name:       get(this, 'displayName'),
+        name:       this.displayName,
         namespace:  get(this, 'namespace.id'),
-        appId:      get(this, 'name'),
+        appId:      this.name,
       });
     },
 
@@ -218,31 +218,31 @@ const App = Resource.extend(StateCounts, EndpointPorts, {
       const latestVersion =  vKeys[vKeys.length - 1];
       const currentVersion = get(this, 'externalIdInfo.version')
 
-      get(this, 'router').transitionTo('catalog-tab.launch', templateId, {
+      this.router.transitionTo('catalog-tab.launch', templateId, {
         queryParams: {
-          appId:        get(this, 'id'),
+          appId:        this.id,
           catalog:      catalogId,
-          namespaceId:  get(this, 'targetNamespace'),
+          namespaceId:  this.targetNamespace,
           upgrade:      latestVersion,
-          istio:        get(this, 'isIstio'),
+          istio:        this.isIstio,
           currentVersion
         }
       });
     },
 
     rollback() {
-      get(this, 'modalService').toggleModal('modal-rollback-app', { originalModel: this });
+      this.modalService.toggleModal('modal-rollback-app', { originalModel: this });
     },
 
     clone() {
       const templateId    = get(this, 'externalIdInfo.templateId');
       const catalogId     = get(this, 'externalIdInfo.catalog');
 
-      get(this, 'router').transitionTo('catalog-tab.launch', templateId, {
+      this.router.transitionTo('catalog-tab.launch', templateId, {
         queryParams: {
-          appId:       get(this, 'id'),
+          appId:       this.id,
           catalog:     catalogId,
-          namespaceId: get(this, 'targetNamespace'),
+          namespaceId: this.targetNamespace,
           clone:       true
         }
       });

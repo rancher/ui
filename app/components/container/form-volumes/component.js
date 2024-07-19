@@ -62,28 +62,28 @@ export default Component.extend({
 
   actions: {
     remove(obj) {
-      get(this, 'volumesArray').removeObject(obj);
+      this.volumesArray.removeObject(obj);
     },
 
     addVolume() {
-      const store = get(this, 'store');
+      const store = this.store;
 
-      get(this, 'volumesArray').pushObject({
+      this.volumesArray.pushObject({
         mode:   NEW_VOLUME,
         volume: store.createRecord({
           type: 'volume',
           name: this.nextName(),
         }),
         mounts: [
-          get(this, 'store').createRecord({ type: 'volumeMount', })
+          this.store.createRecord({ type: 'volumeMount', })
         ],
       });
     },
 
     addNewPvc() {
-      const store = get(this, 'store');
+      const store = this.store;
 
-      get(this, 'volumesArray').pushObject({
+      this.volumesArray.pushObject({
         mode:   NEW_PVC,
         pvc:    store.createRecord({ type: 'persistentVolumeClaim', }),
         name:   null,
@@ -101,9 +101,9 @@ export default Component.extend({
     },
 
     addPvc() {
-      const store = get(this, 'store');
+      const store = this.store;
 
-      get(this, 'volumesArray').pushObject({
+      this.volumesArray.pushObject({
         mode:   EXISTING_PVC,
         volume: store.createRecord({
           type:                  'volume',
@@ -120,9 +120,9 @@ export default Component.extend({
     },
 
     addBindMount() {
-      const store = get(this, 'store');
+      const store = this.store;
 
-      get(this, 'volumesArray').pushObject({
+      this.volumesArray.pushObject({
         mode:   C.VOLUME_TYPES.BIND_MOUNT,
         volume: store.createRecord({
           type:     'volume',
@@ -140,9 +140,9 @@ export default Component.extend({
     },
 
     addTmpfs() {
-      const store = get(this, 'store');
+      const store = this.store;
 
-      get(this, 'volumesArray').pushObject({
+      this.volumesArray.pushObject({
         mode:   C.VOLUME_TYPES.TMPFS,
         volume: store.createRecord({
           type:     'volume',
@@ -159,9 +159,9 @@ export default Component.extend({
     },
 
     addConfigMap() {
-      const store = get(this, 'store');
+      const store = this.store;
 
-      get(this, 'volumesArray').pushObject({
+      this.volumesArray.pushObject({
         mode:   C.VOLUME_TYPES.CONFIG_MAP,
         volume: store.createRecord({
           type:      'volume',
@@ -180,9 +180,9 @@ export default Component.extend({
     },
 
     addSecret() {
-      const store = get(this, 'store');
+      const store = this.store;
 
-      get(this, 'volumesArray').pushObject({
+      this.volumesArray.pushObject({
         mode:   C.VOLUME_TYPES.SECRET,
         volume: store.createRecord({
           type:   'volume',
@@ -201,9 +201,9 @@ export default Component.extend({
     },
 
     addCertificate() {
-      const store = get(this, 'store');
+      const store = this.store;
 
-      get(this, 'volumesArray').pushObject({
+      this.volumesArray.pushObject({
         mode:   C.VOLUME_TYPES.CERTIFICATE,
         volume: store.createRecord({
           type:   'volume',
@@ -222,11 +222,11 @@ export default Component.extend({
     },
 
     addCustomLogPath() {
-      const store = get(this, 'store');
+      const store = this.store;
 
       const name = this.nextName();
 
-      get(this, 'volumesArray').pushObject({
+      this.volumesArray.pushObject({
         mode:   C.VOLUME_TYPES.CUSTOM_LOG_PATH,
         volume: store.createRecord({
           type:       'volume',
@@ -277,7 +277,7 @@ export default Component.extend({
 
 
   initVolumes() {
-    if (!get(this, 'expandFn')) {
+    if (!this.expandFn) {
       set(this, 'expandFn', (item) => {
         item.toggleProperty('expanded');
       });
@@ -334,7 +334,7 @@ export default Component.extend({
     });
 
     // filter out custom log path volume when logging is disabled
-    if (!get(this, 'loggingEnabled')) {
+    if (!this.loggingEnabled) {
       set(this, 'volumesArray', out.filter((row) => row.mode !== C.VOLUME_TYPES.CUSTOM_LOG_PATH));
     } else {
       set(this, 'volumesArray', out);
@@ -342,7 +342,7 @@ export default Component.extend({
   },
 
   getSecretType(secretName) {
-    const store = get(this, 'store');
+    const store = this.store;
     let found = store.all('secret').findBy('name', secretName);
 
     if ( found ) {
@@ -361,7 +361,7 @@ export default Component.extend({
 
   nextName() {
     const volumes = get(this, 'workload.volumes') || [];
-    let num = get(this, 'nextNum');
+    let num = this.nextNum;
     let name;
 
     let ok = false;
@@ -379,7 +379,7 @@ export default Component.extend({
 
   saveVolumes() {
     const { workload, launchConfig } = this;
-    const ary                        = get(this, 'volumesArray') || [];
+    const ary                        = this.volumesArray || [];
     const promises                   = [];
     const statefulSetConfig          = get(workload, 'statefulSetConfig') || {};
     const volumeClaimTemplates       = get(statefulSetConfig, 'volumeClaimTemplates') || [];
@@ -392,7 +392,7 @@ export default Component.extend({
       promises.push(get(row, 'pvc').save());
     });
 
-    if (get(this, 'isStatefulSet')) {
+    if (this.isStatefulSet) {
       ary.filterBy('vct').forEach((row) => {
         vct = get(row, 'vct');
         volumeClaimTemplates.push(vct)
@@ -404,8 +404,8 @@ export default Component.extend({
     ary.filterBy('mode', C.VOLUME_TYPES.CUSTOM_LOG_PATH).filterBy('volume.flexVolume.driver', LOG_AGGREGATOR)
       .forEach((row) => {
         const options  = get(row, 'volume.flexVolume.options');
-        const lc       = get(this, 'launchConfig');
-        const workload = get(this, 'workload');
+        const lc       = this.launchConfig;
+        const workload = this.workload;
 
         if ( !get(row, 'hidden') ) {
           setProperties(options, {

@@ -16,6 +16,6 @@ export default Route.extend({
       return registry;
     }
 
-    return get(this, 'store').find('dockerCredential', params.registry_id);
+    return this.store.find('dockerCredential', params.registry_id);
   },
 });

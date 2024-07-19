@@ -23,12 +23,12 @@ export default Component.extend({
 
   resourceActionsObserver: on('init', observer('resourceActions.open', function() {
     if (this.get('tooltipService.openedViaContextClick')) {
-      this.get('tooltipService').set('openedViaContextClick', false);
+      this.tooltipService.set('openedViaContextClick', false);
     }
   })),
   click(event) {
     this.details(event);
-    this.get('tooltipService').hide();
+    this.tooltipService.hide();
   },
 
   details(/* event*/) {
@@ -38,7 +38,7 @@ export default Component.extend({
       route = 'virtualmachine';
     }
 
-    this.get('router').transitionTo(route, this.get('model.id'));
+    this.router.transitionTo(route, this.get('model.id'));
   },
 
   contextMenu(event) {
@@ -48,12 +48,12 @@ export default Component.extend({
 
     event.preventDefault();
 
-    if (this.get('type') === 'tooltip-action-menu') {
-      this.get('resourceActions').set('open', true);
-      this.get('tooltipService').set('openedViaContextClick', true);
+    if (this.type === 'tooltip-action-menu') {
+      this.resourceActions.set('open', true);
+      this.tooltipService.set('openedViaContextClick', true);
       $('.container-tooltip .more-actions').trigger('click');
     } else {
-      this.get('resourceActions').setActionItems(this.get('model'), {});
+      this.resourceActions.setActionItems(this.model, {});
     }
   },
 

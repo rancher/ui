@@ -18,24 +18,24 @@ export default Component.extend({
   },
 
   didInsertElement() {
-    if (get(this, 'ruleArray.length') === 0 && get(this, 'initialRules') !== false) {
+    if (get(this, 'ruleArray.length') === 0 && this.initialRules !== false) {
       this.send('addRule');
     }
   },
 
   actions: {
     addRule() {
-      get(this, 'ruleArray').pushObject({ operator: 'In' });
+      this.ruleArray.pushObject({ operator: 'In' });
     },
 
     removeRule(rule) {
-      get(this, 'ruleArray').removeObject(rule);
+      this.ruleArray.removeObject(rule);
     }
   },
 
   ruleChanged: observer('ruleArray.@each.{key,operator,values}', function() {
     set(this, 'term.matchExpressions',
-      (get(this, 'ruleArray') || [])
+      (this.ruleArray || [])
         .filter((rule) => {
           if (rule.operator === 'In' || rule.operator === 'NotIn' ) {
             return rule.values;

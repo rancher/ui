@@ -226,30 +226,30 @@ export default Resource.extend(Grafana, ResourceUsage, {
   runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
 
   conditionsDidChange:        on('init', observer('enableClusterMonitoring', 'conditions.@each.status', function() {
-    if ( !get(this, 'enableClusterMonitoring') ) {
+    if ( !this.enableClusterMonitoring ) {
       return false;
     }
-    const conditions = get(this, 'conditions') || [];
+    const conditions = this.conditions || [];
 
     const ready = conditions.findBy('type', 'MonitoringEnabled');
 
     const status = ready && get(ready, 'status') === 'True';
 
-    if ( status !== get(this, 'isMonitoringReady') ) {
+    if ( status !== this.isMonitoringReady ) {
       set(this, 'isMonitoringReady', status);
     }
   })),
 
   clusterTemplateDisplayName: computed('clusterTemplate.{displayName,name}', 'clusterTemplateId', function() {
     const displayName = get(this, 'clusterTemplate.displayName');
-    const clusterTemplateId = (get(this, 'clusterTemplateId') || '').replace(CLUSTER_TEMPLATE_ID_PREFIX, '');
+    const clusterTemplateId = (this.clusterTemplateId || '').replace(CLUSTER_TEMPLATE_ID_PREFIX, '');
 
     return displayName || clusterTemplateId;
   }),
 
   clusterTemplateRevisionDisplayName: computed('clusterTemplateRevision.{displayName,name}', 'clusterTemplateRevisionId', function() {
     const displayName = get(this, 'clusterTemplateRevision.displayName');
-    const revisionId = (get(this, 'clusterTemplateRevisionId') || '').replace(CLUSTER_TEMPLATE_ID_PREFIX, '')
+    const revisionId = (this.clusterTemplateRevisionId || '').replace(CLUSTER_TEMPLATE_ID_PREFIX, '')
 
     return displayName || revisionId;
   }),
@@ -264,11 +264,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
   }),
 
   getAltActionDelete: computed('action.remove', function() { // eslint-disable-line
-    return get(this, 'canBulkRemove') ? 'delete' : null;
+    return this.canBulkRemove ? 'delete' : null;
   }),
 
   hasSessionToken: computed('annotations', function() {
-    const sessionTokenLabel = `${ (get(this, 'annotations') || {})[C.LABEL.EKS_SESSION_TOKEN]  }`;
+    const sessionTokenLabel = `${ (this.annotations || {})[C.LABEL.EKS_SESSION_TOKEN]  }`;
     let hasSessionToken      = false;
 
     if (sessionTokenLabel === 'undefined' || sessionTokenLabel === 'false') {
@@ -324,7 +324,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     }),
 
   canBulkRemove: computed('action.remove', function() { // eslint-disable-line
-    return get(this, 'hasSessionToken') ? false : true;
+    return this.hasSessionToken ? false : true;
   }),
 
   canSaveAsTemplate: computed('actionLinks.saveAsTemplate', 'isReady', 'clusterTemplateRevisionId', 'clusterTemplateId', function() {
@@ -440,7 +440,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const compatibleProviders = ['custom', 'import', 'amazoneksv2', 'googlegkev2', 'azureaksv2'];
 
     // internal indicates the local cluster. Rancher does not manage the local cluster, so nodes can not be added via the UI
-    const internal = get(this, 'internal');
+    const internal = this.internal;
 
     if (!compatibleProviders.includes(clusterProvider) || internal) {
       return false;
@@ -478,7 +478,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
   }),
 
   isRKE: computed('configName', function() {
-    return get(this, 'configName') === 'rancherKubernetesEngineConfig';
+    return this.configName === 'rancherKubernetesEngineConfig';
   }),
 
   isK8s21Plus: computed('version.gitVersion', function() {
@@ -498,10 +498,10 @@ export default Resource.extend(Grafana, ResourceUsage, {
   }),
 
   clusterProvider: computed('configName', 'nodePools.@each.{driver,nodeTemplateId}', 'driver', function() {
-    const pools = get(this, 'nodePools') || [];
+    const pools = this.nodePools || [];
     const firstPool = pools.objectAt(0);
 
-    switch ( get(this, 'configName') ) {
+    switch ( this.configName ) {
     case 'amazonElasticContainerServiceConfig':
       return 'amazoneks';
     case 'eksConfig':
@@ -531,8 +531,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
       return firstPool.driver || get(firstPool, 'nodeTemplate.driver') || null;
     default:
-      if (get(this, 'driver') && get(this, 'configName') && !isEmpty(get(this, this.configName))) {
-        return get(this, 'driver');
+      if (this.driver && this.configName && !isEmpty(get(this, this.configName))) {
+        return this.driver;
       } else {
         return 'import';
       }
@@ -540,11 +540,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
   }),
 
   displayProvider: computed('configName', 'driver', 'intl.locale', 'nodePools.@each.displayProvider', 'provider', function() {
-    const intl = get(this, 'intl');
-    const pools = get(this, 'nodePools');
+    const intl = this.intl;
+    const pools = this.nodePools;
     const firstPool = (pools || []).objectAt(0);
-    const configName = get(this, 'configName');
-    const driverName = get(this, 'driver');
+    const configName = this.configName;
+    const driverName = this.driver;
 
     switch ( configName ) {
     case 'amazonElasticContainerServiceConfig':
@@ -606,13 +606,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
   }),
 
   systemProject: computed('projects.@each.isSystemProject', function() {
-    let projects = (get(this, 'projects') || []).filterBy('isSystemProject', true);
+    let projects = (this.projects || []).filterBy('isSystemProject', true);
 
     return get(projects, 'firstObject');
   }),
 
   canSaveMonitor: computed('actionLinks.{editMonitoring,enableMonitoring}', 'enableClusterMonitoring', function() {
-    const action = get(this, 'enableClusterMonitoring') ?  'editMonitoring' : 'enableMonitoring';
+    const action = this.enableClusterMonitoring ?  'editMonitoring' : 'enableMonitoring';
 
     return !!this.hasAction(action)
   }),
@@ -622,7 +622,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
   }),
 
   defaultProject: computed('projects.@each.{name,clusterOwner}', function() {
-    let projects = get(this, 'projects') || [];
+    let projects = this.projects || [];
 
     let out = projects.findBy('isDefault');
 
@@ -707,7 +707,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
   }),
 
   availableActions: computed('actionLinks.{rotateCertificates,rotateEncryptionKey}', 'canRotateEncryptionKey', 'canSaveAsTemplate', 'canShowAddHost', 'displayImportLabel', 'isClusterScanDisabled', function() {
-    const a = get(this, 'actionLinks') || {};
+    const a = this.actionLinks || {};
 
     return [
       {
@@ -763,22 +763,22 @@ export default Resource.extend(Grafana, ResourceUsage, {
   }),
 
   isWindows:  computed('windowsPreferedCluster', function() {
-    return !!get(this, 'windowsPreferedCluster');
+    return !!this.windowsPreferedCluster;
   }),
 
   isClusterScanDown: computed('systemProject', 'state', 'actionLinks.runSecurityScan', 'isWindows', function() {
-    return !get(this, 'systemProject')
-      || get(this, 'state') !== 'active'
+    return !this.systemProject
+      || this.state !== 'active'
       || !get(this, 'actionLinks.runSecurityScan')
-      || get(this, 'isWindows');
+      || this.isWindows;
   }),
 
   isAddClusterScanScheduleDisabled: computed('isClusterScanDown', 'scheduledClusterScan.enabled', 'clusterTemplateRevision', 'clusterTemplateRevision.questions.[]', function() {
-    if (get(this, 'clusterTemplateRevision') === null) {
-      return get(this, 'isClusterScanDown');
+    if (this.clusterTemplateRevision === null) {
+      return this.isClusterScanDown;
     }
 
-    if (get(this, 'isClusterScanDown')) {
+    if (this.isClusterScanDown) {
       return true;
     }
 
@@ -792,11 +792,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
   isClusterScanDisabled: computed('runningClusterScans.length', 'isClusterScanDown', function() {
     return (get(this, 'runningClusterScans.length') > 0)
-      || get(this, 'isClusterScanDown');
+      || this.isClusterScanDown;
   }),
 
   unhealthyComponents: computed('componentStatuses.@each.conditions', function() {
-    return (get(this, 'componentStatuses') || [])
+    return (this.componentStatuses || [])
       .filter((s) => !(s.conditions || []).any((c) => c.status === 'True'));
   }),
 
@@ -805,13 +805,13 @@ export default Resource.extend(Grafana, ResourceUsage, {
   }),
 
   inactiveNodes: computed('nodes.@each.state', function() {
-    return (get(this, 'nodes') || []).filter( (n) => C.ACTIVEISH_STATES.indexOf(get(n, 'state')) === -1 );
+    return (this.nodes || []).filter( (n) => C.ACTIVEISH_STATES.indexOf(get(n, 'state')) === -1 );
   }),
 
   unhealthyNodes: computed('nodes.@each.conditions', function() {
     const out = [];
 
-    (get(this, 'nodes') || []).forEach((n) => {
+    (this.nodes || []).forEach((n) => {
       const conditions = get(n, 'conditions') || [];
       const outOfDisk = conditions.find((c) => c.type === 'OutOfDisk');
       const diskPressure = conditions.find((c) => c.type === 'DiskPressure');
@@ -843,12 +843,12 @@ export default Resource.extend(Grafana, ResourceUsage, {
   }),
 
   displayWarnings: computed('unhealthyNodes.[]', 'clusterProvider', 'inactiveNodes.[]', 'unhealthyComponents.[]', function() {
-    const intl = get(this, 'intl');
+    const intl = this.intl;
     const out = [];
-    const unhealthyComponents = get(this, 'unhealthyComponents') || [];
-    const inactiveNodes = get(this, 'inactiveNodes') || [];
-    const unhealthyNodes = get(this, 'unhealthyNodes') || [];
-    const clusterProvider = get(this, 'clusterProvider');
+    const unhealthyComponents = this.unhealthyComponents || [];
+    const inactiveNodes = this.inactiveNodes || [];
+    const unhealthyNodes = this.unhealthyNodes || [];
+    const clusterProvider = this.clusterProvider;
 
     const grayOut = C.GRAY_OUT_SCHEDULER_STATUS_PROVIDERS.indexOf(clusterProvider) > -1;
 
@@ -897,20 +897,20 @@ export default Resource.extend(Grafana, ResourceUsage, {
     },
 
     restoreFromEtcdBackup(options) {
-      get(this, 'modalService').toggleModal('modal-restore-backup', {
+      this.modalService.toggleModal('modal-restore-backup', {
         cluster:   this,
         selection: (options || {}).selection
       });
     },
 
     promptDelete() {
-      const hasSessionToken = get(this, 'canBulkRemove') ? false : true; // canBulkRemove returns true of the session token is set false
+      const hasSessionToken = this.canBulkRemove ? false : true; // canBulkRemove returns true of the session token is set false
 
       if (hasSessionToken) {
-        set(this, `${ get(this, 'configName') }.accessKey`, null);
-        get(this, 'modalService').toggleModal('modal-delete-eks-cluster', { model: this, });
+        set(this, `${ this.configName }.accessKey`, null);
+        this.modalService.toggleModal('modal-delete-eks-cluster', { model: this, });
       } else {
-        get(this, 'modalService').toggleModal('confirm-delete', {
+        this.modalService.toggleModal('confirm-delete', {
           escToClose: true,
           resources:  [this]
         });
@@ -918,7 +918,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     },
 
     edit(additionalQueryParams = {}) {
-      let provider = get(this, 'clusterProvider') || get(this, 'driver');
+      let provider = this.clusterProvider || this.driver;
       let queryParams = {
         queryParams: {
           provider,
@@ -927,21 +927,21 @@ export default Resource.extend(Grafana, ResourceUsage, {
       };
 
       if (provider === 'import' &&
-      isEmpty(get(this, 'eksConfig')) &&
-      isEmpty(get(this, 'gkeConfig')) &&
-      isEmpty(get(this, 'aksConfig'))) {
+      isEmpty(this.eksConfig) &&
+      isEmpty(this.gkeConfig) &&
+      isEmpty(this.aksConfig)) {
         set(queryParams, 'queryParams.importProvider', 'other');
       }
 
-      if (provider === 'amazoneks' && !isEmpty(get(this, 'eksConfig'))) {
+      if (provider === 'amazoneks' && !isEmpty(this.eksConfig)) {
         set(queryParams, 'queryParams.provider', 'amazoneksv2');
       }
 
-      if (provider === 'gke' && !isEmpty(get(this, 'gkeConfig'))) {
+      if (provider === 'gke' && !isEmpty(this.gkeConfig)) {
         set(queryParams, 'queryParams.provider', 'googlegkev2');
       }
 
-      if (provider === 'aks' && !isEmpty(get(this, 'aksConfig'))) {
+      if (provider === 'aks' && !isEmpty(this.aksConfig)) {
         set(queryParams, 'queryParams.provider', 'azureaksv2');
       }
 
@@ -949,11 +949,11 @@ export default Resource.extend(Grafana, ResourceUsage, {
         set(queryParams, 'queryParams.clusterTemplateRevision', this.clusterTemplateRevisionId);
       }
 
-      this.router.transitionTo('authenticated.cluster.edit', get(this, 'id'), queryParams);
+      this.router.transitionTo('authenticated.cluster.edit', this.id, queryParams);
     },
 
     scaleDownPool(id) {
-      const pool = (get(this, 'nodePools') || []).findBy('id', id);
+      const pool = (this.nodePools || []).findBy('id', id);
 
       if ( pool ) {
         pool.incrementQuantity(-1);
@@ -961,7 +961,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     },
 
     scaleUpPool(id) {
-      const pool = (get(this, 'nodePools') || []).findBy('id', id);
+      const pool = (this.nodePools || []).findBy('id', id);
 
       if ( pool ) {
         pool.incrementQuantity(1);
@@ -973,7 +973,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     },
 
     runCISScan(options) {
-      this.get('modalService').toggleModal('run-scan-modal', {
+      this.modalService.toggleModal('run-scan-modal', {
         closeWithOutsideClick: true,
         cluster:               this,
         onRun:                 (options || {}).onRun
@@ -983,16 +983,16 @@ export default Resource.extend(Grafana, ResourceUsage, {
     rotateCertificates() {
       const model = this;
 
-      get(this, 'modalService').toggleModal('modal-rotate-certificates', {
+      this.modalService.toggleModal('modal-rotate-certificates', {
         model,
-        serviceDefaults: get(this, 'globalStore').getById('schema', 'rotatecertificateinput').optionsFor('services'),
+        serviceDefaults: this.globalStore.getById('schema', 'rotatecertificateinput').optionsFor('services'),
       });
     },
 
     rotateEncryptionKey() {
       const model = this;
 
-      get(this, 'modalService').toggleModal('modal-rotate-encryption-key', { model, });
+      this.modalService.toggleModal('modal-rotate-encryption-key', { model, });
     },
 
     showCommandModal() {
@@ -1039,15 +1039,15 @@ export default Resource.extend(Grafana, ResourceUsage, {
     const promise = this._super.apply(this, arguments);
 
     return promise.then((/* resp */) => {
-      if (get(this, 'scope.currentCluster.id') === get(this, 'id')) {
-        get(this, 'router').transitionTo('global-admin.clusters');
+      if (get(this, 'scope.currentCluster.id') === this.id) {
+        this.router.transitionTo('global-admin.clusters');
       }
     });
   },
 
   getOrCreateToken() {
-    const globalStore = get(this, 'globalStore');
-    const id = get(this, 'id');
+    const globalStore = this.globalStore;
+    const id = this.id;
 
     return globalStore.findAll('clusterRegistrationToken', { forceReload: true }).then((tokens) => {
       let token = tokens.filterBy('clusterId', id)[0];
@@ -1055,7 +1055,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
       if ( token ) {
         return resolve(token);
       } else {
-        token = get(this, 'globalStore').createRecord({
+        token = this.globalStore.createRecord({
           type:      'clusterRegistrationToken',
           clusterId: id
         });
@@ -1102,7 +1102,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
     } = this;
     let options = null;
 
-    if (get(this, 'driver') === 'EKS' || (this.isObject(eksConfig) && !this.isEmptyObject(eksConfig))) {
+    if (this.driver === 'EKS' || (this.isObject(eksConfig) && !this.isEmptyObject(eksConfig))) {
       options = this.syncEksConfigs(opt);
     } else if (this.isObject(gkeConfig) && !this.isEmptyObject(gkeConfig)) {
       options = this.syncGkeConfigs(opt);
@@ -1283,7 +1283,7 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
       return;
     } else {
-      const config = jsondiffpatch.clone(get(this, 'eksConfig'));
+      const config = jsondiffpatch.clone(this.eksConfig);
       const upstreamSpec = jsondiffpatch.clone(get(this, 'eksStatus.upstreamSpec'));
 
       if (isEmpty(upstreamSpec)) {

@@ -38,11 +38,11 @@ export default Component.extend(ViewNewEdit, ChildHook, {
         },
       });
 
-      get(this, 'metrics').pushObject(metric);
+      this.metrics.pushObject(metric);
     },
 
     removeMetric(metric) {
-      get(this, 'metrics').removeObject(metric);
+      this.metrics.removeObject(metric);
     },
 
     setLabels(labels) {
@@ -52,7 +52,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   },
 
   namespaceDidChange: observer('deploymentsChoices', function() {
-    const deployments = get(this, 'deploymentsChoices') || [];
+    const deployments = this.deploymentsChoices || [];
     const found = deployments.findBy('id', get(this, 'model.workloadId'));
 
     if ( !found ) {
@@ -61,17 +61,17 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   }),
 
   selectedWorkload: computed('model.workloadId', 'deployments.[]', function() {
-    return (get(this, 'deployments') || []).findBy('id', get(this, 'model.workloadId'));
+    return (this.deployments || []).findBy('id', get(this, 'model.workloadId'));
   }),
 
   deploymentsChoices: computed('namespace.id', 'deployments.[]', function() {
     const namespaceId = get(this, 'namespace.id');
 
-    return (get(this, 'deployments') || []).filter((w) => get(w, 'namespaceId') === namespaceId).sortBy('displayName');
+    return (this.deployments || []).filter((w) => get(w, 'namespaceId') === namespaceId).sortBy('displayName');
   }),
 
   resourceMetricsAvailable: computed('apiServices', function() {
-    const apiServices = get(this, 'apiServices') || [];
+    const apiServices = this.apiServices || [];
 
     return apiServices.find((api) => get(api, 'name').split('.').length === 4 && get(api, 'name').endsWith(RESOURCE_METRICS_API_GROUP));
   }),
@@ -79,9 +79,9 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   validate() {
     this._super();
 
-    const intl = get(this, 'intl');
+    const intl = this.intl;
 
-    const errors = get(this, 'errors') || [];
+    const errors = this.errors || [];
 
     if ( get(this, 'model.minReplicas') === null ) {
       errors.pushObject(intl.t('validation.required', { key: intl.t('cruHpa.minReplicas.label') }));
@@ -112,7 +112,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     const sup = this._super;
     const errors = [];
 
-    errors.pushObjects(get(this, 'namespaceErrors') || []);
+    errors.pushObjects(this.namespaceErrors || []);
     set(this, 'errors', errors);
 
     if ( get(errors, 'length') !== 0 ) {

@@ -33,14 +33,14 @@ var Service = Resource.extend(EndpointPorts, {
   isIngress: equal('ownerReferences.firstObject.kind', 'Ingress'),
 
   selectedPods: computed('selector', 'store', function() {
-    const rules = get(this, 'selector');
+    const rules = this.selector;
     let keys = Object.keys(rules);
 
     if ( !keys.length ) {
       return [];
     }
 
-    let pods = get(this, 'store').all('pod');
+    let pods = this.store.all('pod');
     let key;
 
     for ( let i = 0 ; pods.length > 0 && i < keys.length ; i++ ) {
@@ -52,16 +52,16 @@ var Service = Resource.extend(EndpointPorts, {
   }),
 
   nameWithType: computed('displayName', 'recordType', 'intl.locale', function() {
-    const name =  get(this, 'displayName');
-    const recordType =  get(this, 'recordType');
-    const type = get(this, 'intl').t(`dnsPage.type.${  recordType }`);
+    const name =  this.displayName;
+    const recordType =  this.recordType;
+    const type = this.intl.t(`dnsPage.type.${  recordType }`);
 
     return `${ name } (${ type })`;
   }),
 
   availablePorts: computed('recordType', 'ports.@each.{targetPort,port}', function() {
     const list = [];
-    const ports = get(this, 'ports');
+    const ports = this.ports;
 
     ports.forEach((p) => {
       list.push(p.targetPort.toString());
@@ -83,7 +83,7 @@ var Service = Resource.extend(EndpointPorts, {
         return ARECORD;
       }
 
-      if ( get(this, 'hostname') ) {
+      if ( this.hostname ) {
         return CNAME;
       }
 
@@ -95,13 +95,13 @@ var Service = Resource.extend(EndpointPorts, {
         return WORKLOAD;
       }
 
-      const selector = get(this, 'selector');
+      const selector = this.selector;
 
       if ( selector && Object.keys(selector).length ) {
         return SELECTOR;
       }
 
-      if ( get(this, 'clusterIp') ) {
+      if ( this.clusterIp ) {
         return CLUSTERIP;
       }
 
@@ -109,19 +109,19 @@ var Service = Resource.extend(EndpointPorts, {
     }),
 
   displayType: computed('recordType', 'intl.locale', function() {
-    return get(this, 'intl').t(`dnsPage.type.${  get(this, 'recordType') }`);
+    return this.intl.t(`dnsPage.type.${  this.recordType }`);
   }),
 
   displayTarget: computed('clusterIp', 'hostname', 'ipAddresses.[]', 'recordType', 'selector', 'targetDnsRecords.[]', 'targetWorkloads.[]', function() {
-    const selectors = get(this, 'selector') || {};
-    const records = get(this, 'targetDnsRecords') || [];
-    const workloads = get(this, 'targetWorkloads') || {};
+    const selectors = this.selector || {};
+    const records = this.targetDnsRecords || [];
+    const workloads = this.targetWorkloads || {};
 
-    switch ( get(this, 'recordType') ) {
+    switch ( this.recordType ) {
     case ARECORD:
-      return get(this, 'ipAddresses').join('\n');
+      return this.ipAddresses.join('\n');
     case CNAME:
-      return get(this, 'hostname');
+      return this.hostname;
     case SELECTOR:
       return Object.keys(selectors).map((k) => `${ k }=${ selectors[k] }`)
         .join('\n');
@@ -130,14 +130,14 @@ var Service = Resource.extend(EndpointPorts, {
     case WORKLOAD:
       return workloads.map((x) => get(x, 'displayName')).join('\n');
     case CLUSTERIP:
-      return get(this, 'clusterIp');
+      return this.clusterIp;
     default:
       return 'Unknown';
     }
   }),
 
   selectorArray: computed('selector', function() {
-    const selectors = get(this, 'selector') || {};
+    const selectors = this.selector || {};
     const out = [];
 
     Object.keys(selectors).map((k) => {
@@ -151,17 +151,17 @@ var Service = Resource.extend(EndpointPorts, {
   }),
 
   canEdit: computed('links.update', 'isIngress', function() {
-    return !!get(this, 'links.update') && !get(this, 'isIngress');
+    return !!get(this, 'links.update') && !this.isIngress;
   }),
 
   canRemove: computed('links.remove', 'isIngress', function() {
-    return !!get(this, 'links.remove') && !get(this, 'isIngress');
+    return !!get(this, 'links.remove') && !this.isIngress;
   }),
 
   displayKind: computed('intl.locale', 'kind', function() {
-    const intl = get(this, 'intl');
+    const intl = this.intl;
 
-    if ( get(this, 'kind') === 'LoadBalancer' ) {
+    if ( this.kind === 'LoadBalancer' ) {
       return intl.t('model.service.displayKind.loadBalancer');
     } else {
       return intl.t('model.service.displayKind.generic');
@@ -170,17 +170,17 @@ var Service = Resource.extend(EndpointPorts, {
 
   proxyEndpoints: computed('labels', 'name', 'namespaceId', 'ports', 'scope.currentCluster.id', function(){
     const parts = []
-    const labels = get(this, 'labels');
+    const labels = this.labels;
     const location = window.location;
 
     if ( labels && labels['kubernetes.io/cluster-service'] === 'true' ) {
-      (get(this, 'ports') || []).forEach((port) => {
-        let linkEndpoint = `${ location.origin }/k8s/clusters/${ get(this, 'scope.currentCluster.id') }/api/v1/namespaces/${ get(this, 'namespaceId') }/services/`;
+      (this.ports || []).forEach((port) => {
+        let linkEndpoint = `${ location.origin }/k8s/clusters/${ get(this, 'scope.currentCluster.id') }/api/v1/namespaces/${ this.namespaceId }/services/`;
 
         if ( get(port, 'name') === 'http' || get(port, 'name') === 'https' ) {
           linkEndpoint += `${ get(port, 'name') }:`;
         }
-        linkEndpoint += `${ get(this, 'name') }:${ get(port, 'port') }/proxy/`;
+        linkEndpoint += `${ this.name }:${ get(port, 'port') }/proxy/`;
 
         parts.push({
           linkEndpoint,
@@ -197,11 +197,11 @@ var Service = Resource.extend(EndpointPorts, {
 
   actions:      {
     edit() {
-      get(this, 'router').transitionTo('authenticated.project.dns.detail.edit', this.get('id'));
+      this.router.transitionTo('authenticated.project.dns.detail.edit', this.id);
     },
 
     clone() {
-      get(this, 'router').transitionTo('authenticated.project.dns.new', this.get('projectId'), { queryParams: { id: this.get('id') } });
+      this.router.transitionTo('authenticated.project.dns.new', this.projectId, { queryParams: { id: this.id } });
     },
   },
 

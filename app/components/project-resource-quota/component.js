@@ -1,4 +1,4 @@
-import {  get, set, observer } from '@ember/object';
+import { get, set, observer } from '@ember/object';
 import Component from '@ember/component';
 import { convertToMillis } from 'shared/utils/util';
 import { parseSi } from 'shared/utils/parse-unit';
@@ -21,7 +21,7 @@ export default Component.extend({
 
   actions: {
     addQuota() {
-      get(this, 'quotaArray').pushObject({
+      this.quotaArray.pushObject({
         key:            '',
         projectLimit:   '',
         namespaceLimit: '',
@@ -29,7 +29,7 @@ export default Component.extend({
     },
 
     removeQuota(quota){
-      get(this, 'quotaArray').removeObject(quota);
+      this.quotaArray.removeObject(quota);
     }
   },
 
@@ -37,7 +37,7 @@ export default Component.extend({
     const limit = {};
     const nsDefaultLimit = {};
 
-    (get(this, 'quotaArray') || []).forEach((quota) => {
+    (this.quotaArray || []).forEach((quota) => {
       if ( quota.key && (quota.projectLimit || quota.namespaceLimit) ) {
         limit[quota.key] = this.convertToString(quota.key, quota.projectLimit);
         nsDefaultLimit[quota.key] = this.convertToString(quota.key, quota.namespaceLimit);
@@ -97,8 +97,8 @@ export default Component.extend({
   },
 
   initQuotaArray() {
-    const limit = get(this, 'limit') || {};
-    const nsDefaultLimit = get(this, 'nsDefaultLimit') || {};
+    const limit = this.limit || {};
+    const nsDefaultLimit = this.nsDefaultLimit || {};
     const array = [];
 
     Object.keys(limit).forEach((key) => {

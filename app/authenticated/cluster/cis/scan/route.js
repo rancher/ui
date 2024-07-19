@@ -8,7 +8,7 @@ export default Route.extend({
   scope:              service(),
 
   model() {
-    const clusterScans = get(this, 'globalStore').findAll('clusterScan');
+    const clusterScans = this.globalStore.findAll('clusterScan');
 
     return hash({
       clusterScans,
@@ -18,7 +18,7 @@ export default Route.extend({
 
         return await Promise.all(reportPromises);
       })(),
-      clusterTemplateRevisions: get(this, 'globalStore').findAll('clustertemplaterevision')
+      clusterTemplateRevisions: this.globalStore.findAll('clustertemplaterevision')
     });
   },
 });

@@ -7,7 +7,7 @@ export default Mixin.create({
     if (!id) {
       return null;
     }
-    const notifiers = get(this, 'notifiers');
+    const notifiers = this.notifiers;
 
     return notifiers.filterBy('id', id).get('firstObject');
   },

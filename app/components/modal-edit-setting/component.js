@@ -71,8 +71,8 @@ export default Component.extend(ModalBase, {
 
   actions: {
     save(btnCb) {
-      get(this, 'settings').set(normalizeName(get(this, 'model.key')), get(this, 'value'));
-      get(this, 'settings').one('settingsPromisesResolved', () => {
+      this.settings.set(normalizeName(get(this, 'model.key')), this.value);
+      this.settings.one('settingsPromisesResolved', () => {
         btnCb(true);
         this.send('done');
       });

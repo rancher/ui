@@ -31,7 +31,7 @@ const ClusterTemplate =  Resource.extend({
   }),
 
   latestRevision: computed('revisions.[]', 'revisions.@each.enabled', function() {
-    const revisions = (get(this, 'revisions') || []).filter((revision) => revision.enabled);
+    const revisions = (this.revisions || []).filter((revision) => revision.enabled);
 
     return get(revisions, 'length') === 0
       ? null
@@ -39,7 +39,7 @@ const ClusterTemplate =  Resource.extend({
   }),
 
   displayDefaultRevisionId: computed('defaultRevisionId', 'revisions.[]', 'revisionsCount', function() {
-    return get(this, 'defaultRevisionId').split(':')[1];
+    return this.defaultRevisionId.split(':')[1];
   }),
 
   canEdit: computed('links.update', function() {

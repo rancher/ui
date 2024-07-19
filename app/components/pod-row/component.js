@@ -33,7 +33,7 @@ export default Component.extend({
   },
 
   canExpand:  computed('expandPlaceholder', 'model.containers.length', function() {
-    return get(this, 'expandPlaceholder') && get(this, 'model.containers.length') > 1;
+    return this.expandPlaceholder && get(this, 'model.containers.length') > 1;
   }),
 
   statsAvailable: computed('model.{state,healthState}', function() {

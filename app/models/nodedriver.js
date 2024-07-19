@@ -31,14 +31,14 @@ export default Resource.extend({
   intl:                service(),
   type:                'nodeDriver',
   catalogTemplateIcon: computed('app.baseAssets', 'externalId', function() {
-    let parsedExtId = parseExternalId(get(this, 'externalId')) || null;
+    let parsedExtId = parseExternalId(this.externalId) || null;
 
     if (!parsedExtId) {
       return null;
     }
 
-    if (get(this, 'catalog').getTemplateFromCache(parsedExtId.templateId)) {
-      return get(this, 'catalog').getTemplateFromCache(parsedExtId.templateId)
+    if (this.catalog.getTemplateFromCache(parsedExtId.templateId)) {
+      return this.catalog.getTemplateFromCache(parsedExtId.templateId)
         .get('links.icon');
     } else {
       return `${ get(this, 'app.baseAssets') }assets/images/providers/generic-driver.svg`;
@@ -46,8 +46,8 @@ export default Resource.extend({
   }),
 
   displayName: computed('id', 'intl.locale', 'name', function() {
-    const intl = get(this, 'intl');
-    const name = get(this, 'name');
+    const intl = this.intl;
+    const name = this.name;
     const key = `nodeDriver.displayName.${ name }`;
 
     if ( name && intl.exists(key) ) {
@@ -55,14 +55,14 @@ export default Resource.extend({
     } else if ( name ) {
       return name.capitalize();
     } else {
-      return `(${  get(this, 'id')  })`;
+      return `(${  this.id  })`;
     }
   }),
 
   displayIcon: computed('hasBuiltinUi', 'name', function() {
-    let name = get(this, 'name');
+    let name = this.name;
 
-    if ( get(this, 'hasBuiltinUi') ) {
+    if ( this.hasBuiltinUi ) {
       return name;
     } else {
       return 'generic';
@@ -70,31 +70,31 @@ export default Resource.extend({
   }),
 
   displayUrl: computed('url', function() {
-    return displayUrl(get(this, 'url'));
+    return displayUrl(this.url);
   }),
 
   displayChecksum: computed('checksum', function() {
-    return get(this, 'checksum').substring(0, 8);
+    return this.checksum.substring(0, 8);
   }),
 
   displayUiUrl: computed('uiUrl', function() {
-    return displayUrl(get(this, 'uiUrl'));
+    return displayUrl(this.uiUrl);
   }),
 
   hasBuiltinUi: computed('name', function() {
-    return BUILT_IN_UI.indexOf(get(this, 'name')) >= 0;
+    return BUILT_IN_UI.indexOf(this.name) >= 0;
   }),
 
   hasBuiltinIconOnly: computed('name', function() {
-    return BUILT_IN_ICON_ONLY.indexOf(get(this, 'name')) >= 0;
+    return BUILT_IN_ICON_ONLY.indexOf(this.name) >= 0;
   }),
 
   isCustom: computed('builtin', 'externalId', function() {
-    return !get(this, 'builtin') && !get(this, 'externalId');
+    return !this.builtin && !this.externalId;
   }),
 
   hasUi: computed('hasBuiltinUi', 'uiUrl', function() {
-    return get(this, 'hasBuiltinUi') || !!get(this, 'uiUrl');
+    return this.hasBuiltinUi || !!this.uiUrl;
   }),
 
   newExternalId: computed('isSystem', 'selectedTemplateModel.id', function() {
@@ -104,29 +104,29 @@ export default Resource.extend({
   }),
 
   canEdit: computed('links.update', 'builtin', function() {
-    return !!get(this, 'links.update') && !get(this, 'builtin');
+    return !!get(this, 'links.update') && !this.builtin;
   }),
 
   canRemove: computed('state', function() {
-    return get(this, 'state') === 'inactive'
+    return this.state === 'inactive';
   }),
 
   availableActions: computed('actionLinks.{activate,deactivate}', 'state', function() {
-    let a = get(this, 'actionLinks') || {};
+    let a = this.actionLinks || {};
 
     return [
       {
         label:    'action.activate',
         icon:     'icon icon-play',
         action:   'activate',
-        enabled:  !!a.activate && get(this, 'state') === 'inactive',
+        enabled:  !!a.activate && this.state === 'inactive',
         bulkable: true
       },
       {
         label:     'action.deactivate',
         icon:      'icon icon-pause',
         action:    'promptDeactivate',
-        enabled:   !!a.deactivate && get(this, 'state') === 'active',
+        enabled:   !!a.deactivate && this.state === 'active',
         bulkable:  true,
         altAction: 'deactivate',
       },
@@ -134,7 +134,7 @@ export default Resource.extend({
   }),
 
   externalIdInfo: computed('externalId', function() {
-    return parseExternalId(get(this, 'externalId'));
+    return parseExternalId(this.externalId);
   }),
 
   actions: {
@@ -147,14 +147,14 @@ export default Resource.extend({
     },
 
     promptDeactivate() {
-      get(this, 'modalService').toggleModal('modal-confirm-deactivate', {
+      this.modalService.toggleModal('modal-confirm-deactivate', {
         originalModel: this,
         action:        'deactivate'
       });
     },
 
     edit() {
-      get(this, 'modalService').toggleModal('modal-edit-driver', this);
+      this.modalService.toggleModal('modal-edit-driver', this);
     },
   },
 
