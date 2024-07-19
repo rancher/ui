@@ -1,5 +1,4 @@
 import { on } from '@ember/object/evented';
-import { on } from '@ember/object/evented';
 import Router from '@ember/routing/router';
 import { isEmbedded, dashboardWindow } from 'shared/utils/util';
 
