@@ -1,7 +1,7 @@
 import { isArray } from '@ember/array';
 import TextField from '@ember/component/text-field';
 import layout from './template';
-import { get, observer, set } from '@ember/object';
+import { observer, set } from '@ember/object';
 
 const ShellQuote = window.ShellQuote;
 

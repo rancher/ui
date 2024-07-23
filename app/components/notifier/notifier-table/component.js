@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { reads } from '@ember/object/computed';
-import { get, computed } from '@ember/object';
+import { computed } from '@ember/object';
 import layout from './template';
 
 const headers = [

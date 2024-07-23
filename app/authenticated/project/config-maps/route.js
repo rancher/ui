@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { hash } from 'rsvp'
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import { on } from '@ember/object/evented';
 import C from 'ui/utils/constants';
 

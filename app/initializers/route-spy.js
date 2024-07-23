@@ -1,5 +1,4 @@
 import { on } from '@ember/object/evented';
-import { on } from '@ember/object/evented';
 import Router from '@ember/routing/router';
 import { isEmbedded, dashboardWindow } from 'shared/utils/util';
 
@@ -15,7 +14,7 @@ export function initialize() {
         })
       }),
 
-      willTranstionNotify: on('willTransition', function(transition) {
+      willTranstionNotify: on('willTransition', (transition) => {
         dashboardWindow().postMessage({
           action: 'before-navigation',
           target: transition.targetName,

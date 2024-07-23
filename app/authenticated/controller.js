@@ -3,7 +3,6 @@ import { alias, gt } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 import C from 'ui/utils/constants';
-import { computed } from '@ember/object';
 import { on } from '@ember/object/evented';
 import { isEmbedded } from 'shared/utils/util';
 

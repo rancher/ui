@@ -1,4 +1,4 @@
-import { get, set, observer } from '@ember/object';
+import { set, observer } from '@ember/object';
 import Component from '@ember/component';
 import { convertToMillis } from 'shared/utils/util';
 import { parseSi } from 'shared/utils/parse-unit';

@@ -1,4 +1,4 @@
-import { get, computed, observer } from '@ember/object';
+import { computed, observer } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import pagedArray from 'ember-cli-pagination/computed/paged-array';

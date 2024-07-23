@@ -1,5 +1,5 @@
 import Resource from '@rancher/ember-api-store/models/resource';
-import { get, set, computed } from '@ember/object';
+import { set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { all } from 'rsvp';
 import C from 'ui/utils/constants';

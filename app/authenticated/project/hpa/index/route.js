@@ -1,5 +1,5 @@
 import { on } from '@ember/object/evented';
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 

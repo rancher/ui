@@ -1,7 +1,7 @@
 import Resource from '@rancher/ember-api-store/models/resource';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
 import { cancel, later } from '@ember/runloop'
-import { get, set, computed } from '@ember/object';
+import { set, computed } from '@ember/object';
 import { ucFirst } from 'shared/utils/util';
 
 const NodePool = Resource.extend({

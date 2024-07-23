@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import layout from './template';
-import { get, set, computed, observer } from '@ember/object';
+import { set, computed, observer } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { later, run } from '@ember/runloop';
 import { randomStr } from 'shared/utils/util';

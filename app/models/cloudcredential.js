@@ -3,7 +3,6 @@ import { computed } from '@ember/object';
 import { notEmpty } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import { hasMany } from '@rancher/ember-api-store/utils/denormalize';
-import { get } from '@ember/object';
 
 const cloudCredential = Resource.extend({
   modal:         service(),

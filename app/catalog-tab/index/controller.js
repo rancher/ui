@@ -2,7 +2,6 @@ import { alias } from '@ember/object/computed';
 import Controller, { inject as controller } from '@ember/controller';
 import { isAlternate } from 'ui/utils/platform';
 import { getOwner } from '@ember/application';
-import { get } from '@ember/object';
 
 
 export default Controller.extend({

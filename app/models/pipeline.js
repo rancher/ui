@@ -1,6 +1,6 @@
 import Resource from '@rancher/ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
-import { get, computed } from '@ember/object';
+import { computed } from '@ember/object';
 import C from 'shared/utils/pipeline-constants';
 
 let Pipeline = Resource.extend({

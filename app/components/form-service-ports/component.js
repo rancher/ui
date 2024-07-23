@@ -1,6 +1,6 @@
 import { next } from '@ember/runloop';
 import { alias } from '@ember/object/computed';
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
 import $ from 'jquery';

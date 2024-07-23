@@ -1,5 +1,5 @@
 import { inject as service } from '@ember/service';
-import { get, set, setProperties } from '@ember/object';
+import { set, setProperties } from '@ember/object';
 import Component from '@ember/component';
 import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';

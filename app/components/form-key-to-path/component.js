@@ -1,7 +1,7 @@
 import { on } from '@ember/object/evented';
 import { next, debounce } from '@ember/runloop';
 import Component from '@ember/component';
-import EmberObject, { get, set, observer } from '@ember/object';
+import EmberObject, { set, observer } from '@ember/object';
 import layout from './template';
 import $ from 'jquery';
 const SECRET = 'secret';
