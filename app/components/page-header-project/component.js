@@ -55,6 +55,10 @@ export default Component.extend(ThrottledResize, {
   cluster:             alias('scope.pendingCluster'),
   numClusters:         alias('byCluster.length'),
 
+  twoLine: computed.equal('pageScope', 'project'),
+
+  hide: computed.equal('pageScope', 'user'),
+
   init() {
     this._super(...arguments);
     setProperties(this, {
@@ -143,14 +147,6 @@ export default Component.extend(ThrottledResize, {
       $('.clusters, .projects').off('mouseleave', this.boundLeaveScrollers);
     },
   },
-
-  twoLine: computed('pageScope', function() {
-    return this.pageScope === 'project';
-  }),
-
-  hide: computed('pageScope', function() {
-    return this.pageScope === 'user';
-  }),
 
   projectChoices: computed('scope.allProjects.@each.{id,displayName,relevantState}', function() {
     return get(this, 'scope.allProjects')

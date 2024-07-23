@@ -225,6 +225,8 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
   runningClusterScans: computed.filterBy('clusterScans', 'isRunning', true),
 
+  isRKE: computed.equal('configName', 'rancherKubernetesEngineConfig'),
+
   conditionsDidChange:        on('init', observer('enableClusterMonitoring', 'conditions.@each.status', function() {
     if ( !this.enableClusterMonitoring ) {
       return false;
@@ -475,10 +477,6 @@ export default Resource.extend(Grafana, ResourceUsage, {
 
   isReady: computed('conditions.@each.status', function() {
     return this.hasCondition('Ready');
-  }),
-
-  isRKE: computed('configName', function() {
-    return this.configName === 'rancherKubernetesEngineConfig';
   }),
 
   isK8s21Plus: computed('version.gitVersion', function() {

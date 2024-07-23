@@ -30,6 +30,8 @@ export default Resource.extend({
   catalog:             service(),
   intl:                service(),
   type:                'nodeDriver',
+  canRemove:    computed.equal('state', 'inactive'),
+
   catalogTemplateIcon: computed('app.baseAssets', 'externalId', function() {
     let parsedExtId = parseExternalId(this.externalId) || null;
 
@@ -105,10 +107,6 @@ export default Resource.extend({
 
   canEdit: computed('links.update', 'builtin', function() {
     return !!get(this, 'links.update') && !this.builtin;
-  }),
-
-  canRemove: computed('state', function() {
-    return this.state === 'inactive';
   }),
 
   availableActions: computed('actionLinks.{activate,deactivate}', 'state', function() {

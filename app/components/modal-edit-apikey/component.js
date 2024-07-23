@@ -35,6 +35,8 @@ export default Component.extend(ModalBase, NewOrEdit, {
   linkEndpoint:     alias('endpointService.api.auth.current'),
   showSimpleExpire: not('authTokenHasMaxTTL'),
 
+  authTokenHasMaxTTL: computed.gt('authTokenMaxTTL', 0),
+
   didReceiveAttrs() {
     setProperties(this, {
       clone:       this.originalModel.clone(),
@@ -93,10 +95,6 @@ export default Component.extend(ModalBase, NewOrEdit, {
     const maxTTL = get(this, `settings.${ C.SETTING.AUTH_TOKEN_MAX_TTL_MINUTES }`) || '0';
 
     return Number.parseFloat(maxTTL);
-  }),
-
-  authTokenHasMaxTTL: computed('authTokenMaxTTL', function() {
-    return this.authTokenMaxTTL > 0;
   }),
 
   maxTTLDuration: computed('authTokenMaxTTL', function() {

@@ -17,6 +17,10 @@ export default Component.extend(ModalBase, {
   restoreRkeConfig: null,
   loadingBackups:   false,
 
+  k8sVersionRadioDisabled: computed.or('k8sVersionDisabled', 'restorationTypeDisabled'),
+
+  restorationTypeDisabled: computed.not('selectedBackup'),
+
   init() {
     this._super(...arguments);
 
@@ -78,14 +82,6 @@ export default Component.extend(ModalBase, {
 
   k8sVersionDisabled: computed('selectedVersion', 'restorationTypeDisabled', function() {
     return !this.restorationTypeDisabled && this.selectedVersion === this.intl.t('modalRestoreBackup.type.versionUnknown');
-  }),
-
-  k8sVersionRadioDisabled: computed('k8sVersionDisabled', 'restorationTypeDisabled', function() {
-    return this.k8sVersionDisabled || this.restorationTypeDisabled;
-  }),
-
-  restorationTypeDisabled: computed('selectedBackup', function() {
-    return !this.selectedBackup;
   }),
 
   initOwnProperties() {

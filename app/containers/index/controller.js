@@ -1,9 +1,7 @@
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
-import {
-  searchFields as containerSearchFields
-} from 'ui/components/pod-dots/component';
+import { searchFields as containerSearchFields } from 'ui/components/pod-dots/component';
 import { computed } from '@ember/object';
 
 export const headers = [

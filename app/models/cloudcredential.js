@@ -26,6 +26,8 @@ const cloudCredential = Resource.extend({
   isVMware:    notEmpty('vmwarevspherecredentialConfig'),
 
 
+  numberOfNodeTemplateAssociations: computed.reads('nodeTemplates.length'),
+
   displayType: computed('amazonec2credentialConfig', 'azurecredentialConfig', 'digitaloceancredentialConfig', 'harvestercredentialConfig', 'googlecredentialConfig', 'linodecredentialConfig', 'ocicredentialConfig', 'pnapcredentialConfig', 'vmwarevspherecredentialConfig', function() {
     const {
       isAmazon,
@@ -60,10 +62,6 @@ const cloudCredential = Resource.extend({
     }
 
     return '';
-  }),
-
-  numberOfNodeTemplateAssociations: computed('nodeTemplates.[]', function() {
-    return this.nodeTemplates.length;
   }),
 
   actions: {
