@@ -7,6 +7,7 @@ import layout from './template';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import { next } from '@ember/runloop';
 import $ from 'jquery';
+import { capitalize } from '@ember/string';
 
 const CUSTOM = 'custom';
 
@@ -37,7 +38,7 @@ export default Component.extend(NewOrEdit, {
       primaryResource: this.make(model),
       stdUser:         `${ get(this, 'type') }-member`,
       admin:           `${ get(this, 'type') }-owner`,
-      cTyped:          get(this, 'type').capitalize(),
+      cTyped:          capitalize(get(this, 'type')),
     });
   },
 

@@ -87,7 +87,7 @@ module.exports = {
     'ember/no-classic-components':                    'off',
     'ember/no-actions-hash':                          'off',
     'ember/no-component-lifecycle-hooks':             'off',
-    'ember/no-string-prototype-extensions':           'off',
+    'ember/no-string-prototype-extensions':           'error',
     'ember/require-super-in-lifecycle-hooks':         'off',
     'ember/no-controller-access-in-routes':           'off',
     'ember/no-private-routing-service':               'off',

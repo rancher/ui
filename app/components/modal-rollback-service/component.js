@@ -5,6 +5,7 @@ import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
 import C from 'shared/utils/constants';
 import moment from 'moment';
+import { htmlSafe } from '@ember/string';
 
 import jsondiffpatch from 'jsondiffpatch';
 
@@ -120,7 +121,7 @@ export default Component.extend(ModalBase, {
 
       jsondiffpatch.formatters.html.hideUnchanged();
 
-      return jsondiffpatch.formatters.html.format(delta, left).htmlSafe();
+      return htmlSafe(jsondiffpatch.formatters.html.format(delta, left));
     }
 
     return null;

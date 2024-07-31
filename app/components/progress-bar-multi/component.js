@@ -1,4 +1,5 @@
 import { defineProperty, computed, get, observer } from '@ember/object';
+import { htmlSafe } from '@ember/string';
 import Component from '@ember/component';
 import layout from './template';
 import $ from 'jquery';
@@ -74,7 +75,7 @@ export default Component.extend({
       }
 
       out.forEach((obj) => {
-        obj.css = (`width: ${  obj.percent }%`).htmlSafe();
+        obj.css = htmlSafe((`width: ${  obj.percent }%`));
       });
 
       return out.filter((obj) => obj.percent);

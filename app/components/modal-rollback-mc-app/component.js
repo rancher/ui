@@ -5,6 +5,7 @@ import layout from './template';
 import jsondiffpatch from 'jsondiffpatch';
 import moment from 'moment';
 import { notEmpty } from '@ember/object/computed';
+import { htmlSafe } from '@ember/string';
 
 const HIDDEN_FIELDS = ['digest', 'created', 'createdTS', 'links', 'uuid', 'id', 'name'];
 
@@ -95,7 +96,7 @@ export default Component.extend(ModalBase, {
 
     jsondiffpatch.formatters.html.hideUnchanged();
 
-    return jsondiffpatch.formatters.html.format(delta, left).htmlSafe();
+    return htmlSafe(jsondiffpatch.formatters.html.format(delta, left));
   },
 
   getMultiClusterAppRevisions() {

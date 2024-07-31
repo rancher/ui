@@ -4,6 +4,7 @@ import ModalBase from 'shared/mixins/modal-base';
 import layout from './template';
 import jsondiffpatch from 'jsondiffpatch';
 import moment from 'moment';
+import { htmlSafe } from '@ember/string';
 
 const HIDDEN_FIELDS = ['digest'];
 
@@ -95,7 +96,7 @@ export default Component.extend(ModalBase, {
 
       jsondiffpatch.formatters.html.hideUnchanged();
 
-      return jsondiffpatch.formatters.html.format(delta, left).htmlSafe();
+      return htmlSafe(jsondiffpatch.formatters.html.format(delta, left));
     }
 
     return null;
