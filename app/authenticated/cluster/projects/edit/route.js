@@ -9,14 +9,14 @@ export default Route.extend({
   roleTemplateService: service('roleTemplate'),
 
   model(params) {
-    const store = get(this, 'globalStore');
+    const store = this.globalStore;
 
     return hash({
       me:                          get(this, 'access.principal'),
       project:                     store.find('project', params.project_id),
       projectRoleTemplateBindings: store.find('projectRoleTemplateBinding'),
       projects:                    store.findAll('project'),
-      roles:                       get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
+      roles:                       this.roleTemplateService.get('allFilteredRoleTemplates'),
       users:                       store.find('user', null, { forceReload: true }),
     }).then((hash) => {
       set(hash, 'project', get(hash, 'project').clone());

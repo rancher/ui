@@ -1,6 +1,6 @@
 import Resource from '@rancher/ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
-import { get, computed } from '@ember/object';
+import { computed } from '@ember/object';
 import C from 'shared/utils/pipeline-constants';
 
 let Pipeline = Resource.extend({
@@ -12,19 +12,19 @@ let Pipeline = Resource.extend({
   canDownloadYaml: false,
 
   lastRun: computed('nextRun', function() {
-    return parseInt(get(this, 'nextRun'), 10) - 1;
+    return parseInt(this.nextRun, 10) - 1;
   }),
 
   relevantState: computed('lastRunState', 'state', function() {
-    if ( get(this, 'state') === 'removing' ) {
+    if ( this.state === 'removing' ) {
       return 'removing';
     }
 
-    return get(this, 'lastRunState') || 'untriggered';
+    return this.lastRunState || 'untriggered';
   }),
 
   displayRepositoryUrl: computed('repositoryUrl', function() {
-    let url = get(this, 'repositoryUrl');
+    let url = this.repositoryUrl;
 
     if ( url.endsWith('.git') ) {
       url = url.substr(0, url.length - 4);
@@ -34,21 +34,21 @@ let Pipeline = Resource.extend({
   }),
 
   projectName: computed('displayName', function() {
-    const displayName = get(this, 'displayName')  ;
+    const displayName = this.displayName  ;
     let tokens = displayName.split('/') ;
 
     return tokens[0].startsWith('~') ? tokens[0].substr(1, tokens[0].length) : tokens[0];
   }),
 
   repoName: computed('displayName', function() {
-    const displayName = get(this, 'displayName')  ;
+    const displayName = this.displayName  ;
     let tokens = displayName.split('/') ;
 
     return tokens[1];
   }),
 
   displayName: computed('repositoryUrl', function() {
-    let tokens = get(this, 'repositoryUrl').split('/') ;
+    let tokens = this.repositoryUrl.split('/') ;
 
     tokens = tokens.slice(tokens.length - 2);
     const last = tokens[tokens.length - 1];
@@ -61,9 +61,9 @@ let Pipeline = Resource.extend({
   }),
 
   availableActions: computed('actions', 'links.yaml', 'repositoryUrl', function() {
-    let l = get(this, 'links') || {};
-    let a = get(this, 'actions') || {};
-    const isExample = C.DEMO_REPOSITORIES.findBy('url', get(this, 'repositoryUrl'));
+    let l = this.links || {};
+    let a = this.actions || {};
+    const isExample = C.DEMO_REPOSITORIES.findBy('url', this.repositoryUrl);
 
     return [{ divider: true },
       {
@@ -100,25 +100,25 @@ let Pipeline = Resource.extend({
   }),
   actions: {
     run() {
-      get(this, 'modalService').toggleModal('modal-pipeline-run', {
+      this.modalService.toggleModal('modal-pipeline-run', {
         originalModel: this,
         escToClose:    true,
       });
     },
 
     setting() {
-      get(this, 'modalService').toggleModal('modal-pipeline-setting', {
+      this.modalService.toggleModal('modal-pipeline-setting', {
         originalModel: this,
         escToClose:    true,
       });
     },
 
     editConfig() {
-      get(this, 'router').transitionTo('authenticated.project.pipeline.pipelines.edit', get(this, 'id'))
+      this.router.transitionTo('authenticated.project.pipeline.pipelines.edit', this.id)
     },
 
     editYaml() {
-      get(this, 'modalService').toggleModal('modal-pipeline-yaml', {
+      this.modalService.toggleModal('modal-pipeline-yaml', {
         originalModel: this,
         escToClose:    true,
       });

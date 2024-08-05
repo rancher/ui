@@ -9,10 +9,10 @@ export default Mixin.create({
   type: null,
 
   patch() {
-    const t = get(this, 'targetType');
-    const store = get(this, 'store');
+    const t = this.targetType;
+    const store = this.store;
 
-    const nue = store.createRecord({ type: this.get('type'), });
+    const nue = store.createRecord({ type: this.type, });
 
     const map = EmberObject.create({});
 
@@ -55,8 +55,8 @@ export default Mixin.create({
         [`${ t }.config`]:                 get(this, `${ t }Config`),
         [`${ t }.outputFlushInterval`]:    get(this, `outputFlushInterval`),
         [`${ t }.outputTags`]:             get(this, `outputTags`),
-        [`${ t }.dockerRootDir`]:          get(this, 'dockerRootDir'),
-        [`${ t }.includeSystemComponent`]: get(this, 'includeSystemComponent'),
+        [`${ t }.dockerRootDir`]:          this.dockerRootDir,
+        [`${ t }.includeSystemComponent`]: this.includeSystemComponent,
       })
     }
 
@@ -91,11 +91,11 @@ export default Mixin.create({
   }),
 
   sslTargetType: computed('elasticsearchConfig', 'splunkConfig', 'kafkaConfig', 'syslogConfig', 'fluentForwarderConfig', function() {
-    const es = get(this, 'elasticsearchConfig');
-    const splunk = get(this, 'splunkConfig');
-    const kafka = get(this, 'kafkaConfig');
-    const syslog = get(this, 'syslogConfig');
-    const fluentd = get(this, 'fluentForwarderConfig');
+    const es = this.elasticsearchConfig;
+    const splunk = this.splunkConfig;
+    const kafka = this.kafkaConfig;
+    const syslog = this.syslogConfig;
+    const fluentd = this.fluentForwarderConfig;
 
     if (es) {
       return 'elasticsearch';

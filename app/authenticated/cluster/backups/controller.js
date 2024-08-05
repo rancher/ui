@@ -41,7 +41,7 @@ export default Controller.extend({
   rows:    computed('model.[]', function() {
     let { currentClusterId } = this;
 
-    return get(this, 'model').filterBy('clusterId', currentClusterId);
+    return this.model.filterBy('clusterId', currentClusterId);
   }),
 
 });

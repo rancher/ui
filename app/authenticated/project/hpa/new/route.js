@@ -7,8 +7,8 @@ export default Route.extend({
   clusterStore: service(),
 
   model(params) {
-    const store = get(this, 'store');
-    const clusterStore = get(this, 'clusterStore');
+    const store = this.store;
+    const clusterStore = this.clusterStore;
 
     const deps = {
       deployments: store.findAll('workload').then((workloads) => workloads.filter((w) => w.type === 'statefulSet' || w.type === 'deployment')),

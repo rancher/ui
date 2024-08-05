@@ -1,3 +1,4 @@
+import { alias, equal } from '@ember/object/computed';
 import Resource from '@rancher/ember-api-store/models/resource';
 import { computed, get, set, observer } from '@ember/object';
 import moment from 'moment';
@@ -13,13 +14,13 @@ const ClusterScan = Resource.extend({
   type:          'clusterScan',
   report:        'null',
   reportPromise: null,
-  total:         computed.alias('summary.total'),
-  passed:        computed.alias('summary.passed'),
-  skipped:       computed.alias('summary.skipped'),
-  failed:        computed.alias('summary.failed'),
-  notApplicable: computed.alias('summary.notApplicable'),
+  total:         alias('summary.total'),
+  passed:        alias('summary.passed'),
+  skipped:       alias('summary.skipped'),
+  failed:        alias('summary.failed'),
+  notApplicable: alias('summary.notApplicable'),
 
-  isRunning: computed.equal('state', 'running'),
+  isRunning: equal('state', 'running'),
 
   loader: observer('store', 'state', function() {
     this.loadReport();
@@ -27,13 +28,13 @@ const ClusterScan = Resource.extend({
 
   file: computed('name', 'report', 'resultsForCsv', function(){
     return {
-      name: `${ get(this, 'name') }.csv`,
-      file:  get(this, 'resultsForCsv')
+      name: `${ this.name }.csv`,
+      file:  this.resultsForCsv
     };
   }),
 
   csvFile: computed('file', async function() {
-    const file = get(this, 'file');
+    const file = this.file;
 
     return {
       ...file,
@@ -61,10 +62,10 @@ const ClusterScan = Resource.extend({
   }),
 
   resultsForCsv: computed('profile', 'referencedResults', 'report', function() {
-    return get(this, 'referencedResults').map((result) => {
-      const intl = get(this, 'intl');
+    return this.referencedResults.map((result) => {
+      const intl = this.intl;
       const nodesAndStateForTest = this.getNodesAndStateForTestResult(result);
-      const profile = intl.t('cis.scan.report.headers.profile', { profile: get(this, 'profile') });
+      const profile = intl.t('cis.scan.report.headers.profile', { profile: this.profile });
 
       return {
         [profile]:                                        '',
@@ -74,12 +75,12 @@ const ClusterScan = Resource.extend({
         [intl.t('cis.scan.report.headers.failed_nodes')]: nodesAndStateForTest.failedNodes.join(','),
         [intl.t('cis.scan.report.headers.node_type')]:    result.node_type.join(',')
       };
-    })
+    });
   }),
 
   summary: computed('state', 'report', function() {
-    const state = get(this, 'state');
-    const report = get(this, 'report');
+    const state = this.state;
+    const report = this.report;
 
     if (state === 'activating' || !report) {
       return {};
@@ -117,7 +118,7 @@ const ClusterScan = Resource.extend({
 
   actions:       {
     async download() {
-      const file = await get(this, 'csvFile');
+      const file = await this.csvFile;
 
       downloadFile(file.name, file.file, 'text/plain');
     },
@@ -192,7 +193,7 @@ const ClusterScan = Resource.extend({
   },
 
   async loadReport() {
-    const reportPromise = get(this, 'reportPromise');
+    const reportPromise = this.reportPromise;
 
     if (reportPromise) {
       return reportPromise;

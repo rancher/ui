@@ -30,11 +30,11 @@ var Container = Resource.extend(Grafana, DisplayImage, {
   }),
 
   canShell: computed('state', function() {
-    return C.CAN_SHELL_STATES.indexOf(get(this, 'state')) > -1
+    return C.CAN_SHELL_STATES.indexOf(this.state) > -1;
   }),
 
   availableActions: computed('canShell', function() {
-    const canShell = get(this, 'canShell');
+    const canShell = this.canShell;
 
     var choices = [
       {
@@ -57,7 +57,7 @@ var Container = Resource.extend(Grafana, DisplayImage, {
   }),
 
   restarts: computed('name', 'pod.status.containerStatuses.@each.restartCount', function() {
-    const state = (get(this, 'pod.status.containerStatuses') || []).findBy('name', get(this, 'name'));
+    const state = (get(this, 'pod.status.containerStatuses') || []).findBy('name', this.name);
 
     if ( state ) {
       return get(state, 'restartCount');
@@ -81,7 +81,7 @@ var Container = Resource.extend(Grafana, DisplayImage, {
       return [];
     }
 
-    const intl = get(this, 'intl');
+    const intl = this.intl;
     const errors = [];
 
     const {
@@ -106,16 +106,16 @@ var Container = Resource.extend(Grafana, DisplayImage, {
 
   actions:      {
     shell() {
-      get(this, 'modalService').toggleModal('modal-shell', {
-        model:         get(this, 'pod'),
-        containerName: get(this, 'name')
+      this.modalService.toggleModal('modal-shell', {
+        model:         this.pod,
+        containerName: this.name
       });
     },
 
     popoutShell() {
       const projectId = get(this, 'scope.currentProject.id');
       const podId = get(this, 'pod.id');
-      const route = get(this, 'router').urlFor('authenticated.project.console', projectId);
+      const route = this.router.urlFor('authenticated.project.console', projectId);
 
       const system = get(this, 'pod.node.info.os.operatingSystem') || ''
       let windows = false;
@@ -125,24 +125,24 @@ var Container = Resource.extend(Grafana, DisplayImage, {
       }
 
       later(() => {
-        window.open(`//${ window.location.host }${ route }?podId=${ podId }&windows=${ windows }&containerName=${ get(this, 'name') }&isPopup=true`, '_blank', 'toolbars=0,width=900,height=700,left=200,top=200');
+        window.open(`//${ window.location.host }${ route }?podId=${ podId }&windows=${ windows }&containerName=${ this.name }&isPopup=true`, '_blank', 'toolbars=0,width=900,height=700,left=200,top=200');
       });
     },
 
     logs() {
-      get(this, 'modalService').toggleModal('modal-container-logs', {
-        model:         get(this, 'pod'),
-        containerName: get(this, 'name')
+      this.modalService.toggleModal('modal-container-logs', {
+        model:         this.pod,
+        containerName: this.name
       });
     },
 
     popoutLogs() {
       const projectId = get(this, 'scope.currentProject.id');
       const podId = get(this, 'pod.id');
-      const route = get(this, 'router').urlFor('authenticated.project.container-log', projectId);
+      const route = this.router.urlFor('authenticated.project.container-log', projectId);
 
       later(() => {
-        window.open(`//${ window.location.host }${ route }?podId=${ podId }&containerName=${ get(this, 'name') }&isPopup=true`, '_blank', 'toolbars=0,width=900,height=700,left=200,top=200');
+        window.open(`//${ window.location.host }${ route }?podId=${ podId }&containerName=${ this.name }&isPopup=true`, '_blank', 'toolbars=0,width=900,height=700,left=200,top=200');
       });
     },
   },

@@ -1,5 +1,4 @@
 import Route from '@ember/routing/route';
-import { get } from '@ember/object';
 
 export default Route.extend({
   model(params) {
@@ -11,6 +10,6 @@ export default Route.extend({
       return configMaps;
     }
 
-    return get(this, 'store').find('configMap', params.config_map_id);
+    return this.store.find('configMap', params.config_map_id);
   },
 });

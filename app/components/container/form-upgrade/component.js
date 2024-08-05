@@ -12,7 +12,7 @@ export default Component.extend({
   classNames: ['accordion-wrapper'],
 
   didReceiveAttrs() {
-    if (!this.get('expandFn')) {
+    if (!this.expandFn) {
       this.set('expandFn', (item) => {
         item.toggleProperty('expanded');
       });
@@ -20,13 +20,13 @@ export default Component.extend({
   },
 
   workloadConfig: computed('scaleMode', function() {
-    const scaleMode = get(this, 'scaleMode');
+    const scaleMode = this.scaleMode;
     const config = get(this, `workload.${ scaleMode }Config`);
 
     return config;
   }),
 
   componentName: computed('scaleMode', function() {
-    return `container/form-upgrade-${  get(this, 'scaleMode').dasherize() }`;
+    return `container/form-upgrade-${  this.scaleMode.dasherize() }`;
   }),
 });

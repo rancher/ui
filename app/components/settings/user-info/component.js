@@ -10,7 +10,7 @@ export default Component.extend({
 
   actions: {
     editPassword() {
-      this.get('account').send('edit');
+      this.account.send('edit');
     }
   }
 

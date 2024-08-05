@@ -18,13 +18,13 @@ export default Route.extend(VerifyAuth, {
 
   beforeModel() {
     if (!this.intl.locale) {
-      return get(this, 'language').initUnauthed();
+      return this.language.initUnauthed();
     }
   },
 
   model(params/* , transition */) {
-    const oauth  = get(this, 'oauth');
-    const azure  = get(this, 'azureAD');
+    const oauth  = this.oauth;
+    const azure  = this.azureAD;
 
     const forward = get(params, 'forward');
 
@@ -151,7 +151,7 @@ export default Route.extend(VerifyAuth, {
           description:  C.SESSION.DESCRIPTION,
           ttl:          C.SESSION.TTL,
         }).then(() => {
-          return get(this, 'access').detect()
+          return this.access.detect()
             .then(() => this.transitionTo('authenticated'));
         });
       }

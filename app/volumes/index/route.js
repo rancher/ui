@@ -1,12 +1,12 @@
 import { on } from '@ember/object/evented';
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import { hash } from 'rsvp';
 import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
   model() {
-    let store = get(this, 'store');
+    let store = this.store;
 
     return hash({ persistentVolumeClaims: store.findAll('persistentVolumeClaim'), });
   },

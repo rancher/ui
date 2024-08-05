@@ -45,7 +45,7 @@ export default Component.extend({
 
   actions: {
     addPort() {
-      this.get('ports').pushObject(get(this, 'store').createRecord({
+      this.ports.pushObject(this.store.createRecord({
         type:          'containerPort',
         kind:          'NodePort',
         protocol:      'TCP',
@@ -62,14 +62,14 @@ export default Component.extend({
     },
 
     removePort(obj) {
-      this.get('ports').removeObject(obj);
+      this.ports.removeObject(obj);
     },
   },
 
   portsChanged: observer('ports.@each.{containerPort,dnsName,hostIp,kind,name,protocol,sourcePort,_ipPort}', function() {
     const errors = [];
-    const intl = get(this, 'intl');
-    const ports = get(this, 'ports');
+    const intl = this.intl;
+    const ports = this.ports;
 
     ports.forEach((obj) => {
       let containerPort = obj.containerPort;
@@ -126,7 +126,7 @@ export default Component.extend({
   }),
 
   nodePortRangeDidChange: observer('intl.locale', 'scope.currentCluster.rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange', function() {
-    const intl          = get(this, 'intl');
+    const intl          = this.intl;
     const nodePortRange = get(this, 'scope.currentCluster.rancherKubernetesEngineConfig.services.kubeApi.serviceNodePortRange')
     const ccPorts       = get(this, 'capabilities.allowedNodePortRanges');
 
@@ -168,7 +168,7 @@ export default Component.extend({
   }),
 
   initPorts() {
-    let ports = get(this, 'initialPorts') || [];
+    let ports = this.initialPorts || [];
 
     ports.forEach((obj) => {
       if ( get(obj, 'kind') === 'HostPort' ) {

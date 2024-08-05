@@ -1,4 +1,4 @@
-import {  get, set, observer } from '@ember/object';
+import { get, set, observer } from '@ember/object';
 import { next } from '@ember/runloop';
 import Component from '@ember/component';
 import { convertToMillis } from 'shared/utils/util';
@@ -38,7 +38,7 @@ export default Component.extend({
   quotaDidChange: observer('quotaArray.@each.{key,value}', function() {
     const out = {};
 
-    (get(this, 'quotaArray') || []).forEach((quota) => {
+    (this.quotaArray || []).forEach((quota) => {
       if ( quota.key ) {
         let value      = parseInt(get(quota, 'value'), defaultRadix);
         let max        = get(quota, 'max');
@@ -81,9 +81,9 @@ export default Component.extend({
   },
 
   updateLimits() {
-    ( get(this, 'quotaArray') || [] ).forEach((quota) => {
+    ( this.quotaArray || [] ).forEach((quota) => {
       if ( quota.key ) {
-        const intl        = get(this, 'intl');
+        const intl        = this.intl;
         const value       = parseInt(get(quota, 'value'), defaultRadix) || 0;
         const usedValue   = get(quota, 'currentProjectUse.firstObject.value');
         const newUse      = get(quota, 'currentProjectUse.lastObject');
@@ -128,8 +128,8 @@ export default Component.extend({
       nsDefaultQuota,
       intl
     }                         = this;
-    const used                = get(this, 'usedLimit');
-    const currentProjectLimit = get(this, 'projectLimit')
+    const used                = this.usedLimit;
+    const currentProjectLimit = this.projectLimit
     const array               = [];
 
     Object.keys(nsDefaultQuota).forEach((key) => {
@@ -177,7 +177,7 @@ export default Component.extend({
           break;
         }
 
-        if ( !get(this, 'isNew') ) {
+        if ( !this.isNew ) {
           usedValue = usedValue - value
         }
 

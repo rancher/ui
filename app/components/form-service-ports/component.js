@@ -1,6 +1,6 @@
 import { next } from '@ember/runloop';
 import { alias } from '@ember/object/computed';
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
 import $ from 'jquery';
@@ -26,14 +26,14 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    if ( !get(this, 'ports') ) {
+    if ( !this.ports ) {
       set(this, 'model.ports', []);
     }
   },
 
   actions: {
     addPort() {
-      get(this, 'ports').pushObject(get(this, 'store').createRecord({
+      this.ports.pushObject(this.store.createRecord({
         type:          'servicePort',
         protocol:      'TCP',
       }));
@@ -48,7 +48,7 @@ export default Component.extend({
     },
 
     removePort(obj) {
-      get(this, 'ports').removeObject(obj);
+      this.ports.removeObject(obj);
     },
   },
 });

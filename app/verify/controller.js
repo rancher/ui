@@ -10,9 +10,9 @@ export default Controller.extend({
 
   actions: {
     createAcct() {
-      var body   = this.get('model');
+      var body   = this.model;
 
-      body.token = this.get('token');
+      body.token = this.token;
 
       this.set('loading', true);
 
@@ -23,7 +23,7 @@ export default Controller.extend({
       }).then(() => {
         let code = `${ body.email }:${ body.pw }`;
 
-        this.get('access').login(code)
+        this.access.login(code)
           .then(() => {
             this.transitionToRoute('authenticated')
             this.set('loading', false);

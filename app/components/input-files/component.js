@@ -22,7 +22,7 @@ export default Component.extend({
     this._super(...arguments);
 
     let ary = [];
-    let files = this.get('initialFiles') || {};
+    let files = this.initialFiles || {};
 
     Object.keys(files).forEach((name) => {
       ary.push({
@@ -36,7 +36,7 @@ export default Component.extend({
 
   actions: {
     add() {
-      this.get('ary').pushObject({
+      this.ary.pushObject({
         name:  '',
         value: '',
       });
@@ -47,14 +47,14 @@ export default Component.extend({
     },
 
     remove(file) {
-      this.get('ary').removeObject(file);
+      this.ary.removeObject(file);
     }
   },
 
   onFilesChanged: observer('ary.@each.{name,value}', function() {
     let out = {};
 
-    this.get('ary').forEach((file) => {
+    this.ary.forEach((file) => {
       if ( file.name && file.value ) {
         out[file.name] = file.value;
       }
@@ -69,12 +69,12 @@ export default Component.extend({
     if ( isSafari ) {
       return '';
     } else {
-      return this.get('accept');
+      return this.accept;
     }
   }),
 
   change(event) {
-    let ary = this.get('ary');
+    let ary = this.ary;
     var input = event.target;
     let handles = input.files;
     let names = [];
@@ -91,7 +91,7 @@ export default Component.extend({
         let reader = new FileReader();
 
         reader.onload = (event2) => {
-          this.get('ary').pushObject({
+          this.ary.pushObject({
             name:     names[i],
             value:    event2.target.result,
             uploaded: true,
@@ -99,7 +99,7 @@ export default Component.extend({
         };
 
         reader.onerror = (err) => {
-          get(this, 'growl').fromError(get(err, 'srcElement.error.message'));
+          this.growl.fromError(get(err, 'srcElement.error.message'));
         };
 
         names[i] = handles[i].name;

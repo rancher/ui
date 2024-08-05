@@ -15,7 +15,7 @@ export default Component.extend({
   valuePlaceholder:     'formKeyValue.value.placeholder',
   actions:          {
     onAdd() {
-      const keyValuePairs = get(this, 'keyValuePairs');
+      const keyValuePairs = this.keyValuePairs;
 
       // We push a null keyValuePair and replace it so that we can get the filteredContent
       // with the newly selected value visible to the provider of the contetFilter method.
@@ -26,11 +26,11 @@ export default Component.extend({
       }]);
     },
     onRemove(index) {
-      get(this, 'keyValuePairs').removeAt(index);
+      this.keyValuePairs.removeAt(index);
     }
   },
   asyncKeyContent: computed('keyContent', function() {
-    return StatefulPromise.wrap(get(this, 'keyContent'), []);
+    return StatefulPromise.wrap(this.keyContent, []);
   }),
   selections: computed('keyValuePairs.[]', 'asyncKeyContent.value', function() {
     return this.keyValuePairs
@@ -46,10 +46,10 @@ export default Component.extend({
   }),
   lastValue: computed('keyValuePairs', 'keyValuePairs.[]', {
     get() {
-      return get(this, 'keyValuePairs').objectAt(get(this, 'keyValuePairs.length') - 1);
+      return this.keyValuePairs.objectAt(get(this, 'keyValuePairs.length') - 1);
     },
     set(key, value) {
-      get(this, 'keyValuePairs').set(get(this, 'keyValuePairs.length') - 1, value);
+      this.keyValuePairs.set(get(this, 'keyValuePairs.length') - 1, value);
 
       return value;
     }
@@ -62,10 +62,10 @@ export default Component.extend({
     return get(this, 'keyValuePairs.length') - 1;
   }),
   filteredKeyContent: computed('asyncKeyContent.value', 'keyContentFilter', 'keyValuePairs.[]', function() {
-    if (!get(this, 'keyContentFilter')) {
+    if (!this.keyContentFilter) {
       return get(this, 'asyncKeyContent.value') || [];
     }
 
-    return this.keyContentFilter(get(this, 'asyncKeyContent.value'), get(this, 'keyValuePairs').slice(0, -1)) || [];
+    return this.keyContentFilter(get(this, 'asyncKeyContent.value'), this.keyValuePairs.slice(0, -1)) || [];
   }),
 });

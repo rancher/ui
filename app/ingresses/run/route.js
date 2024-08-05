@@ -1,10 +1,10 @@
 import { hash } from 'rsvp';
-import { get, set } from '@ember/object'
+import { set } from '@ember/object'
 import Route from '@ember/routing/route';
 
 export default Route.extend({
   model(params) {
-    const store = get(this, 'store');
+    const store = this.store;
 
     const dependencies = {
       namespacedcertificates: store.findAll('namespacedcertificate'),

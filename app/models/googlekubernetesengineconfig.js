@@ -8,9 +8,9 @@ export default Resource.extend({
   validationErrors() {
     let errors = [];
 
-    if (!this.get('credential')) {
+    if (!this.credential) {
       errors.push('"Service Account" is required');
-    } else if (!this.get('projectId')){
+    } else if (!this.projectId){
       errors.push('"Google Project ID" is required');
     }
     if (errors.length > 0) {

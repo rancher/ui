@@ -1,4 +1,4 @@
-import { alias } from '@ember/object/computed';
+import { alias, not } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import NewOrEdit from 'shared/mixins/new-or-edit';
@@ -33,12 +33,14 @@ export default Component.extend(ModalBase, NewOrEdit, {
   originalModel:    alias('modalService.modalOpts'),
   displayEndpoint:  alias('endpointService.api.display.current'),
   linkEndpoint:     alias('endpointService.api.auth.current'),
-  showSimpleExpire: computed.not('authTokenHasMaxTTL'),
+  showSimpleExpire: not('authTokenHasMaxTTL'),
+
+  authTokenHasMaxTTL: computed.gt('authTokenMaxTTL', 0),
 
   didReceiveAttrs() {
     setProperties(this, {
-      clone:       get(this, 'originalModel').clone(),
-      model:       get(this, 'originalModel').clone(),
+      clone:       this.originalModel.clone(),
+      model:       this.originalModel.clone(),
       justCreated: false,
     });
 
@@ -53,24 +55,24 @@ export default Component.extend(ModalBase, NewOrEdit, {
   },
 
   expireChanged: observer('expire', 'customTTLDuration', function() {
-    if (!get(this, 'showSimpleExpire')) {
+    if (!this.showSimpleExpire) {
       return;
     }
-    const expire = get(this, 'expire');
+    const expire = this.expire;
     const isCustom = expire === 'custom';
-    const duration = isCustom ? get(this, 'customTTLDuration') : moment.duration(1, expire);
+    const duration = isCustom ? this.customTTLDuration : moment.duration(1, expire);
 
     set(this, 'model.ttl', duration.asMilliseconds());
   }),
 
   complexExpireChanged: observer('complexExpire', 'maxTTLDuration', 'customTTLDuration', function() {
-    if (get(this, 'showSimpleExpire')) {
+    if (this.showSimpleExpire) {
       return;
     }
 
-    const complexExpire = get(this, 'complexExpire');
-    const maxTTLDuration = get(this, 'maxTTLDuration');
-    const customTTLDuration = get(this, 'customTTLDuration');
+    const complexExpire = this.complexExpire;
+    const maxTTLDuration = this.maxTTLDuration;
+    const customTTLDuration = this.customTTLDuration;
     const duration = complexExpire === 'max' ? maxTTLDuration : customTTLDuration;
 
     console.log(complexExpire, maxTTLDuration, customTTLDuration, duration.asMilliseconds());
@@ -83,8 +85,8 @@ export default Component.extend(ModalBase, NewOrEdit, {
   }),
 
   customTTLDuration: computed('customTTL', 'ttlUnit', function() {
-    const customTTL = Number.parseFloat(get(this, 'customTTL'));
-    const ttlUnit = get(this, 'ttlUnit');
+    const customTTL = Number.parseFloat(this.customTTL);
+    const ttlUnit = this.ttlUnit;
 
     return moment.duration(customTTL, ttlUnit);
   }),
@@ -95,26 +97,22 @@ export default Component.extend(ModalBase, NewOrEdit, {
     return Number.parseFloat(maxTTL);
   }),
 
-  authTokenHasMaxTTL: computed('authTokenMaxTTL', function() {
-    return get(this, 'authTokenMaxTTL') > 0;
-  }),
-
   maxTTLDuration: computed('authTokenMaxTTL', function() {
-    const maxTTLInMinutes = get(this, 'authTokenMaxTTL');
+    const maxTTLInMinutes = this.authTokenMaxTTL;
 
     return moment.duration(maxTTLInMinutes, 'minutes');
   }),
 
   maxTTLBestUnit: computed('maxTTLDuration', function() {
-    const duration = get(this, 'maxTTLDuration');
+    const duration = this.maxTTLDuration;
 
     return this.getBestTimeUnit(duration);
   }),
 
   friendlyMaxTTL: computed('maxTTLDuration', 'maxTTLBestUnit', function() {
-    const intl = get(this, 'intl');
-    const duration = get(this, 'maxTTLDuration');
-    const unit = get(this, 'maxTTLBestUnit');
+    const intl = this.intl;
+    const duration = this.maxTTLDuration;
+    const unit = this.maxTTLBestUnit;
     const count = roundDown(duration.as(unit), 2);
 
     return intl.t(`editApiKey.ttl.max.unit.${ unit }`, { count });
@@ -142,19 +140,19 @@ export default Component.extend(ModalBase, NewOrEdit, {
   }),
 
   ttlCustomMax: computed('authTokenHasMaxTTL', 'ttlUnit', 'maxTTLDuration', function() {
-    if (!get(this, 'authTokenHasMaxTTL')) {
+    if (!this.authTokenHasMaxTTL) {
       return;
     }
 
-    const unit = get(this, 'ttlUnit');
-    const duration = get(this, 'maxTTLDuration');
+    const unit = this.ttlUnit;
+    const duration = this.maxTTLDuration;
 
     return roundDown(duration.as(unit), 2);
   }),
 
 
   ttlUnitOptions: computed('maxTTLBestUnit', function() {
-    const unit = get(this, 'maxTTLBestUnit');
+    const unit = this.maxTTLBestUnit;
     const indexOfUnit = ttlUnits.indexOf(unit);
 
     return ttlUnits.slice(0, indexOfUnit + 1);
@@ -179,7 +177,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
   },
 
   doneSaving(neu) {
-    if ( get(this, 'editing') ) {
+    if ( this.editing ) {
       this.send('cancel');
     } else {
       setProperties(this, {

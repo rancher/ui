@@ -18,8 +18,8 @@ export default Resource.extend({
 
   workloads: computed('name', 'namespace.workloads.@each.{containers,volumes}', function() {
     return (get(this, 'namespace.workloads') || []).filter((workload) => {
-      const volume = (get(workload, 'volumes') || []).find((volume) => get(volume, 'configMap.name') === get(this, 'name'));
-      const env = (get(workload, 'containers') || []).find((container) => (get(container, 'environmentFrom') || []).find((env) => get(env, 'source') === 'configMap' && get(env, 'sourceName') === get(this, 'name')));
+      const volume = (get(workload, 'volumes') || []).find((volume) => get(volume, 'configMap.name') === this.name);
+      const env = (get(workload, 'containers') || []).find((container) => (get(container, 'environmentFrom') || []).find((env) => get(env, 'source') === 'configMap' && get(env, 'sourceName') === this.name));
 
       return volume || env;
     });
@@ -52,11 +52,11 @@ export default Resource.extend({
 
   actions: {
     edit() {
-      get(this, 'router').transitionTo('authenticated.project.config-maps.detail.edit', get(this, 'id'));
+      this.router.transitionTo('authenticated.project.config-maps.detail.edit', this.id);
     },
 
     clone() {
-      get(this, 'router').transitionTo('authenticated.project.config-maps.new', get(this, 'projectId'), { queryParams: { id: get(this, 'id') } });
+      this.router.transitionTo('authenticated.project.config-maps.new', this.projectId, { queryParams: { id: this.id } });
     }
 
   },

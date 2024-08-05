@@ -14,24 +14,24 @@ export default Controller.extend({
 
   actions: {
     add() {
-      const record = get(this, 'globalStore').createRecord({
+      const record = this.globalStore.createRecord({
         type:      'projectcatalog',
         kind:      'helm',
         branch:    'master',
         projectId: get(this, 'scope.currentProject.id'),
       });
 
-      get(this, 'modalService').toggleModal('modal-edit-catalog', {
+      this.modalService.toggleModal('modal-edit-catalog', {
         model: record,
         scope: 'project'
       });
     },
 
     goBack() {
-      if ( get(this, 'istio') ) {
-        get(this, 'router').transitionTo('authenticated.project.istio.project-istio.rules');
+      if ( this.istio ) {
+        this.router.transitionTo('authenticated.project.istio.project-istio.rules');
       } else {
-        get(this, 'router').transitionTo('apps-tab');
+        this.router.transitionTo('apps-tab');
       }
     }
   },

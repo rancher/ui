@@ -15,7 +15,7 @@ export default Route.extend({
     }
   },
   model(params) {
-    const pod = get(this, 'store').find('pod', params.pod_id);
+    const pod = this.store.find('pod', params.pod_id);
 
     return hash({ pod }).then((hash) => {
       const container = get(hash, 'pod.containers').findBy('name', params.container_name);

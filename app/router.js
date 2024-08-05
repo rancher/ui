@@ -11,7 +11,7 @@ const Router = EmberRouter.extend({
 
     this.on('routeWillChange', ( /* transition */ ) => {
       if (get(this, 'modalService.modalVisible')) {
-        get(this, 'modalService').toggleModal();
+        this.modalService.toggleModal();
       }
     });
   }

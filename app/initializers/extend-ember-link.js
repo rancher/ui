@@ -12,7 +12,7 @@ export function initialize(/* application */) {
     activeParent: null,
 
     addActiveObserver: on('didInsertElement', function() {
-      if ( this.get('activeParent') ) {
+      if ( this.activeParent ) {
         this.addObserver('active', this, 'activeChanged');
         this.addObserver('application.currentRouteName', this, 'activeChanged');
         this.activeChanged();
@@ -24,14 +24,14 @@ export function initialize(/* application */) {
         return;
       }
 
-      const parent = $().closest(get(this, 'activeParent'));
+      const parent = $().closest(this.activeParent);
 
       if ( !parent || !parent.length ) {
         return;
       }
 
-      let active = !!get(this, 'active');
-      let more = get(this, 'currentWhen');
+      let active = !!this.active;
+      let more = this.currentWhen;
 
       if ( !active && more && more.length) {
         const currentRouteName = get(this, 'application.currentRouteName');

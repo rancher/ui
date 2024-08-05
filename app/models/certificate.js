@@ -12,39 +12,39 @@ export default Resource.extend({
 
   workloads: computed('allWorkloads.list.@each.{containers,volumes}', 'name', 'namespaceId', function() {
     return (get(this, 'allWorkloads.list') || []).map((item) => item.obj).filter((workload) => {
-      if ( get(this, 'namespaceId') && get(workload, 'namespaceId') !== get(this, 'namespaceId')) {
+      if ( this.namespaceId && get(workload, 'namespaceId') !== this.namespaceId) {
         return false;
       }
-      const volume = (get(workload, 'volumes') || []).find((volume) => get(volume, 'secret.secretName') === get(this, 'name'));
-      const env = (get(workload, 'containers') || []).find((container) => (get(container, 'environmentFrom') || []).find((env) => get(env, 'source') === 'secret' && get(env, 'sourceName') === get(this, 'name')));
+      const volume = (get(workload, 'volumes') || []).find((volume) => get(volume, 'secret.secretName') === this.name);
+      const env = (get(workload, 'containers') || []).find((container) => (get(container, 'environmentFrom') || []).find((env) => get(env, 'source') === 'secret' && get(env, 'sourceName') === this.name));
 
       return volume || env;
     });
   }),
 
   issuedDate: computed('issuedAt', function() {
-    return new Date(get(this, 'issuedAt'));
+    return new Date(this.issuedAt);
   }),
 
   expiresDate: computed('expiresAt', function() {
-    return new Date(get(this, 'expiresAt'));
+    return new Date(this.expiresAt);
   }),
 
   expiresSoon: computed('expiresDate', function() {
-    var diff = (get(this, 'expiresDate')).getTime() - (new Date()).getTime();
+    var diff = (this.expiresDate).getTime() - (new Date()).getTime();
     var days = diff / (86400 * 1000);
 
     return days <= 8;
   }),
 
   displayIssuer: computed('issuer', function() {
-    return (get(this, 'issuer') || '').split(/,/)[0].replace(/^CN=/i, '');
+    return (this.issuer || '').split(/,/)[0].replace(/^CN=/i, '');
   }),
 
   // All the SANs that aren't the CN
   displaySans: computed('cn', 'subjectAlternativeNames.[]', function() {
-    const sans = get(this, 'subjectAlternativeNames') || '';
-    const cn = get(this, 'cn') || '';
+    const sans = this.subjectAlternativeNames || '';
+    const cn = this.cn || '';
 
     if ( !sans ) {
       return [];
@@ -56,22 +56,22 @@ export default Resource.extend({
 
   // The useful SANs; Removes "domain.com" when the cert is for "www.domain.com"
   countableSans: computed('displaySans.[]', 'cn', function() {
-    var sans = get(this, 'displaySans').slice();
+    var sans = this.displaySans.slice();
 
-    if ( get(this, 'cn') ) {
-      sans.pushObject(get(this, 'cn'));
+    if ( this.cn ) {
+      sans.pushObject(this.cn);
     }
 
     var commonBases = sans.filter((name) => name.indexOf('*.') === 0 || name.indexOf('www.') === 0).map((name) => name.substr(name.indexOf('.')));
 
-    return get(this, 'displaySans').slice()
+    return this.displaySans.slice()
       .removeObjects(commonBases);
   }),
 
   // "cn.com and 5 others" (for table view)
   displayDomainName: computed('cn', 'countableSans.length', function() {
-    const intl = get(this, 'intl');
-    const cn = get(this, 'cn');
+    const intl = this.intl;
+    const cn = this.cn;
 
     if ( !cn ) {
       return intl.t('generic.none');
@@ -102,8 +102,8 @@ export default Resource.extend({
 
   // "user-provided-name (cn-if-different-than-user-name.com + 5 others)"
   displayDetailedName: computed('displayName', 'cn', 'countableSans.length', function() {
-    var name = get(this, 'displayName');
-    var cn = get(this, 'cn');
+    var name = this.displayName;
+    var cn = this.cn;
     var sans = get(this, 'countableSans.length');
     var out = name;
 
@@ -127,7 +127,7 @@ export default Resource.extend({
   }),
   actions: {
     edit() {
-      get(this, 'router').transitionTo('authenticated.project.certificates.detail.edit', get(this, 'id'));
+      this.router.transitionTo('authenticated.project.certificates.detail.edit', this.id);
     },
   },
 

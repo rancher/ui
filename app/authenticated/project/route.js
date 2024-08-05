@@ -29,7 +29,7 @@ export default Route.extend(Preload, {
   model(params, transition) {
     const isPopup = this.controllerFor('application').get('isPopup');
 
-    return get(this, 'globalStore').find('project', params.project_id)
+    return this.globalStore.find('project', params.project_id)
       .then((project) => {
         const hideLocalCluster = get(this.settings, 'shouldHideLocalCluster');
 
@@ -37,7 +37,7 @@ export default Route.extend(Preload, {
           return this.replaceWith('authenticated');
         }
 
-        return get(this, 'scope').startSwitchToProject(project, !isPopup)
+        return this.scope.startSwitchToProject(project, !isPopup)
           .then(() => PromiseAll([
             this.loadSchemas('clusterStore'),
             this.loadSchemas('store'),
@@ -60,7 +60,7 @@ export default Route.extend(Preload, {
                 this.preload('persistentVolumeClaim'),
               ]).then(() => out)
             }
-          }))
+          }));
       })
       .catch((err) => this.loadingError(err, transition));
   },
@@ -90,7 +90,7 @@ export default Route.extend(Preload, {
     },
 
     importYaml() {
-      get(this, 'modalService').toggleModal('modal-import', {
+      this.modalService.toggleModal('modal-import', {
         escToClose: true,
         mode:       'project',
         projectId:  get(this, 'scope.currentProject.id')

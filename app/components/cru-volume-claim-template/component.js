@@ -26,19 +26,19 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   canUseStorageClass: gt('storageClasses.length', 0),
 
   didReceiveAttrs() {
-    if ( !get(this, 'persistentVolumes') ) {
-      set(this, 'persistentVolumes', get(this, 'clusterStore').all('persistentVolume'));
+    if ( !this.persistentVolumes ) {
+      set(this, 'persistentVolumes', this.clusterStore.all('persistentVolume'));
     }
 
-    if ( !get(this, 'storageClasses') ) {
-      set(this, 'storageClasses', get(this, 'clusterStore').all('storageClass'));
+    if ( !this.storageClasses ) {
+      set(this, 'storageClasses', this.clusterStore.all('storageClass'));
     }
 
-    if ( !get(this, 'selectNamespace') ) {
+    if ( !this.selectNamespace ) {
       set(this, 'primaryResource.namespaceId', get(this, 'namespace.id') || get(this, 'namespace.name'));
     }
 
-    if ( get(this, 'isNew') ) {
+    if ( this.isNew ) {
       const capacity = get(this, 'primaryResource.resources.requests.storage');
 
       if ( capacity ) {
@@ -48,7 +48,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
         set(this, 'capacity', gib);
       }
 
-      if ( !get(this, 'canUseStorageClass')) {
+      if ( !this.canUseStorageClass) {
         set(this, 'useStorageClass', false);
       }
     } else {
@@ -66,7 +66,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   },
 
   persistentVolumeChoices: computed('persistentVolumes.@each.{name,state}', function() {
-    return get(this, 'persistentVolumes').map((v) => {
+    return this.persistentVolumes.map((v) => {
       let label      = get(v, 'displayName');
       const state    = get(v, 'state');
       const disabled = state !== 'available';
@@ -85,13 +85,13 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   }),
 
   willSave() {
-    const pr = get(this, 'primaryResource');
-    const intl = get(this, 'intl');
+    const pr = this.primaryResource;
+    const intl = this.intl;
 
-    if ( get(this, 'useStorageClass') ) {
+    if ( this.useStorageClass ) {
       set(pr, 'volumeId', null);
 
-      const capacity = get(this, 'capacity');
+      const capacity = this.capacity;
 
       if ( capacity ) {
         set(pr, 'resources', { requests: { storage: `${ capacity  }Gi`, } });
@@ -108,7 +108,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
       set(pr, 'resources', { requests: Object.assign({}, get(pr, 'persistentVolume.capacity')), });
     }
 
-    if ( !get(this, 'actuallySave') ) {
+    if ( !this.actuallySave ) {
       let ok = this._super(...arguments);
 
       if ( ok ) {
@@ -125,10 +125,10 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     const self = this;
     const sup = this._super;
 
-    if ( get(this, 'selectNamespace') ) {
+    if ( this.selectNamespace ) {
       const errors = [];
 
-      errors.pushObjects(get(this, 'namespaceErrors') || []);
+      errors.pushObjects(this.namespaceErrors || []);
 
       set(this, 'errors', errors);
 

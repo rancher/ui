@@ -31,8 +31,8 @@ export default Route.extend({
       }
 
       // Find out if auth is enabled
-      return get(this, 'access').detect().finally(() => {
-        return get(this, 'language').initLanguage();
+      return this.access.detect().finally(() => {
+        return this.language.initLanguage();
       });
     })();
   },
@@ -57,14 +57,14 @@ export default Route.extend({
     },
     loading(transition) {
       this.incrementProperty('loadingId');
-      let id = get(this, 'loadingId');
+      let id = this.loadingId;
 
-      cancel(get(this, 'hideTimer'));
+      cancel(this.hideTimer);
 
       // console.log('Loading', id);
       this.notifyAction('need-to-load');
 
-      if ( !get(this, 'loadingShown') ) {
+      if ( !this.loadingShown ) {
         set(this, 'loadingShown', true);
         // console.log('Loading Show', id);
         this.notifyLoading(true);
@@ -102,7 +102,7 @@ export default Route.extend({
           });
         }
 
-        if ( get(this, 'loadingId') === id ) {
+        if ( this.loadingId === id ) {
           if ( transition.isAborted ) {
             // console.log('Loading aborted', id, get(this, 'loadingId'));
             set(this, 'hideTimer', next(hide));
@@ -143,8 +143,8 @@ export default Route.extend({
     },
 
     logout(transition, errorMsg) {
-      let session = get(this, 'session');
-      let access = get(this, 'access');
+      let session = this.session;
+      let access = this.access;
 
       if ( isEmbedded() ) {
         dashboardWindow().postMessage({ action: 'logout' });
@@ -161,7 +161,7 @@ export default Route.extend({
           url =  `${ window.location.origin }/dashboard/auth/login`;
         }
 
-        get(this, 'tab-session').clear();
+        this['tab-session'].clear();
         set(this, `session.${ C.SESSION.CONTAINER_ROUTE }`, undefined);
         set(this, `session.${ C.SESSION.ISTIO_ROUTE }`, undefined);
         set(this, `session.${ C.SESSION.CLUSTER_ROUTE }`, undefined);
@@ -172,7 +172,7 @@ export default Route.extend({
         }
 
         if ( get(this, 'modal.modalVisible') ) {
-          get(this, 'modal').toggleModal();
+          this.modal.toggleModal();
         }
 
         if ( errorMsg ) {
@@ -184,11 +184,11 @@ export default Route.extend({
     },
 
     langToggle() {
-      let svc = get(this, 'language');
+      let svc = this.language;
       let cur = svc.getLocale();
 
       if ( cur === 'none' ) {
-        svc.sideLoadLanguage(get(this, 'previousLang') || 'en-us');
+        svc.sideLoadLanguage(this.previousLang || 'en-us');
       } else {
         set(this, 'previousLang', cur);
         svc.sideLoadLanguage('none');
@@ -201,7 +201,7 @@ export default Route.extend({
   }),
 
   finishLogin() {
-    let session = get(this, 'session');
+    let session = this.session;
 
     let backTo = session.get(C.SESSION.BACK_TO);
 

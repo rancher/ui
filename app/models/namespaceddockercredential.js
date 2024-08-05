@@ -1,7 +1,6 @@
 import DockerCredential from './dockercredential';
 import { reference } from '@rancher/ember-api-store/utils/denormalize';
 import { inject as service } from '@ember/service';
-import { get } from '@ember/object';
 
 export default DockerCredential.extend({
   clusterStore: service(),
@@ -11,10 +10,10 @@ export default DockerCredential.extend({
   namespace:    reference('namespaceId', 'namespace', 'clusterStore'),
   actions:   {
     clone() {
-      get(this, 'router').transitionTo('authenticated.project.registries.new', {
+      this.router.transitionTo('authenticated.project.registries.new', {
         queryParams: {
-          id:   get(this, 'id'),
-          type: get(this, 'type')
+          id:   this.id,
+          type: this.type
         }
       });
     }

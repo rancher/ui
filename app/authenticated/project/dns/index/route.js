@@ -6,7 +6,7 @@ import C from 'ui/utils/constants';
 
 export default Route.extend({
   model() {
-    var store = this.get('store');
+    var store = this.store;
 
     return hash({ records: store.findAll('service'), });
   },
