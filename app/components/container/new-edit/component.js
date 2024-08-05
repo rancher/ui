@@ -67,22 +67,22 @@ export default Component.extend(NewOrEdit, ChildHook, {
     window.nec = this;
     this._super(...arguments);
 
-    if (get(this, 'launchConfig') && !get(this, 'launchConfig.environmentFrom')) {
+    if (this.launchConfig && !get(this, 'launchConfig.environmentFrom')) {
       set(this, 'launchConfig.environmentFrom', []);
     }
 
-    const service = get(this, 'service');
+    const service = this.service;
 
     const scheduling = get(service, 'scheduling')
 
-    if (!get(this, 'isSidekick') && !get(service, 'scheduling.node')) {
+    if (!this.isSidekick && !get(service, 'scheduling.node')) {
       set(service, 'scheduling', {
         ...scheduling,
         node: {}
       });
     }
 
-    if (!get(this, 'isSidekick')) {
+    if (!this.isSidekick) {
       setProperties(this, {
         description: get(this, 'service.description'),
         scale:       get(this, 'service.scale'),
@@ -98,14 +98,14 @@ export default Component.extend(NewOrEdit, ChildHook, {
     namespaceId = get(this, 'service.namespaceId');
 
     if (namespaceId) {
-      let namespace = get(this, 'clusterStore').getById('namespace', namespaceId);
+      let namespace = this.clusterStore.getById('namespace', namespaceId);
 
       if (namespace) {
         set(this, 'namespace', namespace);
       }
     }
 
-    if (!get(this, 'separateLivenessCheck')) {
+    if (!this.separateLivenessCheck) {
       const ready = get(this, 'launchConfig.readinessProbe');
       const live = get(this, 'launchConfig.livenessProbe');
       const readyStr = JSON.stringify(ready);
@@ -116,7 +116,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
       }
     }
 
-    if ( get(this, 'showTargetOS') && get(this, `prefs.${ C.PREFS.TARGET_OS }`) ) {
+    if ( this.showTargetOS && get(this, `prefs.${ C.PREFS.TARGET_OS }`) ) {
       set(this, 'targetOs', get(this, `prefs.${ C.PREFS.TARGET_OS }`));
     }
   },
@@ -159,7 +159,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
     },
 
     toggleSeparateLivenessCheck() {
-      set(this, 'separateLivenessCheck', !get(this, 'separateLivenessCheck'));
+      set(this, 'separateLivenessCheck', !this.separateLivenessCheck);
     },
 
     removeSidekick(idx) {
@@ -173,9 +173,9 @@ export default Component.extend(NewOrEdit, ChildHook, {
     let args = {};
     let k = 'newContainer.';
 
-    k += `${ get(this, 'isUpgrade') ? 'upgrade' : 'add'  }.`;
-    if (get(this, 'isSidekick')) {
-      let svc = get(this, 'service');
+    k += `${ this.isUpgrade ? 'upgrade' : 'add'  }.`;
+    if (this.isSidekick) {
+      let svc = this.service;
 
       if (svc && get(svc, 'id')) {
         k += 'sidekickName';
@@ -183,7 +183,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
       } else {
         k += 'sidekick';
       }
-    } else if (get(this, 'isGlobal')) {
+    } else if (this.isGlobal) {
       k += 'globalService';
     } else {
       k += 'service';
@@ -194,7 +194,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
         return;
       }
 
-      set(this, 'header', get(this, 'intl').t(k, args));
+      set(this, 'header', this.intl.t(k, args));
     });
   })),
 
@@ -203,11 +203,11 @@ export default Component.extend(NewOrEdit, ChildHook, {
   // Save
   // ----------------------------------
   validate() {
-    let pr = get(this, 'primaryResource');
+    let pr = this.primaryResource;
     let errors = pr.validationErrors() || [];
-    const lc = get(this, 'launchConfig');
+    const lc = this.launchConfig;
 
-    const quotaErrors = lc.validateQuota(get(this, 'namespace'));
+    const quotaErrors = lc.validateQuota(this.namespace);
 
     errors.pushObjects(quotaErrors);
 
@@ -225,27 +225,27 @@ export default Component.extend(NewOrEdit, ChildHook, {
     });
 
     // Errors from components
-    errors.pushObjects(get(this, 'commandErrors') || []);
-    errors.pushObjects(get(this, 'volumeErrors') || []);
-    errors.pushObjects(get(this, 'networkingErrors') || []);
-    errors.pushObjects(get(this, 'secretsErrors') || []);
-    errors.pushObjects(get(this, 'readyCheckErrors') || []);
-    errors.pushObjects(get(this, 'liveCheckErrors') || []);
-    errors.pushObjects(get(this, 'schedulingErrors') || []);
-    errors.pushObjects(get(this, 'securityErrors') || []);
-    errors.pushObjects(get(this, 'scaleErrors') || []);
-    errors.pushObjects(get(this, 'imageErrors') || []);
-    errors.pushObjects(get(this, 'portErrors') || []);
-    errors.pushObjects(get(this, 'namespaceErrors') || []);
-    errors.pushObjects(get(this, 'labelErrors') || []);
-    errors.pushObjects(get(this, 'annotationErrors') || []);
+    errors.pushObjects(this.commandErrors || []);
+    errors.pushObjects(this.volumeErrors || []);
+    errors.pushObjects(this.networkingErrors || []);
+    errors.pushObjects(this.secretsErrors || []);
+    errors.pushObjects(this.readyCheckErrors || []);
+    errors.pushObjects(this.liveCheckErrors || []);
+    errors.pushObjects(this.schedulingErrors || []);
+    errors.pushObjects(this.securityErrors || []);
+    errors.pushObjects(this.scaleErrors || []);
+    errors.pushObjects(this.imageErrors || []);
+    errors.pushObjects(this.portErrors || []);
+    errors.pushObjects(this.namespaceErrors || []);
+    errors.pushObjects(this.labelErrors || []);
+    errors.pushObjects(this.annotationErrors || []);
 
     errors = errors.uniq();
 
     if (get(errors, 'length')) {
       set(this, 'errors', errors);
 
-      if ( get(this, 'isSidekick') && !get(this, 'isUpgrade') ) {
+      if ( this.isSidekick && !this.isUpgrade ) {
         get(pr, 'secondaryLaunchConfigs').pop();
       }
 
@@ -258,17 +258,17 @@ export default Component.extend(NewOrEdit, ChildHook, {
   },
 
   willSave() {
-    let intl = get(this, 'intl');
+    let intl = this.intl;
     let pr;
     let nameResource;
-    let lc = get(this, 'launchConfig');
-    let name = (get(this, 'name') || '').trim().toLowerCase();
-    let service = get(this, 'service');
+    let lc = this.launchConfig;
+    let name = (this.name || '').trim().toLowerCase();
+    let service = this.service;
 
     let readinessProbe = get(lc, 'readinessProbe');
 
-    if ( get(this, 'showTargetOS') && ( get(this, 'targetOs') === LINUX || get(this, 'targetOs') === WINDOWS )  ) {
-      const selector = get(this, 'targetOs') === WINDOWS ? WINDOWS_NODE_SELECTOR : LINUX_NODE_SELECTOR;
+    if ( this.showTargetOS && ( this.targetOs === LINUX || this.targetOs === WINDOWS )  ) {
+      const selector = this.targetOs === WINDOWS ? WINDOWS_NODE_SELECTOR : LINUX_NODE_SELECTOR;
 
       if ( !get(service, 'scheduling') ) {
         set(service, 'scheduling', { node: { requireAll: [selector] } });
@@ -286,7 +286,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
       }
     }
 
-    if (!get(this, 'separateLivenessCheck')) {
+    if (!this.separateLivenessCheck) {
       if ( readinessProbe ) {
         const livenessProbe = Object.assign({}, readinessProbe);
 
@@ -302,11 +302,11 @@ export default Component.extend(NewOrEdit, ChildHook, {
       set(lc, 'uid', null);
     }
 
-    if (get(this, 'isSidekick')) {
+    if (this.isSidekick) {
       let errors = [];
 
       if (!service) {
-        errors.push(get(this, 'intl').t('newContainer.errors.noSidekick'));
+        errors.push(this.intl.t('newContainer.errors.noSidekick'));
         set(this, 'errors', errors);
 
         return false;
@@ -329,7 +329,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
         set(pr, 'secondaryLaunchConfigs', slc);
       }
 
-      let lci = get(this, 'launchConfigIndex');
+      let lci = this.launchConfigIndex;
 
       if (lci === undefined || lci === null) {
         // If it's a new sidekick, add it to the end of the list
@@ -356,13 +356,13 @@ export default Component.extend(NewOrEdit, ChildHook, {
       set(pr, 'containers', [pr.containers[0]]);
       pr.containers.pushObjects(slc);
     } else {
-      service.clearConfigsExcept(`${ get(this, 'scaleMode')  }Config`);
-      if ( get(this, 'scaleMode') === 'statefulSet' &&  !get(service, 'statefulSetConfig.serviceName') ) {
+      service.clearConfigsExcept(`${ this.scaleMode  }Config`);
+      if ( this.scaleMode === 'statefulSet' &&  !get(service, 'statefulSetConfig.serviceName') ) {
         set(service, 'statefulSetConfig.serviceName', name);
       }
       pr = service;
       nameResource = pr;
-      set(pr, 'scale', get(this, 'scale'));
+      set(pr, 'scale', this.scale);
       const containers = get(pr, 'containers');
 
       if (!containers) {
@@ -375,7 +375,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
 
     nameResource.setProperties({
       name,
-      description: get(this, 'description'),
+      description: this.description,
     });
 
     set(this, 'primaryResource', pr);
@@ -410,8 +410,8 @@ export default Component.extend(NewOrEdit, ChildHook, {
   },
 
   doneSaving() {
-    if (!get(this, 'isUpgrade')) {
-      let scaleMode = get(this, 'scaleMode');
+    if (!this.isUpgrade) {
+      let scaleMode = this.scaleMode;
 
       if (scaleMode === 'sidekick') {
         // Remember sidekick as service since you're not
@@ -423,8 +423,8 @@ export default Component.extend(NewOrEdit, ChildHook, {
       set(this, `prefs.${ C.PREFS.LAST_NAMESPACE }`, get(this, 'namespace.id'));
 
 
-      if ( get(this, 'showTargetOS') ) {
-        set(this, `prefs.${ C.PREFS.TARGET_OS }`, get(this, 'targetOs'));
+      if ( this.showTargetOS ) {
+        set(this, `prefs.${ C.PREFS.TARGET_OS }`, this.targetOs);
       }
     }
     if (this.done) {

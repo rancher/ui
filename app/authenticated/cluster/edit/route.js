@@ -2,7 +2,11 @@ import { get, set, setProperties } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import { hash, hashSettled/* , all */ } from 'rsvp';
-import { loadScript, loadStylesheet, proxifyUrl } from 'shared/utils/load-script';
+import {
+  loadScript,
+  loadStylesheet,
+  proxifyUrl
+} from 'shared/utils/load-script';
 import { isEmpty } from '@ember/utils';
 import { scheduleOnce } from '@ember/runloop';
 
@@ -15,7 +19,7 @@ export default Route.extend({
   roleTemplateService:    service('roleTemplate'),
 
   model() {
-    const globalStore = this.get('globalStore');
+    const globalStore = this.globalStore;
 
     const cluster     = this.modelFor('authenticated.cluster');
 
@@ -27,7 +31,7 @@ export default Route.extend({
       nodeTemplates:              globalStore.findAll('nodeTemplate'),
       nodeDrivers:                globalStore.findAll('nodeDriver'),
       psacs:                      globalStore.findAll('podSecurityAdmissionConfigurationTemplate'),
-      roleTemplates:              get(this, 'roleTemplateService').get('allFilteredRoleTemplates'),
+      roleTemplates:              this.roleTemplateService.get('allFilteredRoleTemplates'),
       users:                      globalStore.findAll('user'),
       clusterRoleTemplateBinding: globalStore.findAll('clusterRoleTemplateBinding'),
       me:                         get(this, 'access.principal'),
@@ -125,7 +129,7 @@ export default Route.extend({
 
             console.log('Error Loading External Component for: ', match);
             if (match && get(match, 'scriptError') !== true) {
-              set(match, 'scriptError', get(this, 'intl').t('clusterNew.externalError'));
+              set(match, 'scriptError', this.intl.t('clusterNew.externalError'));
             }
           }
         });

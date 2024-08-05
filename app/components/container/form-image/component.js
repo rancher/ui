@@ -24,9 +24,9 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    set(this, 'allPods', get(this, 'store').all('pod'));
+    set(this, 'allPods', this.store.all('pod'));
 
-    let initial = get(this, 'initialValue') || '';
+    let initial = this.initialValue || '';
 
     if ( !lastContainer ) {
       lastContainer = (get(this, 'scope.currentCluster.isWindows') ? WINDOWS_LAST_CONTAINER : LINUX_LAST_CONTAINER)
@@ -45,7 +45,7 @@ export default Component.extend({
   },
 
   userInputDidChange: observer('userInput', function() {
-    var input = (get(this, 'userInput') || '').trim();
+    var input = (this.userInput || '').trim();
     var out;
 
     if ( input && input.length ) {
@@ -67,7 +67,7 @@ export default Component.extend({
   suggestions: computed('allPods.@each.containers', function() {
     let inUse = [];
 
-    get(this, 'allPods').forEach((pod) => {
+    this.allPods.forEach((pod) => {
       inUse.addObjects(pod.get('containers') || []);
     });
 
@@ -82,7 +82,7 @@ export default Component.extend({
   validate() {
     var errors = [];
 
-    if ( !get(this, 'value') ) {
+    if ( !this.value ) {
       errors.push('Image is required');
     }
 

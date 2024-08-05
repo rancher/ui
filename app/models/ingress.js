@@ -16,23 +16,23 @@ export default Resource.extend({
 
   targets: computed('defaultBackend', 'rules.@each.paths', 'store', 'tls', function() {
     const out = [];
-    const store = get(this, 'store');
+    const store = this.store;
 
     let tlsHosts = [];
 
-    (get(this, 'tls') || []).forEach((entry) => {
+    (this.tls || []).forEach((entry) => {
       tlsHosts.addObjects(entry.hosts || []);
     });
     tlsHosts = tlsHosts.uniq();
 
 
-    let def = get(this, 'defaultBackend');
+    let def = this.defaultBackend;
 
     if ( def ) {
       addRow(null, null, def);
     }
 
-    (get(this, 'rules') || []).forEach((rule) => {
+    (this.rules || []).forEach((rule) => {
       let entries = get(rule, 'paths') || [];
 
       entries.forEach((entry) => {
@@ -70,24 +70,24 @@ export default Resource.extend({
   }),
 
   displayKind: computed('intl.locale', function() {
-    const intl = get(this, 'intl');
+    const intl = this.intl;
 
     return intl.t('model.ingress.displayKind');
   }),
   actions:      {
     edit() {
-      get(this, 'router').transitionTo('ingresses.run', {
+      this.router.transitionTo('ingresses.run', {
         queryParams: {
-          ingressId: get(this, 'id'),
+          ingressId: this.id,
           upgrade:   true,
         }
       });
     },
 
     clone() {
-      get(this, 'router').transitionTo('ingresses.run', {
+      this.router.transitionTo('ingresses.run', {
         queryParams: {
-          ingressId: get(this, 'id'),
+          ingressId: this.id,
           upgrade:   false,
         }
       });

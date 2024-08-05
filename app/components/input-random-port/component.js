@@ -1,4 +1,4 @@
-import { set, get } from '@ember/object';
+import { set } from '@ember/object';
 import Component from '@ember/component';
 import layout from './template';
 import { next } from '@ember/runloop';
@@ -17,7 +17,7 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    if (get(this, 'value')) {
+    if (this.value) {
       set(this, 'showEdit', true);
     }
   },

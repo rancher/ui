@@ -5,23 +5,23 @@ var Port = Resource.extend({
   _publicIp:       null,
   _publicIpState:  null,
   displayPublicIp: computed('_publicIp', '_publicIpState', 'bindAddress', 'publicIpAddressId', 'publicPort', 'store', function() {
-    var bind = this.get('bindAddress');
+    var bind = this.bindAddress;
 
     if ( bind ) {
       return bind;
-    } else if ( !this.get('publicPort') ) {
+    } else if ( !this.publicPort ) {
       return null;
     }
 
-    var ip = this.get('_publicIp');
+    var ip = this._publicIp;
 
     if ( ip ) {
       return ip;
-    } else if ( this.get('_publicIpState') === 2 ) {
+    } else if ( this._publicIpState === 2 ) {
       return '(Unknown IP)';
-    } else if ( !this.get('_publicIpState') ) {
+    } else if ( !this._publicIpState ) {
       this.set('_publicIpState', 1);
-      this.get('store').find('ipaddress', this.get('publicIpAddressId'))
+      this.store.find('ipaddress', this.publicIpAddressId)
         .then((ip) => {
           this.set('_publicIp', ip.get('address'));
         })

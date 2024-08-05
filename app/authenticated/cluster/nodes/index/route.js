@@ -11,7 +11,7 @@ export default Route.extend({
   model() {
     const cluster = this.modelFor('authenticated.cluster');
 
-    return this.get('globalStore').findAll('node')
+    return this.globalStore.findAll('node')
       .then((nodes) => ({
         cluster,
         nodes,

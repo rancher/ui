@@ -23,16 +23,16 @@ export default Component.extend({
     addRule() {
       const rule = EmberObject.create({});
 
-      get(this, 'rules').pushObject(rule);
+      this.rules.pushObject(rule);
     },
 
     removeRule(rule) {
-      get(this, 'rules').removeObject(rule);
+      this.rules.removeObject(rule);
     },
   },
 
   rulesChanged: observer('rules.@each.matchExpressions', function() {
-    const out = (get(this, 'rules') || []).filter((rule) => {
+    const out = (this.rules || []).filter((rule) => {
       return rule.matchExpressions && rule.matchExpressions.length > 0;
     });
 

@@ -10,7 +10,7 @@ export default Route.extend({
   clusterStore: service(),
 
   model() {
-    var store = this.get('clusterStore');
+    var store = this.clusterStore;
 
     return hash({ namespaces: store.findAll('namespace'), });
   },

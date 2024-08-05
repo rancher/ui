@@ -18,7 +18,7 @@ export default Component.extend({
     let accessROX = false;
     let accessRWX = false;
 
-    if ( get(this, 'mode') !== 'new' ) {
+    if ( this.mode !== 'new' ) {
       const modes = get(this, 'model.accessModes') || [];
 
       accessRWO = modes.includes('ReadWriteOnce');
@@ -38,20 +38,20 @@ export default Component.extend({
   modesChanged: observer('accessRWO', 'accessROX', 'accessRWX', function() {
     const modes = [];
 
-    if ( get(this, 'accessRWO') ) {
+    if ( this.accessRWO ) {
       modes.push('ReadWriteOnce');
     }
-    if ( get(this, 'accessROX') ) {
+    if ( this.accessROX ) {
       modes.push('ReadOnlyMany');
     }
-    if ( get(this, 'accessRWX') ) {
+    if ( this.accessRWX ) {
       modes.push('ReadWriteMany');
     }
 
     set(this, 'model.accessModes', modes);
   }),
   editing: computed('mode', function() {
-    return get(this, 'mode') !== 'view';
+    return this.mode !== 'view';
   }),
 
 });

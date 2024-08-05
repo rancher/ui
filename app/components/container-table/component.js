@@ -45,9 +45,9 @@ export default Component.extend({
   extraSearchFields: ['displayIp', 'primaryHost.displayName'],
 
   headers: computed('showNode', 'showStats', function() {
-    if ( this.get('showStats') ) {
+    if ( this.showStats ) {
       return headersWithStats;
-    } else if ( this.get('showNode') ) {
+    } else if ( this.showNode ) {
       return headersWithNode;
     } else {
       return headersWithoutHost;
@@ -55,7 +55,7 @@ export default Component.extend({
   }),
 
   filtered: computed('body.@each.isSystem', function() {
-    let out = this.get('body') || [];
+    let out = this.body || [];
 
     return out;
   }),

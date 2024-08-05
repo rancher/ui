@@ -16,24 +16,24 @@ export default Component.extend(ModalBase, {
 
   actions: {
     downloadLinuxImages() {
-      get(this, 'globalStore').rawRequest({
+      this.globalStore.rawRequest({
         url:    `/v3/kontainerdrivers/rancher-images`,
         method: 'GET',
       }).then((res) => {
         downloadFile(`rancher-linux-images.txt`, get(res, 'body'));
       }).catch((error) => {
-        get(this, 'growl').fromError('Error downloading Linux image list', error.message);
+        this.growl.fromError('Error downloading Linux image list', error.message);
       });
     },
 
     downloadWindowsImages() {
-      get(this, 'globalStore').rawRequest({
+      this.globalStore.rawRequest({
         url:    `/v3/kontainerdrivers/rancher-windows-images`,
         method: 'GET',
       }).then((res) => {
         downloadFile(`rancher-windows-images.txt`, get(res, 'body'));
       }).catch((error) => {
-        get(this, 'growl').fromError('Error downloading Windows image list', error.message);
+        this.growl.fromError('Error downloading Windows image list', error.message);
       });
     },
   }

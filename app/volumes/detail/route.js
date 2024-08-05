@@ -1,11 +1,10 @@
-import { get } from '@ember/object';
 import { hash } from 'rsvp';
 import Route from '@ember/routing/route';
 
 export default Route.extend({
   model(params) {
-    const store = get(this, 'store');
-    const clusterStore = get(this, 'clusterStore');
+    const store = this.store;
+    const clusterStore = this.clusterStore;
 
     return hash({
       persistentVolumes: clusterStore.findAll('persistentVolume'),

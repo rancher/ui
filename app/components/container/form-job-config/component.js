@@ -11,14 +11,14 @@ export default Component.extend({
   classNames: ['accordion-wrapper'],
 
   didReceiveAttrs() {
-    if (!this.get('expandFn')) {
+    if (!this.expandFn) {
       this.set('expandFn', (item) => {
         item.toggleProperty('expanded');
       });
     }
   },
   jobConfig: computed('scaleMode', 'workload.cronJobConfig.jobConfig', 'workload.jobConfig', function() {
-    const scaleMode = get(this, 'scaleMode');
+    const scaleMode = this.scaleMode;
     let config;
 
     if ( scaleMode === 'job' ) {

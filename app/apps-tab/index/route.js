@@ -9,17 +9,17 @@ export default Route.extend({
   store:   service(),
 
   beforeModel() {
-    return get(this, 'catalog').fetchUnScopedCatalogs();
+    return this.catalog.fetchUnScopedCatalogs();
   },
 
 
   model() {
-    return this.get('store').findAll('app')
+    return this.store.findAll('app')
       .then((apps) => ({ apps, }));
   },
 
   afterModel(model/* , transition */) {
-    return get(this, 'catalog').fetchAppTemplates(get(model, 'apps'));
+    return this.catalog.fetchAppTemplates(get(model, 'apps'));
   },
 
   setDefaultRoute: on('activate', function() {

@@ -7,9 +7,9 @@ export default Resource.extend({
   globalStore: service(),
 
   principal: computed('userPrincipalId', 'groupPrincipalId', function() {
-    if (get(this, 'userPrincipalId')) {
+    if (this.userPrincipalId) {
       return this.globalStore.getById('principal', this.userPrincipalId)
-    } else if (get(this, 'groupPrincipalId')) {
+    } else if (this.groupPrincipalId) {
       return this.globalStore.getById('principal', this.groupPrincipalId)
     }
 
@@ -17,28 +17,28 @@ export default Resource.extend({
   }),
 
   displayType: computed('principal.id', 'principalType', function() {
-    let principal = get(this, 'principal');
+    let principal = this.principal;
     let type      = null;
 
     if (principal && get(principal, 'displayType')) {
       type = get(principal, 'displayType');
     } else if (principal && get(principal, 'principalType')) {
-      type = get(this, 'principalType');
+      type = this.principalType;
     }
 
     return type;
   }),
 
   displayName: computed('groupPrincipalId', 'principal.id', 'userPrincipalId', function() {
-    let principal = get(this, 'principal');
+    let principal = this.principal;
     let name      = null;
 
     if (principal && get(principal, 'displayName')) {
       name = get(principal, 'displayName');
-    } else if (get(this, 'userPrincipalId')) {
-      name = get(this, 'userPrincipalId');
-    } else if (get(this, 'groupPrincipalId')) {
-      name = get(this, 'groupPrincipalId');
+    } else if (this.userPrincipalId) {
+      name = this.userPrincipalId;
+    } else if (this.groupPrincipalId) {
+      name = this.groupPrincipalId;
     }
 
     return name;

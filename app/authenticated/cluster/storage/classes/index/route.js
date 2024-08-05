@@ -12,7 +12,7 @@ export default Route.extend({
       this.transitionTo('authenticated.cluster.index');
     }
 
-    return hash({ storageClasses: get(this, 'clusterStore').findAll('storageClass'), });
+    return hash({ storageClasses: this.clusterStore.findAll('storageClass'), });
   },
 
   setDefaultRoute: on('activate', function() {

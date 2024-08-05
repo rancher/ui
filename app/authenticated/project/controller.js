@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { computed, observer } from '@ember/object';
-import { alias } from '@ember/object/computed';
+import { alias, and } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import C from 'ui/utils/constants';
 import { isEmbedded } from 'shared/utils/util';
@@ -24,18 +24,18 @@ export default Controller.extend({
 
   namespaces: alias('scope.currentProject.namespaces'),
 
-  showSystemProjectWarning: computed.and('model.project.isSystemProject', 'notEmbedded'),
+  showSystemProjectWarning: and('model.project.isSystemProject', 'notEmbedded'),
 
   init() {
     this._super(...arguments);
-    this.set('nodes', this.get('store').all('node'));
+    this.set('nodes', this.store.all('node'));
     this.set('expandedInstances', []);
     this.set('notEmbedded', !isEmbedded());
   },
 
   actions: {
     toggleExpand(instId) {
-      let list = this.get('expandedInstances');
+      let list = this.expandedInstances;
 
       if ( list.includes(instId) ) {
         list.removeObject(instId);
@@ -52,7 +52,7 @@ export default Controller.extend({
   groupChanged: observer('group', function() {
     let key = `prefs.${ C.PREFS.CONTAINER_VIEW }`;
     let cur = this.get(key);
-    let neu = this.get('group');
+    let neu = this.group;
 
     if ( cur !== neu ) {
       this.set(key, neu);
@@ -63,9 +63,9 @@ export default Controller.extend({
   }),
 
   groupTableBy: computed('group', function() {
-    if ( this.get('group') === NAMESPACE ) {
+    if ( this.group === NAMESPACE ) {
       return 'namespaceId';
-    } else if ( this.get('group') === NODE ) {
+    } else if ( this.group === NODE ) {
       return 'nodeId';
     } else {
       return null;
@@ -73,7 +73,7 @@ export default Controller.extend({
   }),
 
   preSorts: computed('groupTableBy', function() {
-    if ( this.get('groupTableBy') ) {
+    if ( this.groupTableBy ) {
       return ['namespace.isDefault:desc', 'namespace.displayName'];
     } else {
       return null;

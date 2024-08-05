@@ -9,10 +9,10 @@ export default Route.extend({
   k8s:   service(),
 
   model(params) {
-    let store = get(this, 'store');
+    let store = this.store;
 
     if (params.kubernetes) {
-      return get(this, 'k8s').getInstanceToConnect();
+      return this.k8s.getInstanceToConnect();
     }
 
     return hash({
@@ -28,14 +28,14 @@ export default Route.extend({
     set(controller, 'windows', model.windows === 'true');
     set(controller, 'containerName', model.containerName);
 
-    if (controller.get('kubernetes')) {
+    if (controller.kubernetes) {
       defineProperty(controller, 'command', computed('cookies', 'model.pod.labels', function() {
         var labels = get(this, 'model.pod.labels') || {};
 
         if ( `${ labels[C.LABEL.K8S_TOKEN] }` === 'true' ) {
           return [
             'kubectl-shell.sh',
-            get(this, 'cookies').get(C.COOKIE.TOKEN) || 'unauthorized'
+            this.cookies.get(C.COOKIE.TOKEN) || 'unauthorized'
           ];
         } else {
           return ['/bin/bash', '-l', '-c', 'echo "# Run kubectl commands inside here\n# e.g. kubectl get rc\n"; TERM=xterm-256color /bin/bash'];

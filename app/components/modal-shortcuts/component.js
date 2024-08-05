@@ -22,7 +22,7 @@ export default Component.extend(ModalBase, {
 
   init() {
     this._super(...arguments);
-    this.set('pods', this.get('store').all('pod'));
+    this.set('pods', this.store.all('pod'));
 
     this.set('timer', setInterval(() => {
       this.updateTime();
@@ -30,7 +30,7 @@ export default Component.extend(ModalBase, {
   },
 
   willDestroyElement() {
-    clearInterval(this.get('timer'));
+    clearInterval(this.timer);
   },
   containerCount: computed('pods.length', function() {
     let count = this.get('pods.length');
@@ -48,7 +48,7 @@ export default Component.extend(ModalBase, {
 
 
   updateTime() {
-    let time = this.get('time');
+    let time = this.time;
 
     if ( time > 0 ) {
       time--;

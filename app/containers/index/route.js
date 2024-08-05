@@ -9,8 +9,8 @@ export default Route.extend({
   globalStore: service(),
 
   model() {
-    var store = this.get('store');
-    var globalStore = this.get('globalStore');
+    var store = this.store;
+    var globalStore = this.globalStore;
 
     return hash({
       workloads: store.findAll('workload'),

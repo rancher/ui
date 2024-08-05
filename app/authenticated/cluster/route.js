@@ -19,7 +19,7 @@ export default Route.extend(Preload, {
   settings:     service(),
 
   model(params, transition) {
-    return get(this, 'globalStore').find('cluster', params.cluster_id)
+    return this.globalStore.find('cluster', params.cluster_id)
       .then((cluster) => {
         const hideLocalCluster = get(this.settings, 'shouldHideLocalCluster');
 
@@ -27,7 +27,7 @@ export default Route.extend(Preload, {
           return this.replaceWith('authenticated');
         }
 
-        return get(this, 'scope').startSwitchToCluster(cluster).then(() => {
+        return this.scope.startSwitchToCluster(cluster).then(() => {
           if ( get(cluster, 'isReady') ) {
             const preloads = [
               this.preload('namespace', 'clusterStore'),
@@ -56,7 +56,7 @@ export default Route.extend(Preload, {
   },
 
   afterModel(model) {
-    return get(this, 'scope').finishSwitchToCluster(model);
+    return this.scope.finishSwitchToCluster(model);
   },
 
   redirect(router, transition) {
@@ -68,7 +68,7 @@ export default Route.extend(Preload, {
   },
   actions: {
     becameReady() {
-      get(this, 'clusterStore').reset();
+      this.clusterStore.reset();
       this.refresh();
     },
 

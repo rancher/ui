@@ -1,5 +1,9 @@
 import { module, test } from 'qunit';
-import { insensitiveCompare, sortInsensitiveBy, sortVersions } from 'shared/utils/sort';
+import {
+  insensitiveCompare,
+  sortInsensitiveBy,
+  sortVersions
+} from 'shared/utils/sort';
 
 module('Unit | Utility | sort', () => {
   module('insensitiveCompare', () => {

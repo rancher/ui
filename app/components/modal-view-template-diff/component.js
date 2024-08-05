@@ -50,6 +50,6 @@ export default Component.extend(ModalBase, {
   },
 
   cancel() {
-    get(this, 'modalService').toggleModal();
+    this.modalService.toggleModal();
   },
 });

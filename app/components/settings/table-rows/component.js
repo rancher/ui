@@ -24,10 +24,10 @@ export default Component.extend({
   perPage: alias('prefs.tablePerPage'),
   init() {
     this._super(...arguments);
-    this.set('selectedCount', `${ this.get('perPage') }`);
+    this.set('selectedCount', `${ this.perPage }`);
   },
 
   countChanged: observer('selectedCount', function() {
-    this.set(`prefs.${ C.PREFS.TABLE_COUNT }`, parseInt(this.get('selectedCount'), 10));
+    this.set(`prefs.${ C.PREFS.TABLE_COUNT }`, parseInt(this.selectedCount, 10));
   }),
 });

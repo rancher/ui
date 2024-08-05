@@ -43,8 +43,8 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
   },
 
   availableActions: computed('actionLinks.{cordon,drain,uncordon}', 'canScaleDown', 'links.nodeConfig', function() {
-    let l = get(this, 'links');
-    const a = get(this, 'actionLinks') || {};
+    let l = this.links;
+    const a = this.actionLinks || {};
 
     let out = [
       {
@@ -96,20 +96,20 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
   }),
 
   canScaleDown: computed('actionLinks.scaledown', 'nodePool.quantity', function() {
-    const actions = get(this, 'actionLinks');
-    const nodePool = get(this, 'nodePool');
+    const actions = this.actionLinks;
+    const nodePool = this.nodePool;
 
     return !!actions?.scaledown && nodePool?.quantity > 1;
   }),
 
   displayName: computed('id', 'name', 'nodeName.length', 'nodes', 'requestedHostname', function() {
-    let name = get(this, 'name');
+    let name = this.name;
 
     if ( name ) {
       return name;
     }
 
-    name = get(this, 'nodeName');
+    name = this.nodeName;
     if ( name ) {
       if ( name.match(/[a-z]/i) ) {
         name = this.parseNodeName(name);
@@ -118,12 +118,12 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
       return name;
     }
 
-    name = get(this, 'requestedHostname');
+    name = this.requestedHostname;
     if ( name ) {
       return name;
     }
 
-    return `(${ get(this, 'id') })`;
+    return `(${ this.id })`;
   }),
 
   rolesArray: computed('etcd', 'controlPlane', 'worker', function() {
@@ -131,8 +131,8 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
   }),
 
   displayRoles: computed('intl.locale', 'rolesArray.[]', function() {
-    const intl = get(this, 'intl');
-    const roles = get(this, 'rolesArray');
+    const intl = this.intl;
+    const roles = this.rolesArray;
 
     if ( roles.length >= 3 ) {
       return [intl.t('generic.all')];
@@ -150,7 +150,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
   }),
 
   sortRole: computed('rolesArray.[]', function() {
-    let roles = get(this, 'rolesArray');
+    let roles = this.rolesArray;
 
     if ( roles.length >= 3 ) {
       return 1;
@@ -168,13 +168,13 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
   }),
 
   isUnschedulable: computed('taints.@each.{effect,key}', function(){
-    const taints = get(this, 'taints') || [];
+    const taints = this.taints || [];
 
     return taints.some((taint) => UNSCHEDULABLE_KEYS.includes(taint.key) && UNSCHEDULABLE_EFFECTS.includes(taint.effect));
   }),
 
   isK3sNode: computed('labels', function() {
-    const labels = get(this, 'labels') || {};
+    const labels = this.labels || {};
 
     return Object.prototype.hasOwnProperty.call(labels, C.LABEL.NODE_INSTANCE_TYPE);
   }),
@@ -247,16 +247,16 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
   }),
 
   osInfo: computed('labels', function() {
-    const labels = get(this, 'labels') || {};
+    const labels = this.labels || {};
 
     return labels['beta.kubernetes.io/os'];
   }),
 
   //  or they will not be pulled in correctly.
   displayEndpoints: computed('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}', function() {
-    var store = get(this, 'clusterStore');
+    var store = this.clusterStore;
 
-    return (get(this, 'publicEndpoints') || []).map((endpoint) => {
+    return (this.publicEndpoints || []).map((endpoint) => {
       if ( !endpoint.service ) {
         endpoint.service = store.getById('service', endpoint.serviceId);
       }
@@ -269,7 +269,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
 
   // If you use this you must ensure that services and containers are already in the store
   requireAnyLabelStrings: computed(`labels.${ C.LABEL.REQUIRE_ANY }`, 'labels', function() {
-    return  ((get(this, 'labels') || {})[C.LABEL.REQUIRE_ANY] || '')
+    return ((this.labels || {})[C.LABEL.REQUIRE_ANY] || '')
       .split(/\s*,\s*/)
       .filter((x) => x.length > 0 && x !== C.LABEL.SYSTEM_TYPE);
   }),
@@ -314,7 +314,7 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     },
 
     drain() {
-      get(this, 'modalService').toggleModal('modal-drain-node', {
+      this.modalService.toggleModal('modal-drain-node', {
         escToClose: true,
         resources:  [this],
       });
@@ -325,11 +325,11 @@ var Node = Resource.extend(Grafana, StateCounts, ResourceUsage, {
     },
 
     newContainer() {
-      get(this, 'router').transitionTo('containers.run', { queryParams: { hostId: get(this, 'model.id') } });
+      this.router.transitionTo('containers.run', { queryParams: { hostId: get(this, 'model.id') } });
     },
 
     edit() {
-      get(this, 'modalService').toggleModal('modal-edit-host', this);
+      this.modalService.toggleModal('modal-edit-host', this);
     },
 
     nodeConfig() {

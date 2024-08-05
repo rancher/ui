@@ -27,13 +27,13 @@ export default Component.extend(VolumeSource, {
   },
 
   specificDidChange: observer('specific', function() {
-    if (!get(this, 'specific')){
+    if (!this.specific){
       set(this, 'config.items', null);
     }
   }),
 
   modeDidChange: observer('defaultMode', function() {
-    const octal = get(this, 'defaultMode') || '0';
+    const octal = this.defaultMode || '0';
 
     set(this, 'config.defaultMode', parseInt(octal, 8));
   }),

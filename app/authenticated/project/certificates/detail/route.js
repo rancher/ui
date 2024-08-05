@@ -1,5 +1,4 @@
 import Route from '@ember/routing/route';
-import { get } from '@ember/object';
 
 export default Route.extend({
   model(params) {
@@ -16,6 +15,6 @@ export default Route.extend({
       return cert;
     }
 
-    return get(this, 'store').find('certificate', params.certificate_id);
+    return this.store.find('certificate', params.certificate_id);
   },
 });

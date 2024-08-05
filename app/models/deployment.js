@@ -1,11 +1,11 @@
 import Workload from 'ui/models/workload';
-import { get, computed } from '@ember/object';
+import { computed } from '@ember/object';
 
 const Deployment = Workload.extend({
   combinedState: computed('state', 'isPaused', function() {
-    var service = get(this, 'state');
+    var service = this.state;
 
-    if (service === 'active' && get(this, 'isPaused')) {
+    if (service === 'active' && this.isPaused) {
       return 'paused';
     }
 
@@ -13,7 +13,7 @@ const Deployment = Workload.extend({
   }),
 
   isPaused: computed('paused', function() {
-    return !!get(this, 'paused');
+    return !!this.paused;
   }),
 });
 

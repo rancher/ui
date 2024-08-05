@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { alias } from '@ember/object/computed';
-import { get, observer } from '@ember/object';
+import { observer } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default Controller.extend({
@@ -21,7 +21,7 @@ export default Controller.extend({
 
   scrolling: observer('model.activated', function() {
     const intervalId = setInterval(() => {
-      const element = $(`#${ get(this, 'scrollTo') }`); // eslint-disable-line
+      const element = $(`#${ this.scrollTo }`); // eslint-disable-line
 
       if (element.length > 0 && element.get(0).getBoundingClientRect().top !== 0) {
         element.get(0).scrollIntoView(true);

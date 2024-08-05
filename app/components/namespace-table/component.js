@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import layout from './template';
 import { inject as service } from '@ember/service';
-import { get, computed } from '@ember/object';
+import { computed } from '@ember/object';
 import { filter } from 'ui/utils/search-text';
 
 const headers = [
@@ -45,7 +45,7 @@ export default Component.extend({
   ],
 
   projectsWithoutNamespace: computed('projectsWithoutNamespaces.[]', 'searchText', function() {
-    const { matches } =  filter(get(this, 'projectsWithoutNamespaces').slice(), get(this, 'searchText'), ['displayName']);
+    const { matches } =  filter(this.projectsWithoutNamespaces.slice(), this.searchText, ['displayName']);
 
     return matches;
   }),

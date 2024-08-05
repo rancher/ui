@@ -34,7 +34,7 @@ export default Component.extend({
 
   actions: {
     add() {
-      get(this, 'metrics').pushObject({
+      this.metrics.pushObject({
         path:   '',
         port:   '',
         schema: HTTP
@@ -42,11 +42,11 @@ export default Component.extend({
     },
 
     remove(obj) {
-      get(this, 'metrics').removeObject(obj);
+      this.metrics.removeObject(obj);
     },
   },
 
   metricsChanged: observer('metrics.@each.{port,path,schema}', function() {
-    set(this, 'workload.workloadMetrics', get(this, 'metrics').filter((metric) => get(metric, 'port')));
+    set(this, 'workload.workloadMetrics', this.metrics.filter((metric) => get(metric, 'port')));
   })
 });

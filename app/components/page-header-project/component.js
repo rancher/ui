@@ -55,6 +55,10 @@ export default Component.extend(ThrottledResize, {
   cluster:             alias('scope.pendingCluster'),
   numClusters:         alias('byCluster.length'),
 
+  twoLine: computed.equal('pageScope', 'project'),
+
+  hide: computed.equal('pageScope', 'user'),
+
   init() {
     this._super(...arguments);
     setProperties(this, {
@@ -104,7 +108,7 @@ export default Component.extend(ThrottledResize, {
 
           if ( currentClusterId ) {
             const li = $(`.clusters LI[data-cluster-id="${ currentClusterId }"]`)[0];
-            const entry = get(this, 'byCluster').findBy('clusterId', currentClusterId);
+            const entry = this.byCluster.findBy('clusterId', currentClusterId);
 
             ensureVisible(li);
 
@@ -144,21 +148,13 @@ export default Component.extend(ThrottledResize, {
     },
   },
 
-  twoLine: computed('pageScope', function() {
-    return get(this, 'pageScope') === 'project';
-  }),
-
-  hide: computed('pageScope', function() {
-    return get(this, 'pageScope') === 'user';
-  }),
-
   projectChoices: computed('scope.allProjects.@each.{id,displayName,relevantState}', function() {
     return get(this, 'scope.allProjects')
       .sortBy('displayName', 'id');
   }),
 
   maxProjects: computed('byCluster.@each.numProjects', function() {
-    const counts = get(this, 'byCluster').map((x) => x.projects.length);
+    const counts = this.byCluster.map((x) => x.projects.length);
 
     return Math.max(...counts);
   }),
@@ -175,7 +171,7 @@ export default Component.extend(ThrottledResize, {
       }
     });
 
-    get(this, 'projectChoices').forEach((project) => {
+    this.projectChoices.forEach((project) => {
       const cluster = get(project, 'cluster');
       const width   = getMaxWidth(textWidth(get(project, 'displayName'), FONT), navWidth);
 
@@ -224,22 +220,22 @@ export default Component.extend(ThrottledResize, {
   }),
 
   clustersWidth: computed('byCluster.@each.width', function() {
-    const widths = get(this, 'byCluster').map((x) => get(x, 'width'));
+    const widths = this.byCluster.map((x) => get(x, 'width'));
 
     return Math.max(...widths);
   }),
 
   projectsWidth: computed('byCluster.@each.projectWidth', function() {
-    const widths = get(this, 'byCluster').map((x) => get(x, 'projectWidth'));
+    const widths = this.byCluster.map((x) => get(x, 'projectWidth'));
 
     return Math.max(...widths);
   }),
 
   clusterSearchResults: computed('searchInput', 'byCluster.[]', function() {
-    const needle = get(this, 'searchInput');
+    const needle = this.searchInput;
     const out = [];
 
-    get(this, 'byCluster').forEach((entry) => {
+    this.byCluster.forEach((entry) => {
       const cluster = get(entry, 'cluster');
       const name = get(cluster, 'displayName');
       const { found, match } = highlightMatches(needle, name);
@@ -256,10 +252,10 @@ export default Component.extend(ThrottledResize, {
   }),
 
   projectSearchResults: computed('byCluster.[]', 'projectChoices', 'searchInput', function() {
-    const needle = get(this, 'searchInput');
+    const needle = this.searchInput;
     const out = [];
 
-    get(this, 'projectChoices').forEach((project) => {
+    this.projectChoices.forEach((project) => {
       const name = get(project, 'displayName');
       const { found, match } = highlightMatches(needle, name);
 
@@ -418,7 +414,7 @@ export default Component.extend(ThrottledResize, {
   },
 
   enterCluster(e) {
-    if ( get(this, 'searchInput') ) {
+    if ( this.searchInput ) {
       return;
     }
 
@@ -428,7 +424,7 @@ export default Component.extend(ThrottledResize, {
     const id = $li.data('cluster-id');
 
     if ( id ) {
-      const entry = get(this, 'byCluster').findBy('clusterId', id);
+      const entry = this.byCluster.findBy('clusterId', id);
 
       this.maybeHover(entry);
     }
@@ -444,13 +440,13 @@ export default Component.extend(ThrottledResize, {
     set(this, 'leaveDelayTimer', setTimeout(() => {
       setProperties(this, {
         hoverEntry:   null,
-        clusterEntry: get(this, 'activeClusterEntry'),
+        clusterEntry: this.activeClusterEntry,
       });
     }, MOUSE_DELAY));
   },
 
   getHoverDelay() {
-    const entry  = get(this, 'activeClusterEntry');
+    const entry  = this.activeClusterEntry;
     const points = this.mousePoints;
     const $menu  = $('.clusters');
 
@@ -525,7 +521,7 @@ export default Component.extend(ThrottledResize, {
         this.maybeHover(entry);
       }, delay);
     } else {
-      const prev = get(this, 'hoverEntry');
+      const prev = this.hoverEntry;
 
       if ( entry !== prev ) {
         setProperties(this, {
@@ -553,20 +549,20 @@ export default Component.extend(ThrottledResize, {
   },
 
   onResize() {
-    if ( !get(this, 'open') ) {
+    if ( !this.open ) {
       return;
     }
 
     const $window = $(window);
-    let want      = Math.max(get(this, 'numClusters'), get(this, 'maxProjects'));
+    let want      = Math.max(this.numClusters, this.maxProjects);
     let roomFor   = Math.ceil( ($window.height() - BUFFER_HEIGHT) / (2 * ITEM_HEIGHT) );
     const rows    = Math.max(3, Math.min(want, roomFor));
     const height  = rows * ITEM_HEIGHT;
 
     set(this, 'columnStyle', `height: ${ height }px`.htmlSafe());
 
-    let cw = Math.max(MIN_COLUMN_WIDTH, get(this, 'clustersWidth') + 60); // 20px icon, 20px padding, 20px scrollbar
-    let pw = Math.max(MIN_COLUMN_WIDTH, get(this, 'projectsWidth') + 60);
+    let cw = Math.max(MIN_COLUMN_WIDTH, this.clustersWidth + 60); // 20px icon, 20px padding, 20px scrollbar
+    let pw = Math.max(MIN_COLUMN_WIDTH, this.projectsWidth + 60);
 
     want    = cw + pw;
     roomFor = $window.width() - BUFFER_WIDTH;

@@ -31,15 +31,15 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
       set(this, 'scope', 'namespace');
       set(this, 'namespace', get(this, 'model.namespace'));
     }
-    const globalRegistryEnabled = get(this, 'globalStore').all('setting').findBy('id', 'global-registry-enabled') || {};
+    const globalRegistryEnabled = this.globalStore.all('setting').findBy('id', 'global-registry-enabled') || {};
 
     set(this, 'globalRegistryEnabled', get(globalRegistryEnabled, 'value') === 'true')
 
     let asArray = JSON.parse(JSON.stringify(get(this, 'model.asArray') || []))
 
-    if (!globalRegistryEnabled && get(this, 'mode') === 'new') {
+    if (!globalRegistryEnabled && this.mode === 'new') {
       asArray = asArray.map((item) => {
-        if (item.preset === get(this, 'hostname')) {
+        if (item.preset === this.hostname) {
           return {
             ...item,
             preset: 'custom'
@@ -56,7 +56,7 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   arrayChanged: observer('asArray.@each.{preset,address,username,password,auth}', function() {
     const registries = {};
 
-    get(this, 'asArray').forEach((obj) => {
+    this.asArray.forEach((obj) => {
       const preset = get(obj, 'preset');
       let key = get(obj, 'address');
 
@@ -108,10 +108,10 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   validate() {
     this._super();
 
-    const errors = get(this, 'errors') || [];
+    const errors = this.errors || [];
 
-    if ( get(this, 'scope') === 'namespace' && isEmpty(get(this, 'primaryResource.namespaceId')) ) {
-      errors.pushObjects(get(this, 'namespaceErrors') || []);
+    if ( this.scope === 'namespace' && isEmpty(get(this, 'primaryResource.namespaceId')) ) {
+      errors.pushObjects(this.namespaceErrors || []);
     }
     set(this, 'errors', errors);
 

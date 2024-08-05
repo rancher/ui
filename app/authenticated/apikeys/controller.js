@@ -57,9 +57,9 @@ export default Controller.extend({
   project:     alias('scope.currentProject'),
   actions: {
     newApikey() {
-      const cred = this.get('globalStore').createRecord({ type: 'token', });
+      const cred = this.globalStore.createRecord({ type: 'token', });
 
-      this.get('modalService').toggleModal('modal-edit-apikey', cred);
+      this.modalService.toggleModal('modal-edit-apikey', cred);
     },
   },
 

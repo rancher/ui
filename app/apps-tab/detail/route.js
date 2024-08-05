@@ -8,7 +8,7 @@ export default Route.extend({
   store:   service(),
 
   model(params) {
-    const store = get(this, 'store');
+    const store = this.store;
 
     return hash({ app: store.find('app', get(params, 'app_id')), });
   },

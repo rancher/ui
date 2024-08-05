@@ -1,4 +1,4 @@
-import { get, computed, observer } from '@ember/object';
+import { computed, observer } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import pagedArray from 'ember-cli-pagination/computed/paged-array';
@@ -23,11 +23,11 @@ export default Component.extend({
   perPage:          120,
   pageCountChanged: observer('indexFrom', 'filtered.length', function() {
     // Go to the last page if we end up past the last page
-    let from = this.get('indexFrom');
+    let from = this.indexFrom;
     let last = this.get('filtered.length');
-    var perPage = this.get('perPage');
+    var perPage = this.perPage;
 
-    if ( this.get('page') > 1 && from > last) {
+    if ( this.page > 1 && from > last) {
       let page = Math.ceil(last / perPage);
 
       this.set('page', page);
@@ -37,8 +37,8 @@ export default Component.extend({
 
   filtered: computed('pod', 'pods.[]', 'searchFields', 'searchText', function() {
     let out = [];
-    const pod = this.get('pod');
-    const pods = this.get('pods');
+    const pod = this.pod;
+    const pods = this.pods;
 
     if ( pods ) {
       out.pushObjects(pods.slice());
@@ -48,7 +48,7 @@ export default Component.extend({
       out.pushObject(pod);
     }
 
-    const { matches } = filter(out, get(this, 'searchText'), get(this, 'searchFields'));
+    const { matches } = filter(out, this.searchText, this.searchFields);
 
     return matches;
   }),
@@ -59,14 +59,14 @@ export default Component.extend({
   }),
 
   indexFrom: computed('page', 'perPage', function() {
-    var current =  this.get('page');
-    var perPage =  this.get('perPage');
+    var current =  this.page;
+    var perPage =  this.perPage;
 
     return Math.max(0, 1 + perPage * (current - 1));
   }),
 
   indexTo: computed('indexFrom', 'perPage', 'filtered.length', function() {
-    return Math.min(this.get('filtered.length'), this.get('indexFrom') + this.get('perPage') - 1);
+    return Math.min(this.get('filtered.length'), this.indexFrom + this.perPage - 1);
   }),
 
 });
