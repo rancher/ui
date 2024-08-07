@@ -258,9 +258,11 @@
             />
           {{/if}}
         </label>
-        <p class="help-block mt-0">
-          {{t (get (get azureDescriptions answer.key) "description") htmlSafe=true}}
-        </p>
+        {{#if (get azureDescriptions answer.key)}}
+          <p class="help-block mt-0">
+            {{t (get (get azureDescriptions answer.key) "description") htmlSafe=true}}
+          </p>
+        {{/if}}
       </div>
       <div class="col span-6">
         <CheckOverrideAllowed
