@@ -39,6 +39,16 @@
     @isCreateClusterOrClusterTemplate={{isCreateClusterOrClusterTemplate}}
     @computedState={{not (eq selectedCloudProvider "none")}}
   >
+    {{#if showChangedToExternal}}
+      <div class="col span-12">
+        <BannerMessage
+          @color="bg-warning mt-0 mb-0"
+          @icon="icon-alert"
+          @message={{t "cloudProvider.azureUnsupported" htmlSafe=true}}
+        />
+      </div>
+    {{/if}}
+  
     {{#input-or-display
        editable=(or (and (eq mode "new") (or (not applyClusterTemplate) (and (eq mode "new") selectedCloudProviderOverrideAvailable))) canEditProvider)
        value=selectedCloudProvider
@@ -89,7 +99,7 @@
                 {{t "cloudProvider.azure"}}
               </label>
             </div>
-          {{else if isCreateClusterOrClusterTemplate}}
+          {{else if (and isCreateClusterOrClusterTemplate isAzureInTreeSupported)}}
             <div class="radio">
               <label>
                 {{radio-button
@@ -248,9 +258,11 @@
             />
           {{/if}}
         </label>
-        <p class="help-block mt-0">
-          {{t (get (get azureDescriptions answer.key) "description") htmlSafe=true}}
-        </p>
+        {{#if (get azureDescriptions answer.key)}}
+          <p class="help-block mt-0">
+            {{t (get (get azureDescriptions answer.key) "description") htmlSafe=true}}
+          </p>
+        {{/if}}
       </div>
       <div class="col span-6">
         <CheckOverrideAllowed
