@@ -7,9 +7,9 @@ runs:
     - name: Setup Node
       uses: ./.github/actions/setup-node
 
-    # - uses: actions/setup-python@v5
-    #   with:
-    #     python-version: '3.12'
+    # We don't need to install python (for node-sass) as the base image contains it
+    # Note - we're on bci, so no apt-get, though there is zypper...
+    # Note - we're on bci, is not supported by actions/setup-python
 
     - name: Install packages
       shell: bash
