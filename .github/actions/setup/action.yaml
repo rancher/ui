@@ -4,14 +4,12 @@ description: Setup node, python and call bootstrap script
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '14.x'
+    - name: Setup Node
+      uses: ./.github/actions/setup-node
 
-    - name: Install Python for node-sass
-      shell: bash
-      run: |
-        DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends python2
+    # We don't need to install python (for node-sass) as the base image contains it
+    # Note - we're on bci, so no apt-get, though there is zypper...
+    # Note - we're on bci, is not supported by actions/setup-python
 
     - name: Install packages
       shell: bash

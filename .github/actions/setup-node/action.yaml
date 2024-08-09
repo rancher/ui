@@ -1,0 +1,21 @@
+name: Setup Node
+description: Setup node, including yarn
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install yarn
+      shell: bash
+      run: |
+        curl -fsSL -o ~/bin/yarn https://github.com/yarnpkg/yarn/releases/download/v1.22.17/yarn-1.22.17.js
+        chmod +x ~/bin/yarn
+        echo "~/bin" >> $GITHUB_PATH
+    - name: Ensure repo dir is accepted as safe by git (diff user)
+      shell: bash
+      run: |
+        git config --global --add safe.directory $PWD
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '14.x'
+        cache: 'yarn'

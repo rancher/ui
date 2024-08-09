@@ -1,0 +1,15 @@
+name: Setup Chrome
+description: Setup Chrome
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install chrome
+      shell: bash
+      run: |
+        zypper addrepo http://dl.google.com/linux/chrome/rpm/stable/x86_64 Google-Chrome
+        curl https://dl.google.com/linux/linux_signing_key.pub
+        rpm --import linux_signing_key.pub
+        zypper -n refresh
+        zypper install --no-confirm google-chrome-stable
+        google-chrome --version

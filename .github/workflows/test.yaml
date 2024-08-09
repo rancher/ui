@@ -13,25 +13,30 @@ on:
 
 jobs:
   unit-test:
-    runs-on: ubuntu-latest
+    container: registry.suse.com/bci/python:3.12
+    runs-on: org-${{ github.repository_owner_id }}-amd64-k8s
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 1
 
-      - name: Run Setup
+      - name: Setup
         uses: ./.github/actions/setup
+
+      - name: Setup Chrome
+        uses: ./.github/actions/setup-chrome
 
       - name: Run tests
         run: yarn test
   lint:
-    runs-on: ubuntu-latest
+    container: registry.suse.com/bci/python:3.12
+    runs-on: org-${{ github.repository_owner_id }}-amd64-k8s
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 1
 
-      - name: Run Setup
+      - name: Setup
         uses: ./.github/actions/setup
 
       - name: Run linter
