@@ -4,14 +4,12 @@ description: Setup node, python and call bootstrap script
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '14.x'
+    - name: Setup Node
+      uses: ./.github/actions/setup-node
 
-    - name: Install Python for node-sass
-      shell: bash
-      run: |
-        DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends python2
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '2.7'
 
     - name: Install packages
       shell: bash
