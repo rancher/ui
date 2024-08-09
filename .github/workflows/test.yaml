@@ -13,7 +13,7 @@ on:
 
 jobs:
   unit-test:
-    container: registry.suse.com/bci/nodejs:20
+    container: registry.suse.com/bci/python:3.12
     runs-on: org-${{ github.repository_owner_id }}-amd64-k8s
     steps:
       - uses: actions/checkout@v3
@@ -26,7 +26,7 @@ jobs:
       - name: Run tests
         run: yarn test
   lint:
-    container: registry.suse.com/bci/nodejs:20
+    container: registry.suse.com/bci/python:3.12
     runs-on: org-${{ github.repository_owner_id }}-amd64-k8s
     steps:
       - uses: actions/checkout@v3
