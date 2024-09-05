@@ -4,7 +4,10 @@ import { inject as service } from '@ember/service';
 import ViewNewEdit from 'shared/mixins/view-new-edit';
 import OptionallyNamespaced from 'shared/mixins/optionally-namespaced';
 import layout from './template';
-import { validateCertWeakly, validateKeyWeakly } from 'shared/utils/util';
+import {
+  validateCertWeakly,
+  validateKeyWeakly
+} from 'shared/utils/util';
 
 export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   intl: service(),
@@ -27,15 +30,15 @@ export default Component.extend(ViewNewEdit, OptionallyNamespaced, {
   validate() {
     this._super();
 
-    var errors = get(this, 'errors') || [];
+    var errors = this.errors || [];
 
-    if ( get(this, 'scope') !== 'project' ) {
-      errors.pushObjects(get(this, 'namespaceErrors') || []);
+    if ( this.scope !== 'project' ) {
+      errors.pushObjects(this.namespaceErrors || []);
     }
 
-    var intl = get(this, 'intl');
+    var intl = this.intl;
 
-    if (get(this, 'isEncrypted')) {
+    if (this.isEncrypted) {
       errors.push(intl.t('newCertificate.errors.encrypted'));
     }
 

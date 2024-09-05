@@ -30,7 +30,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
   init() {
     this._super(...arguments);
 
-    const orig  = get(this, 'originalModel');
+    const orig  = this.originalModel;
     const clone = orig.clone();
 
     delete clone.services;
@@ -38,8 +38,8 @@ export default Component.extend(ModalBase, NewOrEdit, {
     setProperties(this, {
       model:         clone,
       tags:          (get(this, 'primaryResource.tags') || []).join(','),
-      allNamespaces: get(this, 'clusterStore').all('namespace'),
-      allProjects:   get(this, 'globalStore').all('project')
+      allNamespaces: this.clusterStore.all('namespace'),
+      allProjects:   this.globalStore.all('project')
         .filterBy('clusterId', get(this, 'scope.currentCluster.id')),
     })
 
@@ -85,7 +85,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
     },
 
     toggleAutoInject() {
-      set(this, 'istioInjection', !get(this, 'istioInjection'));
+      set(this, 'istioInjection', !this.istioInjection);
     },
   },
 
@@ -100,7 +100,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
   }),
 
   tagsDidChanged: observer('tags', function() {
-    set(this, 'primaryResource.tags', get(this, 'tags').split(',') || []);
+    set(this, 'primaryResource.tags', this.tags.split(',') || []);
   }),
 
   canMoveNamespace: computed('primaryResource.actionLinks.move', function() {
@@ -109,21 +109,21 @@ export default Component.extend(ModalBase, NewOrEdit, {
 
   projectLimit: computed('allProjects', 'primaryResource.projectId', 'primaryResource.resourceQuota.limit', function() {
     const projectId = get(this, 'primaryResource.projectId');
-    const project   = get(this, 'allProjects').findBy('id', projectId);
+    const project   = this.allProjects.findBy('id', projectId);
 
     return get(project, 'resourceQuota.limit');
   }),
 
   projectUsedLimit: computed('allProjects', 'primaryResource.projectId', 'primaryResource.resourceQuota.limit', function() {
     const projectId = get(this, 'primaryResource.projectId');
-    const project   = get(this, 'allProjects').findBy('id', projectId);
+    const project   = this.allProjects.findBy('id', projectId);
 
     return get(project, 'resourceQuota.usedLimit');
   }),
 
   nsDefaultQuota: computed('allProjects', 'primaryResource.projectId', 'primaryResource.resourceQuota.limit', function() {
     const projectId = get(this, 'primaryResource.projectId');
-    const project   = get(this, 'allProjects').findBy('id', projectId);
+    const project   = this.allProjects.findBy('id', projectId);
 
     return get(project, 'namespaceDefaultResourceQuota.limit');
   }),
@@ -131,8 +131,8 @@ export default Component.extend(ModalBase, NewOrEdit, {
   validate() {
     this._super();
 
-    const errors      = get(this, 'errors') || [];
-    const quotaErrors = get(this, 'primaryResource').validateResourceQuota(get(this, 'originalModel.resourceQuota.limit'));
+    const errors      = this.errors || [];
+    const quotaErrors = this.primaryResource.validateResourceQuota(get(this, 'originalModel.resourceQuota.limit'));
 
     if ( quotaErrors.length > 0 ) {
       errors.pushObjects(quotaErrors);
@@ -147,7 +147,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
     const labels = { ...get(this, 'primaryResource.labels') };
 
     if ( get(this, 'scope.currentCluster.istioEnabled') ) {
-      if ( get(this, 'istioInjection') ) {
+      if ( this.istioInjection ) {
         labels[ISTIO_INJECTION] = ENABLED;
       } else {
         delete labels[ISTIO_INJECTION];
@@ -155,7 +155,7 @@ export default Component.extend(ModalBase, NewOrEdit, {
     }
 
     setProperties(this, {
-      'beforeSaveModel':        get(this, 'originalModel').clone(),
+      'beforeSaveModel':        this.originalModel.clone(),
       'primaryResource.labels': labels
     });
 

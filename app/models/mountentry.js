@@ -13,7 +13,7 @@ export default Resource.extend({
   volume:      reference('volumeId'),
 
   displayVolumeName: computed('volumeName', function() {
-    let name = this.get('volumeName');
+    let name = this.volumeName;
 
     if ( name.match(/^[0-9a-f]{64}$/) ) {
       return (`${ name.substr(0, 12) }&hellip;`).htmlSafe();
@@ -23,9 +23,9 @@ export default Resource.extend({
   }),
 
   displayPermission: computed('permission', function() {
-    let permission = this.get('permission');
+    let permission = this.permission;
     let out        = null;
-    let intl       = this.get('intl');
+    let intl       = this.intl;
 
     switch (permission) {
     case 'ro':

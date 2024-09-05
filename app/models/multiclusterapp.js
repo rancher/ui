@@ -42,7 +42,7 @@ const MultiClusterApp = Resource.extend({
   }),
 
   canUpgrade: computed('actionLinks.upgrade', 'catalogTemplate', 'links', 'templateVersion', function() {
-    const l = get(this, 'links') || {};
+    const l = this.links || {};
 
     return !!l.update && !isEmpty(this.catalogTemplate);
   }),
@@ -61,13 +61,13 @@ const MultiClusterApp = Resource.extend({
         label:   'action.upgrade',
         icon:    'icon icon-edit',
         action:  'upgrade',
-        enabled: get(this, 'canUpgrade')
+        enabled: this.canUpgrade
       },
       {
         label:   'action.rollback',
         icon:    'icon icon-history',
         action:  'rollback',
-        enabled: get(this, 'canRollback')
+        enabled: this.canRollback
       }
     ];
   }),
@@ -79,9 +79,9 @@ const MultiClusterApp = Resource.extend({
       const vKeys         = Object.keys(get(this, 'catalogTemplate.versionLinks'));
       const latestVersion =  vKeys[vKeys.length - 1];
 
-      get(this, 'router').transitionTo('global-admin.multi-cluster-apps.catalog.launch', templateId, {
+      this.router.transitionTo('global-admin.multi-cluster-apps.catalog.launch', templateId, {
         queryParams: {
-          appId:       get(this, 'id'),
+          appId:       this.id,
           catalog:     catalogId,
           upgrade:     latestVersion,
         }
@@ -89,7 +89,7 @@ const MultiClusterApp = Resource.extend({
     },
 
     rollback() {
-      get(this, 'modalService').toggleModal('modal-rollback-mc-app', {
+      this.modalService.toggleModal('modal-rollback-mc-app', {
         originalModel: this,
         revisionsLink: this.links.revisions,
       });
@@ -99,9 +99,9 @@ const MultiClusterApp = Resource.extend({
       const templateId    = get(this, 'externalIdInfo.templateId');
       const catalogId     = get(this, 'externalIdInfo.catalog');
 
-      get(this, 'router').transitionTo('global-admin.multi-cluster-apps.catalog.launch', templateId, {
+      this.router.transitionTo('global-admin.multi-cluster-apps.catalog.launch', templateId, {
         queryParams: {
-          appId:       get(this, 'id'),
+          appId:       this.id,
           catalog:     catalogId,
           clone:       true
         }

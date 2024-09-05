@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import layout from './template';
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { next } from '@ember/runloop';
@@ -28,7 +28,7 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    const initServerUrl = get(this, 'initServerUrl');
+    const initServerUrl = this.initServerUrl;
 
     if ( isEmpty(initServerUrl) ) {
       set(this, 'serverUrl', window.location.host);
@@ -52,12 +52,12 @@ export default Component.extend({
 
   actions: {
     saveServerUrl() {
-      let setting = get(this, 'serverUrlSetting');
+      let setting = this.serverUrlSetting;
 
-      set(setting, 'value', `${ SCHEME }${ get(this, 'serverUrl') }`);
+      set(setting, 'value', `${ SCHEME }${ this.serverUrl }`);
       setting.save().then(() => {
-        if ( !get(this, 'popupMode') ) {
-          get(this, 'router').replaceWith('authenticated');
+        if ( !this.popupMode ) {
+          this.router.replaceWith('authenticated');
         } else {
           this.send('cancel');
         }

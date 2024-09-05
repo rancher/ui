@@ -35,7 +35,7 @@ export default Route.extend({
   },
 
   model(params/* , transition*/) {
-    var store = get(this, 'store');
+    var store = this.store;
 
     let promise = null;
 
@@ -167,7 +167,7 @@ export default Route.extend({
       return out;
     } else {
       // Clone workload with one container
-      let neu = get(this, 'store').createRecord(clone.serializeForNew());
+      let neu = this.store.createRecord(clone.serializeForNew());
 
       delete neu.deploymentStatus;
       container = neu.containers[0];
@@ -191,7 +191,7 @@ export default Route.extend({
   },
 
   getNamespaceId(params) {
-    const clusterStore = get(this, 'clusterStore');
+    const clusterStore = this.clusterStore;
 
     let ns = null;
 
@@ -220,7 +220,7 @@ export default Route.extend({
   },
 
   emptyWorkload(params) {
-    const store = get(this, 'store');
+    const store = this.store;
 
     return store.createRecord({
       type:          'workload',
@@ -234,7 +234,7 @@ export default Route.extend({
   },
 
   emptyContainer(params, namespaceId) {
-    return get(this, 'store').createRecord({
+    return this.store.createRecord({
       type:                     'container',
       tty:                      true,
       stdin:                    true,

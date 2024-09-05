@@ -20,7 +20,7 @@ export default Component.extend(ModalBase, {
         set(this, `prefs.${ C.PREFS.SEEN_WHATS_NEW }`, version);
       }
 
-      get(this, 'modalService').toggleModal();
+      this.modalService.toggleModal();
     },
   },
 });

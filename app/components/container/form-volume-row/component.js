@@ -16,7 +16,7 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    set(this, 'pvcs', get(this, 'store').all('persistentVolumeClaim'));
+    set(this, 'pvcs', this.store.all('persistentVolumeClaim'));
   },
 
   didReceiveAttrs() {
@@ -39,7 +39,7 @@ export default Component.extend({
 
   actions: {
     defineNewVolume() {
-      get(this, 'modalService').toggleModal('modal-new-volume', {
+      this.modalService.toggleModal('modal-new-volume', {
         model:    get(this, 'model.volume').clone(),
         callback: (volume) => {
           set(this, 'model.volume', volume);
@@ -48,9 +48,9 @@ export default Component.extend({
     },
 
     defineNewPvc() {
-      get(this, 'modalService').toggleModal('modal-new-pvc', {
+      this.modalService.toggleModal('modal-new-pvc', {
         model:     get(this, 'model.pvc'),
-        namespace: get(this, 'namespace'),
+        namespace: this.namespace,
         callback:  (pvc) => {
           set(this, 'model.pvc', pvc);
           if ( !get(this, 'model.volume.name') ) {
@@ -65,7 +65,7 @@ export default Component.extend({
 
       modalService.toggleModal('modal-new-vct', {
         model:     get(this, 'model.vct'),
-        namespace: get(this, 'namespace'),
+        namespace: this.namespace,
         callback:  (vct) => {
           set(this, 'model.vct', vct);
 
@@ -83,7 +83,7 @@ export default Component.extend({
     },
 
     addMount() {
-      const mount = get(this, 'store').createRecord({ type: 'volumeMount', })
+      const mount = this.store.createRecord({ type: 'volumeMount', })
 
       get(this, 'model.mounts').pushObject(mount);
     },
@@ -94,7 +94,7 @@ export default Component.extend({
   },
 
   pvcChoices: computed('pvcs.@each.{name,state}', 'namespace.id', function() {
-    return get(this, 'pvcs').filterBy('namespaceId', get(this, 'namespace.id'))
+    return this.pvcs.filterBy('namespaceId', get(this, 'namespace.id'))
       .map((v) => {
         let label = get(v, 'displayName');
         const state = get(v, 'state');

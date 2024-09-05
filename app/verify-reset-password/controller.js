@@ -8,10 +8,10 @@ export default Controller.extend({
   canSend:      false,
   actions:      {
     resetPassword() {
-      var body = this.get('model');
+      var body = this.model;
 
-      body.token = this.get('token');
-      body.pw = this.get('password');
+      body.token = this.token;
+      body.pw = this.password;
       this.set('loading', true);
       fetch('/update-password', {
         method:  'POST',

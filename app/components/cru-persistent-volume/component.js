@@ -25,14 +25,14 @@ export default Component.extend(ViewNewEdit, {
 
   init() {
     this._super(...arguments);
-    set(this, 'storageClasses', get(this, 'clusterStore').all('storageclass'));
+    set(this, 'storageClasses', this.clusterStore.all('storageclass'));
   },
 
   didReceiveAttrs() {
     const { primaryResource } = this;
     const { sourceName = '' } = primaryResource;
 
-    if ( get(this, 'isNew') ) {
+    if ( this.isNew ) {
       set(this, 'capacity', 10);
     } else {
       const source = get(primaryResource, sourceName);
@@ -70,7 +70,7 @@ export default Component.extend(ViewNewEdit, {
   },
 
   sourceChoices: computed('intl.locale', function() {
-    const intl = get(this, 'intl');
+    const intl = this.intl;
     const out = getSources('persistent').map((p) => {
       const entry = Object.assign({}, p);
       const key = `volumeSource.${ entry.name }.title`;
@@ -90,9 +90,9 @@ export default Component.extend(ViewNewEdit, {
   }),
 
   supportedSourceChoices: computed('sourceChoices', function() {
-    const showUnsupported = get(this, 'features').isFeatureEnabled(C.FEATURES.UNSUPPORTED_STORAGE_DRIVERS);
+    const showUnsupported = this.features.isFeatureEnabled(C.FEATURES.UNSUPPORTED_STORAGE_DRIVERS);
 
-    return get(this, 'sourceChoices').filter((choice) => showUnsupported || choice.supported)
+    return this.sourceChoices.filter((choice) => showUnsupported || choice.supported);
   }),
 
   sourceDisplayName: computed('sourceName', 'sourceChoices.[]', function() {
@@ -103,7 +103,7 @@ export default Component.extend(ViewNewEdit, {
   }),
 
   sourceComponent: computed('sourceName', function() {
-    const name = get(this, 'sourceName');
+    const name = this.sourceName;
     const sources = getSources('persistent');
     const entry = sources.findBy('name', name);
 
@@ -115,9 +115,9 @@ export default Component.extend(ViewNewEdit, {
   }),
 
   willSave() {
-    const vol = get(this, 'primaryResource');
-    const entry = getSources('persistent').findBy('name', get(this, 'sourceName'));
-    const intl = get(this, 'intl');
+    const vol = this.primaryResource;
+    const entry = getSources('persistent').findBy('name', this.sourceName);
+    const intl = this.intl;
     const errors = [];
 
     if ( !entry ) {
@@ -139,7 +139,7 @@ export default Component.extend(ViewNewEdit, {
 
     vol.clearSourcesExcept(entry.value);
 
-    const capacity = get(this, 'capacity');
+    const capacity = this.capacity;
 
     if ( capacity ) {
       set(vol, 'capacity', { storage: `${ capacity  }Gi`, });

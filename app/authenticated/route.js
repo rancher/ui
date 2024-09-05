@@ -78,17 +78,17 @@ export default Route.extend(Preload, {
       }
 
       if (get(this, 'settings.serverUrlIsEmpty')) {
-        get(this, 'router').transitionTo('update-critical-settings');
+        this.router.transitionTo('update-critical-settings');
       }
     });
   },
 
   model(params, transition) {
-    get(this, 'session').set(C.SESSION.BACK_TO, undefined);
+    this.session.set(C.SESSION.BACK_TO, undefined);
 
     const isPopup = this.controllerFor('application').get('isPopup');
 
-    return get(this, 'scope').startSwitchToGlobal(!isPopup)
+    return this.scope.startSwitchToGlobal(!isPopup)
       .then(() => {
         const list = [
           this.loadSchemas('globalStore'),
@@ -97,7 +97,7 @@ export default Route.extend(Preload, {
           this.loadPreferences(),
         ];
 
-        const globalStore = get(this, 'globalStore');
+        const globalStore = this.globalStore;
 
         if ( !isPopup ) {
           list.addObjects([
@@ -138,7 +138,7 @@ export default Route.extend(Preload, {
   },
 
   afterModel() {
-    return get(this, 'scope').finishSwitchToGlobal();
+    return this.scope.finishSwitchToGlobal();
   },
 
   activate() {
@@ -187,12 +187,12 @@ export default Route.extend(Preload, {
 
   deactivate() {
     this._super();
-    const scope = get(this, 'scope');
+    const scope = this.scope;
 
     scope.startSwitchToNothing().then(() => {
       scope.finishSwitchToNothing();
     });
-    cancel(get(this, 'testTimer'));
+    cancel(this.testTimer);
   },
 
   actions: {
@@ -229,10 +229,10 @@ export default Route.extend(Preload, {
     finishSwitch(id, transitionTo, transitionArgs) {
       // console.log('Switch finishing');
 
-      const cookies = get(this, 'cookies');
+      const cookies = this.cookies;
       var [whichCookie, idOut] = id.split(':');
 
-      get(this, 'storeReset').reset();
+      this.storeReset.reset();
 
       if ( transitionTo ) {
         let args = (transitionArgs || []).slice();
@@ -249,7 +249,7 @@ export default Route.extend(Preload, {
     },
 
     help()  {
-      get(this, 'modalService').toggleModal('modal-shortcuts', { escToClose: true });
+      this.modalService.toggleModal('modal-shortcuts', { escToClose: true });
     },
 
     // Special
@@ -325,7 +325,7 @@ export default Route.extend(Preload, {
       const clusterId = get(this, 'scope.currentCluster.id');
 
       if ( clusterId ) {
-        this.get('modalService').toggleModal('modal-kubectl', {});
+        this.modalService.toggleModal('modal-kubectl', {});
       }
     },
 
@@ -352,7 +352,7 @@ export default Route.extend(Preload, {
   },
 
   testAuthToken() {
-    return get(this, 'access').testAuth()
+    return this.access.testAuth()
       .catch(() => {
         set(this, `session.${ C.SESSION.BACK_TO }`, window.location.href);
         this.transitionTo('login');
@@ -361,10 +361,10 @@ export default Route.extend(Preload, {
   },
 
   loadPreferences() {
-    return get(this, 'globalStore').find('preference', null, { url: 'preference' })
+    return this.globalStore.find('preference', null, { url: 'preference' })
       .then((res) => {
-        get(this, 'language').initLanguage(true);
-        get(this, 'userTheme').setupTheme();
+        this.language.initLanguage(true);
+        this.userTheme.setupTheme();
 
         if (get(this, `prefs.${ C.PREFS.I_HATE_SPINNERS }`)) {
           $('BODY').addClass('i-hate-spinners');
@@ -375,20 +375,20 @@ export default Route.extend(Preload, {
   },
 
   loadClusters() {
-    return get(this, 'scope').getAllClusters();
+    return this.scope.getAllClusters();
   },
 
   loadProjects() {
-    return get(this, 'scope').getAllProjects();
+    return this.scope.getAllProjects();
   },
 
   loadPublicSettings() {
-    return get(this, 'globalStore').find('setting', null, { url: 'settings' });
+    return this.globalStore.find('setting', null, { url: 'settings' });
   },
 
   loadSecrets() {
-    if ( get(this, 'store').getById('schema', 'secret') ) {
-      return get(this, 'store').find('secret');
+    if ( this.store.getById('schema', 'secret') ) {
+      return this.store.find('secret');
     } else {
       return resolve();
     }

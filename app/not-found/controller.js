@@ -11,7 +11,7 @@ export default Controller.extend({
       const looped = window.location.href === target;
 
       if (looped || get(this, 'app.environment') === 'development') {
-        const router = get(this, 'router');
+        const router = this.router;
 
         router.transitionTo('authenticated');
       } else {

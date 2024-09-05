@@ -1,6 +1,5 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import { get, } from '@ember/object';
 import { hash } from 'rsvp';
 
 export default Route.extend({
@@ -8,7 +7,7 @@ export default Route.extend({
   scope:              service(),
 
   model() {
-    const clusterScans = get(this, 'globalStore').findAll('clusterScan');
+    const clusterScans = this.globalStore.findAll('clusterScan');
 
     return hash({
       clusterScans,
@@ -18,7 +17,7 @@ export default Route.extend({
 
         return await Promise.all(reportPromises);
       })(),
-      clusterTemplateRevisions: get(this, 'globalStore').findAll('clustertemplaterevision')
+      clusterTemplateRevisions: this.globalStore.findAll('clustertemplaterevision')
     });
   },
 });

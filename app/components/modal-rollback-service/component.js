@@ -44,7 +44,7 @@ export default Component.extend(ModalBase, {
   init() {
     this._super(...arguments);
 
-    const schema = get(this, 'store').getById('schema', 'workload');
+    const schema = this.store.getById('schema', 'workload');
     const resourceFields = get(schema, 'resourceFields');
 
     set(this, 'keys', Object.keys(resourceFields).filter((field) => !field.endsWith('Status') && HIDDEN_FIELDS.indexOf(field) === -1));
@@ -54,7 +54,7 @@ export default Component.extend(ModalBase, {
     let model = get(this, 'modalService.modalOpts.originalModel').clone();
 
     set(this, 'model', model);
-    get(this, 'store').rawRequest({
+    this.store.rawRequest({
       url:    get(model, 'links.revisions'),
       method: 'GET',
     })
@@ -63,7 +63,7 @@ export default Component.extend(ModalBase, {
       })
       .catch((err) => {
         this.send('cancel');
-        get(this, 'growl').fromError(err);
+        this.growl.fromError(err);
       })
       .finally(() => {
         set(this, 'loading', false);
@@ -74,7 +74,7 @@ export default Component.extend(ModalBase, {
     save(cb) {
       const id = get(this, 'selected.id');
 
-      get(this, 'model').doAction('rollback', { replicaSetId: id, })
+      this.model.doAction('rollback', { replicaSetId: id, })
         .then(() => {
           this.send('cancel');
         })
@@ -85,7 +85,7 @@ export default Component.extend(ModalBase, {
   },
 
   choices: computed('model.workloadAnnotations', 'revisions.[]', function() {
-    return (get(this, 'revisions') || [])
+    return (this.revisions || [])
       .sortBy('createdTS')
       .reverse()
       .map((r) => {
@@ -105,17 +105,17 @@ export default Component.extend(ModalBase, {
   current: computed('model.workloadAnnotations', 'revisions.@each.workloadAnnotations', function() {
     const currentRevision = get(this, 'model.workloadAnnotations')[C.LABEL.DEPLOYMENT_REVISION];
 
-    return (get(this, 'revisions') || []).find((r) => get(r, 'workloadAnnotations')[C.LABEL.DEPLOYMENT_REVISION] === currentRevision);
+    return (this.revisions || []).find((r) => get(r, 'workloadAnnotations')[C.LABEL.DEPLOYMENT_REVISION] === currentRevision);
   }),
 
   selected: computed('revisionId', 'revisions.[]', function() {
-    return (get(this, 'revisions') || []).findBy('id', get(this, 'revisionId'));
+    return (this.revisions || []).findBy('id', this.revisionId);
   }),
 
   diff: computed('current', 'keys', 'selected', function() {
-    if (get(this, 'current') && get(this, 'selected')) {
-      let left = sanitize(get(this, 'current'), get(this, 'keys'));
-      let right = sanitize(get(this, 'selected'), get(this, 'keys'));
+    if (this.current && this.selected) {
+      let left = sanitize(this.current, this.keys);
+      let right = sanitize(this.selected, this.keys);
       var delta = jsondiffpatch.diff(left, right);
 
       jsondiffpatch.formatters.html.hideUnchanged();

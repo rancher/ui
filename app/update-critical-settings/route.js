@@ -9,7 +9,7 @@ export default Route.extend({
   globalStore: service(),
 
   model() {
-    let globalStore = get(this, 'globalStore');
+    let globalStore = this.globalStore;
 
     return globalStore.find('setting', C.SETTING.SERVER_URL).then((serverUrl) => ({
       serverUrl:        get(serverUrl, 'value') || window.location.host,

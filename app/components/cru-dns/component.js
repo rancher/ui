@@ -87,7 +87,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   },
 
   timeoutSecondsDidChange: observer('timeoutSeconds', function() {
-    const timeoutSeconds = get(this, 'timeoutSeconds');
+    const timeoutSeconds = this.timeoutSeconds;
 
     if ( !get(this, 'model.sessionAffinityConfig.clientIP.timeoutSeconds') ) {
       set(this, 'model.sessionAffinityConfig', { clientIP: { timeoutSeconds } })
@@ -97,7 +97,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   }),
 
   kindDidChange: observer('kind', function() {
-    let kind = get(this, 'kind');
+    let kind = this.kind;
 
     if ( kind === HEADLESS ) {
       kind = CLUSTER_IP;
@@ -116,7 +116,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   }),
 
   namespaceDidChange: observer('namespace.id', function() {
-    if (get(this, 'recordType') === 'workload') {
+    if (this.recordType === 'workload') {
       if ( get(this, 'model.targetWorkloads').some((target) => target.namespaceId !== get(this, 'namespace.id')) ) {
         setProperties(this, {
           'model.targetWorkloadIds': null,
@@ -130,7 +130,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   }),
 
   recordTypeDidChange: observer('recordType', function() {
-    const recordType = get(this, 'recordType');
+    const recordType = this.recordType;
 
     if ( recordType === CNAME ) {
       set(this, 'kind', EXTERNAL_NAME);
@@ -140,15 +140,15 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   }),
 
   showSessionAffinity: computed('isHeadless', 'kind', 'showMoreOptions', function() {
-    return get(this, 'showMoreOptions') && get(this, 'kind') !== HEADLESS;
+    return this.showMoreOptions && this.kind !== HEADLESS;
   }),
 
   showMoreOptions: computed('recordType', 'kind', function() {
-    return CNAME !==  get(this, 'recordType');
+    return CNAME !==  this.recordType;
   }),
 
   isHeadless: computed('kind', function() {
-    return get(this, 'kind') === HEADLESS;
+    return this.kind === HEADLESS;
   }),
 
   /*
@@ -161,7 +161,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   workloadsChoices: computed('namespace.id', 'workloads.[]', function() {
     const namespaceId = get(this, 'namespace.id');
 
-    return (get(this, 'workloads') || []).filter((w) => get(w, 'namespaceId') === namespaceId);
+    return (this.workloads || []).filter((w) => get(w, 'namespaceId') === namespaceId);
   }),
 
   initKindChoices() {
@@ -191,10 +191,10 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   },
 
   willSave() {
-    get(this, 'model').clearTypesExcept(get(this, 'recordType'));
+    this.model.clearTypesExcept(this.recordType);
 
-    if ( get(this, 'mode') === 'edit' && get(this, 'recordType') === WORKLOAD ) {
-      delete get(this, 'model')[SELECTOR];
+    if ( this.mode === 'edit' && this.recordType === WORKLOAD ) {
+      delete this.model[SELECTOR];
     }
 
     const ports = this.primaryResource.ports || [];
@@ -208,7 +208,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     const sup = this._super;
     const errors = [];
 
-    errors.pushObjects(get(this, 'namespaceErrors') || []);
+    errors.pushObjects(this.namespaceErrors || []);
     set(this, 'errors', errors);
 
     if ( get(errors, 'length') !== 0 ) {
@@ -225,8 +225,8 @@ export default Component.extend(ViewNewEdit, ChildHook, {
   },
 
   validate() {
-    const errors = get(this, 'errors') || [];
-    const intl = get(this, 'intl');
+    const errors = this.errors || [];
+    const intl = this.intl;
 
     const aliasTargets = (get(this, 'model.targetDnsRecords') || []);
     const aliases = aliasTargets.length;
@@ -234,7 +234,7 @@ export default Component.extend(ViewNewEdit, ChildHook, {
     const selectorKeys = Object.keys(get(this, 'model.selector') || {}).length;
     const workloads = (get(this, 'model.targetWorkloads') || []).length;
 
-    switch ( get(this, 'recordType') ) {
+    switch ( this.recordType ) {
     case ARECORD:
       if ( !(get(this, 'model.ipAddresses') || []).any((ip) => ip) ) {
         errors.pushObject(intl.t('editDns.errors.targetRequired'));

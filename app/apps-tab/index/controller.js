@@ -20,7 +20,7 @@ export default Controller.extend({
   }),
 
   filteredApps: computed('model.apps.@each.{type,isFromCatalog,tags,state}', 'tags', 'searchText', function() {
-    var needTags = get(this, 'tags');
+    var needTags = this.tags;
 
     var apps = get(this, 'model.apps').filter((ns) => !C.REMOVEDISH_STATES.includes(get(ns, 'state')));
 
@@ -31,7 +31,7 @@ export default Controller.extend({
     apps = apps.filterBy('isIstio', false);
     apps = apps.sortBy('displayName');
 
-    const { matches } = filter(apps, get(this, 'searchText'));
+    const { matches } = filter(apps, this.searchText);
 
     const group = [];
     let dataIndex = 0;

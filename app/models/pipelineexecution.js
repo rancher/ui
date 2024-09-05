@@ -12,7 +12,7 @@ let PipelineExecution = Resource.extend({
 
   relevantState:    alias('executionState'),
   availableActions: computed('actionLinks.{rerun,stop}', function() {
-    const a = get(this, 'actionLinks') || {};
+    const a = this.actionLinks || {};
 
     return [
       {
@@ -55,7 +55,7 @@ let PipelineExecution = Resource.extend({
   }),
 
   shortCommit: computed('commit', function() {
-    const commit = get(this, 'commit')
+    const commit = this.commit
 
     if (commit) {
       return commit.substr(0, 8)
@@ -65,17 +65,17 @@ let PipelineExecution = Resource.extend({
   }),
 
   startedTimeStamp: computed('started', function(){
-    const time = get(this, 'started');
+    const time = this.started;
 
     return new Date(time);
   }),
 
   showTransitioning: computed('showTransitioningMessage', 'executionState', function() {
-    return get(this, 'showTransitioningMessage') && get(this, 'executionState') !== C.STATES.ABORTED && get(this, 'executionState') !== C.STATES.FAILED;
+    return this.showTransitioningMessage && this.executionState !== C.STATES.ABORTED && this.executionState !== C.STATES.FAILED;
   }),
 
   displayRepositoryUrl: computed('repositoryUrl', function() {
-    let url = get(this, 'repositoryUrl');
+    let url = this.repositoryUrl;
 
     if ( url.endsWith('.git') ) {
       url = url.substr(0, url.length - 4);
@@ -85,46 +85,46 @@ let PipelineExecution = Resource.extend({
   }),
 
   commitUrl: computed('commit', 'displayRepositoryUrl', 'pipeline.displayName', 'pipeline.sourceCodeCredential.sourceCodeType', function() {
-    let url = get(this, 'displayRepositoryUrl');
+    let url = this.displayRepositoryUrl;
     const sourceCodeType = get(this, 'pipeline.sourceCodeCredential.sourceCodeType');
     const name = get(this, 'pipeline.displayName');
 
     switch ( sourceCodeType ) {
     case 'bitbucketserver':
       if ( name.startsWith('~') ) {
-        return `${ this.bitbucketRootUrl('users') }/commits/${ get(this, 'commit') }`;
+        return `${ this.bitbucketRootUrl('users') }/commits/${ this.commit }`;
       } else {
-        return `${ this.bitbucketRootUrl('projects') }/commits/${ get(this, 'commit') }`;
+        return `${ this.bitbucketRootUrl('projects') }/commits/${ this.commit }`;
       }
     case 'bitbucketcloud':
-      return `${ url }/commits/${ get(this, 'commit') }`;
+      return `${ url }/commits/${ this.commit }`;
     default:
-      return `${ url }/commit/${ get(this, 'commit') }`;
+      return `${ url }/commit/${ this.commit }`;
     }
   }),
 
   branchUrl: computed('branch', 'displayRepositoryUrl', 'pipeline.displayName', 'pipeline.sourceCodeCredential.sourceCodeType', function() {
-    let url = get(this, 'displayRepositoryUrl');
+    let url = this.displayRepositoryUrl;
     const sourceCodeType = get(this, 'pipeline.sourceCodeCredential.sourceCodeType');
     const name = get(this, 'pipeline.displayName');
 
     switch ( sourceCodeType ) {
     case 'bitbucketserver':
       if ( name.startsWith('~') ) {
-        return `${ this.bitbucketRootUrl('users') }/browse?at=refs%2Fheads%2F${ get(this, 'branch') }`;
+        return `${ this.bitbucketRootUrl('users') }/browse?at=refs%2Fheads%2F${ this.branch }`;
       } else {
-        return `${ this.bitbucketRootUrl('projects') }/browse?at=refs%2Fheads%2F${ get(this, 'branch') }`;
+        return `${ this.bitbucketRootUrl('projects') }/browse?at=refs%2Fheads%2F${ this.branch }`;
       }
     case 'bitbucketcloud':
-      return `${ url }/src/${ get(this, 'branch') }`;
+      return `${ url }/src/${ this.branch }`;
     default:
-      return `${ url }/tree/${ get(this, 'branch') }`;
+      return `${ url }/tree/${ this.branch }`;
     }
   }),
 
   duration: computed('started', 'ended', function(){
-    const started = get(this, 'started');
-    const ended = get(this, 'ended');
+    const started = this.started;
+    const ended = this.ended;
 
     if ( ended ) {
       const duration = new Date(ended).getTime() - new Date(started).getTime();
@@ -136,7 +136,7 @@ let PipelineExecution = Resource.extend({
   }),
 
   bitbucketRootUrl(repoType) {
-    let url = get(this, 'displayRepositoryUrl');
+    let url = this.displayRepositoryUrl;
 
     url = url.substr(0, get(url, 'length') - get(this, 'pipeline.displayName.length') - 5);
 
@@ -149,7 +149,7 @@ let PipelineExecution = Resource.extend({
         const pipelineId = get(this, 'pipeline.id');
         const nextRun = get(this, 'pipeline.nextRun');
 
-        get(this, 'router').transitionTo('authenticated.project.pipeline.pipelines.run', pipelineId, nextRun);
+        this.router.transitionTo('authenticated.project.pipeline.pipelines.run', pipelineId, nextRun);
       });
     },
 

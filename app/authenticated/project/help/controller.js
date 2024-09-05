@@ -37,7 +37,7 @@ export default Controller.extend({
 
       out = {
         title:   announcement.title,
-        link:    `${ this.get('forumsLink') }/t/${ announcement.slug }`,
+        link:    `${ this.forumsLink }/t/${ announcement.slug }`,
         created: announcement.created_at
       };
     }

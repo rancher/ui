@@ -1,3 +1,4 @@
+import { on } from '@ember/object/evented';
 import Router from '@ember/routing/router';
 import { isEmbedded, dashboardWindow } from 'shared/utils/util';
 
@@ -6,19 +7,19 @@ export function initialize() {
 
   if (isEmbedded()) {
     Router.reopen({
-      notifyTopFrame: function() {
+      notifyTopFrame: on('didTransition', function() {
         dashboardWindow().postMessage({
           action: 'did-transition',
           url:    this.currentURL
         })
-      }.on('didTransition'),
+      }),
 
-      willTranstionNotify: function(transition) {
+      willTranstionNotify: on('willTransition', (transition) => {
         dashboardWindow().postMessage({
           action: 'before-navigation',
           target: transition.targetName,
         })
-      }.on('willTransition')
+      })
     });
 
     // Add listener for post messages to change the route in the application

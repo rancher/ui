@@ -11,7 +11,7 @@ export default Route.extend({
 
   afterModel(model) {
     if ( model ) {
-      this.get('storeReset').reset();
+      this.storeReset.reset();
     } else {
       this.transitionTo('authenticated');
     }

@@ -46,7 +46,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
     },
 
     updateQuota(quota) {
-      const primaryResource = get(this, 'primaryResource');
+      const primaryResource = this.primaryResource;
 
       if ( quota ) {
         setProperties(primaryResource, quota);
@@ -59,7 +59,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
     },
 
     updateContainerDefault(limit) {
-      const primaryResource = get(this, 'primaryResource');
+      const primaryResource = this.primaryResource;
 
       set(primaryResource, 'containerDefaultResourceLimit', limit);
     },
@@ -69,7 +69,7 @@ export default Component.extend(NewOrEdit, ChildHook, {
     let cid = get(this, 'primaryResource.creatorId');
     let creator = null;
 
-    if (get(this, 'editing')) {
+    if (this.editing) {
       let users = get(this, 'model.users');
 
       creator = users.findBy('id', cid) || users.findBy('username', cid); // TODO 2.0 must do because first clusters and projects are given admin as the creator id which is not the admins userid
@@ -81,15 +81,15 @@ export default Component.extend(NewOrEdit, ChildHook, {
   }),
 
   goBack() {
-    get(this, 'router').transitionTo('authenticated.cluster.projects.index');
+    this.router.transitionTo('authenticated.cluster.projects.index');
   },
 
   validate() {
     this._super();
 
-    const errors = get(this, 'errors') || [];
+    const errors = this.errors || [];
 
-    const intl = get(this, 'intl');
+    const intl = this.intl;
 
     const resourceQuota = get(this, 'primaryResource.resourceQuota.limit') || {};
     const nsResourceQuota = get(this, 'primaryResource.namespaceDefaultResourceQuota.limit') || {};

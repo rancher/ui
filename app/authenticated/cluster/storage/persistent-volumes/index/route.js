@@ -12,7 +12,7 @@ export default Route.extend({
       this.transitionTo('authenticated.cluster.index');
     }
 
-    return hash({ persistentVolumes: get(this, 'clusterStore').findAll('persistentVolume'), });
+    return hash({ persistentVolumes: this.clusterStore.findAll('persistentVolume'), });
   },
 
   setDefaultRoute: on('activate', function() {

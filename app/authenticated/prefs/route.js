@@ -9,7 +9,7 @@ export default Route.extend({
   globalStore: service(),
 
   model(/* params, transition*/) {
-    return get(this, 'globalStore').find('user', null, {
+    return this.globalStore.find('user', null, {
       forceReload: true,
       filter:      { me: true }
     }).then((user) => EmberObject.create({ account: get(user, 'firstObject'), /* dont like this */ }));

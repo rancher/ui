@@ -1,11 +1,11 @@
 import { on } from '@ember/object/evented';
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import Route from '@ember/routing/route';
 import C from 'ui/utils/constants';
 
 export default Route.extend({
   model() {
-    var store = get(this, 'store');
+    var store = this.store;
 
     return store.findAll('horizontalpodautoscaler')
       .then((hpas) => {

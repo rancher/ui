@@ -23,7 +23,7 @@ export default Component.extend(VolumeSource, {
   },
 
   modeDidChange: observer('defaultMode', function() {
-    const octal = get(this, 'defaultMode') || '0';
+    const octal = this.defaultMode || '0';
 
     set(this, 'config.defaultMode', parseInt(octal, 8));
   }),

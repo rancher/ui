@@ -37,7 +37,7 @@ export default Component.extend(ModalBase, ChildHook, {
     },
 
     save(cb) {
-      let yaml = get(this, 'yaml');
+      let yaml = this.yaml;
       const lintError = [];
 
       jsyaml.safeLoadAll(yaml, (y) => {
@@ -45,7 +45,7 @@ export default Component.extend(ModalBase, ChildHook, {
       });
 
       if ( lintError.length ) {
-        set(this, 'errors', [get(this, 'intl').t('yamlPage.errors')]);
+        set(this, 'errors', [this.intl.t('yamlPage.errors')]);
         cb(false);
 
         return;
@@ -53,21 +53,21 @@ export default Component.extend(ModalBase, ChildHook, {
 
       set(this, 'errors', null);
 
-      const opts = { yaml: get(this, 'yaml'), };
+      const opts = { yaml: this.yaml, };
 
-      switch ( get(this, 'mode') ) {
+      switch ( this.mode ) {
       case 'namespace':
         opts.namespace = get(this, 'namespace.name');
         break;
       case 'project':
-        opts.project = get(this, 'projectId');
+        opts.project = this.projectId;
         opts.defaultNamespace = get(this, 'namespace.name');
         break;
       case 'cluster':
         break;
       }
 
-      if ( get(this, 'mode') === 'cluster' ) {
+      if ( this.mode === 'cluster' ) {
         this.send('actuallySave', opts, cb);
       } else {
         return this.applyHooks('_beforeSaveHooks').then(() => {
@@ -92,7 +92,7 @@ export default Component.extend(ModalBase, ChildHook, {
   },
 
   lintObserver: observer('yaml', function() {
-    const yaml = get(this, 'yaml');
+    const yaml = this.yaml;
     const lintError = [];
 
     jsyaml.safeLoadAll(yaml, (y) => {

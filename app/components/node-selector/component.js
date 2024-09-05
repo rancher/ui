@@ -22,22 +22,22 @@ export default Component.extend({
         value:    ''
       };
 
-      this.get('ruleArray').pushObject(newRule);
+      this.ruleArray.pushObject(newRule);
     },
 
     removeRule(rule) {
-      this.get('ruleArray').removeObject(rule);
+      this.ruleArray.removeObject(rule);
     },
   },
 
   inputChanged: observer('ruleArray.@each.{key,value,operator,custom}', function() {
-    this.set('rules', this.get('ruleArray')
+    this.set('rules', this.ruleArray
       .filter((r) => this.isRuleValid(r))
       .map((r) => this.convertRule(r)));
   }),
 
   initRuleArray() {
-    const rules = this.get('rules') || [];
+    const rules = this.rules || [];
     const ruleArray = rules.map((rule) => ({ custom: rule, }));
 
     this.set('ruleArray', ruleArray);

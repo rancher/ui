@@ -17,7 +17,7 @@ export default Component.extend(ViewNewEdit, {
   titleKey: 'cruVolume.title',
 
   didReceiveAttrs() {
-    const selectedSource = (get(this, 'sourceChoices') || []).find((source) => !!get(this, `primaryResource.${ get(source, 'value') }`));
+    const selectedSource = (this.sourceChoices || []).find((source) => !!get(this, `primaryResource.${ get(source, 'value') }`));
 
     if ( selectedSource ) {
       set(this, 'sourceName', get(selectedSource, 'name'));
@@ -39,13 +39,13 @@ export default Component.extend(ViewNewEdit, {
   headerToken: computed('mode', 'scope', function() {
     let k = 'cruPersistentVolumeClaim.define.';
 
-    k += get(this, 'mode');
+    k += this.mode;
 
     return k;
   }),
 
   sourceChoices: computed('intl.locale', function() {
-    const intl = get(this, 'intl');
+    const intl = this.intl;
     const skip = ['host-path', 'secret'];
     const out = getSources('ephemeral').map((p) => {
       const entry = Object.assign({}, p);
@@ -72,13 +72,13 @@ export default Component.extend(ViewNewEdit, {
   }),
 
   supportedSourceChoices: computed('sourceChoices', function() {
-    const showUnsupported = get(this, 'features').isFeatureEnabled(C.FEATURES.UNSUPPORTED_STORAGE_DRIVERS);
+    const showUnsupported = this.features.isFeatureEnabled(C.FEATURES.UNSUPPORTED_STORAGE_DRIVERS);
 
-    return get(this, 'sourceChoices').filter((choice) => showUnsupported || choice.supported)
+    return this.sourceChoices.filter((choice) => showUnsupported || choice.supported);
   }),
 
   sourceComponent: computed('sourceName', function() {
-    const name = get(this, 'sourceName');
+    const name = this.sourceName;
     const sources = getSources('ephemeral');
     const entry = sources.findBy('name', name);
 
@@ -93,12 +93,12 @@ export default Component.extend(ViewNewEdit, {
   }),
 
   willSave() {
-    const vol = get(this, 'primaryResource');
-    const entry = getSources('ephemeral').findBy('name', get(this, 'sourceName'));
+    const vol = this.primaryResource;
+    const entry = getSources('ephemeral').findBy('name', this.sourceName);
 
     if ( !entry ) {
       const errors = [];
-      const intl = get(this, 'intl');
+      const intl = this.intl;
 
       errors.push(intl.t('validation.required', { key: intl.t('cruVolume.source.label') }));
       set(this, 'errors', errors);

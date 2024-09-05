@@ -6,7 +6,7 @@ import C from 'ui/utils/constants';
 
 export default Route.extend({
   model() {
-    const store = this.get('store');
+    const store = this.store;
 
     return hash({
       ingresses: store.findAll('ingress'),

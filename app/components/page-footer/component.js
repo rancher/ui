@@ -20,7 +20,7 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    let settings = this.get('settings');
+    let settings = this.settings;
 
     let cli = {};
 
@@ -33,16 +33,16 @@ export default Component.extend({
 
   actions: {
     showAbout() {
-      this.get('modalService').toggleModal('modal-about', { closeWithOutsideClick: true });
+      this.modalService.toggleModal('modal-about', { closeWithOutsideClick: true });
     },
 
     showWechat() {
-      this.get('modalService').toggleModal('modal-wechat', { closeWithOutsideClick: true });
+      this.modalService.toggleModal('modal-wechat', { closeWithOutsideClick: true });
     },
   },
 
   displayVersion: computed('settings.rancherVersion', function() {
-    const fullVersion = get(this, 'settings.rancherVersion') || get(this, 'intl').t('pageFooter.notARelease');
+    const fullVersion = get(this, 'settings.rancherVersion') || this.intl.t('pageFooter.notARelease');
     let displayVersion = fullVersion;
 
     const match = fullVersion.match(/^(.*)-([0-9a-f]{40})-(.*)$/);

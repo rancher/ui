@@ -17,8 +17,8 @@ export default Resource.extend({
       data: null,
     };
 
-    const multiClusterAppId = get(this, 'multiClusterAppId');
-    const projectIds        = get(this, 'projectIds');
+    const multiClusterAppId = this.multiClusterAppId;
+    const projectIds        = this.projectIds;
 
     if (multiClusterAppId && !projectIds) {
       setProperties(out, {
@@ -38,7 +38,7 @@ export default Resource.extend({
 
   linkedProjects: computed('projectIds.[]', 'scope.allProjects.@each.id', function() {
     const allProjects = get(this, 'scope.allProjects') || [];
-    const projectIds  = get(this, 'projectIds') || [];
+    const projectIds  = this.projectIds || [];
 
     const myProjects = [];
 

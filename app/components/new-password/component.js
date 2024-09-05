@@ -9,9 +9,9 @@ export default Component.extend({
   passwordOkay:    false,
   passwordOut:     null,
   passwordsMatch:  computed('newPassword', 'confirmPassword', function() {
-    if (this.get('confirmPassword')) {
-      if ((this.get('newPassword') === this.get('confirmPassword'))) {
-        this.set('passwordOut', this.get('newPassword'));
+    if (this.confirmPassword) {
+      if ((this.newPassword === this.confirmPassword)) {
+        this.set('passwordOut', this.newPassword);
         this.set('passwordOkay', true);
 
         return true;

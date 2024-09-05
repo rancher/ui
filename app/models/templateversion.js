@@ -33,7 +33,7 @@ export default Resource.extend({
   }),
 
   filesAsArray: computed('files', function() {
-    var obj = (get(this, 'files') || {});
+    var obj = (this.files || {});
     var out = [];
 
     Object.keys(obj).forEach((key) => {
@@ -48,7 +48,7 @@ export default Resource.extend({
 
   allQuestions: computed('questions', function() {
     const out = [];
-    const originQuestions = get(this, 'questions') || [];
+    const originQuestions = this.questions || [];
 
     originQuestions.forEach((q) => {
       out.push(q);

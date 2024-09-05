@@ -8,7 +8,7 @@ var KontainerDriver = Resource.extend({
   type:         'kontainerDriver',
 
   availableActions: computed('actionLinks.{activate,deactivate}', function() {
-    let a = get(this, 'actionLinks') || {};
+    let a = this.actionLinks || {};
 
     return [
       {
@@ -30,10 +30,10 @@ var KontainerDriver = Resource.extend({
   }),
 
   displayName: computed('id', 'intl.locale', 'name', function() {
-    const intl = get(this, 'intl');
-    const name = get(this, 'name');
+    const intl = this.intl;
+    const name = this.name;
     const keyByName = `kontainerDriver.displayName.${ name }`;
-    const keyById = `kontainerDriver.displayName.${ get(this, 'id') }`;
+    const keyById = `kontainerDriver.displayName.${ this.id }`;
 
     if ( name && intl.exists(keyByName) ) {
       return intl.t(keyByName);
@@ -42,17 +42,17 @@ var KontainerDriver = Resource.extend({
     } else if ( name ) {
       return name.capitalize();
     } else {
-      return `(${  get(this, 'id')  })`;
+      return `(${  this.id  })`;
     }
   }),
 
   canEdit: computed('links.update', 'builtin', function() {
-    return !!get(this, 'links.update') && !get(this, 'builtin');
+    return !!get(this, 'links.update') && !this.builtin;
   }),
 
 
   hasUi: computed('hasBuiltinUi', 'uiUrl', function() {
-    return !!get(this, 'uiUrl');
+    return !!this.uiUrl;
   }),
 
 
@@ -66,11 +66,11 @@ var KontainerDriver = Resource.extend({
     },
 
     edit() {
-      get(this, 'modalService').toggleModal('modal-edit-driver', this);
+      this.modalService.toggleModal('modal-edit-driver', this);
     },
 
     promptDeactivate() {
-      get(this, 'modalService').toggleModal('modal-confirm-deactivate', {
+      this.modalService.toggleModal('modal-confirm-deactivate', {
         originalModel: this,
         action:        'deactivate'
       });

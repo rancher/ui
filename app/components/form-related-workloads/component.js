@@ -17,7 +17,7 @@ export default Component.extend({
 
   actions: {
     toggleExpand(instId) {
-      let list = this.get('expandedInstances');
+      let list = this.expandedInstances;
 
       if ( list.includes(instId) ) {
         list.removeObject(instId);

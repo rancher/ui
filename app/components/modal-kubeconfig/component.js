@@ -28,8 +28,8 @@ export default Component.extend(ModalBase, {
         set(this, 'step', 2);
       })
       .catch((err) => {
-        this.get('growl').fromError('Error creating kubeconfig file', err);
-        this.get('modalService').toggleModal();
+        this.growl.fromError('Error creating kubeconfig file', err);
+        this.modalService.toggleModal();
       });
   },
 

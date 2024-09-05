@@ -77,7 +77,7 @@ var Volume = Resource.extend({
   type: 'volume',
 
   configName: computed('sources.@each.value', 'state', function() {
-    const keys = get(this, 'sources').map((x) => x.value);
+    const keys = this.sources.map((x) => x.value);
 
     for ( let key, i = 0 ; i < keys.length ; i++ ) {
       key = keys[i];
@@ -90,7 +90,7 @@ var Volume = Resource.extend({
   }),
 
   config: computed('configName', function() {
-    const key = get(this, 'configName');
+    const key = this.configName;
 
     if ( key ) {
       return get(this, key);
@@ -100,7 +100,7 @@ var Volume = Resource.extend({
   }),
 
   sourceName: computed('configName', 'sources', function(){
-    const key = get(this, 'configName');
+    const key = this.configName;
 
     if ( !key ) {
       return;
@@ -108,7 +108,7 @@ var Volume = Resource.extend({
 
     let entry;
     let driver    = get(this, key).driver;
-    const sources = get(this, 'sources');
+    const sources = this.sources;
 
     entry = sources.findBy('value', key);
 
@@ -128,8 +128,8 @@ var Volume = Resource.extend({
   }),
 
   displaySource: computed('csi.driver', 'intl.locale', 'sourceName', function() {
-    const intl       = get(this, 'intl');
-    const sourceName = get(this, 'sourceName');
+    const intl       = this.intl;
+    const sourceName = this.sourceName;
 
     if ( sourceName === 'csi' ) {
       return get(this, 'csi.driver')
@@ -139,7 +139,7 @@ var Volume = Resource.extend({
   }),
 
   clearSourcesExcept(keep) {
-    const keys = get(this, 'sources').map((x) => x.value);
+    const keys = this.sources.map((x) => x.value);
 
     for ( let key, i = 0 ; i < keys.length ; i++ ) {
       key = keys[i];

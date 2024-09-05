@@ -1,5 +1,5 @@
 import Resource from '@rancher/ember-api-store/models/resource';
-import { get, computed, set } from '@ember/object';
+import { computed, set } from '@ember/object';
 import { next } from '@ember/runloop'
 import { inject as service } from '@ember/service';
 
@@ -7,7 +7,7 @@ export default Resource.extend({
   growl: service(),
 
   state: computed('expired', function() {
-    if ( get(this, 'expired') ) {
+    if ( this.expired ) {
       return 'expired';
     }
 
@@ -42,7 +42,7 @@ export default Resource.extend({
         set(this, 'enabled', false);
         this.save().catch((err) => {
           set(this, 'enabled', true);
-          get(this, 'growl').fromError('Error deactivating token', err)
+          this.growl.fromError('Error deactivating token', err)
         });
       });
     },
@@ -52,7 +52,7 @@ export default Resource.extend({
         set(this, 'enabled', true);
         this.save().catch((err) => {
           set(this, 'enabled', false);
-          get(this, 'growl').fromError('Error activating token', err)
+          this.growl.fromError('Error activating token', err)
         });
       });
     },

@@ -11,14 +11,14 @@ export default Controller.extend({
 
   actions: {
     add() {
-      const record = get(this, 'globalStore').createRecord({
+      const record = this.globalStore.createRecord({
         type:      'clustercatalog',
         kind:      'helm',
         branch:    'master',
         clusterId: get(this, 'scope.currentCluster.id'),
       });
 
-      get(this, 'modalService').toggleModal('modal-edit-catalog', {
+      this.modalService.toggleModal('modal-edit-catalog', {
         model: record,
         scope: 'cluster'
       });

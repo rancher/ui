@@ -18,7 +18,7 @@ export default Component.extend({
 
     let val = false;
 
-    if ( this.get('initialValue') === IN ) {
+    if ( this.initialValue === IN ) {
       val = true;
     }
 
@@ -26,8 +26,8 @@ export default Component.extend({
   },
   actions: {
     save(btnCb) {
-      this.get('settings').set(C.SETTING.TELEMETRY, (this.get('optIn') ? IN : OUT));
-      this.get('settings').one('settingsPromisesResolved', () => {
+      this.settings.set(C.SETTING.TELEMETRY, (this.optIn ? IN : OUT));
+      this.settings.one('settingsPromisesResolved', () => {
         btnCb(true);
         if (this.saved) {
           this.saved();

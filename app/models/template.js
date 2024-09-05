@@ -16,7 +16,7 @@ const Template = Resource.extend({
   projectCatalog: reference('projectCatalogId'),
 
   latestVersion:  computed('versionLinks', function() {
-    const  links = get(this, 'versionLinks');
+    const  links = this.versionLinks;
 
     return get(Object.keys(links || {}).sort((a, b) => compareVersion(a, b)), 'lastObject');
   }),
@@ -30,7 +30,7 @@ const Template = Resource.extend({
   }),
 
   isIstio: computed('labels', function() {
-    const labels = get(this, 'labels') || {};
+    const labels = this.labels || {};
 
     return labels[C.LABEL_ISTIO_RULE] === 'true';
   }),
@@ -77,10 +77,10 @@ const Template = Resource.extend({
   }),
 
   categoryArray: computed('category', 'categories.[]', function() {
-    let out = get(this, 'categories');
+    let out = this.categories;
 
     if ( !out || !out.length ) {
-      let single = get(this, 'category');
+      let single = this.category;
 
       if ( single ) {
         out = [single];
@@ -93,18 +93,18 @@ const Template = Resource.extend({
   }),
 
   categoryLowerArray: computed('categoryArray.[]', function() {
-    return get(this, 'categoryArray').map((x) => (x || '').underscore().toLowerCase());
+    return this.categoryArray.map((x) => (x || '').underscore().toLowerCase());
   }),
 
   certifiedType: computed('catalogId', 'labels', function() {
     let str = null;
-    let labels = get(this, 'labels');
+    let labels = this.labels;
 
     if ( labels && labels[C.LABEL.CERTIFIED] ) {
       str = labels[C.LABEL.CERTIFIED];
     }
 
-    if ( str === C.LABEL.CERTIFIED_RANCHER && get(this, 'catalogId') === C.CATALOG.LIBRARY_KEY ) {
+    if ( str === C.LABEL.CERTIFIED_RANCHER && this.catalogId === C.CATALOG.LIBRARY_KEY ) {
       return 'rancher';
     } else if ( str === C.LABEL.CERTIFIED_PARTNER ) {
       return 'partner';
@@ -114,7 +114,7 @@ const Template = Resource.extend({
   }),
 
   certifiedClass: computed('certifiedType', 'settings.isRancher', function() {
-    let type = get(this, 'certifiedType');
+    let type = this.certifiedType;
 
     if ( type === 'rancher' && get(this, 'settings.isRancher') ) {
       return 'badge-rancher-logo';
@@ -125,7 +125,7 @@ const Template = Resource.extend({
 
   certified: computed('catalogId', 'certifiedType', 'intl.locale', 'labels', 'settings.isRancher', function() {
     let out = null;
-    let labels = get(this, 'labels');
+    let labels = this.labels;
 
     if ( labels && labels[C.LABEL.CERTIFIED] ) {
       out = labels[C.LABEL.CERTIFIED];
@@ -134,12 +134,12 @@ const Template = Resource.extend({
     let looksLikeCertified = false;
 
     if ( out ) {
-      let display = get(this, 'intl').t('catalogPage.index.certified.rancher.rancher');
+      let display = this.intl.t('catalogPage.index.certified.rancher.rancher');
 
       looksLikeCertified = normalize(out) === normalize(display);
     }
 
-    if ( get(this, 'catalogId') !== C.CATALOG.LIBRARY_KEY && (out === C.LABEL.CERTIFIED_RANCHER || looksLikeCertified) ) {
+    if ( this.catalogId !== C.CATALOG.LIBRARY_KEY && (out === C.LABEL.CERTIFIED_RANCHER || looksLikeCertified) ) {
       // Rancher-certified things can only be in the library catalog.
       out = null;
     }
@@ -152,7 +152,7 @@ const Template = Resource.extend({
         pl = 'rancher';
       }
 
-      return get(this, 'intl').t(`catalogPage.index.certified.${ pl }.${ out }`);
+      return this.intl.t(`catalogPage.index.certified.${ pl }.${ out }`);
     }
 
     // For custom strings, use what they said.

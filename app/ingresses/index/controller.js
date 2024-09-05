@@ -49,7 +49,7 @@ export default Controller.extend({
   }),
 
   rows: computed('model.ingresses.[]', 'balancerServices.[]', function() {
-    const out = (get(this, 'balancerServices') || []).slice();
+    const out = (this.balancerServices || []).slice();
 
     out.addObjects(get(this, 'model.ingresses') || []);
 

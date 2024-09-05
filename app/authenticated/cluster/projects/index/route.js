@@ -20,8 +20,8 @@ export default Route.extend({
     }
 
     return hash({
-      projects:   get(this, 'globalStore').findAll('project'),
-      namespaces: get(this, 'clusterStore').findAll('namespace')
+      projects:   this.globalStore.findAll('project'),
+      namespaces: this.clusterStore.findAll('namespace')
     });
   },
 
