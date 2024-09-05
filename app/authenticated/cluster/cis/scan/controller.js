@@ -1,6 +1,5 @@
 import { filterBy, alias } from '@ember/object/computed';
 import Controller from '@ember/controller';
-import { downloadFile, generateZip } from 'shared/utils/download-files';
 import { get, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 
@@ -79,13 +78,8 @@ export default Controller.extend({
   },
   bulkActionHandler: computed(function() {
     return {
-      download: async(scans) => {
-        const asyncFiles = scans
-          .map((scan) => get(scan, 'csvFile'))
-        const files = await Promise.all(asyncFiles);
-        const zip = await generateZip(files);
-
-        await downloadFile(`cis-scans.zip`, zip, get(zip, 'type'));
+      download: () => {
+        console.error('CIS Scan Downloads is no longer available');
       },
       promptDelete: async(scans) => {
         this.modalService.toggleModal('confirm-delete', {
