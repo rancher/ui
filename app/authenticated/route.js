@@ -352,6 +352,18 @@ export default Route.extend(Preload, {
   },
 
   testAuthToken() {
+    // If not embedded and not dev mode, then direct access is disabled
+    const isDev = get(this, 'app.environment') === 'development';
+    const noDirectAccess = !isDev && !isEmbedded();
+
+    if (noDirectAccess) {
+      return Promise.reject({
+        status:          410,
+        useVueDashboard: true,
+        dashboardLink:   get(this, 'scope.dashboardBase')
+      });
+    }
+
     return this.access.testAuth()
       .catch(() => {
         set(this, `session.${ C.SESSION.BACK_TO }`, window.location.href);
