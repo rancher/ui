@@ -60,17 +60,14 @@ fi
 
 if [ ! -d node_modules ]; then
   echo -e "${YELLOW}node_modules folder does not exist - running yarn install${RESET}"
-  yarn installecho -e "${CYAN}Building production build of the UI${RESET}"
+  yarn install
+  echo -e "${CYAN}Building production build of the UI${RESET}"
+fi
 
 rm -rf ${DIR}/dist
 mkdir -p ${DIR}/dist
 
 UI_MODE="" RANCHER="" CATALOG="" ${DIR}/node_modules/.bin/ember build --environment=production --output-path=${DIR}/dist
-
-  mkdir -p ${DIR}/dist
-
-  UI_MODE="" RANCHER="" CATALOG="" ${DIR}/node_modules/.bin/ember build --environment=production --output-path=${DIR}/dist
-fi
 
 rm -f dist.tar
 tar -cvf dist.tar dist/
@@ -85,5 +82,3 @@ echo ""
 echo "All done"
 echo -e "${YELLOW}Note: It is recommended to set the Rancher 'ui-offline-preferred' setting to 'Local' to ensure the embedded UI is always used${RESET}"
 echo ""
-
-
