@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+
+DIR=$(cd $(dirname $0)/..; pwd)
+
+CYAN="\033[96m"
+YELLOW="\033[93m"
+RESET="\033[0m"
+BOLD="\033[1m"
+
+echo -e "${CYAN}${BOLD}==================================================${RESET}"
+echo -e "${CYAN}${BOLD}Patch running Rancher Docker container with dev UI${RESET}"
+echo -e "${CYAN}${BOLD}==================================================${RESET}"
+echo ""
+echo "This script will build the UI and copy the built UI into the specified running Rancher container"
+echo ""
+
+if [ -z "$1" ]; then
+  echo -e "${YELLOW}Need ID of Rancher container to patch${RESET}"
+  exit 1
+fi
+
+DOCKER=$(docker version > /dev/null)
+if [ $? -ne 0 ]; then
+  echo -e "${YELLOW}Can not run Docker commands - is Docker running?${RESET}"
+  exit 1
+fi
+
+CONTAINER=$1
+
+SKIP_BUILD="false"
+
+if [ "$2" == "-s" ]; then
+  echo "Skipping build"
+  SKIP_BUILD="true"
+fi
+
+# Check container exists and looks like a Rancher container
+VERSION=$(docker exec ${CONTAINER} /bin/bash -c "printenv CATTLE_UI_VERSION")
+
+if [ $? -ne 0 ]; then
+  echo -e "${YELLOW}Could not get version env var from container - check the container ID${RESET}"
+  exit 1
+fi
+
+echo "UI version from existing container: ${VERSION}"
+
+# Check we have node and yarn installed
+
+node --version > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo -e "${YELLOW}node does not appear to be installed - this is required to build the UI${RESET}"
+  exit 1
+fi
+
+yarn --version > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo -e "${YELLOW}yarn does not appear to be installed - this is required to build the UI${RESET}"
+  exit 1
+fi
+
+if [ ! -d node_modules ]; then
+  echo -e "${YELLOW}node_modules folder does not exist - running yarn install${RESET}"
+  yarn install
+  echo -e "${CYAN}Building production build of the UI${RESET}"
+fi
+
+rm -rf ${DIR}/dist
+mkdir -p ${DIR}/dist
+
+UI_MODE="" RANCHER="" CATALOG="" ${DIR}/node_modules/.bin/ember build --environment=production --output-path=${DIR}/dist
+
+rm -f dist.tar
+tar -cvf dist.tar dist/
+
+docker exec -it ${CONTAINER} bash -c "cd /usr/share/rancher/ui; rm -rf *"
+docker cp dist.tar ${CONTAINER}:/usr/share/rancher/ui
+rm -f dist.tar
+
+docker exec -it ${CONTAINER} bash -c "cd /usr/share/rancher/ui; tar -xvf dist.tar --strip-components=1"
+
+echo ""
+echo "All done"
+echo -e "${YELLOW}Note: It is recommended to set the Rancher 'ui-offline-preferred' setting to 'Local' to ensure the embedded UI is always used${RESET}"
+echo ""
