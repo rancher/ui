@@ -1,7 +1,7 @@
 import { get, computed } from '@ember/object';
 import { alias } from '@ember/object/computed'
 import { inject as service } from '@ember/service';
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 
 export const PRESETS = {
   'index.docker.io':                              'dockerhub',

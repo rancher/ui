@@ -1,8 +1,8 @@
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import { computed } from '@ember/object';
 import { notEmpty } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
-import { hasMany } from '@rancher/ember-api-store/utils/denormalize';
+import { hasMany } from 'ember-api-store/utils/denormalize';
 
 const cloudCredential = Resource.extend({
   modal:         service(),

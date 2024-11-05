@@ -1,9 +1,9 @@
 import { inject as service } from '@ember/service';
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import { get, computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import C from 'shared/utils/pipeline-constants';
-import { reference } from '@rancher/ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 
 let PipelineExecution = Resource.extend({
   router:   service(),

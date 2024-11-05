@@ -1,11 +1,11 @@
 import { computed, get, set } from '@ember/object';
 import { or, alias } from '@ember/object/computed';
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import { download } from 'shared/utils/util';
 import C from 'ui/utils/constants';
 import StateCounts from 'ui/mixins/state-counts';
 import { inject as service } from '@ember/service';
-import { hasMany, reference } from '@rancher/ember-api-store/utils/denormalize';
+import { hasMany, reference } from 'ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 import Grafana from 'shared/mixins/grafana';
 import { next } from '@ember/runloop';

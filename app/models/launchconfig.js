@@ -1,5 +1,5 @@
 import { computed } from '@ember/object';
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 
 var LaunchConfig = Resource.extend({
   displayEnvironmentVars: computed('launchConfig.environment', function() {

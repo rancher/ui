@@ -1,5 +1,5 @@
-import Resource from '@rancher/ember-api-store/models/resource';
-import { reference, arrayOfReferences } from '@rancher/ember-api-store/utils/denormalize';
+import Resource from 'ember-api-store/models/resource';
+import { reference, arrayOfReferences } from 'ember-api-store/utils/denormalize';
 import { computed, get, set } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import { inject as service } from '@ember/service';

@@ -1,5 +1,5 @@
 import { inject as service } from '@ember/service';
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
 import { computed } from '@ember/object';

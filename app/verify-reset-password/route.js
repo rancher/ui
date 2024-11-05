@@ -1,6 +1,6 @@
 import { reject } from 'rsvp';
 import Route from '@ember/routing/route';
-import fetch from '@rancher/ember-api-store/utils/fetch';
+import fetch from 'ember-api-store/utils/fetch';
 
 export default Route.extend({
   model(params) {

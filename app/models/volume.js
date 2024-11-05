@@ -1,6 +1,6 @@
 import { get, set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
 const SOURCES = [];

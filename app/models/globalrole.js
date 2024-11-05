@@ -1,8 +1,8 @@
 import { not } from '@ember/object/computed';
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { hasMany } from '@rancher/ember-api-store/utils/denormalize';
+import { hasMany } from 'ember-api-store/utils/denormalize';
 
 const BASE = 'user-base';
 const USER = 'user';

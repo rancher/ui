@@ -1,7 +1,7 @@
 import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import { computed, get } from '@ember/object';
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 
 export default Resource.extend({
   router:       service(),

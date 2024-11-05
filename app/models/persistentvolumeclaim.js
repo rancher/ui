@@ -1,6 +1,6 @@
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import { get, computed } from '@ember/object'
-import { reference } from '@rancher/ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 import { parseSi, formatSi } from 'shared/utils/parse-unit';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';

@@ -1,5 +1,5 @@
 import { alias, equal } from '@ember/object/computed';
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import { computed, get, set, observer } from '@ember/object';
 import moment from 'moment';
 import { downloadFile } from 'shared/utils/download-files';

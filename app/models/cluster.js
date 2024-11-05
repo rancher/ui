@@ -1,8 +1,8 @@
 import { get, set, computed, observer } from '@ember/object';
 import { on } from '@ember/object/evented';
 import { inject as service } from '@ember/service';
-import Resource from '@rancher/ember-api-store/models/resource';
-import { hasMany, reference } from '@rancher/ember-api-store/utils/denormalize';
+import Resource from 'ember-api-store/models/resource';
+import { hasMany, reference } from 'ember-api-store/utils/denormalize';
 import ResourceUsage from 'shared/mixins/resource-usage';
 import Grafana from 'shared/mixins/grafana';
 import { equal, alias } from '@ember/object/computed';
