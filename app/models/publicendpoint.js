@@ -1,6 +1,6 @@
 import { isArray } from '@ember/array';
 import { get, computed } from '@ember/object';
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
 import C from 'shared/utils/constants';
 

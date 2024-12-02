@@ -1,6 +1,6 @@
 import { inject as service } from '@ember/service';
-import { validateChars, validateLength } from '@rancher/ember-api-store/utils/validate';
-import Resource from '@rancher/ember-api-store/models/resource';
+import { validateChars, validateLength } from 'ember-api-store/utils/validate';
+import Resource from 'ember-api-store/models/resource';
 import { get, computed } from '@ember/object';
 import { evaluate } from 'shared/utils/evaluate';
 import C from 'ui/utils/constants';

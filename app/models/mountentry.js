@@ -1,8 +1,8 @@
 import { computed } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
-import Resource from '@rancher/ember-api-store/models/resource';
-import { reference } from '@rancher/ember-api-store/utils/denormalize';
+import Resource from 'ember-api-store/models/resource';
+import { reference } from 'ember-api-store/utils/denormalize';
 
 export default Resource.extend({
   intl:        service(),
