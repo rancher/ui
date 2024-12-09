@@ -1,5 +1,5 @@
 import Secret from './secret';
-import { reference } from '@rancher/ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 import { inject as service } from '@ember/service';
 
 export default Secret.extend({

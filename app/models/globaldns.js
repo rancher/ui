@@ -1,7 +1,7 @@
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import { get, set, computed, setProperties } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { reference } from '@rancher/ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 import { next } from '@ember/runloop';
 
 export default Resource.extend({

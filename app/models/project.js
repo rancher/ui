@@ -1,8 +1,8 @@
 import { get, set, computed, observer } from '@ember/object';
 import { on } from '@ember/object/evented';
 import { inject as service } from '@ember/service';
-import { hasMany, reference } from '@rancher/ember-api-store/utils/denormalize';
-import Resource from '@rancher/ember-api-store/models/resource';
+import { hasMany, reference } from 'ember-api-store/utils/denormalize';
+import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import { alias } from '@ember/object/computed';
 

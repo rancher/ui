@@ -1,4 +1,4 @@
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
 import { computed, get, set } from '@ember/object';
 import { ucFirst } from 'shared/utils/util';
