@@ -1,11 +1,11 @@
 import { computed, get, set } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import { convertToMillis } from 'shared/utils/util';
 import { parseSi } from 'shared/utils/parse-unit';
 import C from 'ui/utils/constants';
-import { hasMany, reference } from '@rancher/ember-api-store/utils/denormalize';
+import { hasMany, reference } from 'ember-api-store/utils/denormalize';
 import StateCounts from 'ui/mixins/state-counts';
 const ISTIO_INJECTION = 'istio-injection'
 const ENABLED = 'enabled';

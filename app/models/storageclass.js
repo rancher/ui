@@ -1,4 +1,4 @@
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import { set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { all } from 'rsvp';
