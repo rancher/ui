@@ -1,7 +1,9 @@
 Rancher UI
 --------
 
-Perhaps you like managing Cattle.
+This is the source code repository for the original Rancher UI.
+
+The new Rancher UI source code can be found here - https://github.com/rancher/dashboard
 
 ## Usage
 
@@ -91,9 +93,9 @@ If you want to customize the UI, re-packaging all of Rancher to distribute the U
 * `ember test --server`
 
 ### Bugs & Issues
-Please submit bugs and issues to [rancher/rancher](//github.com/rancher/rancher/issues) with a title starting with `[UI] `.
+Please submit bugs and issues to [rancher/dashboard](//github.com/rancher/dashboard/issues) and add the issue label `ember`.
 
-Or just [click here](//github.com/rancher/rancher/issues/new?title=%5BUI%5D%20) to create a new issue.
+Or just [click here](//github.com/rancher/dashboard/issues/new/choose) to create a new issue.
 
 
 #### Useful links
@@ -107,7 +109,7 @@ Or just [click here](//github.com/rancher/rancher/issues/new?title=%5BUI%5D%20) 
 
 License
 =======
-Copyright (c) 2014-2024 [Rancher Labs, Inc.](http://rancher.com)
+Copyright (c) 2014-2025 [Rancher Labs, Inc.](http://rancher.com)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
