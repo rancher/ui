@@ -7,6 +7,11 @@ runs:
     - uses: actions/setup-node@v3
       with:
         node-version: '14.x'
+  
+    - name: Update packages
+      shell: bash
+      run: |
+        DEBIAN_FRONTEND=noninteractive sudo apt update
 
     - name: Install Python for node-sass
       shell: bash
