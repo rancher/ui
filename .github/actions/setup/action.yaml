@@ -16,7 +16,13 @@ runs:
     - name: Install Python for node-sass
       shell: bash
       run: |
-        DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends python2
+        DEBIAN_FRONTEND=noninteractive sudo apt-get -y install make
+        DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential
+        DEBIAN_FRONTEND=noninteractive wget https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz
+        DEBIAN_FRONTEND=noninteractive sudo tar xzf Python-2.7.9.tgz
+        DEBIAN_FRONTEND=noninteractive cd Python-2.7.9
+        DEBIAN_FRONTEND=noninteractive sudo ./configure --enable-optimizations
+        DEBIAN_FRONTEND=noninteractive sudo make install
 
     - name: Install packages
       shell: bash
