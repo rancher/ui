@@ -1,9 +1,9 @@
 import { htmlSafe } from '@ember/string';
 import { computed, get } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
-import { reference } from '@rancher/ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 import { compare as compareVersion } from 'ui/utils/parse-version';
 
 const Template = Resource.extend({
