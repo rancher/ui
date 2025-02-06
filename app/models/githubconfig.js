@@ -1,4 +1,4 @@
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import { inject as service } from '@ember/service';
 
 var GithubConfig = Resource.extend({

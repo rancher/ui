@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import fetch from '@rancher/ember-api-store/utils/fetch';
+import fetch from 'ember-api-store/utils/fetch';
 
 export default Controller.extend({
   passwordRest: false,

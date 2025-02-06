@@ -1,5 +1,5 @@
-import Resource from '@rancher/ember-api-store/models/resource';
-import { reference } from '@rancher/ember-api-store/utils/denormalize';
+import Resource from 'ember-api-store/models/resource';
+import { reference } from 'ember-api-store/utils/denormalize';
 import { computed, get } from '@ember/object';
 import { parseHelmExternalId } from 'ui/utils/parse-externalid';
 import StateCounts from 'ui/mixins/state-counts';
