@@ -1,8 +1,8 @@
 import { inject as service } from '@ember/service';
 import { get, set, computed } from '@ember/object';
-import { hasMany } from '@rancher/ember-api-store/utils/denormalize';
+import { hasMany } from 'ember-api-store/utils/denormalize';
 import { next } from '@ember/runloop'
-import Resource from '@rancher/ember-api-store/models/resource';
+import Resource from 'ember-api-store/models/resource';
 import Identicon from 'identicon.js';
 
 export default Resource.extend({

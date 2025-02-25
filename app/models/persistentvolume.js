@@ -1,7 +1,7 @@
 import Volume from './volume';
 import { get, computed } from '@ember/object'
 import { inject as service } from '@ember/service';
-import { reference } from '@rancher/ember-api-store/utils/denormalize';
+import { reference } from 'ember-api-store/utils/denormalize';
 
 export default Volume.extend({
   router: service(),

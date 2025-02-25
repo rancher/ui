@@ -1,5 +1,5 @@
-import Resource from '@rancher/ember-api-store/models/resource';
-import { reference } from '@rancher/ember-api-store/utils/denormalize';
+import Resource from 'ember-api-store/models/resource';
+import { reference } from 'ember-api-store/utils/denormalize';
 import { get, set, computed, defineProperty } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { ucFirst } from 'shared/utils/util';
