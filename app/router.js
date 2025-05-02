@@ -25,15 +25,8 @@ Router.map(function() {
   this.route('failWhale', { path: '/fail' });
   this.route('not-found', { path: '*path' });
 
-  this.route('signup' );
-  this.route('verify');
-  this.route('verify-reset-password', { path: '/verify-reset-password/:verify_token' });
-
   this.route('logout');
 
-  this.route('verify-auth');
-  this.route('verify-auth-azure');
-  this.route('update-password' );
   this.route('update-critical-settings', { path: '/update-setting' });
 
   this.route('authenticated', { path: '/' }, function() {
