@@ -1,177 +1,184 @@
-{{#if (eq step 1)}}
-  <form onsubmit={{action "clickNext"}}>
-    {{form-name-description
-      model=model.cluster
-      editing=(not isEksClusterPending)
-      nameRequired=true
-      rowClass="row mb-20"
-      colClass="col span-12 mb-0"
-      nameLabel="clusterNew.name.label"
-      namePlaceholder="clusterNew.name.placeholder"
-      descriptionPlaceholder="clusterNew.description.placeholder"
-    }}
-  </form>
-{{/if}}
-
-{{#if (eq driverInfo.name "amazoneks")}}
+{{#if (and showDriverComponent hasDriverComponentError) }}
   {{banner-message
-    color="bg-warning"
-    message=(t "clusterNew.amazoneks.ingressWarning")
+    color="bg-error"
+    message=(t "clusterNew.driverError")
   }}
-{{else if (eq driverInfo.name "azureaks")}}
-  {{banner-message
-    color="bg-warning"
-    message=(t "clusterNew.azureaks.ingressWarning")
-  }}
-{{/if}}
+{{else}}
+  {{#if (eq step 1)}}
+    <form onsubmit={{action "clickNext"}}>
+      {{form-name-description
+        model=model.cluster
+        editing=(not isEksClusterPending)
+        nameRequired=true
+        rowClass="row mb-20"
+        colClass="col span-12 mb-0"
+        nameLabel="clusterNew.name.label"
+        namePlaceholder="clusterNew.name.placeholder"
+        descriptionPlaceholder="clusterNew.description.placeholder"
+      }}
+    </form>
+  {{/if}}
 
-{{#if (and driverInfo.nodePool (not isCustom))}}
-  <section class="mb-40 mt-40">
-    <CruNodePools
-      @mode={{mode}}
-      @cluster={{cluster}}
-      @driver={{driverInfo.nodeWhich}}
-      @nodeTemplates={{model.nodeTemplates}}
-      @registerHook={{action "registerHook"}}
-      @setNodePoolErrors={{action "setNodePoolErrors"}}
-      @model={{model}}
-    />
-  </section>
-{{/if}}
-
-{{#if (eq step 1)}}
-  {{#accordion-list showExpandAll=false as |al expandFn|}}
-    {{#accordion-list-item
-       title=(t "clusterNew.members.label")
-       detail=(t "clusterNew.members.detail")
-       expandAll=al.expandAll
-       everExpanded=true
-       expanded=expanded
-       expand=(action expandFn)
-       componentId="cru-cluster__members"
+  {{#if (eq driverInfo.name "amazoneks")}}
+    {{banner-message
+      color="bg-warning"
+      message=(t "clusterNew.amazoneks.ingressWarning")
     }}
-      {{#if model.cluster.internal}}
-        <BannerMessage
-          @icon="icon-alert"
-          @color="bg-error mt-0 mb-10"
-          @message={{t "clusterPage.internal" appName=settings.appName htmlSafe=true}}
-        />
-      {{/if}}
+  {{else if (eq driverInfo.name "azureaks")}}
+    {{banner-message
+      color="bg-warning"
+      message=(t "clusterNew.azureaks.ingressWarning")
+    }}
+  {{/if}}
 
-      {{#if isEdit}}
-        <BannerMessage
-          @icon="icon-info"
-          @color="bg-info mt-0 mb-10"
-          @message={{t "clusterPage.removeMemberNote"}}
-        />
-      {{/if}}
-      <FormMembers
-        @creator={{model.me}}
-        @editing={{and (and notView) (not isEksClusterPending)}}
-        @expanded={{expanded}}
-        @isNew={{newCluster}}
-        @memberConfig={{memberConfig}}
-        @errors={{memberErrors}}
-        @primaryResource={{cluster}}
+  {{#if (and driverInfo.nodePool (not isCustom))}}
+    <section class="mb-40 mt-40">
+      <CruNodePools
+        @mode={{mode}}
+        @cluster={{cluster}}
+        @driver={{driverInfo.nodeWhich}}
+        @nodeTemplates={{model.nodeTemplates}}
         @registerHook={{action "registerHook"}}
-        @roles={{model.roleTemplates}}
-        @type="cluster"
-        @users={{model.users}}
-        data-testid="cru-cluster__members__form"
+        @setNodePoolErrors={{action "setNodePoolErrors"}}
+        @model={{model}}
       />
-    {{/accordion-list-item}}
+    </section>
+  {{/if}}
 
-    {{form-labels-annotations
-      classNames="accordion-wrapper"
-      detailKey="clusterPage.annotationsDetail"
-      expandAll=al.expandAll
-      expandFn=expandFn
-      initialLabels=model.cluster.labels
-      model=model.cluster
-      readonlyLabels=readonlyLabels
-      editing=(and (and notView (not isRke2Cluster)) (not isEksClusterPending))
-    }}
-  {{/accordion-list}}
-  {{#if isImportedOther}}
+  {{#if (eq step 1)}}
     {{#accordion-list showExpandAll=false as |al expandFn|}}
       {{#accordion-list-item
-        title=(t "clusterNew.rke.advanced.label")
-        detail=(t "clusterNew.rke.advanced.detail")
+        title=(t "clusterNew.members.label")
+        detail=(t "clusterNew.members.detail")
         expandAll=al.expandAll
         everExpanded=true
+        expanded=expanded
         expand=(action expandFn)
+        componentId="cru-cluster__members"
       }}
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "generic.networking"}}
-          </label>
-          <div class="checkbox">
-            <label>
-              {{input type="checkbox" checked=cluster.enableNetworkPolicy}}
-              {{t "clusterNew.rke.networkPolicy.label"}}
+        {{#if model.cluster.internal}}
+          <BannerMessage
+            @icon="icon-alert"
+            @color="bg-error mt-0 mb-10"
+            @message={{t "clusterPage.internal" appName=settings.appName htmlSafe=true}}
+          />
+        {{/if}}
+
+        {{#if isEdit}}
+          <BannerMessage
+            @icon="icon-info"
+            @color="bg-info mt-0 mb-10"
+            @message={{t "clusterPage.removeMemberNote"}}
+          />
+        {{/if}}
+        <FormMembers
+          @creator={{model.me}}
+          @editing={{and (and notView) (not isEksClusterPending)}}
+          @expanded={{expanded}}
+          @isNew={{newCluster}}
+          @memberConfig={{memberConfig}}
+          @errors={{memberErrors}}
+          @primaryResource={{cluster}}
+          @registerHook={{action "registerHook"}}
+          @roles={{model.roleTemplates}}
+          @type="cluster"
+          @users={{model.users}}
+          data-testid="cru-cluster__members__form"
+        />
+      {{/accordion-list-item}}
+
+      {{form-labels-annotations
+        classNames="accordion-wrapper"
+        detailKey="clusterPage.annotationsDetail"
+        expandAll=al.expandAll
+        expandFn=expandFn
+        initialLabels=model.cluster.labels
+        model=model.cluster
+        readonlyLabels=readonlyLabels
+        editing=(and (and notView (not isRke2Cluster)) (not isEksClusterPending))
+      }}
+    {{/accordion-list}}
+    {{#if isImportedOther}}
+      {{#accordion-list showExpandAll=false as |al expandFn|}}
+        {{#accordion-list-item
+          title=(t "clusterNew.rke.advanced.label")
+          detail=(t "clusterNew.rke.advanced.detail")
+          expandAll=al.expandAll
+          everExpanded=true
+          expand=(action expandFn)
+        }}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "generic.networking"}}
             </label>
+            <div class="checkbox">
+              <label>
+                {{input type="checkbox" checked=cluster.enableNetworkPolicy}}
+                {{t "clusterNew.rke.networkPolicy.label"}}
+              </label>
+            </div>
+          </div>
+          <div class="col span-6">
+            {{#if cluster.enableNetworkPolicy}}
+              <BannerMessage
+                @icon="icon-alert"
+                @color="bg-warning mt-0"
+                @message={{t "clusterNew.import.clusterOptions.warning"}}
+              />
+            {{/if}}
           </div>
         </div>
-        <div class="col span-6">
-          {{#if cluster.enableNetworkPolicy}}
-            <BannerMessage
-              @icon="icon-alert"
-              @color="bg-warning mt-0"
-              @message={{t "clusterNew.import.clusterOptions.warning"}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "clusterNew.rke.agentEnvVars.label"}}
+            </label>
+            <FormAgentEnvVar
+              @editable={{notView}}
+              @value={{mut agentEnvVars}}
             />
-          {{/if}}
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col span-6">
-          <label class="acc-label">
-            {{t "clusterNew.rke.agentEnvVars.label"}}
-          </label>
-          <FormAgentEnvVar
-            @editable={{notView}}
-            @value={{mut agentEnvVars}}
-          />
-        </div>
-      </div>
-      {{/accordion-list-item}}
-    {{/accordion-list}}
+        {{/accordion-list-item}}
+      {{/accordion-list}}
+    {{/if}}
   {{/if}}
-{{/if}}
 
-{{#if showDriverComponent}}
-  {{component driverInfo.driverComponent
-    applyClusterTemplate=applyClusterTemplate
-    clusterTemplateQuestions=model.clusterTemplateRevision.questions
-    clusterTemplateRevisionId=clusterTemplateRevisionId
-    clusterErrors=errors
-    mode=mode
-    model=model
-    nodePoolErrors=nodePoolErrors
-    nodeWhich=driverInfo.nodeWhich
-    originalCluster=originalCluster
-    otherErrors=memberErrors
-    isEditCluster=isEdit
-    isPostSave=isPostSave
-    save=(action "save")
-    close=(action "close")
-    registerHook=(action "registerHook")
-    updateFromYaml=(action "updateFromYaml")
-  }}
-{{/if}}
+  {{#if showDriverComponent}}
+    {{component driverInfo.driverComponent
+      applyClusterTemplate=applyClusterTemplate
+      clusterTemplateQuestions=model.clusterTemplateRevision.questions
+      clusterTemplateRevisionId=clusterTemplateRevisionId
+      clusterErrors=errors
+      mode=mode
+      model=model
+      nodePoolErrors=nodePoolErrors
+      nodeWhich=driverInfo.nodeWhich
+      originalCluster=originalCluster
+      otherErrors=memberErrors
+      isEditCluster=isEdit
+      isPostSave=isPostSave
+      save=(action "save")
+      close=(action "close")
+      registerHook=(action "registerHook")
+      updateFromYaml=(action "updateFromYaml")
+    }}
+  {{/if}}
 
-{{!-- otherwise save is handled by the cluster driver component --}}
-{{#if (and isEdit (not provider))}}
-  {{top-errors errors=errors}}
-  {{save-cancel
-    editing=isEdit
-    save=(action "save" )
-    cancel=(action "close")
-  }}
-{{else if (not showDriverComponent)}}
-  {{!-- something is super wrong because your not import or custom or any driver in general so we're not letting you save --}}
-  {{save-cancel
-    saveDisabled=true
-    cancel=(action "close")
-  }}
+  {{!-- otherwise save is handled by the cluster driver component --}}
+  {{#if (and isEdit (not provider))}}
+    {{top-errors errors=errors}}
+    {{save-cancel
+      editing=isEdit
+      save=(action "save" )
+      cancel=(action "close")
+    }}
+  {{else if (not showDriverComponent)}}
+    {{!-- something is super wrong because your not import or custom or any driver in general so we're not letting you save --}}
+    {{save-cancel
+      saveDisabled=true
+      cancel=(action "close")
+    }}
+  {{/if}}
 {{/if}}
