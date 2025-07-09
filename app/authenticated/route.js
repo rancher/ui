@@ -103,7 +103,6 @@ export default Route.extend(Preload, {
           list.addObjects([
             this.preload('node', 'globalStore', { url: 'nodes' }),
             this.preload('nodePool', 'globalStore', { url: 'nodePools' }),
-            this.preload('noedTemplates', 'globalStore', { url: 'nodeTemplates' }),
             this.preload('roleTemplate', 'globalStore', {
               url:    'roleTemplates',
               filter: {

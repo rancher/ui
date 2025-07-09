@@ -9,6 +9,7 @@ const cloudCredential = Resource.extend({
   globalStore:    service(),
   nodeTemplates: hasMany('id', 'nodetemplate', 'cloudCredentialId', 'globalStore'),
 
+
   type: 'cloudCredential',
 
   canClone: false,

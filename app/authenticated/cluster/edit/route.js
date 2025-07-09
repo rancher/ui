@@ -28,7 +28,6 @@ export default Route.extend({
       cluster:                    cluster.clone(),
       cloudCredentials:           globalStore.findAll('cloudcredential'),
       kontainerDrivers:           globalStore.findAll('kontainerDriver'),
-      nodeTemplates:              globalStore.findAll('nodeTemplate'),
       nodeDrivers:                globalStore.findAll('nodeDriver'),
       psacs:                      globalStore.findAll('podSecurityAdmissionConfigurationTemplate'),
       roleTemplates:              this.roleTemplateService.get('allFilteredRoleTemplates'),
