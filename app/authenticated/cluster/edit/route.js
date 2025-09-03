@@ -40,12 +40,12 @@ export default Route.extend({
       this.releaseVersions.getAllVersions(cluster.driver);
     }
 
-    if (!isEmpty(cluster.clusterTemplateRevisionId)) {
-      setProperties(modelOut, {
-        clusterTemplateRevisions: globalStore.findAll('clustertemplaterevision'),
-        clusterTemplates:         globalStore.findAll('clustertemplate'),
-      });
-    }
+    // if (!isEmpty(cluster.clusterTemplateRevisionId)) {
+    //   setProperties(modelOut, {
+    //     clusterTemplateRevisions: globalStore.findAll('clustertemplaterevision'),
+    //     clusterTemplates:         globalStore.findAll('clustertemplate'),
+    //   });
+    // }
 
     return hash(modelOut);
   },

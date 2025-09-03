@@ -321,13 +321,13 @@ const rootNav = [
       //   resource:       ['globaldns'],
       //   resourceScope:  'global',
       // },
-      {
-        id:             'rke-template',
-        localizedLabel: 'nav.admin.clusters.rkeTemplate',
-        route:          'global-admin.cluster-templates',
-        resource:       ['clustertemplate'],
-        resourceScope:  'global',
-      },
+      // {
+      //   id:             'rke-template',
+      //   localizedLabel: 'nav.admin.clusters.rkeTemplate',
+      //   route:          'global-admin.cluster-templates',
+      //   resource:       ['clustertemplate'],
+      //   resourceScope:  'global',
+      // },
       { divider: true },
       {
         id:                'tools-fleet',
