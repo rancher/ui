@@ -5,6 +5,8 @@ This is the source code repository for the original Rancher UI.
 
 The new Rancher UI source code can be found here - https://github.com/rancher/dashboard
 
+This UI is being phased out and we plan to retire it completely in 2026, thus, we are not accepting new Pull Requests from external contributors.
+
 ## Usage
 
 Prerequisites:
@@ -109,7 +111,7 @@ Or just [click here](//github.com/rancher/dashboard/issues/new/choose) to create
 
 License
 =======
-Copyright (c) 2014-2025 [SUSE](http://www.suse.com)
+Copyright (c) 2014-2026 [SUSE](http://www.suse.com)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
