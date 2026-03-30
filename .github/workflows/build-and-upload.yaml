@@ -38,12 +38,12 @@ jobs:
 
       - name: Apply gcs auth
         # https://github.com/google-github-actions/auth
-        uses: 'google-github-actions/auth@c200f3691d83b41bf9bbd8638997a462592937ed # v2'
+        uses: google-github-actions/auth@c200f3691d83b41bf9bbd8638997a462592937ed # v2
         with:
           credentials_json: "${{ env.GOOGLE_AUTH }}"
 
       - name: Upload build
-        uses: 'google-github-actions/upload-cloud-storage@c0f6160ff80057923ff50e5e567695cea181ec23 # v2'
+        uses: google-github-actions/upload-cloud-storage@c0f6160ff80057923ff50e5e567695cea181ec23 # v2
         # https://github.com/google-github-actions/upload-cloud-storage
         with:
           path: ${{steps.build.outputs.BUILD_DIR}}
@@ -56,7 +56,7 @@ jobs:
 
       - name: Upload tar
         if: ${{ env.CI_BUILD_TAG != ''}}
-        uses: 'google-github-actions/upload-cloud-storage@c0f6160ff80057923ff50e5e567695cea181ec23 # v2'
+        uses: google-github-actions/upload-cloud-storage@c0f6160ff80057923ff50e5e567695cea181ec23 # v2
         with:
           path: ${{steps.build.outputs.BUILD_TGZ}}
           # Example - https://releases.rancher.com/ui/2.8.0.tar.gz
