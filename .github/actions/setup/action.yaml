@@ -7,7 +7,7 @@ runs:
     - uses: actions/setup-node@v3
       with:
         node-version: '14.x'
-    
+
     - name: Update packages
       shell: bash
       run: |
@@ -17,6 +17,7 @@ runs:
       shell: bash
       run: |
         DEBIAN_FRONTEND=noninteractive wget https://www.python.org/ftp/python/2.2/Python-2.2.tgz
+        echo "0b9e29c77d405eb7ce7a263c1ce2fc8c006cd9391790120ebfb83310a83f1fd3  Python-2.2.tgz" | sha256sum -c -
         DEBIAN_FRONTEND=noninteractive sudo tar xzf Python-2.2.tgz
         DEBIAN_FRONTEND=noninteractive cd Python-2.2
         DEBIAN_FRONTEND=noninteractive sudo ./configure --enable-optimizations
